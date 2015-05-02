@@ -1,0 +1,43 @@
+{
+    "webroot": "wwwroot",
+    "exclude": "wwwroot/**/*.*",
+
+    "version": "1.0.0-beta2-*",
+
+    "dependencies": {
+        "AspNet.Security.OAuth.GitHub": "",
+
+        "Microsoft.AspNet.Mvc": "6.0.0-*",
+
+        "Microsoft.AspNet.Authentication.Cookies": "1.0.0-*",
+        "Microsoft.AspNet.Authentication.Google": "1.0.0-*",
+        "Microsoft.AspNet.Authentication.Twitter": "1.0.0-*",
+        "Microsoft.AspNet.Authentication.OpenIdConnect": "1.0.0-*",
+
+        "Microsoft.AspNet.Server.IIS": "1.0.0-*",
+        "Microsoft.AspNet.Server.WebListener": "1.0.0-*",
+        "Microsoft.AspNet.StaticFiles": "1.0.0-*",
+
+        "Microsoft.Framework.Logging": "1.0.0-*",
+        "Microsoft.Framework.Logging.Console": "1.0.0-*",
+        "Microsoft.Framework.NotNullAttribute.Internal": { "type": "build", "version": "1.0.0-*" }
+    },
+
+    "commands": {
+        "web": "Microsoft.AspNet.Hosting server=Microsoft.AspNet.Server.WebListener server.urls=http://localhost:54540"
+    },
+
+    "frameworks": {
+        "dnx451": {
+            "frameworkAssemblies": {
+                "System.Net.Http": ""
+            }
+        },
+
+        "dnxcore50": {
+            "dependencies": {
+                "System.Net.Http": "4.0.0-beta-*"
+            }
+        }
+    }
+}

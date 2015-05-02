@@ -3,8 +3,7 @@ using Microsoft.AspNet.Http;
 using Microsoft.Framework.Internal;
 using Newtonsoft.Json.Linq;
 
-namespace AspNet.Security.OAuth.GitHub
-{
+namespace AspNet.Security.OAuth.GitHub {
     public class GitHubAuthenticatedNotification : OAuthAuthenticatedContext {
         public GitHubAuthenticatedNotification(
             [NotNull] HttpContext context,
@@ -18,12 +17,24 @@ namespace AspNet.Security.OAuth.GitHub
             Link = TryGetValue(payload, "url");
         }
 
+        /// <summary>
+        /// Gets the identifier corresponding to the authenticated user.
+        /// </summary>
         public string Identifier { get; }
 
+        /// <summary>
+        /// Gets the login corresponding to the authenticated user.
+        /// </summary>
         public string Login { get; }
 
+        /// <summary>
+        /// Gets the name corresponding to the authenticated user.
+        /// </summary>
         public string Name { get; }
 
+        /// <summary>
+        /// Gets the URL corresponding to the authenticated user.
+        /// </summary>
         public string Link { get; }
 
         private static string TryGetValue(JObject payload, string property) {

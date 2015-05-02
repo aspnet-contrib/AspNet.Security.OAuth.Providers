@@ -2,6 +2,9 @@
 using Microsoft.AspNet.Http;
 
 namespace AspNet.Security.OAuth.GitHub {
+    /// <summary>
+    /// Defines a set of options used by <see cref="GitHubAuthenticationHandler"/>.
+    /// </summary>
     public class GitHubAuthenticationOptions : OAuthAuthenticationOptions<GitHubAuthenticationNotifications> {
         public GitHubAuthenticationOptions() {
             AuthenticationScheme = GitHubAuthenticationDefaults.AuthenticationScheme;

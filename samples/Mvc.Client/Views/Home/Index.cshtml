@@ -1,0 +1,20 @@
+﻿@model string
+
+<div class="jumbotron">
+    @if (User?.Identity?.IsAuthenticated ?? false) {
+        <h1>Welcome, @User.Identity.Name</h1>
+
+        <p>
+            @foreach (var claim in Context.User.Claims) {
+                <div>@claim.Type: <b>@claim.Value</b></div>
+            }
+        </p>
+        
+        <a class="btn btn-lg btn-danger" href="/signout">Sign out</a>
+    }
+
+    else {
+        <h1>Welcome, anonymous</h1>
+        <a class="btn btn-lg btn-success" href="/signin">Sign in</a>
+    }
+</div>

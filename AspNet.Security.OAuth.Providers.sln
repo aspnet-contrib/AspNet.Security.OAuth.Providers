@@ -5,7 +5,11 @@ VisualStudioVersion = 14.0.22823.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{BAC7067D-88FE-4385-8AC9-1A325FFBDE69}"
+EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "AspNet.Security.OAuth.GitHub", "src\AspNet.Security.OAuth.GitHub\AspNet.Security.OAuth.GitHub.xproj", "{9DFEE19E-C170-4F20-93F3-EC952B1532F2}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Mvc.Client", "samples\Mvc.Client\Mvc.Client.xproj", "{68631868-902A-46FB-9A44-BACF1812FBDE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,11 +21,16 @@ Global
 		{9DFEE19E-C170-4F20-93F3-EC952B1532F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9DFEE19E-C170-4F20-93F3-EC952B1532F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9DFEE19E-C170-4F20-93F3-EC952B1532F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68631868-902A-46FB-9A44-BACF1812FBDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68631868-902A-46FB-9A44-BACF1812FBDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68631868-902A-46FB-9A44-BACF1812FBDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68631868-902A-46FB-9A44-BACF1812FBDE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{9DFEE19E-C170-4F20-93F3-EC952B1532F2} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
+		{68631868-902A-46FB-9A44-BACF1812FBDE} = {BAC7067D-88FE-4385-8AC9-1A325FFBDE69}
 	EndGlobalSection
 EndGlobal
