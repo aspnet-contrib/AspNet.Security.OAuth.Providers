@@ -5,6 +5,7 @@
 *.sln.ide/
 target/
 .nuget/
+.vs/
 
 # User-specific files
 *.suo
