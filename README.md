@@ -3,7 +3,7 @@ AspNet.Security.OAuth.Providers
 
 __AspNet.Security.OAuth.Providers__ is a __collection of security middleware__ that you can use in your __ASP.NET 5__ application to support social authentication providers like __[GitHub](https://github.com/)__, __[Foursquare](https://foursquare.com/)__ or __[Dropbox](https://www.dropbox.com/)__. It is directly inspired by __[Jerrie Pelser](https://github.com/jerriep)__'s initiative, __[Owin.Security.Providers](https://github.com/RockstarLabs/OwinOAuthProviders)__.
 
-__The latest nightly builds can be found here__: __[https://www.myget.org/F/aspnet-contrib/](https://www.myget.org/F/aspnet-contrib/api/v2)__
+__The latest nightly builds can be found here__: __[https://www.myget.org/F/aspnet-contrib/](https://www.myget.org/F/aspnet-contrib/)__
 
 [![Build status](https://ci.appveyor.com/api/projects/status/3lh3pq6e57c8pnr4/branch/dev?svg=true)](https://ci.appveyor.com/project/aspnet-contrib/aspnet-security-oauth-providers/branch/dev)
 [![Build status](https://travis-ci.org/aspnet-contrib/AspNet.Security.OAuth.Providers.svg?branch=dev)](https://travis-ci.org/aspnet-contrib/AspNet.Security.OAuth.Providers)
