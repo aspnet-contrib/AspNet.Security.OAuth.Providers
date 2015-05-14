@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using System.Globalization;
+using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -46,6 +47,26 @@ namespace AspNet.Security.OAuth.GitHub {
                     if (!string.IsNullOrEmpty(notification.Link)) {
                         identity.AddClaim(new Claim("urn:github:url", notification.Link,
                                                     ClaimValueTypes.String, Options.ClaimsIssuer));
+                    }
+
+                    if (Options.SaveTokens) {
+                        identity.AddClaim(new Claim("access_token", notification.AccessToken,
+                                                    ClaimValueTypes.String, Options.ClaimsIssuer));
+
+                        if (!string.IsNullOrEmpty(notification.RefreshToken)) {
+                            identity.AddClaim(new Claim("refresh_token", notification.RefreshToken,
+                                                        ClaimValueTypes.String, Options.ClaimsIssuer));
+                        }
+
+                        if (!string.IsNullOrEmpty(notification.TokenType)) {
+                            identity.AddClaim(new Claim("token_type", notification.TokenType,
+                                                        ClaimValueTypes.String, Options.ClaimsIssuer));
+                        }
+
+                        if (notification.ExpiresIn.HasValue) {
+                            identity.AddClaim(new Claim("expires_in", notification.ExpiresIn.Value.TotalSeconds.ToString(CultureInfo.InvariantCulture),
+                                                        ClaimValueTypes.String, Options.ClaimsIssuer));
+                        }
                     }
 
                     notification.Properties = properties;
