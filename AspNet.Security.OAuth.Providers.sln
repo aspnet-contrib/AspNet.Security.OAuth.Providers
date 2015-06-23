@@ -11,6 +11,8 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "AspNet.Security.OAuth.GitHu
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Mvc.Client", "samples\Mvc.Client\Mvc.Client.xproj", "{68631868-902A-46FB-9A44-BACF1812FBDE}"
 EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "AspNet.Security.OAuth.Extensions", "src\AspNet.Security.OAuth.Extensions\AspNet.Security.OAuth.Extensions.xproj", "{FE52A431-57AD-45FA-AA59-C63CB6EA3F31}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +27,10 @@ Global
 		{68631868-902A-46FB-9A44-BACF1812FBDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{68631868-902A-46FB-9A44-BACF1812FBDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{68631868-902A-46FB-9A44-BACF1812FBDE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE52A431-57AD-45FA-AA59-C63CB6EA3F31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE52A431-57AD-45FA-AA59-C63CB6EA3F31}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE52A431-57AD-45FA-AA59-C63CB6EA3F31}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE52A431-57AD-45FA-AA59-C63CB6EA3F31}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -32,5 +38,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{9DFEE19E-C170-4F20-93F3-EC952B1532F2} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 		{68631868-902A-46FB-9A44-BACF1812FBDE} = {BAC7067D-88FE-4385-8AC9-1A325FFBDE69}
+		{FE52A431-57AD-45FA-AA59-C63CB6EA3F31} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 	EndGlobalSection
 EndGlobal

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNet.Authentication.Cookies;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNet.Authentication.Cookies;
 using Microsoft.AspNet.Http.Authentication;
 using Microsoft.AspNet.Mvc;
 using Mvc.Client.Extensions;
@@ -28,11 +29,11 @@ namespace Mvc.Client.Controllers {
 
         [HttpGet("~/signout")]
         [HttpPost("~/signout")]
-        public IActionResult SignOut() {
+        public async Task<IActionResult> SignOut() {
             // Instruct the cookies middleware to delete the local cookie created
             // when the user agent is redirected from the external identity provider
             // after a successful authentication flow (e.g Google or Facebook).
-            Context.Authentication.SignOut(CookieAuthenticationDefaults.AuthenticationScheme);
+            await Context.Authentication.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
             return RedirectToAction("Index", "Home");
         }

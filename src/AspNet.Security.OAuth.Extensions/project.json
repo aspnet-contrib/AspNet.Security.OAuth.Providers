@@ -1,0 +1,20 @@
+﻿{
+    "version": "1.0.0-alpha1-*",
+    "description": "ASP.NET 5 extensions making OAuth2 authentication easier to use.",
+    "authors": [ "Kévin Chalet", "Jerrie Pelser" ],
+    "owners": [ "Kévin Chalet", "Jerrie Pelser" ],
+
+    "projectUrl": "https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers",
+    "licenseUrl": "http://www.apache.org/licenses/LICENSE-2.0.html",
+
+    "shared": "*.cs",
+
+    "frameworks": {
+        "dnx451": { },
+        "dnxcore50": {
+            "dependencies": {
+                "System.Security.Claims": "4.0.0-*"
+            }
+        }
+    }
+}
