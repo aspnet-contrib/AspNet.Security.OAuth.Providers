@@ -8,13 +8,12 @@ using Microsoft.Framework.Logging;
 namespace Mvc.Client {
     public class Startup {
         public void ConfigureServices(IServiceCollection services) {
-            services.Configure<ExternalAuthenticationOptions>(options => {
+            services.AddAuthentication();
+            services.AddMvc();
+
+            services.Configure<SharedAuthenticationOptions>(options => {
                 options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
             });
-
-            services.AddAuthentication();
-
-            services.AddMvc();
         }
 
         public void Configure(IApplicationBuilder app) {

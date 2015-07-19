@@ -14,7 +14,7 @@ namespace AspNet.Security.OAuth.GitHub {
             [NotNull] IDataProtectionProvider dataProtectionProvider,
             [NotNull] ILoggerFactory loggerFactory,
             [NotNull] IUrlEncoder encoder,
-            [NotNull] IOptions<ExternalAuthenticationOptions> externalOptions,
+            [NotNull] IOptions<SharedAuthenticationOptions> externalOptions,
             [NotNull] IOptions<GitHubAuthenticationOptions> options,
             ConfigureOptions<GitHubAuthenticationOptions> configureOptions = null)
             : base(next, dataProtectionProvider, loggerFactory,
