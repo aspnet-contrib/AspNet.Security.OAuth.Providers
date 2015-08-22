@@ -49,6 +49,11 @@ namespace Mvc.Client {
                 options.ClientSecret = "98f1bf028608901e9df91d64ee61536fe562064b";
             });
 
+            app.UseLinkedInAuthentication(options => {
+                options.ClientId = "your client id";
+                options.ClientSecret = "your client secret";
+            });
+
             app.UseMvc();
         }
     }
