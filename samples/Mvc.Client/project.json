@@ -6,6 +6,7 @@
 
     "dependencies": {
         "AspNet.Security.OAuth.GitHub": "",
+        "AspNet.Security.OAuth.LinkedIn": "",
 
         "Microsoft.AspNet.Mvc": "6.0.0-*",
 
