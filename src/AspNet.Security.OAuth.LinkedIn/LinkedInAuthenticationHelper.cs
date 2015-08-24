@@ -1,4 +1,10 @@
-﻿using Microsoft.Framework.Internal;
+﻿/*
+ * Licensed under the Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0)
+ * See https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers
+ * for more information concerning the license and the contributors participating to this project.
+ */
+
+using Microsoft.Framework.Internal;
 using Newtonsoft.Json.Linq;
 
 namespace AspNet.Security.OAuth.LinkedIn {
@@ -11,6 +17,7 @@ namespace AspNet.Security.OAuth.LinkedIn {
         /// Gets the email address corresponding to the authenticated user.
         /// </summary>
         public static string GetEmail([NotNull] JObject user) => user.Value<string>("emailAddress");
+
         /// <summary>
         /// Gets the identifier corresponding to the authenticated user.
         /// </summary>

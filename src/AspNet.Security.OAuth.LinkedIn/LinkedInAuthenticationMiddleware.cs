@@ -1,3 +1,9 @@
+/*
+ * Licensed under the Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0)
+ * See https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers
+ * for more information concerning the license and the contributors participating to this project.
+ */
+
 using Microsoft.AspNet.Authentication;
 using Microsoft.AspNet.Authentication.OAuth;
 using Microsoft.AspNet.Builder;
@@ -20,10 +26,8 @@ namespace AspNet.Security.OAuth.LinkedIn {
                 encoder, externalOptions, options, configureOptions) {
         }
 
-        protected override AuthenticationHandler<LinkedInAuthenticationOptions> CreateHandler()
-        {
+        protected override AuthenticationHandler<LinkedInAuthenticationOptions> CreateHandler() {
             return new LinkedInAuthenticationHandler(Backchannel);
         }
-
     }
 }

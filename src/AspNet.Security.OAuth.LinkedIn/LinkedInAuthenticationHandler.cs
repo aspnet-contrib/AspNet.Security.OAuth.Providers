@@ -1,4 +1,10 @@
-﻿using System.Net.Http;
+﻿/*
+ * Licensed under the Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0)
+ * See https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers
+ * for more information concerning the license and the contributors participating to this project.
+ */
+
+using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -16,8 +22,7 @@ namespace AspNet.Security.OAuth.LinkedIn {
         }
 
         protected override async Task<AuthenticationTicket> CreateTicketAsync([NotNull] ClaimsIdentity identity,
-            [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens)
-        {
+            [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens) {
             var request = new HttpRequestMessage(HttpMethod.Get, Options.UserInformationEndpoint);
             request.Headers.Add("x-li-format", "json");
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", tokens.AccessToken);
@@ -33,23 +38,20 @@ namespace AspNet.Security.OAuth.LinkedIn {
                 .AddOptionalClaim("urn:linkedin:profile", LinkedInAuthenticationHelper.GetPublicProfileUrl(payload), Options.ClaimsIssuer)
                 .AddOptionalClaim("urn:linkedin:profilepicture", LinkedInAuthenticationHelper.GetProfilePictureUrl(payload), Options.ClaimsIssuer);
 
-            var notification = new OAuthAuthenticatedContext(Context, Options, Backchannel, tokens, payload)
-            {
+            var notification = new OAuthAuthenticatedContext(Context, Options, Backchannel, tokens, payload) {
                 Principal = new ClaimsPrincipal(identity),
                 Properties = properties
             };
 
             await Options.Notifications.Authenticated(notification);
 
-            if (notification.Principal?.Identity == null)
-            {
+            if (notification.Principal?.Identity == null) {
                 return null;
             }
 
             return new AuthenticationTicket(
                 notification.Principal, notification.Properties,
                 notification.Options.AuthenticationScheme);
-
         }
     }
 }
