@@ -8,6 +8,7 @@
         "AspNet.Security.OAuth.GitHub": "",
         "AspNet.Security.OAuth.LinkedIn": "",
         "AspNet.Security.OAuth.WordPress": "",
+        "AspNet.Security.OAuth.Yahoo": "",
 
         "Microsoft.AspNet.Mvc": "6.0.0-*",
 
