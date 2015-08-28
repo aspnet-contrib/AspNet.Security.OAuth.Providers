@@ -1,7 +1,7 @@
 language: csharp
 sudo: false
 script:
-  - ./build.sh verify
+  - ./build.sh --quiet verify
 mono:
   - alpha
   - latest
