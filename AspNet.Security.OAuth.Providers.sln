@@ -15,6 +15,8 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "AspNet.Security.OAuth.Exten
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "AspNet.Security.OAuth.LinkedIn", "src\AspNet.Security.OAuth.LinkedIn\AspNet.Security.OAuth.LinkedIn.xproj", "{0351689C-EAB7-42D0-966F-4021B89EF553}"
 EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "AspNet.Security.OAuth.WordPress", "src\AspNet.Security.OAuth.WordPress\AspNet.Security.OAuth.WordPress.xproj", "{38E5DB77-7F35-4E3C-9719-8A25CE4130CA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +39,10 @@ Global
 		{0351689C-EAB7-42D0-966F-4021B89EF553}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0351689C-EAB7-42D0-966F-4021B89EF553}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0351689C-EAB7-42D0-966F-4021B89EF553}.Release|Any CPU.Build.0 = Release|Any CPU
+		{38E5DB77-7F35-4E3C-9719-8A25CE4130CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38E5DB77-7F35-4E3C-9719-8A25CE4130CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38E5DB77-7F35-4E3C-9719-8A25CE4130CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38E5DB77-7F35-4E3C-9719-8A25CE4130CA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -46,5 +52,6 @@ Global
 		{68631868-902A-46FB-9A44-BACF1812FBDE} = {BAC7067D-88FE-4385-8AC9-1A325FFBDE69}
 		{FE52A431-57AD-45FA-AA59-C63CB6EA3F31} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 		{0351689C-EAB7-42D0-966F-4021B89EF553} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
+		{38E5DB77-7F35-4E3C-9719-8A25CE4130CA} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 	EndGlobalSection
 EndGlobal
