@@ -54,6 +54,11 @@ namespace Mvc.Client {
                 options.ClientSecret = "C7CzxvLrYpetEmZm";
             });
 
+            app.UseYahooAuthentication(options => {
+                options.ClientId = "dj0yJmk9a29HamkxMm9UT21tJmQ9WVdrOVdXdERVRE5JTnpBbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmeD1mZg--";
+                options.ClientSecret = "bf9bacc22391a01977f8e7d57daadd564809e6a1";
+            });
+
             app.UseMvc();
         }
     }
