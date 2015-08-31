@@ -54,6 +54,11 @@ namespace Mvc.Client {
                 options.ClientSecret = "C7CzxvLrYpetEmZm";
             });
 
+            app.UseWordPressAuthentication(options => {
+                options.ClientId = "42245";
+                options.ClientSecret = "n18qkkc7Kpksf3EZ2GZfoRqN7jPGJkMOAcIbv3l1s0Jys7XrwhMlOlCctDmLUe0F";
+            });
+
             app.UseMvc();
         }
     }
