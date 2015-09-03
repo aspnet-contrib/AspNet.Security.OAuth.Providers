@@ -18,12 +18,6 @@ namespace Microsoft.AspNet.Builder {
             return services.Configure(configuration);
         }
 
-        public static IServiceCollection ConfigureGitHubAuthentication(
-            [NotNull] this IServiceCollection services, [NotNull] string instance,
-            [NotNull] Action<GitHubAuthenticationOptions> configuration) {
-            return services.Configure(configuration, instance);
-        }
-
         public static IApplicationBuilder UseGitHubAuthentication([NotNull] this IApplicationBuilder app) {
             return app.UseMiddleware<GitHubAuthenticationMiddleware>();
         }
@@ -33,19 +27,6 @@ namespace Microsoft.AspNet.Builder {
             [NotNull] Action<GitHubAuthenticationOptions> configuration) {
             return app.UseMiddleware<GitHubAuthenticationMiddleware>(
                 new ConfigureOptions<GitHubAuthenticationOptions>(configuration));
-        }
-
-        public static IApplicationBuilder UseGitHubAuthentication(
-            [NotNull] this IApplicationBuilder app, [NotNull] string instance) {
-            return app.UseMiddleware<GitHubAuthenticationMiddleware>(
-                new ConfigureOptions<GitHubAuthenticationOptions>(options => { }) { Name = instance });
-        }
-
-        public static IApplicationBuilder UseGitHubAuthentication(
-            [NotNull] this IApplicationBuilder app, [NotNull] string instance,
-            [NotNull] Action<GitHubAuthenticationOptions> configuration) {
-            return app.UseMiddleware<GitHubAuthenticationMiddleware>(
-                new ConfigureOptions<GitHubAuthenticationOptions>(configuration) { Name = instance });
         }
     }
 }
