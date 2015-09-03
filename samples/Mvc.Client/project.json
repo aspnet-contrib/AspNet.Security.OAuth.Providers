@@ -2,7 +2,7 @@
     "webroot": "wwwroot",
     "exclude": "wwwroot/**/*.*",
 
-    "version": "1.0.0-beta2-*",
+    "version": "1.0.0-*",
 
     "dependencies": {
         "AspNet.Security.OAuth.GitHub": "",
@@ -24,7 +24,11 @@
 
         "Microsoft.Framework.Logging": "1.0.0-*",
         "Microsoft.Framework.Logging.Console": "1.0.0-*",
-        "Microsoft.Framework.NotNullAttribute.Internal": { "type": "build", "version": "1.0.0-*" }
+
+        "Microsoft.Framework.NotNullAttribute.Internal": {
+            "type": "build",
+            "version": "1.0.0-*"
+        }
     },
 
     "commands": {

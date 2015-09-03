@@ -1,5 +1,5 @@
 ﻿{
-    "version": "1.0.0-alpha1-*",
+    "version": "1.0.0-*",
     "description": "ASP.NET 5 security middleware enabling Yahoo authentication.",
     "authors": [ "Kévin Chalet", "Jerrie Pelser" ],
     "owners": [ "Kévin Chalet", "Jerrie Pelser" ],
