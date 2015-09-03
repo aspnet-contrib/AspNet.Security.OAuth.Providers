@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Authentication.Cookies;
 using Microsoft.AspNet.Http.Authentication;
 using Microsoft.AspNet.Mvc;
+using Microsoft.AspNet.Mvc.ActionResults;
 using Mvc.Client.Extensions;
 
 namespace Mvc.Client.Controllers {
