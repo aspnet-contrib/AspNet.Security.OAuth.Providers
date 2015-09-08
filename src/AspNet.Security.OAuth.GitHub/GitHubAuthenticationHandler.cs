@@ -37,20 +37,18 @@ namespace AspNet.Security.OAuth.GitHub {
                     .AddOptionalClaim("urn:github:name", GitHubAuthenticationHelper.GetName(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim("urn:github:url", GitHubAuthenticationHelper.GetLink(payload), Options.ClaimsIssuer);
 
-            var notification = new OAuthAuthenticatedContext(Context, Options, Backchannel, tokens, payload) {
+            var context = new OAuthAuthenticatedContext(Context, Options, Backchannel, tokens, payload) {
                 Principal = new ClaimsPrincipal(identity),
                 Properties = properties
             };
 
-            await Options.Notifications.Authenticated(notification);
+            await Options.Events.Authenticated(context);
 
-            if (notification.Principal?.Identity == null) {
+            if (context.Principal?.Identity == null) {
                 return null;
             }
                     
-            return new AuthenticationTicket(
-                notification.Principal, notification.Properties,
-                notification.Options.AuthenticationScheme);
+            return new AuthenticationTicket(context.Principal, context.Properties, Options.AuthenticationScheme);
         }
     }
 }

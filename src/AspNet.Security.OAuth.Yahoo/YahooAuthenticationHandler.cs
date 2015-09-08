@@ -42,20 +42,18 @@ namespace AspNet.Security.OAuth.Yahoo {
                     .AddOptionalClaim("urn:yahoo:profile", YahooAuthenticationHelper.GetProfileUrl(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim("urn:yahoo:profileimage", YahooAuthenticationHelper.GetProfileImageUrl(payload), Options.ClaimsIssuer);
 
-            var notification = new OAuthAuthenticatedContext(Context, Options, Backchannel, tokens, payload) {
+            var context = new OAuthAuthenticatedContext(Context, Options, Backchannel, tokens, payload) {
                 Principal = new ClaimsPrincipal(identity),
                 Properties = properties
             };
 
-            await Options.Notifications.Authenticated(notification);
+            await Options.Events.Authenticated(context);
 
-            if (notification.Principal?.Identity == null) {
+            if (context.Principal?.Identity == null) {
                 return null;
             }
 
-            return new AuthenticationTicket(
-                notification.Principal, notification.Properties,
-                notification.Options.AuthenticationScheme);
+            return new AuthenticationTicket(context.Principal, context.Properties, Options.AuthenticationScheme);
         }
 
         protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] string code, [NotNull] string redirectUri) {
