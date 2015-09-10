@@ -23,6 +23,7 @@
     <DevelopmentServerPort>53507</DevelopmentServerPort>
     <CommandLineArguments />
     <DebugTarget>web</DebugTarget>
+    <SSLPort>44300</SSLPort>
   </PropertyGroup>
   <Import Project="$(VSToolsPath)\DNX\Microsoft.DNX.Props" />
   <Import Project="$(VSToolsPath)\DNX\Microsoft.DNX.targets" />

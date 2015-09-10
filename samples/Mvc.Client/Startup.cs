@@ -4,6 +4,7 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using AspNet.Security.OAuth.BattleNet;
 using Microsoft.AspNet.Authentication;
 using Microsoft.AspNet.Authentication.Cookies;
 using Microsoft.AspNet.Builder;
@@ -63,6 +64,13 @@ namespace Mvc.Client {
                 options.ClientId = "dj0yJmk9a29HamkxMm9UT21tJmQ9WVdrOVdXdERVRE5JTnpBbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmeD1mZg--";
                 options.ClientSecret = "bf9bacc22391a01977f8e7d57daadd564809e6a1";
             });
+
+			app.UseBattleNetAuthentication(options =>
+			{
+				options.ClientId = "7e9p3rner7z3v8wsa4bnpyuxek5d3dkv";
+				options.ClientSecret = "7eHQMnYgfkNQpPuq8HzEHQ5cqQF66Fcm";
+				options.SetServerRegion(ServerRegion.US);
+			});
 
             app.UseMvc();
         }
