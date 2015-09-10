@@ -65,12 +65,12 @@ namespace Mvc.Client {
                 options.ClientSecret = "bf9bacc22391a01977f8e7d57daadd564809e6a1";
             });
 
-			app.UseBattleNetAuthentication(options =>
-			{
-				options.ClientId = "7e9p3rner7z3v8wsa4bnpyuxek5d3dkv";
-				options.ClientSecret = "7eHQMnYgfkNQpPuq8HzEHQ5cqQF66Fcm";
-				options.SetServerRegion(ServerRegion.US);
-			});
+            app.UseBattleNetAuthentication(options =>
+            {
+                options.ClientId = "7e9p3rner7z3v8wsa4bnpyuxek5d3dkv";
+                options.ClientSecret = "7eHQMnYgfkNQpPuq8HzEHQ5cqQF66Fcm";
+                options.SetServerRegion(ServerRegion.US);
+            });
 
             app.UseMvc();
         }

@@ -23,9 +23,8 @@ namespace AspNet.Security.OAuth.BattleNet {
 
         protected override async Task<AuthenticationTicket> CreateTicketAsync([NotNull] ClaimsIdentity identity,
             [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens) {
-
-			string userInfoUri = Options.UserInformationEndpoint + "?access_token=" + tokens.AccessToken;
-            var request = new HttpRequestMessage(HttpMethod.Get, userInfoUri);
+            
+            var request = new HttpRequestMessage(HttpMethod.Get, Options.UserInformationEndpoint + "?access_token=" + tokens.AccessToken);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
             var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
@@ -34,10 +33,10 @@ namespace AspNet.Security.OAuth.BattleNet {
             var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
 
 
-			string id = BattleNetAuthenticationHelper.GetIdentifier(payload);
-			string battleTag = BattleNetAuthenticationHelper.GetBattleTag(payload);
-			identity.AddOptionalClaim(ClaimTypes.NameIdentifier, id, Options.ClaimsIssuer)
-					.AddOptionalClaim(ClaimTypes.Name, battleTag, Options.ClaimsIssuer);
+            string id = BattleNetAuthenticationHelper.GetIdentifier(payload);
+            string battleTag = BattleNetAuthenticationHelper.GetBattleTag(payload);
+            identity.AddOptionalClaim(ClaimTypes.NameIdentifier, id, Options.ClaimsIssuer)
+                    .AddOptionalClaim(ClaimTypes.Name, battleTag, Options.ClaimsIssuer);
 
             var context = new OAuthAuthenticatedContext(Context, Options, Backchannel, tokens, payload) {
                 Principal = new ClaimsPrincipal(identity),

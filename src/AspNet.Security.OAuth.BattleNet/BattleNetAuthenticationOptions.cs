@@ -20,44 +20,43 @@ namespace AspNet.Security.OAuth.BattleNet {
 
             CallbackPath = new PathString(BattleNetAuthenticationDefaults.CallbackPath);
 
-			this.SetServerRegion(ServerRegion.US); //Default to US
-			
+            this.SetServerRegion(ServerRegion.US); //Default to US
+
             UserInformationEndpoint = BattleNetAuthenticationDefaults.UserInformationEndpoint;
 
             SaveTokensAsClaims = false;
         }
 
-		public void SetServerRegion(ServerRegion serverRegion)
-		{
-			string authEndpoint;
-			string tokenEndpoint;
-			switch (serverRegion)
-			{
-				case ServerRegion.US:
-					authEndpoint = BattleNetAuthenticationDefaults.AuthorizationEndpointUS;
-					tokenEndpoint = BattleNetAuthenticationDefaults.TokenEndpointUS;
-					break;
-				case ServerRegion.TW:
-					authEndpoint = BattleNetAuthenticationDefaults.AuthorizationEndpointTW;
-					tokenEndpoint = BattleNetAuthenticationDefaults.TokenEndpointTW;
-					break;
-				case ServerRegion.KR:
-					authEndpoint = BattleNetAuthenticationDefaults.AuthorizationEndpointKR;
-					tokenEndpoint = BattleNetAuthenticationDefaults.TokenEndpointKR;
-					break;
-				case ServerRegion.EU:
-					authEndpoint = BattleNetAuthenticationDefaults.AuthorizationEndpointEU;
-					tokenEndpoint = BattleNetAuthenticationDefaults.TokenEndpointEU;
-					break;
-				case ServerRegion.CN:
-					authEndpoint = BattleNetAuthenticationDefaults.AuthorizationEndpointCN;
-					tokenEndpoint = BattleNetAuthenticationDefaults.TokenEndpointCN;
-					break;
-				default:
-					throw new ArgumentOutOfRangeException(nameof(serverRegion));
-			}
-			AuthorizationEndpoint = authEndpoint;
-			TokenEndpoint = tokenEndpoint;
-		}
+        public void SetServerRegion(ServerRegion serverRegion) {
+            string authEndpoint;
+            string tokenEndpoint;
+            switch (serverRegion)
+            {
+                case ServerRegion.US:
+                    authEndpoint = BattleNetAuthenticationDefaults.AuthorizationEndpointUS;
+                    tokenEndpoint = BattleNetAuthenticationDefaults.TokenEndpointUS;
+                    break;
+                case ServerRegion.TW:
+                    authEndpoint = BattleNetAuthenticationDefaults.AuthorizationEndpointTW;
+                    tokenEndpoint = BattleNetAuthenticationDefaults.TokenEndpointTW;
+                    break;
+                case ServerRegion.KR:
+                    authEndpoint = BattleNetAuthenticationDefaults.AuthorizationEndpointKR;
+                    tokenEndpoint = BattleNetAuthenticationDefaults.TokenEndpointKR;
+                    break;
+                case ServerRegion.EU:
+                    authEndpoint = BattleNetAuthenticationDefaults.AuthorizationEndpointEU;
+                    tokenEndpoint = BattleNetAuthenticationDefaults.TokenEndpointEU;
+                    break;
+                case ServerRegion.CN:
+                    authEndpoint = BattleNetAuthenticationDefaults.AuthorizationEndpointCN;
+                    tokenEndpoint = BattleNetAuthenticationDefaults.TokenEndpointCN;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(serverRegion));
+            }
+            AuthorizationEndpoint = authEndpoint;
+            TokenEndpoint = tokenEndpoint;
+        }
     }
 }
