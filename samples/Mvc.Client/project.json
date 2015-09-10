@@ -9,6 +9,7 @@
         "AspNet.Security.OAuth.LinkedIn": "",
         "AspNet.Security.OAuth.WordPress": "",
         "AspNet.Security.OAuth.Yahoo": "",
+        "AspNet.Security.OAuth.Spotify": "",
 
         "Microsoft.AspNet.Mvc": "6.0.0-*",
 

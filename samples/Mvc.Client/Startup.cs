@@ -64,6 +64,12 @@ namespace Mvc.Client {
                 options.ClientSecret = "bf9bacc22391a01977f8e7d57daadd564809e6a1";
             });
 
+            // whitelisted redirect url for this id and secret: http://localhost:53507/signin-spotify
+            app.UseSpotifyAuthentication(options => {
+                options.ClientId = "21791719e1b14b3492c2f49607b4924c";
+                options.ClientSecret = "c0141cc57a7a483c892b059b09c5ebf4";
+            });
+
             app.UseMvc();
         }
     }
