@@ -17,7 +17,7 @@ copy %CACHED_NUGET% .nuget\nuget.exe > nul
 :restore
 IF EXIST packages\KoreBuild goto run
 .nuget\NuGet.exe install KoreBuild -ExcludeVersion -o packages -nocache -pre
-.nuget\NuGet.exe install Sake -version 0.2 -o packages -ExcludeVersion
+.nuget\NuGet.exe install Sake -version 0.2.2 -o packages -ExcludeVersion
 CALL packages\KoreBuild\build\dnvm upgrade -runtime clr -arch x86
 CALL packages\KoreBuild\build\dnvm install default -runtime clr -arch x86
 
