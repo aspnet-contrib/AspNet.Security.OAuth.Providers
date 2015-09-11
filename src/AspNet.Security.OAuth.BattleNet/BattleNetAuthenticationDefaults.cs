@@ -87,12 +87,4 @@ namespace AspNet.Security.OAuth.BattleNet {
         /// </summary>
         public const string UserInformationEndpoint = "https://us.api.battle.net/account/user";
     }
-
-    public enum ServerRegion {
-        US,
-        EU,
-        TW,
-        KR,
-        CN
-    }
 }
