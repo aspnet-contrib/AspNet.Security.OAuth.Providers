@@ -69,7 +69,6 @@ namespace Mvc.Client {
             {
                 options.ClientId = "7e9p3rner7z3v8wsa4bnpyuxek5d3dkv";
                 options.ClientSecret = "7eHQMnYgfkNQpPuq8HzEHQ5cqQF66Fcm";
-                options.SetServerRegion(ServerRegion.US);
             });
 
             app.UseMvc();
