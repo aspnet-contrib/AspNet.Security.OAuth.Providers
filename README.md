@@ -14,6 +14,7 @@ The __dev__ branch relies on the latest version of __DNX__ and __ASP.NET 5__, th
 
 Make sure to always run the latest __DNX__ version and the corresponding __ASP.NET 5__ packages by running `dnvm upgrade -u` and `dnu restore`.
 
+
 ## Getting started
 
 __Adding social authentication to your application is a breeze__ and just requires a few lines in your `Startup` class:
