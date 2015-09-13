@@ -38,9 +38,6 @@ namespace AspNet.Security.OAuth.Imgur {
                     .AddOptionalClaim("urn:imgur:created", ImgurAuthenticationHelper.GetCreated(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim("urn:imgur:proexpiration", ImgurAuthenticationHelper.GetProExpiration(payload), Options.ClaimsIssuer);
 
-            // TODO: Add any optional claims, eg
-            //  .AddOptionalClaim("urn:imgur:name", ImgurAuthenticationHelper.GetName(payload), Options.ClaimsIssuer)
-
             var context = new OAuthAuthenticatedContext(Context, Options, Backchannel, tokens, payload) {
                 Principal = new ClaimsPrincipal(identity),
                 Properties = properties
