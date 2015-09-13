@@ -32,8 +32,11 @@ namespace AspNet.Security.OAuth.Imgur {
 
             var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
             
-            identity.AddOptionalClaim(ClaimTypes.NameIdentifier, ImgurAuthenticationHelper.GetIdentifier(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim(ClaimTypes.Name, ImgurAuthenticationHelper.GetName(payload), Options.ClaimsIssuer);
+            identity.AddOptionalClaim(ClaimTypes.NameIdentifier, ImgurAuthenticationHelper.GetId(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim(ClaimTypes.Name, ImgurAuthenticationHelper.GetUrl(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim("urn:imgur:reputation", ImgurAuthenticationHelper.GetReputation(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim("urn:imgur:created", ImgurAuthenticationHelper.GetCreated(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim("urn:imgur:proexpiration", ImgurAuthenticationHelper.GetProExpiration(payload), Options.ClaimsIssuer);
 
             // TODO: Add any optional claims, eg
             //  .AddOptionalClaim("urn:imgur:name", ImgurAuthenticationHelper.GetName(payload), Options.ClaimsIssuer)
