@@ -25,16 +25,25 @@ __Adding social authentication to your application is a breeze__ and just requir
 
 See [https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers/tree/dev/samples/Mvc.Client](https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers/tree/dev/samples/Mvc.Client) for a complete sample __using MVC 6 and supporting multiple social providers__.
 
+## Contributing
+
+__AspNet.Security.OAuth.Providers__ is actively maintained by __[Kévin Chalet](https://github.com/PinpointTownes)__ ([@PinpointTownes](https://twitter.com/PinpointTownes)) and __[Jerrie Pelser](https://github.com/jerriep)__ ([@jerriepelser](https://twitter.com/jerriepelser)).
+
+We would love it if you could help contributing to this repository. Please look at [CONTRIBUTING.MD](CONTRIBUTING.MD).
+
+Special thanks to our contributors:
+
+* Adam Reisinger (https://github.com/Res42)
+* Jerrie Pelser (https://github.com/jerriep)
+* Kévin Chalet (https://github.com/PinpointTownes)
+* Tommy Parnell (https://github.com/tparnell8)
+
 ## Support
 
 **Need help or wanna share your thoughts? Don't hesitate to join our dedicated chat rooms:**
 
 - **JabbR: [https://jabbr.net/#/rooms/aspnet-contrib](https://jabbr.net/#/rooms/aspnet-contrib)**
 - **Gitter: [https://gitter.im/aspnet-contrib/AspNet.Security.OAuth.Providers](https://gitter.im/aspnet-contrib/AspNet.Security.OAuth.Providers)**
-
-## Contributors
-
-__AspNet.Security.OAuth.Providers__ is actively maintained by __[Kévin Chalet](https://github.com/PinpointTownes)__ ([@PinpointTownes](https://twitter.com/PinpointTownes)) and __[Jerrie Pelser](https://github.com/jerriep)__ ([@jerriepelser](https://twitter.com/jerriepelser)). Contributions are welcome and can be submitted using pull requests.
 
 ## License
 
