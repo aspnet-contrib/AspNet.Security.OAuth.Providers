@@ -1,0 +1,33 @@
+﻿{
+  "version": "1.0.0-*",
+    "description": "ASP.NET 5 security middleware enabling Fitbit authentication.",
+    "authors": [ "Jason Loeffler" ],
+    "owners": [ "Kévin Chalet", "Jerrie Pelser" ],
+
+    "projectUrl": "https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers",
+    "licenseUrl": "http://www.apache.org/licenses/LICENSE-2.0.html",
+
+  "dependencies": {
+        "AspNet.Security.OAuth.Extensions": {
+            "type": "build",
+            "version": "1.0.0-*"
+        },
+
+        "Microsoft.AspNet.Authentication.OAuth": "1.0.0-*",
+
+        "Microsoft.Framework.NotNullAttribute.Internal": {
+            "type": "build",
+            "version": "1.0.0-*"
+        }
+  },
+
+  "frameworks": {
+        "dnx451": { },
+
+        "dnxcore50": {
+            "dependencies": {
+                "System.Security.Claims": "4.0.1-*"
+            }
+        }
+    }
+}

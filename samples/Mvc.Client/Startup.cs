@@ -49,6 +49,11 @@ namespace Mvc.Client {
                 options.ClientSecret = "98f1bf028608901e9df91d64ee61536fe562064b";
             });
 
+            app.UseFitbitAuthentication(options => {
+                options.ClientId = "229CK5";
+                options.ClientSecret = "aa6ee102c6164255a3041fdc43c9c0b2";
+            });
+
             app.UseMvc();
         }
     }
