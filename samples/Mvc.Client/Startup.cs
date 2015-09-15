@@ -12,7 +12,9 @@ using Microsoft.Framework.DependencyInjection;
 using Microsoft.Framework.Logging;
 
 namespace Mvc.Client {
+
     public class Startup {
+
         public void ConfigureServices(IServiceCollection services) {
             services.AddAuthentication();
             services.AddMvc();
@@ -49,6 +51,10 @@ namespace Mvc.Client {
                 options.ClientSecret = "98f1bf028608901e9df91d64ee61536fe562064b";
             });
 
+            app.UseRedditAuthentication(options => {
+                options.ClientId = "UtHzQNZ-3uBJOw";
+                options.ClientSecret = "0YYKJnduvkLHHl6yk-XNDZZO5CY";
+            });
             app.UseMvc();
         }
     }
