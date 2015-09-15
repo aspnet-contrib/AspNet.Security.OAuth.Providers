@@ -11,7 +11,7 @@ namespace AspNet.Security.OAuth.Fitbit {
     /// <summary>
     /// Defines a set of options used by <see cref="FitbitAuthenticationHandler"/>.
     /// </summary>
-    public class FitbitAuthenticationOptions : OAuthAuthenticationOptions {
+    public class FitbitAuthenticationOptions : OAuthOptions {
         public FitbitAuthenticationOptions() {
             AuthenticationScheme = FitbitAuthenticationDefaults.AuthenticationScheme;
             Caption = FitbitAuthenticationDefaults.Caption;

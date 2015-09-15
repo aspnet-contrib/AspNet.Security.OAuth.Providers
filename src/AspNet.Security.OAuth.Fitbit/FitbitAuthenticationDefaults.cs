@@ -20,37 +20,37 @@ namespace AspNet.Security.OAuth.Fitbit
         public const string AuthenticationScheme = "Fitbit";
 
         /// <summary>
-        /// Default value for <see cref="OAuthAuthenticationOptions.Caption"/>.
+        /// Default value for <see cref="OAuthOptions.Caption"/>.
         /// </summary>
         public const string Caption = "Fitbit";
 
         /// <summary>
-        /// Default value for <see cref="OAuthAuthenticationOptions.ClaimsIssuer"/>.
+        /// Default value for <see cref="OAuthOptions.ClaimsIssuer"/>.
         /// </summary>
         public const string Issuer = "Fitbit";
 
         /// <summary>
-        /// Default value for <see cref="OAuthAuthenticationOptions.CallbackPath"/>.
+        /// Default value for <see cref="OAuthOptions.CallbackPath"/>.
         /// </summary>
         public const string CallbackPath = "/signin-Fitbit";
 
         /// <summary>
-        /// Default value for <see cref="OAuthAuthenticationOptions.AuthorizationEndpoint"/>.
+        /// Default value for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
         /// </summary>
         public const string AuthorizationEndpoint = "https://www.fitbit.com/oauth2/authorize";
 
         /// <summary>
-        /// Default value for <see cref="OAuthAuthenticationOptions.TokenEndpoint"/>.
+        /// Default value for <see cref="OAuthOptions.TokenEndpoint"/>.
         /// </summary>
         public const string TokenEndpoint = "https://api.fitbit.com/oauth2/token";
 
         /// <summary>
-        /// Default value for <see cref="OAuthAuthenticationOptions.UserInformationEndpoint"/>.
+        /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
         /// </summary>
         public const string UserInformationEndpoint = "https://api.fitbit.com/1/user/-/profile.json";
 
         /// <summary>
-        /// Default value for <see cref="OAuthAuthenticationOptions.Scope"/>  Modify the Scope list
+        /// Default value for <see cref="OAuthOptions.Scope"/>  Modify the Scope list
         /// to customize the permissions being requested.  Defaults to: "profile".
         /// Possible options are: "activity", "nutrition", "profile", "settings", "sleep", "social", "weight".
         /// </summary>

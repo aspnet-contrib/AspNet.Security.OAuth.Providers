@@ -14,7 +14,7 @@ using Microsoft.Framework.OptionsModel;
 using Microsoft.Framework.WebEncoders;
 
 namespace AspNet.Security.OAuth.Fitbit {
-    public class FitbitAuthenticationMiddleware : OAuthAuthenticationMiddleware<FitbitAuthenticationOptions> {
+    public class FitbitAuthenticationMiddleware : OAuthMiddleware<FitbitAuthenticationOptions> {
         public FitbitAuthenticationMiddleware(
             [NotNull] RequestDelegate next,
             [NotNull] IDataProtectionProvider dataProtectionProvider,

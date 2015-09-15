@@ -19,7 +19,7 @@ using System.Threading.Tasks;
 using AspNet.Security.OAuth.Extensions;
 
 namespace AspNet.Security.OAuth.Fitbit {
-    public class FitbitAuthenticationHandler : OAuthAuthenticationHandler<FitbitAuthenticationOptions> {
+    public class FitbitAuthenticationHandler : OAuthHandler<FitbitAuthenticationOptions> {
         public FitbitAuthenticationHandler([NotNull] HttpClient client)
             : base(client) {
         }
