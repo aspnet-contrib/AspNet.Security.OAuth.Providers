@@ -34,20 +34,46 @@ namespace Mvc.Client {
                 options.LoginPath = new PathString("/signin");
             });
 
-            app.UseGoogleAuthentication(options => {
+            app.UseGoogleAuthentication(options =>
+            {
                 options.ClientId = "560027070069-37ldt4kfuohhu3m495hk2j4pjp92d382.apps.googleusercontent.com";
                 options.ClientSecret = "n2Q-GEw9RQjzcRbU3qhfTj8f";
             });
 
-            app.UseTwitterAuthentication(options => {
+            app.UseTwitterAuthentication(options =>
+            {
                 options.ConsumerKey = "6XaCTaLbMqfj6ww3zvZ5g";
                 options.ConsumerSecret = "Il2eFzGIrYhz6BWjYhVXBPQSfZuS4xoHpSSyD9PI";
             });
 
-            app.UseGitHubAuthentication(options => {
+            app.UseGitHubAuthentication(options =>
+            {
                 options.ClientId = "49e302895d8b09ea5656";
                 options.ClientSecret = "98f1bf028608901e9df91d64ee61536fe562064b";
             });
+
+            app.UseLinkedInAuthentication(options =>
+            {
+                options.ClientId = "75pgsv1r7ckn2w";
+                options.ClientSecret = "C7CzxvLrYpetEmZm";
+            });
+
+            app.UseWordPressAuthentication(options =>
+            {
+                options.ClientId = "42245";
+                options.ClientSecret = "n18qkkc7Kpksf3EZ2GZfoRqN7jPGJkMOAcIbv3l1s0Jys7XrwhMlOlCctDmLUe0F";
+            });
+
+            app.UseYahooAuthentication(options =>
+            {
+                options.ClientId = "dj0yJmk9a29HamkxMm9UT21tJmQ9WVdrOVdXdERVRE5JTnpBbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmeD1mZg--";
+                options.ClientSecret = "bf9bacc22391a01977f8e7d57daadd564809e6a1";
+            });
+            //app.UseTwitchAuthentication(options=> {
+
+            //    options.ClientId = "";
+            //    options.ClientSecret = "";
+            //});
 
             app.UseMvc();
         }
