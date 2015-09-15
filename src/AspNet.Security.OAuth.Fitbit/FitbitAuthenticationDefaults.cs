@@ -51,8 +51,9 @@ namespace AspNet.Security.OAuth.Fitbit
 
         /// <summary>
         /// Default value for <see cref="OAuthAuthenticationOptions.Scope"/>  Modify the Scope list
-        /// to customize the permissions being requested.  Defaults to: "activity", "nutrition", "profile", "settings", "sleep", "social", "weight".
+        /// to customize the permissions being requested.  Defaults to: "profile".
+        /// Possible options are: "activity", "nutrition", "profile", "settings", "sleep", "social", "weight".
         /// </summary>
-        public static List<string> Scope => new List<string> {"activity", "nutrition", "profile", "settings", "sleep", "social", "weight"}; 
+        public static IReadOnlyList<string> Scope => new List<string> {"profile"}.AsReadOnly(); 
     }
 }

@@ -23,8 +23,10 @@ namespace AspNet.Security.OAuth.Fitbit {
             TokenEndpoint = FitbitAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = FitbitAuthenticationDefaults.UserInformationEndpoint;
 
-            FitbitAuthenticationDefaults.Scope.ForEach(Scope.Add);
-
+            foreach (var scopeOption in FitbitAuthenticationDefaults.Scope) {
+                Scope.Add(scopeOption);
+            }
+            
             SaveTokensAsClaims = false;
         }
     }
