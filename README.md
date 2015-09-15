@@ -29,7 +29,7 @@ See [https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers/tree/dev/
 
 __AspNet.Security.OAuth.Providers__ is actively maintained by __[Kévin Chalet](https://github.com/PinpointTownes)__ ([@PinpointTownes](https://twitter.com/PinpointTownes)) and __[Jerrie Pelser](https://github.com/jerriep)__ ([@jerriepelser](https://twitter.com/jerriepelser)).
 
-We would love it if you could help contributing to this repository. Please look at [CONTRIBUTING.MD](CONTRIBUTING.MD).
+We would love it if you could help contributing to this repository. Please look at [CONTRIBUTING.md](CONTRIBUTING.md).
 
 Special thanks to our contributors:
 
