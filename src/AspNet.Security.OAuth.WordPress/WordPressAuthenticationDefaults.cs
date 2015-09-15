@@ -18,32 +18,32 @@ namespace AspNet.Security.OAuth.WordPress {
         public const string AuthenticationScheme = "WordPress";
 
         /// <summary>
-        /// Default value for <see cref="OAuthAuthenticationOptions.Caption"/>.
+        /// Default value for <see cref="OAuthOptions.Caption"/>.
         /// </summary>
         public const string Caption = "WordPress";
 
         /// <summary>
-        /// Default value for <see cref="OAuthAuthenticationOptions.ClaimsIssuer"/>.
+        /// Default value for <see cref="OAuthOptions.ClaimsIssuer"/>.
         /// </summary>
         public const string Issuer = "WordPress";
 
         /// <summary>
-        /// Default value for <see cref="OAuthAuthenticationOptions.CallbackPath"/>.
+        /// Default value for <see cref="OAuthOptions.CallbackPath"/>.
         /// </summary>
         public const string CallbackPath = "/signin-wordpress";
 
         /// <summary>
-        /// Default value for <see cref="OAuthAuthenticationOptions.AuthorizationEndpoint"/>.
+        /// Default value for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
         /// </summary>
         public const string AuthorizationEndpoint = "https://public-api.wordpress.com/oauth2/authorize";
 
         /// <summary>
-        /// Default value for <see cref="OAuthAuthenticationOptions.TokenEndpoint"/>.
+        /// Default value for <see cref="OAuthOptions.TokenEndpoint"/>.
         /// </summary>
         public const string TokenEndpoint = "https://public-api.wordpress.com/oauth2/token";
 
         /// <summary>
-        /// Default value for <see cref="OAuthAuthenticationOptions.UserInformationEndpoint"/>.
+        /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
         /// </summary>
         public const string UserInformationEndpoint = "https://public-api.wordpress.com/rest/v1.1/me";
     }

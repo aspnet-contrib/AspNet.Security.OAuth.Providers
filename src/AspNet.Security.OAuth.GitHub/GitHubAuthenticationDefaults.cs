@@ -18,32 +18,32 @@ namespace AspNet.Security.OAuth.GitHub {
         public const string AuthenticationScheme = "GitHub";
 
         /// <summary>
-        /// Default value for <see cref="OAuthAuthenticationOptions.Caption"/>.
+        /// Default value for <see cref="OAuthOptions.Caption"/>.
         /// </summary>
         public const string Caption = "GitHub";
 
         /// <summary>
-        /// Default value for <see cref="OAuthAuthenticationOptions.ClaimsIssuer"/>.
+        /// Default value for <see cref="OAuthOptions.ClaimsIssuer"/>.
         /// </summary>
         public const string Issuer = "GitHub";
 
         /// <summary>
-        /// Default value for <see cref="OAuthAuthenticationOptions.CallbackPath"/>.
+        /// Default value for <see cref="OAuthOptions.CallbackPath"/>.
         /// </summary>
         public const string CallbackPath = "/signin-github";
 
         /// <summary>
-        /// Default value for <see cref="OAuthAuthenticationOptions.AuthorizationEndpoint"/>.
+        /// Default value for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
         /// </summary>
         public const string AuthorizationEndpoint = "https://github.com/login/oauth/authorize";
 
         /// <summary>
-        /// Default value for <see cref="OAuthAuthenticationOptions.TokenEndpoint"/>.
+        /// Default value for <see cref="OAuthOptions.TokenEndpoint"/>.
         /// </summary>
         public const string TokenEndpoint = "https://github.com/login/oauth/access_token";
 
         /// <summary>
-        /// Default value for <see cref="OAuthAuthenticationOptions.UserInformationEndpoint"/>.
+        /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
         /// </summary>
         public const string UserInformationEndpoint = "https://api.github.com/user";
     }

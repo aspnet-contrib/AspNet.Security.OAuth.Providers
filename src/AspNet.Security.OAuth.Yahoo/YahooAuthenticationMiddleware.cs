@@ -14,7 +14,7 @@ using Microsoft.Framework.OptionsModel;
 using Microsoft.Framework.WebEncoders;
 
 namespace AspNet.Security.OAuth.Yahoo {
-    public class YahooAuthenticationMiddleware : OAuthAuthenticationMiddleware<YahooAuthenticationOptions> {
+    public class YahooAuthenticationMiddleware : OAuthMiddleware<YahooAuthenticationOptions> {
         public YahooAuthenticationMiddleware(
             [NotNull] RequestDelegate next,
             [NotNull] IDataProtectionProvider dataProtectionProvider,

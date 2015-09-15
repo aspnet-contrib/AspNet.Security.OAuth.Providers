@@ -19,7 +19,7 @@ using Microsoft.Framework.Internal;
 using Newtonsoft.Json.Linq;
 
 namespace AspNet.Security.OAuth.Yahoo {
-    public class YahooAuthenticationHandler : OAuthAuthenticationHandler<YahooAuthenticationOptions> {
+    public class YahooAuthenticationHandler : OAuthHandler<YahooAuthenticationOptions> {
         public YahooAuthenticationHandler([NotNull] HttpClient client)
             : base(client) {
         }

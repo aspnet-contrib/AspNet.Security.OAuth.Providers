@@ -16,7 +16,7 @@ using Microsoft.Framework.Internal;
 using Newtonsoft.Json.Linq;
 
 namespace AspNet.Security.OAuth.Spotify {
-    public class SpotifyAuthenticationHandler : OAuthAuthenticationHandler<SpotifyAuthenticationOptions> {
+    public class SpotifyAuthenticationHandler : OAuthHandler<SpotifyAuthenticationOptions> {
         public SpotifyAuthenticationHandler([NotNull] HttpClient client)
             : base(client) {
         }

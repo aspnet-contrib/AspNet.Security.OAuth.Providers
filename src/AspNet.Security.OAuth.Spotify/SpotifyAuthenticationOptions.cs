@@ -11,7 +11,7 @@ namespace AspNet.Security.OAuth.Spotify {
     /// <summary>
     /// Defines a set of options used by <see cref="SpotifyAuthenticationHandler"/>.
     /// </summary>
-    public class SpotifyAuthenticationOptions : OAuthAuthenticationOptions {
+    public class SpotifyAuthenticationOptions : OAuthOptions {
         public SpotifyAuthenticationOptions() {
             AuthenticationScheme = SpotifyAuthenticationDefaults.AuthenticationScheme;
             Caption = SpotifyAuthenticationDefaults.Caption;

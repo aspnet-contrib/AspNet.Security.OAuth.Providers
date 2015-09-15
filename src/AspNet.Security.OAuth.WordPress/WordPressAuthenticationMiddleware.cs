@@ -14,7 +14,7 @@ using Microsoft.Framework.OptionsModel;
 using Microsoft.Framework.WebEncoders;
 
 namespace AspNet.Security.OAuth.WordPress {
-    public class WordPressAuthenticationMiddleware : OAuthAuthenticationMiddleware<WordPressAuthenticationOptions> {
+    public class WordPressAuthenticationMiddleware : OAuthMiddleware<WordPressAuthenticationOptions> {
         public WordPressAuthenticationMiddleware(
             [NotNull] RequestDelegate next,
             [NotNull] IDataProtectionProvider dataProtectionProvider,
