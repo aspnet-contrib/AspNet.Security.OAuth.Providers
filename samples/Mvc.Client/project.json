@@ -9,6 +9,7 @@
         "AspNet.Security.OAuth.GitHub": "1.0.0-*",
         "AspNet.Security.OAuth.Imgur": "1.0.0-*",
         "AspNet.Security.OAuth.LinkedIn": "1.0.0-*",
+        "AspNet.Security.OAuth.Reddit": "1.0.0-*",
         "AspNet.Security.OAuth.Slack": "1.0.0-*",
         "AspNet.Security.OAuth.Spotify": "1.0.0-*",
         "AspNet.Security.OAuth.WordPress": "1.0.0-*",
