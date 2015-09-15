@@ -11,7 +11,7 @@ namespace AspNet.Security.OAuth.WordPress {
     /// <summary>
     /// Defines a set of options used by <see cref="WordPressAuthenticationHandler"/>.
     /// </summary>
-    public class WordPressAuthenticationOptions : OAuthAuthenticationOptions {
+    public class WordPressAuthenticationOptions : OAuthOptions {
         public WordPressAuthenticationOptions() {
             AuthenticationScheme = WordPressAuthenticationDefaults.AuthenticationScheme;
             Caption = WordPressAuthenticationDefaults.Caption;

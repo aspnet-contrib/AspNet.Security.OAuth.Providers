@@ -16,7 +16,7 @@ using Microsoft.Framework.Internal;
 using Newtonsoft.Json.Linq;
 
 namespace AspNet.Security.OAuth.GitHub {
-    public class GitHubAuthenticationHandler : OAuthAuthenticationHandler<GitHubAuthenticationOptions> {
+    public class GitHubAuthenticationHandler : OAuthHandler<GitHubAuthenticationOptions> {
         public GitHubAuthenticationHandler([NotNull] HttpClient client)
             : base(client) {
         }

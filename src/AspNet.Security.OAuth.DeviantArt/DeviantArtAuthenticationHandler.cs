@@ -16,7 +16,7 @@ using Microsoft.Framework.Internal;
 using Newtonsoft.Json.Linq;
 
 namespace AspNet.Security.OAuth.DeviantArt {
-    public class DeviantArtAuthenticationHandler : OAuthAuthenticationHandler<DeviantArtAuthenticationOptions> {
+    public class DeviantArtAuthenticationHandler : OAuthHandler<DeviantArtAuthenticationOptions> {
         public DeviantArtAuthenticationHandler([NotNull] HttpClient client)
             : base(client) {
         }

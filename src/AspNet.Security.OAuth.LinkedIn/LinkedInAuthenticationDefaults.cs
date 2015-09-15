@@ -18,32 +18,32 @@ namespace AspNet.Security.OAuth.LinkedIn {
         public const string AuthenticationScheme = "LinkedIn";
 
         /// <summary>
-        /// Default value for <see cref="OAuthAuthenticationOptions.Caption"/>.
+        /// Default value for <see cref="OAuthOptions.Caption"/>.
         /// </summary>
         public const string Caption = "LinkedIn";
 
         /// <summary>
-        /// Default value for <see cref="OAuthAuthenticationOptions.ClaimsIssuer"/>.
+        /// Default value for <see cref="OAuthOptions.ClaimsIssuer"/>.
         /// </summary>
         public const string Issuer = "LinkedIn";
 
         /// <summary>
-        /// Default value for <see cref="OAuthAuthenticationOptions.CallbackPath"/>.
+        /// Default value for <see cref="OAuthOptions.CallbackPath"/>.
         /// </summary>
         public const string CallbackPath = "/signin-linkedin";
 
         /// <summary>
-        /// Default value for <see cref="OAuthAuthenticationOptions.AuthorizationEndpoint"/>.
+        /// Default value for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
         /// </summary>
         public const string AuthorizationEndpoint = "https://www.linkedin.com/uas/oauth2/authorization";
 
         /// <summary>
-        /// Default value for <see cref="OAuthAuthenticationOptions.TokenEndpoint"/>.
+        /// Default value for <see cref="OAuthOptions.TokenEndpoint"/>.
         /// </summary>
         public const string TokenEndpoint = "https://www.linkedin.com/uas/oauth2/accessToken";
 
         /// <summary>
-        /// Default value for <see cref="OAuthAuthenticationOptions.UserInformationEndpoint"/>.
+        /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
         /// </summary>
         public const string UserInformationEndpoint = "https://api.linkedin.com/v1/people/~:(id,first-name,last-name,formatted-name,email-address,public-profile-url,picture-url)";
     }

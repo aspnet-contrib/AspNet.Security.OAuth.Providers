@@ -11,7 +11,7 @@ namespace AspNet.Security.OAuth.DeviantArt {
     /// <summary>
     /// Defines a set of options used by <see cref="DeviantArtAuthenticationHandler"/>.
     /// </summary>
-    public class DeviantArtAuthenticationOptions : OAuthAuthenticationOptions {
+    public class DeviantArtAuthenticationOptions : OAuthOptions {
         public DeviantArtAuthenticationOptions() {
             AuthenticationScheme = DeviantArtAuthenticationDefaults.AuthenticationScheme;
             Caption = DeviantArtAuthenticationDefaults.Caption;

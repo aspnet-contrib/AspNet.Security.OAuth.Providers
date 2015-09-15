@@ -16,7 +16,7 @@ using Microsoft.Framework.Internal;
 using Newtonsoft.Json.Linq;
 
 namespace AspNet.Security.OAuth.WordPress {
-    public class WordPressAuthenticationHandler : OAuthAuthenticationHandler<WordPressAuthenticationOptions> {
+    public class WordPressAuthenticationHandler : OAuthHandler<WordPressAuthenticationOptions> {
         public WordPressAuthenticationHandler([NotNull] HttpClient client)
             : base(client) {
         }

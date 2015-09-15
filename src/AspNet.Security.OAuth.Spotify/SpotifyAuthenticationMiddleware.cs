@@ -14,7 +14,7 @@ using Microsoft.Framework.OptionsModel;
 using Microsoft.Framework.WebEncoders;
 
 namespace AspNet.Security.OAuth.Spotify {
-    public class SpotifyAuthenticationMiddleware : OAuthAuthenticationMiddleware<SpotifyAuthenticationOptions> {
+    public class SpotifyAuthenticationMiddleware : OAuthMiddleware<SpotifyAuthenticationOptions> {
         public SpotifyAuthenticationMiddleware(
             [NotNull] RequestDelegate next,
             [NotNull] IDataProtectionProvider dataProtectionProvider,
