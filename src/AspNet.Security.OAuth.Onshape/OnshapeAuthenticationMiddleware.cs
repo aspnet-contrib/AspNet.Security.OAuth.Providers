@@ -15,8 +15,8 @@ using Microsoft.Framework.WebEncoders;
 
 namespace AspNet.Security.OAuth.Onshape
 {
-    public class GitHubAuthenticationMiddleware : OAuthMiddleware<OnshapeAuthenticationOptions> {
-        public GitHubAuthenticationMiddleware(
+    public class OnshapeAuthenticationMiddleware : OAuthMiddleware<OnshapeAuthenticationOptions> {
+        public OnshapeAuthenticationMiddleware(
             [NotNull] RequestDelegate next,
             [NotNull] IDataProtectionProvider dataProtectionProvider,
             [NotNull] ILoggerFactory loggerFactory,

@@ -12,20 +12,20 @@ using Microsoft.Framework.OptionsModel;
 
 namespace Microsoft.AspNet.Builder {
     public static class OnshapeAuthenticationExtensions {
-        public static IServiceCollection ConfigureGitHubAuthentication(
+        public static IServiceCollection ConfigureOnshapeAuthentication(
             [NotNull] this IServiceCollection services,
             [NotNull] Action<OnshapeAuthenticationOptions> configuration) {
             return services.Configure(configuration);
         }
 
-        public static IApplicationBuilder UseGitHubAuthentication([NotNull] this IApplicationBuilder app) {
-            return app.UseMiddleware<GitHubAuthenticationMiddleware>();
+        public static IApplicationBuilder UseOnshapeAuthentication([NotNull] this IApplicationBuilder app) {
+            return app.UseMiddleware<OnshapeAuthenticationMiddleware>();
         }
 
-        public static IApplicationBuilder UseGitHubAuthentication(
+        public static IApplicationBuilder UseOnshapeAuthentication(
             [NotNull] this IApplicationBuilder app,
             [NotNull] Action<OnshapeAuthenticationOptions> configuration) {
-            return app.UseMiddleware<GitHubAuthenticationMiddleware>(
+            return app.UseMiddleware<OnshapeAuthenticationMiddleware>(
                 new ConfigureOptions<OnshapeAuthenticationOptions>(configuration));
         }
     }
