@@ -11,7 +11,7 @@ namespace AspNet.Security.OAuth.Onshape
 {
     /// <summary>
     /// Contains static methods that allow to extract user's information from a <see cref="JObject"/>
-    /// instance retrieved from GitHub after a successful authentication process.
+    /// instance retrieved from Onshape after a successful authentication process.
     /// </summary>
     public static class OnshapeAuthenticationHelper {
         /// <summary>
