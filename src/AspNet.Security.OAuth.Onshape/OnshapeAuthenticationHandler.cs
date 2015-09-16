@@ -34,9 +34,7 @@ namespace AspNet.Security.OAuth.Onshape
             var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
             
             identity.AddOptionalClaim(ClaimTypes.NameIdentifier, OnshapeAuthenticationHelper.GetIdentifier(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim(ClaimTypes.Name, OnshapeAuthenticationHelper.GetLogin(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:github:name", OnshapeAuthenticationHelper.GetName(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:github:url", OnshapeAuthenticationHelper.GetLink(payload), Options.ClaimsIssuer);
+                    .AddOptionalClaim(ClaimTypes.Name, OnshapeAuthenticationHelper.GetName(payload), Options.ClaimsIssuer);
 
             var context = new OAuthAuthenticatedContext(Context, Options, Backchannel, tokens, payload) {
                 Principal = new ClaimsPrincipal(identity),

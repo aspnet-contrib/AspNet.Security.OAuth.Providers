@@ -20,18 +20,8 @@ namespace AspNet.Security.OAuth.Onshape
         public static string GetIdentifier([NotNull] JObject user) => user.Value<string>("id");
 
         /// <summary>
-        /// Gets the login corresponding to the authenticated user.
-        /// </summary>
-        public static string GetLogin([NotNull] JObject user) => user.Value<string>("login");
-
-        /// <summary>
         /// Gets the name corresponding to the authenticated user.
         /// </summary>
         public static string GetName([NotNull] JObject user) => user.Value<string>("name");
-
-        /// <summary>
-        /// Gets the URL corresponding to the authenticated user.
-        /// </summary>
-        public static string GetLink([NotNull] JObject user) => user.Value<string>("url");
     }
 }
