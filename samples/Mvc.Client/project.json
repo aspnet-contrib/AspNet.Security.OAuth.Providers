@@ -5,6 +5,7 @@
     "version": "1.0.0-*",
 
     "dependencies": {
+        "AspNet.Security.OAuth.Buffer": "1.0.0-*",
         "AspNet.Security.OAuth.DeviantArt": "1.0.0-*",
         "AspNet.Security.OAuth.GitHub": "1.0.0-*",
         "AspNet.Security.OAuth.Imgur": "1.0.0-*",
