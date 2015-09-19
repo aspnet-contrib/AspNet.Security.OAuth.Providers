@@ -11,7 +11,7 @@ namespace AspNet.Security.OAuth.Imgur {
     /// <summary>
     /// Defines a set of options used by <see cref="ImgurAuthenticationHandler"/>.
     /// </summary>
-    public class ImgurAuthenticationOptions : OAuthAuthenticationOptions {
+    public class ImgurAuthenticationOptions : OAuthOptions {
         public ImgurAuthenticationOptions() {
             AuthenticationScheme = ImgurAuthenticationDefaults.AuthenticationScheme;
             Caption = ImgurAuthenticationDefaults.Caption;

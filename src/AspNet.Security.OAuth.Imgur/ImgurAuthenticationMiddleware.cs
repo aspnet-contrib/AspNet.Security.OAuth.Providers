@@ -14,7 +14,7 @@ using Microsoft.Framework.OptionsModel;
 using Microsoft.Framework.WebEncoders;
 
 namespace AspNet.Security.OAuth.Imgur {
-    public class ImgurAuthenticationMiddleware : OAuthAuthenticationMiddleware<ImgurAuthenticationOptions> {
+    public class ImgurAuthenticationMiddleware : OAuthMiddleware<ImgurAuthenticationOptions> {
         public ImgurAuthenticationMiddleware(
             [NotNull] RequestDelegate next,
             [NotNull] IDataProtectionProvider dataProtectionProvider,

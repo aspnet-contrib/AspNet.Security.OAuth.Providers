@@ -16,7 +16,7 @@ using Microsoft.Framework.Internal;
 using Newtonsoft.Json.Linq;
 
 namespace AspNet.Security.OAuth.Imgur {
-    public class ImgurAuthenticationHandler : OAuthAuthenticationHandler<ImgurAuthenticationOptions> {
+    public class ImgurAuthenticationHandler : OAuthHandler<ImgurAuthenticationOptions> {
         public ImgurAuthenticationHandler([NotNull] HttpClient client)
             : base(client) {
         }
