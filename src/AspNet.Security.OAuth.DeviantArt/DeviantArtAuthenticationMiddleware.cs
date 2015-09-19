@@ -14,7 +14,7 @@ using Microsoft.Framework.OptionsModel;
 using Microsoft.Framework.WebEncoders;
 
 namespace AspNet.Security.OAuth.DeviantArt {
-    public class DeviantArtAuthenticationMiddleware : OAuthAuthenticationMiddleware<DeviantArtAuthenticationOptions> {
+    public class DeviantArtAuthenticationMiddleware : OAuthMiddleware<DeviantArtAuthenticationOptions> {
         public DeviantArtAuthenticationMiddleware(
             [NotNull] RequestDelegate next,
             [NotNull] IDataProtectionProvider dataProtectionProvider,

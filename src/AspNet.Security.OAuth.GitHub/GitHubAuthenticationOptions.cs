@@ -11,7 +11,7 @@ namespace AspNet.Security.OAuth.GitHub {
     /// <summary>
     /// Defines a set of options used by <see cref="GitHubAuthenticationHandler"/>.
     /// </summary>
-    public class GitHubAuthenticationOptions : OAuthAuthenticationOptions {
+    public class GitHubAuthenticationOptions : OAuthOptions {
         public GitHubAuthenticationOptions() {
             AuthenticationScheme = GitHubAuthenticationDefaults.AuthenticationScheme;
             Caption = GitHubAuthenticationDefaults.Caption;

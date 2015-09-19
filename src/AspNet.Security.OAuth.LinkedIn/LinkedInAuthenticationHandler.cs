@@ -16,7 +16,7 @@ using Microsoft.Framework.Internal;
 using Newtonsoft.Json.Linq;
 
 namespace AspNet.Security.OAuth.LinkedIn {
-    public class LinkedInAuthenticationHandler : OAuthAuthenticationHandler<LinkedInAuthenticationOptions> {
+    public class LinkedInAuthenticationHandler : OAuthHandler<LinkedInAuthenticationOptions> {
         public LinkedInAuthenticationHandler([NotNull] HttpClient client)
             : base(client) {
         }
