@@ -11,7 +11,7 @@ namespace AspNet.Security.OAuth.LinkedIn {
     /// <summary>
     /// Defines a set of options used by <see cref="LinkedInAuthenticationHandler"/>.
     /// </summary>
-    public class LinkedInAuthenticationOptions : OAuthAuthenticationOptions {
+    public class LinkedInAuthenticationOptions : OAuthOptions {
         public LinkedInAuthenticationOptions() {
             AuthenticationScheme = LinkedInAuthenticationDefaults.AuthenticationScheme;
             Caption = LinkedInAuthenticationDefaults.Caption;

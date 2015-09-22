@@ -14,7 +14,7 @@ using Microsoft.Framework.OptionsModel;
 using Microsoft.Framework.WebEncoders;
 
 namespace AspNet.Security.OAuth.BattleNet {
-    public class BattleNetAuthenticationMiddleware : OAuthAuthenticationMiddleware<BattleNetAuthenticationOptions> {
+    public class BattleNetAuthenticationMiddleware : OAuthMiddleware<BattleNetAuthenticationOptions> {
         public BattleNetAuthenticationMiddleware(
             [NotNull] RequestDelegate next,
             [NotNull] IDataProtectionProvider dataProtectionProvider,

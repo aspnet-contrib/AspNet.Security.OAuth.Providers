@@ -16,7 +16,7 @@ using Microsoft.Framework.Internal;
 using Newtonsoft.Json.Linq;
 
 namespace AspNet.Security.OAuth.BattleNet {
-    public class BattleNetAuthenticationHandler : OAuthAuthenticationHandler<BattleNetAuthenticationOptions> {
+    public class BattleNetAuthenticationHandler : OAuthHandler<BattleNetAuthenticationOptions> {
         public BattleNetAuthenticationHandler([NotNull] HttpClient client)
             : base(client) {
         }

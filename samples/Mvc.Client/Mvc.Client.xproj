@@ -20,7 +20,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <SchemaVersion>2.0</SchemaVersion>
-    <DevelopmentServerPort>53507</DevelopmentServerPort>
+    <DevelopmentServerPort>54540</DevelopmentServerPort>
     <CommandLineArguments />
     <DebugTarget>web</DebugTarget>
     <SSLPort>44300</SSLPort>

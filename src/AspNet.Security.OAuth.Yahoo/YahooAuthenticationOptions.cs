@@ -11,7 +11,7 @@ namespace AspNet.Security.OAuth.Yahoo {
     /// <summary>
     /// Defines a set of options used by <see cref="YahooAuthenticationHandler"/>.
     /// </summary>
-    public class YahooAuthenticationOptions : OAuthAuthenticationOptions {
+    public class YahooAuthenticationOptions : OAuthOptions {
         public YahooAuthenticationOptions() {
             AuthenticationScheme = YahooAuthenticationDefaults.AuthenticationScheme;
             Caption = YahooAuthenticationDefaults.Caption;

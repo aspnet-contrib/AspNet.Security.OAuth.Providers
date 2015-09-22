@@ -14,7 +14,7 @@ using Microsoft.Framework.OptionsModel;
 using Microsoft.Framework.WebEncoders;
 
 namespace AspNet.Security.OAuth.GitHub {
-    public class GitHubAuthenticationMiddleware : OAuthAuthenticationMiddleware<GitHubAuthenticationOptions> {
+    public class GitHubAuthenticationMiddleware : OAuthMiddleware<GitHubAuthenticationOptions> {
         public GitHubAuthenticationMiddleware(
             [NotNull] RequestDelegate next,
             [NotNull] IDataProtectionProvider dataProtectionProvider,

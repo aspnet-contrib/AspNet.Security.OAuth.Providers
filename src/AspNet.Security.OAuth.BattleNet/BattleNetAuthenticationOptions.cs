@@ -13,7 +13,7 @@ namespace AspNet.Security.OAuth.BattleNet {
     /// Defines a set of options used by <see cref="BattleNetAuthenticationHandler"/>.
     /// Defaults to using US server endpoints
     /// </summary>
-    public class BattleNetAuthenticationOptions : OAuthAuthenticationOptions
+    public class BattleNetAuthenticationOptions : OAuthOptions
     {
         public BattleNetAuthenticationOptions() {
             AuthenticationScheme = BattleNetAuthenticationDefaults.AuthenticationScheme;

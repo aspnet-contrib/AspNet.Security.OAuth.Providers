@@ -14,7 +14,7 @@ using Microsoft.Framework.OptionsModel;
 using Microsoft.Framework.WebEncoders;
 
 namespace AspNet.Security.OAuth.LinkedIn {
-    public class LinkedInAuthenticationMiddleware : OAuthAuthenticationMiddleware<LinkedInAuthenticationOptions> {
+    public class LinkedInAuthenticationMiddleware : OAuthMiddleware<LinkedInAuthenticationOptions> {
         public LinkedInAuthenticationMiddleware(
             [NotNull] RequestDelegate next,
             [NotNull] IDataProtectionProvider dataProtectionProvider,
