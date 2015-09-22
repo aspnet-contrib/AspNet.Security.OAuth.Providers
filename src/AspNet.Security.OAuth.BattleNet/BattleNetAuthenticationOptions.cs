@@ -13,7 +13,8 @@ namespace AspNet.Security.OAuth.BattleNet {
     /// Defines a set of options used by <see cref="BattleNetAuthenticationHandler"/>.
     /// Defaults to using US server endpoints
     /// </summary>
-    public class BattleNetAuthenticationOptions : OAuthAuthenticationOptions {
+    public class BattleNetAuthenticationOptions : OAuthAuthenticationOptions
+    {
         public BattleNetAuthenticationOptions() {
             AuthenticationScheme = BattleNetAuthenticationDefaults.AuthenticationScheme;
             Caption = BattleNetAuthenticationDefaults.Caption;
@@ -22,10 +23,10 @@ namespace AspNet.Security.OAuth.BattleNet {
             CallbackPath = new PathString(BattleNetAuthenticationDefaults.CallbackPath);
 
             //Default to US server endpoints
-            AuthorizationEndpoint = BattleNetAuthenticationDefaults.AuthorizationEndpointUS;
-            TokenEndpoint = BattleNetAuthenticationDefaults.TokenEndpointUS;
+            AuthorizationEndpoint = BattleNetAuthenticationDefaults.US.AuthorizationEndpoint;
+            TokenEndpoint = BattleNetAuthenticationDefaults.US.TokenEndpoint;
 
-            UserInformationEndpoint = BattleNetAuthenticationDefaults.UserInformationEndpoint;
+            UserInformationEndpoint = BattleNetAuthenticationDefaults.US.UserInformationEndpoint;
 
             SaveTokensAsClaims = false;
         }

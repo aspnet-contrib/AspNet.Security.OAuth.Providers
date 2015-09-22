@@ -32,59 +32,89 @@ namespace AspNet.Security.OAuth.BattleNet {
         /// </summary>
         public const string CallbackPath = "/signin-battlenet";
 
-        /// <summary>
-        /// Default value for <see cref="OAuthAuthenticationOptions.AuthorizationEndpoint"/> for US servers.
-        /// </summary>
-        public const string AuthorizationEndpointUS = "https://us.battle.net/oauth/authorize";
+        public static class US {
+            /// <summary>
+            /// Default value for <see cref="OAuthAuthenticationOptions.AuthorizationEndpoint"/> for US servers.
+            /// </summary>
+            public const string AuthorizationEndpoint = "https://us.battle.net/oauth/authorize";
 
-        /// <summary>
-        /// Default value for <see cref="OAuthAuthenticationOptions.AuthorizationEndpoint"/> for EU servers.
-        /// </summary>
-        public const string AuthorizationEndpointEU = "https://eu.battle.net/oauth/authorize";
+            /// <summary>
+            /// Default value for <see cref="OAuthAuthenticationOptions.TokenEndpoint"/> for US servers.
+            /// </summary>
+            public const string TokenEndpoint = "https://us.battle.net/oauth/token";
 
-        /// <summary>
-        /// Default value for <see cref="OAuthAuthenticationOptions.AuthorizationEndpoint"/> for KR servers.
-        /// </summary>
-        public const string AuthorizationEndpointKR = "https://kr.battle.net/oauth/authorize";
+            /// <summary>
+            /// Default value for <see cref="OAuthAuthenticationOptions.UserInformationEndpoint"/> for US servers.
+            /// </summary>
+            public const string UserInformationEndpoint = "https://us.api.battle.net/account/user";
+        }
 
-        /// <summary>
-        /// Default value for <see cref="OAuthAuthenticationOptions.AuthorizationEndpoint"/> for TW servers.
-        /// </summary>
-        public const string AuthorizationEndpointTW = "https://tw.battle.net/oauth/authorize";
+        public static class EU {
+            /// <summary>
+            /// Default value for <see cref="OAuthAuthenticationOptions.AuthorizationEndpoint"/> for EU servers.
+            /// </summary>
+            public const string AuthorizationEndpoint = "https://eu.battle.net/oauth/authorize";
 
-        /// <summary>
-        /// Default value for <see cref="OAuthAuthenticationOptions.AuthorizationEndpoint"/> for CN servers.
-        /// </summary>
-        public const string AuthorizationEndpointCN = "https://www.battlenet.com.cn/oauth/authorize";
+            /// <summary>
+            /// Default value for <see cref="OAuthAuthenticationOptions.TokenEndpoint"/> for EU servers.
+            /// </summary>
+            public const string TokenEndpoint = "https://eu.battle.net/oauth/token";
 
-        /// <summary>
-        /// Default value for <see cref="OAuthAuthenticationOptions.TokenEndpoint"/> for US servers.
-        /// </summary>
-        public const string TokenEndpointUS = "https://us.battle.net/oauth/token";
+            /// <summary>
+            /// Default value for <see cref="OAuthAuthenticationOptions.UserInformationEndpoint"/> for EU servers.
+            /// </summary>
+            public const string UserInformationEndpoint = "https://eu.api.battle.net/account/user";
+        }
 
-        /// <summary>
-        /// Default value for <see cref="OAuthAuthenticationOptions.TokenEndpoint"/> for EU servers.
-        /// </summary>
-        public const string TokenEndpointEU = "https://eu.battle.net/oauth/token";
+        public static class KR {
+            /// <summary>
+            /// Default value for <see cref="OAuthAuthenticationOptions.AuthorizationEndpoint"/> for KR servers.
+            /// </summary>
+            public const string AuthorizationEndpoint = "https://kr.battle.net/oauth/authorize";
 
-        /// <summary>
-        /// Default value for <see cref="OAuthAuthenticationOptions.TokenEndpoint"/> for KR servers.
-        /// </summary>
-        public const string TokenEndpointKR = "https://kr.battle.net/oauth/token";
+            /// <summary>
+            /// Default value for <see cref="OAuthAuthenticationOptions.TokenEndpoint"/> for KR servers.
+            /// </summary>
+            public const string TokenEndpoint = "https://kr.battle.net/oauth/token";
 
-        /// <summary>
-        /// Default value for <see cref="OAuthAuthenticationOptions.TokenEndpoint"/> for TW servers.
-        /// </summary>
-        public const string TokenEndpointTW = "https://tw.battle.net/oauth/token";
+            /// <summary>
+            /// Default value for <see cref="OAuthAuthenticationOptions.UserInformationEndpoint"/> for KR servers.
+            /// </summary>
+            public const string UserInformationEndpoint = "https://kr.api.battle.net/account/user";
+        }
 
-        /// <summary>
-        /// Default value for <see cref="OAuthAuthenticationOptions.TokenEndpoint"/> for CN servers.
-        /// </summary>
-        public const string TokenEndpointCN = "https://www.battlenet.com.cn/oauth/token";
+        public static class TW {
+            /// <summary>
+            /// Default value for <see cref="OAuthAuthenticationOptions.AuthorizationEndpoint"/> for TW servers.
+            /// </summary>
+            public const string AuthorizationEndpoint = "https://tw.battle.net/oauth/authorize";
 
-        /// <summary>
-        /// Default value for <see cref="OAuthAuthenticationOptions.UserInformationEndpoint"/>.
-        /// </summary>
-        public const string UserInformationEndpoint = "https://us.api.battle.net/account/user";
+            /// <summary>
+            /// Default value for <see cref="OAuthAuthenticationOptions.TokenEndpoint"/> for TW servers.
+            /// </summary>
+            public const string TokenEndpoint = "https://tw.battle.net/oauth/token";
+
+            /// <summary>
+            /// Default value for <see cref="OAuthAuthenticationOptions.UserInformationEndpoint"/> for TW servers.
+            /// </summary>
+            public const string UserInformationEndpoint = "https://tw.api.battle.net/account/user";
+        }
+
+        public static class CN {
+            /// <summary>
+            /// Default value for <see cref="OAuthAuthenticationOptions.AuthorizationEndpoint"/> for CN servers.
+            /// </summary>
+            public const string AuthorizationEndpoint = "https://www.battlenet.com.cn/oauth/authorize";
+
+            /// <summary>
+            /// Default value for <see cref="OAuthAuthenticationOptions.TokenEndpoint"/> for CN servers.
+            /// </summary>
+            public const string TokenEndpoint = "https://www.battlenet.com.cn/oauth/token";
+
+            /// <summary>
+            /// Default value for <see cref="OAuthAuthenticationOptions.UserInformationEndpoint"/> for CN servers.
+            /// </summary>
+            public const string UserInformationEndpoint = "https://api.battlenet.com.cn/account/user";
+        }
     }
 }
