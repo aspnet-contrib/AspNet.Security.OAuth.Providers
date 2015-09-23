@@ -17,14 +17,12 @@ namespace AspNet.Security.OAuth.Imgur {
     public class ImgurAuthenticationMiddleware : OAuthMiddleware<ImgurAuthenticationOptions> {
         public ImgurAuthenticationMiddleware(
             [NotNull] RequestDelegate next,
+            [NotNull] ImgurAuthenticationOptions options,
             [NotNull] IDataProtectionProvider dataProtectionProvider,
             [NotNull] ILoggerFactory loggerFactory,
             [NotNull] IUrlEncoder encoder,
-            [NotNull] IOptions<SharedAuthenticationOptions> externalOptions,
-            [NotNull] IOptions<ImgurAuthenticationOptions> options,
-            ConfigureOptions<ImgurAuthenticationOptions> configureOptions = null)
-            : base(next, dataProtectionProvider, loggerFactory,
-                   encoder, externalOptions, options, configureOptions) {
+            [NotNull] IOptions<SharedAuthenticationOptions> externalOptions)
+            : base(next, dataProtectionProvider, loggerFactory, encoder, externalOptions, options) {
         }
 
         protected override AuthenticationHandler<ImgurAuthenticationOptions> CreateHandler() {

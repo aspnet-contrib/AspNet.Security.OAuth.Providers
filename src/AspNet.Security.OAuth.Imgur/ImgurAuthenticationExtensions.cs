@@ -6,27 +6,23 @@
 
 using System;
 using AspNet.Security.OAuth.Imgur;
-using Microsoft.Framework.DependencyInjection;
 using Microsoft.Framework.Internal;
-using Microsoft.Framework.OptionsModel;
 
 namespace Microsoft.AspNet.Builder {
     public static class ImgurAuthenticationExtensions {
-        public static IServiceCollection ConfigureImgurAuthentication(
-            [NotNull] this IServiceCollection services,
-            [NotNull] Action<ImgurAuthenticationOptions> configuration) {
-            return services.Configure(configuration);
-        }
-
-        public static IApplicationBuilder UseImgurAuthentication([NotNull] this IApplicationBuilder app) {
-            return app.UseMiddleware<ImgurAuthenticationMiddleware>();
+        public static IApplicationBuilder UseImgurAuthentication(
+            [NotNull] this IApplicationBuilder app,
+            [NotNull] ImgurAuthenticationOptions options) {
+            return app.UseMiddleware<ImgurAuthenticationMiddleware>(options);
         }
 
         public static IApplicationBuilder UseImgurAuthentication(
             [NotNull] this IApplicationBuilder app,
             [NotNull] Action<ImgurAuthenticationOptions> configuration) {
-            return app.UseMiddleware<ImgurAuthenticationMiddleware>(
-                new ConfigureOptions<ImgurAuthenticationOptions>(configuration));
+            var options = new ImgurAuthenticationOptions();
+            configuration(options);
+
+            return app.UseImgurAuthentication(options);
         }
     }
 }

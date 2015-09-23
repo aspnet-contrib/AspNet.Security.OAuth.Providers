@@ -17,14 +17,12 @@ namespace AspNet.Security.OAuth.GitHub {
     public class GitHubAuthenticationMiddleware : OAuthMiddleware<GitHubAuthenticationOptions> {
         public GitHubAuthenticationMiddleware(
             [NotNull] RequestDelegate next,
+            [NotNull] GitHubAuthenticationOptions options,
             [NotNull] IDataProtectionProvider dataProtectionProvider,
             [NotNull] ILoggerFactory loggerFactory,
             [NotNull] IUrlEncoder encoder,
-            [NotNull] IOptions<SharedAuthenticationOptions> externalOptions,
-            [NotNull] IOptions<GitHubAuthenticationOptions> options,
-            ConfigureOptions<GitHubAuthenticationOptions> configureOptions = null)
-            : base(next, dataProtectionProvider, loggerFactory,
-                   encoder, externalOptions, options, configureOptions) {
+            [NotNull] IOptions<SharedAuthenticationOptions> externalOptions)
+            : base(next, dataProtectionProvider, loggerFactory, encoder, externalOptions, options) {
         }
 
         protected override AuthenticationHandler<GitHubAuthenticationOptions> CreateHandler() {

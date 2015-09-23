@@ -17,14 +17,12 @@ namespace AspNet.Security.OAuth.Reddit {
     public class RedditAuthenticationMiddleware : OAuthMiddleware<RedditAuthenticationOptions> {
         public RedditAuthenticationMiddleware(
             [NotNull] RequestDelegate next,
+            [NotNull] RedditAuthenticationOptions options,
             [NotNull] IDataProtectionProvider dataProtectionProvider,
             [NotNull] ILoggerFactory loggerFactory,
             [NotNull] IUrlEncoder encoder,
-            [NotNull] IOptions<SharedAuthenticationOptions> sharedOptions,
-            [NotNull] IOptions<RedditAuthenticationOptions> options,
-            ConfigureOptions<RedditAuthenticationOptions> configureOptions = null)
-            : base(next, dataProtectionProvider, loggerFactory,
-                   encoder, sharedOptions, options, configureOptions) {
+            [NotNull] IOptions<SharedAuthenticationOptions> sharedOptions)
+            : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options) {
         }
 
         protected override AuthenticationHandler<RedditAuthenticationOptions> CreateHandler() {

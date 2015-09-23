@@ -6,27 +6,23 @@
 
 using System;
 using AspNet.Security.OAuth.Reddit;
-using Microsoft.Framework.DependencyInjection;
 using Microsoft.Framework.Internal;
-using Microsoft.Framework.OptionsModel;
 
 namespace Microsoft.AspNet.Builder {
     public static class RedditAuthenticationExtensions {
-        public static IServiceCollection ConfigureRedditAuthentication(
-            [NotNull] this IServiceCollection services,
-            [NotNull] Action<RedditAuthenticationOptions> configuration) {
-            return services.Configure(configuration);
-        }
-
-        public static IApplicationBuilder UseRedditAuthentication([NotNull] this IApplicationBuilder app) {
-            return app.UseMiddleware<RedditAuthenticationMiddleware>();
+        public static IApplicationBuilder UseRedditAuthentication(
+            [NotNull] this IApplicationBuilder app,
+            [NotNull] RedditAuthenticationOptions options) {
+            return app.UseMiddleware<RedditAuthenticationMiddleware>(options);
         }
 
         public static IApplicationBuilder UseRedditAuthentication(
             [NotNull] this IApplicationBuilder app,
             [NotNull] Action<RedditAuthenticationOptions> configuration) {
-            return app.UseMiddleware<RedditAuthenticationMiddleware>(
-                new ConfigureOptions<RedditAuthenticationOptions>(configuration));
+            var options = new RedditAuthenticationOptions();
+            configuration(options);
+
+            return app.UseRedditAuthentication(options);
         }
     }
 }

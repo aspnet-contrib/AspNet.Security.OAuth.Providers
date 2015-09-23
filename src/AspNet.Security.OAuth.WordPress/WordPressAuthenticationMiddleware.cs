@@ -17,14 +17,12 @@ namespace AspNet.Security.OAuth.WordPress {
     public class WordPressAuthenticationMiddleware : OAuthMiddleware<WordPressAuthenticationOptions> {
         public WordPressAuthenticationMiddleware(
             [NotNull] RequestDelegate next,
+            [NotNull] WordPressAuthenticationOptions options,
             [NotNull] IDataProtectionProvider dataProtectionProvider,
             [NotNull] ILoggerFactory loggerFactory,
             [NotNull] IUrlEncoder encoder,
-            [NotNull] IOptions<SharedAuthenticationOptions> externalOptions,
-            [NotNull] IOptions<WordPressAuthenticationOptions> options,
-            ConfigureOptions<WordPressAuthenticationOptions> configureOptions = null)
-            : base(next, dataProtectionProvider, loggerFactory,
-                encoder, externalOptions, options, configureOptions) {
+            [NotNull] IOptions<SharedAuthenticationOptions> externalOptions)
+            : base(next, dataProtectionProvider, loggerFactory, encoder, externalOptions, options) {
         }
 
         protected override AuthenticationHandler<WordPressAuthenticationOptions> CreateHandler() {

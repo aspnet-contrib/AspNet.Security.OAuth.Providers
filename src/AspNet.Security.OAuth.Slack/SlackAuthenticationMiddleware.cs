@@ -17,14 +17,12 @@ namespace AspNet.Security.OAuth.Slack {
     public class SlackAuthenticationMiddleware : OAuthMiddleware<SlackAuthenticationOptions> {
         public SlackAuthenticationMiddleware(
             [NotNull] RequestDelegate next,
+            [NotNull] SlackAuthenticationOptions options,
             [NotNull] IDataProtectionProvider dataProtectionProvider,
             [NotNull] ILoggerFactory loggerFactory,
             [NotNull] IUrlEncoder encoder,
-            [NotNull] IOptions<SharedAuthenticationOptions> externalOptions,
-            [NotNull] IOptions<SlackAuthenticationOptions> options,
-            ConfigureOptions<SlackAuthenticationOptions> configureOptions = null)
-            : base(next, dataProtectionProvider, loggerFactory,
-                   encoder, externalOptions, options, configureOptions) {
+            [NotNull] IOptions<SharedAuthenticationOptions> externalOptions)
+            : base(next, dataProtectionProvider, loggerFactory, encoder, externalOptions, options) {
         }
 
         protected override AuthenticationHandler<SlackAuthenticationOptions> CreateHandler() {
