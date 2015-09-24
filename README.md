@@ -34,8 +34,11 @@ We would love it if you could help contributing to this repository. Please look 
 Special thanks to our contributors:
 
 * Adam Reisinger (https://github.com/Res42)
+* Albireo (https://github.com/kappa7194)
 * Jerrie Pelser (https://github.com/jerriep)
 * Kévin Chalet (https://github.com/PinpointTownes)
+* Michael Knowles (https://github.com/mjknowles)
+* Tathagata Chakraborty (https://github.com/tatx)
 * Tommy Parnell (https://github.com/tparnell8)
 
 ## Support

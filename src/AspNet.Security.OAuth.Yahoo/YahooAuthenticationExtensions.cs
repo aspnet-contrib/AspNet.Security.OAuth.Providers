@@ -6,27 +6,23 @@
 
 using System;
 using AspNet.Security.OAuth.Yahoo;
-using Microsoft.Framework.DependencyInjection;
 using Microsoft.Framework.Internal;
-using Microsoft.Framework.OptionsModel;
 
 namespace Microsoft.AspNet.Builder {
     public static class YahooAuthenticationExtensions {
-        public static IServiceCollection ConfigureYahooAuthentication(
-            [NotNull] this IServiceCollection services,
-            [NotNull] Action<YahooAuthenticationOptions> configuration) {
-            return services.Configure(configuration);
-        }
-
-        public static IApplicationBuilder UseYahooAuthentication([NotNull] this IApplicationBuilder app) {
-            return app.UseMiddleware<YahooAuthenticationMiddleware>();
+        public static IApplicationBuilder UseYahooAuthentication(
+            [NotNull] this IApplicationBuilder app,
+            [NotNull] YahooAuthenticationOptions options) {
+            return app.UseMiddleware<YahooAuthenticationMiddleware>(options);
         }
 
         public static IApplicationBuilder UseYahooAuthentication(
             [NotNull] this IApplicationBuilder app,
             [NotNull] Action<YahooAuthenticationOptions> configuration) {
-            return app.UseMiddleware<YahooAuthenticationMiddleware>(
-                new ConfigureOptions<YahooAuthenticationOptions>(configuration));
+            var options = new YahooAuthenticationOptions();
+            configuration(options);
+
+            return app.UseYahooAuthentication(options);
         }
     }
 }

@@ -6,27 +6,23 @@
 
 using System;
 using AspNet.Security.OAuth.WordPress;
-using Microsoft.Framework.DependencyInjection;
 using Microsoft.Framework.Internal;
-using Microsoft.Framework.OptionsModel;
 
 namespace Microsoft.AspNet.Builder {
     public static class WordPressAuthenticationExtensions {
-        public static IServiceCollection ConfigureWordPressAuthentication(
-            [NotNull] this IServiceCollection services,
-            [NotNull] Action<WordPressAuthenticationOptions> configuration) {
-            return services.Configure(configuration);
-        }
-
-        public static IApplicationBuilder UseWordPressAuthentication([NotNull] this IApplicationBuilder app) {
-            return app.UseMiddleware<WordPressAuthenticationMiddleware>();
+        public static IApplicationBuilder UseWordPressAuthentication(
+            [NotNull] this IApplicationBuilder app,
+            [NotNull] WordPressAuthenticationOptions options) {
+            return app.UseMiddleware<WordPressAuthenticationMiddleware>(options);
         }
 
         public static IApplicationBuilder UseWordPressAuthentication(
             [NotNull] this IApplicationBuilder app,
             [NotNull] Action<WordPressAuthenticationOptions> configuration) {
-            return app.UseMiddleware<WordPressAuthenticationMiddleware>(
-                new ConfigureOptions<WordPressAuthenticationOptions>(configuration));
+            var options = new WordPressAuthenticationOptions();
+            configuration(options);
+
+            return app.UseWordPressAuthentication(options);
         }
     }
 }

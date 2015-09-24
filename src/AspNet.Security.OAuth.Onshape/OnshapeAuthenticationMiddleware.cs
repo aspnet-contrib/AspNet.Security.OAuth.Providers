@@ -13,11 +13,11 @@ using Microsoft.Framework.Logging;
 using Microsoft.Framework.OptionsModel;
 using Microsoft.Framework.WebEncoders;
 
-namespace AspNet.Security.OAuth.WordPress {
-    public class WordPressAuthenticationMiddleware : OAuthMiddleware<WordPressAuthenticationOptions> {
-        public WordPressAuthenticationMiddleware(
+namespace AspNet.Security.OAuth.Onshape {
+    public class OnshapeAuthenticationMiddleware : OAuthMiddleware<OnshapeAuthenticationOptions> {
+        public OnshapeAuthenticationMiddleware(
             [NotNull] RequestDelegate next,
-            [NotNull] WordPressAuthenticationOptions options,
+            [NotNull] OnshapeAuthenticationOptions options,
             [NotNull] IDataProtectionProvider dataProtectionProvider,
             [NotNull] ILoggerFactory loggerFactory,
             [NotNull] IUrlEncoder encoder,
@@ -25,8 +25,8 @@ namespace AspNet.Security.OAuth.WordPress {
             : base(next, dataProtectionProvider, loggerFactory, encoder, externalOptions, options) {
         }
 
-        protected override AuthenticationHandler<WordPressAuthenticationOptions> CreateHandler() {
-            return new WordPressAuthenticationHandler(Backchannel);
+        protected override AuthenticationHandler<OnshapeAuthenticationOptions> CreateHandler() {
+            return new OnshapeAuthenticationHandler(Backchannel);
         }
     }
 }

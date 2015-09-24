@@ -6,27 +6,23 @@
 
 using System;
 using AspNet.Security.OAuth.DeviantArt;
-using Microsoft.Framework.DependencyInjection;
 using Microsoft.Framework.Internal;
-using Microsoft.Framework.OptionsModel;
 
 namespace Microsoft.AspNet.Builder {
     public static class DeviantArtAuthenticationExtensions {
-        public static IServiceCollection ConfigureDeviantArtAuthentication(
-            [NotNull] this IServiceCollection services,
-            [NotNull] Action<DeviantArtAuthenticationOptions> configuration) {
-            return services.Configure(configuration);
-        }
-
-        public static IApplicationBuilder UseDeviantArtAuthentication([NotNull] this IApplicationBuilder app) {
-            return app.UseMiddleware<DeviantArtAuthenticationMiddleware>();
+        public static IApplicationBuilder UseDeviantArtAuthentication(
+            [NotNull] this IApplicationBuilder app,
+            [NotNull] DeviantArtAuthenticationOptions options) {
+            return app.UseMiddleware<DeviantArtAuthenticationMiddleware>(options);
         }
 
         public static IApplicationBuilder UseDeviantArtAuthentication(
             [NotNull] this IApplicationBuilder app,
             [NotNull] Action<DeviantArtAuthenticationOptions> configuration) {
-            return app.UseMiddleware<DeviantArtAuthenticationMiddleware>(
-                new ConfigureOptions<DeviantArtAuthenticationOptions>(configuration));
+            var options = new DeviantArtAuthenticationOptions();
+            configuration(options);
+
+            return app.UseDeviantArtAuthentication(options);
         }
     }
 }

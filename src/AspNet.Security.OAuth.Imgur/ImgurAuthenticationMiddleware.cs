@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Licensed under the Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0)
  * See https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers
  * for more information concerning the license and the contributors participating to this project.
@@ -13,11 +13,11 @@ using Microsoft.Framework.Logging;
 using Microsoft.Framework.OptionsModel;
 using Microsoft.Framework.WebEncoders;
 
-namespace AspNet.Security.OAuth.WordPress {
-    public class WordPressAuthenticationMiddleware : OAuthMiddleware<WordPressAuthenticationOptions> {
-        public WordPressAuthenticationMiddleware(
+namespace AspNet.Security.OAuth.Imgur {
+    public class ImgurAuthenticationMiddleware : OAuthMiddleware<ImgurAuthenticationOptions> {
+        public ImgurAuthenticationMiddleware(
             [NotNull] RequestDelegate next,
-            [NotNull] WordPressAuthenticationOptions options,
+            [NotNull] ImgurAuthenticationOptions options,
             [NotNull] IDataProtectionProvider dataProtectionProvider,
             [NotNull] ILoggerFactory loggerFactory,
             [NotNull] IUrlEncoder encoder,
@@ -25,8 +25,8 @@ namespace AspNet.Security.OAuth.WordPress {
             : base(next, dataProtectionProvider, loggerFactory, encoder, externalOptions, options) {
         }
 
-        protected override AuthenticationHandler<WordPressAuthenticationOptions> CreateHandler() {
-            return new WordPressAuthenticationHandler(Backchannel);
+        protected override AuthenticationHandler<ImgurAuthenticationOptions> CreateHandler() {
+            return new ImgurAuthenticationHandler(Backchannel);
         }
     }
 }

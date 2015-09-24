@@ -13,20 +13,20 @@ using Microsoft.Framework.Logging;
 using Microsoft.Framework.OptionsModel;
 using Microsoft.Framework.WebEncoders;
 
-namespace AspNet.Security.OAuth.WordPress {
-    public class WordPressAuthenticationMiddleware : OAuthMiddleware<WordPressAuthenticationOptions> {
-        public WordPressAuthenticationMiddleware(
+namespace AspNet.Security.OAuth.Reddit {
+    public class RedditAuthenticationMiddleware : OAuthMiddleware<RedditAuthenticationOptions> {
+        public RedditAuthenticationMiddleware(
             [NotNull] RequestDelegate next,
-            [NotNull] WordPressAuthenticationOptions options,
+            [NotNull] RedditAuthenticationOptions options,
             [NotNull] IDataProtectionProvider dataProtectionProvider,
             [NotNull] ILoggerFactory loggerFactory,
             [NotNull] IUrlEncoder encoder,
-            [NotNull] IOptions<SharedAuthenticationOptions> externalOptions)
-            : base(next, dataProtectionProvider, loggerFactory, encoder, externalOptions, options) {
+            [NotNull] IOptions<SharedAuthenticationOptions> sharedOptions)
+            : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options) {
         }
 
-        protected override AuthenticationHandler<WordPressAuthenticationOptions> CreateHandler() {
-            return new WordPressAuthenticationHandler(Backchannel);
+        protected override AuthenticationHandler<RedditAuthenticationOptions> CreateHandler() {
+            return new RedditAuthenticationHandler(Backchannel);
         }
     }
 }

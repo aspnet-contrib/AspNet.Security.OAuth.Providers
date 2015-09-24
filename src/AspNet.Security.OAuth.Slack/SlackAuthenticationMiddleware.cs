@@ -13,11 +13,11 @@ using Microsoft.Framework.Logging;
 using Microsoft.Framework.OptionsModel;
 using Microsoft.Framework.WebEncoders;
 
-namespace AspNet.Security.OAuth.WordPress {
-    public class WordPressAuthenticationMiddleware : OAuthMiddleware<WordPressAuthenticationOptions> {
-        public WordPressAuthenticationMiddleware(
+namespace AspNet.Security.OAuth.Slack {
+    public class SlackAuthenticationMiddleware : OAuthMiddleware<SlackAuthenticationOptions> {
+        public SlackAuthenticationMiddleware(
             [NotNull] RequestDelegate next,
-            [NotNull] WordPressAuthenticationOptions options,
+            [NotNull] SlackAuthenticationOptions options,
             [NotNull] IDataProtectionProvider dataProtectionProvider,
             [NotNull] ILoggerFactory loggerFactory,
             [NotNull] IUrlEncoder encoder,
@@ -25,8 +25,8 @@ namespace AspNet.Security.OAuth.WordPress {
             : base(next, dataProtectionProvider, loggerFactory, encoder, externalOptions, options) {
         }
 
-        protected override AuthenticationHandler<WordPressAuthenticationOptions> CreateHandler() {
-            return new WordPressAuthenticationHandler(Backchannel);
+        protected override AuthenticationHandler<SlackAuthenticationOptions> CreateHandler() {
+            return new SlackAuthenticationHandler(Backchannel);
         }
     }
 }
