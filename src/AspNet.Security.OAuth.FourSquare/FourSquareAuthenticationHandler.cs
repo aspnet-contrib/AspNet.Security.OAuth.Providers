@@ -27,9 +27,11 @@ namespace AspNet.Security.OAuth.FourSquare {
 
 
             var queryBuilder = new QueryBuilder() {
-                { "oauth_token", tokens.AccessToken },                
+                { "oauth_token", tokens.AccessToken },
+                // For "v" and "m" query parameter, please refer to "https://developer.foursquare.com/overview/versioning". 
                 {"v", Options.ApiVersion },
-                {"m", "foursquare" }  // An m parameter, which specifies response mode style i.e. Foursquare-style responses.                         
+                // An m parameter, which specifies response mode style i.e. Foursquare-style responses. The "m" parameter is now mandatory.
+                {"m", "foursquare" }
             };
 
             var request = new HttpRequestMessage(HttpMethod.Get, Options.UserInformationEndpoint + queryBuilder.ToQueryString());            
@@ -37,18 +39,16 @@ namespace AspNet.Security.OAuth.FourSquare {
             response.EnsureSuccessStatusCode();
 
             var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
-
-            var userPayLoad = payload.Value<JObject>("response")?.Value<JObject>("user");            
            
-            identity.AddOptionalClaim(ClaimTypes.NameIdentifier, FourSquareAuthenticationHelper.GetIdentifier(userPayLoad), Options.ClaimsIssuer)
-                    .AddOptionalClaim(ClaimTypes.Surname, FourSquareAuthenticationHelper.GetLastName(userPayLoad), Options.ClaimsIssuer)
-                    .AddOptionalClaim(ClaimTypes.GivenName, FourSquareAuthenticationHelper.GetFirstName(userPayLoad), Options.ClaimsIssuer)
-                    .AddOptionalClaim(ClaimTypes.Name, FourSquareAuthenticationHelper.GetUserName(userPayLoad), Options.ClaimsIssuer)
-                    .AddOptionalClaim(ClaimTypes.Gender, FourSquareAuthenticationHelper.GetGender(userPayLoad), Options.ClaimsIssuer)
-                    .AddOptionalClaim(ClaimTypes.Email, FourSquareAuthenticationHelper.GetContactEmail(userPayLoad), Options.ClaimsIssuer)
-                    .AddOptionalClaim(ClaimTypes.Uri, FourSquareAuthenticationHelper.GetCanonicalUrl(userPayLoad), Options.ClaimsIssuer);            
+            identity.AddOptionalClaim(ClaimTypes.NameIdentifier, FourSquareAuthenticationHelper.GetIdentifier(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim(ClaimTypes.Surname, FourSquareAuthenticationHelper.GetLastName(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim(ClaimTypes.GivenName, FourSquareAuthenticationHelper.GetFirstName(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim(ClaimTypes.Name, FourSquareAuthenticationHelper.GetUserName(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim(ClaimTypes.Gender, FourSquareAuthenticationHelper.GetGender(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim(ClaimTypes.Email, FourSquareAuthenticationHelper.GetContactEmail(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim(ClaimTypes.Uri, FourSquareAuthenticationHelper.GetCanonicalUrl(payload), Options.ClaimsIssuer);            
             
-            var context = new OAuthAuthenticatedContext(Context, Options, Backchannel, tokens, userPayLoad) {
+            var context = new OAuthAuthenticatedContext(Context, Options, Backchannel, tokens, payload) {
                 Principal = new ClaimsPrincipal(identity),
                 Properties = properties
             };

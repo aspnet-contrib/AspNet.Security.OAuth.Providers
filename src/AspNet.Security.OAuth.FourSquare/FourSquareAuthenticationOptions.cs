@@ -24,14 +24,12 @@ namespace AspNet.Security.OAuth.FourSquare {
             UserInformationEndpoint = FourSquareAuthenticationDefaults.UserInformationEndpoint;
 
             SaveTokensAsClaims = false;
-
-            ApiVersion = FourSquareAuthenticationDefaults.ApiVersion;           
         }
 
         /// <summary>
         /// A parameter, which is a date in YYYYMMDD format, essentially represents the "version" of the API you expect from Foursquare.
-        /// Please refer to "https://developer.foursquare.com/overview/versioning"      
+        /// Please refer to "https://developer.foursquare.com/overview/versioning".
         /// </summary>
-        public string ApiVersion { get; set; }       
+        public string ApiVersion { get; set; } = FourSquareAuthenticationDefaults.ApiVersion;
     }
 }

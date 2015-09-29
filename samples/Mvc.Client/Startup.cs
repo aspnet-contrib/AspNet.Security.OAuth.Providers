@@ -49,7 +49,7 @@ namespace Mvc.Client {
                 options.ClientSecret = "98f1bf028608901e9df91d64ee61536fe562064b";
             });
 
-            app.UseFourSquareAuthentication(options => { 
+            app.UseFoursquareAuthentication(options => { 
             
                 options.ClientId = "PZCYFR434Y5XCAQTUOIEI1HGWQAY1QLWRJPQAJDIPDNUEPYK";
                 options.ClientSecret = "AXWNVUPDBNEGDAHNDACSKUEPTEVG3AGUDYMDTNGM3JAF2M4V";

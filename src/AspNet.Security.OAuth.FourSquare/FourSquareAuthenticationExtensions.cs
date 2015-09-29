@@ -12,20 +12,20 @@ using Microsoft.Framework.OptionsModel;
 
 namespace Microsoft.AspNet.Builder {
     public static class FourSquareAuthenticationExtensions {
-        public static IApplicationBuilder UseFourSquareAuthentication(
+        public static IApplicationBuilder UseFoursquareAuthentication(
             [NotNull] this IApplicationBuilder app,
             [NotNull] FourSquareAuthenticationOptions options) {
             return app.UseMiddleware<FourSquareAuthenticationMiddleware>(options);
         }
 
-        public static IApplicationBuilder UseFourSquareAuthentication(
+        public static IApplicationBuilder UseFoursquareAuthentication(
             [NotNull] this IApplicationBuilder app,
             [NotNull] Action<FourSquareAuthenticationOptions> configuration)
         {
             var options = new FourSquareAuthenticationOptions();
             configuration(options);
 
-            return app.UseFourSquareAuthentication(options);
+            return app.UseFoursquareAuthentication(options);
         }
     }      
     

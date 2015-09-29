@@ -16,55 +16,55 @@ namespace AspNet.Security.OAuth.FourSquare {
         /// <summary>
         /// Gets the identifier corresponding to the authenticated user.
         /// </summary>
-        public static string GetIdentifier([NotNull] JObject user) => user.Value<string>("id");
+        public static string GetIdentifier([NotNull] JObject payload) => payload.Value<JObject>("response")?.Value<JObject>("user")?.Value<string>("id");
 
         /// <summary>
         /// Gets the last name corresponding to the authenticated user.
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public static string GetLastName([NotNull] JObject user) => user.Value<string>("lastName");
+        public static string GetLastName([NotNull] JObject payload) => payload.Value<JObject>("response")?.Value<JObject>("user")?.Value<string>("lastName");
 
         /// <summary>
         /// Gets the first name corresponding to the authenticated user.
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public static string GetFirstName([NotNull] JObject user) => user.Value<string>("firstName");
+        public static string GetFirstName([NotNull] JObject payload) => payload.Value<JObject>("response")?.Value<JObject>("user")?.Value<string>("firstName");
 
         /// <summary>
         /// Gets the username corresponding to the authenticated user.
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public static string GetUserName([NotNull] JObject user) =>  string.Format("{0} {1}",user.Value<string>("firstName"), user.Value<string>("lastName"));
+        public static string GetUserName([NotNull] JObject payload) => GetFirstName(payload) + " " + GetLastName(payload);
 
         /// <summary>
         /// Gets the gender corresponding to the authenticated user.
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public static string GetGender([NotNull] JObject user) => user.Value<string>("gender");
+        public static string GetGender([NotNull] JObject payload) => payload.Value<JObject>("response")?.Value<JObject>("user")?.Value<string>("gender");
 
         /// <summary>
         /// Gets the GetCanonicalUrl corresponding to the authenticated user.
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public static string GetCanonicalUrl([NotNull] JObject user) => user.Value<string>("canonicalUrl");
+        public static string GetCanonicalUrl([NotNull] JObject payload) => payload.Value<JObject>("response")?.Value<JObject>("user")?.Value<string>("canonicalUrl");
 
         /// <summary>
         /// Gets the home city corresponding to the authenticated user.
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public static string GetHomeCity([NotNull] JObject user) => user.Value<string>("homeCity");
+        public static string GetHomeCity([NotNull] JObject payload) => payload.Value<JObject>("response")?.Value<JObject>("user")?.Value<string>("homeCity");
 
         /// <summary>
         /// Gets the email corresponding to the authenticated user.
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public static string GetContactEmail([NotNull] JObject user) => user.Value<JObject>("contact")?.Value<string>("email");
+        public static string GetContactEmail([NotNull] JObject payload) => payload.Value<JObject>("response")?.Value<JObject>("user")?.Value<JObject>("contact")?.Value<string>("email");
     }
 }

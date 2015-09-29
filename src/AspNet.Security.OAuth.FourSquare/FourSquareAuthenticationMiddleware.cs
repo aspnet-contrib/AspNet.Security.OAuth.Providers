@@ -21,12 +21,10 @@ namespace AspNet.Security.OAuth.FourSquare {
             [NotNull] ILoggerFactory loggerFactory,
             [NotNull] IUrlEncoder encoder,
             [NotNull] IOptions<SharedAuthenticationOptions> externalOptions,
-            [NotNull] FourSquareAuthenticationOptions options,            
-            ConfigureOptions<FourSquareAuthenticationOptions> configureOptions = null)
+            [NotNull] FourSquareAuthenticationOptions options)
             : base(next, dataProtectionProvider, loggerFactory,
                    encoder, externalOptions, options) {
         }
-
         
         protected override AuthenticationHandler<FourSquareAuthenticationOptions> CreateHandler() {
             return new FourSquareAuthenticationHandler(Backchannel);
