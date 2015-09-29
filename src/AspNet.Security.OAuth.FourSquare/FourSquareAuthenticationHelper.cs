@@ -37,7 +37,7 @@ namespace AspNet.Security.OAuth.FourSquare {
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public static string GetUserName([NotNull] JObject payload) => GetFirstName(payload) + " " + GetLastName(payload);
+        public static string GetUserName([NotNull] JObject payload) => string.Format("{0} {1}", GetFirstName(payload), GetLastName(payload));
 
         /// <summary>
         /// Gets the gender corresponding to the authenticated user.
