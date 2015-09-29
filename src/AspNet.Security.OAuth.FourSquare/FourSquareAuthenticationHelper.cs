@@ -6,6 +6,7 @@
 
 using Microsoft.Framework.Internal;
 using Newtonsoft.Json.Linq;
+using System.Globalization;
 
 namespace AspNet.Security.OAuth.FourSquare {
     /// <summary>
@@ -37,7 +38,7 @@ namespace AspNet.Security.OAuth.FourSquare {
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public static string GetUserName([NotNull] JObject payload) => string.Format("{0} {1}", GetFirstName(payload), GetLastName(payload));
+        public static string GetUserName([NotNull] JObject payload) => string.Format("{0} {1}", GetFirstName(payload), GetLastName(payload), CultureInfo.InvariantCulture);
 
         /// <summary>
         /// Gets the gender corresponding to the authenticated user.

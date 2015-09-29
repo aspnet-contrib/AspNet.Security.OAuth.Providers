@@ -32,18 +32,18 @@ namespace AspNet.Security.OAuth.LinkedIn {
 
             var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
 
+            var context = new OAuthCreatingTicketContext(Context, Options, Backchannel, tokens, payload) {
+                Principal = new ClaimsPrincipal(identity),
+                Properties = properties
+            };
+
             identity.AddOptionalClaim(ClaimTypes.NameIdentifier, LinkedInAuthenticationHelper.GetIdentifier(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim(ClaimTypes.Name, LinkedInAuthenticationHelper.GetName(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim(ClaimTypes.Email, LinkedInAuthenticationHelper.GetEmail(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim("urn:linkedin:profile", LinkedInAuthenticationHelper.GetPublicProfileUrl(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim("urn:linkedin:profilepicture", LinkedInAuthenticationHelper.GetProfilePictureUrl(payload), Options.ClaimsIssuer);
 
-            var context = new OAuthAuthenticatedContext(Context, Options, Backchannel, tokens, payload) {
-                Principal = new ClaimsPrincipal(identity),
-                Properties = properties
-            };
-
-            await Options.Events.Authenticated(context);
+            await Options.Events.CreatingTicket(context);
 
             if (context.Principal?.Identity == null) {
                 return null;

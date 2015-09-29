@@ -14,7 +14,7 @@ namespace AspNet.Security.OAuth.FourSquare {
     public class FourSquareAuthenticationOptions : OAuthOptions {
         public FourSquareAuthenticationOptions() {
             AuthenticationScheme = FourSquareAuthenticationDefaults.AuthenticationScheme;            
-            Caption = FourSquareAuthenticationDefaults.Caption;
+            DisplayName = FourSquareAuthenticationDefaults.Caption;
             ClaimsIssuer = FourSquareAuthenticationDefaults.Issuer;
 
             CallbackPath = new PathString(FourSquareAuthenticationDefaults.CallbackPath);

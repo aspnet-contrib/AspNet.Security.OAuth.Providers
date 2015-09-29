@@ -14,7 +14,7 @@ namespace AspNet.Security.OAuth.Onshape {
     public class OnshapeAuthenticationOptions : OAuthOptions {
         public OnshapeAuthenticationOptions() {
             AuthenticationScheme = OnshapeAuthenticationDefaults.AuthenticationScheme;
-            Caption = OnshapeAuthenticationDefaults.Caption;
+            DisplayName = OnshapeAuthenticationDefaults.Caption;
             ClaimsIssuer = OnshapeAuthenticationDefaults.Issuer;
 
             CallbackPath = new PathString(OnshapeAuthenticationDefaults.CallbackPath);

@@ -32,17 +32,18 @@ namespace AspNet.Security.OAuth.Spotify {
 
             var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
 
+            var context = new OAuthCreatingTicketContext(Context, Options, Backchannel, tokens, payload) {
+                Principal = new ClaimsPrincipal(identity),
+                Properties = properties
+            };
+
             identity.AddOptionalClaim(ClaimTypes.NameIdentifier, SpotifyAuthenticationHelper.GetIdentifier(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim(ClaimTypes.Name, SpotifyAuthenticationHelper.GetName(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim("urn:spotify:url", SpotifyAuthenticationHelper.GetLink(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim("urn:spotify:profilepicture", SpotifyAuthenticationHelper.GetProfilePictureUrl(payload), Options.ClaimsIssuer);
 
-            var context = new OAuthAuthenticatedContext(Context, Options, Backchannel, tokens, payload) {
-                Principal = new ClaimsPrincipal(identity),
-                Properties = properties
-            };
-
-            await Options.Events.Authenticated(context);
+            
+            await Options.Events.CreatingTicket(context);
 
             if (context.Principal?.Identity == null) {
                 return null;

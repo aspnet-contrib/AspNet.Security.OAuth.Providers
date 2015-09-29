@@ -39,7 +39,12 @@ namespace AspNet.Security.OAuth.FourSquare {
             response.EnsureSuccessStatusCode();
 
             var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
-           
+
+            var context = new OAuthCreatingTicketContext(Context, Options, Backchannel, tokens, payload) {
+                Principal = new ClaimsPrincipal(identity),
+                Properties = properties
+            };
+
             identity.AddOptionalClaim(ClaimTypes.NameIdentifier, FourSquareAuthenticationHelper.GetIdentifier(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim(ClaimTypes.Surname, FourSquareAuthenticationHelper.GetLastName(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim(ClaimTypes.GivenName, FourSquareAuthenticationHelper.GetFirstName(payload), Options.ClaimsIssuer)
@@ -48,14 +53,9 @@ namespace AspNet.Security.OAuth.FourSquare {
                     .AddOptionalClaim(ClaimTypes.Email, FourSquareAuthenticationHelper.GetContactEmail(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim(ClaimTypes.Uri, FourSquareAuthenticationHelper.GetCanonicalUrl(payload), Options.ClaimsIssuer);            
             
-            var context = new OAuthAuthenticatedContext(Context, Options, Backchannel, tokens, payload) {
-                Principal = new ClaimsPrincipal(identity),
-                Properties = properties
-            };
+           await Options.Events.CreatingTicket(context);
 
-            await Options.Events.Authenticated(context);
-
-            if (context.Principal?.Identity == null) {
+           if (context.Principal?.Identity == null) {
                 return null;
             }
                     

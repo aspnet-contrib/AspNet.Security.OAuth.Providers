@@ -32,6 +32,11 @@ namespace AspNet.Security.OAuth.WordPress {
 
             var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
 
+            var context = new OAuthCreatingTicketContext(Context, Options, Backchannel, tokens, payload) {
+                Principal = new ClaimsPrincipal(identity),
+                Properties = properties
+            };
+
             identity.AddOptionalClaim(ClaimTypes.NameIdentifier, WordPressAuthenticationHelper.GetIdentifier(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim(ClaimTypes.Name, WordPressAuthenticationHelper.GetUsername(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim("urn:wordpress:email", WordPressAuthenticationHelper.GetEmail(payload), Options.ClaimsIssuer)
@@ -40,12 +45,7 @@ namespace AspNet.Security.OAuth.WordPress {
                     .AddOptionalClaim("urn:wordpress:avatarurl", WordPressAuthenticationHelper.GetAvatarUrl(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim("urn:wordpress:primaryblog", WordPressAuthenticationHelper.GetPrimaryBlog(payload), Options.ClaimsIssuer);
 
-            var context = new OAuthAuthenticatedContext(Context, Options, Backchannel, tokens, payload) {
-                Principal = new ClaimsPrincipal(identity),
-                Properties = properties
-            };
-
-            await Options.Events.Authenticated(context);
+            await Options.Events.CreatingTicket(context);
 
             if (context.Principal?.Identity == null) {
                 return null;

@@ -31,19 +31,19 @@ namespace AspNet.Security.OAuth.Imgur {
             response.EnsureSuccessStatusCode();
 
             var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
-            
+
+            var context = new OAuthCreatingTicketContext(Context, Options, Backchannel, tokens, payload) {
+                Principal = new ClaimsPrincipal(identity),
+                Properties = properties
+            };
+
             identity.AddOptionalClaim(ClaimTypes.NameIdentifier, ImgurAuthenticationHelper.GetId(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim(ClaimTypes.Name, ImgurAuthenticationHelper.GetUrl(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim("urn:imgur:reputation", ImgurAuthenticationHelper.GetReputation(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim("urn:imgur:created", ImgurAuthenticationHelper.GetCreated(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim("urn:imgur:proexpiration", ImgurAuthenticationHelper.GetProExpiration(payload), Options.ClaimsIssuer);
-
-            var context = new OAuthAuthenticatedContext(Context, Options, Backchannel, tokens, payload) {
-                Principal = new ClaimsPrincipal(identity),
-                Properties = properties
-            };
-
-            await Options.Events.Authenticated(context);
+            
+            await Options.Events.CreatingTicket(context);
 
             if (context.Principal?.Identity == null) {
                 return null;

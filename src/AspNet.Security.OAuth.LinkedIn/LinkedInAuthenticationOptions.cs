@@ -14,7 +14,7 @@ namespace AspNet.Security.OAuth.LinkedIn {
     public class LinkedInAuthenticationOptions : OAuthOptions {
         public LinkedInAuthenticationOptions() {
             AuthenticationScheme = LinkedInAuthenticationDefaults.AuthenticationScheme;
-            Caption = LinkedInAuthenticationDefaults.Caption;
+            DisplayName = LinkedInAuthenticationDefaults.Caption;
             ClaimsIssuer = LinkedInAuthenticationDefaults.Issuer;
 
             CallbackPath = new PathString(LinkedInAuthenticationDefaults.CallbackPath);

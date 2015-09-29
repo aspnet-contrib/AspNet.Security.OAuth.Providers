@@ -14,7 +14,7 @@ namespace AspNet.Security.OAuth.Slack {
     public class SlackAuthenticationOptions : OAuthOptions {
         public SlackAuthenticationOptions() {
             AuthenticationScheme = SlackAuthenticationDefaults.AuthenticationScheme;
-            Caption = SlackAuthenticationDefaults.Caption;
+            DisplayName = SlackAuthenticationDefaults.Caption;
             ClaimsIssuer = SlackAuthenticationDefaults.Issuer;
 
             CallbackPath = new PathString(SlackAuthenticationDefaults.CallbackPath);

@@ -31,19 +31,20 @@ namespace AspNet.Security.OAuth.Slack {
             response.EnsureSuccessStatusCode();
 
             var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
-            
+
+            var context = new OAuthCreatingTicketContext(Context, Options, Backchannel, tokens, payload) {
+                Principal = new ClaimsPrincipal(identity),
+                Properties = properties
+            };
+
             identity.AddOptionalClaim(ClaimTypes.NameIdentifier, SlackAuthenticationHelper.GetUserIdentifier(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim(ClaimTypes.Name, SlackAuthenticationHelper.GetUserName(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim("urn:slack:team_id", SlackAuthenticationHelper.GetTeamIdentifier(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim("urn:slack:team_name", SlackAuthenticationHelper.GetTeamName(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim("urn:slack:team_url", SlackAuthenticationHelper.GetTeamLink(payload), Options.ClaimsIssuer);
 
-            var context = new OAuthAuthenticatedContext(Context, Options, Backchannel, tokens, payload) {
-                Principal = new ClaimsPrincipal(identity),
-                Properties = properties
-            };
-
-            await Options.Events.Authenticated(context);
+           
+            await Options.Events.CreatingTicket(context);
 
             if (context.Principal?.Identity == null) {
                 return null;
