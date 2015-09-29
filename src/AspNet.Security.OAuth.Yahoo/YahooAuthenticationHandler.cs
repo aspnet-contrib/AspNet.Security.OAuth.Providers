@@ -35,19 +35,19 @@ namespace AspNet.Security.OAuth.Yahoo {
 
             var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
 
+            var context = new OAuthCreatingTicketContext(Context, Options, Backchannel, tokens, payload) {
+                Principal = new ClaimsPrincipal(identity),
+                Properties = properties
+            };
+
             identity.AddOptionalClaim(ClaimTypes.NameIdentifier, YahooAuthenticationHelper.GetIdentifier(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim(ClaimTypes.Name, YahooAuthenticationHelper.GetNickname(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim("urn:yahoo:familyname", YahooAuthenticationHelper.GetFamilyName(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim("urn:yahoo:givenname", YahooAuthenticationHelper.GetGivenName(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim("urn:yahoo:profile", YahooAuthenticationHelper.GetProfileUrl(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim("urn:yahoo:profileimage", YahooAuthenticationHelper.GetProfileImageUrl(payload), Options.ClaimsIssuer);
-
-            var context = new OAuthAuthenticatedContext(Context, Options, Backchannel, tokens, payload) {
-                Principal = new ClaimsPrincipal(identity),
-                Properties = properties
-            };
-
-            await Options.Events.Authenticated(context);
+            
+            await Options.Events.CreatingTicket(context);
 
             if (context.Principal?.Identity == null) {
                 return null;

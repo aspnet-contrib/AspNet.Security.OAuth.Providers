@@ -14,7 +14,7 @@ namespace AspNet.Security.OAuth.Spotify {
     public class SpotifyAuthenticationOptions : OAuthOptions {
         public SpotifyAuthenticationOptions() {
             AuthenticationScheme = SpotifyAuthenticationDefaults.AuthenticationScheme;
-            Caption = SpotifyAuthenticationDefaults.Caption;
+            DisplayName = SpotifyAuthenticationDefaults.Caption;
             ClaimsIssuer = SpotifyAuthenticationDefaults.Issuer;
 
             CallbackPath = new PathString(SpotifyAuthenticationDefaults.CallbackPath);

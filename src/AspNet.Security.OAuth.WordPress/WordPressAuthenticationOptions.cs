@@ -14,7 +14,7 @@ namespace AspNet.Security.OAuth.WordPress {
     public class WordPressAuthenticationOptions : OAuthOptions {
         public WordPressAuthenticationOptions() {
             AuthenticationScheme = WordPressAuthenticationDefaults.AuthenticationScheme;
-            Caption = WordPressAuthenticationDefaults.Caption;
+            DisplayName = WordPressAuthenticationDefaults.Caption;
             ClaimsIssuer = WordPressAuthenticationDefaults.Issuer;
 
             CallbackPath = new PathString(WordPressAuthenticationDefaults.CallbackPath);

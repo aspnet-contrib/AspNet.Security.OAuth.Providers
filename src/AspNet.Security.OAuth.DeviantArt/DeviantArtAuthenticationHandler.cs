@@ -30,17 +30,19 @@ namespace AspNet.Security.OAuth.DeviantArt {
             response.EnsureSuccessStatusCode();
 
             var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
-            
-            identity.AddOptionalClaim(ClaimTypes.NameIdentifier, DeviantArtAuthenticationHelper.GetIdentifier(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim(ClaimTypes.Name, DeviantArtAuthenticationHelper.GetLogin(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:DeviantArt:name", DeviantArtAuthenticationHelper.GetName(payload), Options.ClaimsIssuer);
 
-            var context = new OAuthAuthenticatedContext(Context, Options, Backchannel, tokens, payload) {
+            var context = new OAuthCreatingTicketContext(Context, Options, Backchannel, tokens, payload) {
                 Principal = new ClaimsPrincipal(identity),
                 Properties = properties
             };
 
-            await Options.Events.Authenticated(context);
+            identity.AddOptionalClaim(ClaimTypes.NameIdentifier, DeviantArtAuthenticationHelper.GetIdentifier(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim(ClaimTypes.Name, DeviantArtAuthenticationHelper.GetLogin(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim("urn:DeviantArt:name", DeviantArtAuthenticationHelper.GetName(payload), Options.ClaimsIssuer);
+
+            
+
+            await Options.Events.CreatingTicket(context);
 
             if (context.Principal?.Identity == null) {
                 return null;

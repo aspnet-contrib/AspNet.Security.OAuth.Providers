@@ -36,16 +36,17 @@ namespace AspNet.Security.OAuth.Reddit {
 
             var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
 
-            identity.AddOptionalClaim(ClaimTypes.NameIdentifier, RedditAuthenticationHelper.GetIdentifier(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim(ClaimTypes.Name, RedditAuthenticationHelper.GetName(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:reddit:over18", RedditAuthenticationHelper.GetOver18(payload), Options.ClaimsIssuer);
-
-            var context = new OAuthAuthenticatedContext(Context, Options, Backchannel, tokens, payload) {
+            var context = new OAuthCreatingTicketContext(Context, Options, Backchannel, tokens, payload) {
                 Principal = new ClaimsPrincipal(identity),
                 Properties = properties
             };
 
-            await Options.Events.Authenticated(context);
+            identity.AddOptionalClaim(ClaimTypes.NameIdentifier, RedditAuthenticationHelper.GetIdentifier(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim(ClaimTypes.Name, RedditAuthenticationHelper.GetName(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim("urn:reddit:over18", RedditAuthenticationHelper.GetOver18(payload), Options.ClaimsIssuer);
+
+           
+            await Options.Events.CreatingTicket(context);
 
             if (context.Principal?.Identity == null) {
                 return null;

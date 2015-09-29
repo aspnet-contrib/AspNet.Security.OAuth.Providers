@@ -15,7 +15,7 @@ namespace Mvc.Client.Extensions {
     public static class HttpContextExtensions {
         public static IEnumerable<AuthenticationDescription> GetExternalProviders([NotNull] this HttpContext context) {
             return from description in context.Authentication.GetAuthenticationSchemes()
-                   where !string.IsNullOrWhiteSpace(description.Caption)
+                   where !string.IsNullOrWhiteSpace(description.DisplayName)
                    select description;
         }
 
