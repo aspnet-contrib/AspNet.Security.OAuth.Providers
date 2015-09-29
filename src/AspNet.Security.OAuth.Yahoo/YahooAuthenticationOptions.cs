@@ -14,7 +14,7 @@ namespace AspNet.Security.OAuth.Yahoo {
     public class YahooAuthenticationOptions : OAuthOptions {
         public YahooAuthenticationOptions() {
             AuthenticationScheme = YahooAuthenticationDefaults.AuthenticationScheme;
-            Caption = YahooAuthenticationDefaults.Caption;
+            DisplayName = YahooAuthenticationDefaults.DisplayName;
             ClaimsIssuer = YahooAuthenticationDefaults.Issuer;
 
             CallbackPath = new PathString(YahooAuthenticationDefaults.CallbackPath);

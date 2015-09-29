@@ -14,7 +14,7 @@ namespace AspNet.Security.OAuth.Reddit {
     public class RedditAuthenticationOptions : OAuthOptions {
         public RedditAuthenticationOptions() {
             AuthenticationScheme = RedditAuthenticationDefaults.AuthenticationScheme;
-            Caption = RedditAuthenticationDefaults.Caption;
+            DisplayName = RedditAuthenticationDefaults.DisplayName;
             ClaimsIssuer = RedditAuthenticationDefaults.Issuer;
 
             CallbackPath = new PathString(RedditAuthenticationDefaults.CallbackPath);

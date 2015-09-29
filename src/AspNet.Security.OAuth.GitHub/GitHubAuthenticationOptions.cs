@@ -14,7 +14,7 @@ namespace AspNet.Security.OAuth.GitHub {
     public class GitHubAuthenticationOptions : OAuthOptions {
         public GitHubAuthenticationOptions() {
             AuthenticationScheme = GitHubAuthenticationDefaults.AuthenticationScheme;
-            Caption = GitHubAuthenticationDefaults.Caption;
+            DisplayName = GitHubAuthenticationDefaults.DisplayName;
             ClaimsIssuer = GitHubAuthenticationDefaults.Issuer;
 
             CallbackPath = new PathString(GitHubAuthenticationDefaults.CallbackPath);

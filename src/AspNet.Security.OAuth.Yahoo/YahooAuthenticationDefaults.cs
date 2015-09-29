@@ -18,9 +18,9 @@ namespace AspNet.Security.OAuth.Yahoo {
         public const string AuthenticationScheme = "Yahoo";
 
         /// <summary>
-        /// Default value for <see cref="OAuthOptions.Caption"/>.
+        /// Default value for <see cref="OAuthOptions.DisplayName"/>.
         /// </summary>
-        public const string Caption = "Yahoo";
+        public const string DisplayName = "Yahoo";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.ClaimsIssuer"/>.

@@ -13,7 +13,7 @@ using Mvc.Client.Extensions;
 namespace Mvc.Client.Controllers {
     public class AuthenticationController : Controller {
         [HttpGet("~/signin")]
-        public IActionResult SignIn() => View("SignIn", Context.GetExternalProviders());
+        public IActionResult SignIn() => View("SignIn", HttpContext.GetExternalProviders());
 
         [HttpPost("~/signin")]
         public IActionResult SignIn([FromForm] string provider) {
@@ -23,7 +23,7 @@ namespace Mvc.Client.Controllers {
                 return HttpBadRequest();
             }
 
-            if (!Context.IsProviderSupported(provider)) {
+            if (!HttpContext.IsProviderSupported(provider)) {
                 return HttpBadRequest();
             }
             
@@ -39,7 +39,7 @@ namespace Mvc.Client.Controllers {
             // Instruct the cookies middleware to delete the local cookie created
             // when the user agent is redirected from the external identity provider
             // after a successful authentication flow (e.g Google or Facebook).
-            await Context.Authentication.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            await HttpContext.Authentication.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
             return RedirectToAction("Index", "Home");
         }

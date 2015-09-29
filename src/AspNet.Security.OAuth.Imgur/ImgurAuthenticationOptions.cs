@@ -14,7 +14,7 @@ namespace AspNet.Security.OAuth.Imgur {
     public class ImgurAuthenticationOptions : OAuthOptions {
         public ImgurAuthenticationOptions() {
             AuthenticationScheme = ImgurAuthenticationDefaults.AuthenticationScheme;
-            Caption = ImgurAuthenticationDefaults.Caption;
+            DisplayName = ImgurAuthenticationDefaults.DisplayName;
             ClaimsIssuer = ImgurAuthenticationDefaults.Issuer;
 
             CallbackPath = new PathString(ImgurAuthenticationDefaults.CallbackPath);

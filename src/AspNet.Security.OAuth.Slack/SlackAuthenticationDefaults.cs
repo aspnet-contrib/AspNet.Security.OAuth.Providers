@@ -18,9 +18,9 @@ namespace AspNet.Security.OAuth.Slack {
         public const string AuthenticationScheme = "Slack";
 
         /// <summary>
-        /// Default value for <see cref="OAuthOptions.Caption"/>.
+        /// Default value for <see cref="OAuthOptions.DisplayName"/>.
         /// </summary>
-        public const string Caption = "Slack";
+        public const string DisplayName = "Slack";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.ClaimsIssuer"/>.
