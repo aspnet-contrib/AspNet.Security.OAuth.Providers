@@ -5,24 +5,24 @@
  */
 
 using System;
-using AspNet.Security.OAuth.FourSquare;
+using AspNet.Security.OAuth.Foursquare;
 using Microsoft.Framework.DependencyInjection;
 using Microsoft.Framework.Internal;
 using Microsoft.Framework.OptionsModel;
 
 namespace Microsoft.AspNet.Builder {
-    public static class FourSquareAuthenticationExtensions {
+    public static class FoursquareAuthenticationExtensions {
         public static IApplicationBuilder UseFoursquareAuthentication(
             [NotNull] this IApplicationBuilder app,
-            [NotNull] FourSquareAuthenticationOptions options) {
-            return app.UseMiddleware<FourSquareAuthenticationMiddleware>(options);
+            [NotNull] FoursquareAuthenticationOptions options) {
+            return app.UseMiddleware<FoursquareAuthenticationMiddleware>(options);
         }
 
         public static IApplicationBuilder UseFoursquareAuthentication(
             [NotNull] this IApplicationBuilder app,
-            [NotNull] Action<FourSquareAuthenticationOptions> configuration)
+            [NotNull] Action<FoursquareAuthenticationOptions> configuration)
         {
-            var options = new FourSquareAuthenticationOptions();
+            var options = new FoursquareAuthenticationOptions();
             configuration(options);
 
             return app.UseFoursquareAuthentication(options);

@@ -16,9 +16,9 @@ using Microsoft.Framework.Internal;
 using Newtonsoft.Json.Linq;
 using Microsoft.AspNet.Http.Extensions;
 
-namespace AspNet.Security.OAuth.FourSquare {
-    public class FourSquareAuthenticationHandler : OAuthHandler<FourSquareAuthenticationOptions> {
-        public FourSquareAuthenticationHandler([NotNull] HttpClient client)
+namespace AspNet.Security.OAuth.Foursquare {
+    public class FoursquareAuthenticationHandler : OAuthHandler<FoursquareAuthenticationOptions> {
+        public FoursquareAuthenticationHandler([NotNull] HttpClient client)
             : base(client) {
         }
 
@@ -45,13 +45,13 @@ namespace AspNet.Security.OAuth.FourSquare {
                 Properties = properties
             };
 
-            identity.AddOptionalClaim(ClaimTypes.NameIdentifier, FourSquareAuthenticationHelper.GetIdentifier(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim(ClaimTypes.Surname, FourSquareAuthenticationHelper.GetLastName(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim(ClaimTypes.GivenName, FourSquareAuthenticationHelper.GetFirstName(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim(ClaimTypes.Name, FourSquareAuthenticationHelper.GetUserName(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim(ClaimTypes.Gender, FourSquareAuthenticationHelper.GetGender(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim(ClaimTypes.Email, FourSquareAuthenticationHelper.GetContactEmail(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim(ClaimTypes.Uri, FourSquareAuthenticationHelper.GetCanonicalUrl(payload), Options.ClaimsIssuer);            
+            identity.AddOptionalClaim(ClaimTypes.NameIdentifier, FoursquareAuthenticationHelper.GetIdentifier(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim(ClaimTypes.Surname, FoursquareAuthenticationHelper.GetLastName(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim(ClaimTypes.GivenName, FoursquareAuthenticationHelper.GetFirstName(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim(ClaimTypes.Name, FoursquareAuthenticationHelper.GetUserName(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim(ClaimTypes.Gender, FoursquareAuthenticationHelper.GetGender(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim(ClaimTypes.Email, FoursquareAuthenticationHelper.GetContactEmail(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim(ClaimTypes.Uri, FoursquareAuthenticationHelper.GetCanonicalUrl(payload), Options.ClaimsIssuer);            
             
            await Options.Events.CreatingTicket(context);
 

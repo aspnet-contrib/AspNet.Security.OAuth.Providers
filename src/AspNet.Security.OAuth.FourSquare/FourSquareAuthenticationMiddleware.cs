@@ -13,21 +13,21 @@ using Microsoft.Framework.Logging;
 using Microsoft.Framework.OptionsModel;
 using Microsoft.Framework.WebEncoders;
 
-namespace AspNet.Security.OAuth.FourSquare {
-    public class FourSquareAuthenticationMiddleware :OAuthMiddleware<FourSquareAuthenticationOptions> {
-        public FourSquareAuthenticationMiddleware(
+namespace AspNet.Security.OAuth.Foursquare {
+    public class FoursquareAuthenticationMiddleware :OAuthMiddleware<FoursquareAuthenticationOptions> {
+        public FoursquareAuthenticationMiddleware(
             [NotNull] RequestDelegate next,
             [NotNull] IDataProtectionProvider dataProtectionProvider,
             [NotNull] ILoggerFactory loggerFactory,
             [NotNull] IUrlEncoder encoder,
             [NotNull] IOptions<SharedAuthenticationOptions> externalOptions,
-            [NotNull] FourSquareAuthenticationOptions options)
+            [NotNull] FoursquareAuthenticationOptions options)
             : base(next, dataProtectionProvider, loggerFactory,
                    encoder, externalOptions, options) {
         }
         
-        protected override AuthenticationHandler<FourSquareAuthenticationOptions> CreateHandler() {
-            return new FourSquareAuthenticationHandler(Backchannel);
+        protected override AuthenticationHandler<FoursquareAuthenticationOptions> CreateHandler() {
+            return new FoursquareAuthenticationHandler(Backchannel);
         }
     }
 }

@@ -8,12 +8,12 @@ using Microsoft.Framework.Internal;
 using Newtonsoft.Json.Linq;
 using System.Globalization;
 
-namespace AspNet.Security.OAuth.FourSquare {
+namespace AspNet.Security.OAuth.Foursquare {
     /// <summary>
     /// Contains static methods that allow to extract user's information from a <see cref="JObject"/>
-    /// instance retrieved from FourSquare after a successful authentication process.
+    /// instance retrieved from Foursquare after a successful authentication process.
     /// </summary>
-    public static class FourSquareAuthenticationHelper {
+    public static class FoursquareAuthenticationHelper {
         /// <summary>
         /// Gets the identifier corresponding to the authenticated user.
         /// </summary>

@@ -1,10 +1,10 @@
 {
     "version": "1.0.0-*",
-    "description": "ASP.NET 5 security middleware enabling FourSquare authentication.",
+    "description": "ASP.NET 5 security middleware enabling Foursquare authentication.",
     "authors": [ "Abhinav Nigam" ],
     "owners": [ "Kévin Chalet", "Jerrie Pelser" ],
 
-      "projectUrl": "https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers",
+    "projectUrl": "https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers",
     "licenseUrl": "http://www.apache.org/licenses/LICENSE-2.0.html",
 
     "dependencies": {

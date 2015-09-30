@@ -7,21 +7,21 @@
 using Microsoft.AspNet.Authentication.OAuth;
 using Microsoft.AspNet.Http;
 
-namespace AspNet.Security.OAuth.FourSquare {
+namespace AspNet.Security.OAuth.Foursquare {
     /// <summary>
-    /// Defines a set of options used by <see cref="FourSquareAuthenticationHandler"/>.
+    /// Defines a set of options used by <see cref="FoursquareAuthenticationHandler"/>.
     /// </summary>
-    public class FourSquareAuthenticationOptions : OAuthOptions {
-        public FourSquareAuthenticationOptions() {
-            AuthenticationScheme = FourSquareAuthenticationDefaults.AuthenticationScheme;            
-            DisplayName = FourSquareAuthenticationDefaults.Caption;
-            ClaimsIssuer = FourSquareAuthenticationDefaults.Issuer;
+    public class FoursquareAuthenticationOptions : OAuthOptions {
+        public FoursquareAuthenticationOptions() {
+            AuthenticationScheme = FoursquareAuthenticationDefaults.AuthenticationScheme;            
+            DisplayName = FoursquareAuthenticationDefaults.Caption;
+            ClaimsIssuer = FoursquareAuthenticationDefaults.Issuer;
 
-            CallbackPath = new PathString(FourSquareAuthenticationDefaults.CallbackPath);
+            CallbackPath = new PathString(FoursquareAuthenticationDefaults.CallbackPath);
 
-            AuthorizationEndpoint = FourSquareAuthenticationDefaults.AuthorizationEndpoint;
-            TokenEndpoint = FourSquareAuthenticationDefaults.TokenEndpoint;
-            UserInformationEndpoint = FourSquareAuthenticationDefaults.UserInformationEndpoint;
+            AuthorizationEndpoint = FoursquareAuthenticationDefaults.AuthorizationEndpoint;
+            TokenEndpoint = FoursquareAuthenticationDefaults.TokenEndpoint;
+            UserInformationEndpoint = FoursquareAuthenticationDefaults.UserInformationEndpoint;
 
             SaveTokensAsClaims = false;
         }
@@ -30,6 +30,6 @@ namespace AspNet.Security.OAuth.FourSquare {
         /// A parameter, which is a date in YYYYMMDD format, essentially represents the "version" of the API you expect from Foursquare.
         /// Please refer to "https://developer.foursquare.com/overview/versioning".
         /// </summary>
-        public string ApiVersion { get; set; } = FourSquareAuthenticationDefaults.ApiVersion;
+        public string ApiVersion { get; set; } = FoursquareAuthenticationDefaults.ApiVersion;
     }
 }

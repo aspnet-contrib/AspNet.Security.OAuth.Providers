@@ -7,25 +7,25 @@
 using Microsoft.AspNet.Authentication;
 using Microsoft.AspNet.Authentication.OAuth;
 
-namespace AspNet.Security.OAuth.FourSquare {
+namespace AspNet.Security.OAuth.Foursquare {
     /// <summary>
-    /// Default values used by the FourSquare authentication middleware.
+    /// Default values used by the Foursquare authentication middleware.
     /// </summary>
-    public static class FourSquareAuthenticationDefaults {
+    public static class FoursquareAuthenticationDefaults {
         /// <summary>
         /// Default value for <see cref="AuthenticationOptions.AuthenticationScheme"/>.
         /// </summary>
-        public const string AuthenticationScheme = "FourSquare";
+        public const string AuthenticationScheme = "Foursquare";
 
         /// <summary>
         /// Default value for <see cref="OAuthAuthenticationOptions.Caption"/>.
         /// </summary>
-        public const string Caption = "FourSquare";
+        public const string Caption = "Foursquare";
 
         /// <summary>
         /// Default value for <see cref="OAuthAuthenticationOptions.ClaimsIssuer"/>.
         /// </summary>
-        public const string Issuer = "FourSquare";
+        public const string Issuer = "Foursquare";
 
         /// <summary>
         /// Default value for <see cref="OAuthAuthenticationOptions.CallbackPath"/>.
@@ -48,7 +48,7 @@ namespace AspNet.Security.OAuth.FourSquare {
         public const string UserInformationEndpoint = "https://api.foursquare.com/v2/users/self";
 
         /// <summary>
-        /// Default value for FourSquare API version.
+        /// Default value for Foursquare API version.
         /// </summary>
         public const string ApiVersion = "20150927";
     }
