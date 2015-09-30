@@ -8,6 +8,7 @@
         "AspNet.Security.OAuth.Buffer": "1.0.0-*",
         "AspNet.Security.OAuth.DeviantArt": "1.0.0-*",
         "AspNet.Security.OAuth.Dropbox": "1.0.0-*",
+        "AspNet.Security.OAuth.Foursquare": "1.0.0-*",
         "AspNet.Security.OAuth.GitHub": "1.0.0-*",
         "AspNet.Security.OAuth.Imgur": "1.0.0-*",
         "AspNet.Security.OAuth.LinkedIn": "1.0.0-*",
