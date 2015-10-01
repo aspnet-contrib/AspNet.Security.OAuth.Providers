@@ -15,26 +15,22 @@
         "AspNet.Security.OAuth.Spotify": "1.0.0-*",
         "AspNet.Security.OAuth.WordPress": "1.0.0-*",
         "AspNet.Security.OAuth.Yahoo": "1.0.0-*",
-
         "Microsoft.AspNet.Mvc": "6.0.0-*",
-
         "Microsoft.AspNet.Authentication.Cookies": "1.0.0-*",
         "Microsoft.AspNet.Authentication.Google": "1.0.0-*",
         "Microsoft.AspNet.Authentication.Twitter": "1.0.0-*",
         "Microsoft.AspNet.Authentication.OpenIdConnect": "1.0.0-*",
-
         "Microsoft.AspNet.Server.IIS": "1.0.0-*",
         "Microsoft.AspNet.Server.Kestrel": "1.0.0-*",
         "Microsoft.AspNet.Server.WebListener": "1.0.0-*",
         "Microsoft.AspNet.StaticFiles": "1.0.0-*",
-
         "Microsoft.Framework.Logging": "1.0.0-*",
         "Microsoft.Framework.Logging.Console": "1.0.0-*",
-
-        "Microsoft.Framework.NotNullAttribute.Internal": {
-            "type": "build",
-            "version": "1.0.0-*"
-        }
+      "Microsoft.Framework.NotNullAttribute.Internal": {
+        "type": "build",
+        "version": "1.0.0-*"
+      },
+      "AspNet.Security.OAuth.Dropbox": "1.0.0-*"
     },
 
     "commands": {
