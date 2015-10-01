@@ -14,7 +14,7 @@ namespace AspNet.Security.OAuth.DeviantArt {
     public class DeviantArtAuthenticationOptions : OAuthOptions {
         public DeviantArtAuthenticationOptions() {
             AuthenticationScheme = DeviantArtAuthenticationDefaults.AuthenticationScheme;
-            Caption = DeviantArtAuthenticationDefaults.Caption;
+            DisplayName = DeviantArtAuthenticationDefaults.DisplayName;
             ClaimsIssuer = DeviantArtAuthenticationDefaults.Issuer;
 
             CallbackPath = new PathString(DeviantArtAuthenticationDefaults.CallbackPath);

@@ -18,9 +18,9 @@ namespace AspNet.Security.OAuth.GitHub {
         public const string AuthenticationScheme = "GitHub";
 
         /// <summary>
-        /// Default value for <see cref="OAuthOptions.Caption"/>.
+        /// Default value for <see cref="OAuthOptions.DisplayName"/>.
         /// </summary>
-        public const string Caption = "GitHub";
+        public const string DisplayName = "GitHub";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.ClaimsIssuer"/>.

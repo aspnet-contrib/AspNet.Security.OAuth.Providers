@@ -42,12 +42,12 @@ namespace AspNet.Security.OAuth.Yahoo {
                     .AddOptionalClaim("urn:yahoo:profile", YahooAuthenticationHelper.GetProfileUrl(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim("urn:yahoo:profileimage", YahooAuthenticationHelper.GetProfileImageUrl(payload), Options.ClaimsIssuer);
 
-            var context = new OAuthAuthenticatedContext(Context, Options, Backchannel, tokens, payload) {
+            var context = new OAuthCreatingTicketContext(Context, Options, Backchannel, tokens, payload) {
                 Principal = new ClaimsPrincipal(identity),
                 Properties = properties
             };
 
-            await Options.Events.Authenticated(context);
+            await Options.Events.CreatingTicket(context);
 
             if (context.Principal?.Identity == null) {
                 return null;
