@@ -14,7 +14,7 @@ namespace AspNet.Security.OAuth.Dropbox {
     public class DropboxAuthenticationOptions : OAuthOptions {
         public DropboxAuthenticationOptions() {
             AuthenticationScheme = DropboxAuthenticationDefaults.AuthenticationScheme;
-            Caption = DropboxAuthenticationDefaults.Caption;
+            DisplayName = DropboxAuthenticationDefaults.Caption;
             ClaimsIssuer = DropboxAuthenticationDefaults.Issuer;
 
             CallbackPath = new PathString(DropboxAuthenticationDefaults.CallbackPath);

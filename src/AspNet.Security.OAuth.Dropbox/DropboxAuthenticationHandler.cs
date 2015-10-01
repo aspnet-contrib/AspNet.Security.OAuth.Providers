@@ -39,12 +39,12 @@ namespace AspNet.Security.OAuth.Dropbox {
             // TODO: Add any optional claims, eg
             //  .AddOptionalClaim("urn:dropbox:name", DropboxAuthenticationHelper.GetName(payload), Options.ClaimsIssuer)
 
-            var context = new OAuthAuthenticatedContext(Context, Options, Backchannel, tokens, payload) {
+            var context = new OAuthCreatingTicketContext(Context, Options, Backchannel, tokens, payload) {
                 Principal = new ClaimsPrincipal(identity),
                 Properties = properties
             };
 
-            await Options.Events.Authenticated(context);
+            await Options.Events.CreatingTicket(context);
 
             if (context.Principal?.Identity == null) {
                 return null;
