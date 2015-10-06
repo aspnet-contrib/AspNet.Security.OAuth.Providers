@@ -15,6 +15,7 @@
         "AspNet.Security.OAuth.Spotify": "1.0.0-*",
         "AspNet.Security.OAuth.WordPress": "1.0.0-*",
         "AspNet.Security.OAuth.Yahoo": "1.0.0-*",
+        "AspNet.Security.OAuth.Asana": "1.0.0-*",
 
         "Microsoft.AspNet.Mvc": "6.0.0-*",
 
