@@ -49,6 +49,11 @@ namespace Mvc.Client {
                 options.ClientSecret = "98f1bf028608901e9df91d64ee61536fe562064b";
             });
 
+            app.UseAsanaAuthentication(options => {
+                options.ClientId = "55679250085311";
+                options.ClientSecret = "4d3224bc290974269c294267a342cdff";
+            });
+
             app.UseMvc();
         }
     }
