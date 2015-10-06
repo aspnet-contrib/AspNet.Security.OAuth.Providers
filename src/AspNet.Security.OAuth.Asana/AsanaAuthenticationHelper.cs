@@ -22,7 +22,7 @@ namespace AspNet.Security.OAuth.Asana {
         /// </summary>
         public static string GetName([NotNull] JObject user) => user.Value<JObject>("data")?.Value<string>("name");
         /// <summary>
-        /// Gets the name corresponding to the authenticated user.
+        /// Gets the email corresponding to the authenticated user.
         /// </summary>
         public static string GetEmail([NotNull] JObject user) => user.Value<JObject>("data")?.Value<string>("email");
     }
