@@ -17,7 +17,7 @@ namespace AspNet.Security.OAuth.BattleNet {
     {
         public BattleNetAuthenticationOptions() {
             AuthenticationScheme = BattleNetAuthenticationDefaults.AuthenticationScheme;
-            Caption = BattleNetAuthenticationDefaults.Caption;
+            DisplayName = BattleNetAuthenticationDefaults.DisplayName;
             ClaimsIssuer = BattleNetAuthenticationDefaults.Issuer;
 
             CallbackPath = new PathString(BattleNetAuthenticationDefaults.CallbackPath);

@@ -20,7 +20,7 @@ namespace AspNet.Security.OAuth.BattleNet {
         /// <summary>
         /// Default value for <see cref="OAuthAuthenticationOptions.Caption"/>.
         /// </summary>
-        public const string Caption = "BattleNet";
+        public const string DisplayName = "BattleNet";
 
         /// <summary>
         /// Default value for <see cref="OAuthAuthenticationOptions.ClaimsIssuer"/>.

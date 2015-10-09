@@ -9,9 +9,9 @@ using Microsoft.AspNet.Authentication.OAuth;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.DataProtection;
 using Microsoft.Framework.Internal;
-using Microsoft.Framework.Logging;
-using Microsoft.Framework.OptionsModel;
-using Microsoft.Framework.WebEncoders;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.OptionsModel;
+using Microsoft.Extensions.WebEncoders;
 
 namespace AspNet.Security.OAuth.BattleNet {
     public class BattleNetAuthenticationMiddleware : OAuthMiddleware<BattleNetAuthenticationOptions> {
@@ -21,10 +21,8 @@ namespace AspNet.Security.OAuth.BattleNet {
             [NotNull] ILoggerFactory loggerFactory,
             [NotNull] IUrlEncoder encoder,
             [NotNull] IOptions<SharedAuthenticationOptions> externalOptions,
-            [NotNull] IOptions<BattleNetAuthenticationOptions> options,
-            ConfigureOptions<BattleNetAuthenticationOptions> configureOptions = null)
-            : base(next, dataProtectionProvider, loggerFactory,
-                   encoder, externalOptions, options, configureOptions) {
+            BattleNetAuthenticationOptions options)
+            : base(next, dataProtectionProvider, loggerFactory, encoder, externalOptions, options) {
         }
 
         protected override AuthenticationHandler<BattleNetAuthenticationOptions> CreateHandler() {

@@ -6,9 +6,9 @@
 
 using System;
 using AspNet.Security.OAuth.BattleNet;
-using Microsoft.Framework.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Framework.Internal;
-using Microsoft.Framework.OptionsModel;
+using Microsoft.Extensions.OptionsModel;
 
 namespace Microsoft.AspNet.Builder {
     public static class BattleNetAuthenticationExtensions {
