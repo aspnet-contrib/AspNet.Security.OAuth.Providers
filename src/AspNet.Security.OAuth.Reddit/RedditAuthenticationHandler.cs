@@ -16,7 +16,7 @@ using Microsoft.AspNet.Authentication;
 using Microsoft.AspNet.Authentication.OAuth;
 using Microsoft.AspNet.Http.Authentication;
 using Microsoft.AspNet.WebUtilities;
-using Microsoft.Framework.Internal;
+using Microsoft.Extensions.Internal;
 using Newtonsoft.Json.Linq;
 
 namespace AspNet.Security.OAuth.Reddit {
@@ -40,12 +40,12 @@ namespace AspNet.Security.OAuth.Reddit {
                     .AddOptionalClaim(ClaimTypes.Name, RedditAuthenticationHelper.GetName(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim("urn:reddit:over18", RedditAuthenticationHelper.GetOver18(payload), Options.ClaimsIssuer);
 
-            var context = new OAuthAuthenticatedContext(Context, Options, Backchannel, tokens, payload) {
+            var context = new OAuthCreatingTicketContext(Context, Options, Backchannel, tokens, payload) {
                 Principal = new ClaimsPrincipal(identity),
                 Properties = properties
             };
 
-            await Options.Events.Authenticated(context);
+            await Options.Events.CreatingTicket(context);
 
             if (context.Principal?.Identity == null) {
                 return null;

@@ -18,9 +18,9 @@ namespace AspNet.Security.OAuth.Imgur {
         public const string AuthenticationScheme = "Imgur";
 
         /// <summary>
-        /// Default value for <see cref="OAuthOptions.Caption"/>.
+        /// Default value for <see cref="OAuthOptions.DisplayName"/>.
         /// </summary>
-        public const string Caption = "Imgur";
+        public const string DisplayName = "Imgur";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.ClaimsIssuer"/>.

@@ -8,23 +8,21 @@ using Microsoft.AspNet.Authentication;
 using Microsoft.AspNet.Authentication.OAuth;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.DataProtection;
-using Microsoft.Framework.Internal;
-using Microsoft.Framework.Logging;
-using Microsoft.Framework.OptionsModel;
-using Microsoft.Framework.WebEncoders;
+using Microsoft.Extensions.Internal;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.OptionsModel;
+using Microsoft.Extensions.WebEncoders;
 
 namespace AspNet.Security.OAuth.Reddit {
     public class RedditAuthenticationMiddleware : OAuthMiddleware<RedditAuthenticationOptions> {
         public RedditAuthenticationMiddleware(
             [NotNull] RequestDelegate next,
+            [NotNull] RedditAuthenticationOptions options,
             [NotNull] IDataProtectionProvider dataProtectionProvider,
             [NotNull] ILoggerFactory loggerFactory,
             [NotNull] IUrlEncoder encoder,
-            [NotNull] IOptions<SharedAuthenticationOptions> sharedOptions,
-            [NotNull] IOptions<RedditAuthenticationOptions> options,
-            ConfigureOptions<RedditAuthenticationOptions> configureOptions = null)
-            : base(next, dataProtectionProvider, loggerFactory,
-                   encoder, sharedOptions, options, configureOptions) {
+            [NotNull] IOptions<SharedAuthenticationOptions> sharedOptions)
+            : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options) {
         }
 
         protected override AuthenticationHandler<RedditAuthenticationOptions> CreateHandler() {

@@ -15,9 +15,9 @@ namespace AspNet.Security.OAuth.Reddit {
         public const string AuthenticationScheme = "Reddit";
 
         /// <summary>
-        /// Default value for <see cref="OAuthOptions.Caption"/>.
+        /// Default value for <see cref="OAuthOptions.DisplayName"/>.
         /// </summary>
-        public const string Caption = "Reddit";
+        public const string DisplayName = "Reddit";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.ClaimsIssuer"/>.

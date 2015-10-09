@@ -6,27 +6,23 @@
 
 using System;
 using AspNet.Security.OAuth.GitHub;
-using Microsoft.Framework.DependencyInjection;
-using Microsoft.Framework.Internal;
-using Microsoft.Framework.OptionsModel;
+using Microsoft.Extensions.Internal;
 
 namespace Microsoft.AspNet.Builder {
     public static class GitHubAuthenticationExtensions {
-        public static IServiceCollection ConfigureGitHubAuthentication(
-            [NotNull] this IServiceCollection services,
-            [NotNull] Action<GitHubAuthenticationOptions> configuration) {
-            return services.Configure(configuration);
-        }
-
-        public static IApplicationBuilder UseGitHubAuthentication([NotNull] this IApplicationBuilder app) {
-            return app.UseMiddleware<GitHubAuthenticationMiddleware>();
+        public static IApplicationBuilder UseGitHubAuthentication(
+            [NotNull] this IApplicationBuilder app,
+            [NotNull] GitHubAuthenticationOptions options) {
+            return app.UseMiddleware<GitHubAuthenticationMiddleware>(options);
         }
 
         public static IApplicationBuilder UseGitHubAuthentication(
             [NotNull] this IApplicationBuilder app,
             [NotNull] Action<GitHubAuthenticationOptions> configuration) {
-            return app.UseMiddleware<GitHubAuthenticationMiddleware>(
-                new ConfigureOptions<GitHubAuthenticationOptions>(configuration));
+            var options = new GitHubAuthenticationOptions();
+            configuration(options);
+
+            return app.UseGitHubAuthentication(options);
         }
     }
 }
