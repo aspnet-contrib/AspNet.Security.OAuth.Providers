@@ -5,7 +5,10 @@
     "version": "1.0.0-*",
 
     "dependencies": {
+        "AspNet.Security.OAuth.Buffer": "1.0.0-*",
         "AspNet.Security.OAuth.DeviantArt": "1.0.0-*",
+        "AspNet.Security.OAuth.Dropbox": "1.0.0-*",
+        "AspNet.Security.OAuth.Foursquare": "1.0.0-*",
         "AspNet.Security.OAuth.GitHub": "1.0.0-*",
         "AspNet.Security.OAuth.Imgur": "1.0.0-*",
         "AspNet.Security.OAuth.LinkedIn": "1.0.0-*",
@@ -23,15 +26,14 @@
         "Microsoft.AspNet.Authentication.Twitter": "1.0.0-*",
         "Microsoft.AspNet.Authentication.OpenIdConnect": "1.0.0-*",
 
-        "Microsoft.AspNet.Server.IIS": "1.0.0-*",
         "Microsoft.AspNet.Server.Kestrel": "1.0.0-*",
         "Microsoft.AspNet.Server.WebListener": "1.0.0-*",
         "Microsoft.AspNet.StaticFiles": "1.0.0-*",
 
-        "Microsoft.Framework.Logging": "1.0.0-*",
-        "Microsoft.Framework.Logging.Console": "1.0.0-*",
+        "Microsoft.Extensions.Logging": "1.0.0-*",
+        "Microsoft.Extensions.Logging.Console": "1.0.0-*",
 
-        "Microsoft.Framework.NotNullAttribute.Internal": {
+        "Microsoft.Extensions.NotNullAttribute.Sources": {
             "type": "build",
             "version": "1.0.0-*"
         }

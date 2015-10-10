@@ -4,7 +4,7 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using Microsoft.Framework.Internal;
+using Microsoft.Extensions.Internal;
 using Newtonsoft.Json.Linq;
 
 namespace AspNet.Security.OAuth.Slack {
