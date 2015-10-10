@@ -6,7 +6,7 @@
 
 using System;
 using AspNet.Security.OAuth.LinkedIn;
-using Microsoft.Framework.Internal;
+using Microsoft.Extensions.Internal;
 
 namespace Microsoft.AspNet.Builder {
     public static class LinkedInAuthenticationExtensions {

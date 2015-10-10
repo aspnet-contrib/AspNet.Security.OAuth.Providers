@@ -12,7 +12,7 @@ using AspNet.Security.OAuth.Extensions;
 using Microsoft.AspNet.Authentication;
 using Microsoft.AspNet.Authentication.OAuth;
 using Microsoft.AspNet.Http.Authentication;
-using Microsoft.Framework.Internal;
+using Microsoft.Extensions.Internal;
 using Newtonsoft.Json.Linq;
 
 namespace AspNet.Security.OAuth.Imgur {
