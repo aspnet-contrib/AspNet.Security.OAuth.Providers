@@ -8,23 +8,22 @@ using Microsoft.AspNet.Authentication;
 using Microsoft.AspNet.Authentication.OAuth;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.DataProtection;
-using Microsoft.Framework.Internal;
-using Microsoft.Framework.Logging;
-using Microsoft.Framework.OptionsModel;
-using Microsoft.Framework.WebEncoders;
+using Microsoft.Extensions.Internal;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.OptionsModel;
+using Microsoft.Extensions.WebEncoders;
 
 namespace AspNet.Security.OAuth.Fitbit {
     public class FitbitAuthenticationMiddleware : OAuthMiddleware<FitbitAuthenticationOptions> {
         public FitbitAuthenticationMiddleware(
             [NotNull] RequestDelegate next,
+            [NotNull] FitbitAuthenticationOptions options,
             [NotNull] IDataProtectionProvider dataProtectionProvider,
             [NotNull] ILoggerFactory loggerFactory,
             [NotNull] IUrlEncoder encoder,
-            [NotNull] IOptions<SharedAuthenticationOptions> externalOptions,
-            [NotNull] IOptions<FitbitAuthenticationOptions> options,
-            ConfigureOptions<FitbitAuthenticationOptions> configureOptions = null)
+            [NotNull] IOptions<SharedAuthenticationOptions> externalOptions)
             : base(next, dataProtectionProvider, loggerFactory,
-                   encoder, externalOptions, options, configureOptions) {
+                   encoder, externalOptions, options) {
         }
 
         protected override AuthenticationHandler<FitbitAuthenticationOptions> CreateHandler() {

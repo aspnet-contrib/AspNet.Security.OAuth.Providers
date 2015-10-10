@@ -14,7 +14,7 @@ namespace AspNet.Security.OAuth.Fitbit {
     public class FitbitAuthenticationOptions : OAuthOptions {
         public FitbitAuthenticationOptions() {
             AuthenticationScheme = FitbitAuthenticationDefaults.AuthenticationScheme;
-            Caption = FitbitAuthenticationDefaults.Caption;
+            DisplayName = FitbitAuthenticationDefaults.Displayname;
             ClaimsIssuer = FitbitAuthenticationDefaults.Issuer;
 
             CallbackPath = new PathString(FitbitAuthenticationDefaults.CallbackPath);

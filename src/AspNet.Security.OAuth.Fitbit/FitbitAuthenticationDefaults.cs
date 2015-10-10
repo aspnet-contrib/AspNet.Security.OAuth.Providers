@@ -20,9 +20,9 @@ namespace AspNet.Security.OAuth.Fitbit
         public const string AuthenticationScheme = "Fitbit";
 
         /// <summary>
-        /// Default value for <see cref="OAuthOptions.Caption"/>.
+        /// Default value for <see cref="OAuthOptions.DisplayName"/>.
         /// </summary>
-        public const string Caption = "Fitbit";
+        public const string Displayname = "Fitbit";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.ClaimsIssuer"/>.

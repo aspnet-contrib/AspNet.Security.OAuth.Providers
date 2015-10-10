@@ -4,7 +4,7 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using Microsoft.Framework.Internal;
+using Microsoft.Extensions.Internal;
 using Newtonsoft.Json.Linq;
 
 namespace AspNet.Security.OAuth.Fitbit {
@@ -16,11 +16,21 @@ namespace AspNet.Security.OAuth.Fitbit {
         /// <summary>
         /// Gets the identifier corresponding to the authenticated user.
         /// </summary>
-        public static string GetIdentifier([NotNull] JObject user) => user.SelectToken("user.encodedId").ToString();
+        public static string GetIdentifier([NotNull] JObject user) => user.Value<JObject>("user")?.Value<string>("encodedId");
 
         /// <summary>
         /// Gets the login corresponding to the authenticated user.
         /// </summary>
-        public static string GetLogin([NotNull] JObject user) => user.SelectToken("user.displayName").ToString();
+        public static string GetLogin([NotNull] JObject user) => user.Value<JObject>("user")?.Value<string>("displayName");
+
+        /// <summary>
+        /// Get the link to the user's avatar
+        /// </summary>
+        public static string GetAvatar([NotNull] JObject user) => user.Value<JObject>("user")?.Value<string>("avatar");
+
+        /// <summary>
+        /// Get the link to the user's avatar150
+        /// </summary>
+        public static string GetAvatar150([NotNull] JObject user) => user.Value<JObject>("user")?.Value<string>("avatar150");
     }
 }
