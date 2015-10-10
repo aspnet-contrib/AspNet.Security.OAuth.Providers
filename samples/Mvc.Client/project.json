@@ -34,8 +34,7 @@
         "Microsoft.Framework.NotNullAttribute.Internal": {
             "type": "build",
             "version": "1.0.0-*"
-        },
-        "AspNet.Security.OAuth.Foursquare": "1.0.0-*"
+        }
     },
 
     "commands": {
