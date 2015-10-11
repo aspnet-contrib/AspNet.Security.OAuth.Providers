@@ -43,6 +43,8 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "AspNet.Security.OAuth.Battl
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "AspNet.Security.OAuth.HealthGraph", "src\AspNet.Security.OAuth.HealthGraph\AspNet.Security.OAuth.HealthGraph.xproj", "{C20BE880-52CB-491C-977C-F08702376766}"
 EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "AspNet.Security.OAuth.SoundCloud", "src\AspNet.Security.OAuth.SoundCloud\AspNet.Security.OAuth.SoundCloud.xproj", "{6BC54AC2-5273-417E-B7E5-EF990F7A4A37}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -121,6 +123,10 @@ Global
 		{C20BE880-52CB-491C-977C-F08702376766}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C20BE880-52CB-491C-977C-F08702376766}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C20BE880-52CB-491C-977C-F08702376766}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6BC54AC2-5273-417E-B7E5-EF990F7A4A37}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6BC54AC2-5273-417E-B7E5-EF990F7A4A37}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6BC54AC2-5273-417E-B7E5-EF990F7A4A37}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6BC54AC2-5273-417E-B7E5-EF990F7A4A37}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -144,5 +150,6 @@ Global
 		{DC58F830-EEE1-45BE-B5F4-AB2222E744A5} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 		{6299EB3E-5E8C-4D54-AAEB-7B825C96411E} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 		{C20BE880-52CB-491C-977C-F08702376766} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
+		{6BC54AC2-5273-417E-B7E5-EF990F7A4A37} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 	EndGlobalSection
 EndGlobal
