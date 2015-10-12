@@ -16,6 +16,7 @@
         "AspNet.Security.OAuth.Onshape": "1.0.0-*",
         "AspNet.Security.OAuth.Reddit": "1.0.0-*",
         "AspNet.Security.OAuth.Slack": "1.0.0-*",
+        "AspNet.Security.OAuth.SoundCloud": "1.0.0-*",
         "AspNet.Security.OAuth.Spotify": "1.0.0-*",
         "AspNet.Security.OAuth.WordPress": "1.0.0-*",
         "AspNet.Security.OAuth.Yahoo": "1.0.0-*",
