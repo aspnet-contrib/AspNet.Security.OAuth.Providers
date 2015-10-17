@@ -4,6 +4,7 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using AspNet.Security.OAuth.BattleNet;
 using Microsoft.AspNet.Authentication;
 using Microsoft.AspNet.Authentication.Cookies;
 using Microsoft.AspNet.Builder;
@@ -47,6 +48,27 @@ namespace Mvc.Client {
             app.UseGitHubAuthentication(options => {
                 options.ClientId = "49e302895d8b09ea5656";
                 options.ClientSecret = "98f1bf028608901e9df91d64ee61536fe562064b";
+            });
+
+            app.UseLinkedInAuthentication(options => {
+                options.ClientId = "75pgsv1r7ckn2w";
+                options.ClientSecret = "C7CzxvLrYpetEmZm";
+            });
+
+            app.UseWordPressAuthentication(options => {
+                options.ClientId = "42245";
+                options.ClientSecret = "n18qkkc7Kpksf3EZ2GZfoRqN7jPGJkMOAcIbv3l1s0Jys7XrwhMlOlCctDmLUe0F";
+            });
+
+            app.UseYahooAuthentication(options => {
+                options.ClientId = "dj0yJmk9a29HamkxMm9UT21tJmQ9WVdrOVdXdERVRE5JTnpBbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmeD1mZg--";
+                options.ClientSecret = "bf9bacc22391a01977f8e7d57daadd564809e6a1";
+            });
+
+            app.UseBattleNetAuthentication(options =>
+            {
+                options.ClientId = "7e9p3rner7z3v8wsa4bnpyuxek5d3dkv";
+                options.ClientSecret = "7eHQMnYgfkNQpPuq8HzEHQ5cqQF66Fcm";
             });
 
             app.UseMvc();
