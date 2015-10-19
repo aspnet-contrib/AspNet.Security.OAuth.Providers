@@ -4,6 +4,7 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using System.Linq;
 using Microsoft.Extensions.Internal;
 using Newtonsoft.Json.Linq;
 
@@ -22,6 +23,20 @@ namespace AspNet.Security.OAuth.GitHub {
         /// Gets the login corresponding to the authenticated user.
         /// </summary>
         public static string GetLogin([NotNull] JObject user) => user.Value<string>("login");
+
+        /// <summary>
+        /// Gets the email address corresponding to the authenticated user.
+        /// </summary>
+        public static string GetEmail([NotNull] JObject user) => user.Value<string>("email");
+
+        /// <summary>
+        /// Gets the primary email address contained in the given array.
+        /// </summary>
+        public static string GetEmail([NotNull] JArray array) {
+            return (from address in array.AsJEnumerable()
+                    where address.Value<bool>("primary")
+                    select address.Value<string>("email")).FirstOrDefault();
+        }
 
         /// <summary>
         /// Gets the name corresponding to the authenticated user.

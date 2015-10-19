@@ -47,6 +47,7 @@ namespace Mvc.Client {
             app.UseGitHubAuthentication(options => {
                 options.ClientId = "49e302895d8b09ea5656";
                 options.ClientSecret = "98f1bf028608901e9df91d64ee61536fe562064b";
+                options.Scope.Add("user:email");
             });
 
             app.UseMvc();

@@ -34,8 +34,14 @@ namespace AspNet.Security.OAuth.GitHub {
             
             identity.AddOptionalClaim(ClaimTypes.NameIdentifier, GitHubAuthenticationHelper.GetIdentifier(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim(ClaimTypes.Name, GitHubAuthenticationHelper.GetLogin(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim(ClaimTypes.Email, GitHubAuthenticationHelper.GetEmail(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim("urn:github:name", GitHubAuthenticationHelper.GetName(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim("urn:github:url", GitHubAuthenticationHelper.GetLink(payload), Options.ClaimsIssuer);
+
+            // When the email address is not public, retrieve it from the emails endpoint if the user:email scope is specified.
+            if (!identity.HasClaim(claim => claim.Type == ClaimTypes.Email) && Options.Scope.Contains("user:email")) {
+                identity.AddOptionalClaim(ClaimTypes.Email, await GetEmailAsync(tokens), Options.ClaimsIssuer);
+            }
 
             var context = new OAuthCreatingTicketContext(Context, Options, Backchannel, tokens, payload) {
                 Principal = new ClaimsPrincipal(identity),
@@ -49,6 +55,23 @@ namespace AspNet.Security.OAuth.GitHub {
             }
                     
             return new AuthenticationTicket(context.Principal, context.Properties, Options.AuthenticationScheme);
+        }
+
+        protected virtual async Task<string> GetEmailAsync([NotNull] OAuthTokenResponse tokens) {
+            // See https://developer.github.com/v3/users/emails/ for more information about the /user/emails endpoint.
+            var request = new HttpRequestMessage(HttpMethod.Get, Options.UserInformationEndpoint + "/emails");
+            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", tokens.AccessToken);
+
+            // Failed requests shouldn't cause an error: in this case, return null to indicate that the email address cannot be retrieved.
+            var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
+            if (!response.IsSuccessStatusCode) {
+                return null;
+            }
+
+            var payload = JArray.Parse(await response.Content.ReadAsStringAsync());
+
+            return GitHubAuthenticationHelper.GetEmail(payload);
         }
     }
 }
