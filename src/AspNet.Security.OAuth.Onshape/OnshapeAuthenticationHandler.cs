@@ -45,7 +45,6 @@ namespace AspNet.Security.OAuth.Onshape {
             if (context.Principal?.Identity == null) {
                 return null;
             }
-
             return new AuthenticationTicket(context.Principal, context.Properties, Options.AuthenticationScheme);
         }
     }

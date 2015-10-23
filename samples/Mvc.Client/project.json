@@ -39,7 +39,7 @@
         "Microsoft.Extensions.NotNullAttribute.Sources": {
             "type": "build",
             "version": "1.0.0-*"
-        }        
+        }
     },
 
     "commands": {
