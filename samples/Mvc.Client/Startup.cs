@@ -50,6 +50,11 @@ namespace Mvc.Client {
                 options.Scope.Add("user:email");
             });
 
+            app.UseFitbitAuthentication(options => {
+                options.ClientId = "229CK5";
+                options.ClientSecret = "aa6ee102c6164255a3041fdc43c9c0b2";
+            });
+
             app.UseMvc();
         }
     }
