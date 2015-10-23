@@ -45,6 +45,6 @@ namespace AspNet.Security.OAuth.Onshape {
         /// <summary>
         /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
         /// </summary>
-        public const string UserInformationEndpoint = "https://cad.onshape.com/api/users/current";
+        public const string UserInformationEndpoint = "https://cad.onshape.com/api/users/session";
     }
 }
