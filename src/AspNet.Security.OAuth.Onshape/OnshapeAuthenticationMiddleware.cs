@@ -8,24 +8,21 @@ using Microsoft.AspNet.Authentication;
 using Microsoft.AspNet.Authentication.OAuth;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.DataProtection;
-using Microsoft.Framework.Internal;
-using Microsoft.Framework.Logging;
-using Microsoft.Framework.OptionsModel;
-using Microsoft.Framework.WebEncoders;
+using Microsoft.Extensions.Internal;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.OptionsModel;
+using Microsoft.Extensions.WebEncoders;
 
-namespace AspNet.Security.OAuth.Onshape
-{
+namespace AspNet.Security.OAuth.Onshape {
     public class OnshapeAuthenticationMiddleware : OAuthMiddleware<OnshapeAuthenticationOptions> {
         public OnshapeAuthenticationMiddleware(
             [NotNull] RequestDelegate next,
+            [NotNull] OnshapeAuthenticationOptions options,
             [NotNull] IDataProtectionProvider dataProtectionProvider,
             [NotNull] ILoggerFactory loggerFactory,
             [NotNull] IUrlEncoder encoder,
-            [NotNull] IOptions<SharedAuthenticationOptions> externalOptions,
-            [NotNull] IOptions<OnshapeAuthenticationOptions> options,
-            ConfigureOptions<OnshapeAuthenticationOptions> configureOptions = null)
-            : base(next, dataProtectionProvider, loggerFactory,
-                   encoder, externalOptions, options, configureOptions) {
+            [NotNull] IOptions<SharedAuthenticationOptions> externalOptions)
+            : base(next, dataProtectionProvider, loggerFactory, encoder, externalOptions, options) {
         }
 
         protected override AuthenticationHandler<OnshapeAuthenticationOptions> CreateHandler() {

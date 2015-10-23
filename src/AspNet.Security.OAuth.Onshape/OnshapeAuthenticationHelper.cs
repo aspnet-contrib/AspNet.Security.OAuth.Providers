@@ -4,11 +4,10 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using Microsoft.Framework.Internal;
+using Microsoft.Extensions.Internal;
 using Newtonsoft.Json.Linq;
 
-namespace AspNet.Security.OAuth.Onshape
-{
+namespace AspNet.Security.OAuth.Onshape {
     /// <summary>
     /// Contains static methods that allow to extract user's information from a <see cref="JObject"/>
     /// instance retrieved from Onshape after a successful authentication process.

@@ -9,13 +9,13 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNet.Http;
 using Microsoft.AspNet.Http.Authentication;
-using Microsoft.Framework.Internal;
+using Microsoft.Extensions.Internal;
 
 namespace Mvc.Client.Extensions {
     public static class HttpContextExtensions {
         public static IEnumerable<AuthenticationDescription> GetExternalProviders([NotNull] this HttpContext context) {
             return from description in context.Authentication.GetAuthenticationSchemes()
-                   where !string.IsNullOrWhiteSpace(description.Caption)
+                   where !string.IsNullOrWhiteSpace(description.DisplayName)
                    select description;
         }
 

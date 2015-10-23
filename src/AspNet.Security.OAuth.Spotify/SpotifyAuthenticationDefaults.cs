@@ -18,9 +18,9 @@ namespace AspNet.Security.OAuth.Spotify {
         public const string AuthenticationScheme = "Spotify";
 
         /// <summary>
-        /// Default value for <see cref="OAuthOptions.Caption"/>.
+        /// Default value for <see cref="OAuthOptions.DisplayName"/>.
         /// </summary>
-        public const string Caption = "Spotify";
+        public const string DisplayName = "Spotify";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.ClaimsIssuer"/>.

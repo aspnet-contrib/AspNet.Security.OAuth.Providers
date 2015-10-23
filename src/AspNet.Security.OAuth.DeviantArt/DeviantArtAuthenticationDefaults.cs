@@ -18,9 +18,9 @@ namespace AspNet.Security.OAuth.DeviantArt {
         public const string AuthenticationScheme = "DeviantArt";
 
         /// <summary>
-        /// Default value for <see cref="OAuthOptions.Caption"/>.
+        /// Default value for <see cref="OAuthOptions.DisplayName"/>.
         /// </summary>
-        public const string Caption = "DeviantArt";
+        public const string DisplayName = "DeviantArt";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.ClaimsIssuer"/>.

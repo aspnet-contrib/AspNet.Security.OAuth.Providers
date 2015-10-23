@@ -12,7 +12,7 @@ using AspNet.Security.OAuth.Extensions;
 using Microsoft.AspNet.Authentication;
 using Microsoft.AspNet.Authentication.OAuth;
 using Microsoft.AspNet.Http.Authentication;
-using Microsoft.Framework.Internal;
+using Microsoft.Extensions.Internal;
 using Newtonsoft.Json.Linq;
 
 namespace AspNet.Security.OAuth.Spotify {
@@ -37,12 +37,12 @@ namespace AspNet.Security.OAuth.Spotify {
                     .AddOptionalClaim("urn:spotify:url", SpotifyAuthenticationHelper.GetLink(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim("urn:spotify:profilepicture", SpotifyAuthenticationHelper.GetProfilePictureUrl(payload), Options.ClaimsIssuer);
 
-            var context = new OAuthAuthenticatedContext(Context, Options, Backchannel, tokens, payload) {
+            var context = new OAuthCreatingTicketContext(Context, Options, Backchannel, tokens, payload) {
                 Principal = new ClaimsPrincipal(identity),
                 Properties = properties
             };
 
-            await Options.Events.Authenticated(context);
+            await Options.Events.CreatingTicket(context);
 
             if (context.Principal?.Identity == null) {
                 return null;

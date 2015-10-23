@@ -8,8 +8,8 @@ using Microsoft.AspNet.Authentication;
 using Microsoft.AspNet.Authentication.Cookies;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Http;
-using Microsoft.Framework.DependencyInjection;
-using Microsoft.Framework.Logging;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace Mvc.Client {
     public class Startup {
@@ -47,6 +47,7 @@ namespace Mvc.Client {
             app.UseGitHubAuthentication(options => {
                 options.ClientId = "49e302895d8b09ea5656";
                 options.ClientSecret = "98f1bf028608901e9df91d64ee61536fe562064b";
+                options.Scope.Add("user:email");
             });
 
             app.UseMvc();

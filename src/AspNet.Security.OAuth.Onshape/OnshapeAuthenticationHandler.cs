@@ -12,11 +12,10 @@ using AspNet.Security.OAuth.Extensions;
 using Microsoft.AspNet.Authentication;
 using Microsoft.AspNet.Authentication.OAuth;
 using Microsoft.AspNet.Http.Authentication;
-using Microsoft.Framework.Internal;
+using Microsoft.Extensions.Internal;
 using Newtonsoft.Json.Linq;
 
-namespace AspNet.Security.OAuth.Onshape
-{
+namespace AspNet.Security.OAuth.Onshape {
     public class OnshapeAuthenticationHandler : OAuthHandler<OnshapeAuthenticationOptions> {
         public OnshapeAuthenticationHandler([NotNull] HttpClient client)
             : base(client) {
@@ -32,21 +31,21 @@ namespace AspNet.Security.OAuth.Onshape
             response.EnsureSuccessStatusCode();
 
             var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
-            
+
             identity.AddOptionalClaim(ClaimTypes.NameIdentifier, OnshapeAuthenticationHelper.GetIdentifier(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim(ClaimTypes.Name, OnshapeAuthenticationHelper.GetName(payload), Options.ClaimsIssuer);
 
-            var context = new OAuthAuthenticatedContext(Context, Options, Backchannel, tokens, payload) {
+            var context = new OAuthCreatingTicketContext(Context, Options, Backchannel, tokens, payload) {
                 Principal = new ClaimsPrincipal(identity),
                 Properties = properties
             };
 
-            await Options.Events.Authenticated(context);
+            await Options.Events.CreatingTicket(context);
 
             if (context.Principal?.Identity == null) {
                 return null;
             }
-                    
+
             return new AuthenticationTicket(context.Principal, context.Properties, Options.AuthenticationScheme);
         }
     }

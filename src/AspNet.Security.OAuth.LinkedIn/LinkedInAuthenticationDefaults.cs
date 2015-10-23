@@ -18,9 +18,9 @@ namespace AspNet.Security.OAuth.LinkedIn {
         public const string AuthenticationScheme = "LinkedIn";
 
         /// <summary>
-        /// Default value for <see cref="OAuthOptions.Caption"/>.
+        /// Default value for <see cref="OAuthOptions.DisplayName"/>.
         /// </summary>
-        public const string Caption = "LinkedIn";
+        public const string DisplayName = "LinkedIn";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.ClaimsIssuer"/>.

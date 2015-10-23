@@ -7,15 +7,14 @@
 using Microsoft.AspNet.Authentication.OAuth;
 using Microsoft.AspNet.Http;
 
-namespace AspNet.Security.OAuth.Onshape
-{
+namespace AspNet.Security.OAuth.Onshape {
     /// <summary>
     /// Defines a set of options used by <see cref="OnshapeAuthenticationHandler"/>.
     /// </summary>
     public class OnshapeAuthenticationOptions : OAuthOptions {
         public OnshapeAuthenticationOptions() {
             AuthenticationScheme = OnshapeAuthenticationDefaults.AuthenticationScheme;
-            Caption = OnshapeAuthenticationDefaults.Caption;
+            DisplayName = OnshapeAuthenticationDefaults.DisplayName;
             ClaimsIssuer = OnshapeAuthenticationDefaults.Issuer;
 
             CallbackPath = new PathString(OnshapeAuthenticationDefaults.CallbackPath);

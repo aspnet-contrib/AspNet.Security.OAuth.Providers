@@ -8,23 +8,21 @@ using Microsoft.AspNet.Authentication;
 using Microsoft.AspNet.Authentication.OAuth;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.DataProtection;
-using Microsoft.Framework.Internal;
-using Microsoft.Framework.Logging;
-using Microsoft.Framework.OptionsModel;
-using Microsoft.Framework.WebEncoders;
+using Microsoft.Extensions.Internal;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.OptionsModel;
+using Microsoft.Extensions.WebEncoders;
 
 namespace AspNet.Security.OAuth.Spotify {
     public class SpotifyAuthenticationMiddleware : OAuthMiddleware<SpotifyAuthenticationOptions> {
         public SpotifyAuthenticationMiddleware(
             [NotNull] RequestDelegate next,
+            [NotNull] SpotifyAuthenticationOptions options,
             [NotNull] IDataProtectionProvider dataProtectionProvider,
             [NotNull] ILoggerFactory loggerFactory,
             [NotNull] IUrlEncoder encoder,
-            [NotNull] IOptions<SharedAuthenticationOptions> externalOptions,
-            [NotNull] IOptions<SpotifyAuthenticationOptions> options,
-            ConfigureOptions<SpotifyAuthenticationOptions> configureOptions = null)
-            : base(next, dataProtectionProvider, loggerFactory,
-                   encoder, externalOptions, options, configureOptions) {
+            [NotNull] IOptions<SharedAuthenticationOptions> externalOptions)
+            : base(next, dataProtectionProvider, loggerFactory, encoder, externalOptions, options) {
         }
 
         protected override AuthenticationHandler<SpotifyAuthenticationOptions> CreateHandler() {

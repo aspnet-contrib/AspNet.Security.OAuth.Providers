@@ -18,9 +18,9 @@ namespace AspNet.Security.OAuth.WordPress {
         public const string AuthenticationScheme = "WordPress";
 
         /// <summary>
-        /// Default value for <see cref="OAuthOptions.Caption"/>.
+        /// Default value for <see cref="OAuthOptions.DisplayName"/>.
         /// </summary>
-        public const string Caption = "WordPress";
+        public const string DisplayName = "WordPress";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.ClaimsIssuer"/>.

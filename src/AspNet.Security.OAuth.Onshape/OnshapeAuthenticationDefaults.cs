@@ -18,9 +18,10 @@ namespace AspNet.Security.OAuth.Onshape {
         public const string AuthenticationScheme = "Onshape";
 
         /// <summary>
-        /// Default value for <see cref="OAuthOptions.Caption"/>.
+
+        /// Default value for <see cref="OAuthOptions.DisplayName"/>.
         /// </summary>
-        public const string Caption = "Onshape";
+        public const string DisplayName = "Onshape";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.ClaimsIssuer"/>.
