@@ -33,11 +33,15 @@ We would love it if you could help contributing to this repository. Please look 
 
 Special thanks to our contributors:
 
+* Abhinav Nigam (https://github.com/abhinavnigam)
 * Adam Reisinger (https://github.com/Res42)
 * Albireo (https://github.com/kappa7194)
+* Ethan Celletti (https://github.com/Gekctek)
+* Jason Loeffler (https://github.com/jmloeffler)
 * Jerrie Pelser (https://github.com/jerriep)
 * Kévin Chalet (https://github.com/PinpointTownes)
 * Michael Knowles (https://github.com/mjknowles)
+* Sinan (https://github.com/SH2015)
 * Tathagata Chakraborty (https://github.com/tatx)
 * Tommy Parnell (https://github.com/tparnell8)
 
