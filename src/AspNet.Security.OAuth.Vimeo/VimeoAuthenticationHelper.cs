@@ -17,7 +17,7 @@ namespace AspNet.Security.OAuth.Vimeo {
         /// <summary>
         /// Gets the identifier corresponding to the authenticated user.
         /// </summary>
-        public static string GetIdentifier([NotNull] JObject user) => user.Value<string>("uri")?.Split('/').LastOrDefault();
+        public static string GetIdentifier([NotNull] JObject user) => user.Value<string>("uri")?.Split('/')?.LastOrDefault();
 
         /// <summary>
         /// Gets the full name corresponding to the authenticated user.
