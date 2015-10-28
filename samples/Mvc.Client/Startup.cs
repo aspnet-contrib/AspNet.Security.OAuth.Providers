@@ -29,7 +29,8 @@ namespace Mvc.Client {
             app.UseStaticFiles();
 
             app.UseCookieAuthentication(options => {
-                options.AutomaticAuthentication = true;
+                options.AutomaticAuthenticate = true;
+                options.AutomaticChallenge = true;
                 options.AuthenticationScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.LoginPath = new PathString("/signin");
             });
