@@ -19,7 +19,7 @@ namespace AspNet.Security.OAuth.Paypal {
         /// </summary>
         public static string GetIdentifier([NotNull] JObject user)
         {
-            return user.Value<string>("user_id").Split('/').Last();
+            return user.Value<string>("user_id")?.Split('/')?.LastOrDefault();
         }
 
         /// <summary>
