@@ -17,6 +17,7 @@
         "AspNet.Security.OAuth.Imgur": "1.0.0-*",
         "AspNet.Security.OAuth.LinkedIn": "1.0.0-*",
         "AspNet.Security.OAuth.Onshape": "1.0.0-*",
+        "AspNet.Security.OAuth.Paypal": "1.0.0-*",
         "AspNet.Security.OAuth.Reddit": "1.0.0-*",
         "AspNet.Security.OAuth.Slack": "1.0.0-*",
         "AspNet.Security.OAuth.SoundCloud": "1.0.0-*",
