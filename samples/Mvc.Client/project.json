@@ -6,6 +6,7 @@
 
     "dependencies": {
         "AspNet.Security.OAuth.Asana": "1.0.0-*",
+        "AspNet.Security.OAuth.Beam": "1.0.0-*",
         "AspNet.Security.OAuth.BattleNet": "1.0.0-*",
         "AspNet.Security.OAuth.Buffer": "1.0.0-*",
         "AspNet.Security.OAuth.DeviantArt": "1.0.0-*",
