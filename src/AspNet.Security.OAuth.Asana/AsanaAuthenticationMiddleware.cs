@@ -4,14 +4,14 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using System.Text.Encodings.Web;
 using Microsoft.AspNet.Authentication;
 using Microsoft.AspNet.Authentication.OAuth;
-using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.DataProtection;
+using Microsoft.AspNet.Http;
 using Microsoft.Extensions.Internal;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.OptionsModel;
-using Microsoft.Extensions.WebEncoders;
 
 namespace AspNet.Security.OAuth.Asana {
     public class AsanaAuthenticationMiddleware : OAuthMiddleware<AsanaAuthenticationOptions> {
@@ -20,7 +20,7 @@ namespace AspNet.Security.OAuth.Asana {
             [NotNull] AsanaAuthenticationOptions options,
             [NotNull] IDataProtectionProvider dataProtectionProvider,
             [NotNull] ILoggerFactory loggerFactory,
-            [NotNull] IUrlEncoder encoder,
+            [NotNull] UrlEncoder encoder,
             [NotNull] IOptions<SharedAuthenticationOptions> externalOptions)
             : base(next, dataProtectionProvider, loggerFactory, encoder, externalOptions, options) {
         }

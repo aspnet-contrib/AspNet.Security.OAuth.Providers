@@ -17,6 +17,7 @@ using Microsoft.AspNet.Authentication.OAuth;
 using Microsoft.AspNet.Http.Authentication;
 using Microsoft.AspNet.WebUtilities;
 using Microsoft.Extensions.Internal;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 
 namespace AspNet.Security.OAuth.Reddit {
@@ -83,11 +84,19 @@ namespace AspNet.Security.OAuth.Reddit {
             });
 
             var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
-            response.EnsureSuccessStatusCode();
+            if (!response.IsSuccessStatusCode) {
+                Logger.LogError("An error occurred when retrieving an access token: the remote server " +
+                                "returned a {Status} response with the following payload: {Headers} {Body}.",
+                                /* Status: */ response.StatusCode,
+                                /* Headers: */ response.Headers.ToString(),
+                                /* Body: */ await response.Content.ReadAsStringAsync());
+
+                return OAuthTokenResponse.Failed(new Exception("An error occurred when retrieving an access token."));
+            }
 
             var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
 
-            return new OAuthTokenResponse(payload);
+            return OAuthTokenResponse.Success(payload);
         }
     }
 }
