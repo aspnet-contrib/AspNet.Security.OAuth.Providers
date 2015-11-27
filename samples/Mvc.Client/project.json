@@ -5,6 +5,7 @@
     "version": "1.0.0-*",
 
     "dependencies": {
+        "AspNet.Security.OAuth.ArcGIS": "1.0.0-*",
         "AspNet.Security.OAuth.Asana": "1.0.0-*",
         "AspNet.Security.OAuth.Beam": "1.0.0-*",
         "AspNet.Security.OAuth.BattleNet": "1.0.0-*",
