@@ -1,33 +1,27 @@
 AspNet.Security.OAuth.Providers
 ==================================
 
-__AspNet.Security.OAuth.Providers__ is a __collection of security middleware__ that you can use in your __ASP.NET 5__ application to support social authentication providers like __[GitHub](https://github.com/)__, __[Foursquare](https://foursquare.com/)__ or __[Dropbox](https://www.dropbox.com/)__. It is directly inspired by __[Jerrie Pelser](https://github.com/jerriep)__'s initiative, __[Owin.Security.Providers](https://github.com/RockstarLabs/OwinOAuthProviders)__.
+**AspNet.Security.OAuth.Providers** is a **collection of security middleware** that you can use in your **ASP.NET 5** application to support social authentication providers like **[GitHub](https://github.com/)**, **[Foursquare](https://foursquare.com/)** or **[Dropbox](https://www.dropbox.com/)**. It is directly inspired by **[Jerrie Pelser](https://github.com/jerriep)**'s initiative, **[Owin.Security.Providers](https://github.com/RockstarLabs/OwinOAuthProviders)**.
 
-__The latest nightly builds can be found here__: __[https://www.myget.org/F/aspnet-contrib/](https://www.myget.org/F/aspnet-contrib/)__
+**The latest official release can be found on [NuGet](https://www.nuget.org/profiles/aspnet-contrib) and the nightly builds on [MyGet](https://www.myget.org/gallery/aspnet-contrib)**.
 
 [![Build status](https://ci.appveyor.com/api/projects/status/3lh3pq6e57c8pnr4/branch/dev?svg=true)](https://ci.appveyor.com/project/aspnet-contrib/aspnet-security-oauth-providers/branch/dev)
 [![Build status](https://travis-ci.org/aspnet-contrib/AspNet.Security.OAuth.Providers.svg?branch=dev)](https://travis-ci.org/aspnet-contrib/AspNet.Security.OAuth.Providers)
 
-## Dependencies
-
-The __dev__ branch relies on the latest version of __DNX__ and __ASP.NET 5__, that can be found on __MyGet__: __[https://www.myget.org/gallery/aspnetvnext](https://www.myget.org/gallery/aspnetvnext)__.
-
-Make sure to always run the latest __DNX__ version and the corresponding __ASP.NET 5__ packages by running `dnvm upgrade -u` and `dnu restore`.
-
 ## Getting started
 
-__Adding social authentication to your application is a breeze__ and just requires a few lines in your `Startup` class:
+**Adding social authentication to your application is a breeze** and just requires a few lines in your `Startup` class:
 
     app.UseGitHubAuthentication(options => {
         options.ClientId = "49e302895d8b09ea5656";
         options.ClientSecret = "98f1bf028608901e9df91d64ee61536fe562064b";
     });
 
-See [https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers/tree/dev/samples/Mvc.Client](https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers/tree/dev/samples/Mvc.Client) for a complete sample __using MVC 6 and supporting multiple social providers__.
+See [https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers/tree/dev/samples/Mvc.Client](https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers/tree/dev/samples/Mvc.Client) for a complete sample **using MVC 6 and supporting multiple social providers**.
 
 ## Contributing
 
-__AspNet.Security.OAuth.Providers__ is actively maintained by __[Kévin Chalet](https://github.com/PinpointTownes)__ ([@PinpointTownes](https://twitter.com/PinpointTownes)) and __[Jerrie Pelser](https://github.com/jerriep)__ ([@jerriepelser](https://twitter.com/jerriepelser)).
+**AspNet.Security.OAuth.Providers** is actively maintained by **[Kévin Chalet](https://github.com/PinpointTownes)** ([@PinpointTownes](https://twitter.com/PinpointTownes)) and **[Jerrie Pelser](https://github.com/jerriep)** ([@jerriepelser](https://twitter.com/jerriepelser)).
 
 We would love it if you could help contributing to this repository. Please look at [CONTRIBUTING.md](CONTRIBUTING.md).
 
@@ -54,4 +48,4 @@ Special thanks to our contributors:
 
 ## License
 
-This project is licensed under the __Apache License__. This means that you can use, modify and distribute it freely. See [http://www.apache.org/licenses/LICENSE-2.0.html](http://www.apache.org/licenses/LICENSE-2.0.html) for more details.
+This project is licensed under the **Apache License**. This means that you can use, modify and distribute it freely. See [http://www.apache.org/licenses/LICENSE-2.0.html](http://www.apache.org/licenses/LICENSE-2.0.html) for more details.
