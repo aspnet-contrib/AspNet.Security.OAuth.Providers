@@ -24,9 +24,9 @@ namespace AspNet.Security.OAuth.Foursquare {
 
         protected override async Task<AuthenticationTicket> CreateTicketAsync([NotNull] ClaimsIdentity identity,
             [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens) {
+            // See https://developer.foursquare.com/overview/versioning
+            // for more information about the mandatory "v" and "m" parameters.
             var address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, new Dictionary<string, string> {
-                // See https://developer.foursquare.com/overview/versioning
-                // for more information about the mandatory "v" and "m" parameters.
                 ["m"] = "foursquare",
                 ["v"] = Options.ApiVersion,
                 ["oauth_token"] = tokens.AccessToken,

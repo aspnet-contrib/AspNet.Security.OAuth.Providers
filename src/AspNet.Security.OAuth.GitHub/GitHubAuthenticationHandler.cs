@@ -38,8 +38,10 @@ namespace AspNet.Security.OAuth.GitHub {
                     .AddOptionalClaim("urn:github:name", GitHubAuthenticationHelper.GetName(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim("urn:github:url", GitHubAuthenticationHelper.GetLink(payload), Options.ClaimsIssuer);
 
-            // When the email address is not public, retrieve it from the emails endpoint if the user:email scope is specified.
-            if (!identity.HasClaim(claim => claim.Type == ClaimTypes.Email) && Options.Scope.Contains("user:email")) {
+            // When the email address is not public, retrieve it from
+            // the emails endpoint if the user:email scope is specified.
+            if (!string.IsNullOrEmpty(Options.UserEmailsEndpoint) &&
+                !identity.HasClaim(claim => claim.Type == ClaimTypes.Email) && Options.Scope.Contains("user:email")) {
                 identity.AddOptionalClaim(ClaimTypes.Email, await GetEmailAsync(tokens), Options.ClaimsIssuer);
             }
 
@@ -59,7 +61,7 @@ namespace AspNet.Security.OAuth.GitHub {
 
         protected virtual async Task<string> GetEmailAsync([NotNull] OAuthTokenResponse tokens) {
             // See https://developer.github.com/v3/users/emails/ for more information about the /user/emails endpoint.
-            var request = new HttpRequestMessage(HttpMethod.Get, Options.UserInformationEndpoint + "/emails");
+            var request = new HttpRequestMessage(HttpMethod.Get, Options.UserEmailsEndpoint);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", tokens.AccessToken);
 

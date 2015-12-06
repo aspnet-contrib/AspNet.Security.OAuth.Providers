@@ -12,6 +12,7 @@ using AspNet.Security.OAuth.Extensions;
 using Microsoft.AspNet.Authentication;
 using Microsoft.AspNet.Authentication.OAuth;
 using Microsoft.AspNet.Http.Authentication;
+using Microsoft.AspNet.WebUtilities;
 using Microsoft.Extensions.Internal;
 using Newtonsoft.Json.Linq;
 
@@ -23,7 +24,9 @@ namespace AspNet.Security.OAuth.BattleNet {
 
         protected override async Task<AuthenticationTicket> CreateTicketAsync([NotNull] ClaimsIdentity identity,
             [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens) {
-            var request = new HttpRequestMessage(HttpMethod.Get, Options.UserInformationEndpoint + "?access_token=" + tokens.AccessToken);
+            var address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, "access_token", tokens.AccessToken);
+
+            var request = new HttpRequestMessage(HttpMethod.Get, address);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
             var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
