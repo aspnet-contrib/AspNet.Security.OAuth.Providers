@@ -40,6 +40,7 @@ namespace AspNet.Security.OAuth.ArcGIS {
             var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
             var error = ArcGISAuthenticationHelper.GetError(payload); // error responses still return 200 status codes
             if (error != null) {
+                // See https://developers.arcgis.com/authentication/server-based-user-logins/ for more information
                 Logger.LogError("An error occurred when retrieving the user information: the remote server " +
                     "returned a response with the following error code: {Status} {Description}.",
                     /* Status: */ error.Value<string>("code"),
