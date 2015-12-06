@@ -4,6 +4,7 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
@@ -14,10 +15,8 @@ using Microsoft.AspNet.Authentication.OAuth;
 using Microsoft.AspNet.Http.Authentication;
 using Microsoft.AspNet.WebUtilities;
 using Microsoft.Extensions.Internal;
-using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json.Linq;
 
 namespace AspNet.Security.OAuth.ArcGIS {
     public class ArcGISAuthenticationHandler : OAuthHandler<ArcGISAuthenticationOptions> {
