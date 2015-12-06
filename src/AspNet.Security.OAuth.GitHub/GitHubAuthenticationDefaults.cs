@@ -46,5 +46,10 @@ namespace AspNet.Security.OAuth.GitHub {
         /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
         /// </summary>
         public const string UserInformationEndpoint = "https://api.github.com/user";
+
+        /// <summary>
+        /// Default value for <see cref="GitHubAuthenticationOptions.UserEmailsEndpoint"/>.
+        /// </summary>
+        public const string UserEmailsEndpoint = "https://api.github.com/user/emails";
     }
 }
