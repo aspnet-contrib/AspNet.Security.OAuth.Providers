@@ -45,6 +45,6 @@ namespace AspNet.Security.OAuth.ArcGIS {
         /// <summary>
         /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
         /// </summary>
-        public const string UserInformationEndpoint = "https://www.arcgis.com/sharing/rest/community/self?f=json";
+        public const string UserInformationEndpoint = "https://www.arcgis.com/sharing/rest/community/self";
     }
 }

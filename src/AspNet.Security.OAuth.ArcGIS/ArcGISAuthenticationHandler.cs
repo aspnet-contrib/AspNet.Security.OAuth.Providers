@@ -12,9 +12,12 @@ using AspNet.Security.OAuth.Extensions;
 using Microsoft.AspNet.Authentication;
 using Microsoft.AspNet.Authentication.OAuth;
 using Microsoft.AspNet.Http.Authentication;
+using Microsoft.AspNet.WebUtilities;
 using Microsoft.Extensions.Internal;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
+using Microsoft.Extensions.Logging;
 
 namespace AspNet.Security.OAuth.ArcGIS {
     public class ArcGISAuthenticationHandler : OAuthHandler<ArcGISAuthenticationOptions> {
@@ -24,7 +27,10 @@ namespace AspNet.Security.OAuth.ArcGIS {
 
         protected override async Task<AuthenticationTicket> CreateTicketAsync([NotNull] ClaimsIdentity identity,
             [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens) {
-            var request = new HttpRequestMessage(HttpMethod.Get, Options.UserInformationEndpoint + "&token=" + Uri.EscapeDataString(tokens.AccessToken));
+
+            // The API doesn't support content negotiation via the header so we need to set the query param for the format (f for shorthand)
+            var address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, new Dictionary<string, string> { { "f", "json"}, { "token", tokens.AccessToken } });
+            var request = new HttpRequestMessage(HttpMethod.Get, address);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                         
             // Request the token 
@@ -34,6 +40,10 @@ namespace AspNet.Security.OAuth.ArcGIS {
             var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
             var error = ArcGISAuthenticationHelper.GetError(payload); // error responses still return 200 status codes
             if (error != null) {
+                Logger.LogError("An error occurred when retrieving the user information: the remote server " +
+                    "returned a response with the following error code: {Status} {Description}.",
+                    /* Status: */ error.Value<string>("code"),
+                    /* Description: */ error.Value<string>("message"));
                 return null;
             }
 
