@@ -30,14 +30,10 @@ namespace AspNet.Security.OAuth.Instagram {
             var userInformationEndpoint = $"{Options.UserInformationEndpoint}?access_token={tokens.AccessToken}";
 
             if (Options.SignedRequestsEnforced) {
-                var parameters = new Dictionary<string, string> {
-                    ["access_token"] = tokens.AccessToken
-                };
+                var signature = SignRequest("/users/self",
+                    tokens.AccessToken, Options.ClientSecret);
 
-                var sig = SignRequest(InstagramAuthenticationDefaults.UserInformationEndpoint,
-                    parameters, Options.ClientSecret);
-
-                userInformationEndpoint += $"&sig={sig}";
+                userInformationEndpoint += $"&sig={signature}";
             }
 
             var request = new HttpRequestMessage(HttpMethod.Get, userInformationEndpoint);
@@ -66,23 +62,13 @@ namespace AspNet.Security.OAuth.Instagram {
             return new AuthenticationTicket(context.Principal, context.Properties, context.Options.AuthenticationScheme);
         }
 
-        private static byte[] CreateToken([NotNull] string endpoint, [NotNull] Dictionary<string, string> parameters) {
-            var token = parameters.OrderBy(par => par.Key)
-                .Aggregate(endpoint, (current, par) => current + $"|{par.Key}={par.Value}");
-            return Encoding.UTF8.GetBytes(token);
-        }
-
-        private static string ConvertToHex(byte[] hash) {
-            return BitConverter.ToString(hash).Replace("-", "");
-        }
-
-        private static string SignRequest([NotNull] string endpoint, [NotNull] Dictionary<string, string> parameters,
+        private static string SignRequest([NotNull] string endpoint, [NotNull] string accessToken,
             string secret) {
-            var token = CreateToken(endpoint, parameters);
+            var token = Encoding.UTF8.GetBytes($"{endpoint}|access_token={accessToken}");
             var key = Encoding.UTF8.GetBytes(secret);
             using (var hmac = new HMACSHA256(key)) {
                 var hash = hmac.ComputeHash(token);
-                return ConvertToHex(hash).ToLower();
+                return BitConverter.ToString(hash).Replace("-", "").ToLower();
             }
         }
     }
