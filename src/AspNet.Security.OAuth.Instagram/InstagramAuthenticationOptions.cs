@@ -12,7 +12,7 @@ namespace AspNet.Security.OAuth.Instagram {
     /// Defines a set of options used by <see cref="InstagramAuthenticationHandler"/>.
     /// </summary>
     public class InstagramAuthenticationOptions : OAuthOptions {
-        public bool SignedRequestsEnforced { get; set; } = false;
+        public bool SignedRequestsEnforced { get; set; }
 
         public InstagramAuthenticationOptions() {
             AuthenticationScheme = InstagramAuthenticationDefaults.AuthenticationScheme;
