@@ -29,7 +29,7 @@ namespace AspNet.Security.OAuth.Instagram {
             [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens) {
             var userInformationEndpoint = $"{Options.UserInformationEndpoint}?access_token={tokens.AccessToken}";
 
-            if (Options.SignedRequestsEnforced) {
+            if (Options.UseSignedRequests) {
                 var signature = SignRequest("/users/self",
                     tokens.AccessToken, Options.ClientSecret);
 
