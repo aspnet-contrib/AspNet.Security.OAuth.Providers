@@ -17,6 +17,7 @@ using AspNet.Security.OAuth.Extensions;
 using Microsoft.AspNet.Authentication;
 using Microsoft.AspNet.Authentication.OAuth;
 using Microsoft.AspNet.Http.Authentication;
+using Microsoft.AspNet.WebUtilities;
 using Microsoft.Extensions.Internal;
 using Newtonsoft.Json.Linq;
 
@@ -27,13 +28,14 @@ namespace AspNet.Security.OAuth.Instagram {
 
         protected override async Task<AuthenticationTicket> CreateTicketAsync([NotNull] ClaimsIdentity identity,
             [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens) {
-            var userInformationEndpoint = $"{Options.UserInformationEndpoint}?access_token={tokens.AccessToken}";
+            var userInformationEndpoint = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, name: "access_token", value: tokens.AccessToken);
 
             if (Options.UseSignedRequests) {
                 var signature = SignRequest("/users/self",
                     tokens.AccessToken, Options.ClientSecret);
 
-                userInformationEndpoint += $"&sig={signature}";
+                userInformationEndpoint = QueryHelpers.AddQueryString(userInformationEndpoint, name: "sig",
+                    value: signature);
             }
 
             var request = new HttpRequestMessage(HttpMethod.Get, userInformationEndpoint);
