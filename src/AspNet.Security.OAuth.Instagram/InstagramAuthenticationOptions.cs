@@ -23,8 +23,7 @@ namespace AspNet.Security.OAuth.Instagram {
 
             AuthorizationEndpoint = InstagramAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = InstagramAuthenticationDefaults.TokenEndpoint;
-            UserInformationEndpoint = InstagramAuthenticationDefaults.ApiLocation + 
-                InstagramAuthenticationDefaults.UserInformationEndpoint;
+            UserInformationEndpoint = InstagramAuthenticationDefaults.UserInformationEndpoint;
 
             Scope.Add("basic");
 

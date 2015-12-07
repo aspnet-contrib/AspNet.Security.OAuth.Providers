@@ -45,11 +45,6 @@ namespace AspNet.Security.OAuth.Instagram {
         /// <summary>
         /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
         /// </summary>
-        public const string UserInformationEndpoint = "/users/self";
-
-        /// <summary>
-        /// Default location of the api
-        /// </summary>
-        public const string ApiLocation = "https://api.instagram.com/v1";
+        public const string UserInformationEndpoint = "https://api.instagram.com/v1/users/self";
     }
 }
