@@ -22,8 +22,6 @@ namespace AspNet.Security.OAuth.GitHub {
             AuthorizationEndpoint = GitHubAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = GitHubAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = GitHubAuthenticationDefaults.UserInformationEndpoint;
-
-            SaveTokensAsClaims = false;
         }
 
         /// <summary>

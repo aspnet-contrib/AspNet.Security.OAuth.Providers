@@ -23,8 +23,6 @@ namespace AspNet.Security.OAuth.WordPress {
             TokenEndpoint = WordPressAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = WordPressAuthenticationDefaults.UserInformationEndpoint;
 
-            SaveTokensAsClaims = false;
-
             // Note: limit by default to 'auth' scope only,
             // otherwise too many permissions are requested.
             Scope.Add("auth");

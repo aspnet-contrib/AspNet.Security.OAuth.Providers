@@ -22,8 +22,6 @@ namespace AspNet.Security.OAuth.SoundCloud {
             AuthorizationEndpoint = SoundCloudAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = SoundCloudAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = SoundCloudAuthenticationDefaults.UserInformationEndpoint;
-
-            SaveTokensAsClaims = false;
         }
     }
 }

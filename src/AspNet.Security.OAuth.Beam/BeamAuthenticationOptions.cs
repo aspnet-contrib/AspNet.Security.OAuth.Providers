@@ -22,8 +22,6 @@ namespace AspNet.Security.OAuth.Beam {
             AuthorizationEndpoint = BeamAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = BeamAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = BeamAuthenticationDefaults.UserInformationEndpoint;
-
-            SaveTokensAsClaims = false;
         }
     }
 }

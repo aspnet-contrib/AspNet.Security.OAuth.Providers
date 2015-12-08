@@ -22,8 +22,6 @@ namespace AspNet.Security.OAuth.Asana {
             AuthorizationEndpoint = AsanaAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = AsanaAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = AsanaAuthenticationDefaults.UserInformationEndpoint;
-
-            SaveTokensAsClaims = false;
         }
     }
 }

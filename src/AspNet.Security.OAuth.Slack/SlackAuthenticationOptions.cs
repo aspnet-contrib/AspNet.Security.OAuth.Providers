@@ -22,8 +22,6 @@ namespace AspNet.Security.OAuth.Slack {
             AuthorizationEndpoint = SlackAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = SlackAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = SlackAuthenticationDefaults.UserInformationEndpoint;
-
-            SaveTokensAsClaims = false;
         }
     }
 }

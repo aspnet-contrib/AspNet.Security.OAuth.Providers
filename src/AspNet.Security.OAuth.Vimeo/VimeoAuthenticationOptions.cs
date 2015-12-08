@@ -22,8 +22,6 @@ namespace AspNet.Security.OAuth.Vimeo {
             AuthorizationEndpoint = VimeoAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = VimeoAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = VimeoAuthenticationDefaults.UserInformationEndpoint;
-
-            SaveTokensAsClaims = false;
         }
     }
 }

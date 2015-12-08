@@ -23,8 +23,6 @@ namespace AspNet.Security.OAuth.Reddit {
             TokenEndpoint = RedditAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = RedditAuthenticationDefaults.UserInformationEndpoint;
 
-            SaveTokensAsClaims = false;
-
             Scope.Add("identity");
         }
     }

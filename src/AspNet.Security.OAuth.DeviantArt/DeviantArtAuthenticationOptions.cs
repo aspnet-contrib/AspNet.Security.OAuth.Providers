@@ -23,8 +23,6 @@ namespace AspNet.Security.OAuth.DeviantArt {
             TokenEndpoint = DeviantArtAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = DeviantArtAuthenticationDefaults.UserInformationEndpoint;
 
-            SaveTokensAsClaims = false;
-
             Scope.Add("user");
         }
     }

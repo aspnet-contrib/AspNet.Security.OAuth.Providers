@@ -22,8 +22,6 @@ namespace AspNet.Security.OAuth.Onshape {
             AuthorizationEndpoint = OnshapeAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = OnshapeAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = OnshapeAuthenticationDefaults.UserInformationEndpoint;
-
-            SaveTokensAsClaims = false;
         }
     }
 }

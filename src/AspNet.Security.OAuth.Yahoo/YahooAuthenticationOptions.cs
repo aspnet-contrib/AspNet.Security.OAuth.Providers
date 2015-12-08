@@ -22,8 +22,6 @@ namespace AspNet.Security.OAuth.Yahoo {
             AuthorizationEndpoint = YahooAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = YahooAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = YahooAuthenticationDefaults.UserInformationEndpoint;
-
-            SaveTokensAsClaims = false;
         }
     }
 }

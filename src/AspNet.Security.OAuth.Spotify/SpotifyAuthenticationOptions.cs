@@ -22,8 +22,6 @@ namespace AspNet.Security.OAuth.Spotify {
             AuthorizationEndpoint = SpotifyAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = SpotifyAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = SpotifyAuthenticationDefaults.UserInformationEndpoint;
-
-            SaveTokensAsClaims = false;
         }
     }
 }

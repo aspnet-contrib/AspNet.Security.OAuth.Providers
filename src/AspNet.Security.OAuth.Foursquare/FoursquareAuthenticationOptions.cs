@@ -22,8 +22,6 @@ namespace AspNet.Security.OAuth.Foursquare {
             AuthorizationEndpoint = FoursquareAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = FoursquareAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = FoursquareAuthenticationDefaults.UserInformationEndpoint;
-
-            SaveTokensAsClaims = false;
         }
 
         /// <summary>

@@ -22,8 +22,6 @@ namespace AspNet.Security.OAuth.Buffer {
             AuthorizationEndpoint = BufferAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = BufferAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = BufferAuthenticationDefaults.UserInformationEndpoint;
-
-            SaveTokensAsClaims = false;
         }
     }
 }

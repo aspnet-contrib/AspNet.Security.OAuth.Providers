@@ -21,7 +21,6 @@ namespace AspNet.Security.OAuth.BattleNet {
             CallbackPath = new PathString(BattleNetAuthenticationDefaults.CallbackPath);
 
             Region = BattleNetAuthenticationRegion.America;
-            SaveTokensAsClaims = false;
         }
 
         /// <summary>

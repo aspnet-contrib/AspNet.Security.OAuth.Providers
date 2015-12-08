@@ -22,8 +22,6 @@ namespace AspNet.Security.OAuth.LinkedIn {
             AuthorizationEndpoint = LinkedInAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = LinkedInAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = LinkedInAuthenticationDefaults.UserInformationEndpoint;
-
-            SaveTokensAsClaims = false;
         }
     }
 }

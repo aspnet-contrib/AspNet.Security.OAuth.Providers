@@ -22,8 +22,6 @@ namespace AspNet.Security.OAuth.Imgur {
             AuthorizationEndpoint = ImgurAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = ImgurAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = ImgurAuthenticationDefaults.UserInformationEndpoint;
-
-            SaveTokensAsClaims = false;
         }
     }
 }

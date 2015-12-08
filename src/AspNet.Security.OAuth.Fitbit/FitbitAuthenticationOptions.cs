@@ -24,8 +24,6 @@ namespace AspNet.Security.OAuth.Fitbit {
             UserInformationEndpoint = FitbitAuthenticationDefaults.UserInformationEndpoint;
 
             Scope.Add("profile");
-            
-            SaveTokensAsClaims = false;
         }
     }
 }

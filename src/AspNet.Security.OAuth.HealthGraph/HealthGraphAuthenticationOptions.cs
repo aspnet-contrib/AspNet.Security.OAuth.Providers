@@ -22,8 +22,6 @@ namespace AspNet.Security.OAuth.HealthGraph {
             AuthorizationEndpoint = HealthGraphAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = HealthGraphAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = HealthGraphAuthenticationDefaults.UserInformationEndpoint;
-
-            SaveTokensAsClaims = false;
         }
     }
 }

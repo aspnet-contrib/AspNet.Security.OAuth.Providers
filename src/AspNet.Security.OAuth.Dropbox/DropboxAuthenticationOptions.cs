@@ -22,8 +22,6 @@ namespace AspNet.Security.OAuth.Dropbox {
             AuthorizationEndpoint = DropboxAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = DropboxAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = DropboxAuthenticationDefaults.UserInformationEndpoint;
-
-            SaveTokensAsClaims = false;
         }
     }
 }

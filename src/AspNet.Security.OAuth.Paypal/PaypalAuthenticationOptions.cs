@@ -26,8 +26,6 @@ namespace AspNet.Security.OAuth.Paypal {
             Scope.Add("openid");
             Scope.Add("profile");
             Scope.Add("email");
-
-            SaveTokensAsClaims = false;
         }
     }
 }

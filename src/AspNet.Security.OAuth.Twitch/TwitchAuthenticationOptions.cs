@@ -24,8 +24,6 @@ namespace AspNet.Security.OAuth.Twitch {
             UserInformationEndpoint = TwitchAuthenticationDefaults.UserInformationEndpoint;
 
             Scope.Add("user_read");
-
-            SaveTokensAsClaims = false;
         }
     }
 }
