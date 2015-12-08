@@ -26,8 +26,6 @@ namespace AspNet.Security.OAuth.Instagram {
             UserInformationEndpoint = InstagramAuthenticationDefaults.UserInformationEndpoint;
 
             Scope.Add("basic");
-
-            SaveTokensAsClaims = false;
         }
     }
 }
