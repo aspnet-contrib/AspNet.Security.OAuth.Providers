@@ -5,6 +5,8 @@
  */
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
@@ -29,8 +31,7 @@ namespace AspNet.Security.OAuth.Instagram {
             var userInformationEndpoint = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, name: "access_token", value: tokens.AccessToken);
 
             if (Options.UseSignedRequests) {
-                var signature = SignRequest("/users/self",
-                    tokens.AccessToken, Options.ClientSecret);
+                var signature = ComputeSignature(userInformationEndpoint);
 
                 userInformationEndpoint = QueryHelpers.AddQueryString(userInformationEndpoint, name: "sig",
                     value: signature);
@@ -62,12 +63,25 @@ namespace AspNet.Security.OAuth.Instagram {
             return new AuthenticationTicket(context.Principal, context.Properties, context.Options.AuthenticationScheme);
         }
 
-        private static string SignRequest([NotNull] string endpoint, [NotNull] string accessToken,
-            string secret) {
-            var token = Encoding.UTF8.GetBytes($"{endpoint}|access_token={accessToken}");
-            var key = Encoding.UTF8.GetBytes(secret);
-            using (var hmac = new HMACSHA256(key)) {
-                var hash = hmac.ComputeHash(token);
+        /// <summary>
+        /// See https://www.instagram.com/developer/secure-api-requests/
+        /// for more information about the signature format
+        /// </summary>
+        protected virtual string ComputeSignature(string address) {
+            using (var algorithm = new HMACSHA256(Encoding.UTF8.GetBytes(Options.ClientSecret))) {
+                // Select only the parameter part of the url
+                var query = address.Substring(address.IndexOf("?", StringComparison.Ordinal));
+
+                // Extract parameters from the query string
+                var parameters = from parameter in QueryHelpers.ParseQuery(query)
+                    orderby parameter.Key
+                    select $"|{parameter.Key}={parameter.Value}";
+
+                var bytes = Encoding.UTF8.GetBytes($"/users/self{String.Join("", parameters)}");
+
+                var hash = algorithm.ComputeHash(bytes);
+
+                // Convert the hash to its lowercased hexadecimal representation.
                 return BitConverter.ToString(hash).Replace("-", "").ToLower();
             }
         }
