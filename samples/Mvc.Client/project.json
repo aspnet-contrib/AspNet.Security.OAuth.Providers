@@ -16,6 +16,7 @@
         "AspNet.Security.OAuth.GitHub": "1.0.0-*",
         "AspNet.Security.OAuth.HealthGraph": "1.0.0-*",
         "AspNet.Security.OAuth.Imgur": "1.0.0-*",
+        "AspNet.Security.OAuth.Instagram": "1.0.0-*",
         "AspNet.Security.OAuth.LinkedIn": "1.0.0-*",
         "AspNet.Security.OAuth.Onshape": "1.0.0-*",
         "AspNet.Security.OAuth.Paypal": "1.0.0-*",
