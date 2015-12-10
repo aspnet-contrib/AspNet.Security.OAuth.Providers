@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 using AspNet.Security.OAuth.Extensions;
 using Microsoft.AspNet.Authentication;
 using Microsoft.AspNet.Authentication.OAuth;
+using Microsoft.AspNet.Http;
 using Microsoft.AspNet.Http.Authentication;
 using Microsoft.AspNet.WebUtilities;
 using Microsoft.Extensions.Internal;
@@ -70,7 +71,7 @@ namespace AspNet.Security.OAuth.Instagram {
         protected virtual string ComputeSignature(string address) {
             using (var algorithm = new HMACSHA256(Encoding.UTF8.GetBytes(Options.ClientSecret))) {
                 // Select only the parameter part of the url
-                var query = address.Substring(address.IndexOf("?", StringComparison.Ordinal));
+                var query = new UriBuilder(address).Query;
 
                 // Extract parameters from the query string
                 var parameters = from parameter in QueryHelpers.ParseQuery(query)
