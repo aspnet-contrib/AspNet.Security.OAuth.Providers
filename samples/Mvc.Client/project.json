@@ -1,7 +1,4 @@
 {
-    "webroot": "wwwroot",
-    "exclude": "wwwroot/**/*.*",
-
     "version": "1.0.0-*",
 
     "dependencies": {
@@ -37,12 +34,12 @@
         "Microsoft.AspNet.Authentication.Twitter": "1.0.0-*",
         "Microsoft.AspNet.Authentication.OpenIdConnect": "1.0.0-*",
 
+        "Microsoft.AspNet.Hosting": "1.0.0-*",
         "Microsoft.AspNet.Server.Kestrel": "1.0.0-*",
-        "Microsoft.AspNet.Server.WebListener": "1.0.0-*",
         "Microsoft.AspNet.StaticFiles": "1.0.0-*",
 
-        "Microsoft.Extensions.Logging": "1.0.0-*",
         "Microsoft.Extensions.Logging.Console": "1.0.0-*",
+        "Microsoft.Extensions.Logging.Debug": "1.0.0-*",
 
         "Microsoft.Extensions.NotNullAttribute.Sources": {
             "type": "build",
@@ -50,22 +47,39 @@
         }
     },
 
+    "compilationOptions": {
+        "emitEntryPoint": true
+    },
+
     "commands": {
-        "kestrel": "Microsoft.AspNet.Hosting --server=Microsoft.AspNet.Server.Kestrel --server.urls=http://localhost:54540",
-        "web": "Microsoft.AspNet.Hosting server=Microsoft.AspNet.Server.WebListener server.urls=http://localhost:54540"
+        "web": "Mvc.Client"
     },
 
     "frameworks": {
-        "dnx451": {
-            "frameworkAssemblies": {
-                "System.Net.Http": "4.0.0.0"
-            }
-        },
+        "dnx451": { },
+        "dnxcore50": { }
+    },
 
-        "dnxcore50": {
-            "dependencies": {
-                "System.Net.Http": "4.0.0-beta-*"
-            }
-        }
+    "exclude": [
+        "wwwroot",
+        "node_modules",
+        "bower_components"
+    ],
+
+    "publishExclude": [
+        "node_modules",
+        "bower_components",
+        "**.xproj",
+        "**.user",
+        "**.vspscc"
+    ],
+
+    "scripts": {
+        "prepublish": [
+            "npm install",
+            "bower install",
+            "gulp clean",
+            "gulp min"
+        ]
     }
 }
