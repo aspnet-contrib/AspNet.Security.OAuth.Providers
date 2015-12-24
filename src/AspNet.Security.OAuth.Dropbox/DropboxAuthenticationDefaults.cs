@@ -40,11 +40,11 @@ namespace AspNet.Security.OAuth.Dropbox {
         /// <summary>
         /// Default value for <see cref="OAuthOptions.TokenEndpoint"/>.
         /// </summary>
-        public const string TokenEndpoint = "https://api.dropbox.com/1/oauth2/token";
+        public const string TokenEndpoint = "https://api.dropboxapi.com/1/oauth2/token";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
         /// </summary>
-        public const string UserInformationEndpoint = "https://api.dropbox.com/1/account/info";
+        public const string UserInformationEndpoint = "https://api.dropboxapi.com/1/account/info";
     }
 }

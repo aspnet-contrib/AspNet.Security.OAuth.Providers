@@ -16,7 +16,7 @@ namespace AspNet.Security.OAuth.Dropbox {
         /// <summary>
         /// Gets the identifier corresponding to the authenticated user.
         /// </summary>
-        public static string GetIdentifier([NotNull] JObject user) => user.Value<string>("id");
+        public static string GetIdentifier([NotNull] JObject user) => user.Value<string>("uid");
 
         /// <summary>
         /// Gets the full username of the authenticated user.
