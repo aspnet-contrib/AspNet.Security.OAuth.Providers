@@ -11,7 +11,7 @@ using Microsoft.AspNet.Http;
 using Microsoft.AspNet.DataProtection;
 using Microsoft.Extensions.Internal;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.OptionsModel;
+using Microsoft.Extensions.Options;
 
 namespace AspNet.Security.OAuth.Instagram {
     public class InstagramAuthenticationMiddleware : OAuthMiddleware<InstagramAuthenticationOptions> {

@@ -11,7 +11,7 @@ using Microsoft.AspNet.DataProtection;
 using Microsoft.AspNet.Http;
 using Microsoft.Extensions.Internal;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.OptionsModel;
+using Microsoft.Extensions.Options;
 
 namespace AspNet.Security.OAuth.Twitch {
     public class TwitchAuthenticationMiddleware : OAuthMiddleware<TwitchAuthenticationOptions> {

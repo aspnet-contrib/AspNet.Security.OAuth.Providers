@@ -21,7 +21,7 @@ namespace AspNet.Security.OAuth.Dropbox {
         /// <summary>
         /// Gets the full username of the authenticated user.
         /// </summary>
-        public static string GetDisplayName ([NotNull] JObject user) => user.Value<string>("display_name");
+        public static string GetDisplayName([NotNull] JObject user) => user.Value<string>("display_name");
 
         /// <summary>
         /// Gets the email address associated with the Dropbox account.
