@@ -25,19 +25,22 @@ See [https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers/tree/dev/
 
 We would love it if you could help contributing to this repository. Please look at [CONTRIBUTING.md](CONTRIBUTING.md).
 
-Special thanks to our contributors:
+**Special thanks to our contributors:**
 
-* Abhinav Nigam (https://github.com/abhinavnigam)
-* Adam Reisinger (https://github.com/Res42)
-* Albireo (https://github.com/kappa7194)
-* Ethan Celletti (https://github.com/Gekctek)
-* Jason Loeffler (https://github.com/jmloeffler)
-* Jerrie Pelser (https://github.com/jerriep)
-* Kévin Chalet (https://github.com/PinpointTownes)
-* Michael Knowles (https://github.com/mjknowles)
-* Sinan (https://github.com/SH2015)
-* Tathagata Chakraborty (https://github.com/tatx)
-* Tommy Parnell (https://github.com/tparnell8)
+* [Abhinav Nigam](https://github.com/abhinavnigam)
+* [Adam Reisinger](https://github.com/Res42)
+* [Albireo](https://github.com/kappa7194)
+* [Dave Timmins](https://github.com/davetimmins)
+* [Ethan Celletti](https://github.com/Gekctek)
+* [Jason Loeffler](https://github.com/jmloeffler)
+* [Jerrie Pelser](https://github.com/jerriep)
+* [Kévin Chalet](https://github.com/PinpointTownes)
+* [Michael Knowles](https://github.com/mjknowles)
+* [Sinan](https://github.com/SH2015)
+* [Stefan](https://github.com/Schlurcher)
+* [Tathagata Chakraborty](https://github.com/tatx)
+* [Tommy Parnell](https://github.com/tparnell8)
+* [Yannic Smeets](https://github.com/yannicsmeets)
 
 ## Support
 
