@@ -6,14 +6,15 @@
 
 using System;
 using AspNet.Security.OAuth.LinkedIn;
-using Microsoft.Extensions.Internal;
+using JetBrains.Annotations;
+using Microsoft.Extensions.Options;
 
-namespace Microsoft.AspNet.Builder {
+namespace Microsoft.AspNetCore.Builder {
     public static class LinkedInAuthenticationExtensions {
         public static IApplicationBuilder UseLinkedInAuthentication(
             [NotNull] this IApplicationBuilder app,
             [NotNull] LinkedInAuthenticationOptions options) {
-            return app.UseMiddleware<LinkedInAuthenticationMiddleware>(options);
+            return app.UseMiddleware<LinkedInAuthenticationMiddleware>(Options.Create(options));
         }
 
         public static IApplicationBuilder UseLinkedInAuthentication(

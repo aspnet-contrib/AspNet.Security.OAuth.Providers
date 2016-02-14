@@ -4,6 +4,9 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Authentication.OAuth;
+
 namespace AspNet.Security.OAuth.Twitch {
     /// <summary>
     /// Default values used by the Twitch authentication middleware.

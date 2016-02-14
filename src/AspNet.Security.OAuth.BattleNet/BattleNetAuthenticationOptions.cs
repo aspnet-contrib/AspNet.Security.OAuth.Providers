@@ -5,8 +5,8 @@
  */
 
 using System;
-using Microsoft.AspNet.Authentication.OAuth;
-using Microsoft.AspNet.Http;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 
 namespace AspNet.Security.OAuth.BattleNet {
     /// <summary>

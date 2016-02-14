@@ -6,14 +6,15 @@
 
 using System;
 using AspNet.Security.OAuth.SoundCloud;
-using Microsoft.Extensions.Internal;
+using JetBrains.Annotations;
+using Microsoft.Extensions.Options;
 
-namespace Microsoft.AspNet.Builder {
+namespace Microsoft.AspNetCore.Builder {
     public static class SoundCloudAuthenticationExtensions {
         public static IApplicationBuilder UseSoundCloudAuthentication(
             [NotNull] this IApplicationBuilder app,
             [NotNull] SoundCloudAuthenticationOptions options) {
-            return app.UseMiddleware<SoundCloudAuthenticationMiddleware>(options);
+            return app.UseMiddleware<SoundCloudAuthenticationMiddleware>(Options.Create(options));
         }
 
         public static IApplicationBuilder UseSoundCloudAuthentication(

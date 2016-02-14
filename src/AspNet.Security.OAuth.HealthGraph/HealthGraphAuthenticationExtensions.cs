@@ -6,14 +6,15 @@
 
 using System;
 using AspNet.Security.OAuth.HealthGraph;
-using Microsoft.Extensions.Internal;
+using JetBrains.Annotations;
+using Microsoft.Extensions.Options;
 
-namespace Microsoft.AspNet.Builder {
+namespace Microsoft.AspNetCore.Builder {
     public static class HealthGraphAuthenticationExtensions {
         public static IApplicationBuilder UseHealthGraphAuthentication(
             [NotNull] this IApplicationBuilder app,
             [NotNull] HealthGraphAuthenticationOptions options) {
-            return app.UseMiddleware<HealthGraphAuthenticationMiddleware>(options);
+            return app.UseMiddleware<HealthGraphAuthenticationMiddleware>(Options.Create(options));
         }
 
         public static IApplicationBuilder UseHealthGraphAuthentication(

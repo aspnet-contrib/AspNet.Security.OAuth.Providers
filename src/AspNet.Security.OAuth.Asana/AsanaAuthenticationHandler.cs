@@ -9,10 +9,10 @@ using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AspNet.Security.OAuth.Extensions;
-using Microsoft.AspNet.Authentication;
-using Microsoft.AspNet.Authentication.OAuth;
-using Microsoft.AspNet.Http.Authentication;
-using Microsoft.Extensions.Internal;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OAuth;
+using Microsoft.AspNetCore.Http.Authentication;
+using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
 
 namespace AspNet.Security.OAuth.Asana {
@@ -36,18 +36,13 @@ namespace AspNet.Security.OAuth.Asana {
                     .AddOptionalClaim(ClaimTypes.Name, AsanaAuthenticationHelper.GetName(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim(ClaimTypes.Email, AsanaAuthenticationHelper.GetEmail(payload), Options.ClaimsIssuer);
 
-            var context = new OAuthCreatingTicketContext(Context, Options, Backchannel, tokens, payload) {
-                Principal = new ClaimsPrincipal(identity),
-                Properties = properties
-            };
+            var principal = new ClaimsPrincipal(identity);
+            var ticket = new AuthenticationTicket(principal, properties, Options.AuthenticationScheme);
 
+            var context = new OAuthCreatingTicketContext(ticket, Context, Options, Backchannel, tokens, payload);
             await Options.Events.CreatingTicket(context);
 
-            if (context.Principal?.Identity == null) {
-                return null;
-            }
-                    
-            return new AuthenticationTicket(context.Principal, context.Properties, context.Options.AuthenticationScheme);
+            return context.Ticket;
         }
     }
 }

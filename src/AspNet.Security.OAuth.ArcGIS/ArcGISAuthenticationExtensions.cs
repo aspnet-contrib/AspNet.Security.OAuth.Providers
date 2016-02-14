@@ -6,14 +6,15 @@
 
 using System;
 using AspNet.Security.OAuth.ArcGIS;
-using Microsoft.Extensions.Internal;
+using JetBrains.Annotations;
+using Microsoft.Extensions.Options;
 
-namespace Microsoft.AspNet.Builder {
+namespace Microsoft.AspNetCore.Builder {
     public static class ArcGISAuthenticationExtensions {
         public static IApplicationBuilder UseArcGISAuthentication(
             [NotNull] this IApplicationBuilder app,
             [NotNull] ArcGISAuthenticationOptions options) {
-            return app.UseMiddleware<ArcGISAuthenticationMiddleware>(options);
+            return app.UseMiddleware<ArcGISAuthenticationMiddleware>(Options.Create(options));
         }
 
         public static IApplicationBuilder UseArcGISAuthentication(

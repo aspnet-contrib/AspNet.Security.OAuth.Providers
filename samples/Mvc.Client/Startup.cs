@@ -4,19 +4,22 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using Microsoft.AspNet.Authentication;
-using Microsoft.AspNet.Authentication.Cookies;
-using Microsoft.AspNet.Builder;
-using Microsoft.AspNet.Hosting;
-using Microsoft.AspNet.Http;
+using AspNet.Security.OAuth.GitHub;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace Mvc.Client {
     public class Startup {
         public static void Main(string[] args) {
-            var application = new WebApplicationBuilder()
-                .UseConfiguration(WebApplicationConfiguration.GetDefault(args))
+            var application = new WebHostBuilder()
+                .UseDefaultConfiguration(args)
+                .UseIISPlatformHandlerUrl()
+                .UseServer("Microsoft.AspNetCore.Server.Kestrel")
                 .UseStartup<Startup>()
                 .Build();
 
@@ -24,12 +27,11 @@ namespace Mvc.Client {
         }
 
         public void ConfigureServices(IServiceCollection services) {
-            services.AddAuthentication();
-            services.AddMvc();
-
-            services.Configure<SharedAuthenticationOptions>(options => {
+            services.AddAuthentication(options => {
                 options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
             });
+
+            services.AddMvc();
         }
 
         public void Configure(IApplicationBuilder app) {
@@ -37,29 +39,35 @@ namespace Mvc.Client {
             factory.AddConsole();
             factory.AddDebug();
 
+            app.UseIISPlatformHandler();
+
+            app.UseForwardedHeaders(new ForwardedHeadersOptions {
+                ForwardedHeaders = ForwardedHeaders.All
+            });
+
             app.UseStaticFiles();
 
-            app.UseCookieAuthentication(options => {
-                options.AutomaticAuthenticate = true;
-                options.AutomaticChallenge = true;
-                options.AuthenticationScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.LoginPath = new PathString("/signin");
+            app.UseCookieAuthentication(new CookieAuthenticationOptions {
+                AutomaticAuthenticate = true,
+                AutomaticChallenge = true,
+                AuthenticationScheme = CookieAuthenticationDefaults.AuthenticationScheme,
+                LoginPath = new PathString("/signin")
             });
 
-            app.UseGoogleAuthentication(options => {
-                options.ClientId = "560027070069-37ldt4kfuohhu3m495hk2j4pjp92d382.apps.googleusercontent.com";
-                options.ClientSecret = "n2Q-GEw9RQjzcRbU3qhfTj8f";
+            app.UseGoogleAuthentication(new GoogleOptions {
+                ClientId = "560027070069-37ldt4kfuohhu3m495hk2j4pjp92d382.apps.googleusercontent.com",
+                ClientSecret = "n2Q-GEw9RQjzcRbU3qhfTj8f"
             });
 
-            app.UseTwitterAuthentication(options => {
-                options.ConsumerKey = "6XaCTaLbMqfj6ww3zvZ5g";
-                options.ConsumerSecret = "Il2eFzGIrYhz6BWjYhVXBPQSfZuS4xoHpSSyD9PI";
+            app.UseTwitterAuthentication(new TwitterOptions {
+                ConsumerKey = "6XaCTaLbMqfj6ww3zvZ5g",
+                ConsumerSecret = "Il2eFzGIrYhz6BWjYhVXBPQSfZuS4xoHpSSyD9PI"
             });
 
-            app.UseGitHubAuthentication(options => {
-                options.ClientId = "49e302895d8b09ea5656";
-                options.ClientSecret = "98f1bf028608901e9df91d64ee61536fe562064b";
-                options.Scope.Add("user:email");
+            app.UseGitHubAuthentication(new GitHubAuthenticationOptions {
+                ClientId = "49e302895d8b09ea5656",
+                ClientSecret = "98f1bf028608901e9df91d64ee61536fe562064b",
+                Scope = { "user:email" }
             });
 
             app.UseMvc();

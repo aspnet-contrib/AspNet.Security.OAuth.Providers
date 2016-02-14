@@ -1,7 +1,21 @@
 language: csharp
-sudo: false
-script:
-  - ./build.sh --quiet verify
+sudo: required
+dist: trusty
+addons:
+  apt:
+    packages:
+    - gettext
+    - libcurl4-openssl-dev
+    - libicu-dev
+    - libssl-dev
+    - libunwind8
+    - zlib1g
 mono:
   - alpha
   - latest
+os:
+  - linux
+  - osx
+osx_image: xcode7.1
+script:
+  - ./build.sh verify

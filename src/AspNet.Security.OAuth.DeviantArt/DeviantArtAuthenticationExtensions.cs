@@ -6,14 +6,15 @@
 
 using System;
 using AspNet.Security.OAuth.DeviantArt;
-using Microsoft.Extensions.Internal;
+using JetBrains.Annotations;
+using Microsoft.Extensions.Options;
 
-namespace Microsoft.AspNet.Builder {
+namespace Microsoft.AspNetCore.Builder {
     public static class DeviantArtAuthenticationExtensions {
         public static IApplicationBuilder UseDeviantArtAuthentication(
             [NotNull] this IApplicationBuilder app,
             [NotNull] DeviantArtAuthenticationOptions options) {
-            return app.UseMiddleware<DeviantArtAuthenticationMiddleware>(options);
+            return app.UseMiddleware<DeviantArtAuthenticationMiddleware>(Options.Create(options));
         }
 
         public static IApplicationBuilder UseDeviantArtAuthentication(

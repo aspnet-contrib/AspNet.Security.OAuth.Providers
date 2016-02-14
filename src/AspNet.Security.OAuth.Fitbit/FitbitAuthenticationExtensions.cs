@@ -6,14 +6,15 @@
 
 using System;
 using AspNet.Security.OAuth.Fitbit;
-using Microsoft.Extensions.Internal;
+using JetBrains.Annotations;
+using Microsoft.Extensions.Options;
 
-namespace Microsoft.AspNet.Builder {
+namespace Microsoft.AspNetCore.Builder {
     public static class FitbitAuthenticationExtensions {
         public static IApplicationBuilder UseFitbitAuthentication(
             [NotNull] this IApplicationBuilder app,
             [NotNull] FitbitAuthenticationOptions options) {
-            return app.UseMiddleware<FitbitAuthenticationMiddleware>(options);
+            return app.UseMiddleware<FitbitAuthenticationMiddleware>(Options.Create(options));
         }
 
         public static IApplicationBuilder UseFitbitAuthentication(

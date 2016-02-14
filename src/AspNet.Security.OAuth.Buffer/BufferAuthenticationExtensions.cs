@@ -6,14 +6,15 @@
 
 using System;
 using AspNet.Security.OAuth.Buffer;
-using Microsoft.Extensions.Internal;
+using JetBrains.Annotations;
+using Microsoft.Extensions.Options;
 
-namespace Microsoft.AspNet.Builder {
+namespace Microsoft.AspNetCore.Builder {
     public static class BufferAuthenticationExtensions {
         public static IApplicationBuilder UseBufferAuthentication(
             [NotNull] this IApplicationBuilder app,
             [NotNull] BufferAuthenticationOptions options) {
-            return app.UseMiddleware<BufferAuthenticationMiddleware>(options);
+            return app.UseMiddleware<BufferAuthenticationMiddleware>(Options.Create(options));
         }
 
         public static IApplicationBuilder UseBufferAuthentication(

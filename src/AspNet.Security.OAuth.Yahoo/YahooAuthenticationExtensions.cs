@@ -6,14 +6,15 @@
 
 using System;
 using AspNet.Security.OAuth.Yahoo;
-using Microsoft.Extensions.Internal;
+using JetBrains.Annotations;
+using Microsoft.Extensions.Options;
 
-namespace Microsoft.AspNet.Builder {
+namespace Microsoft.AspNetCore.Builder {
     public static class YahooAuthenticationExtensions {
         public static IApplicationBuilder UseYahooAuthentication(
             [NotNull] this IApplicationBuilder app,
             [NotNull] YahooAuthenticationOptions options) {
-            return app.UseMiddleware<YahooAuthenticationMiddleware>(options);
+            return app.UseMiddleware<YahooAuthenticationMiddleware>(Options.Create(options));
         }
 
         public static IApplicationBuilder UseYahooAuthentication(

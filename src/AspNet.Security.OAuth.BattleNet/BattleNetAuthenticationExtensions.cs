@@ -6,14 +6,15 @@
 
 using System;
 using AspNet.Security.OAuth.BattleNet;
-using Microsoft.Extensions.Internal;
+using JetBrains.Annotations;
+using Microsoft.Extensions.Options;
 
-namespace Microsoft.AspNet.Builder {
+namespace Microsoft.AspNetCore.Builder {
     public static class BattleNetAuthenticationExtensions {
         public static IApplicationBuilder UseBattleNetAuthentication(
             [NotNull] this IApplicationBuilder app,
             [NotNull] BattleNetAuthenticationOptions options) {
-            return app.UseMiddleware<BattleNetAuthenticationMiddleware>(options);
+            return app.UseMiddleware<BattleNetAuthenticationMiddleware>(Options.Create(options));
         }
 
         public static IApplicationBuilder UseBattleNetAuthentication(

@@ -5,7 +5,7 @@
  */
 
 using System.Linq;
-using Microsoft.Extensions.Internal;
+using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
 
 namespace AspNet.Security.OAuth.GitHub {

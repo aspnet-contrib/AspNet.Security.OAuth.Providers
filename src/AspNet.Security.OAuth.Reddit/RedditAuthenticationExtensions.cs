@@ -6,14 +6,15 @@
 
 using System;
 using AspNet.Security.OAuth.Reddit;
-using Microsoft.Extensions.Internal;
+using JetBrains.Annotations;
+using Microsoft.Extensions.Options;
 
-namespace Microsoft.AspNet.Builder {
+namespace Microsoft.AspNetCore.Builder {
     public static class RedditAuthenticationExtensions {
         public static IApplicationBuilder UseRedditAuthentication(
             [NotNull] this IApplicationBuilder app,
             [NotNull] RedditAuthenticationOptions options) {
-            return app.UseMiddleware<RedditAuthenticationMiddleware>(options);
+            return app.UseMiddleware<RedditAuthenticationMiddleware>(Options.Create(options));
         }
 
         public static IApplicationBuilder UseRedditAuthentication(

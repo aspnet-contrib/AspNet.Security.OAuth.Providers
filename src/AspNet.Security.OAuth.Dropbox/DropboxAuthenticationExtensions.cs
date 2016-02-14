@@ -6,14 +6,15 @@
 
 using System;
 using AspNet.Security.OAuth.Dropbox;
-using Microsoft.Extensions.Internal;
+using JetBrains.Annotations;
+using Microsoft.Extensions.Options;
 
-namespace Microsoft.AspNet.Builder {
+namespace Microsoft.AspNetCore.Builder {
     public static class DropboxAuthenticationExtensions {
         public static IApplicationBuilder UseDropboxAuthentication(
             [NotNull] this IApplicationBuilder app,
             [NotNull] DropboxAuthenticationOptions options) {
-            return app.UseMiddleware<DropboxAuthenticationMiddleware>(options);
+            return app.UseMiddleware<DropboxAuthenticationMiddleware>(Options.Create(options));
         }
 
         public static IApplicationBuilder UseDropboxAuthentication(

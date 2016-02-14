@@ -4,7 +4,7 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using Microsoft.Extensions.Internal;
+using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
 
 namespace AspNet.Security.OAuth.Yahoo {

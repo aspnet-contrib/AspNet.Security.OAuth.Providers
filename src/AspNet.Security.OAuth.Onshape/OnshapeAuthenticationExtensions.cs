@@ -6,14 +6,15 @@
 
 using System;
 using AspNet.Security.OAuth.Onshape;
-using Microsoft.Extensions.Internal;
+using JetBrains.Annotations;
+using Microsoft.Extensions.Options;
 
-namespace Microsoft.AspNet.Builder {
+namespace Microsoft.AspNetCore.Builder {
     public static class OnshapeAuthenticationExtensions {
         public static IApplicationBuilder UseOnshapeAuthentication(
             [NotNull] this IApplicationBuilder app,
             [NotNull] OnshapeAuthenticationOptions options) {
-            return app.UseMiddleware<OnshapeAuthenticationMiddleware>(options);
+            return app.UseMiddleware<OnshapeAuthenticationMiddleware>(Options.Create(options));
         }
 
         public static IApplicationBuilder UseOnshapeAuthentication(

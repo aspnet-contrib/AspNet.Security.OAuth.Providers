@@ -13,22 +13,19 @@
             "version": "1.0.0-*"
         },
 
-        "Microsoft.AspNet.Authentication.OAuth": "1.0.0-*",
-
-        "Microsoft.Extensions.NotNullAttribute.Sources": {
-            "type": "build",
-            "version": "1.0.0-*"
-        }
+        "JetBrains.Annotations": "10.1.2-eap",
+        "Microsoft.AspNetCore.Authentication.OAuth": "1.0.0-*"
     },
 
     "frameworks": {
-        "dnx451": { },
+        "net451": { },
 
-        "dnxcore50": {
+        "dotnet5.4": {
             "dependencies": {
-                "System.Dynamic.Runtime": "4.0.11-*",
-                "System.Security.Claims": "4.0.1-*"
-            }
+                "System.Dynamic.Runtime": "4.0.11-*"
+            },
+
+            "imports": "portable-net451+win8"
         }
     }
 }

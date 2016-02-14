@@ -6,14 +6,15 @@
 
 using System;
 using AspNet.Security.OAuth.GitHub;
-using Microsoft.Extensions.Internal;
+using JetBrains.Annotations;
+using Microsoft.Extensions.Options;
 
-namespace Microsoft.AspNet.Builder {
+namespace Microsoft.AspNetCore.Builder {
     public static class GitHubAuthenticationExtensions {
         public static IApplicationBuilder UseGitHubAuthentication(
             [NotNull] this IApplicationBuilder app,
             [NotNull] GitHubAuthenticationOptions options) {
-            return app.UseMiddleware<GitHubAuthenticationMiddleware>(options);
+            return app.UseMiddleware<GitHubAuthenticationMiddleware>(Options.Create(options));
         }
 
         public static IApplicationBuilder UseGitHubAuthentication(

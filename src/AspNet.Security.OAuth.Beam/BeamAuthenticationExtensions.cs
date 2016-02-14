@@ -6,14 +6,15 @@
 
 using System;
 using AspNet.Security.OAuth.Beam;
-using Microsoft.Extensions.Internal;
+using JetBrains.Annotations;
+using Microsoft.Extensions.Options;
 
-namespace Microsoft.AspNet.Builder {
+namespace Microsoft.AspNetCore.Builder {
     public static class BeamAuthenticationExtensions {
         public static IApplicationBuilder UseBeamAuthentication(
             [NotNull] this IApplicationBuilder app,
             [NotNull] BeamAuthenticationOptions options) {
-            return app.UseMiddleware<BeamAuthenticationMiddleware>(options);
+            return app.UseMiddleware<BeamAuthenticationMiddleware>(Options.Create(options));
         }
 
         public static IApplicationBuilder UseBeamAuthentication(

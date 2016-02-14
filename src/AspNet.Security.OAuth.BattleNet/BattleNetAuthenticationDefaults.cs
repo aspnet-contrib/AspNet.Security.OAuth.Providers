@@ -4,8 +4,8 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using Microsoft.AspNet.Authentication;
-using Microsoft.AspNet.Authentication.OAuth;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Authentication.OAuth;
 
 namespace AspNet.Security.OAuth.BattleNet {
     /// <summary>

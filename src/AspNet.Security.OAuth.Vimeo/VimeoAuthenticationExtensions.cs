@@ -6,14 +6,15 @@
 
 using System;
 using AspNet.Security.OAuth.Vimeo;
-using Microsoft.Extensions.Internal;
+using JetBrains.Annotations;
+using Microsoft.Extensions.Options;
 
-namespace Microsoft.AspNet.Builder {
+namespace Microsoft.AspNetCore.Builder {
     public static class VimeoAuthenticationExtensions {
         public static IApplicationBuilder UseVimeoAuthentication(
             [NotNull] this IApplicationBuilder app,
             [NotNull] VimeoAuthenticationOptions options) {
-            return app.UseMiddleware<VimeoAuthenticationMiddleware>(options);
+            return app.UseMiddleware<VimeoAuthenticationMiddleware>(Options.Create(options));
         }
 
         public static IApplicationBuilder UseVimeoAuthentication(

@@ -6,14 +6,15 @@
 
 using System;
 using AspNet.Security.OAuth.Slack;
-using Microsoft.Extensions.Internal;
+using JetBrains.Annotations;
+using Microsoft.Extensions.Options;
 
-namespace Microsoft.AspNet.Builder {
+namespace Microsoft.AspNetCore.Builder {
     public static class SlackAuthenticationExtensions {
         public static IApplicationBuilder UseSlackAuthentication(
             [NotNull] this IApplicationBuilder app,
             [NotNull] SlackAuthenticationOptions options) {
-            return app.UseMiddleware<SlackAuthenticationMiddleware>(options);
+            return app.UseMiddleware<SlackAuthenticationMiddleware>(Options.Create(options));
         }
 
         public static IApplicationBuilder UseSlackAuthentication(

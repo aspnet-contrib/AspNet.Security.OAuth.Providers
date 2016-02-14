@@ -6,14 +6,15 @@
 
 using System;
 using AspNet.Security.OAuth.Foursquare;
-using Microsoft.Extensions.Internal;
+using JetBrains.Annotations;
+using Microsoft.Extensions.Options;
 
-namespace Microsoft.AspNet.Builder {
+namespace Microsoft.AspNetCore.Builder {
     public static class FoursquareAuthenticationExtensions {
         public static IApplicationBuilder UseFoursquareAuthentication(
             [NotNull] this IApplicationBuilder app,
             [NotNull] FoursquareAuthenticationOptions options) {
-            return app.UseMiddleware<FoursquareAuthenticationMiddleware>(options);
+            return app.UseMiddleware<FoursquareAuthenticationMiddleware>(Options.Create(options));
         }
 
         public static IApplicationBuilder UseFoursquareAuthentication(

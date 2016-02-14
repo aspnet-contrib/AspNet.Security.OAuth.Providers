@@ -6,14 +6,15 @@
 
 using System;
 using AspNet.Security.OAuth.Instagram;
-using Microsoft.Extensions.Internal;
+using JetBrains.Annotations;
+using Microsoft.Extensions.Options;
 
-namespace Microsoft.AspNet.Builder {
+namespace Microsoft.AspNetCore.Builder {
     public static class InstagramAuthenticationExtensions {
         public static IApplicationBuilder UseInstagramAuthentication(
             [NotNull] this IApplicationBuilder app,
             [NotNull] InstagramAuthenticationOptions options) {
-            return app.UseMiddleware<InstagramAuthenticationMiddleware>(options);
+            return app.UseMiddleware<InstagramAuthenticationMiddleware>(Options.Create(options));
         }
 
         public static IApplicationBuilder UseInstagramAuthentication(

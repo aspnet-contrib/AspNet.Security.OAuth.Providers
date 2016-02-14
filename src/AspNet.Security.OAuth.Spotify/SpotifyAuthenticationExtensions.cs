@@ -6,14 +6,15 @@
 
 using System;
 using AspNet.Security.OAuth.Spotify;
-using Microsoft.Extensions.Internal;
+using JetBrains.Annotations;
+using Microsoft.Extensions.Options;
 
-namespace Microsoft.AspNet.Builder {
+namespace Microsoft.AspNetCore.Builder {
     public static class SpotifyAuthenticationExtensions {
         public static IApplicationBuilder UseSpotifyAuthentication(
             [NotNull] this IApplicationBuilder app,
             [NotNull] SpotifyAuthenticationOptions options) {
-            return app.UseMiddleware<SpotifyAuthenticationMiddleware>(options);
+            return app.UseMiddleware<SpotifyAuthenticationMiddleware>(Options.Create(options));
         }
 
         public static IApplicationBuilder UseSpotifyAuthentication(

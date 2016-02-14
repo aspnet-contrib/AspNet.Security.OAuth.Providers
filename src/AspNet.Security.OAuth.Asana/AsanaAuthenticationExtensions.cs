@@ -6,14 +6,15 @@
 
 using System;
 using AspNet.Security.OAuth.Asana;
-using Microsoft.Extensions.Internal;
+using JetBrains.Annotations;
+using Microsoft.Extensions.Options;
 
-namespace Microsoft.AspNet.Builder {
+namespace Microsoft.AspNetCore.Builder {
     public static class AsanaAuthenticationExtensions {
         public static IApplicationBuilder UseAsanaAuthentication(
             [NotNull] this IApplicationBuilder app,
             [NotNull] AsanaAuthenticationOptions options) {
-            return app.UseMiddleware<AsanaAuthenticationMiddleware>(options);
+            return app.UseMiddleware<AsanaAuthenticationMiddleware>(Options.Create(options));
         }
 
         public static IApplicationBuilder UseAsanaAuthentication(

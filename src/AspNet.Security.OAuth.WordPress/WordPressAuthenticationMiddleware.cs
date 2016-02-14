@@ -5,11 +5,11 @@
  */
 
 using System.Text.Encodings.Web;
-using Microsoft.AspNet.Authentication;
-using Microsoft.AspNet.Authentication.OAuth;
-using Microsoft.AspNet.DataProtection;
-using Microsoft.AspNet.Http;
-using Microsoft.Extensions.Internal;
+using JetBrains.Annotations;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OAuth;
+using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -17,7 +17,7 @@ namespace AspNet.Security.OAuth.WordPress {
     public class WordPressAuthenticationMiddleware : OAuthMiddleware<WordPressAuthenticationOptions> {
         public WordPressAuthenticationMiddleware(
             [NotNull] RequestDelegate next,
-            [NotNull] WordPressAuthenticationOptions options,
+            [NotNull] IOptions<WordPressAuthenticationOptions> options,
             [NotNull] IDataProtectionProvider dataProtectionProvider,
             [NotNull] ILoggerFactory loggerFactory,
             [NotNull] UrlEncoder encoder,

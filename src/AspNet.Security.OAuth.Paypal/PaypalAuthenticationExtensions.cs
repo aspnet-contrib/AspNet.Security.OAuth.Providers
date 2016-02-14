@@ -6,14 +6,15 @@
 
 using System;
 using AspNet.Security.OAuth.Paypal;
-using Microsoft.Extensions.Internal;
+using JetBrains.Annotations;
+using Microsoft.Extensions.Options;
 
-namespace Microsoft.AspNet.Builder {
+namespace Microsoft.AspNetCore.Builder {
     public static class PaypalAuthenticationExtensions {
         public static IApplicationBuilder UsePaypalAuthentication(
             [NotNull] this IApplicationBuilder app,
             [NotNull] PaypalAuthenticationOptions options) {
-            return app.UseMiddleware<PaypalAuthenticationMiddleware>(options);
+            return app.UseMiddleware<PaypalAuthenticationMiddleware>(Options.Create(options));
         }
 
         public static IApplicationBuilder UsePaypalAuthentication(

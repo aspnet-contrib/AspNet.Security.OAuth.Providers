@@ -6,14 +6,15 @@
 
 using System;
 using AspNet.Security.OAuth.Twitch;
-using Microsoft.Extensions.Internal;
+using JetBrains.Annotations;
+using Microsoft.Extensions.Options;
 
-namespace Microsoft.AspNet.Builder {
+namespace Microsoft.AspNetCore.Builder {
     public static class TwitchAuthenticationExtensions {
         public static IApplicationBuilder UseTwitchAuthentication(
             [NotNull] this IApplicationBuilder app,
             [NotNull] TwitchAuthenticationOptions options) {
-            return app.UseMiddleware<TwitchAuthenticationMiddleware>(options);
+            return app.UseMiddleware<TwitchAuthenticationMiddleware>(Options.Create(options));
         }
 
         public static IApplicationBuilder UseTwitchAuthentication(

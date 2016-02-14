@@ -6,14 +6,15 @@
 
 using System;
 using AspNet.Security.OAuth.WordPress;
-using Microsoft.Extensions.Internal;
+using JetBrains.Annotations;
+using Microsoft.Extensions.Options;
 
-namespace Microsoft.AspNet.Builder {
+namespace Microsoft.AspNetCore.Builder {
     public static class WordPressAuthenticationExtensions {
         public static IApplicationBuilder UseWordPressAuthentication(
             [NotNull] this IApplicationBuilder app,
             [NotNull] WordPressAuthenticationOptions options) {
-            return app.UseMiddleware<WordPressAuthenticationMiddleware>(options);
+            return app.UseMiddleware<WordPressAuthenticationMiddleware>(Options.Create(options));
         }
 
         public static IApplicationBuilder UseWordPressAuthentication(
