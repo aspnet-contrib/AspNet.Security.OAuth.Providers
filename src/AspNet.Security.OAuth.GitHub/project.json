@@ -26,8 +26,7 @@
 
         "dnxcore50": {
             "dependencies": {
-                "System.Dynamic.Runtime": "4.0.11-*",
-                "System.Security.Claims": "4.0.1-*"
+                "System.Dynamic.Runtime": "4.0.11-*"
             }
         }
     }
