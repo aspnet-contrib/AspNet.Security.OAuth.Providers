@@ -20,11 +20,11 @@ namespace Mvc.Client.Controllers {
             // Note: the "provider" parameter corresponds to the external
             // authentication provider choosen by the user agent.
             if (string.IsNullOrWhiteSpace(provider)) {
-                return HttpBadRequest();
+                return BadRequest();
             }
 
             if (!HttpContext.IsProviderSupported(provider)) {
-                return HttpBadRequest();
+                return BadRequest();
             }
             
             // Instruct the middleware corresponding to the requested external identity
