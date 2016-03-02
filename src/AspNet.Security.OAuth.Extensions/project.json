@@ -12,12 +12,15 @@
     "frameworks": {
         "net451": { },
 
-        "dotnet5.4": {
+        "netstandard1.3": {
             "dependencies": {
                 "System.Security.Claims": "4.0.1-*"
             },
 
-            "imports": "portable-net451+win8"
+            "imports": [
+                "dotnet5.4",
+                "portable-net451+win8"
+            ]
         }
     }
 }
