@@ -1,30 +1,49 @@
 ﻿{
-    "version": "1.0.0-*",
-    "description": "ASP.NET 5 security middleware enabling Spotify authentication.",
-    "authors": [ "Adam Reisinger" ],
-    "owners": [ "Kévin Chalet", "Jerrie Pelser" ],
+  "version": "1.0.0-alpha4-*",
 
-    "projectUrl": "https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers",
-    "licenseUrl": "http://www.apache.org/licenses/LICENSE-2.0.html",
+  "description": "ASP.NET Core security middleware enabling Spotify authentication.",
+  "authors": [ "Adam Reisinger" ],
+  "owners": [ "Kévin Chalet", "Jerrie Pelser" ],
 
-    "dependencies": {
-        "AspNet.Security.OAuth.Extensions": {
-            "type": "build",
-            "version": "1.0.0-*"
-        },
+  "projectUrl": "https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers",
+  "licenseUrl": "http://www.apache.org/licenses/LICENSE-2.0.html",
 
-        "JetBrains.Annotations": "10.1.2-eap",
-        "Microsoft.AspNetCore.Authentication.OAuth": "1.0.0-*"
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers"
+  },
+
+  "tags": [
+    "aspnetcore",
+    "authentication",
+    "oauth",
+    "security",
+    "spotify"
+  ],
+
+  "compilationOptions": {
+    "nowarn": [ "CS1591" ],
+    "xmlDoc": true
+  },
+
+  "dependencies": {
+    "AspNet.Security.OAuth.Extensions": { "type": "build", "version": "1.0.0-*" },
+    "JetBrains.Annotations": { "type": "build", "version": "10.1.2-eap" },
+    "Microsoft.AspNetCore.Authentication.OAuth": "1.0.0-*"
+  },
+
+  "frameworks": {
+    "net451": {
+      "frameworkAssemblies": {
+        "System.Runtime": { "type": "build", "version": "4.0.10.0" }
+      }
     },
 
-    "frameworks": {
-        "net451": { },
-
-        "netstandard1.3": {
-            "imports": [
-                "dotnet5.4",
-                "portable-net451+win8"
-            ]
-        }
+    "netstandard1.3": {
+      "imports": [
+        "dotnet5.4",
+        "portable-net451+win8"
+      ]
     }
+  }
 }

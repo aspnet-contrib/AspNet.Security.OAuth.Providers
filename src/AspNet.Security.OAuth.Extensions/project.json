@@ -1,26 +1,44 @@
 ﻿{
-    "version": "1.0.0-*",
-    "description": "ASP.NET 5 extensions making OAuth2 authentication easier to use.",
-    "authors": [ "Kévin Chalet", "Jerrie Pelser" ],
-    "owners": [ "Kévin Chalet", "Jerrie Pelser" ],
+  "version": "1.0.0-alpha4-*",
 
-    "projectUrl": "https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers",
-    "licenseUrl": "http://www.apache.org/licenses/LICENSE-2.0.html",
+  "description": "ASP.NET Core extensions making OAuth2 authentication easier to use.",
+  "authors": [ "Kévin Chalet", "Jerrie Pelser" ],
+  "owners": [ "Kévin Chalet", "Jerrie Pelser" ],
 
-    "shared": "*.cs",
+  "projectUrl": "https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers",
+  "licenseUrl": "http://www.apache.org/licenses/LICENSE-2.0.html",
 
-    "frameworks": {
-        "net451": { },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers"
+  },
 
-        "netstandard1.3": {
-            "dependencies": {
-                "System.Security.Claims": "4.0.1-*"
-            },
+  "tags": [
+    "aspnetcore",
+    "authentication",
+    "oauth",
+    "security"
+  ],
 
-            "imports": [
-                "dotnet5.4",
-                "portable-net451+win8"
-            ]
-        }
+  "compilationOptions": {
+    "nowarn": [ "CS1591" ],
+    "xmlDoc": true
+  },
+
+  "shared": "*.cs",
+
+  "frameworks": {
+    "net451": { },
+
+    "netstandard1.3": {
+      "dependencies": {
+        "System.Security.Claims": "4.0.1-*"
+      },
+
+      "imports": [
+        "dotnet5.4",
+        "portable-net451+win8"
+      ]
     }
+  }
 }
