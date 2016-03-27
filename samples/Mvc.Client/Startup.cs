@@ -7,25 +7,12 @@
 using AspNet.Security.OAuth.GitHub;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 
 namespace Mvc.Client {
     public class Startup {
-        public static void Main(string[] args) {
-            var application = new WebHostBuilder()
-                .UseDefaultConfiguration(args)
-                .UseIISPlatformHandlerUrl()
-                .UseServer("Microsoft.AspNetCore.Server.Kestrel")
-                .UseStartup<Startup>()
-                .Build();
-
-            application.Run();
-        }
-
         public void ConfigureServices(IServiceCollection services) {
             services.AddAuthentication(options => {
                 options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -35,10 +22,7 @@ namespace Mvc.Client {
             services.AddMvcDnx();
         }
 
-        public void Configure(IApplicationBuilder app, ILoggerFactory factory) {
-            factory.AddConsole();
-            factory.AddDebug();
-
+        public void Configure(IApplicationBuilder app) {
             app.UseIISPlatformHandler();
 
             app.UseForwardedHeaders(new ForwardedHeadersOptions {
