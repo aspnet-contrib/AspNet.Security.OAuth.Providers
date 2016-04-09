@@ -10,13 +10,28 @@ using JetBrains.Annotations;
 using Microsoft.Extensions.Options;
 
 namespace Microsoft.AspNetCore.Builder {
+    /// <summary>
+    /// Extension methods to add Fitbit authentication capabilities to an HTTP application pipeline.
+    /// </summary>
     public static class FitbitAuthenticationExtensions {
+        /// <summary>
+        /// Adds the <see cref="FitbitAuthenticationMiddleware"/> middleware to the specified <see cref="IApplicationBuilder"/>, which enables Fitbit authentication capabilities.
+        /// </summary>
+        /// <param name="app">The <see cref="IApplicationBuilder"/> to add the middleware to.</param>
+        /// <param name="options">A <see cref="FitbitAuthenticationOptions"/> that specifies options for the middleware.</param>        
+        /// <returns>A reference to this instance after the operation has completed.</returns>
         public static IApplicationBuilder UseFitbitAuthentication(
             [NotNull] this IApplicationBuilder app,
             [NotNull] FitbitAuthenticationOptions options) {
             return app.UseMiddleware<FitbitAuthenticationMiddleware>(Options.Create(options));
         }
 
+        /// <summary>
+        /// Adds the <see cref="FitbitAuthenticationMiddleware"/> middleware to the specified <see cref="IApplicationBuilder"/>, which enables Fitbit authentication capabilities.
+        /// </summary>
+        /// <param name="app">The <see cref="IApplicationBuilder"/> to add the middleware to.</param>
+        /// <param name="configuration">An action delegate to configure the provided <see cref="FitbitAuthenticationOptions"/>.</param>
+        /// <returns>A reference to this instance after the operation has completed.</returns>
         public static IApplicationBuilder UseFitbitAuthentication(
             [NotNull] this IApplicationBuilder app,
             [NotNull] Action<FitbitAuthenticationOptions> configuration) {
