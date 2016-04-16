@@ -18,17 +18,17 @@ namespace AspNet.Security.OAuth.WordPress {
         public const string AuthenticationScheme = "WordPress";
 
         /// <summary>
-        /// Default value for <see cref="OAuthOptions.DisplayName"/>.
+        /// Default value for <see cref="RemoteAuthenticationOptions.DisplayName"/>.
         /// </summary>
         public const string DisplayName = "WordPress";
 
         /// <summary>
-        /// Default value for <see cref="OAuthOptions.ClaimsIssuer"/>.
+        /// Default value for <see cref="RemoteAuthenticationOptions.ClaimsIssuer"/>.
         /// </summary>
         public const string Issuer = "WordPress";
 
         /// <summary>
-        /// Default value for <see cref="OAuthOptions.CallbackPath"/>.
+        /// Default value for <see cref="RemoteAuthenticationOptions.CallbackPath"/>.
         /// </summary>
         public const string CallbackPath = "/signin-wordpress";
 

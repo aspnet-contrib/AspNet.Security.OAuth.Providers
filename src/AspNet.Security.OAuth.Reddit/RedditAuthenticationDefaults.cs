@@ -18,17 +18,17 @@ namespace AspNet.Security.OAuth.Reddit {
         public const string AuthenticationScheme = "Reddit";
 
         /// <summary>
-        /// Default value for <see cref="OAuthOptions.DisplayName"/>.
+        /// Default value for <see cref="RemoteAuthenticationOptions.DisplayName"/>.
         /// </summary>
         public const string DisplayName = "Reddit";
 
         /// <summary>
-        /// Default value for <see cref="OAuthOptions.ClaimsIssuer"/>.
+        /// Default value for <see cref="RemoteAuthenticationOptions.ClaimsIssuer"/>.
         /// </summary>
         public const string Issuer = "Reddit";
 
         /// <summary>
-        /// Default value for <see cref="OAuthOptions.CallbackPath"/>.
+        /// Default value for <see cref="RemoteAuthenticationOptions.CallbackPath"/>.
         /// </summary>
         public const string CallbackPath = "/signin-reddit";
 

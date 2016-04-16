@@ -18,17 +18,17 @@ namespace AspNet.Security.OAuth.GitHub {
         public const string AuthenticationScheme = "GitHub";
 
         /// <summary>
-        /// Default value for <see cref="OAuthOptions.DisplayName"/>.
+        /// Default value for <see cref="RemoteAuthenticationOptions.DisplayName"/>.
         /// </summary>
         public const string DisplayName = "GitHub";
 
         /// <summary>
-        /// Default value for <see cref="OAuthOptions.ClaimsIssuer"/>.
+        /// Default value for <see cref="RemoteAuthenticationOptions.ClaimsIssuer"/>.
         /// </summary>
         public const string Issuer = "GitHub";
 
         /// <summary>
-        /// Default value for <see cref="OAuthOptions.CallbackPath"/>.
+        /// Default value for <see cref="RemoteAuthenticationOptions.CallbackPath"/>.
         /// </summary>
         public const string CallbackPath = "/signin-github";
 

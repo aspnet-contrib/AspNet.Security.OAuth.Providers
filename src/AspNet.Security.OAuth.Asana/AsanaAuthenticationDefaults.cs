@@ -18,17 +18,17 @@ namespace AspNet.Security.OAuth.Asana {
         public const string AuthenticationScheme = "Asana";
 
         /// <summary>
-        /// Default value for <see cref="OAuthOptions.DisplayName"/>.
+        /// Default value for <see cref="RemoteAuthenticationOptions.DisplayName"/>.
         /// </summary>
         public const string DisplayName = "Asana";
 
         /// <summary>
-        /// Default value for <see cref="OAuthOptions.ClaimsIssuer"/>.
+        /// Default value for <see cref="RemoteAuthenticationOptions.ClaimsIssuer"/>.
         /// </summary>
         public const string Issuer = "Asana";
 
         /// <summary>
-        /// Default value for <see cref="OAuthOptions.CallbackPath"/>.
+        /// Default value for <see cref="RemoteAuthenticationOptions.CallbackPath"/>.
         /// </summary>
         public const string CallbackPath = "/signin-asana";
 
