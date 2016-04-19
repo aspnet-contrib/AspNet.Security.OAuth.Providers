@@ -28,9 +28,9 @@
   },
 
   "dependencies": {
-    "AspNet.Security.OAuth.Extensions": { "type": "build", "version": "1.0.0-*" },
+    "AspNet.Security.OAuth.Extensions": { "type": "build", "version": "1.0.0-alpha4-*" },
     "JetBrains.Annotations": { "type": "build", "version": "10.1.2-eap" },
-    "Microsoft.AspNetCore.Authentication.OAuth": "1.0.0-*"
+    "Microsoft.AspNetCore.Authentication.OAuth": "1.0.0-rc2-*"
   },
 
   "frameworks": {
@@ -42,7 +42,7 @@
 
     "netstandard1.3": {
       "dependencies": {
-        "System.Dynamic.Runtime": "4.0.11-*"
+        "System.Dynamic.Runtime": "4.0.11-rc2-*"
       },
 
       "imports": [
