@@ -26,8 +26,8 @@ namespace Mvc.Client {
             app.UseCookieAuthentication(new CookieAuthenticationOptions {
                 AutomaticAuthenticate = true,
                 AutomaticChallenge = true,
-                AuthenticationScheme = CookieAuthenticationDefaults.AuthenticationScheme,
-                LoginPath = new PathString("/signin")
+                LoginPath = new PathString("/signin"),
+                LogoutPath = new PathString("/signout")
             });
 
             app.UseGoogleAuthentication(new GoogleOptions {
