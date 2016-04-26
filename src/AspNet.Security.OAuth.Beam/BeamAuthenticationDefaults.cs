@@ -23,7 +23,7 @@ namespace AspNet.Security.OAuth.Beam {
         public const string DisplayName = "Beam";
 
         /// <summary>
-        /// Default value for <see cref="RemoteAuthenticationOptions.ClaimsIssuer"/>.
+        /// Default value for <see cref="AuthenticationOptions.ClaimsIssuer"/>.
         /// </summary>
         public const string Issuer = "Beam";
 

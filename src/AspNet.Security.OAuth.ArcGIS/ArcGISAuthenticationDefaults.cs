@@ -23,7 +23,7 @@ namespace AspNet.Security.OAuth.ArcGIS {
         public const string DisplayName = "ArcGIS";
 
         /// <summary>
-        /// Default value for <see cref="RemoteAuthenticationOptions.ClaimsIssuer"/>.
+        /// Default value for <see cref="AuthenticationOptions.ClaimsIssuer"/>.
         /// </summary>
         public const string Issuer = "ArcGIS";
 

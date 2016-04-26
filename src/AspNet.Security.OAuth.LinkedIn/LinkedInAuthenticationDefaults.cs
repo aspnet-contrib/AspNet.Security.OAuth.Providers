@@ -23,7 +23,7 @@ namespace AspNet.Security.OAuth.LinkedIn {
         public const string DisplayName = "LinkedIn";
 
         /// <summary>
-        /// Default value for <see cref="RemoteAuthenticationOptions.ClaimsIssuer"/>.
+        /// Default value for <see cref="AuthenticationOptions.ClaimsIssuer"/>.
         /// </summary>
         public const string Issuer = "LinkedIn";
 

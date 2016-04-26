@@ -23,7 +23,7 @@ namespace AspNet.Security.OAuth.Dropbox {
         public const string DisplayName = "Dropbox";
 
         /// <summary>
-        /// Default value for <see cref="RemoteAuthenticationOptions.ClaimsIssuer"/>.
+        /// Default value for <see cref="AuthenticationOptions.ClaimsIssuer"/>.
         /// </summary>
         public const string Issuer = "Dropbox";
 
