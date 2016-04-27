@@ -4,7 +4,6 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.AspNetCore.Mvc;
@@ -26,22 +25,20 @@ namespace Mvc.Client.Controllers {
             if (!HttpContext.IsProviderSupported(provider)) {
                 return BadRequest();
             }
-            
+
             // Instruct the middleware corresponding to the requested external identity
             // provider to redirect the user agent to its own authorization endpoint.
             // Note: the authenticationScheme parameter must match the value configured in Startup.cs
-            return new ChallengeResult(provider, new AuthenticationProperties { RedirectUri = "/" });
+            return Challenge(new AuthenticationProperties { RedirectUri = "/" }, provider);
         }
 
-        [HttpGet("~/signout")]
-        [HttpPost("~/signout")]
-        public async Task<IActionResult> SignOut() {
+        [HttpGet("~/signout"), HttpPost("~/signout")]
+        public IActionResult SignOut() {
             // Instruct the cookies middleware to delete the local cookie created
             // when the user agent is redirected from the external identity provider
             // after a successful authentication flow (e.g Google or Facebook).
-            await HttpContext.Authentication.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-
-            return RedirectToAction("Index", "Home");
+            return SignOut(new AuthenticationProperties { RedirectUri = "/" },
+                CookieAuthenticationDefaults.AuthenticationScheme);
         }
     }
 }

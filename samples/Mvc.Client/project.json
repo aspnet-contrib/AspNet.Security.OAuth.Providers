@@ -33,7 +33,6 @@
     "Microsoft.AspNetCore.Authentication.Cookies": "1.0.0-*",
     "Microsoft.AspNetCore.Authentication.Google": "1.0.0-*",
     "Microsoft.AspNetCore.Authentication.Twitter": "1.0.0-*",
-    "Microsoft.AspNetCore.HttpOverrides": "1.0.0-*",
     "Microsoft.AspNetCore.Hosting": "1.0.0-*",
     "Microsoft.AspNetCore.Mvc": "1.0.0-*",
     "Microsoft.AspNetCore.Server.IISIntegration": "1.0.0-*",
@@ -56,6 +55,17 @@
         "portable-net451+win8"
       ]
     }
+  },
+
+  "tools": {
+    "Microsoft.AspNetCore.Server.IISIntegration.Tools": {
+      "version": "1.0.0-*",
+      "imports": "portable-net45+wp80+win8+wpa81+dnxcore50"
+    }
+  },
+
+  "scripts": {
+    "postpublish": "dotnet publish-iis --publish-folder %publish:OutputPath% --framework %publish:FullTargetFramework%"
   },
 
   "content": [

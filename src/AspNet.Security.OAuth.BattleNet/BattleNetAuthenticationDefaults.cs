@@ -23,7 +23,7 @@ namespace AspNet.Security.OAuth.BattleNet {
         public const string DisplayName = "BattleNet";
 
         /// <summary>
-        /// Default value for <see cref="RemoteAuthenticationOptions.ClaimsIssuer"/>.
+        /// Default value for <see cref="AuthenticationOptions.ClaimsIssuer"/>.
         /// </summary>
         public const string Issuer = "BattleNet";
 

@@ -23,7 +23,7 @@ namespace AspNet.Security.OAuth.SoundCloud {
         public const string DisplayName = "SoundCloud";
 
         /// <summary>
-        /// Default value for <see cref="RemoteAuthenticationOptions.ClaimsIssuer"/>.
+        /// Default value for <see cref="AuthenticationOptions.ClaimsIssuer"/>.
         /// </summary>
         public const string Issuer = "SoundCloud";
 
