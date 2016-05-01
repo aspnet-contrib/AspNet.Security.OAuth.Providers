@@ -23,6 +23,14 @@ namespace Microsoft.AspNetCore.Builder {
         public static IApplicationBuilder UseHealthGraphAuthentication(
             [NotNull] this IApplicationBuilder app,
             [NotNull] HealthGraphAuthenticationOptions options) {
+            if (app == null) {
+                throw new ArgumentNullException(nameof(app));
+            }
+
+            if (options == null) {
+                throw new ArgumentNullException(nameof(options));
+            }
+
             return app.UseMiddleware<HealthGraphAuthenticationMiddleware>(Options.Create(options));
         }
 
@@ -35,10 +43,18 @@ namespace Microsoft.AspNetCore.Builder {
         public static IApplicationBuilder UseHealthGraphAuthentication(
             [NotNull] this IApplicationBuilder app,
             [NotNull] Action<HealthGraphAuthenticationOptions> configuration) {
+            if (app == null) {
+                throw new ArgumentNullException(nameof(app));
+            }
+
+            if (configuration == null) {
+                throw new ArgumentNullException(nameof(configuration));
+            }
+
             var options = new HealthGraphAuthenticationOptions();
             configuration(options);
 
-            return app.UseMiddleware<HealthGraphAuthenticationMiddleware>(options);
+            return app.UseMiddleware<HealthGraphAuthenticationMiddleware>(Options.Create(options));
         }
     }
 }

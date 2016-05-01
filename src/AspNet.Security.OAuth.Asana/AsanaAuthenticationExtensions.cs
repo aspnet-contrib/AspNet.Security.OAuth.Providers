@@ -23,6 +23,14 @@ namespace Microsoft.AspNetCore.Builder {
         public static IApplicationBuilder UseAsanaAuthentication(
             [NotNull] this IApplicationBuilder app,
             [NotNull] AsanaAuthenticationOptions options) {
+            if (app == null) {
+                throw new ArgumentNullException(nameof(app));
+            }
+
+            if (options == null) {
+                throw new ArgumentNullException(nameof(options));
+            }
+
             return app.UseMiddleware<AsanaAuthenticationMiddleware>(Options.Create(options));
         }
 
@@ -35,10 +43,18 @@ namespace Microsoft.AspNetCore.Builder {
         public static IApplicationBuilder UseAsanaAuthentication(
             [NotNull] this IApplicationBuilder app,
             [NotNull] Action<AsanaAuthenticationOptions> configuration) {
+            if (app == null) {
+                throw new ArgumentNullException(nameof(app));
+            }
+
+            if (configuration == null) {
+                throw new ArgumentNullException(nameof(configuration));
+            }
+
             var options = new AsanaAuthenticationOptions();
             configuration(options);
 
-            return app.UseMiddleware<AsanaAuthenticationMiddleware>(options);
+            return app.UseMiddleware<AsanaAuthenticationMiddleware>(Options.Create(options));
         }
     }
 }
