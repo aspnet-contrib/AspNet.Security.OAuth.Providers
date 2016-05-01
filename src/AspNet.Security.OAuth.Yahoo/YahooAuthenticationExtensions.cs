@@ -23,6 +23,14 @@ namespace Microsoft.AspNetCore.Builder {
         public static IApplicationBuilder UseYahooAuthentication(
             [NotNull] this IApplicationBuilder app,
             [NotNull] YahooAuthenticationOptions options) {
+            if (app == null) {
+                throw new ArgumentNullException(nameof(app));
+            }
+
+            if (options == null) {
+                throw new ArgumentNullException(nameof(options));
+            }
+
             return app.UseMiddleware<YahooAuthenticationMiddleware>(Options.Create(options));
         }
 
@@ -35,10 +43,18 @@ namespace Microsoft.AspNetCore.Builder {
         public static IApplicationBuilder UseYahooAuthentication(
             [NotNull] this IApplicationBuilder app,
             [NotNull] Action<YahooAuthenticationOptions> configuration) {
+            if (app == null) {
+                throw new ArgumentNullException(nameof(app));
+            }
+
+            if (configuration == null) {
+                throw new ArgumentNullException(nameof(configuration));
+            }
+
             var options = new YahooAuthenticationOptions();
             configuration(options);
 
-            return app.UseYahooAuthentication(options);
+            return app.UseMiddleware<YahooAuthenticationMiddleware>(Options.Create(options));
         }
     }
 }

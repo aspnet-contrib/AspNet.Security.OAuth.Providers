@@ -23,6 +23,14 @@ namespace Microsoft.AspNetCore.Builder {
         public static IApplicationBuilder UseLinkedInAuthentication(
             [NotNull] this IApplicationBuilder app,
             [NotNull] LinkedInAuthenticationOptions options) {
+            if (app == null) {
+                throw new ArgumentNullException(nameof(app));
+            }
+
+            if (options == null) {
+                throw new ArgumentNullException(nameof(options));
+            }
+
             return app.UseMiddleware<LinkedInAuthenticationMiddleware>(Options.Create(options));
         }
 
@@ -35,10 +43,18 @@ namespace Microsoft.AspNetCore.Builder {
         public static IApplicationBuilder UseLinkedInAuthentication(
             [NotNull] this IApplicationBuilder app,
             [NotNull] Action<LinkedInAuthenticationOptions> configuration) {
+            if (app == null) {
+                throw new ArgumentNullException(nameof(app));
+            }
+
+            if (configuration == null) {
+                throw new ArgumentNullException(nameof(configuration));
+            }
+
             var options = new LinkedInAuthenticationOptions();
             configuration(options);
 
-            return app.UseLinkedInAuthentication(options);
+            return app.UseMiddleware<LinkedInAuthenticationMiddleware>(Options.Create(options));
         }
     }
 }
