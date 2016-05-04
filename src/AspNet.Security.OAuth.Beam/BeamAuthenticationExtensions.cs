@@ -23,6 +23,14 @@ namespace Microsoft.AspNetCore.Builder {
         public static IApplicationBuilder UseBeamAuthentication(
             [NotNull] this IApplicationBuilder app,
             [NotNull] BeamAuthenticationOptions options) {
+            if (app == null) {
+                throw new ArgumentNullException(nameof(app));
+            }
+
+            if (options == null) {
+                throw new ArgumentNullException(nameof(options));
+            }
+
             return app.UseMiddleware<BeamAuthenticationMiddleware>(Options.Create(options));
         }
 
@@ -35,10 +43,18 @@ namespace Microsoft.AspNetCore.Builder {
         public static IApplicationBuilder UseBeamAuthentication(
             [NotNull] this IApplicationBuilder app,
             [NotNull] Action<BeamAuthenticationOptions> configuration) {
+            if (app == null) {
+                throw new ArgumentNullException(nameof(app));
+            }
+
+            if (configuration == null) {
+                throw new ArgumentNullException(nameof(configuration));
+            }
+
             var options = new BeamAuthenticationOptions();
             configuration(options);
 
-            return app.UseMiddleware<BeamAuthenticationMiddleware>(options);
+            return app.UseMiddleware<BeamAuthenticationMiddleware>(Options.Create(options));
         }
     }
 }

@@ -23,6 +23,14 @@ namespace Microsoft.AspNetCore.Builder {
         public static IApplicationBuilder UseSoundCloudAuthentication(
             [NotNull] this IApplicationBuilder app,
             [NotNull] SoundCloudAuthenticationOptions options) {
+            if (app == null) {
+                throw new ArgumentNullException(nameof(app));
+            }
+
+            if (options == null) {
+                throw new ArgumentNullException(nameof(options));
+            }
+
             return app.UseMiddleware<SoundCloudAuthenticationMiddleware>(Options.Create(options));
         }
 
@@ -35,10 +43,18 @@ namespace Microsoft.AspNetCore.Builder {
         public static IApplicationBuilder UseSoundCloudAuthentication(
             [NotNull] this IApplicationBuilder app,
             [NotNull] Action<SoundCloudAuthenticationOptions> configuration) {
+            if (app == null) {
+                throw new ArgumentNullException(nameof(app));
+            }
+
+            if (configuration == null) {
+                throw new ArgumentNullException(nameof(configuration));
+            }
+
             var options = new SoundCloudAuthenticationOptions();
             configuration(options);
 
-            return app.UseMiddleware<SoundCloudAuthenticationMiddleware>(options);
+            return app.UseMiddleware<SoundCloudAuthenticationMiddleware>(Options.Create(options));
         }
     }
 }

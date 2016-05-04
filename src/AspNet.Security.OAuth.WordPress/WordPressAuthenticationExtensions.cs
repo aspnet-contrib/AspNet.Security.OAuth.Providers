@@ -23,6 +23,14 @@ namespace Microsoft.AspNetCore.Builder {
         public static IApplicationBuilder UseWordPressAuthentication(
             [NotNull] this IApplicationBuilder app,
             [NotNull] WordPressAuthenticationOptions options) {
+            if (app == null) {
+                throw new ArgumentNullException(nameof(app));
+            }
+
+            if (options == null) {
+                throw new ArgumentNullException(nameof(options));
+            }
+
             return app.UseMiddleware<WordPressAuthenticationMiddleware>(Options.Create(options));
         }
 
@@ -35,10 +43,18 @@ namespace Microsoft.AspNetCore.Builder {
         public static IApplicationBuilder UseWordPressAuthentication(
             [NotNull] this IApplicationBuilder app,
             [NotNull] Action<WordPressAuthenticationOptions> configuration) {
+            if (app == null) {
+                throw new ArgumentNullException(nameof(app));
+            }
+
+            if (configuration == null) {
+                throw new ArgumentNullException(nameof(configuration));
+            }
+
             var options = new WordPressAuthenticationOptions();
             configuration(options);
 
-            return app.UseWordPressAuthentication(options);
+            return app.UseMiddleware<WordPressAuthenticationMiddleware>(Options.Create(options));
         }
     }
 }

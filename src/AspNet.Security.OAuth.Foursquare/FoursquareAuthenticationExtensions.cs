@@ -23,6 +23,14 @@ namespace Microsoft.AspNetCore.Builder {
         public static IApplicationBuilder UseFoursquareAuthentication(
             [NotNull] this IApplicationBuilder app,
             [NotNull] FoursquareAuthenticationOptions options) {
+            if (app == null) {
+                throw new ArgumentNullException(nameof(app));
+            }
+
+            if (options == null) {
+                throw new ArgumentNullException(nameof(options));
+            }
+
             return app.UseMiddleware<FoursquareAuthenticationMiddleware>(Options.Create(options));
         }
 
@@ -35,10 +43,18 @@ namespace Microsoft.AspNetCore.Builder {
         public static IApplicationBuilder UseFoursquareAuthentication(
             [NotNull] this IApplicationBuilder app,
             [NotNull] Action<FoursquareAuthenticationOptions> configuration) {
+            if (app == null) {
+                throw new ArgumentNullException(nameof(app));
+            }
+
+            if (configuration == null) {
+                throw new ArgumentNullException(nameof(configuration));
+            }
+
             var options = new FoursquareAuthenticationOptions();
             configuration(options);
 
-            return app.UseFoursquareAuthentication(options);
+            return app.UseMiddleware<FoursquareAuthenticationMiddleware>(Options.Create(options));
         }
     }
 
