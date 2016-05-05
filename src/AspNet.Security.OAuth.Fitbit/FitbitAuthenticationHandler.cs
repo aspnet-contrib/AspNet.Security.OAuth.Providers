@@ -12,10 +12,10 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using AspNet.Security.OAuth.Extensions;
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http.Authentication;
-using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 
@@ -32,7 +32,15 @@ namespace AspNet.Security.OAuth.Fitbit {
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", tokens.AccessToken);
 
             var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
-            response.EnsureSuccessStatusCode();
+            if (!response.IsSuccessStatusCode) {
+                Logger.LogError("An error occurred when retrieving the user profile: the remote server " +
+                                "returned a {Status} response with the following payload: {Headers} {Body}.",
+                                /* Status: */ response.StatusCode,
+                                /* Headers: */ response.Headers.ToString(),
+                                /* Body: */ await response.Content.ReadAsStringAsync());
+
+                throw new HttpRequestException("An error occurred when retrieving the user profile.");
+            }
 
             var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
 
