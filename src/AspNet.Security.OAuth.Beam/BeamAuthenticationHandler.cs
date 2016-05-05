@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http.Authentication;
 using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
+using Microsoft.Extensions.Logging;
 
 namespace AspNet.Security.OAuth.Beam {
     public class BeamAuthenticationHandler : OAuthHandler<BeamAuthenticationOptions> {
@@ -28,7 +29,15 @@ namespace AspNet.Security.OAuth.Beam {
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", tokens.AccessToken);
 
             var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
-            response.EnsureSuccessStatusCode();
+            if (!response.IsSuccessStatusCode) {
+                Logger.LogError("An error occurred when retrieving the user profile: the remote server " +
+                                "returned a {Status} response with the following payload: {Headers} {Body}.",
+                                /* Status: */ response.StatusCode,
+                                /* Headers: */ response.Headers.ToString(),
+                                /* Body: */ await response.Content.ReadAsStringAsync());
+
+                throw new HttpRequestException("An error occurred when retrieving the user profile.");
+            }
 
             var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
 
