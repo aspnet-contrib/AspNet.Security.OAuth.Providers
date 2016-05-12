@@ -1,28 +1,31 @@
 ﻿{
   "version": "1.0.0-beta1-*",
 
-  "description": "ASP.NET Core security middleware enabling LinkedIn authentication.",
-  "authors": [ "Kévin Chalet", "Jerrie Pelser" ],
-  "owners": [ "Kévin Chalet", "Jerrie Pelser" ],
+  "packOptions": {
+    "description": "ASP.NET Core security middleware enabling LinkedIn authentication.",
+    "authors": [ "Kévin Chalet", "Jerrie Pelser" ],
+    "owners": [ "Kévin Chalet", "Jerrie Pelser" ],
 
-  "projectUrl": "https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers",
-  "iconUrl": "https://avatars3.githubusercontent.com/u/7998081?s=64",
-  "licenseUrl": "http://www.apache.org/licenses/LICENSE-2.0.html",
+    "projectUrl": "https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers",
+    "iconUrl": "https://avatars3.githubusercontent.com/u/7998081?s=64",
+    "licenseUrl": "http://www.apache.org/licenses/LICENSE-2.0.html",
 
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers"
+    "repository": {
+      "type": "git",
+      "url": "git://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers"
+    },
+
+    "tags": [
+      "aspnetcore",
+      "authentication",
+      "linkedin",
+      "oauth",
+      "security"
+    ]
   },
 
-  "tags": [
-    "aspnetcore",
-    "authentication",
-    "linkedin",
-    "oauth",
-    "security"
-  ],
-
-  "compilationOptions": {
+  "buildOptions": {
+    "warningsAsErrors": true,
     "nowarn": [ "CS1591" ],
     "xmlDoc": true
   },
