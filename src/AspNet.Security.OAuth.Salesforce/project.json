@@ -1,0 +1,53 @@
+{
+  "version": "1.0.0-beta1-*",
+
+  "packOptions": {
+    "description": "ASP.NET Core security middleware enabling Salesforce authentication.",
+    "authors": [ "Andrew Mattie" ],
+    "owners": [ "Kévin Chalet", "Jerrie Pelser" ],
+
+    "projectUrl": "https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers",
+    "iconUrl": "https://avatars3.githubusercontent.com/u/7998081?s=64",
+    "licenseUrl": "http://www.apache.org/licenses/LICENSE-2.0.html",
+
+    "repository": {
+      "type": "git",
+      "url": "git://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers"
+    },
+
+    "tags": [
+      "aspnetcore",
+      "authentication",
+      "oauth",
+      "salesforce",
+      "security"
+    ]
+  },
+
+  "buildOptions": {
+    "warningsAsErrors": true,
+    "nowarn": [ "CS1591" ],
+    "xmlDoc": true
+  },
+
+  "dependencies": {
+    "AspNet.Security.OAuth.Extensions": { "type": "build", "version": "1.0.0-*" },
+    "JetBrains.Annotations": { "type": "build", "version": "10.1.2-eap" },
+    "Microsoft.AspNetCore.Authentication.OAuth": "1.0.0-*"
+  },
+
+  "frameworks": {
+    "net451": {
+      "frameworkAssemblies": {
+        "System.Runtime": { "type": "build" }
+      }
+    },
+
+    "netstandard1.3": {
+      "imports": [
+        "dotnet5.4",
+        "portable-net451+win8"
+      ]
+    }
+  }
+}
