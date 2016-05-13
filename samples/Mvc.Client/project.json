@@ -32,6 +32,7 @@
     "AspNet.Security.OAuth.Onshape": { "target": "project" },
     "AspNet.Security.OAuth.Paypal": { "target": "project" },
     "AspNet.Security.OAuth.Reddit": { "target": "project" },
+    "AspNet.Security.OAuth.Salesforce": { "target": "project" },
     "AspNet.Security.OAuth.Slack": { "target": "project" },
     "AspNet.Security.OAuth.SoundCloud": { "target": "project" },
     "AspNet.Security.OAuth.Spotify": { "target": "project" },
