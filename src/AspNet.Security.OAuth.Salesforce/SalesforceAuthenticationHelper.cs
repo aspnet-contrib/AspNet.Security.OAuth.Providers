@@ -21,8 +21,28 @@ namespace AspNet.Security.OAuth.Salesforce
         public static string GetUserIdentifier([NotNull] JObject user) => user.Value<string>("user_id");
 
         /// <summary>
-        /// Gets the user's name
+        /// Gets the user's name.
         /// </summary>
         public static string GetUserName([NotNull] JObject user) => user.Value<string>("user_name");
+
+        /// <summary>
+        /// Gets the user's email.
+        /// </summary>
+        public static string GetEmail([NotNull] JObject user) => user.Value<string>("email");
+
+        /// <summary>
+        /// Gets the user's thumbnail photo.
+        /// </summary>
+        public static string GetThumbnailPhoto([NotNull] JObject user) => user["photos"].Value<string>("thumbnail");
+
+        /// <summary>
+        /// Gets the user's UTC offset, in milliseconds.
+        /// </summary>
+        public static string GetUtcOffset([NotNull] JObject user) => user.Value<int>("utcOffset").ToString();
+
+        /// <summary>
+        /// Gets the REST URL returned from the identity service.
+        /// </summary>
+        public static string GetRestUrl([NotNull] JObject user) => user["urls"].Value<string>("rest");
     }
 }
