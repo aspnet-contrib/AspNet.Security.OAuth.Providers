@@ -31,17 +31,13 @@
   },
 
   "dependencies": {
-    "AspNet.Security.OAuth.Extensions": { "type": "build", "version": "1.0.0-*" },
-    "JetBrains.Annotations": { "type": "build", "version": "10.1.2-eap" },
+    "AspNet.Security.OAuth.Extensions": { "target": "project", "type": "build" },
+    "JetBrains.Annotations": { "type": "build", "version": "10.1.4" },
     "Microsoft.AspNetCore.Authentication.OAuth": "1.0.0-*"
   },
 
   "frameworks": {
-    "net451": {
-      "frameworkAssemblies": {
-        "System.Runtime": { "type": "build" }
-      }
-    },
+    "net451": { },
 
     "netstandard1.3": {
       "dependencies": {
