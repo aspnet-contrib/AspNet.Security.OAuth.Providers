@@ -32,7 +32,7 @@
 
   "dependencies": {
     "AspNet.Security.OAuth.Extensions": { "type": "build", "version": "1.0.0-alpha4-*" },
-    "JetBrains.Annotations": { "type": "build", "version": "10.1.2-eap" },
+    "JetBrains.Annotations": { "type": "build", "version": "10.1.4" },
     "Microsoft.AspNetCore.Authentication.OAuth": "1.0.0-rc2-*"
   },
 
