@@ -15,20 +15,6 @@ namespace AspNet.Security.OAuth.Salesforce
     /// </summary>
     public class SalesforceAuthenticationOptions : OAuthOptions
     {
-        public SalesforceAuthenticationOptions OverrideHostInEndpoints(string newHost)
-        {
-            var authEndpointUri = new UriBuilder(AuthorizationEndpoint);
-            var tokenEndpointUri = new UriBuilder(TokenEndpoint);
-
-            authEndpointUri.Host = newHost;
-            tokenEndpointUri.Host = newHost;
-
-            AuthorizationEndpoint = authEndpointUri.ToString();
-            TokenEndpoint = tokenEndpointUri.ToString();
-
-            return this;
-        }
-
         public SalesforceAuthenticationOptions()
         {
             AuthenticationScheme = SalesforceAuthenticationDefaults.AuthenticationScheme;
@@ -37,8 +23,27 @@ namespace AspNet.Security.OAuth.Salesforce
 
             CallbackPath = new PathString(SalesforceAuthenticationDefaults.CallbackPath);
 
-            AuthorizationEndpoint = SalesforceAuthenticationDefaults.AuthorizationEndpoint;
-            TokenEndpoint = SalesforceAuthenticationDefaults.TokenEndpoint;
+            Environment = SalesforceAuthenticationDefaults.Environment;
+        }
+
+        public SalesforceEnvironment Environment
+        {
+            set
+            {
+                switch (value)
+                {
+                    case SalesforceEnvironment.Production:
+                        AuthorizationEndpoint = SalesforceAuthenticationDefaults.ProductionEnvironment.AuthorizationEndpoint;
+                        TokenEndpoint = SalesforceAuthenticationDefaults.ProductionEnvironment.TokenEndpoint;
+                        break;
+                    case SalesforceEnvironment.Test:
+                        AuthorizationEndpoint = SalesforceAuthenticationDefaults.TestEnvironment.AuthorizationEndpoint;
+                        TokenEndpoint = SalesforceAuthenticationDefaults.TestEnvironment.TokenEndpoint;
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(value), value, "Unsupported Salesforce environment");
+                }
+            }
         }
     }
 }

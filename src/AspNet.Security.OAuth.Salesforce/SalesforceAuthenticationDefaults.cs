@@ -35,13 +35,34 @@ namespace AspNet.Security.OAuth.Salesforce
         public const string CallbackPath = "/signin-salesforce";
 
         /// <summary>
-        /// Default value for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
+        /// Default value for the Salesforce environment (production or test)
         /// </summary>
-        public const string AuthorizationEndpoint = "https://login.salesforce.com/services/oauth2/authorize";
+        public const SalesforceEnvironment Environment = SalesforceEnvironment.Production;
 
-        /// <summary>
-        /// Default value for <see cref="OAuthOptions.TokenEndpoint"/>.
-        /// </summary>
-        public const string TokenEndpoint = "https://login.salesforce.com/services/oauth2/token";
+        public static class ProductionEnvironment
+        {
+            /// <summary>
+            /// Default value for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
+            /// </summary>
+            public const string AuthorizationEndpoint = "https://login.salesforce.com/services/oauth2/authorize";
+
+            /// <summary>
+            /// Default value for <see cref="OAuthOptions.TokenEndpoint"/>.
+            /// </summary>
+            public const string TokenEndpoint = "https://login.salesforce.com/services/oauth2/token";
+        }
+
+        public static class TestEnvironment
+        {
+            /// <summary>
+            /// Default value for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
+            /// </summary>
+            public const string AuthorizationEndpoint = "https://test.salesforce.com/services/oauth2/authorize";
+
+            /// <summary>
+            /// Default value for <see cref="OAuthOptions.TokenEndpoint"/>.
+            /// </summary>
+            public const string TokenEndpoint = "https://test.salesforce.com/services/oauth2/token";
+        }
     }
 }
