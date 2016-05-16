@@ -5,8 +5,8 @@ AspNet.Security.OAuth.Providers
 
 **The latest official release can be found on [NuGet](https://www.nuget.org/profiles/aspnet-contrib) and the nightly builds on [MyGet](https://www.myget.org/gallery/aspnet-contrib)**.
 
-[![Build status](https://ci.appveyor.com/api/projects/status/3lh3pq6e57c8pnr4/branch/release?svg=true)](https://ci.appveyor.com/project/aspnet-contrib/aspnet-security-oauth-providers/branch/release)
-[![Build status](https://travis-ci.org/aspnet-contrib/AspNet.Security.OAuth.Providers.svg?branch=release)](https://travis-ci.org/aspnet-contrib/AspNet.Security.OAuth.Providers)
+[![Build status](https://ci.appveyor.com/api/projects/status/3lh3pq6e57c8pnr4/branch/master?svg=true)](https://ci.appveyor.com/project/aspnet-contrib/aspnet-security-oauth-providers/branch/master)
+[![Build status](https://travis-ci.org/aspnet-contrib/AspNet.Security.OAuth.Providers.svg?branch=master)](https://travis-ci.org/aspnet-contrib/AspNet.Security.OAuth.Providers)
 
 ## Getting started
 

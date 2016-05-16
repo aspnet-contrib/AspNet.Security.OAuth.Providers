@@ -1,5 +1,5 @@
 ﻿{
-  "version": "1.0.0-alpha4-*",
+  "version": "1.0.0-alpha4-final",
 
   "packOptions": {
     "description": "ASP.NET Core extensions making OAuth2 authentication easier to use.",
@@ -36,7 +36,7 @@
 
     "netstandard1.3": {
       "dependencies": {
-        "System.Security.Claims": "4.0.1-rc2-*"
+        "System.Security.Claims": "4.0.1-rc2-24027"
       },
 
       "imports": [

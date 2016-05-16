@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0-alpha4-*",
+  "version": "1.0.0-alpha4-final",
 
   "packOptions": {
     "description": "ASP.NET Core security middleware enabling Buffer authentication.",
@@ -33,7 +33,7 @@
   "dependencies": {
     "AspNet.Security.OAuth.Extensions": { "target": "project", "type": "build" },
     "JetBrains.Annotations": { "type": "build", "version": "10.1.4" },
-    "Microsoft.AspNetCore.Authentication.OAuth": "1.0.0-rc2-*"
+    "Microsoft.AspNetCore.Authentication.OAuth": "1.0.0-rc2-final"
   },
 
   "frameworks": {
