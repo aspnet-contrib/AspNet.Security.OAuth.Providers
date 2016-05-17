@@ -1,9 +1,10 @@
 {
   "version": "1.0.0-beta1-*",
 
+  "description": "ASP.NET Core security middleware enabling Vimeo authentication.",
+  "authors": [ "Adam Reisinger" ],
+
   "packOptions": {
-    "description": "ASP.NET Core security middleware enabling Vimeo authentication.",
-    "authors": [ "Adam Reisinger" ],
     "owners": [ "Kévin Chalet", "Jerrie Pelser" ],
 
     "projectUrl": "https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers",
