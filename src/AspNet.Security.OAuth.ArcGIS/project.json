@@ -1,9 +1,10 @@
 {
   "version": "1.0.0-alpha4-final",
 
+  "description": "ASP.NET Core security middleware enabling ArcGIS authentication.",
+  "authors": [ "Dave Timmins" ],
+
   "packOptions": {
-    "description": "ASP.NET Core security middleware enabling ArcGIS authentication.",
-    "authors": [ "Dave Timmins" ],
     "owners": [ "Kévin Chalet", "Jerrie Pelser" ],
 
     "projectUrl": "https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers",
