@@ -1,9 +1,10 @@
 {
   "version": "1.0.0-beta1-*",
 
+  "description": "ASP.NET Core security middleware enabling Beam authentication.",
+  "authors": [ "Stefan Pohl" ],
+
   "packOptions": {
-    "description": "ASP.NET Core security middleware enabling Beam authentication.",
-    "authors": [ "Stefan Pohl" ],
     "owners": [ "Kévin Chalet", "Jerrie Pelser" ],
 
     "projectUrl": "https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers",
@@ -31,17 +32,13 @@
   },
 
   "dependencies": {
-    "AspNet.Security.OAuth.Extensions": { "type": "build", "version": "1.0.0-*" },
-    "JetBrains.Annotations": { "type": "build", "version": "10.1.2-eap" },
+    "AspNet.Security.OAuth.Extensions": { "target": "project", "type": "build" },
+    "JetBrains.Annotations": { "type": "build", "version": "10.1.4" },
     "Microsoft.AspNetCore.Authentication.OAuth": "1.0.0-*"
   },
 
   "frameworks": {
-    "net451": {
-      "frameworkAssemblies": {
-        "System.Runtime": { "type": "build" }
-      }
-    },
+    "net451": { },
 
     "netstandard1.3": {
       "imports": [
