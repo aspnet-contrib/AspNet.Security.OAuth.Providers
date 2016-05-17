@@ -1,9 +1,10 @@
 {
   "version": "1.0.0-alpha4-*",
 
+  "description": "ASP.NET Core security middleware enabling Instagram authentication.",
+  "authors": [ "Yannic Smeets" ],
+
   "packOptions": {
-    "description": "ASP.NET Core security middleware enabling Instagram authentication.",
-    "authors": [ "Yannic Smeets" ],
     "owners": [ "Kévin Chalet", "Jerrie Pelser" ],
 
     "projectUrl": "https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers",

@@ -1,9 +1,10 @@
 ﻿{
   "version": "1.0.0-alpha4-*",
 
+  "description": "ASP.NET Core security middleware enabling Twitch authentication.",
+  "authors": [ "Tommy Parnell" ],
+
   "packOptions": {
-    "description": "ASP.NET Core security middleware enabling Twitch authentication.",
-    "authors": [ "Tommy Parnell" ],
     "owners": [ "Kévin Chalet", "Jerrie Pelser" ],
 
     "projectUrl": "https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers",
