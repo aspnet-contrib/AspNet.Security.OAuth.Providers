@@ -6,8 +6,6 @@
 
 using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
-using System;
-using System.Linq;
 
 namespace AspNet.Security.OAuth.Gitter
 {
@@ -46,10 +44,5 @@ namespace AspNet.Security.OAuth.Gitter
         /// Gets the medium url avatar corresponding to the authenticated user.
         /// </summary>
         public static string GetAvatarUrlMedium([NotNull] JObject user) => user.Value<string>("avatarUrlMedium");
-
-        /// <summary>
-        ///  Gets the GV corresponding to the authenticated user.
-        /// </summary>
-        public static string GetGV([NotNull] JObject user) => user.Value<string>("gv");
     }
 }

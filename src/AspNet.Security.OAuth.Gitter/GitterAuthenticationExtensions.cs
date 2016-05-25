@@ -1,15 +1,15 @@
 ﻿/*
  * Licensed under the Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0)
- * See https://Gitter.com/aspnet-contrib/AspNet.Security.OAuth.Providers
+ * See https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using AspNet.Security.OAuth.Gitter;
 using JetBrains.Annotations;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Options;
 using System;
 
-namespace AspNet.Security.OAuth.Gitter
+namespace Microsoft.AspNetCore.Builder
 {
     /// <summary>
     /// Extension methods to add Gitter authentication capabilities to an HTTP application pipeline.

@@ -1,4 +1,10 @@
-﻿using AspNet.Security.OAuth.Extensions;
+﻿/*
+ * Licensed under the Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0)
+ * See https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers
+ * for more information concerning the license and the contributors participating to this project.
+ */
+
+using AspNet.Security.OAuth.Extensions;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
@@ -10,7 +16,6 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace AspNet.Security.OAuth.Gitter
@@ -41,13 +46,12 @@ namespace AspNet.Security.OAuth.Gitter
             }
 
             var payload = JArray.Parse(await response.Content.ReadAsStringAsync());
-            var user = JObject.Parse(payload[0].ToString());
+            var user = (JObject)payload[0];
 
             identity.AddOptionalClaim(ClaimTypes.NameIdentifier, GitterAuthenticationHelper.GetIdentifier(user), Options.ClaimsIssuer)
                     .AddOptionalClaim(ClaimTypes.Name, GitterAuthenticationHelper.GetUsername(user), Options.ClaimsIssuer)
                     .AddOptionalClaim(ClaimTypes.Webpage, GitterAuthenticationHelper.GetLink(user), Options.ClaimsIssuer)
                     .AddOptionalClaim("urn:gitter:displayname", GitterAuthenticationHelper.GetDisplayName(user), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:gitter:gv", GitterAuthenticationHelper.GetGV(user), Options.ClaimsIssuer)
                     .AddOptionalClaim("urn:gitter:avatarurlsmall", GitterAuthenticationHelper.GetAvatarUrlSmall(user), Options.ClaimsIssuer)
                     .AddOptionalClaim("urn:gitter:avatarurlmedium", GitterAuthenticationHelper.GetAvatarUrlMedium(user), Options.ClaimsIssuer);
 
