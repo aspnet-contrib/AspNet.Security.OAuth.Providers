@@ -6,6 +6,7 @@
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using System.Collections.Generic;
 
 namespace AspNet.Security.OAuth.LinkedIn {
     /// <summary>
@@ -22,6 +23,16 @@ namespace AspNet.Security.OAuth.LinkedIn {
             AuthorizationEndpoint = LinkedInAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = LinkedInAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = LinkedInAuthenticationDefaults.UserInformationEndpoint;
+
+            Fields.Add("id");
+            Fields.Add("formatted-name");
+            Fields.Add("email-address");
         }
+
+        /// <summary>
+        /// The list of fields to retrieve from the UserInformationEndpoint.
+        /// https://developer.linkedin.com/docs/fields/basic-profile
+        /// </summary>
+        public ICollection<string> Fields { get; } = new HashSet<string>();
     }
 }
