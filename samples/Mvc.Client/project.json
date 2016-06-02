@@ -25,6 +25,7 @@
     "AspNet.Security.OAuth.Foursquare": { "target": "project" },
     "AspNet.Security.OAuth.Fitbit": { "target": "project" },
     "AspNet.Security.OAuth.GitHub": { "target": "project" },
+    "AspNet.Security.OAuth.Gitter": { "target": "project" },
     "AspNet.Security.OAuth.HealthGraph": { "target": "project" },
     "AspNet.Security.OAuth.Imgur": { "target": "project" },
     "AspNet.Security.OAuth.Instagram": { "target": "project" },
@@ -62,7 +63,10 @@
 
     "netcoreapp1.0": {
       "dependencies": {
-        "Microsoft.NETCore.App": { "type": "platform", "version": "1.0.0-*" }
+        "Microsoft.NETCore.App": {
+          "type": "platform",
+          "version": "1.0.0-*"
+        }
       },
 
       "imports": [
