@@ -1,0 +1,36 @@
+{
+    "version": "1.0.0-*",
+    "description": "ASP.NET Core middleware that enables an application to support Vkontakte OAuth 2.0 authentication workflow.",
+    "authors": [ "Albert Zakiev" ],
+    "packOptions": {
+        "repository": {
+            "type": "git",
+            "url": "git://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers"
+        },
+        "tags": [
+            "aspnetcore",
+            "authentication",
+            "oauth",
+            "security",
+            "vkontakte"
+        ]
+    },
+    "buildOptions": {
+        "warningsAsErrors": true,
+        "nowarn": [ "CS1591" ],
+        "xmlDoc": true
+    },
+    "dependencies": {
+        "Microsoft.AspNetCore.Authentication.OAuth": "1.0.0-*"
+    },
+    "frameworks": {
+        "net451": { },
+
+        "netstandard1.3": {
+            "imports": [
+                "dotnet5.4",
+                "portable-net451+win8"
+            ]
+        }
+    }
+}
