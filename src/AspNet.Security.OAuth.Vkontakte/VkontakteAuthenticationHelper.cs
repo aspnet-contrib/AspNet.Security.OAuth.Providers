@@ -1,82 +1,35 @@
-﻿using System;
+﻿using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
 
-namespace AspNet.Security.OAuth.Vkontakte
-{
+namespace AspNet.Security.OAuth.Vkontakte {
     /// <summary>
     /// Contains static methods that allow to extract user's information from a <see cref="JObject"/>
     /// instance retrieved from Facebook after a successful authentication process.
     /// </summary>
-    internal static class VkontakteAuthenticationHelper
-    {
+    internal static class VkontakteAuthenticationHelper {
         /// <summary>
         /// Gets the user ID.
         /// </summary>
-        public static string GetId(JObject response)
-        {
-            if (response == null)
-            {
-                throw new ArgumentNullException(nameof(response));
-            }
+        public static string GetId([NotNull] JObject user) => user.Value<string>("uid");
 
-            return GetStringValue(response, "uid");
-        }
-        
         /// <summary>
         /// Gets the first name.
         /// </summary>
-        public static string GetFirstName(JObject response)
-        {
-            if (response == null)
-            {
-                throw new ArgumentNullException(nameof(response));
-            }
+        public static string GetFirstName([NotNull] JObject user) => user.Value<string>("first_name");
 
-            return GetStringValue(response, "first_name");
-        }
-        
         /// <summary>
         /// Gets the last name.
         /// </summary>
-        public static string GetLastName(JObject response)
-        {
-            if (response == null)
-            {
-                throw new ArgumentNullException(nameof(response));
-            }
-
-            return GetStringValue(response, "last_name");
-        }
+        public static string GetLastName([NotNull] JObject user) => user.Value<string>("last_name");
 
         /// <summary>
         /// Gets the screen name.
         /// </summary>
-        public static string GetScreenName(JObject response)
-        {
-            if (response == null)
-            {
-                throw new ArgumentNullException(nameof(response));
-            }
+        public static string GetScreenName([NotNull] JObject user) => user.Value<string>("screen_name");
 
-            return GetStringValue(response, "screen_name");
-        }
-        
         /// <summary>
-        /// Get photo
+        /// Gets the photo
         /// </summary>
-        public static string GetPhoto(JObject response)
-        {
-            if (response == null)
-            {
-                throw new ArgumentNullException(nameof(response));
-            }
-
-            return GetStringValue(response, "photo_50");
-        }
-
-        private static string GetStringValue(JObject jObject, string key)
-        {
-            return jObject["response"][0].Value<string>(key) ?? string.Empty;
-        }
+        public static string GetPhoto([NotNull] JObject user) => user.Value<string>("photo_50");
     }
 }

@@ -1,69 +1,49 @@
 ﻿using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using AspNet.Security.OAuth.Extensions;
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 
-namespace AspNet.Security.OAuth.Vkontakte
-{
-    internal class VkontakteAuthenticationHandler : OAuthHandler<VkontakteAuthenticationOptions>
-    {
-        public VkontakteAuthenticationHandler(HttpClient httpClient) : base(httpClient)
-        {
+namespace AspNet.Security.OAuth.Vkontakte {
+    public class VkontakteAuthenticationHandler : OAuthHandler<VkontakteAuthenticationOptions> {
+        public VkontakteAuthenticationHandler(HttpClient httpClient) : base(httpClient) {
         }
 
-        protected override async Task<AuthenticationTicket> CreateTicketAsync(ClaimsIdentity identity, AuthenticationProperties properties, OAuthTokenResponse tokens)
-        {
+        protected override async Task<AuthenticationTicket> CreateTicketAsync([NotNull] ClaimsIdentity identity, [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens) {
             string endpoint = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, "access_token", tokens.AccessToken);
 
-            if (Options.Fields.Count > 0)
-            {
+            if (Options.Fields.Count > 0) {
                 endpoint = QueryHelpers.AddQueryString(endpoint, "fields", string.Join(",", Options.Fields));
             }
 
-            HttpResponseMessage response = await Backchannel.GetAsync(endpoint, Context.RequestAborted);
-            response.EnsureSuccessStatusCode();
-
-            string responseText = await response.Content.ReadAsStringAsync();
-
-            JObject payload = JObject.Parse(responseText);
-            
-            AuthenticationTicket ticket = new AuthenticationTicket(new ClaimsPrincipal(identity), properties, Options.AuthenticationScheme);
-            OAuthCreatingTicketContext context = new OAuthCreatingTicketContext(ticket, Context, Options, Backchannel, tokens, payload);
-
-            string identifier = VkontakteAuthenticationHelper.GetId(payload);
-            if (!string.IsNullOrEmpty(identifier))
-            {
-                identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, identifier, ClaimValueTypes.String, Options.ClaimsIssuer));
-            }
-            
-            string firstName = VkontakteAuthenticationHelper.GetFirstName(payload);
-            if (!string.IsNullOrEmpty(firstName))
-            {
-                identity.AddClaim(new Claim(ClaimTypes.GivenName, firstName, ClaimValueTypes.String, Options.ClaimsIssuer));
+            var response = await Backchannel.GetAsync(endpoint, Context.RequestAborted);
+            if (!response.IsSuccessStatusCode) {
+                Logger.LogError("An error occurred when retrieving the user profile: the remote server " +
+                                "returned a {Status} response with the following payload: {Headers} {Body}.",
+                    /* Status: */ response.StatusCode,
+                    /* Headers: */ response.Headers.ToString(),
+                    /* Body: */ await response.Content.ReadAsStringAsync());
+                throw new HttpRequestException("An error occurred when retrieving the user profile.");
             }
 
-            string lastName = VkontakteAuthenticationHelper.GetLastName(payload);
-            if (!string.IsNullOrEmpty(lastName))
-            {
-                identity.AddClaim(new Claim(ClaimTypes.Surname, lastName, ClaimValueTypes.String, Options.ClaimsIssuer));
-            }
+            var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
+            var user = (JObject)payload["response"][0];
 
-            string name = VkontakteAuthenticationHelper.GetScreenName(payload);
-            if (!string.IsNullOrEmpty(name))
-            {
-                identity.AddClaim(new Claim(ClaimTypes.Name, name, ClaimValueTypes.String, Options.ClaimsIssuer));
-            }
-            
-            string photo = VkontakteAuthenticationHelper.GetPhoto(payload);
-            if (!string.IsNullOrEmpty(photo))
-            {
-                identity.AddClaim(new Claim("urn:vkontakte:link", photo, ClaimValueTypes.String, Options.ClaimsIssuer));
-            }
-            
+            var ticket = new AuthenticationTicket(new ClaimsPrincipal(identity), properties, Options.AuthenticationScheme);
+            var context = new OAuthCreatingTicketContext(ticket, Context, Options, Backchannel, tokens, user);
+
+            identity.AddOptionalClaim(ClaimTypes.NameIdentifier, VkontakteAuthenticationHelper.GetId(user), Options.ClaimsIssuer);
+            identity.AddOptionalClaim(ClaimTypes.GivenName, VkontakteAuthenticationHelper.GetFirstName(user), Options.ClaimsIssuer);
+            identity.AddOptionalClaim(ClaimTypes.Surname, VkontakteAuthenticationHelper.GetLastName(user), Options.ClaimsIssuer);
+            identity.AddOptionalClaim(ClaimTypes.Name, VkontakteAuthenticationHelper.GetScreenName(user), Options.ClaimsIssuer);
+            identity.AddOptionalClaim("urn:vkontakte:link", VkontakteAuthenticationHelper.GetPhoto(user), Options.ClaimsIssuer);
+
             await Options.Events.CreatingTicket(context);
 
             return context.Ticket;
