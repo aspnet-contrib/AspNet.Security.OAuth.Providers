@@ -44,11 +44,11 @@ namespace AspNet.Security.OAuth.Vkontakte {
             var ticket = new AuthenticationTicket(new ClaimsPrincipal(identity), properties, Options.AuthenticationScheme);
             var context = new OAuthCreatingTicketContext(ticket, Context, Options, Backchannel, tokens, user);
 
-            identity.AddOptionalClaim(ClaimTypes.NameIdentifier, VkontakteAuthenticationHelper.GetId(user), Options.ClaimsIssuer);
-            identity.AddOptionalClaim(ClaimTypes.GivenName, VkontakteAuthenticationHelper.GetFirstName(user), Options.ClaimsIssuer);
-            identity.AddOptionalClaim(ClaimTypes.Surname, VkontakteAuthenticationHelper.GetLastName(user), Options.ClaimsIssuer);
-            identity.AddOptionalClaim(ClaimTypes.Name, VkontakteAuthenticationHelper.GetScreenName(user), Options.ClaimsIssuer);
-            identity.AddOptionalClaim("urn:vkontakte:link", VkontakteAuthenticationHelper.GetPhoto(user), Options.ClaimsIssuer);
+            identity.AddOptionalClaim(ClaimTypes.NameIdentifier, VkontakteAuthenticationHelper.GetId(user), Options.ClaimsIssuer)
+                    .AddOptionalClaim(ClaimTypes.GivenName, VkontakteAuthenticationHelper.GetFirstName(user), Options.ClaimsIssuer)
+                    .AddOptionalClaim(ClaimTypes.Surname, VkontakteAuthenticationHelper.GetLastName(user), Options.ClaimsIssuer)
+                    .AddOptionalClaim(ClaimTypes.Name, VkontakteAuthenticationHelper.GetScreenName(user), Options.ClaimsIssuer)
+                    .AddOptionalClaim("urn:vkontakte:link", VkontakteAuthenticationHelper.GetPhoto(user), Options.ClaimsIssuer);
 
             await Options.Events.CreatingTicket(context);
 

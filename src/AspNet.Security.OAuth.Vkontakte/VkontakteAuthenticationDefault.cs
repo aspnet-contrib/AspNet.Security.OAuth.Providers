@@ -17,6 +17,21 @@ namespace AspNet.Security.OAuth.Vkontakte {
         public const string AuthenticationScheme = "Vkontakte";
 
         /// <summary>
+        /// Default value for <see cref="RemoteAuthenticationOptions.DisplayName"/>.
+        /// </summary>
+        public const string DisplayName = "Vkontakte";
+
+        /// <summary>
+        /// Default value for <see cref="AuthenticationOptions.ClaimsIssuer"/>.
+        /// </summary>
+        public const string Issuer = "Vkontakte";
+
+        /// <summary>
+        /// Default value for <see cref="RemoteAuthenticationOptions.CallbackPath"/>.
+        /// </summary>
+        public const string CallbackPath = "/signin-vkontakte";
+
+        /// <summary>
         /// Default value for <see cref="OAuthOptions.TokenEndpoint"/>.
         /// </summary>
         public const string TokenEndpoint = "https://oauth.vk.com/access_token";
