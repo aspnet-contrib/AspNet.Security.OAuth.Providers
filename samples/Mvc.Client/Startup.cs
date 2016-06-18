@@ -46,6 +46,12 @@ namespace Mvc.Client {
                 Scope = { "user:email" }
             });
 
+            app.UseYammerAuthentication(new YammerAuthenticationOptions {
+                ClientId = "N4ombIYYwD4ipyFMauv4g",
+                ClientSecret = "TINDQgP5uHMwqbvkH1UlsnKFnjh5mJstMBoTp1zVJI",
+                SaveTokens = true
+            });
+
             app.UseMvc();
         }
     }
