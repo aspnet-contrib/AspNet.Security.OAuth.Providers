@@ -24,7 +24,13 @@ namespace AspNet.Security.OAuth.LinkedIn {
 
         protected override async Task<AuthenticationTicket> CreateTicketAsync([NotNull] ClaimsIdentity identity,
             [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens) {
-            var request = new HttpRequestMessage(HttpMethod.Get, Options.UserInformationEndpoint);
+            var endpoint = Options.UserInformationEndpoint;
+            if (Options.Fields.Count > 0) {
+                var insertIndex = Options.UserInformationEndpoint.LastIndexOf("~") + 1;
+                endpoint = endpoint.Insert(insertIndex, $":({ string.Join(",", Options.Fields)})");
+            }
+
+            var request = new HttpRequestMessage(HttpMethod.Get, endpoint);
             request.Headers.Add("x-li-format", "json");
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", tokens.AccessToken);
 
@@ -44,8 +50,26 @@ namespace AspNet.Security.OAuth.LinkedIn {
             identity.AddOptionalClaim(ClaimTypes.NameIdentifier, LinkedInAuthenticationHelper.GetIdentifier(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim(ClaimTypes.Name, LinkedInAuthenticationHelper.GetName(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim(ClaimTypes.Email, LinkedInAuthenticationHelper.GetEmail(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim(ClaimTypes.GivenName, LinkedInAuthenticationHelper.GetGivenName(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim(ClaimTypes.Surname, LinkedInAuthenticationHelper.GetFamilyName(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim("urn:linkedin:profile", LinkedInAuthenticationHelper.GetPublicProfileUrl(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:linkedin:profilepicture", LinkedInAuthenticationHelper.GetProfilePictureUrl(payload), Options.ClaimsIssuer);
+                    .AddOptionalClaim("urn:linkedin:profilepicture", LinkedInAuthenticationHelper.GetProfilePictureUrl(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim("urn:linkedin:industry", LinkedInAuthenticationHelper.GetIndustry(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim("urn:linkedin:summary", LinkedInAuthenticationHelper.GetSummary(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim("urn:linkedin:headline", LinkedInAuthenticationHelper.GetHeadline(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim("urn:linkedin:positions", LinkedInAuthenticationHelper.GetPositions(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim("urn:linkedin:maidenname", LinkedInAuthenticationHelper.GetMaidenName(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim("urn:linkedin:phoneticfirstname", LinkedInAuthenticationHelper.GetPhoneticFirstName(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim("urn:linkedin:phoneticlastname", LinkedInAuthenticationHelper.GetPhoneticLastName(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim("urn:linkedin:phoneticname", LinkedInAuthenticationHelper.GetPhoneticName(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim("urn:linkedin:location", LinkedInAuthenticationHelper.GetLocation(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim("urn:linkedin:specialties", LinkedInAuthenticationHelper.GetSpecialties(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim("urn:linkedin:numconnections", LinkedInAuthenticationHelper.GetNumConnections(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim("urn:linkedin:numconnectionscapped", LinkedInAuthenticationHelper.GetNumConnectionsCapped(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim("urn:linkedin:currentshare", LinkedInAuthenticationHelper.GetCurrentShare(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim("urn:linkedin:sitestandardprofilerequest", LinkedInAuthenticationHelper.GetSiteStandardProfileRequest(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim("urn:linkedin:apistandardprofilerequest", LinkedInAuthenticationHelper.GetApiStandardProfileRequest(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim("urn:linkedin:pictureurls", LinkedInAuthenticationHelper.GetPictureUrls(payload), Options.ClaimsIssuer);
 
             var principal = new ClaimsPrincipal(identity);
             var ticket = new AuthenticationTicket(principal, properties, Options.AuthenticationScheme);
