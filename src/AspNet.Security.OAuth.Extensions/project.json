@@ -37,7 +37,7 @@
 
     "netstandard1.3": {
       "dependencies": {
-        "System.Security.Claims": "4.0.1-*"
+        "System.Security.Claims": "4.0.1"
       },
 
       "imports": [
