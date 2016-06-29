@@ -1,5 +1,5 @@
 ﻿{
-  "version": "1.0.0-beta1-*",
+  "version": "1.0.0-beta1-final",
 
   "description": "ASP.NET Core security middleware enabling DeviantArt authentication.",
   "authors": [ "Tommy Parnell" ],
