@@ -37,6 +37,7 @@ We would love it if you could help contributing to this repository. Please look 
 * [Ethan Celletti](https://github.com/Gekctek)
 * [Jason Loeffler](https://github.com/jmloeffler)
 * [Jerrie Pelser](https://github.com/jerriep)
+* [Jesse Mandel](https://github.com/supergibbs)
 * [Kévin Chalet](https://github.com/PinpointTownes)
 * [Maxime Roussin-Bélanger](https://github.com/Lorac)
 * [Michael Knowles](https://github.com/mjknowles)
