@@ -19,7 +19,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 
 namespace AspNet.Security.OAuth.Automatic {
-    internal class AutomaticAuthenticationHandler : OAuthHandler<AutomaticAuthenticationOptions> {
+    public class AutomaticAuthenticationHandler : OAuthHandler<AutomaticAuthenticationOptions> {
         public AutomaticAuthenticationHandler([NotNull] HttpClient httpClient)
             : base(httpClient) {}
 

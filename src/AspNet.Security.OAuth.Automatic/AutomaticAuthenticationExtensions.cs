@@ -43,11 +43,13 @@ namespace Microsoft.AspNetCore.Builder {
         public static IApplicationBuilder UseAutomaticAuthentication(
             [NotNull] this IApplicationBuilder app,
             [NotNull] Action<AutomaticAuthenticationOptions> configuration) {
-            if (app == null)
+            if (app == null) {
                 throw new ArgumentNullException(nameof(app));
+            }
 
-            if (configuration == null)
+            if (configuration == null) {
                 throw new ArgumentNullException(nameof(configuration));
+            }
 
             var options = new AutomaticAuthenticationOptions();
             configuration(options);
