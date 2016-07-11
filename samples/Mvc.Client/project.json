@@ -22,6 +22,7 @@
     "AspNet.Security.OAuth.Buffer": { "target": "project" },
     "AspNet.Security.OAuth.DeviantArt": { "target": "project" },
     "AspNet.Security.OAuth.Dropbox": { "target": "project" },
+    "AspNet.Security.OAuth.EVEOnline": { "target": "project" },
     "AspNet.Security.OAuth.Foursquare": { "target": "project" },
     "AspNet.Security.OAuth.Fitbit": { "target": "project" },
     "AspNet.Security.OAuth.GitHub": { "target": "project" },
