@@ -39,6 +39,7 @@ We would love it if you could help contributing to this repository. Please look 
 * [Jerrie Pelser](https://github.com/jerriep)
 * [Jesse Mandel](https://github.com/supergibbs)
 * [Kévin Chalet](https://github.com/PinpointTownes)
+* [Mariusz Zieliński](https://github.com/mariozski)
 * [Maxime Roussin-Bélanger](https://github.com/Lorac)
 * [Michael Knowles](https://github.com/mjknowles)
 * [Sinan](https://github.com/SH2015)
