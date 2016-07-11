@@ -27,20 +27,20 @@ namespace AspNet.Security.OAuth.EVEOnline {
         public EVEOnlineAuthenticationServer Server {
             set {
                 switch (value) {
-                    case EVEOnlineAuthenticationServer.Tranquility:
-                        AuthorizationEndpoint = EVEOnlineAuthenticationDefaults.Tranquility.AuthorizationEndpoint;
-                        TokenEndpoint = EVEOnlineAuthenticationDefaults.Tranquility.TokenEndpoint;
-                        UserInformationEndpoint = EVEOnlineAuthenticationDefaults.Tranquility.UserInformationEndpoint;
-                        break;
+                case EVEOnlineAuthenticationServer.Tranquility:
+                    AuthorizationEndpoint = EVEOnlineAuthenticationDefaults.Tranquility.AuthorizationEndpoint;
+                    TokenEndpoint = EVEOnlineAuthenticationDefaults.Tranquility.TokenEndpoint;
+                    UserInformationEndpoint = EVEOnlineAuthenticationDefaults.Tranquility.UserInformationEndpoint;
+                    break;
 
-                    case EVEOnlineAuthenticationServer.Singularity:
-                        AuthorizationEndpoint = EVEOnlineAuthenticationDefaults.Singularity.AuthorizationEndpoint;
-                        TokenEndpoint = EVEOnlineAuthenticationDefaults.Singularity.TokenEndpoint;
-                        UserInformationEndpoint = EVEOnlineAuthenticationDefaults.Singularity.UserInformationEndpoint;
-                        break;
+                case EVEOnlineAuthenticationServer.Singularity:
+                    AuthorizationEndpoint = EVEOnlineAuthenticationDefaults.Singularity.AuthorizationEndpoint;
+                    TokenEndpoint = EVEOnlineAuthenticationDefaults.Singularity.TokenEndpoint;
+                    UserInformationEndpoint = EVEOnlineAuthenticationDefaults.Singularity.UserInformationEndpoint;
+                    break;
 
-                    default:
-                        throw new ArgumentException($"Server '{value}' is unsupported.", nameof(value));
+                default:
+                    throw new ArgumentException($"Server '{value}' is unsupported.", nameof(value));
                 }
             }
         }

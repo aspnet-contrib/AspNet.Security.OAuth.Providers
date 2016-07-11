@@ -31,6 +31,9 @@ namespace AspNet.Security.OAuth.EVEOnline {
         /// </summary>
         public const string CallbackPath = "/signin-eveonline";
 
+        /// <summary>
+        /// Class with default values for Tranquility (Live) server.
+        /// </summary>
         public static class Tranquility
         {
             /// <summary>
@@ -49,6 +52,9 @@ namespace AspNet.Security.OAuth.EVEOnline {
             public const string UserInformationEndpoint = "https://login.eveonline.com/oauth/verify";
         }
 
+        /// <summary>
+        /// Class with default values for Singularity (Test) server.
+        /// </summary>
         public static class Singularity
         {
             /// <summary>

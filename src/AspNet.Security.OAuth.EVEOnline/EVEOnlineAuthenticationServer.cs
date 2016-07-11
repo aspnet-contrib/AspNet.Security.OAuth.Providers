@@ -5,7 +5,14 @@
     /// accessed server.
     /// </summary>
     public enum EVEOnlineAuthenticationServer {
+        /// <summary>
+        /// Live server
+        /// </summary>
         Tranquility = 0,
+
+        /// <summary>
+        /// Test server
+        /// </summary>
         Singularity = 1
     }
 }

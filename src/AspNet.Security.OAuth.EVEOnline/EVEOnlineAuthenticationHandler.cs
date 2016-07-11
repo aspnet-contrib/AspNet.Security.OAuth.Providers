@@ -35,8 +35,8 @@ namespace AspNet.Security.OAuth.EVEOnline {
 
             identity.AddOptionalClaim(ClaimTypes.NameIdentifier, EVEOnlineAuthenticationHelper.GetIdentifier(payload), Options.ClaimsIssuer);
             identity.AddOptionalClaim(ClaimTypes.Name, EVEOnlineAuthenticationHelper.GetName(payload), Options.ClaimsIssuer);
-            identity.AddOptionalClaim(ClaimTypes.Expiration, EVEOnlineAuthenticationHelper.GetExpiration(payload), Options.ClaimsIssuer);
-            identity.AddOptionalClaim("urn:eveonline:scopes", EVEOnlineAuthenticationHelper.GetScopes(payload), Options.ClaimsIssuer);
+            identity.AddOptionalClaim(ClaimTypes.Expiration, EVEOnlineAuthenticationHelper.GetTokenExpiration(payload), Options.ClaimsIssuer);
+            identity.AddOptionalClaim("urn:eveonline:scopes", EVEOnlineAuthenticationHelper.GetTokenScopes(payload), Options.ClaimsIssuer);
 
             var principal = new ClaimsPrincipal(identity);
             var ticket = new AuthenticationTicket(principal, properties, Options.AuthenticationScheme);

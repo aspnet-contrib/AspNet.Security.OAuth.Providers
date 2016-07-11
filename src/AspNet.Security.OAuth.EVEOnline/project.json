@@ -1,7 +1,7 @@
 {
-    "version": "1.0.0-*",
-    "description": "ASP.NET 5 security middleware enabling EVEOnline authentication.",
-    "authors": [ "Mariusz Zieliński" ],
+  "version": "1.0.0-beta2-*",
+  "description": "ASP.NET 5 security middleware enabling EVEOnline authentication.",
+  "authors": [ "Mariusz Zieliński" ],
 
   "packOptions": {
     "owners": [ "Kévin Chalet", "Jerrie Pelser" ],
@@ -31,13 +31,19 @@
   },
 
   "dependencies": {
-    "AspNet.Security.OAuth.Extensions": { "target": "project", "type": "build" },
-    "JetBrains.Annotations": { "type": "build", "version": "10.1.4" },
+    "AspNet.Security.OAuth.Extensions": {
+      "target": "project",
+      "type": "build"
+    },
+    "JetBrains.Annotations": {
+      "type": "build",
+      "version": "10.1.4"
+    },
     "Microsoft.AspNetCore.Authentication.OAuth": "1.0.0-*"
   },
 
   "frameworks": {
-    "net451": { },
+    "net451": {},
 
     "netstandard1.3": {
       "imports": [
