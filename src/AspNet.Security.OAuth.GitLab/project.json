@@ -1,7 +1,7 @@
 {
-    "version": "1.0.0-*",
-    "description": "ASP.NET 5 security middleware enabling GitLab authentication.",
-    "authors": [ "Joost van Hassel" ],
+  "version": "1.0.0-beta2-*",
+  "description": "ASP.NET 5 security middleware enabling GitLab authentication.",
+  "authors": [ "Joost van Hassel" ],
 
   "packOptions": {
     "owners": [ "Kévin Chalet", "Jerrie Pelser" ],
