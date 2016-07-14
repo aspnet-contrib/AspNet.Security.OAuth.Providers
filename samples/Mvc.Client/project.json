@@ -20,6 +20,7 @@
     "AspNet.Security.OAuth.Beam": { "target": "project" },
     "AspNet.Security.OAuth.BattleNet": { "target": "project" },
     "AspNet.Security.OAuth.Buffer": { "target": "project" },
+    "AspNet.Security.OAuth.CiscoSpark": { "target": "project" },
     "AspNet.Security.OAuth.DeviantArt": { "target": "project" },
     "AspNet.Security.OAuth.Dropbox": { "target": "project" },
     "AspNet.Security.OAuth.Foursquare": { "target": "project" },
