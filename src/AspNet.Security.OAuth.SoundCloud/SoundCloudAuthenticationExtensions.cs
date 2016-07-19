@@ -15,7 +15,8 @@ namespace Microsoft.AspNetCore.Builder {
     /// </summary>
     public static class SoundCloudAuthenticationExtensions {
         /// <summary>
-        /// Adds the <see cref="SoundCloudAuthenticationMiddleware"/> middleware to the specified <see cref="IApplicationBuilder"/>, which enables Soundcloud authentication capabilities.
+        /// Adds the <see cref="SoundCloudAuthenticationMiddleware"/> middleware to the specified
+        /// <see cref="IApplicationBuilder"/>, which enables Soundcloud authentication capabilities.
         /// </summary>
         /// <param name="app">The <see cref="IApplicationBuilder"/> to add the middleware to.</param>
         /// <param name="options">A <see cref="SoundCloudAuthenticationOptions"/> that specifies options for the middleware.</param>        
@@ -35,7 +36,8 @@ namespace Microsoft.AspNetCore.Builder {
         }
 
         /// <summary>
-        /// Adds the <see cref="SoundCloudAuthenticationMiddleware"/> middleware to the specified <see cref="IApplicationBuilder"/>, which enables Soundcloud authentication capabilities.
+        /// Adds the <see cref="SoundCloudAuthenticationMiddleware"/> middleware to the specified
+        /// <see cref="IApplicationBuilder"/>, which enables Soundcloud authentication capabilities.
         /// </summary>
         /// <param name="app">The <see cref="IApplicationBuilder"/> to add the middleware to.</param>
         /// <param name="configuration">An action delegate to configure the provided <see cref="SoundCloudAuthenticationOptions"/>.</param>

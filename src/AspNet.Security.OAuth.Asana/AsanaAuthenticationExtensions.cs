@@ -15,7 +15,8 @@ namespace Microsoft.AspNetCore.Builder {
     /// </summary>
     public static class AsanaAuthenticationExtensions {
         /// <summary>
-        /// Adds the <see cref="AsanaAuthenticationMiddleware"/> middleware to the specified <see cref="IApplicationBuilder"/>, which enables Asana authentication capabilities.
+        /// Adds the <see cref="AsanaAuthenticationMiddleware"/> middleware to the specified
+        /// <see cref="IApplicationBuilder"/>, which enables Asana authentication capabilities.
         /// </summary>
         /// <param name="app">The <see cref="IApplicationBuilder"/> to add the middleware to.</param>
         /// <param name="options">A <see cref="AsanaAuthenticationOptions"/> that specifies options for the middleware.</param>        
@@ -35,7 +36,8 @@ namespace Microsoft.AspNetCore.Builder {
         }
 
         /// <summary>
-        /// Adds the <see cref="AsanaAuthenticationMiddleware"/> middleware to the specified <see cref="IApplicationBuilder"/>, which enables Asana authentication capabilities.
+        /// Adds the <see cref="AsanaAuthenticationMiddleware"/> middleware to the specified
+        /// <see cref="IApplicationBuilder"/>, which enables Asana authentication capabilities.
         /// </summary>
         /// <param name="app">The <see cref="IApplicationBuilder"/> to add the middleware to.</param>
         /// <param name="configuration">An action delegate to configure the provided <see cref="AsanaAuthenticationOptions"/>.</param>

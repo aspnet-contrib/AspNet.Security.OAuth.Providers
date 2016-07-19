@@ -17,12 +17,12 @@ namespace AspNet.Security.OAuth.Asana {
     public class AsanaAuthenticationMiddleware : OAuthMiddleware<AsanaAuthenticationOptions> {
         public AsanaAuthenticationMiddleware(
             [NotNull] RequestDelegate next,
-            [NotNull] IOptions<AsanaAuthenticationOptions> options,
             [NotNull] IDataProtectionProvider dataProtectionProvider,
             [NotNull] ILoggerFactory loggerFactory,
             [NotNull] UrlEncoder encoder,
-            [NotNull] IOptions<SharedAuthenticationOptions> externalOptions)
-            : base(next, dataProtectionProvider, loggerFactory, encoder, externalOptions, options) {
+            [NotNull] IOptions<SharedAuthenticationOptions> sharedOptions,
+            [NotNull] IOptions<AsanaAuthenticationOptions> options)
+            : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options) {
         }
 
         protected override AuthenticationHandler<AsanaAuthenticationOptions> CreateHandler() {

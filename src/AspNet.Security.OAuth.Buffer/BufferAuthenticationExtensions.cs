@@ -15,7 +15,8 @@ namespace Microsoft.AspNetCore.Builder {
     /// </summary>
     public static class BufferAuthenticationExtensions {
         /// <summary>
-        /// Adds the <see cref="BufferAuthenticationMiddleware"/> middleware to the specified <see cref="IApplicationBuilder"/>, which enables Buffer authentication capabilities.
+        /// Adds the <see cref="BufferAuthenticationMiddleware"/> middleware to the specified
+        /// <see cref="IApplicationBuilder"/>, which enables Buffer authentication capabilities.
         /// </summary>
         /// <param name="app">The <see cref="IApplicationBuilder"/> to add the middleware to.</param>
         /// <param name="options">A <see cref="BufferAuthenticationOptions"/> that specifies options for the middleware.</param>        
@@ -35,7 +36,8 @@ namespace Microsoft.AspNetCore.Builder {
         }
 
         /// <summary>
-        /// Adds the <see cref="BufferAuthenticationMiddleware"/> middleware to the specified <see cref="IApplicationBuilder"/>, which enables Buffer authentication capabilities.
+        /// Adds the <see cref="BufferAuthenticationMiddleware"/> middleware to the specified
+        /// <see cref="IApplicationBuilder"/>, which enables Buffer authentication capabilities.
         /// </summary>
         /// <param name="app">The <see cref="IApplicationBuilder"/> to add the middleware to.</param>
         /// <param name="configuration">An action delegate to configure the provided <see cref="BufferAuthenticationOptions"/>.</param>

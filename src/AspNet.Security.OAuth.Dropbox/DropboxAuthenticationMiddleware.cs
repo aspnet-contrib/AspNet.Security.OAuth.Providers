@@ -17,12 +17,12 @@ namespace AspNet.Security.OAuth.Dropbox {
     public class DropboxAuthenticationMiddleware : OAuthMiddleware<DropboxAuthenticationOptions> {
         public DropboxAuthenticationMiddleware(
             [NotNull] RequestDelegate next,
-            [NotNull] IOptions<DropboxAuthenticationOptions> options,
             [NotNull] IDataProtectionProvider dataProtectionProvider,
             [NotNull] ILoggerFactory loggerFactory,
             [NotNull] UrlEncoder encoder,
-            [NotNull] IOptions<SharedAuthenticationOptions> externalOptions)
-            : base(next, dataProtectionProvider, loggerFactory, encoder, externalOptions, options) {
+            [NotNull] IOptions<SharedAuthenticationOptions> sharedOptions,
+            [NotNull] IOptions<DropboxAuthenticationOptions> options)
+            : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options) {
         }
 
         protected override AuthenticationHandler<DropboxAuthenticationOptions> CreateHandler() {

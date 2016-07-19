@@ -17,11 +17,11 @@ namespace AspNet.Security.OAuth.Vkontakte {
     public class VkontakteAuthenticationMiddleware : OAuthMiddleware<VkontakteAuthenticationOptions> {
         public VkontakteAuthenticationMiddleware(
             [NotNull] RequestDelegate next,
-            [NotNull] IOptions<VkontakteAuthenticationOptions> options,
             [NotNull] IDataProtectionProvider dataProtectionProvider,
             [NotNull] ILoggerFactory loggerFactory,
             [NotNull] UrlEncoder encoder,
-            [NotNull] IOptions<SharedAuthenticationOptions> sharedOptions)
+            [NotNull] IOptions<SharedAuthenticationOptions> sharedOptions,
+            [NotNull] IOptions<VkontakteAuthenticationOptions> options)
             : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options) {
         }
 
