@@ -26,7 +26,6 @@ namespace AspNet.Security.OAuth.CiscoSpark {
         /// <summary>
         /// Gets the email corresponding to the authenticated user.
         /// </summary>
-        public static string GetEmail([NotNull] JObject user)  => (string)((JArray)user["emails"]).First;
-        
+        public static string GetEmail([NotNull] JObject user) => user.Value<JArray>("emails")?.First.Value<string>();
     }
 }
