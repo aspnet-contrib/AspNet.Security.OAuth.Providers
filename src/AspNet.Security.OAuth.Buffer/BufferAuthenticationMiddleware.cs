@@ -17,12 +17,12 @@ namespace AspNet.Security.OAuth.Buffer {
     public class BufferAuthenticationMiddleware : OAuthMiddleware<BufferAuthenticationOptions> {
         public BufferAuthenticationMiddleware(
             [NotNull] RequestDelegate next,
-            [NotNull] IOptions<BufferAuthenticationOptions> options,
             [NotNull] IDataProtectionProvider dataProtectionProvider,
             [NotNull] ILoggerFactory loggerFactory,
             [NotNull] UrlEncoder encoder,
-            [NotNull] IOptions<SharedAuthenticationOptions> externalOptions)
-            : base(next, dataProtectionProvider, loggerFactory, encoder, externalOptions, options) {
+            [NotNull] IOptions<SharedAuthenticationOptions> sharedOptions,
+            [NotNull] IOptions<BufferAuthenticationOptions> options)
+            : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options) {
         }
 
         protected override AuthenticationHandler<BufferAuthenticationOptions> CreateHandler() {

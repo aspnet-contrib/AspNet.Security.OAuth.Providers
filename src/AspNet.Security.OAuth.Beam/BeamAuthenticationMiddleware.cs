@@ -17,12 +17,12 @@ namespace AspNet.Security.OAuth.Beam {
     public class BeamAuthenticationMiddleware : OAuthMiddleware<BeamAuthenticationOptions> {
         public BeamAuthenticationMiddleware(
             [NotNull] RequestDelegate next,
-            [NotNull] IOptions<BeamAuthenticationOptions> options,
             [NotNull] IDataProtectionProvider dataProtectionProvider,
             [NotNull] ILoggerFactory loggerFactory,
             [NotNull] UrlEncoder encoder,
-            [NotNull] IOptions<SharedAuthenticationOptions> externalOptions)
-            : base(next, dataProtectionProvider, loggerFactory, encoder, externalOptions, options) {
+            [NotNull] IOptions<SharedAuthenticationOptions> sharedOptions,
+            [NotNull] IOptions<BeamAuthenticationOptions> options)
+            : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options) {
         }
 
         protected override AuthenticationHandler<BeamAuthenticationOptions> CreateHandler() {

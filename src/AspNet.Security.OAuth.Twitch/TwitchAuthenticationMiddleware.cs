@@ -17,12 +17,12 @@ namespace AspNet.Security.OAuth.Twitch {
     public class TwitchAuthenticationMiddleware : OAuthMiddleware<TwitchAuthenticationOptions> {
         public TwitchAuthenticationMiddleware(
             [NotNull] RequestDelegate next,
-            [NotNull] IOptions<TwitchAuthenticationOptions> options,
             [NotNull] IDataProtectionProvider dataProtectionProvider,
             [NotNull] ILoggerFactory loggerFactory,
             [NotNull] UrlEncoder encoder,
-            [NotNull] IOptions<SharedAuthenticationOptions> externalOptions)
-            : base(next, dataProtectionProvider, loggerFactory, encoder, externalOptions, options) {
+            [NotNull] IOptions<SharedAuthenticationOptions> sharedOptions,
+            [NotNull] IOptions<TwitchAuthenticationOptions> options)
+            : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options) {
         }
 
         protected override AuthenticationHandler<TwitchAuthenticationOptions> CreateHandler() {
