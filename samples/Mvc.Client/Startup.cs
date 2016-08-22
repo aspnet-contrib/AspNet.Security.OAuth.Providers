@@ -5,7 +5,6 @@
  */
 
 using AspNet.Security.OAuth.GitHub;
-using AspNet.Security.OAuth.VisualStudio;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
