@@ -32,6 +32,7 @@
     "AspNet.Security.OAuth.Imgur": { "target": "project" },
     "AspNet.Security.OAuth.Instagram": { "target": "project" },
     "AspNet.Security.OAuth.LinkedIn": { "target": "project" },
+    "AspNet.Security.OAuth.MYOB": { "target": "project" },
     "AspNet.Security.OAuth.Onshape": { "target": "project" },
     "AspNet.Security.OAuth.Paypal": { "target": "project" },
     "AspNet.Security.OAuth.Reddit": { "target": "project" },
