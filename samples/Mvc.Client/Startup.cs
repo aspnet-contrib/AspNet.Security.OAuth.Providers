@@ -5,7 +5,6 @@
  */
 
 using AspNet.Security.OAuth.GitHub;
-using AspNet.Security.OAuth.MyobAccounting;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -45,13 +44,6 @@ namespace Mvc.Client {
                 ClientId = "49e302895d8b09ea5656",
                 ClientSecret = "98f1bf028608901e9df91d64ee61536fe562064b",
                 Scope = { "user:email" }
-            });
-
-            app.UseMyobAccountingAuthentication(new MyobAccountingAuthenticationOptions
-            {
-                ClientId = "wn43zfuwawkj36ebmgqapwn6",
-                ClientSecret = "eKMYxGRXfZe5wH3tPUyqrZZ5",
-                Scope = { "CompanyFile" }
             });
 
             app.UseMvc();
