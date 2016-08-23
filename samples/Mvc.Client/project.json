@@ -32,7 +32,7 @@
     "AspNet.Security.OAuth.Imgur": { "target": "project" },
     "AspNet.Security.OAuth.Instagram": { "target": "project" },
     "AspNet.Security.OAuth.LinkedIn": { "target": "project" },
-    "AspNet.Security.OAuth.MYOB": { "target": "project" },
+    "AspNet.Security.OAuth.MyobAccounting": { "target": "project" },
     "AspNet.Security.OAuth.Onshape": { "target": "project" },
     "AspNet.Security.OAuth.Paypal": { "target": "project" },
     "AspNet.Security.OAuth.Reddit": { "target": "project" },
@@ -56,8 +56,7 @@
     "Microsoft.Extensions.Configuration.CommandLine": "1.0.0",
     "Microsoft.Extensions.Configuration.EnvironmentVariables": "1.0.0",
     "Microsoft.Extensions.Logging.Console": "1.0.0",
-    "Microsoft.Extensions.Logging.Debug": "1.0.0",
-    "AspNet.Security.OAuth.MyobAccounting": "1.0.0-beta2-*"
+    "Microsoft.Extensions.Logging.Debug": "1.0.0"
   },
 
   "frameworks": {
@@ -69,7 +68,10 @@
 
     "netcoreapp1.0": {
       "dependencies": {
-        "Microsoft.NETCore.App": { "type": "platform", "version": "1.0.0" }
+        "Microsoft.NETCore.App": {
+          "type": "platform",
+          "version": "1.0.0"
+        }
       },
 
       "imports": [

@@ -6,7 +6,6 @@
 
 using AspNet.Security.OAuth.GitHub;
 using AspNet.Security.OAuth.MyobAccounting;
-using AspNet.Security.OAuth.MYOB;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
