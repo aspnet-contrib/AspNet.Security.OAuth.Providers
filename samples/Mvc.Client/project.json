@@ -56,7 +56,8 @@
     "Microsoft.Extensions.Configuration.CommandLine": "1.0.0",
     "Microsoft.Extensions.Configuration.EnvironmentVariables": "1.0.0",
     "Microsoft.Extensions.Logging.Console": "1.0.0",
-    "Microsoft.Extensions.Logging.Debug": "1.0.0"
+    "Microsoft.Extensions.Logging.Debug": "1.0.0",
+    "AspNet.Security.OAuth.MyobAccounting": "1.0.0-beta2-*"
   },
 
   "frameworks": {
