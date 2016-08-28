@@ -48,8 +48,11 @@ namespace AspNet.Security.OAuth.StackExchange {
             //content will be UTF-8 encoded and gzipped
             var payload = JObject.Parse(await ReadGzipUTF8ContentAsStringAsync(response.Content));
 
-            identity.AddOptionalClaim(ClaimTypes.NameIdentifier, StackExchangeAuthenticationHelper.GetIdentifier(payload), Options.ClaimsIssuer);
-
+            //we cannot get the email claim from the stack exchange endpoint
+            identity.AddOptionalClaim(ClaimTypes.NameIdentifier, StackExchangeAuthenticationHelper.GetIdentifier(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim(ClaimTypes.Name, StackExchangeAuthenticationHelper.GetDisplayName(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim(ClaimTypes.Webpage, StackExchangeAuthenticationHelper.GetWebsiteUrl(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim("urn:stackexchange:link", StackExchangeAuthenticationHelper.GetLink(payload), Options.ClaimsIssuer);
             // TODO: Add any optional claims, eg
             //  .AddOptionalClaim("urn:stackexchange:name", StackExchangeAuthenticationHelper.GetName(payload), Options.ClaimsIssuer)
 
