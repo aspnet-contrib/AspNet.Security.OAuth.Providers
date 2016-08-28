@@ -39,6 +39,7 @@
     "AspNet.Security.OAuth.Slack": { "target": "project" },
     "AspNet.Security.OAuth.SoundCloud": { "target": "project" },
     "AspNet.Security.OAuth.Spotify": { "target": "project" },
+    "AspNet.Security.OAuth.StackExchange": { "target": "project" },
     "AspNet.Security.OAuth.Twitch": { "target": "project" },
     "AspNet.Security.OAuth.Vimeo": { "target": "project" },
     "AspNet.Security.OAuth.Vkontakte": { "target": "project" },
