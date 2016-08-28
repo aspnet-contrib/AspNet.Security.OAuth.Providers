@@ -23,5 +23,15 @@ namespace AspNet.Security.OAuth.StackExchange {
             TokenEndpoint = StackExchangeAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = StackExchangeAuthenticationDefaults.UserInformationEndpoint;
         }
+
+        /// <summary>
+        /// The application request key, obtained when registering your application with StackApps
+        /// </summary>
+        public string RequestKey { get; set; }
+
+        /// <summary>
+        /// The site on which the user is registered
+        /// </summary>
+        public string Site { get; set; } = "StackOverflow";
     }
 }
