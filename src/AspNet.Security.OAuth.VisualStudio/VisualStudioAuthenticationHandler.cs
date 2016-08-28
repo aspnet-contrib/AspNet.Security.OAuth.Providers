@@ -58,7 +58,7 @@ namespace AspNet.Security.OAuth.VisualStudio {
             return context.Ticket;
         }
 
-        protected override async Task<OAuthTokenResponse> ExchangeCodeAsync(string code, string redirectUri) {
+        protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] string code, [NotNull] string redirectUri) {
             var request = new HttpRequestMessage(HttpMethod.Post, Options.TokenEndpoint);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/x-www-form-urlencoded"));
 
