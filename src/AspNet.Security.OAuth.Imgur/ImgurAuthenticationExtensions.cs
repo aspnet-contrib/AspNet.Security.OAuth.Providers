@@ -15,7 +15,8 @@ namespace Microsoft.AspNetCore.Builder {
     /// </summary>
     public static class ImgurAuthenticationExtensions {
         /// <summary>
-        /// Adds the <see cref="ImgurAuthenticationMiddleware"/> middleware to the specified <see cref="IApplicationBuilder"/>, which enables Imgur authentication capabilities.
+        /// Adds the <see cref="ImgurAuthenticationMiddleware"/> middleware to the specified
+        /// <see cref="IApplicationBuilder"/>, which enables Imgur authentication capabilities.
         /// </summary>
         /// <param name="app">The <see cref="IApplicationBuilder"/> to add the middleware to.</param>
         /// <param name="options">A <see cref="ImgurAuthenticationOptions"/> that specifies options for the middleware.</param>        
@@ -35,7 +36,8 @@ namespace Microsoft.AspNetCore.Builder {
         }
 
         /// <summary>
-        /// Adds the <see cref="ImgurAuthenticationMiddleware"/> middleware to the specified <see cref="IApplicationBuilder"/>, which enables Imgur authentication capabilities.
+        /// Adds the <see cref="ImgurAuthenticationMiddleware"/> middleware to the specified
+        /// <see cref="IApplicationBuilder"/>, which enables Imgur authentication capabilities.
         /// </summary>
         /// <param name="app">The <see cref="IApplicationBuilder"/> to add the middleware to.</param>
         /// <param name="configuration">An action delegate to configure the provided <see cref="ImgurAuthenticationOptions"/>.</param>

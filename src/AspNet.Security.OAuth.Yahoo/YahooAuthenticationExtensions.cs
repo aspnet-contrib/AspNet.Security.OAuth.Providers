@@ -15,7 +15,8 @@ namespace Microsoft.AspNetCore.Builder {
     /// </summary>
     public static class YahooAuthenticationExtensions {
         /// <summary>
-        /// Adds the <see cref="YahooAuthenticationMiddleware"/> middleware to the specified <see cref="IApplicationBuilder"/>, which enables Yahoo authentication capabilities.
+        /// Adds the <see cref="YahooAuthenticationMiddleware"/> middleware to the specified
+        /// <see cref="IApplicationBuilder"/>, which enables Yahoo authentication capabilities.
         /// </summary>
         /// <param name="app">The <see cref="IApplicationBuilder"/> to add the middleware to.</param>
         /// <param name="options">A <see cref="YahooAuthenticationOptions"/> that specifies options for the middleware.</param>        

@@ -17,12 +17,12 @@ namespace AspNet.Security.OAuth.Paypal {
     public class PaypalAuthenticationMiddleware : OAuthMiddleware<PaypalAuthenticationOptions> {
         public PaypalAuthenticationMiddleware(
             [NotNull] RequestDelegate next,
-            [NotNull] IOptions<PaypalAuthenticationOptions> options,
             [NotNull] IDataProtectionProvider dataProtectionProvider,
             [NotNull] ILoggerFactory loggerFactory,
             [NotNull] UrlEncoder encoder,
-            [NotNull] IOptions<SharedAuthenticationOptions> externalOptions)
-            : base(next, dataProtectionProvider, loggerFactory, encoder, externalOptions, options) {
+            [NotNull] IOptions<SharedAuthenticationOptions> sharedOptions,
+            [NotNull] IOptions<PaypalAuthenticationOptions> options)
+            : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options) {
         }
 
         protected override AuthenticationHandler<PaypalAuthenticationOptions> CreateHandler() {

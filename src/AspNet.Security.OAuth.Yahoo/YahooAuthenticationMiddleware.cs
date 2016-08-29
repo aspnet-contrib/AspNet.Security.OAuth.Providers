@@ -17,11 +17,11 @@ namespace AspNet.Security.OAuth.Yahoo {
     public class YahooAuthenticationMiddleware : OAuthMiddleware<YahooAuthenticationOptions> {
         public YahooAuthenticationMiddleware(
             [NotNull] RequestDelegate next,
-            [NotNull] IOptions<YahooAuthenticationOptions> options,
             [NotNull] IDataProtectionProvider dataProtectionProvider,
             [NotNull] ILoggerFactory loggerFactory,
             [NotNull] UrlEncoder encoder,
-            [NotNull] IOptions<SharedAuthenticationOptions> sharedOptions)
+            [NotNull] IOptions<SharedAuthenticationOptions> sharedOptions,
+            [NotNull] IOptions<YahooAuthenticationOptions> options)
             : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options) {
         }
 

@@ -17,12 +17,12 @@ namespace AspNet.Security.OAuth.Salesforce {
     public class SalesforceAuthenticationMiddleware : OAuthMiddleware<SalesforceAuthenticationOptions> {
         public SalesforceAuthenticationMiddleware(
             [NotNull] RequestDelegate next,
-            [NotNull] IOptions<SalesforceAuthenticationOptions> options,
             [NotNull] IDataProtectionProvider dataProtectionProvider,
             [NotNull] ILoggerFactory loggerFactory,
             [NotNull] UrlEncoder encoder,
-            [NotNull] IOptions<SharedAuthenticationOptions> externalOptions)
-            : base(next, dataProtectionProvider, loggerFactory, encoder, externalOptions, options) {
+            [NotNull] IOptions<SharedAuthenticationOptions> sharedOptions,
+            [NotNull] IOptions<SalesforceAuthenticationOptions> options)
+            : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options) {
         }
 
         protected override AuthenticationHandler<SalesforceAuthenticationOptions> CreateHandler() {

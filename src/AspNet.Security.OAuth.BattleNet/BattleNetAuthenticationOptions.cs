@@ -30,38 +30,38 @@ namespace AspNet.Security.OAuth.BattleNet {
         public BattleNetAuthenticationRegion Region {
             set {
                 switch (value) {
-                case BattleNetAuthenticationRegion.America:
-                    AuthorizationEndpoint = BattleNetAuthenticationDefaults.America.AuthorizationEndpoint;
-                    TokenEndpoint = BattleNetAuthenticationDefaults.America.TokenEndpoint;
-                    UserInformationEndpoint = BattleNetAuthenticationDefaults.America.UserInformationEndpoint;
-                    break;
+                    case BattleNetAuthenticationRegion.America:
+                        AuthorizationEndpoint = BattleNetAuthenticationDefaults.America.AuthorizationEndpoint;
+                        TokenEndpoint = BattleNetAuthenticationDefaults.America.TokenEndpoint;
+                        UserInformationEndpoint = BattleNetAuthenticationDefaults.America.UserInformationEndpoint;
+                        break;
 
-                case BattleNetAuthenticationRegion.China:
-                    AuthorizationEndpoint = BattleNetAuthenticationDefaults.China.AuthorizationEndpoint;
-                    TokenEndpoint = BattleNetAuthenticationDefaults.China.TokenEndpoint;
-                    UserInformationEndpoint = BattleNetAuthenticationDefaults.China.UserInformationEndpoint;
-                    break;
+                    case BattleNetAuthenticationRegion.China:
+                        AuthorizationEndpoint = BattleNetAuthenticationDefaults.China.AuthorizationEndpoint;
+                        TokenEndpoint = BattleNetAuthenticationDefaults.China.TokenEndpoint;
+                        UserInformationEndpoint = BattleNetAuthenticationDefaults.China.UserInformationEndpoint;
+                        break;
 
-                case BattleNetAuthenticationRegion.Europe:
-                    AuthorizationEndpoint = BattleNetAuthenticationDefaults.Europe.AuthorizationEndpoint;
-                    TokenEndpoint = BattleNetAuthenticationDefaults.Europe.TokenEndpoint;
-                    UserInformationEndpoint = BattleNetAuthenticationDefaults.Europe.UserInformationEndpoint;
-                    break;
+                    case BattleNetAuthenticationRegion.Europe:
+                        AuthorizationEndpoint = BattleNetAuthenticationDefaults.Europe.AuthorizationEndpoint;
+                        TokenEndpoint = BattleNetAuthenticationDefaults.Europe.TokenEndpoint;
+                        UserInformationEndpoint = BattleNetAuthenticationDefaults.Europe.UserInformationEndpoint;
+                        break;
 
-                case BattleNetAuthenticationRegion.Korea:
-                    AuthorizationEndpoint = BattleNetAuthenticationDefaults.Korea.AuthorizationEndpoint;
-                    TokenEndpoint = BattleNetAuthenticationDefaults.Korea.TokenEndpoint;
-                    UserInformationEndpoint = BattleNetAuthenticationDefaults.Korea.UserInformationEndpoint;
-                    break;
+                    case BattleNetAuthenticationRegion.Korea:
+                        AuthorizationEndpoint = BattleNetAuthenticationDefaults.Korea.AuthorizationEndpoint;
+                        TokenEndpoint = BattleNetAuthenticationDefaults.Korea.TokenEndpoint;
+                        UserInformationEndpoint = BattleNetAuthenticationDefaults.Korea.UserInformationEndpoint;
+                        break;
 
-                case BattleNetAuthenticationRegion.Taiwan:
-                    AuthorizationEndpoint = BattleNetAuthenticationDefaults.Taiwan.AuthorizationEndpoint;
-                    TokenEndpoint = BattleNetAuthenticationDefaults.Taiwan.TokenEndpoint;
-                    UserInformationEndpoint = BattleNetAuthenticationDefaults.Taiwan.UserInformationEndpoint;
-                    break;
+                    case BattleNetAuthenticationRegion.Taiwan:
+                        AuthorizationEndpoint = BattleNetAuthenticationDefaults.Taiwan.AuthorizationEndpoint;
+                        TokenEndpoint = BattleNetAuthenticationDefaults.Taiwan.TokenEndpoint;
+                        UserInformationEndpoint = BattleNetAuthenticationDefaults.Taiwan.UserInformationEndpoint;
+                        break;
 
-                default:
-                    throw new ArgumentException($"Region '{value}' is unsupported.", nameof(value));
+                    default:
+                        throw new ArgumentException($"Region '{value}' is unsupported.", nameof(value));
                 }
             }
         }

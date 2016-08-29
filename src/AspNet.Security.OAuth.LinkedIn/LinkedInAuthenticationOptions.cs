@@ -4,6 +4,7 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 
@@ -23,5 +24,15 @@ namespace AspNet.Security.OAuth.LinkedIn {
             TokenEndpoint = LinkedInAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = LinkedInAuthenticationDefaults.UserInformationEndpoint;
         }
+
+        /// <summary>
+        /// Gets the list of fields to retrieve from the user information endpoint.
+        /// See https://developer.linkedin.com/docs/fields/basic-profile for more information.
+        /// </summary>
+        public ICollection<string> Fields { get; } = new HashSet<string> {
+            "id",
+            "formatted-name",
+            "email-address"
+        };
     }
 }

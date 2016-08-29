@@ -17,12 +17,12 @@ namespace AspNet.Security.OAuth.HealthGraph {
     public class HealthGraphAuthenticationMiddleware : OAuthMiddleware<HealthGraphAuthenticationOptions> {
         public HealthGraphAuthenticationMiddleware(
             [NotNull] RequestDelegate next,
-            [NotNull] IOptions<HealthGraphAuthenticationOptions> options,
             [NotNull] IDataProtectionProvider dataProtectionProvider,
             [NotNull] ILoggerFactory loggerFactory,
             [NotNull] UrlEncoder encoder,
-            [NotNull] IOptions<SharedAuthenticationOptions> externalOptions)
-            : base(next, dataProtectionProvider, loggerFactory, encoder, externalOptions, options) {
+            [NotNull] IOptions<SharedAuthenticationOptions> sharedOptions,
+            [NotNull] IOptions<HealthGraphAuthenticationOptions> options)
+            : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options) {
         }
 
         protected override AuthenticationHandler<HealthGraphAuthenticationOptions> CreateHandler() {
