@@ -17,12 +17,12 @@ namespace AspNet.Security.OAuth.SoundCloud {
     public class SoundCloudAuthenticationMiddleware : OAuthMiddleware<SoundCloudAuthenticationOptions> {
         public SoundCloudAuthenticationMiddleware(
             [NotNull] RequestDelegate next,
-            [NotNull] IOptions<SoundCloudAuthenticationOptions> options,
             [NotNull] IDataProtectionProvider dataProtectionProvider,
             [NotNull] ILoggerFactory loggerFactory,
             [NotNull] UrlEncoder encoder,
-            [NotNull] IOptions<SharedAuthenticationOptions> externalOptions)
-            : base(next, dataProtectionProvider, loggerFactory, encoder, externalOptions, options) {
+            [NotNull] IOptions<SharedAuthenticationOptions> sharedOptions,
+            [NotNull] IOptions<SoundCloudAuthenticationOptions> options)
+            : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options) {
         }
 
         protected override AuthenticationHandler<SoundCloudAuthenticationOptions> CreateHandler() {

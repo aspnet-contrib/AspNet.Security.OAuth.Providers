@@ -17,12 +17,12 @@ namespace AspNet.Security.OAuth.Vimeo {
     public class VimeoAuthenticationMiddleware : OAuthMiddleware<VimeoAuthenticationOptions> {
         public VimeoAuthenticationMiddleware(
             [NotNull] RequestDelegate next,
-            [NotNull] IOptions<VimeoAuthenticationOptions> options,
             [NotNull] IDataProtectionProvider dataProtectionProvider,
             [NotNull] ILoggerFactory loggerFactory,
             [NotNull] UrlEncoder encoder,
-            [NotNull] IOptions<SharedAuthenticationOptions> externalOptions)
-            : base(next, dataProtectionProvider, loggerFactory, encoder, externalOptions, options) {
+            [NotNull] IOptions<SharedAuthenticationOptions> sharedOptions,
+            [NotNull] IOptions<VimeoAuthenticationOptions> options)
+            : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options) {
         }
 
         protected override AuthenticationHandler<VimeoAuthenticationOptions> CreateHandler() {

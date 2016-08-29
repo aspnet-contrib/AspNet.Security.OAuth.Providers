@@ -17,12 +17,12 @@ namespace AspNet.Security.OAuth.Spotify {
     public class SpotifyAuthenticationMiddleware : OAuthMiddleware<SpotifyAuthenticationOptions> {
         public SpotifyAuthenticationMiddleware(
             [NotNull] RequestDelegate next,
-            [NotNull] IOptions<SpotifyAuthenticationOptions> options,
             [NotNull] IDataProtectionProvider dataProtectionProvider,
             [NotNull] ILoggerFactory loggerFactory,
             [NotNull] UrlEncoder encoder,
-            [NotNull] IOptions<SharedAuthenticationOptions> externalOptions)
-            : base(next, dataProtectionProvider, loggerFactory, encoder, externalOptions, options) {
+            [NotNull] IOptions<SharedAuthenticationOptions> sharedOptions,
+            [NotNull] IOptions<SpotifyAuthenticationOptions> options)
+            : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options) {
         }
 
         protected override AuthenticationHandler<SpotifyAuthenticationOptions> CreateHandler() {

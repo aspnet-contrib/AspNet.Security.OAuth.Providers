@@ -17,12 +17,12 @@ namespace AspNet.Security.OAuth.Onshape {
     public class OnshapeAuthenticationMiddleware : OAuthMiddleware<OnshapeAuthenticationOptions> {
         public OnshapeAuthenticationMiddleware(
             [NotNull] RequestDelegate next,
-            [NotNull] IOptions<OnshapeAuthenticationOptions> options,
             [NotNull] IDataProtectionProvider dataProtectionProvider,
             [NotNull] ILoggerFactory loggerFactory,
             [NotNull] UrlEncoder encoder,
-            [NotNull] IOptions<SharedAuthenticationOptions> externalOptions)
-            : base(next, dataProtectionProvider, loggerFactory, encoder, externalOptions, options) {
+            [NotNull] IOptions<SharedAuthenticationOptions> sharedOptions,
+            [NotNull] IOptions<OnshapeAuthenticationOptions> options)
+            : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options) {
         }
 
         protected override AuthenticationHandler<OnshapeAuthenticationOptions> CreateHandler() {

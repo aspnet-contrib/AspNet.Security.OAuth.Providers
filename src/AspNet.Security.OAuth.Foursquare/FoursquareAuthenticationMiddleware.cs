@@ -17,12 +17,12 @@ namespace AspNet.Security.OAuth.Foursquare {
     public class FoursquareAuthenticationMiddleware : OAuthMiddleware<FoursquareAuthenticationOptions> {
         public FoursquareAuthenticationMiddleware(
             [NotNull] RequestDelegate next,
-            [NotNull] IOptions<FoursquareAuthenticationOptions> options,
             [NotNull] IDataProtectionProvider dataProtectionProvider,
             [NotNull] ILoggerFactory loggerFactory,
             [NotNull] UrlEncoder encoder,
-            [NotNull] IOptions<SharedAuthenticationOptions> externalOptions)
-            : base(next, dataProtectionProvider, loggerFactory, encoder, externalOptions, options) {
+            [NotNull] IOptions<SharedAuthenticationOptions> sharedOptions,
+            [NotNull] IOptions<FoursquareAuthenticationOptions> options)
+            : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options) {
         }
         
         protected override AuthenticationHandler<FoursquareAuthenticationOptions> CreateHandler() {

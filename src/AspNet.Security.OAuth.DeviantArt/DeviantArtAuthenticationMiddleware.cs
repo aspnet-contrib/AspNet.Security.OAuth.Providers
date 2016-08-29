@@ -17,12 +17,12 @@ namespace AspNet.Security.OAuth.DeviantArt {
     public class DeviantArtAuthenticationMiddleware : OAuthMiddleware<DeviantArtAuthenticationOptions> {
         public DeviantArtAuthenticationMiddleware(
             [NotNull] RequestDelegate next,
-            [NotNull] IOptions<DeviantArtAuthenticationOptions> options,
             [NotNull] IDataProtectionProvider dataProtectionProvider,
             [NotNull] ILoggerFactory loggerFactory,
             [NotNull] UrlEncoder encoder,
-            [NotNull] IOptions<SharedAuthenticationOptions> externalOptions)
-            : base(next, dataProtectionProvider, loggerFactory, encoder, externalOptions, options) {
+            [NotNull] IOptions<SharedAuthenticationOptions> sharedOptions,
+            [NotNull] IOptions<DeviantArtAuthenticationOptions> options)
+            : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options) {
         }
 
         protected override AuthenticationHandler<DeviantArtAuthenticationOptions> CreateHandler() {

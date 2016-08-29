@@ -44,7 +44,9 @@ namespace AspNet.Security.OAuth.LinkedIn {
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
+        /// Note: the endpoint must follow the LinkedIn convention and contain a '~' to append fields to, if they are specified.
+        /// See https://developer.linkedin.com/docs/signin-with-linkedin for more information.
         /// </summary>
-        public const string UserInformationEndpoint = "https://api.linkedin.com/v1/people/~:(id,first-name,last-name,formatted-name,email-address,public-profile-url,picture-url)";
+        public const string UserInformationEndpoint = "https://api.linkedin.com/v1/people/~";
     }
 }

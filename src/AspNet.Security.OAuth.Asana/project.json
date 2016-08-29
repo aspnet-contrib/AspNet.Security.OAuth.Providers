@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0-beta1-*",
+  "version": "1.0.0-beta2-*",
 
   "description": "ASP.NET Core security middleware enabling Asana authentication.",
   "authors": [ "Adam Reisinger" ],
@@ -34,7 +34,7 @@
   "dependencies": {
     "AspNet.Security.OAuth.Extensions": { "target": "project", "type": "build" },
     "JetBrains.Annotations": { "type": "build", "version": "10.1.4" },
-    "Microsoft.AspNetCore.Authentication.OAuth": "1.0.0-*"
+    "Microsoft.AspNetCore.Authentication.OAuth": "1.0.0"
   },
 
   "frameworks": {
