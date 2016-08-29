@@ -17,12 +17,12 @@ namespace AspNet.Security.OAuth.Fitbit {
     public class FitbitAuthenticationMiddleware : OAuthMiddleware<FitbitAuthenticationOptions> {
         public FitbitAuthenticationMiddleware(
             [NotNull] RequestDelegate next,
-            [NotNull] IOptions<FitbitAuthenticationOptions> options,
             [NotNull] IDataProtectionProvider dataProtectionProvider,
             [NotNull] ILoggerFactory loggerFactory,
             [NotNull] UrlEncoder encoder,
-            [NotNull] IOptions<SharedAuthenticationOptions> externalOptions)
-            : base(next, dataProtectionProvider, loggerFactory, encoder, externalOptions, options) {
+            [NotNull] IOptions<SharedAuthenticationOptions> sharedOptions,
+            [NotNull] IOptions<FitbitAuthenticationOptions> options)
+            : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options) {
         }
 
         protected override AuthenticationHandler<FitbitAuthenticationOptions> CreateHandler() {

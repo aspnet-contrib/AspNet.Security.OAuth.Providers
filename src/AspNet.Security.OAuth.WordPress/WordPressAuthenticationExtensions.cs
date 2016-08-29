@@ -15,7 +15,8 @@ namespace Microsoft.AspNetCore.Builder {
     /// </summary>
     public static class WordPressAuthenticationExtensions {
         /// <summary>
-        /// Adds the <see cref="WordPressAuthenticationMiddleware"/> middleware to the specified <see cref="IApplicationBuilder"/>, which enables WordPress authentication capabilities.
+        /// Adds the <see cref="WordPressAuthenticationMiddleware"/> middleware to the specified
+        /// <see cref="IApplicationBuilder"/>, which enables WordPress authentication capabilities.
         /// </summary>
         /// <param name="app">The <see cref="IApplicationBuilder"/> to add the middleware to.</param>
         /// <param name="options">A <see cref="WordPressAuthenticationOptions"/> that specifies options for the middleware.</param>        

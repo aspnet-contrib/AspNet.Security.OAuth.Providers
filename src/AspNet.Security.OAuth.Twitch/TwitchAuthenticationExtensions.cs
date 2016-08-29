@@ -15,7 +15,8 @@ namespace Microsoft.AspNetCore.Builder {
     /// </summary>
     public static class TwitchAuthenticationExtensions {
         /// <summary>
-        /// Adds the <see cref="TwitchAuthenticationMiddleware"/> middleware to the specified <see cref="IApplicationBuilder"/>, which enables Twitch authentication capabilities.
+        /// Adds the <see cref="TwitchAuthenticationMiddleware"/> middleware to the specified
+        /// <see cref="IApplicationBuilder"/>, which enables Twitch authentication capabilities.
         /// </summary>
         /// <param name="app">The <see cref="IApplicationBuilder"/> to add the middleware to.</param>
         /// <param name="options">A <see cref="TwitchAuthenticationOptions"/> that specifies options for the middleware.</param>        
@@ -35,7 +36,8 @@ namespace Microsoft.AspNetCore.Builder {
         }
 
         /// <summary>
-        /// Adds the <see cref="TwitchAuthenticationMiddleware"/> middleware to the specified <see cref="IApplicationBuilder"/>, which enables Twitch authentication capabilities.
+        /// Adds the <see cref="TwitchAuthenticationMiddleware"/> middleware to the specified
+        /// <see cref="IApplicationBuilder"/>, which enables Twitch authentication capabilities.
         /// </summary>
         /// <param name="app">The <see cref="IApplicationBuilder"/> to add the middleware to.</param>
         /// <param name="configuration">An action delegate to configure the provided <see cref="TwitchAuthenticationOptions"/>.</param>
