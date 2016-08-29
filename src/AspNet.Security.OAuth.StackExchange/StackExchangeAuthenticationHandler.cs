@@ -6,8 +6,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.IO.Compression;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
@@ -46,7 +44,7 @@ namespace AspNet.Security.OAuth.StackExchange {
             response.EnsureSuccessStatusCode();
 
             //content will be UTF-8 encoded and gzipped
-            var payload = JObject.Parse(await ReadGzipUTF8ContentAsStringAsync(response.Content));
+            var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
 
             //we cannot get the email claim from the stack exchange endpoint
             identity.AddOptionalClaim(ClaimTypes.NameIdentifier, StackExchangeAuthenticationHelper.GetIdentifier(payload), Options.ClaimsIssuer)
@@ -99,19 +97,6 @@ namespace AspNet.Security.OAuth.StackExchange {
                                /* Body: */ await response.Content.ReadAsStringAsync());
                 return OAuthTokenResponse.Failed(new Exception("An error occurred when retrieving an access token"));
             }
-        }
-
-
-        private static async Task<string> ReadGzipUTF8ContentAsStringAsync(HttpContent responseContent) {
-            using (var outputStream = new MemoryStream()) {
-                var inputStream = await responseContent.ReadAsStreamAsync();
-                using (var gzipStream = new GZipStream(inputStream, CompressionMode.Decompress, false)) {
-                    gzipStream.CopyTo(outputStream);
-                }
-
-                return Encoding.UTF8.GetString(outputStream.ToArray());
-            }
-
         }
     }
 }

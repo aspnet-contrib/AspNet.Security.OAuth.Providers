@@ -4,6 +4,8 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using System.Net;
+using System.Net.Http;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 
@@ -22,6 +24,7 @@ namespace AspNet.Security.OAuth.StackExchange {
             AuthorizationEndpoint = StackExchangeAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = StackExchangeAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = StackExchangeAuthenticationDefaults.UserInformationEndpoint;
+            BackchannelHttpHandler = new HttpClientHandler {AutomaticDecompression = DecompressionMethods.GZip};
         }
 
         /// <summary>

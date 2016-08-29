@@ -34,8 +34,7 @@
     "AspNet.Security.OAuth.Extensions": { "target": "project", "type": "build" },
     "JetBrains.Annotations": { "type": "build", "version": "10.1.4" },
     "Microsoft.AspNetCore.Authentication.OAuth": "1.0.0",
-    "Microsoft.AspNetCore.WebUtilities": "1.0.0",
-    "System.IO.Compression":  "4.1.0" 
+    "Microsoft.AspNetCore.WebUtilities": "1.0.0"
   },
 
   "frameworks": {
