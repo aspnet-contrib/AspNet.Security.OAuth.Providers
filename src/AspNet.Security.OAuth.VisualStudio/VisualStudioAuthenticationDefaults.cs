@@ -14,17 +14,17 @@ namespace AspNet.Security.OAuth.VisualStudio {
         /// <summary>
         /// Default value for <see cref="AuthenticationOptions.AuthenticationScheme"/>.
         /// </summary>
-        public const string AuthenticationScheme = "VisualStudio";
+        public const string AuthenticationScheme = "Visual Studio Online";
 
         /// <summary>
         /// Default value for <see cref="RemoteAuthenticationOptions.DisplayName"/>.
         /// </summary>
-        public const string DisplayName = "VisualStudio";
+        public const string DisplayName = "Visual Studio Online";
 
         /// <summary>
         /// Default value for <see cref="AuthenticationOptions.ClaimsIssuer"/>.
         /// </summary>
-        public const string Issuer = "VisualStudio";
+        public const string Issuer = "Visual Studio Online";
 
         /// <summary>
         /// Default value for <see cref="RemoteAuthenticationOptions.CallbackPath"/>.
