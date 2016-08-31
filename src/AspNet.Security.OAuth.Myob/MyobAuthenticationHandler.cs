@@ -27,10 +27,7 @@ namespace AspNet.Security.OAuth.Myob {
 
 
             //Myob doesn't provide a user information end point, so we rely on the details sent back in the token request. 
-            var user = new JObject();
-            foreach (var prop in tokens.Response.SelectToken("user")) {
-                user.Add(prop);
-            }
+            var user = (JObject) tokens.Response.SelectToken("user");
 
             identity.AddOptionalClaim(ClaimTypes.NameIdentifier, MyobAuthenticationHelper.GetIdentifier(user), 
                 Options.ClaimsIssuer);
