@@ -13,20 +13,20 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using JetBrains.Annotations;
 
-namespace AspNet.Security.OAuth.MyobAccounting {
-    public class MyobAccountingAuthenticationMiddleware : OAuthMiddleware<MyobAccountingAuthenticationOptions> {
-        public MyobAccountingAuthenticationMiddleware(
+namespace AspNet.Security.OAuth.Myob {
+    public class MyobAuthenticationMiddleware : OAuthMiddleware<MyobAuthenticationOptions> {
+        public MyobAuthenticationMiddleware(
             [NotNull] RequestDelegate next,
             [NotNull] IDataProtectionProvider dataProtectionProvider,
             [NotNull] ILoggerFactory loggerFactory,
             [NotNull] UrlEncoder encoder,
             [NotNull] IOptions<SharedAuthenticationOptions> sharedOptions,
-            [NotNull] IOptions<MyobAccountingAuthenticationOptions> options)
+            [NotNull] IOptions<MyobAuthenticationOptions> options)
             : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options) {
         }
 
-        protected override AuthenticationHandler<MyobAccountingAuthenticationOptions> CreateHandler() {
-            return new MyobAccountingAuthenticationHandler(Backchannel);
+        protected override AuthenticationHandler<MyobAuthenticationOptions> CreateHandler() {
+            return new MyobAuthenticationHandler(Backchannel);
         }
     }
 }

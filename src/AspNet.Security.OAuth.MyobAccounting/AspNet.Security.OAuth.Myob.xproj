@@ -7,7 +7,7 @@
   <Import Project="$(VSToolsPath)\DotNet\Microsoft.DotNet.Props" Condition="'$(VSToolsPath)' != ''" />
   <PropertyGroup Label="Globals">
     <ProjectGuid>6fe602fd-dd5f-4be3-807c-9b13d3b718ce</ProjectGuid>
-    <RootNamespace>AspNet.Security.OAuth.MyobAccounting</RootNamespace>
+    <RootNamespace>AspNet.Security.OAuth.Myob</RootNamespace>
     <BaseIntermediateOutputPath Condition="'$(BaseIntermediateOutputPath)'=='' ">.\obj</BaseIntermediateOutputPath>
     <OutputPath Condition="'$(OutputPath)'=='' ">.\bin\</OutputPath>
   </PropertyGroup>

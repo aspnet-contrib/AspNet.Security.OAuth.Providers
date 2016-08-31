@@ -16,9 +16,9 @@ using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 
-namespace AspNet.Security.OAuth.MyobAccounting {
-    public class MyobAccountingAuthenticationHandler : OAuthHandler<MyobAccountingAuthenticationOptions> {
-        public MyobAccountingAuthenticationHandler([NotNull] HttpClient client)
+namespace AspNet.Security.OAuth.Myob {
+    public class MyobAuthenticationHandler : OAuthHandler<MyobAuthenticationOptions> {
+        public MyobAuthenticationHandler([NotNull] HttpClient client)
             : base(client) {
         }
 
@@ -32,10 +32,10 @@ namespace AspNet.Security.OAuth.MyobAccounting {
                 user.Add(prop);
             }
 
-            identity.AddOptionalClaim(ClaimTypes.NameIdentifier, MyobAccountingAuthenticationHelper.GetIdentifier(user), 
+            identity.AddOptionalClaim(ClaimTypes.NameIdentifier, MyobAuthenticationHelper.GetIdentifier(user), 
                 Options.ClaimsIssuer);
 
-            identity.AddOptionalClaim(ClaimTypes.Name, MyobAccountingAuthenticationHelper.GetUsername(user),
+            identity.AddOptionalClaim(ClaimTypes.Name, MyobAuthenticationHelper.GetUsername(user),
                 Options.ClaimsIssuer);
             
             var principal = new ClaimsPrincipal(identity);
