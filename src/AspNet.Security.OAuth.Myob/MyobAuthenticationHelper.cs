@@ -17,6 +17,10 @@ namespace AspNet.Security.OAuth.Myob {
         /// Gets the identifier corresponding to the authenticated user.
         /// </summary>
         public static string GetIdentifier([NotNull] JObject user) => user.Value<string>("uid");
+        
+        /// <summary>
+        /// Gets the username corresponding to the authenticated user.
+        /// </summary>
         public static string GetUsername([NotNull] JObject user) => user.Value<string>("username");
     }
 }
