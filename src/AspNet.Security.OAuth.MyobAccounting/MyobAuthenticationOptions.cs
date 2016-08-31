@@ -21,7 +21,6 @@ namespace AspNet.Security.OAuth.Myob {
 
             AuthorizationEndpoint = MyobAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = MyobAuthenticationDefaults.TokenEndpoint;
-            UserInformationEndpoint = MyobAuthenticationDefaults.UserInformationEndpoint;
         }
     }
 }

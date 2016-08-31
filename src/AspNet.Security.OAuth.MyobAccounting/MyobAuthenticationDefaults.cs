@@ -40,10 +40,5 @@ namespace AspNet.Security.OAuth.Myob {
         /// Default value for <see cref="OAuthOptions.TokenEndpoint"/>.
         /// </summary>
         public const string TokenEndpoint = "https://secure.myob.com/oauth2/v1/authorize";
-
-        /// <summary>
-        /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
-        /// </summary>
-        public const string UserInformationEndpoint = "";
     }
 }
