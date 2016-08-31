@@ -1,6 +1,6 @@
 {
     "version": "1.0.0-beta2-*",
-    "description": "ASP.NET Core security middleware enabling MyobAccounting authentication.",
+    "description": "ASP.NET Core security middleware enabling Myob authentication.",
     "authors": [ "Jordan Knight" ],
 
   "packOptions": {

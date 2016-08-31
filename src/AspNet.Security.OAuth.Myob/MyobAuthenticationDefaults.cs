@@ -8,28 +8,28 @@ using Microsoft.AspNetCore.Builder;
 
 namespace AspNet.Security.OAuth.Myob {
     /// <summary>
-    /// Default values used by the MyobAccounting authentication middleware.
+    /// Default values used by the Myob authentication middleware.
     /// </summary>
     public static class MyobAuthenticationDefaults {
         /// <summary>
         /// Default value for <see cref="AuthenticationOptions.AuthenticationScheme"/>.
         /// </summary>
-        public const string AuthenticationScheme = "MyobAccounting";
+        public const string AuthenticationScheme = "Myob";
 
         /// <summary>
         /// Default value for <see cref="RemoteAuthenticationOptions.DisplayName"/>.
         /// </summary>
-        public const string DisplayName = "MyobAccounting";
+        public const string DisplayName = "Myob";
 
         /// <summary>
         /// Default value for <see cref="AuthenticationOptions.ClaimsIssuer"/>.
         /// </summary>
-        public const string Issuer = "MyobAccounting";
+        public const string Issuer = "Myob";
 
         /// <summary>
         /// Default value for <see cref="RemoteAuthenticationOptions.CallbackPath"/>.
         /// </summary>
-        public const string CallbackPath = "/signin-myobaccounting";
+        public const string CallbackPath = "/signin-Myob";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.AuthorizationEndpoint"/>.

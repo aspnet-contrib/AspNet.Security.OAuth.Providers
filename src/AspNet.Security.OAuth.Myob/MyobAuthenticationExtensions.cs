@@ -11,12 +11,12 @@ using Microsoft.Extensions.Options;
 
 namespace Microsoft.AspNetCore.Builder {
     /// <summary>
-    /// Extension methods to add MyobAccounting authentication capabilities to an HTTP application pipeline.
+    /// Extension methods to add Myob authentication capabilities to an HTTP application pipeline.
     /// </summary>
     public static class MyobAuthenticationExtensions {
         /// <summary>
         /// Adds the <see cref="MyobAuthenticationMiddleware"/> middleware to the specified
-        /// <see cref="IApplicationBuilder"/>, which enables MyobAccounting authentication capabilities.
+        /// <see cref="IApplicationBuilder"/>, which enables Myob authentication capabilities.
         /// </summary>
         /// <param name="app">The <see cref="IApplicationBuilder"/> to add the middleware to.</param>
         /// <param name="options">A <see cref="MyobAuthenticationOptions"/> that specifies options for the middleware.</param>        
@@ -37,12 +37,12 @@ namespace Microsoft.AspNetCore.Builder {
 
         /// <summary>
         /// Adds the <see cref="MyobAuthenticationMiddleware"/> middleware to the specified
-        /// <see cref="IApplicationBuilder"/>, which enables MyobAccounting authentication capabilities.
+        /// <see cref="IApplicationBuilder"/>, which enables Myob authentication capabilities.
         /// </summary>
         /// <param name="app">The <see cref="IApplicationBuilder"/> to add the middleware to.</param>
         /// <param name="configuration">An action delegate to configure the provided <see cref="MyobAuthenticationOptions"/>.</param>
         /// <returns>A reference to this instance after the operation has completed.</returns>
-        public static IApplicationBuilder UseMyobAccountingAuthentication(
+        public static IApplicationBuilder UseMyobAuthentication(
             [NotNull] this IApplicationBuilder app,
             [NotNull] Action<MyobAuthenticationOptions> configuration) {
             if (app == null) {

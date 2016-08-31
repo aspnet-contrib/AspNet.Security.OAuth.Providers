@@ -10,7 +10,7 @@ using Newtonsoft.Json.Linq;
 namespace AspNet.Security.OAuth.Myob {
     /// <summary>
     /// Contains static methods that allow to extract user's information from a <see cref="JObject"/>
-    /// instance retrieved from MyobAccounting after a successful authentication process.
+    /// instance retrieved from Myob after a successful authentication process.
     /// </summary>
     public static class MyobAuthenticationHelper {
         /// <summary>
