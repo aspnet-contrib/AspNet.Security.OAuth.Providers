@@ -42,6 +42,7 @@
     "AspNet.Security.OAuth.Spotify": { "target": "project" },
     "AspNet.Security.OAuth.Twitch": { "target": "project" },
     "AspNet.Security.OAuth.Vimeo": { "target": "project" },
+    "AspNet.Security.OAuth.VisualStudio": { "target": "project" },
     "AspNet.Security.OAuth.Vkontakte": { "target": "project" },
     "AspNet.Security.OAuth.WordPress": { "target": "project" },
     "AspNet.Security.OAuth.Yahoo": { "target": "project" },
