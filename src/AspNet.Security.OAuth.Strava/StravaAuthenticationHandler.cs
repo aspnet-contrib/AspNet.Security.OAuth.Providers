@@ -13,19 +13,33 @@ using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http.Authentication;
-using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 
 namespace AspNet.Security.OAuth.Strava
 {
-    public class StravaAuthenticationHandler : OAuthHandler<StravaAuthenticationOptions>
+	/// <summary>
+	/// The Strava Authentication Handler
+	/// </summary>
+	/// <seealso cref="OAuthHandler{OAuthOptions}" />
+	public class StravaAuthenticationHandler : OAuthHandler<StravaAuthenticationOptions>
     {
-        public StravaAuthenticationHandler([NotNull] HttpClient client)
+		/// <summary>
+		/// Initializes a new instance of the <see cref="StravaAuthenticationHandler"/> class.
+		/// </summary>
+		/// <param name="client">The client.</param>
+		public StravaAuthenticationHandler([NotNull] HttpClient client)
             : base(client)
         {
         }
 
-        protected override async Task<AuthenticationTicket> CreateTicketAsync([NotNull] ClaimsIdentity identity,
+		/// <summary>
+		/// Creates the ticket.
+		/// </summary>
+		/// <param name="identity">The identity.</param>
+		/// <param name="properties">The properties.</param>
+		/// <param name="tokens">The tokens.</param>
+		/// <returns></returns>
+		protected override async Task<AuthenticationTicket> CreateTicketAsync([NotNull] ClaimsIdentity identity,
             [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens)
         {
             var request = new HttpRequestMessage(HttpMethod.Get, Options.UserInformationEndpoint);
@@ -36,8 +50,6 @@ namespace AspNet.Security.OAuth.Strava
             response.EnsureSuccessStatusCode();
 
             var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
-
-            identity.AddOptionalClaim(ClaimTypes.NameIdentifier, StravaAuthenticationHelper.GetIdentifier(payload), Options.ClaimsIssuer);
 
             identity.AddOptionalClaim(ClaimTypes.NameIdentifier, StravaAuthenticationHelper.GetIdentifier(payload), Options.ClaimsIssuer)
                  .AddOptionalClaim(ClaimTypes.Name, StravaAuthenticationHelper.GetUsername(payload), Options.ClaimsIssuer)
