@@ -19,7 +19,19 @@ namespace AspNet.Security.OAuth.Strava
         /// Gets the identifier corresponding to the authenticated user.
         /// </summary>
         public static string GetIdentifier([NotNull] JObject user) => user.Value<string>("id");
+
+		/// <summary>
+		/// Gets the username corresponding to the authenticated user.
+		/// </summary>
+		/// <param name="user"></param>
+		/// <returns></returns>
         public static string GetUsername([NotNull] JObject user) => user.Value<string>("username");
-        public static string GetEmail([NotNull] JObject user) => user.Value<string>("email");
+
+		/// <summary>
+		/// Gets the email corresponding to the authenticated user.
+		/// </summary>
+		/// <param name="user"></param>
+		/// <returns></returns>
+		public static string GetEmail([NotNull] JObject user) => user.Value<string>("email");
     }
 }
