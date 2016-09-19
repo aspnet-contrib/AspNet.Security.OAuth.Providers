@@ -49,6 +49,21 @@ namespace AspNet.Security.OAuth.Slack {
                     .AddOptionalClaim("urn:slack:team_name", SlackAuthenticationHelper.GetTeamName(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim("urn:slack:team_url", SlackAuthenticationHelper.GetTeamLink(payload), Options.ClaimsIssuer);
 
+            JObject bot = tokens.Response.Value<JObject>("bot");
+            if (bot != null)
+            {
+                identity.AddOptionalClaim("urn:slack:bot:userid", SlackAuthenticationHelper.GetBotUserId(bot), Options.ClaimsIssuer);
+                identity.AddOptionalClaim("urn:slack:bot:accesstoken", SlackAuthenticationHelper.GetBotAccessToken(bot), Options.ClaimsIssuer);
+            }
+
+            JObject webhook = tokens.Response.Value<JObject>("incoming_webhook");
+            if (webhook != null)
+            {
+                identity.AddOptionalClaim("urn:slack:webhook:channel", SlackAuthenticationHelper.GetWebhookChannel(webhook), Options.ClaimsIssuer);
+                identity.AddOptionalClaim("urn:slack:webhook:url", SlackAuthenticationHelper.GetWebhookURL(webhook), Options.ClaimsIssuer);
+                identity.AddOptionalClaim("urn:slack:webhook:configurationurl", SlackAuthenticationHelper.GetWebhookConfigurationURL(webhook), Options.ClaimsIssuer);
+            }
+
             var principal = new ClaimsPrincipal(identity);
             var ticket = new AuthenticationTicket(principal, properties, Options.AuthenticationScheme);
 
