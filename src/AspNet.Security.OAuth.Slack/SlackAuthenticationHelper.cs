@@ -37,5 +37,31 @@ namespace AspNet.Security.OAuth.Slack {
         /// Gets the URL corresponding to the authenticated user.
         /// </summary>
         public static string GetTeamLink([NotNull] JObject user) => user.Value<string>("url");
+
+        /// <summary>
+        /// Gets the identifier associated with the bot.
+        /// </summary>
+        public static string GetBotUserId([NotNull] JObject user) => user["bot"]?.Value<string>("bot_user_id");
+
+        /// <summary>
+        /// Gets the access token associated with the bot.
+        /// </summary>
+        public static string GetBotAccessToken([NotNull] JObject user) => user["bot"]?.Value<string>("bot_access_token");
+
+        /// <summary>
+        /// Gets the channel name of the selected webhook.
+        /// </summary>
+        public static string GetWebhookChannel([NotNull] JObject user) => user["incoming_webhook"]?.Value<string>("channel");
+
+        /// <summary>
+        /// Gets the URL of the selected webhook.
+        /// </summary>
+        public static string GetWebhookURL([NotNull] JObject user) => user["incoming_webhook"]?.Value<string>("url");
+
+        /// <summary>
+        /// Gets the channel configuration URL of the selected webhook.
+        /// </summary>
+        public static string GetWebhookConfigurationURL([NotNull] JObject user) => user["incoming_webhook"]?.Value<string>("configuration_url");
+
     }
 }
