@@ -6,8 +6,7 @@
 
 using Microsoft.AspNetCore.Builder;
 
-namespace Microsoft.AspNetCore.Authentication.Yammer
-{
+namespace AspNet.Security.OAuth.Yammer {
     /// <summary>
     /// Default values used by the Yamer authentication middleware.
     /// </summary>

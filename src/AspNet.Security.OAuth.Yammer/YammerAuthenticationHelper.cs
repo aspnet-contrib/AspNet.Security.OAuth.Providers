@@ -7,7 +7,7 @@
 using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
 
-namespace Microsoft.AspNetCore.Authentication.Yammer {
+namespace AspNet.Security.OAuth.Yammer {
     /// <summary>
     /// Contains static methods that allow to extract user's information from a <see cref="JObject"/>
     /// instance retrieved from Yammer after a successful authentication process.

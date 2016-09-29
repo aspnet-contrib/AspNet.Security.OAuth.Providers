@@ -5,7 +5,7 @@
  */
 
 using System;
-using Microsoft.AspNetCore.Authentication.Yammer;
+using AspNet.Security.OAuth.Yammer;
 using Microsoft.Extensions.Options;
 using JetBrains.Annotations;
 
@@ -15,34 +15,50 @@ namespace Microsoft.AspNetCore.Builder {
     /// </summary>
     public static class YammerAuthenticationExtensions {
         /// <summary>
-        /// Adds the <see cref="YammerAuthenticationMiddleware"/> middleware to the specified <see cref="IApplicationBuilder"/>, which enables Yammer authentication capabilities.
+        /// Adds the <see cref="YammerAuthenticationMiddleware"/> middleware to the specified
+        /// <see cref="IApplicationBuilder"/>, which enables Yammer authentication capabilities.
         /// </summary>
         /// <param name="app">The <see cref="IApplicationBuilder"/> to add the middleware to.</param>
-        /// <returns>A reference to this instance after the operation has completed.</returns>
-        public static IApplicationBuilder UseYammerAuthentication(
-            [NotNull] this IApplicationBuilder app) {
-            if (app == null) {
-                throw new ArgumentNullException(nameof(app));
-            }
-
-            return app.UseMiddleware<YammerAuthenticationMiddleware>();
-        }
-
-        /// <summary>
-        /// Adds the <see cref="YammerAuthenticationMiddleware"/> middleware to the specified <see cref="IApplicationBuilder"/>, which enables Yammer authentication capabilities.
-        /// </summary>
-        /// <param name="app">The <see cref="IApplicationBuilder"/> to add the middleware to.</param>
-        /// <param name="options">A <see cref="YammerAuthenticationOptions"/> that specifies options for the middleware.</param>
+        /// <param name="options">A <see cref="YammerAuthenticationOptions"/> that specifies options for the middleware.</param>        
         /// <returns>A reference to this instance after the operation has completed.</returns>
         public static IApplicationBuilder UseYammerAuthentication(
             [NotNull] this IApplicationBuilder app,
             [NotNull] YammerAuthenticationOptions options) {
-            if (app == null) {
+            if (app == null)
+            {
                 throw new ArgumentNullException(nameof(app));
             }
-            if (options == null) {
+
+            if (options == null)
+            {
                 throw new ArgumentNullException(nameof(options));
             }
+
+            return app.UseMiddleware<YammerAuthenticationMiddleware>(Options.Create(options));
+        }
+
+        /// <summary>
+        /// Adds the <see cref="YammerAuthenticationMiddleware"/> middleware to the specified
+        /// <see cref="IApplicationBuilder"/>, which enables Yammer authentication capabilities.
+        /// </summary>
+        /// <param name="app">The <see cref="IApplicationBuilder"/> to add the middleware to.</param>
+        /// <param name="configuration">An action delegate to configure the provided <see cref="YammerAuthenticationOptions"/>.</param>
+        /// <returns>A reference to this instance after the operation has completed.</returns>
+        public static IApplicationBuilder UseYammerAuthentication(
+            [NotNull] this IApplicationBuilder app,
+            [NotNull] Action<YammerAuthenticationOptions> configuration) {
+            if (app == null)
+            {
+                throw new ArgumentNullException(nameof(app));
+            }
+
+            if (configuration == null)
+            {
+                throw new ArgumentNullException(nameof(configuration));
+            }
+
+            var options = new YammerAuthenticationOptions();
+            configuration(options);
 
             return app.UseMiddleware<YammerAuthenticationMiddleware>(Options.Create(options));
         }

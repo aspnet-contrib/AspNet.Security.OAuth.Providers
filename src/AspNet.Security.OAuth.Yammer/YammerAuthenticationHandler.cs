@@ -13,12 +13,13 @@ using System.Text;
 using System.Threading.Tasks;
 using AspNet.Security.OAuth.Extensions;
 using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http.Authentication;
 using Newtonsoft.Json.Linq;
 using Microsoft.Extensions.Logging;
 
-namespace Microsoft.AspNetCore.Authentication.Yammer {
+namespace AspNet.Security.OAuth.Yammer {
+    using Microsoft.AspNetCore.Authentication;
+
     public class YammerAuthenticationHandler : OAuthHandler<YammerAuthenticationOptions> {
         public YammerAuthenticationHandler(HttpClient httpClient)
             : base(httpClient) {
@@ -29,7 +30,7 @@ namespace Microsoft.AspNetCore.Authentication.Yammer {
              https://developer.yammer.com/docs/oauth-2
              Override this method because Yamer API returns unusual response for TokenEndpoint request
              */
-            var tokenRequestParameters = new Dictionary<string, string>()
+            var tokenRequestParameters = new Dictionary<string, string>
             {
                 { "client_id", Options.ClientId },
                 { "redirect_uri", redirectUri },
@@ -39,7 +40,6 @@ namespace Microsoft.AspNetCore.Authentication.Yammer {
             };
 
             var requestContent = new FormUrlEncodedContent(tokenRequestParameters);
-
             var requestMessage = new HttpRequestMessage(HttpMethod.Post, Options.TokenEndpoint);
             requestMessage.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             requestMessage.Content = requestContent;
@@ -47,14 +47,12 @@ namespace Microsoft.AspNetCore.Authentication.Yammer {
             if (response.IsSuccessStatusCode) {
                 var accessTokenObject = JObject.Parse(await response.Content.ReadAsStringAsync())["access_token"].Value<JObject>();
 
-                JObject payload = JObject.FromObject(new {
-                    access_token = accessTokenObject["token"],
-                    token_type = string.Empty,
-                    refresh_token = string.Empty,
-                    expires_in = string.Empty
-                });
-
-                return OAuthTokenResponse.Success(payload);
+                accessTokenObject["access_token"] = accessTokenObject["token"];
+                accessTokenObject["token_type"] = string.Empty;
+                accessTokenObject["refresh_token"] = string.Empty;
+                accessTokenObject["expires_in"] = string.Empty;
+                
+                return OAuthTokenResponse.Success(accessTokenObject);
             } else {
                 var error = "OAuth token endpoint failure: " + await Display(response);
                 return OAuthTokenResponse.Failed(new Exception(error));

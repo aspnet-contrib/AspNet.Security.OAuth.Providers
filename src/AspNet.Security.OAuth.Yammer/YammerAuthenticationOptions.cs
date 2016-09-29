@@ -4,12 +4,12 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using Microsoft.AspNetCore.Authentication.Yammer;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 
-namespace Microsoft.AspNetCore.Builder {
+namespace AspNet.Security.OAuth.Yammer {
     /// <summary>
-    /// Configuration options for <see cref="YammerAuthenticationMiddleware"/>.
+    /// Configuration options for <see cref="YammerAuthenticationHandler"/>.
     /// </summary>
     public class YammerAuthenticationOptions : OAuthOptions {
         /// <summary>

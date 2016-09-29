@@ -6,14 +6,14 @@
 
 using System.Text.Encodings.Web;
 using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Authentication;
 using JetBrains.Annotations;
 
-namespace Microsoft.AspNetCore.Authentication.Yammer {
+namespace AspNet.Security.OAuth.Yammer {
     /// <summary>
     /// An ASP.NET Core middleware for authenticating users using Yammer.
     /// </summary>
