@@ -43,7 +43,7 @@ namespace Mvc.Client {
             app.UseGitHubAuthentication(new GitHubAuthenticationOptions {
                 ClientId = "49e302895d8b09ea5656",
                 ClientSecret = "98f1bf028608901e9df91d64ee61536fe562064b",
-                Scope = { "user:email" }
+                Scope = {"user:email"}
             });
 
             app.UseYammerAuthentication(new YammerAuthenticationOptions {
