@@ -44,6 +44,7 @@
     "AspNet.Security.OAuth.StackExchange": { "target": "project" },
     "AspNet.Security.OAuth.Strava": { "target": "project" },
     "AspNet.Security.OAuth.Twitch": { "target": "project" },
+    "AspNet.Security.OAuth.Untappd": { "target": "project" },
     "AspNet.Security.OAuth.Vimeo": { "target": "project" },
     "AspNet.Security.OAuth.VisualStudio": { "target": "project" },
     "AspNet.Security.OAuth.Vkontakte": { "target": "project" },
