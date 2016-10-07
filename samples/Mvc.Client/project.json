@@ -42,6 +42,7 @@
     "AspNet.Security.OAuth.SoundCloud": { "target": "project" },
     "AspNet.Security.OAuth.Spotify": { "target": "project" },
     "AspNet.Security.OAuth.StackExchange": { "target": "project" },
+    "AspNet.Security.OAuth.Strava": { "target": "project" },
     "AspNet.Security.OAuth.Twitch": { "target": "project" },
     "AspNet.Security.OAuth.Vimeo": { "target": "project" },
     "AspNet.Security.OAuth.VisualStudio": { "target": "project" },
@@ -59,7 +60,7 @@
     "Microsoft.Extensions.Configuration.CommandLine": "1.0.0",
     "Microsoft.Extensions.Configuration.EnvironmentVariables": "1.0.0",
     "Microsoft.Extensions.Logging.Console": "1.0.0",
-    "Microsoft.Extensions.Logging.Debug": "1.0.0"
+   "Microsoft.Extensions.Logging.Debug": "1.0.0"
   },
 
   "frameworks": {
