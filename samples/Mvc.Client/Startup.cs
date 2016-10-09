@@ -5,6 +5,7 @@
  */
 
 using AspNet.Security.OAuth.GitHub;
+using AspNet.Security.OAuth.Yammer;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -44,6 +45,12 @@ namespace Mvc.Client {
                 ClientId = "49e302895d8b09ea5656",
                 ClientSecret = "98f1bf028608901e9df91d64ee61536fe562064b",
                 Scope = {"user:email"}
+            });
+
+            app.UseYammerAuthentication(new YammerAuthenticationOptions {
+                ClientId = "N4ombIYYwD4ipyFMauv4g",
+                ClientSecret = "TINDQgP5uHMwqbvkH1UlsnKFnjh5mJstMBoTp1zVJI",
+                SaveTokens = true
             });
 
             app.UseMvc();
