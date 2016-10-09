@@ -21,7 +21,7 @@ See [https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers/tree/dev/
 
 ## Contributing
 
-**AspNet.Security.OAuth.Providers** is actively maintained by **[Kévin Chalet](https://github.com/PinpointTownes)** ([@PinpointTownes](https://twitter.com/PinpointTownes)) and **[Jerrie Pelser](https://github.com/jerriep)** ([@jerriepelser](https://twitter.com/jerriepelser)).
+**AspNet.Security.OAuth.Providers** is actively maintained by **[Kévin Chalet](https://github.com/PinpointTownes)** ([@PinpointTownes](https://twitter.com/PinpointTownes)).
 
 We would love it if you could help contributing to this repository. Please look at [CONTRIBUTING.md](CONTRIBUTING.md).
 
@@ -31,17 +31,21 @@ We would love it if you could help contributing to this repository. Please look 
 * [Adam Reisinger](https://github.com/Res42)
 * [Albert Zakiev](https://github.com/serber)
 * [Albireo](https://github.com/kappa7194)
+* [Andrew Lock](https://github.com/andrewlock)
 * [Andrew Mattie](https://github.com/amattie)
 * [Dave Timmins](https://github.com/davetimmins)
 * [Eric Green](https://github.com/ericgreenmix)
 * [Ethan Celletti](https://github.com/Gekctek)
+* [James Holcomb](https://github.com/jamesholcomb)
 * [Jason Loeffler](https://github.com/jmloeffler)
 * [Jerrie Pelser](https://github.com/jerriep)
 * [Jesse Mandel](https://github.com/supergibbs)
+* [Jordan Knight](https://github.com/jakkaj)
 * [Kévin Chalet](https://github.com/PinpointTownes)
 * [Mariusz Zieliński](https://github.com/mariozski)
 * [Maxime Roussin-Bélanger](https://github.com/Lorac)
 * [Michael Knowles](https://github.com/mjknowles)
+* [Robert Shade](https://github.com/robert-shade)
 * [Sinan](https://github.com/SH2015)
 * [Stefan](https://github.com/Schlurcher)
 * [Tathagata Chakraborty](https://github.com/tatx)
