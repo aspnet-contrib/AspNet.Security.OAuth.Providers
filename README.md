@@ -36,6 +36,7 @@ We would love it if you could help contributing to this repository. Please look 
 * [Dave Timmins](https://github.com/davetimmins)
 * [Eric Green](https://github.com/ericgreenmix)
 * [Ethan Celletti](https://github.com/Gekctek)
+* [Igor Simovic](https://github.com/igorsimovic)
 * [James Holcomb](https://github.com/jamesholcomb)
 * [Jason Loeffler](https://github.com/jmloeffler)
 * [Jerrie Pelser](https://github.com/jerriep)
