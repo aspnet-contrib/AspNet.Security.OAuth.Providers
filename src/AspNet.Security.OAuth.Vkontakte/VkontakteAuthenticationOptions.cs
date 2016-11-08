@@ -36,8 +36,9 @@ namespace AspNet.Security.OAuth.Vkontakte {
             "uid",
             "first_name",
             "last_name",
-            "screen_name",
-            "photo_50"
+            "photo_rec",
+            "photo",
+            "hash"
         };
     }
 }
