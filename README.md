@@ -42,6 +42,7 @@ We would love it if you could help contributing to this repository. Please look 
 * [Jesse Mandel](https://github.com/supergibbs)
 * [Jordan Knight](https://github.com/jakkaj)
 * [Kévin Chalet](https://github.com/PinpointTownes)
+* [Konstantin Mamaev](https://github.com/MrMeison)
 * [Mariusz Zieliński](https://github.com/mariozski)
 * [Maxime Roussin-Bélanger](https://github.com/Lorac)
 * [Michael Knowles](https://github.com/mjknowles)

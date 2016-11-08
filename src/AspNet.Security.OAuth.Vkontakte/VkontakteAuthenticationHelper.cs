@@ -19,6 +19,11 @@ namespace AspNet.Security.OAuth.Vkontakte {
         public static string GetId([NotNull] JObject user) => user.Value<string>("uid");
 
         /// <summary>
+        /// Gets the hash for checking authorization on the remote client.
+        /// </summary>
+        public static string GetHash([NotNull] JObject user) => user.Value<string>("hash");
+
+        /// <summary>
         /// Gets the first name associated with the logged in user.
         /// </summary>
         public static string GetFirstName([NotNull] JObject user) => user.Value<string>("first_name");
@@ -29,13 +34,13 @@ namespace AspNet.Security.OAuth.Vkontakte {
         public static string GetLastName([NotNull] JObject user) => user.Value<string>("last_name");
 
         /// <summary>
-        /// Gets the screen name associated with the logged in user.
+        /// Gets the URL of the user profile picture.
         /// </summary>
-        public static string GetScreenName([NotNull] JObject user) => user.Value<string>("screen_name");
+        public static string GetPhoto([NotNull] JObject user) => user.Value<string>("photo");
 
         /// <summary>
-        /// Gets the photo associated with the logged in user.
+        /// Gets the URL of the user profile thumbnail.
         /// </summary>
-        public static string GetPhoto([NotNull] JObject user) => user.Value<string>("photo_50");
+        public static string GetPhotoThumbnail([NotNull] JObject user) => user.Value<string>("photo_rec");
     }
 }

@@ -49,8 +49,9 @@ namespace AspNet.Security.OAuth.Vkontakte {
             identity.AddOptionalClaim(ClaimTypes.NameIdentifier, VkontakteAuthenticationHelper.GetId(user), Options.ClaimsIssuer)
                     .AddOptionalClaim(ClaimTypes.GivenName, VkontakteAuthenticationHelper.GetFirstName(user), Options.ClaimsIssuer)
                     .AddOptionalClaim(ClaimTypes.Surname, VkontakteAuthenticationHelper.GetLastName(user), Options.ClaimsIssuer)
-                    .AddOptionalClaim(ClaimTypes.Name, VkontakteAuthenticationHelper.GetScreenName(user), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:vkontakte:link", VkontakteAuthenticationHelper.GetPhoto(user), Options.ClaimsIssuer);
+                    .AddOptionalClaim(ClaimTypes.Hash, VkontakteAuthenticationHelper.GetHash(user), Options.ClaimsIssuer)
+                    .AddOptionalClaim("urn:vkontakte:photo:link", VkontakteAuthenticationHelper.GetPhoto(user), Options.ClaimsIssuer)
+                    .AddOptionalClaim("urn:vkontakte:photo_thumb:link", VkontakteAuthenticationHelper.GetPhotoThumbnail(user), Options.ClaimsIssuer);
 
             await Options.Events.CreatingTicket(context);
 

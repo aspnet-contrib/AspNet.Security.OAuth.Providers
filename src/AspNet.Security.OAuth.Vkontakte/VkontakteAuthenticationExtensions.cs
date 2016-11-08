@@ -41,7 +41,7 @@ namespace Microsoft.AspNetCore.Builder {
         /// <param name="app">The <see cref="IApplicationBuilder"/> to add the middleware to.</param>
         /// <param name="configuration">An action delegate to configure the provided <see cref="VkontakteAuthenticationOptions"/>.</param>
         /// <returns>A reference to this instance after the operation has completed.</returns>
-        public static IApplicationBuilder UseLinkedInAuthentication(
+        public static IApplicationBuilder UseVkontakteAuthentication(
             [NotNull] this IApplicationBuilder app,
             [NotNull] Action<VkontakteAuthenticationOptions> configuration) {
             if (app == null) {
