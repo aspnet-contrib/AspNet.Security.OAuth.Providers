@@ -1,7 +1,8 @@
 {
-    "version": "1.0.0-beta2-*",
-    "description": "ASP.NET Core security middleware enabling MYOB authentication.",
-    "authors": [ "Jordan Knight" ],
+  "version": "1.0.0-beta2-*",
+
+  "description": "ASP.NET Core security middleware enabling MYOB authentication.",
+  "authors": [ "Jordan Knight" ],
 
   "packOptions": {
     "owners": [ "Kévin Chalet", "Jerrie Pelser" ],
@@ -35,18 +36,13 @@
 
   "dependencies": {
     "AspNet.Security.OAuth.Extensions": { "target": "project", "type": "build" },
-    "JetBrains.Annotations": { "type": "build", "version": "10.1.4" },
-    "Microsoft.AspNetCore.Authentication.OAuth": "1.0.0"
+    "JetBrains.Annotations": { "type": "build", "version": "10.2.1" },
+    "Microsoft.AspNetCore.Authentication.OAuth": "1.1.0",
+    "NETStandard.Library": "1.6.1"
   },
 
   "frameworks": {
     "net451": { },
-
-    "netstandard1.3": {
-      "imports": [
-        "dotnet5.4",
-        "portable-net451+win8"
-      ]
-    }
+    "netstandard1.3": { }
   }
 }
