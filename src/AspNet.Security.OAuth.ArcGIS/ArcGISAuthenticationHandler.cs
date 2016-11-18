@@ -44,12 +44,12 @@ namespace AspNet.Security.OAuth.ArcGIS {
             var error = ArcGISAuthenticationHelper.GetError(payload);
             if (error != null) {
                 // See https://developers.arcgis.com/authentication/server-based-user-logins/ for more information
-                Logger.LogError("An error occurred when retrieving the user profile: the remote server " +
+                Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
                                 "returned a response with the following error code: {Code} {Message}.",
                                 /* Code: */ error.Value<string>("code"),
                                 /* Message: */ error.Value<string>("message"));
 
-                throw new InvalidOperationException("An error occurred when retrieving the user profile.");
+                return null;
             }
 
             identity.AddOptionalClaim(ClaimTypes.NameIdentifier, ArcGISAuthenticationHelper.GetIdentifier(payload), Options.ClaimsIssuer)

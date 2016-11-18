@@ -13,6 +13,7 @@ using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http.Authentication;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 
 namespace AspNet.Security.OAuth.Untappd {
@@ -28,13 +29,20 @@ namespace AspNet.Security.OAuth.Untappd {
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", tokens.AccessToken);
 
             var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
-            response.EnsureSuccessStatusCode();
+            if (!response.IsSuccessStatusCode) {
+                Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
+                                "returned a {Status} response with the following payload: {Headers} {Body}.",
+                                /* Status: */ response.StatusCode,
+                                /* Headers: */ response.Headers.ToString(),
+                                /* Body: */ await response.Content.ReadAsStringAsync());
+
+                return null;
+            }
 
             var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
 
-            identity.AddOptionalClaim(ClaimTypes.NameIdentifier, UntappdAuthenticationHelper.GetIdentifier(payload), Options.ClaimsIssuer);
-            
-            identity.AddOptionalClaim(ClaimTypes.GivenName, UntappdAuthenticationHelper.GetFirstName(payload), Options.ClaimsIssuer)
+            identity.AddOptionalClaim(ClaimTypes.NameIdentifier, UntappdAuthenticationHelper.GetIdentifier(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim(ClaimTypes.GivenName, UntappdAuthenticationHelper.GetFirstName(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim(ClaimTypes.Surname, UntappdAuthenticationHelper.GetLastName(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim(ClaimTypes.Name, UntappdAuthenticationHelper.GetUsername(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim(ClaimTypes.Webpage, UntappdAuthenticationHelper.GetUrl(payload), Options.ClaimsIssuer)
