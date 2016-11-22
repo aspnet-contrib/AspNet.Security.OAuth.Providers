@@ -43,9 +43,11 @@ namespace AspNet.Security.OAuth.GitHub {
             
             identity.AddOptionalClaim(ClaimTypes.NameIdentifier, GitHubAuthenticationHelper.GetIdentifier(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim(ClaimTypes.Name, GitHubAuthenticationHelper.GetLogin(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim(ClaimTypes.Email, GitHubAuthenticationHelper.GetEmail(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:github:name", GitHubAuthenticationHelper.GetName(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:github:url", GitHubAuthenticationHelper.GetLink(payload), Options.ClaimsIssuer);
+                    .AddOptionalClaim(ClaimTypes.Email, GitHubAuthenticationHelper.GetEmail(payload), Options.ClaimsIssuer);
+            
+            foreach (var token in payload) {
+                identity.AddOptionalClaim($"urn:github:{token.Key}", token.Value.ToString(), Options.ClaimsIssuer);
+            }
 
             // When the email address is not public, retrieve it from
             // the emails endpoint if the user:email scope is specified.
