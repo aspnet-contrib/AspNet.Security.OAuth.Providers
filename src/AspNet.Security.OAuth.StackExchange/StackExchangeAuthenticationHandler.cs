@@ -38,7 +38,15 @@ namespace AspNet.Security.OAuth.StackExchange {
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
             var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
-            response.EnsureSuccessStatusCode();
+            if (!response.IsSuccessStatusCode) {
+                Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
+                                "returned a {Status} response with the following payload: {Headers} {Body}.",
+                                /* Status: */ response.StatusCode,
+                                /* Headers: */ response.Headers.ToString(),
+                                /* Body: */ await response.Content.ReadAsStringAsync());
+
+                throw new HttpRequestException("An error occurred while retrieving the user profile.");
+            }
 
             var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
 
@@ -69,13 +77,13 @@ namespace AspNet.Security.OAuth.StackExchange {
 
             var response = await Backchannel.SendAsync(request, Context.RequestAborted);
             if (!response.IsSuccessStatusCode) {
-                Logger.LogError("An error occurred when retrieving an access token: the remote server " +
-                               "returned a {Status} response with the following payload: {Headers} {Body}.",
-                               /* Status: */ response.StatusCode,
-                               /* Headers: */ response.Headers.ToString(),
-                               /* Body: */ await response.Content.ReadAsStringAsync());
+                Logger.LogError("An error occurred while retrieving an access token: the remote server " +
+                                "returned a {Status} response with the following payload: {Headers} {Body}.",
+                                /* Status: */ response.StatusCode,
+                                /* Headers: */ response.Headers.ToString(),
+                                /* Body: */ await response.Content.ReadAsStringAsync());
 
-                return OAuthTokenResponse.Failed(new Exception("An error occurred when retrieving an access token."));
+                return OAuthTokenResponse.Failed(new Exception("An error occurred while retrieving an access token."));
             }
 
             // Note: StackExchange's token endpoint doesn't return JSON but uses application/x-www-form-urlencoded.

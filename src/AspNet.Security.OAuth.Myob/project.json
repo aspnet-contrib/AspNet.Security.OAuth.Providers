@@ -1,7 +1,8 @@
 {
-    "version": "1.0.0-beta2-*",
-    "description": "ASP.NET Core security middleware enabling MYOB authentication.",
-    "authors": [ "Jordan Knight" ],
+  "version": "1.0.0-beta2-*",
+
+  "description": "ASP.NET Core security middleware enabling MYOB authentication.",
+  "authors": [ "Jordan Knight" ],
 
   "packOptions": {
     "owners": [ "Kévin Chalet", "Jerrie Pelser" ],

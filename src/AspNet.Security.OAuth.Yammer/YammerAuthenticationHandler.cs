@@ -31,13 +31,13 @@ namespace AspNet.Security.OAuth.Yammer {
 
             var response = await Backchannel.SendAsync(request, Context.RequestAborted);
             if (!response.IsSuccessStatusCode) {
-                Logger.LogError("An error occurred when retrieving the user profile: the remote server " +
+                Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
                                 "returned a {Status} response with the following payload: {Headers} {Body}.",
                                 /* Status: */ response.StatusCode,
                                 /* Headers: */ response.Headers.ToString(),
                                 /* Body: */ await response.Content.ReadAsStringAsync());
 
-                throw new HttpRequestException("An error occurred when retrieving the user profile.");
+                throw new HttpRequestException("An error occurred while retrieving the user profile.");
             }
 
             var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
@@ -73,13 +73,13 @@ namespace AspNet.Security.OAuth.Yammer {
 
             var response = await Backchannel.SendAsync(request, Context.RequestAborted);
             if (!response.IsSuccessStatusCode) {
-                Logger.LogError("An error occurred when retrieving an access token: the remote server " +
+                Logger.LogError("An error occurred while retrieving an access token: the remote server " +
                                 "returned a {Status} response with the following payload: {Headers} {Body}.",
                                 /* Status: */ response.StatusCode,
                                 /* Headers: */ response.Headers.ToString(),
                                 /* Body: */ await response.Content.ReadAsStringAsync());
 
-                return OAuthTokenResponse.Failed(new Exception("An error occurred when retrieving an access token."));
+                return OAuthTokenResponse.Failed(new Exception("An error occurred while retrieving an access token."));
             }
 
             // Note: Yammer doesn't return a standard OAuth2 response. To make this middleware compatible
