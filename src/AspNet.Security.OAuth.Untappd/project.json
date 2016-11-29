@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0-beta2-*",
+  "version": "1.0.0-beta2-final",
 
   "description": "ASP.NET Core security middleware enabling Untappd authentication.",
   "authors": [ "Albert Zakiev" ],
