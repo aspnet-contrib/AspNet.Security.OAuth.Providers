@@ -28,6 +28,6 @@ namespace AspNet.Security.OAuth.GitHub {
         /// Gets or sets the address of the endpoint exposing
         /// the email addresses associated with the logged in user.
         /// </summary>
-        public string UserEmailsEndpoint { get; } = GitHubAuthenticationDefaults.UserEmailsEndpoint;
+        public string UserEmailsEndpoint { get; set; } = GitHubAuthenticationDefaults.UserEmailsEndpoint;
     }
 }
