@@ -17,6 +17,7 @@
   "dependencies": {
     "AspNet.Security.OAuth.ArcGIS": { "target": "project" },
     "AspNet.Security.OAuth.Asana": { "target": "project" },
+    "AspNet.Security.OAuth.Autodesk": { "target": "project" },
     "AspNet.Security.OAuth.Automatic": { "target": "project" },
     "AspNet.Security.OAuth.Beam": { "target": "project" },
     "AspNet.Security.OAuth.BattleNet": { "target": "project" },
