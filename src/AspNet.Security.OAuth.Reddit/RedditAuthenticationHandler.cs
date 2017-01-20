@@ -36,6 +36,13 @@ namespace AspNet.Security.OAuth.Reddit
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             request.Headers.Authorization = new AuthenticationHeaderValue("bearer", tokens.AccessToken);
 
+            // When a custom user agent is specified in the options, add it to the request headers
+            // to override the default (generic) user agent used by the OAuth2 base middleware.
+            if (!string.IsNullOrEmpty(Options.UserAgent))
+            {
+                request.Headers.UserAgent.ParseAdd(Options.UserAgent);
+            }
+
             var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
             if (!response.IsSuccessStatusCode)
             {
@@ -68,7 +75,7 @@ namespace AspNet.Security.OAuth.Reddit
             var address = base.BuildChallengeUrl(properties, redirectUri);
 
             // Add duration=permanent to the authorization request to get an access token that doesn't expire after 1 hour.
-            // See https://github.com/reddit/reddit/wiki/OAuth2#authorization.
+            // See https://github.com/reddit/reddit/wiki/OAuth2#authorization for more information.
             return QueryHelpers.AddQueryString(address, name: "duration", value: "permanent");
         }
 
@@ -87,6 +94,13 @@ namespace AspNet.Security.OAuth.Reddit
             var request = new HttpRequestMessage(HttpMethod.Post, Options.TokenEndpoint);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             request.Headers.Authorization = new AuthenticationHeaderValue("Basic", credentials);
+
+            // When a custom user agent is specified in the options, add it to the request headers
+            // to override the default (generic) user agent used by the OAuth2 base middleware.
+            if (!string.IsNullOrEmpty(Options.UserAgent))
+            {
+                request.Headers.UserAgent.ParseAdd(Options.UserAgent);
+            }
 
             request.Content = new FormUrlEncodedContent(new Dictionary<string, string>
             {
