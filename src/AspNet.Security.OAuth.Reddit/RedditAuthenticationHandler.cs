@@ -32,6 +32,10 @@ namespace AspNet.Security.OAuth.Reddit {
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             request.Headers.Authorization = new AuthenticationHeaderValue("bearer", tokens.AccessToken);
 
+            if (!string.IsNullOrWhiteSpace(Options.UserAgent)) {
+                request.Headers.Add("User-Agent", Options.UserAgent);
+            }
+
             var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
             if (!response.IsSuccessStatusCode) {
                 Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
@@ -79,6 +83,10 @@ namespace AspNet.Security.OAuth.Reddit {
             var request = new HttpRequestMessage(HttpMethod.Post, Options.TokenEndpoint);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             request.Headers.Authorization = new AuthenticationHeaderValue("Basic", credentials);
+
+            if (!string.IsNullOrWhiteSpace(Options.UserAgent)) {
+                request.Headers.Add("User-Agent", Options.UserAgent);
+            }
 
             request.Content = new FormUrlEncodedContent(new Dictionary<string, string> {
                 ["grant_type"] = "authorization_code",

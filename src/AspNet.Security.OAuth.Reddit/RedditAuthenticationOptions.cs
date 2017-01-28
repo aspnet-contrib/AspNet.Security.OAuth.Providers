@@ -25,5 +25,10 @@ namespace AspNet.Security.OAuth.Reddit {
 
             Scope.Add("identity");
         }
+        /// <summary>
+        /// UserAgent string to pass during requests to Reddit.
+        /// STRONGLY recommend to set this according to policy to avoid request throttling
+        /// </summary>
+        public string UserAgent { get; set; }
     }
 }
