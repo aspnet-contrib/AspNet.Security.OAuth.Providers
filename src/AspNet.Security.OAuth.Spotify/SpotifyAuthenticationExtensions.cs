@@ -9,26 +9,31 @@ using AspNet.Security.OAuth.Spotify;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Options;
 
-namespace Microsoft.AspNetCore.Builder {
+namespace Microsoft.AspNetCore.Builder
+{
     /// <summary>
     /// Extension methods to add Spotify authentication capabilities to an HTTP application pipeline.
     /// </summary>
-    public static class SpotifyAuthenticationExtensions {
+    public static class SpotifyAuthenticationExtensions
+    {
         /// <summary>
         /// Adds the <see cref="SpotifyAuthenticationMiddleware"/> middleware to the specified
         /// <see cref="IApplicationBuilder"/>, which enables Spotify authentication capabilities.
         /// </summary>
         /// <param name="app">The <see cref="IApplicationBuilder"/> to add the middleware to.</param>
-        /// <param name="options">A <see cref="SpotifyAuthenticationOptions"/> that specifies options for the middleware.</param>        
+        /// <param name="options">A <see cref="SpotifyAuthenticationOptions"/> that specifies options for the middleware.</param>
         /// <returns>A reference to this instance after the operation has completed.</returns>
         public static IApplicationBuilder UseSpotifyAuthentication(
             [NotNull] this IApplicationBuilder app,
-            [NotNull] SpotifyAuthenticationOptions options) {
-            if (app == null) {
+            [NotNull] SpotifyAuthenticationOptions options)
+        {
+            if (app == null)
+            {
                 throw new ArgumentNullException(nameof(app));
             }
 
-            if (options == null) {
+            if (options == null)
+            {
                 throw new ArgumentNullException(nameof(options));
             }
 
@@ -44,12 +49,15 @@ namespace Microsoft.AspNetCore.Builder {
         /// <returns>A reference to this instance after the operation has completed.</returns>
         public static IApplicationBuilder UseSpotifyAuthentication(
             [NotNull] this IApplicationBuilder app,
-            [NotNull] Action<SpotifyAuthenticationOptions> configuration) {
-            if (app == null) {
+            [NotNull] Action<SpotifyAuthenticationOptions> configuration)
+        {
+            if (app == null)
+            {
                 throw new ArgumentNullException(nameof(app));
             }
 
-            if (configuration == null) {
+            if (configuration == null)
+            {
                 throw new ArgumentNullException(nameof(configuration));
             }
 

@@ -7,12 +7,14 @@
 using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
 
-namespace AspNet.Security.OAuth.ArcGIS {
+namespace AspNet.Security.OAuth.ArcGIS
+{
     /// <summary>
     /// Contains static methods that allow to extract user's information from a <see cref="JObject"/>
     /// instance retrieved from ArcGIS after a successful authentication process.
     /// </summary>
-    public static class ArcGISAuthenticationHelper {
+    public static class ArcGISAuthenticationHelper
+    {
         /// <summary>
         /// Gets the identifier corresponding to the authenticated user.
         /// </summary>

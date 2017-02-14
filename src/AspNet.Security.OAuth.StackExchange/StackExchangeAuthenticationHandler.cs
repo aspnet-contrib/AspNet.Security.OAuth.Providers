@@ -19,16 +19,21 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 
-namespace AspNet.Security.OAuth.StackExchange {
-    public class StackExchangeAuthenticationHandler : OAuthHandler<StackExchangeAuthenticationOptions> {
+namespace AspNet.Security.OAuth.StackExchange
+{
+    public class StackExchangeAuthenticationHandler : OAuthHandler<StackExchangeAuthenticationOptions>
+    {
         public StackExchangeAuthenticationHandler([NotNull] HttpClient client)
-            : base(client) {
+            : base(client)
+        {
         }
 
         protected override async Task<AuthenticationTicket> CreateTicketAsync([NotNull] ClaimsIdentity identity,
-            [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens) {
+            [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens)
+        {
             // Note: access tokens and request keys are passed in the querystring for StackExchange
-            var address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, new Dictionary<string, string>() {
+            var address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, new Dictionary<string, string>()
+            {
                 ["access_token"] = tokens.AccessToken,
                 ["key"] = Options.RequestKey,
                 ["site"] = Options.Site
@@ -38,7 +43,8 @@ namespace AspNet.Security.OAuth.StackExchange {
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
             var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
-            if (!response.IsSuccessStatusCode) {
+            if (!response.IsSuccessStatusCode)
+            {
                 Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
                                 "returned a {Status} response with the following payload: {Headers} {Body}.",
                                 /* Status: */ response.StatusCode,
@@ -65,9 +71,11 @@ namespace AspNet.Security.OAuth.StackExchange {
             return context.Ticket;
         }
 
-        protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] string code, [NotNull] string redirectUri) {
+        protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] string code, [NotNull] string redirectUri)
+        {
             var request = new HttpRequestMessage(HttpMethod.Post, Options.TokenEndpoint);
-            request.Content = new FormUrlEncodedContent(new Dictionary<string, string> {
+            request.Content = new FormUrlEncodedContent(new Dictionary<string, string>
+            {
                 ["client_id"] = Options.ClientId,
                 ["redirect_uri"] = redirectUri,
                 ["client_secret"] = Options.ClientSecret,
@@ -76,7 +84,8 @@ namespace AspNet.Security.OAuth.StackExchange {
             });
 
             var response = await Backchannel.SendAsync(request, Context.RequestAborted);
-            if (!response.IsSuccessStatusCode) {
+            if (!response.IsSuccessStatusCode)
+            {
                 Logger.LogError("An error occurred while retrieving an access token: the remote server " +
                                 "returned a {Status} response with the following payload: {Headers} {Body}.",
                                 /* Status: */ response.StatusCode,
@@ -91,7 +100,8 @@ namespace AspNet.Security.OAuth.StackExchange {
             var content = QueryHelpers.ParseQuery(await response.Content.ReadAsStringAsync());
 
             var payload = new JObject();
-            foreach (var item in content) {
+            foreach (var item in content)
+            {
                 payload[item.Key] = (string) item.Value;
             }
 

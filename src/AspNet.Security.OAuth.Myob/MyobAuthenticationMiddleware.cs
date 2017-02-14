@@ -5,16 +5,18 @@
  */
 
 using System.Text.Encodings.Web;
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using JetBrains.Annotations;
 
-namespace AspNet.Security.OAuth.Myob {
-    public class MyobAuthenticationMiddleware : OAuthMiddleware<MyobAuthenticationOptions> {
+namespace AspNet.Security.OAuth.Myob
+{
+    public class MyobAuthenticationMiddleware : OAuthMiddleware<MyobAuthenticationOptions>
+    {
         public MyobAuthenticationMiddleware(
             [NotNull] RequestDelegate next,
             [NotNull] IDataProtectionProvider dataProtectionProvider,
@@ -22,10 +24,12 @@ namespace AspNet.Security.OAuth.Myob {
             [NotNull] UrlEncoder encoder,
             [NotNull] IOptions<SharedAuthenticationOptions> sharedOptions,
             [NotNull] IOptions<MyobAuthenticationOptions> options)
-            : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options) {
+            : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options)
+        {
         }
 
-        protected override AuthenticationHandler<MyobAuthenticationOptions> CreateHandler() {
+        protected override AuthenticationHandler<MyobAuthenticationOptions> CreateHandler()
+        {
             return new MyobAuthenticationHandler(Backchannel);
         }
     }

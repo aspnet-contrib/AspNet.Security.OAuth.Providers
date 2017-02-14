@@ -6,11 +6,13 @@
 
 using Microsoft.AspNetCore.Builder;
 
-namespace AspNet.Security.OAuth.Automatic {
+namespace AspNet.Security.OAuth.Automatic
+{
     /// <summary>
     /// Default values used by the Automatic authentication middleware.
     /// </summary>
-    public static class AutomaticAuthenticationDefaults {
+    public static class AutomaticAuthenticationDefaults
+    {
         /// <summary>
         /// Default value for <see cref="AuthenticationOptions.AuthenticationScheme"/>.
         /// </summary>

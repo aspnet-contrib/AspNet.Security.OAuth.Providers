@@ -5,13 +5,14 @@
  */
 
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Authentication.OAuth;
 
-namespace AspNet.Security.OAuth.Reddit {
+namespace AspNet.Security.OAuth.Reddit
+{
     /// <summary>
     /// Default values used by the Reddit authentication middleware.
     /// </summary>
-    public static class RedditAuthenticationDefaults {
+    public static class RedditAuthenticationDefaults
+    {
         /// <summary>
         /// Default value for <see cref="AuthenticationOptions.AuthenticationScheme"/>.
         /// </summary>

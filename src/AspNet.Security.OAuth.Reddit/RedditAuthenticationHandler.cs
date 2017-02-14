@@ -20,20 +20,25 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 
-namespace AspNet.Security.OAuth.Reddit {
-    public class RedditAuthenticationHandler : OAuthHandler<RedditAuthenticationOptions> {
+namespace AspNet.Security.OAuth.Reddit
+{
+    public class RedditAuthenticationHandler : OAuthHandler<RedditAuthenticationOptions>
+    {
         public RedditAuthenticationHandler([NotNull] HttpClient client)
-            : base(client) {
+            : base(client)
+        {
         }
 
         protected override async Task<AuthenticationTicket> CreateTicketAsync([NotNull] ClaimsIdentity identity,
-            [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens) {
+            [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens)
+        {
             var request = new HttpRequestMessage(HttpMethod.Get, Options.UserInformationEndpoint);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             request.Headers.Authorization = new AuthenticationHeaderValue("bearer", tokens.AccessToken);
 
             var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
-            if (!response.IsSuccessStatusCode) {
+            if (!response.IsSuccessStatusCode)
+            {
                 Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
                                 "returned a {Status} response with the following payload: {Headers} {Body}.",
                                 /* Status: */ response.StatusCode,
@@ -58,7 +63,8 @@ namespace AspNet.Security.OAuth.Reddit {
             return context.Ticket;
         }
 
-        protected override string BuildChallengeUrl(AuthenticationProperties properties, string redirectUri) {
+        protected override string BuildChallengeUrl(AuthenticationProperties properties, string redirectUri)
+        {
             var address = base.BuildChallengeUrl(properties, redirectUri);
 
             // Add duration=permanent to the authorization request to get an access token that doesn't expire after 1 hour.
@@ -66,28 +72,32 @@ namespace AspNet.Security.OAuth.Reddit {
             return QueryHelpers.AddQueryString(address, name: "duration", value: "permanent");
         }
 
-        protected override string FormatScope() {
+        protected override string FormatScope()
+        {
             // Note: Reddit requires a non-standard comma-separated scope.
             // See https://github.com/reddit/reddit/wiki/OAuth2#authorization
             // and http://tools.ietf.org/html/rfc6749#section-3.3.
             return string.Join(",", Options.Scope);
         }
 
-        protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] string code, [NotNull] string redirectUri) {
+        protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] string code, [NotNull] string redirectUri)
+        {
             var credentials = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{Options.ClientId}:{Options.ClientSecret}"));
 
             var request = new HttpRequestMessage(HttpMethod.Post, Options.TokenEndpoint);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             request.Headers.Authorization = new AuthenticationHeaderValue("Basic", credentials);
 
-            request.Content = new FormUrlEncodedContent(new Dictionary<string, string> {
+            request.Content = new FormUrlEncodedContent(new Dictionary<string, string>
+            {
                 ["grant_type"] = "authorization_code",
                 ["redirect_uri"] = redirectUri,
                 ["code"] = code
             });
 
             var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
-            if (!response.IsSuccessStatusCode) {
+            if (!response.IsSuccessStatusCode)
+            {
                 Logger.LogError("An error occurred while retrieving an access token: the remote server " +
                                 "returned a {Status} response with the following payload: {Headers} {Body}.",
                                 /* Status: */ response.StatusCode,

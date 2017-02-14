@@ -13,8 +13,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace AspNet.Security.OAuth.Onshape {
-    public class OnshapeAuthenticationMiddleware : OAuthMiddleware<OnshapeAuthenticationOptions> {
+namespace AspNet.Security.OAuth.Onshape
+{
+    public class OnshapeAuthenticationMiddleware : OAuthMiddleware<OnshapeAuthenticationOptions>
+    {
         public OnshapeAuthenticationMiddleware(
             [NotNull] RequestDelegate next,
             [NotNull] IDataProtectionProvider dataProtectionProvider,
@@ -22,10 +24,12 @@ namespace AspNet.Security.OAuth.Onshape {
             [NotNull] UrlEncoder encoder,
             [NotNull] IOptions<SharedAuthenticationOptions> sharedOptions,
             [NotNull] IOptions<OnshapeAuthenticationOptions> options)
-            : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options) {
+            : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options)
+        {
         }
 
-        protected override AuthenticationHandler<OnshapeAuthenticationOptions> CreateHandler() {
+        protected override AuthenticationHandler<OnshapeAuthenticationOptions> CreateHandler()
+        {
             return new OnshapeAuthenticationHandler(Backchannel);
         }
     }

@@ -5,13 +5,14 @@
  */
 
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Authentication.OAuth;
 
-namespace AspNet.Security.OAuth.Asana {
+namespace AspNet.Security.OAuth.Asana
+{
     /// <summary>
     /// Default values used by the Asana authentication middleware.
     /// </summary>
-    public static class AsanaAuthenticationDefaults {
+    public static class AsanaAuthenticationDefaults
+    {
         /// <summary>
         /// Default value for <see cref="AuthenticationOptions.AuthenticationScheme"/>.
         /// </summary>

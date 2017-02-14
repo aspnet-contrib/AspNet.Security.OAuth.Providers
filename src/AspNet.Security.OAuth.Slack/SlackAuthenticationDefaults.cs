@@ -5,13 +5,14 @@
  */
 
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Authentication.OAuth;
 
-namespace AspNet.Security.OAuth.Slack {
+namespace AspNet.Security.OAuth.Slack
+{
     /// <summary>
     /// Default values used by the Slack authentication middleware.
     /// </summary>
-    public static class SlackAuthenticationDefaults {
+    public static class SlackAuthenticationDefaults
+    {
         /// <summary>
         /// Default value for <see cref="AuthenticationOptions.AuthenticationScheme"/>.
         /// </summary>

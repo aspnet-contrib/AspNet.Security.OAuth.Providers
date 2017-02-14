@@ -5,13 +5,14 @@
  */
 
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Authentication.OAuth;
 
-namespace AspNet.Security.OAuth.GitHub {
+namespace AspNet.Security.OAuth.GitHub
+{
     /// <summary>
     /// Default values used by the GitHub authentication middleware.
     /// </summary>
-    public static class GitHubAuthenticationDefaults {
+    public static class GitHubAuthenticationDefaults
+    {
         /// <summary>
         /// Default value for <see cref="AuthenticationOptions.AuthenticationScheme"/>.
         /// </summary>

@@ -8,15 +8,18 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 
-namespace AspNet.Security.OAuth.Vkontakte {
+namespace AspNet.Security.OAuth.Vkontakte
+{
     /// <summary>
     /// Configuration options for <see cref="VkontakteAuthenticationMiddleware"/>.
     /// </summary>
-    public class VkontakteAuthenticationOptions : OAuthOptions {
+    public class VkontakteAuthenticationOptions : OAuthOptions
+    {
         /// <summary>
         /// Initializes a new <see cref="VkontakteAuthenticationOptions"/>.
         /// </summary>
-        public VkontakteAuthenticationOptions() {
+        public VkontakteAuthenticationOptions()
+        {
             AuthenticationScheme = VkontakteAuthenticationDefault.AuthenticationScheme;
             DisplayName = VkontakteAuthenticationDefault.DisplayName;
             ClaimsIssuer = VkontakteAuthenticationDefault.Issuer;

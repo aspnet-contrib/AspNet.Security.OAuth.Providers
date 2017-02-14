@@ -7,12 +7,14 @@
 using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
 
-namespace AspNet.Security.OAuth.StackExchange {
+namespace AspNet.Security.OAuth.StackExchange
+{
     /// <summary>
     /// Contains static methods that allow to extract user's information from a <see cref="JObject"/>
     /// instance retrieved from StackExchange after a successful authentication process.
     /// </summary>
-    public static class StackExchangeAuthenticationHelper {
+    public static class StackExchangeAuthenticationHelper
+    {
         /// <summary>
         /// Gets the identifier corresponding to the authenticated user.
         /// </summary>

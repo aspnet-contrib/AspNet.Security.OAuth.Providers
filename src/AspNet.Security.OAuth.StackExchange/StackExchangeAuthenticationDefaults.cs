@@ -6,11 +6,13 @@
 
 using Microsoft.AspNetCore.Builder;
 
-namespace AspNet.Security.OAuth.StackExchange {
+namespace AspNet.Security.OAuth.StackExchange
+{
     /// <summary>
     /// Default values used by the StackExchange authentication middleware.
     /// </summary>
-    public static class StackExchangeAuthenticationDefaults {
+    public static class StackExchangeAuthenticationDefaults
+    {
         /// <summary>
         /// Default value for <see cref="AuthenticationOptions.AuthenticationScheme"/>.
         /// </summary>

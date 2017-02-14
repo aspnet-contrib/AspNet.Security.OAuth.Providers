@@ -13,8 +13,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace AspNet.Security.OAuth.CiscoSpark {
-    public class CiscoSparkAuthenticationMiddleware : OAuthMiddleware<CiscoSparkAuthenticationOptions> {
+namespace AspNet.Security.OAuth.CiscoSpark
+{
+    public class CiscoSparkAuthenticationMiddleware : OAuthMiddleware<CiscoSparkAuthenticationOptions>
+    {
         public CiscoSparkAuthenticationMiddleware(
             [NotNull] RequestDelegate next,
             [NotNull] IDataProtectionProvider dataProtectionProvider,
@@ -22,10 +24,12 @@ namespace AspNet.Security.OAuth.CiscoSpark {
             [NotNull] UrlEncoder encoder,
             [NotNull] IOptions<SharedAuthenticationOptions> externalOptions,
             [NotNull] IOptions<CiscoSparkAuthenticationOptions> options)
-            : base(next, dataProtectionProvider, loggerFactory, encoder, externalOptions, options) {
+            : base(next, dataProtectionProvider, loggerFactory, encoder, externalOptions, options)
+        {
         }
 
-        protected override AuthenticationHandler<CiscoSparkAuthenticationOptions> CreateHandler() {
+        protected override AuthenticationHandler<CiscoSparkAuthenticationOptions> CreateHandler()
+        {
             return new CiscoSparkAuthenticationHandler(Backchannel);
         }
     }

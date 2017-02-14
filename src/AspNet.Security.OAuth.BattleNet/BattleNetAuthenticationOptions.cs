@@ -8,12 +8,15 @@ using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 
-namespace AspNet.Security.OAuth.BattleNet {
+namespace AspNet.Security.OAuth.BattleNet
+{
     /// <summary>
     /// Defines a set of options used by <see cref="BattleNetAuthenticationHandler"/>.
     /// </summary>
-    public class BattleNetAuthenticationOptions : OAuthOptions {
-        public BattleNetAuthenticationOptions() {
+    public class BattleNetAuthenticationOptions : OAuthOptions
+    {
+        public BattleNetAuthenticationOptions()
+        {
             AuthenticationScheme = BattleNetAuthenticationDefaults.AuthenticationScheme;
             DisplayName = BattleNetAuthenticationDefaults.DisplayName;
             ClaimsIssuer = BattleNetAuthenticationDefaults.Issuer;
@@ -27,9 +30,12 @@ namespace AspNet.Security.OAuth.BattleNet {
         /// Sets the region used to determine the appropriate API endpoints when communicating
         /// with BattleNet (by default, <see cref="BattleNetAuthenticationRegion.America"/>).
         /// </summary>
-        public BattleNetAuthenticationRegion Region {
-            set {
-                switch (value) {
+        public BattleNetAuthenticationRegion Region
+        {
+            set
+            {
+                switch (value)
+                {
                     case BattleNetAuthenticationRegion.America:
                         AuthorizationEndpoint = BattleNetAuthenticationDefaults.America.AuthorizationEndpoint;
                         TokenEndpoint = BattleNetAuthenticationDefaults.America.TokenEndpoint;

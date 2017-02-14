@@ -17,21 +17,26 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 
-namespace AspNet.Security.OAuth.SoundCloud {
-    public class SoundCloudAuthenticationHandler : OAuthHandler<SoundCloudAuthenticationOptions> {
+namespace AspNet.Security.OAuth.SoundCloud
+{
+    public class SoundCloudAuthenticationHandler : OAuthHandler<SoundCloudAuthenticationOptions>
+    {
         public SoundCloudAuthenticationHandler([NotNull] HttpClient client)
-            : base(client) {
+            : base(client)
+        {
         }
 
         protected override async Task<AuthenticationTicket> CreateTicketAsync([NotNull] ClaimsIdentity identity,
-            [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens) {
+            [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens)
+        {
             var address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, "oauth_token", tokens.AccessToken);
 
             var request = new HttpRequestMessage(HttpMethod.Get, address);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
             var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
-            if (!response.IsSuccessStatusCode) {
+            if (!response.IsSuccessStatusCode)
+            {
                 Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
                                 "returned a {Status} response with the following payload: {Headers} {Body}.",
                                 /* Status: */ response.StatusCode,
@@ -42,7 +47,7 @@ namespace AspNet.Security.OAuth.SoundCloud {
             }
 
             var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
-            
+
             identity.AddOptionalClaim(ClaimTypes.NameIdentifier, SoundCloudAuthenticationHelper.GetIdentifier(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim(ClaimTypes.Name, SoundCloudAuthenticationHelper.GetUserName(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim(ClaimTypes.Country, SoundCloudAuthenticationHelper.GetCountry(payload), Options.ClaimsIssuer)

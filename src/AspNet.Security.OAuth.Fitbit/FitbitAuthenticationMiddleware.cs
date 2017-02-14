@@ -13,8 +13,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace AspNet.Security.OAuth.Fitbit {
-    public class FitbitAuthenticationMiddleware : OAuthMiddleware<FitbitAuthenticationOptions> {
+namespace AspNet.Security.OAuth.Fitbit
+{
+    public class FitbitAuthenticationMiddleware : OAuthMiddleware<FitbitAuthenticationOptions>
+    {
         public FitbitAuthenticationMiddleware(
             [NotNull] RequestDelegate next,
             [NotNull] IDataProtectionProvider dataProtectionProvider,
@@ -22,10 +24,12 @@ namespace AspNet.Security.OAuth.Fitbit {
             [NotNull] UrlEncoder encoder,
             [NotNull] IOptions<SharedAuthenticationOptions> sharedOptions,
             [NotNull] IOptions<FitbitAuthenticationOptions> options)
-            : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options) {
+            : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options)
+        {
         }
 
-        protected override AuthenticationHandler<FitbitAuthenticationOptions> CreateHandler() {
+        protected override AuthenticationHandler<FitbitAuthenticationOptions> CreateHandler()
+        {
             return new FitbitAuthenticationHandler(Backchannel);
         }
     }

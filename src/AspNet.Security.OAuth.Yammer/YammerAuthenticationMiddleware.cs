@@ -13,8 +13,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace AspNet.Security.OAuth.Yammer {
-    public class YammerAuthenticationMiddleware : OAuthMiddleware<YammerAuthenticationOptions> {
+namespace AspNet.Security.OAuth.Yammer
+{
+    public class YammerAuthenticationMiddleware : OAuthMiddleware<YammerAuthenticationOptions>
+    {
         public YammerAuthenticationMiddleware(
             [NotNull] RequestDelegate next,
             [NotNull] IDataProtectionProvider dataProtectionProvider,
@@ -22,10 +24,12 @@ namespace AspNet.Security.OAuth.Yammer {
             [NotNull] UrlEncoder encoder,
             [NotNull] IOptions<SharedAuthenticationOptions> sharedOptions,
             [NotNull] IOptions<YammerAuthenticationOptions> options)
-            : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options) {
+            : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options)
+        {
         }
 
-        protected override AuthenticationHandler<YammerAuthenticationOptions> CreateHandler() {
+        protected override AuthenticationHandler<YammerAuthenticationOptions> CreateHandler()
+        {
             return new YammerAuthenticationHandler(Backchannel);
         }
     }

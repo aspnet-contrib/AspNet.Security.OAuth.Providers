@@ -5,13 +5,14 @@
  */
 
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Authentication.OAuth;
 
-namespace AspNet.Security.OAuth.Salesforce {
+namespace AspNet.Security.OAuth.Salesforce
+{
     /// <summary>
     /// Default values used by the Salesforce authentication middleware.
     /// </summary>
-    public static class SalesforceAuthenticationDefaults {
+    public static class SalesforceAuthenticationDefaults
+    {
         /// <summary>
         /// Default value for <see cref="AuthenticationOptions.AuthenticationScheme"/>.
         /// </summary>
@@ -37,7 +38,8 @@ namespace AspNet.Security.OAuth.Salesforce {
         /// </summary>
         public const SalesforceAuthenticationEnvironment Environment = SalesforceAuthenticationEnvironment.Production;
 
-        public static class Production {
+        public static class Production
+        {
             /// <summary>
             /// Default value for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
             /// </summary>
@@ -49,7 +51,8 @@ namespace AspNet.Security.OAuth.Salesforce {
             public const string TokenEndpoint = "https://login.salesforce.com/services/oauth2/token";
         }
 
-        public static class Test {
+        public static class Test
+        {
             /// <summary>
             /// Default value for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
             /// </summary>

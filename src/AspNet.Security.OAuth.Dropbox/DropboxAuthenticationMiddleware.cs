@@ -13,8 +13,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace AspNet.Security.OAuth.Dropbox {
-    public class DropboxAuthenticationMiddleware : OAuthMiddleware<DropboxAuthenticationOptions> {
+namespace AspNet.Security.OAuth.Dropbox
+{
+    public class DropboxAuthenticationMiddleware : OAuthMiddleware<DropboxAuthenticationOptions>
+    {
         public DropboxAuthenticationMiddleware(
             [NotNull] RequestDelegate next,
             [NotNull] IDataProtectionProvider dataProtectionProvider,
@@ -22,10 +24,12 @@ namespace AspNet.Security.OAuth.Dropbox {
             [NotNull] UrlEncoder encoder,
             [NotNull] IOptions<SharedAuthenticationOptions> sharedOptions,
             [NotNull] IOptions<DropboxAuthenticationOptions> options)
-            : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options) {
+            : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options)
+        {
         }
 
-        protected override AuthenticationHandler<DropboxAuthenticationOptions> CreateHandler() {
+        protected override AuthenticationHandler<DropboxAuthenticationOptions> CreateHandler()
+        {
             return new DropboxAuthenticationHandler(Backchannel);
         }
     }

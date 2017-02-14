@@ -13,8 +13,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace AspNet.Security.OAuth.Slack {
-    public class SlackAuthenticationMiddleware : OAuthMiddleware<SlackAuthenticationOptions> {
+namespace AspNet.Security.OAuth.Slack
+{
+    public class SlackAuthenticationMiddleware : OAuthMiddleware<SlackAuthenticationOptions>
+    {
         public SlackAuthenticationMiddleware(
             [NotNull] RequestDelegate next,
             [NotNull] IDataProtectionProvider dataProtectionProvider,
@@ -22,10 +24,12 @@ namespace AspNet.Security.OAuth.Slack {
             [NotNull] UrlEncoder encoder,
             [NotNull] IOptions<SharedAuthenticationOptions> sharedOptions,
             [NotNull] IOptions<SlackAuthenticationOptions> options)
-            : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options) {
+            : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options)
+        {
         }
 
-        protected override AuthenticationHandler<SlackAuthenticationOptions> CreateHandler() {
+        protected override AuthenticationHandler<SlackAuthenticationOptions> CreateHandler()
+        {
             return new SlackAuthenticationHandler(Backchannel);
         }
     }

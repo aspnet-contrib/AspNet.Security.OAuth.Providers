@@ -13,8 +13,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace AspNet.Security.OAuth.Automatic {
-    public class AutomaticAuthenticationMiddleware : OAuthMiddleware<AutomaticAuthenticationOptions> {
+namespace AspNet.Security.OAuth.Automatic
+{
+    public class AutomaticAuthenticationMiddleware : OAuthMiddleware<AutomaticAuthenticationOptions>
+    {
         public AutomaticAuthenticationMiddleware(
             [NotNull] RequestDelegate next,
             [NotNull] IDataProtectionProvider dataProtectionProvider,
@@ -22,10 +24,12 @@ namespace AspNet.Security.OAuth.Automatic {
             [NotNull] UrlEncoder encoder,
             [NotNull] IOptions<SharedAuthenticationOptions> sharedOptions,
             [NotNull] IOptions<AutomaticAuthenticationOptions> options)
-            : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options) {
+            : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options)
+        {
         }
 
-        protected override AuthenticationHandler<AutomaticAuthenticationOptions> CreateHandler() {
+        protected override AuthenticationHandler<AutomaticAuthenticationOptions> CreateHandler()
+        {
             return new AutomaticAuthenticationHandler(Backchannel);
         }
     }

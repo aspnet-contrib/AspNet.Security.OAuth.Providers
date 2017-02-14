@@ -7,12 +7,15 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 
-namespace AspNet.Security.OAuth.MailChimp {
+namespace AspNet.Security.OAuth.MailChimp
+{
     /// <summary>
     /// Defines a set of options used by <see cref="MailChimpAuthenticationHandler"/>.
     /// </summary>
-    public class MailChimpAuthenticationOptions : OAuthOptions {
-        public MailChimpAuthenticationOptions() {
+    public class MailChimpAuthenticationOptions : OAuthOptions
+    {
+        public MailChimpAuthenticationOptions()
+        {
             AuthenticationScheme = MailChimpAuthenticationDefaults.AuthenticationScheme;
             DisplayName = MailChimpAuthenticationDefaults.DisplayName;
             ClaimsIssuer = MailChimpAuthenticationDefaults.Issuer;

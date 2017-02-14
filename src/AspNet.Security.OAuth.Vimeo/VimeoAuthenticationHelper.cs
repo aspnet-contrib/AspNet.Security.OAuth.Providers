@@ -8,12 +8,14 @@ using System.Linq;
 using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
 
-namespace AspNet.Security.OAuth.Vimeo {
+namespace AspNet.Security.OAuth.Vimeo
+{
     /// <summary>
     /// Contains static methods that allow to extract user's information from a <see cref="JObject"/>
     /// instance retrieved from Vimeo after a successful authentication process.
     /// </summary>
-    public static class VimeoAuthenticationHelper {
+    public static class VimeoAuthenticationHelper
+    {
         /// <summary>
         /// Gets the identifier corresponding to the authenticated user.
         /// </summary>

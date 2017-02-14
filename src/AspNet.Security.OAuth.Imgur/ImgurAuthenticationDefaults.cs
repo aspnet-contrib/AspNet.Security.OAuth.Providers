@@ -5,13 +5,14 @@
  */
 
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Authentication.OAuth;
 
-namespace AspNet.Security.OAuth.Imgur {
+namespace AspNet.Security.OAuth.Imgur
+{
     /// <summary>
     /// Default values used by the Imgur authentication middleware.
     /// </summary>
-    public static class ImgurAuthenticationDefaults {
+    public static class ImgurAuthenticationDefaults
+    {
         /// <summary>
         /// Default value for <see cref="AuthenticationOptions.AuthenticationScheme"/>.
         /// </summary>

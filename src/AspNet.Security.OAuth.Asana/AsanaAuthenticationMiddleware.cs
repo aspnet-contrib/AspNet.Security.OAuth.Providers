@@ -13,8 +13,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace AspNet.Security.OAuth.Asana {
-    public class AsanaAuthenticationMiddleware : OAuthMiddleware<AsanaAuthenticationOptions> {
+namespace AspNet.Security.OAuth.Asana
+{
+    public class AsanaAuthenticationMiddleware : OAuthMiddleware<AsanaAuthenticationOptions>
+    {
         public AsanaAuthenticationMiddleware(
             [NotNull] RequestDelegate next,
             [NotNull] IDataProtectionProvider dataProtectionProvider,
@@ -22,10 +24,12 @@ namespace AspNet.Security.OAuth.Asana {
             [NotNull] UrlEncoder encoder,
             [NotNull] IOptions<SharedAuthenticationOptions> sharedOptions,
             [NotNull] IOptions<AsanaAuthenticationOptions> options)
-            : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options) {
+            : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options)
+        {
         }
 
-        protected override AuthenticationHandler<AsanaAuthenticationOptions> CreateHandler() {
+        protected override AuthenticationHandler<AsanaAuthenticationOptions> CreateHandler()
+        {
             return new AsanaAuthenticationHandler(Backchannel);
         }
     }

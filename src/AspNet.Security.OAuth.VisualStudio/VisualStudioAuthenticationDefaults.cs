@@ -6,11 +6,13 @@
 
 using Microsoft.AspNetCore.Builder;
 
-namespace AspNet.Security.OAuth.VisualStudio {
+namespace AspNet.Security.OAuth.VisualStudio
+{
     /// <summary>
     /// Default values used by the Visual Studio authentication middleware.
     /// </summary>
-    public static class VisualStudioAuthenticationDefaults {
+    public static class VisualStudioAuthenticationDefaults
+    {
         /// <summary>
         /// Default value for <see cref="AuthenticationOptions.AuthenticationScheme"/>.
         /// </summary>

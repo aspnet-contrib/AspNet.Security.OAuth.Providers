@@ -13,8 +13,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace AspNet.Security.OAuth.Yahoo {
-    public class YahooAuthenticationMiddleware : OAuthMiddleware<YahooAuthenticationOptions> {
+namespace AspNet.Security.OAuth.Yahoo
+{
+    public class YahooAuthenticationMiddleware : OAuthMiddleware<YahooAuthenticationOptions>
+    {
         public YahooAuthenticationMiddleware(
             [NotNull] RequestDelegate next,
             [NotNull] IDataProtectionProvider dataProtectionProvider,
@@ -22,10 +24,12 @@ namespace AspNet.Security.OAuth.Yahoo {
             [NotNull] UrlEncoder encoder,
             [NotNull] IOptions<SharedAuthenticationOptions> sharedOptions,
             [NotNull] IOptions<YahooAuthenticationOptions> options)
-            : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options) {
+            : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options)
+        {
         }
 
-        protected override AuthenticationHandler<YahooAuthenticationOptions> CreateHandler() {
+        protected override AuthenticationHandler<YahooAuthenticationOptions> CreateHandler()
+        {
             return new YahooAuthenticationHandler(Backchannel);
         }
     }

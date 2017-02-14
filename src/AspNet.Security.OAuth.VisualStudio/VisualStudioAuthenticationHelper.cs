@@ -7,12 +7,14 @@
 using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
 
-namespace AspNet.Security.OAuth.VisualStudio {
+namespace AspNet.Security.OAuth.VisualStudio
+{
     /// <summary>
     /// Contains static methods that allow to extract user's information from a <see cref="JObject"/>
     /// instance retrieved from VisualStudio after a successful authentication process.
     /// </summary>
-    public static class VisualStudioAuthenticationHelper {
+    public static class VisualStudioAuthenticationHelper
+    {
         /// <summary>
         /// Gets the identifier corresponding to the authenticated user.
         /// </summary>

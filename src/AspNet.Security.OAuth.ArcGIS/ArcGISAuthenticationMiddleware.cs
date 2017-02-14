@@ -13,8 +13,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace AspNet.Security.OAuth.ArcGIS {
-    public class ArcGISAuthenticationMiddleware : OAuthMiddleware<ArcGISAuthenticationOptions> {
+namespace AspNet.Security.OAuth.ArcGIS
+{
+    public class ArcGISAuthenticationMiddleware : OAuthMiddleware<ArcGISAuthenticationOptions>
+    {
         public ArcGISAuthenticationMiddleware(
             [NotNull] RequestDelegate next,
             [NotNull] IDataProtectionProvider dataProtectionProvider,
@@ -22,10 +24,12 @@ namespace AspNet.Security.OAuth.ArcGIS {
             [NotNull] UrlEncoder encoder,
             [NotNull] IOptions<SharedAuthenticationOptions> sharedOptions,
             [NotNull] IOptions<ArcGISAuthenticationOptions> options)
-            : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options) {
+            : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options)
+        {
         }
 
-        protected override AuthenticationHandler<ArcGISAuthenticationOptions> CreateHandler() {
+        protected override AuthenticationHandler<ArcGISAuthenticationOptions> CreateHandler()
+        {
             return new ArcGISAuthenticationHandler(Backchannel);
         }
     }

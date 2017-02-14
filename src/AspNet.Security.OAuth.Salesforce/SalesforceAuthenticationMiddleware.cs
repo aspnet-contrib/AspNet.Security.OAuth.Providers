@@ -13,8 +13,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace AspNet.Security.OAuth.Salesforce {
-    public class SalesforceAuthenticationMiddleware : OAuthMiddleware<SalesforceAuthenticationOptions> {
+namespace AspNet.Security.OAuth.Salesforce
+{
+    public class SalesforceAuthenticationMiddleware : OAuthMiddleware<SalesforceAuthenticationOptions>
+    {
         public SalesforceAuthenticationMiddleware(
             [NotNull] RequestDelegate next,
             [NotNull] IDataProtectionProvider dataProtectionProvider,
@@ -22,10 +24,12 @@ namespace AspNet.Security.OAuth.Salesforce {
             [NotNull] UrlEncoder encoder,
             [NotNull] IOptions<SharedAuthenticationOptions> sharedOptions,
             [NotNull] IOptions<SalesforceAuthenticationOptions> options)
-            : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options) {
+            : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options)
+        {
         }
 
-        protected override AuthenticationHandler<SalesforceAuthenticationOptions> CreateHandler() {
+        protected override AuthenticationHandler<SalesforceAuthenticationOptions> CreateHandler()
+        {
             return new SalesforceAuthenticationHandler(Backchannel);
         }
     }

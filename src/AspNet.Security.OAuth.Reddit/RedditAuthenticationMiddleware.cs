@@ -13,8 +13,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace AspNet.Security.OAuth.Reddit {
-    public class RedditAuthenticationMiddleware : OAuthMiddleware<RedditAuthenticationOptions> {
+namespace AspNet.Security.OAuth.Reddit
+{
+    public class RedditAuthenticationMiddleware : OAuthMiddleware<RedditAuthenticationOptions>
+    {
         public RedditAuthenticationMiddleware(
             [NotNull] RequestDelegate next,
             [NotNull] IDataProtectionProvider dataProtectionProvider,
@@ -22,10 +24,12 @@ namespace AspNet.Security.OAuth.Reddit {
             [NotNull] UrlEncoder encoder,
             [NotNull] IOptions<SharedAuthenticationOptions> sharedOptions,
             [NotNull] IOptions<RedditAuthenticationOptions> options)
-            : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options) {
+            : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options)
+        {
         }
 
-        protected override AuthenticationHandler<RedditAuthenticationOptions> CreateHandler() {
+        protected override AuthenticationHandler<RedditAuthenticationOptions> CreateHandler()
+        {
             return new RedditAuthenticationHandler(Backchannel);
         }
     }

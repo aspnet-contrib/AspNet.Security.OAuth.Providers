@@ -6,11 +6,13 @@
 
 using Microsoft.AspNetCore.Builder;
 
-namespace AspNet.Security.OAuth.Strava {
+namespace AspNet.Security.OAuth.Strava
+{
     /// <summary>
     /// Default values used by the Strava authentication middleware.
     /// </summary>
-    public static class StravaAuthenticationDefaults {
+    public static class StravaAuthenticationDefaults
+    {
         /// <summary>
         /// Default value for <see cref="AuthenticationOptions.AuthenticationScheme"/>.
         /// </summary>

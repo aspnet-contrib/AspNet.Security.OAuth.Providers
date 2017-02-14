@@ -7,12 +7,15 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 
-namespace AspNet.Security.OAuth.Reddit {
+namespace AspNet.Security.OAuth.Reddit
+{
     /// <summary>
     /// Defines a set of options used by <see cref="RedditAuthenticationHandler"/>.
     /// </summary>
-    public class RedditAuthenticationOptions : OAuthOptions {
-        public RedditAuthenticationOptions() {
+    public class RedditAuthenticationOptions : OAuthOptions
+    {
+        public RedditAuthenticationOptions()
+        {
             AuthenticationScheme = RedditAuthenticationDefaults.AuthenticationScheme;
             DisplayName = RedditAuthenticationDefaults.DisplayName;
             ClaimsIssuer = RedditAuthenticationDefaults.Issuer;

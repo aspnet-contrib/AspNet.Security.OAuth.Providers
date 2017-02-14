@@ -7,12 +7,14 @@
 using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
 
-namespace AspNet.Security.OAuth.Dropbox {
+namespace AspNet.Security.OAuth.Dropbox
+{
     /// <summary>
     /// Contains static methods that allow to extract user's information from a <see cref="JObject"/>
     /// instance retrieved from Dropbox after a successful authentication process.
     /// </summary>
-    public static class DropboxAuthenticationHelper {
+    public static class DropboxAuthenticationHelper
+    {
         /// <summary>
         /// Gets the identifier corresponding to the authenticated user.
         /// </summary>

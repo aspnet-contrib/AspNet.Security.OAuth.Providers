@@ -10,10 +10,14 @@ using System.Linq;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Authentication;
 
-namespace Mvc.Client.Extensions {
-    public static class HttpContextExtensions {
-        public static IEnumerable<AuthenticationDescription> GetExternalProviders(this HttpContext context) {
-            if (context == null) {
+namespace Mvc.Client.Extensions
+{
+    public static class HttpContextExtensions
+    {
+        public static IEnumerable<AuthenticationDescription> GetExternalProviders(this HttpContext context)
+        {
+            if (context == null)
+            {
                 throw new ArgumentNullException(nameof(context));
             }
 
@@ -22,8 +26,10 @@ namespace Mvc.Client.Extensions {
                    select description;
         }
 
-        public static bool IsProviderSupported(this HttpContext context, string provider) {
-            if (context == null) {
+        public static bool IsProviderSupported(this HttpContext context, string provider)
+        {
+            if (context == null)
+            {
                 throw new ArgumentNullException(nameof(context));
             }
 

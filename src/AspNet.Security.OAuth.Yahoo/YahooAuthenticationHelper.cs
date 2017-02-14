@@ -7,12 +7,14 @@
 using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
 
-namespace AspNet.Security.OAuth.Yahoo {
+namespace AspNet.Security.OAuth.Yahoo
+{
     /// <summary>
     /// Contains static methods that allow to extract user's information from a <see cref="JObject"/>
     /// instance retrieved from Yahoo after a successful authentication process.
     /// </summary>
-    public class YahooAuthenticationHelper {
+    public class YahooAuthenticationHelper
+    {
         /// <summary>
         /// Gets the family name corresponding to the authenticated user.
         /// </summary>

@@ -9,11 +9,13 @@ using AspNet.Security.OAuth.Vkontakte;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Options;
 
-namespace Microsoft.AspNetCore.Builder {
+namespace Microsoft.AspNetCore.Builder
+{
     /// <summary>
     /// Extension methods to add Vkontakte authentication capabilities to an HTTP application pipeline.
     /// </summary>
-    public static class VkontakteAuthenticationExtensions {
+    public static class VkontakteAuthenticationExtensions
+    {
         /// <summary>
         /// Adds the <see cref="VkontakteAuthenticationMiddleware"/> middleware to the specified
         /// <see cref="IApplicationBuilder"/>, which enables Vkontakte authentication capabilities.
@@ -23,12 +25,15 @@ namespace Microsoft.AspNetCore.Builder {
         /// <returns>A reference to this instance after the operation has completed.</returns>
         public static IApplicationBuilder UseVkontakteAuthentication(
             [NotNull] this IApplicationBuilder app,
-            [NotNull] VkontakteAuthenticationOptions options) {
-            if (app == null) {
+            [NotNull] VkontakteAuthenticationOptions options)
+        {
+            if (app == null)
+            {
                 throw new ArgumentNullException(nameof(app));
             }
 
-            if (options == null) {
+            if (options == null)
+            {
                 throw new ArgumentNullException(nameof(options));
             }
 
@@ -43,12 +48,15 @@ namespace Microsoft.AspNetCore.Builder {
         /// <returns>A reference to this instance after the operation has completed.</returns>
         public static IApplicationBuilder UseVkontakteAuthentication(
             [NotNull] this IApplicationBuilder app,
-            [NotNull] Action<VkontakteAuthenticationOptions> configuration) {
-            if (app == null) {
+            [NotNull] Action<VkontakteAuthenticationOptions> configuration)
+        {
+            if (app == null)
+            {
                 throw new ArgumentNullException(nameof(app));
             }
 
-            if (configuration == null) {
+            if (configuration == null)
+            {
                 throw new ArgumentNullException(nameof(configuration));
             }
 

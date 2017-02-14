@@ -7,9 +7,12 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 
-namespace AspNet.Security.OAuth.Gitter {
-    public class GitterAuthenticationOptions : OAuthOptions {
-        public GitterAuthenticationOptions() {
+namespace AspNet.Security.OAuth.Gitter
+{
+    public class GitterAuthenticationOptions : OAuthOptions
+    {
+        public GitterAuthenticationOptions()
+        {
             AuthenticationScheme = GitterAuthenticationDefaults.AuthenticationScheme;
             DisplayName = GitterAuthenticationDefaults.DisplayName;
             ClaimsIssuer = GitterAuthenticationDefaults.Issuer;
