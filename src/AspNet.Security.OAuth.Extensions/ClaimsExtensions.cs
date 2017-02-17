@@ -9,12 +9,16 @@ using System.Security.Claims;
 
 namespace AspNet.Security.OAuth.Extensions
 {
-    public static class ClaimsExtensions {
-        public static ClaimsIdentity AddOptionalClaim(this ClaimsIdentity identity, string type, string value, string issuer) {
+    public static class ClaimsExtensions
+    {
+        public static ClaimsIdentity AddOptionalClaim(this ClaimsIdentity identity, string type, string value, string issuer)
+        {
             return AddOptionalClaim(identity, type, value, ClaimValueTypes.String, issuer);
         }
 
-            public static ClaimsIdentity AddOptionalClaim(this ClaimsIdentity identity, string type, string value, string types, string issuer) {
+        public static ClaimsIdentity AddOptionalClaim(this ClaimsIdentity identity, string type, string value, string types, string issuer)
+        {
+            if (identity == null)
             {
                 throw new ArgumentNullException(nameof(identity));
             }
