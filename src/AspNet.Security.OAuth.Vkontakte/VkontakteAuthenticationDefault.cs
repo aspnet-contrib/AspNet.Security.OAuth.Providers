@@ -6,11 +6,13 @@
 
 using Microsoft.AspNetCore.Builder;
 
-namespace AspNet.Security.OAuth.Vkontakte {
+namespace AspNet.Security.OAuth.Vkontakte
+{
     /// <summary>
     /// Default values used by the Vkontakte authentication middleware.
     /// </summary>
-    public static class VkontakteAuthenticationDefault {
+    public static class VkontakteAuthenticationDefault
+    {
         /// <summary>
         /// Default value for <see cref="AuthenticationOptions.AuthenticationScheme"/>.
         /// </summary>

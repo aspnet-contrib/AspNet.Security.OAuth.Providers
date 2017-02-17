@@ -7,12 +7,14 @@
 using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
 
-namespace AspNet.Security.OAuth.MailChimp {
+namespace AspNet.Security.OAuth.MailChimp
+{
     /// <summary>
     /// Contains static methods that allow to extract user's information from a <see cref="JObject"/>
     /// instance retrieved from MailChimp after a successful authentication process.
     /// </summary>
-    public static class MailChimpAuthenticationHelper {
+    public static class MailChimpAuthenticationHelper
+    {
         /// <summary>
         /// Gets the identifier corresponding to the authenticated user.
         /// </summary>
@@ -44,7 +46,7 @@ namespace AspNet.Security.OAuth.MailChimp {
         /// </summary>
         public static string GetLoginId([NotNull] JObject payload) => payload.Value<JObject>("login")
                                                                             ?.Value<string>("login_id");
-        
+
         /// <summary>
         /// Gets the name corresponding to the authenticated user.
         /// </summary>

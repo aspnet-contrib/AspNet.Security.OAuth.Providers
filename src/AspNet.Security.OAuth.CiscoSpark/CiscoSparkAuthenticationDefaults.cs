@@ -6,11 +6,13 @@
 
 using Microsoft.AspNetCore.Builder;
 
-namespace AspNet.Security.OAuth.CiscoSpark {
+namespace AspNet.Security.OAuth.CiscoSpark
+{
     /// <summary>
     /// Default values used by the Spark authentication middleware.
     /// </summary>
-    public static class CiscoSparkAuthenticationDefaults {
+    public static class CiscoSparkAuthenticationDefaults
+    {
         /// <summary>
         /// Default value for <see cref="AuthenticationOptions.AuthenticationScheme"/>.
         /// </summary>

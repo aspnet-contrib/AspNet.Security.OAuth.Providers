@@ -7,12 +7,15 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 
-namespace AspNet.Security.OAuth.Strava {
+namespace AspNet.Security.OAuth.Strava
+{
     /// <summary>
     /// Defines a set of options used by <see cref="StravaAuthenticationHandler"/>.
     /// </summary>
-    public class StravaAuthenticationOptions : OAuthOptions {
-        public StravaAuthenticationOptions() {
+    public class StravaAuthenticationOptions : OAuthOptions
+    {
+        public StravaAuthenticationOptions()
+        {
             AuthenticationScheme = StravaAuthenticationDefaults.AuthenticationScheme;
             DisplayName = StravaAuthenticationDefaults.DisplayName;
             ClaimsIssuer = StravaAuthenticationDefaults.Issuer;

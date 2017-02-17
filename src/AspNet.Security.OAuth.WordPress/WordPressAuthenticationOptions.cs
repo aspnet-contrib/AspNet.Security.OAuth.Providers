@@ -7,12 +7,15 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 
-namespace AspNet.Security.OAuth.WordPress {
+namespace AspNet.Security.OAuth.WordPress
+{
     /// <summary>
     /// Defines a set of options used by <see cref="WordPressAuthenticationHandler"/>.
     /// </summary>
-    public class WordPressAuthenticationOptions : OAuthOptions {
-        public WordPressAuthenticationOptions() {
+    public class WordPressAuthenticationOptions : OAuthOptions
+    {
+        public WordPressAuthenticationOptions()
+        {
             AuthenticationScheme = WordPressAuthenticationDefaults.AuthenticationScheme;
             DisplayName = WordPressAuthenticationDefaults.DisplayName;
             ClaimsIssuer = WordPressAuthenticationDefaults.Issuer;

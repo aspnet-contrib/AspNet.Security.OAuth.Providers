@@ -8,12 +8,15 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 
-namespace AspNet.Security.OAuth.LinkedIn {
+namespace AspNet.Security.OAuth.LinkedIn
+{
     /// <summary>
     /// Defines a set of options used by <see cref="LinkedInAuthenticationHandler"/>.
     /// </summary>
-    public class LinkedInAuthenticationOptions : OAuthOptions {
-        public LinkedInAuthenticationOptions() {
+    public class LinkedInAuthenticationOptions : OAuthOptions
+    {
+        public LinkedInAuthenticationOptions()
+        {
             AuthenticationScheme = LinkedInAuthenticationDefaults.AuthenticationScheme;
             DisplayName = LinkedInAuthenticationDefaults.DisplayName;
             ClaimsIssuer = LinkedInAuthenticationDefaults.Issuer;

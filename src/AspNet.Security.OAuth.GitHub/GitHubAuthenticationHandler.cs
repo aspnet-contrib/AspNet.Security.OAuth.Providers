@@ -16,20 +16,25 @@ using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 
-namespace AspNet.Security.OAuth.GitHub {
-    public class GitHubAuthenticationHandler : OAuthHandler<GitHubAuthenticationOptions> {
+namespace AspNet.Security.OAuth.GitHub
+{
+    public class GitHubAuthenticationHandler : OAuthHandler<GitHubAuthenticationOptions>
+    {
         public GitHubAuthenticationHandler([NotNull] HttpClient client)
-            : base(client) {
+            : base(client)
+        {
         }
 
         protected override async Task<AuthenticationTicket> CreateTicketAsync([NotNull] ClaimsIdentity identity,
-            [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens) {
+            [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens)
+        {
             var request = new HttpRequestMessage(HttpMethod.Get, Options.UserInformationEndpoint);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", tokens.AccessToken);
 
             var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
-            if (!response.IsSuccessStatusCode) {
+            if (!response.IsSuccessStatusCode)
+            {
                 Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
                                 "returned a {Status} response with the following payload: {Headers} {Body}.",
                                 /* Status: */ response.StatusCode,
@@ -40,7 +45,7 @@ namespace AspNet.Security.OAuth.GitHub {
             }
 
             var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
-            
+
             identity.AddOptionalClaim(ClaimTypes.NameIdentifier, GitHubAuthenticationHelper.GetIdentifier(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim(ClaimTypes.Name, GitHubAuthenticationHelper.GetLogin(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim(ClaimTypes.Email, GitHubAuthenticationHelper.GetEmail(payload), Options.ClaimsIssuer)
@@ -50,7 +55,8 @@ namespace AspNet.Security.OAuth.GitHub {
             // When the email address is not public, retrieve it from
             // the emails endpoint if the user:email scope is specified.
             if (!string.IsNullOrEmpty(Options.UserEmailsEndpoint) &&
-                !identity.HasClaim(claim => claim.Type == ClaimTypes.Email) && Options.Scope.Contains("user:email")) {
+                !identity.HasClaim(claim => claim.Type == ClaimTypes.Email) && Options.Scope.Contains("user:email"))
+            {
                 identity.AddOptionalClaim(ClaimTypes.Email, await GetEmailAsync(tokens), Options.ClaimsIssuer);
             }
 
@@ -63,7 +69,8 @@ namespace AspNet.Security.OAuth.GitHub {
             return context.Ticket;
         }
 
-        protected virtual async Task<string> GetEmailAsync([NotNull] OAuthTokenResponse tokens) {
+        protected virtual async Task<string> GetEmailAsync([NotNull] OAuthTokenResponse tokens)
+        {
             // See https://developer.github.com/v3/users/emails/ for more information about the /user/emails endpoint.
             var request = new HttpRequestMessage(HttpMethod.Get, Options.UserEmailsEndpoint);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -71,7 +78,8 @@ namespace AspNet.Security.OAuth.GitHub {
 
             // Failed requests shouldn't cause an error: in this case, return null to indicate that the email address cannot be retrieved.
             var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
-            if (!response.IsSuccessStatusCode) {
+            if (!response.IsSuccessStatusCode)
+            {
                 Logger.LogWarning("An error occurred while retrieving the email address associated with the logged in user: " +
                                   "the remote server returned a {Status} response with the following payload: {Headers} {Body}.",
                                   /* Status: */ response.StatusCode,

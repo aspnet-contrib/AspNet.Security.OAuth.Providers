@@ -7,13 +7,16 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 
-namespace AspNet.Security.OAuth.Foursquare {
+namespace AspNet.Security.OAuth.Foursquare
+{
     /// <summary>
     /// Defines a set of options used by <see cref="FoursquareAuthenticationHandler"/>.
     /// </summary>
-    public class FoursquareAuthenticationOptions : OAuthOptions {
-        public FoursquareAuthenticationOptions() {
-            AuthenticationScheme = FoursquareAuthenticationDefaults.AuthenticationScheme;            
+    public class FoursquareAuthenticationOptions : OAuthOptions
+    {
+        public FoursquareAuthenticationOptions()
+        {
+            AuthenticationScheme = FoursquareAuthenticationDefaults.AuthenticationScheme;
             DisplayName = FoursquareAuthenticationDefaults.DisplayName;
             ClaimsIssuer = FoursquareAuthenticationDefaults.Issuer;
 

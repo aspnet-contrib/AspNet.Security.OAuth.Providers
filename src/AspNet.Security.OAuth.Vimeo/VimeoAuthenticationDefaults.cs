@@ -5,13 +5,14 @@
  */
 
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Authentication.OAuth;
 
-namespace AspNet.Security.OAuth.Vimeo {
+namespace AspNet.Security.OAuth.Vimeo
+{
     /// <summary>
     /// Default values used by the Vimeo authentication middleware.
     /// </summary>
-    public static class VimeoAuthenticationDefaults {
+    public static class VimeoAuthenticationDefaults
+    {
         /// <summary>
         /// Default value for <see cref="AuthenticationOptions.AuthenticationScheme"/>.
         /// </summary>

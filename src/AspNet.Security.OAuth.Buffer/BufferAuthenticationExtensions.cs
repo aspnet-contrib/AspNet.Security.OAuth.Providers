@@ -9,26 +9,31 @@ using AspNet.Security.OAuth.Buffer;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Options;
 
-namespace Microsoft.AspNetCore.Builder {
+namespace Microsoft.AspNetCore.Builder
+{
     /// <summary>
     /// Extension methods to add Buffer authentication capabilities to an HTTP application pipeline.
     /// </summary>
-    public static class BufferAuthenticationExtensions {
+    public static class BufferAuthenticationExtensions
+    {
         /// <summary>
         /// Adds the <see cref="BufferAuthenticationMiddleware"/> middleware to the specified
         /// <see cref="IApplicationBuilder"/>, which enables Buffer authentication capabilities.
         /// </summary>
         /// <param name="app">The <see cref="IApplicationBuilder"/> to add the middleware to.</param>
-        /// <param name="options">A <see cref="BufferAuthenticationOptions"/> that specifies options for the middleware.</param>        
+        /// <param name="options">A <see cref="BufferAuthenticationOptions"/> that specifies options for the middleware.</param>
         /// <returns>A reference to this instance after the operation has completed.</returns>
         public static IApplicationBuilder UseBufferAuthentication(
             [NotNull] this IApplicationBuilder app,
-            [NotNull] BufferAuthenticationOptions options) {
-            if (app == null) {
+            [NotNull] BufferAuthenticationOptions options)
+        {
+            if (app == null)
+            {
                 throw new ArgumentNullException(nameof(app));
             }
 
-            if (options == null) {
+            if (options == null)
+            {
                 throw new ArgumentNullException(nameof(options));
             }
 
@@ -44,12 +49,15 @@ namespace Microsoft.AspNetCore.Builder {
         /// <returns>A reference to this instance after the operation has completed.</returns>
         public static IApplicationBuilder UseBufferAuthentication(
             [NotNull] this IApplicationBuilder app,
-            [NotNull] Action<BufferAuthenticationOptions> configuration) {
-            if (app == null) {
+            [NotNull] Action<BufferAuthenticationOptions> configuration)
+        {
+            if (app == null)
+            {
                 throw new ArgumentNullException(nameof(app));
             }
 
-            if (configuration == null) {
+            if (configuration == null)
+            {
                 throw new ArgumentNullException(nameof(configuration));
             }
 

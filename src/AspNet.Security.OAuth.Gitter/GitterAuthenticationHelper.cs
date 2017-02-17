@@ -7,12 +7,14 @@
 using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
 
-namespace AspNet.Security.OAuth.Gitter {
+namespace AspNet.Security.OAuth.Gitter
+{
     /// <summary>
     /// Contains static methods that allow to extract user's information from a <see cref="JObject"/>
     /// instance retrieved from GitHub after a successful authentication process.
     /// </summary>
-    public static class GitterAuthenticationHelper {
+    public static class GitterAuthenticationHelper
+    {
         /// <summary>
         /// Gets the username corresponding to the authenticated user.
         /// </summary>

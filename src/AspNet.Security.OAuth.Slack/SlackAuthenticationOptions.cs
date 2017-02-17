@@ -7,12 +7,15 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 
-namespace AspNet.Security.OAuth.Slack {
+namespace AspNet.Security.OAuth.Slack
+{
     /// <summary>
     /// Defines a set of options used by <see cref="SlackAuthenticationHandler"/>.
     /// </summary>
-    public class SlackAuthenticationOptions : OAuthOptions {
-        public SlackAuthenticationOptions() {
+    public class SlackAuthenticationOptions : OAuthOptions
+    {
+        public SlackAuthenticationOptions()
+        {
             AuthenticationScheme = SlackAuthenticationDefaults.AuthenticationScheme;
             DisplayName = SlackAuthenticationDefaults.DisplayName;
             ClaimsIssuer = SlackAuthenticationDefaults.Issuer;

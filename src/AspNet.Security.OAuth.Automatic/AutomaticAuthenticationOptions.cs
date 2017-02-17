@@ -7,12 +7,15 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 
-namespace AspNet.Security.OAuth.Automatic {
+namespace AspNet.Security.OAuth.Automatic
+{
     /// <summary>
     /// Defines a set of options used by <see cref="AutomaticAuthenticationHandler"/>.
     /// </summary>
-    public class AutomaticAuthenticationOptions : OAuthOptions {
-        public AutomaticAuthenticationOptions() {
+    public class AutomaticAuthenticationOptions : OAuthOptions
+    {
+        public AutomaticAuthenticationOptions()
+        {
             AuthenticationScheme = AutomaticAuthenticationDefaults.AuthenticationScheme;
             DisplayName = AutomaticAuthenticationDefaults.DisplayName;
             ClaimsIssuer = AutomaticAuthenticationDefaults.Issuer;

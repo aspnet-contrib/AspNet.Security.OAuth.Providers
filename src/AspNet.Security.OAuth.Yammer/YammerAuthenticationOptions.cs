@@ -7,12 +7,15 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 
-namespace AspNet.Security.OAuth.Yammer {
+namespace AspNet.Security.OAuth.Yammer
+{
     /// <summary>
     /// Defines a set of options used by <see cref="YammerAuthenticationHandler"/>.
     /// </summary>
-    public class YammerAuthenticationOptions : OAuthOptions {
-        public YammerAuthenticationOptions() {
+    public class YammerAuthenticationOptions : OAuthOptions
+    {
+        public YammerAuthenticationOptions()
+        {
             AuthenticationScheme = YammerAuthenticationDefaults.AuthenticationScheme;
             DisplayName = YammerAuthenticationDefaults.DisplayName;
             ClaimsIssuer = YammerAuthenticationDefaults.Issuer;

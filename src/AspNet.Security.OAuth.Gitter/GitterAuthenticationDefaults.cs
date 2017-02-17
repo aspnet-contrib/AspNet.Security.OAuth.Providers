@@ -6,11 +6,13 @@
 
 using Microsoft.AspNetCore.Builder;
 
-namespace AspNet.Security.OAuth.Gitter {
+namespace AspNet.Security.OAuth.Gitter
+{
     /// <summary>
     /// Default values used by the Gitter authentication middleware.
     /// </summary>
-    public static class GitterAuthenticationDefaults {
+    public static class GitterAuthenticationDefaults
+    {
         /// <summary>
         /// Default value for <see cref="AuthenticationOptions.AuthenticationScheme"/>.
         /// </summary>

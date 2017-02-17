@@ -5,13 +5,14 @@
  */
 
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Authentication.OAuth;
 
-namespace AspNet.Security.OAuth.ArcGIS {
+namespace AspNet.Security.OAuth.ArcGIS
+{
     /// <summary>
     /// Default values used by the ArcGIS authentication middleware.
     /// </summary>
-    public static class ArcGISAuthenticationDefaults {
+    public static class ArcGISAuthenticationDefaults
+    {
         /// <summary>
         /// Default value for <see cref="AuthenticationOptions.AuthenticationScheme"/>.
         /// </summary>

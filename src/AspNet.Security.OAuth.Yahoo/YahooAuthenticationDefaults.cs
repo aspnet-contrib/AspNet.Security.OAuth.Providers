@@ -5,13 +5,14 @@
  */
 
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Authentication.OAuth;
 
-namespace AspNet.Security.OAuth.Yahoo {
+namespace AspNet.Security.OAuth.Yahoo
+{
     /// <summary>
     /// Default values used by the Yahoo authentication middleware.
     /// </summary>
-    public static class YahooAuthenticationDefaults {
+    public static class YahooAuthenticationDefaults
+    {
         /// <summary>
         /// Default value for <see cref="AuthenticationOptions.AuthenticationScheme"/>.
         /// </summary>

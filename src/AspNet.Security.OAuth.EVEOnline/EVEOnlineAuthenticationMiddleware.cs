@@ -13,8 +13,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace AspNet.Security.OAuth.EVEOnline {
-    public class EVEOnlineAuthenticationMiddleware : OAuthMiddleware<EVEOnlineAuthenticationOptions> {
+namespace AspNet.Security.OAuth.EVEOnline
+{
+    public class EVEOnlineAuthenticationMiddleware : OAuthMiddleware<EVEOnlineAuthenticationOptions>
+    {
         public EVEOnlineAuthenticationMiddleware(
             [NotNull] RequestDelegate next,
             [NotNull] IDataProtectionProvider dataProtectionProvider,
@@ -22,10 +24,12 @@ namespace AspNet.Security.OAuth.EVEOnline {
             [NotNull] UrlEncoder encoder,
             [NotNull] IOptions<SharedAuthenticationOptions> sharedOptions,
             [NotNull] IOptions<EVEOnlineAuthenticationOptions> options)
-            : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options) {
+            : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options)
+        {
         }
 
-        protected override AuthenticationHandler<EVEOnlineAuthenticationOptions> CreateHandler() {
+        protected override AuthenticationHandler<EVEOnlineAuthenticationOptions> CreateHandler()
+        {
             return new EVEOnlineAuthenticationHandler(Backchannel);
         }
     }

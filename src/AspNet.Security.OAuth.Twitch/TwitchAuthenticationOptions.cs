@@ -7,12 +7,15 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 
-namespace AspNet.Security.OAuth.Twitch {
+namespace AspNet.Security.OAuth.Twitch
+{
     /// <summary>
     /// Defines a set of options used by <see cref="TwitchAuthenticationHandler"/>.
     /// </summary>
-    public class TwitchAuthenticationOptions : OAuthOptions {
-        public TwitchAuthenticationOptions() {
+    public class TwitchAuthenticationOptions : OAuthOptions
+    {
+        public TwitchAuthenticationOptions()
+        {
             AuthenticationScheme = TwitchAuthenticationDefaults.AuthenticationScheme;
             DisplayName = TwitchAuthenticationDefaults.DisplayName;
             ClaimsIssuer = TwitchAuthenticationDefaults.Issuer;

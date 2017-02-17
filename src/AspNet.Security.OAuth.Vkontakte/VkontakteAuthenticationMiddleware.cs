@@ -13,8 +13,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace AspNet.Security.OAuth.Vkontakte {
-    public class VkontakteAuthenticationMiddleware : OAuthMiddleware<VkontakteAuthenticationOptions> {
+namespace AspNet.Security.OAuth.Vkontakte
+{
+    public class VkontakteAuthenticationMiddleware : OAuthMiddleware<VkontakteAuthenticationOptions>
+    {
         public VkontakteAuthenticationMiddleware(
             [NotNull] RequestDelegate next,
             [NotNull] IDataProtectionProvider dataProtectionProvider,
@@ -22,10 +24,12 @@ namespace AspNet.Security.OAuth.Vkontakte {
             [NotNull] UrlEncoder encoder,
             [NotNull] IOptions<SharedAuthenticationOptions> sharedOptions,
             [NotNull] IOptions<VkontakteAuthenticationOptions> options)
-            : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options) {
+            : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options)
+        {
         }
 
-        protected override AuthenticationHandler<VkontakteAuthenticationOptions> CreateHandler() {
+        protected override AuthenticationHandler<VkontakteAuthenticationOptions> CreateHandler()
+        {
             return new VkontakteAuthenticationHandler(Backchannel);
         }
     }

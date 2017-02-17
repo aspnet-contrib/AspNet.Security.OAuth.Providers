@@ -16,20 +16,25 @@ using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 
-namespace AspNet.Security.OAuth.MailChimp {
-    public class MailChimpAuthenticationHandler : OAuthHandler<MailChimpAuthenticationOptions> {
+namespace AspNet.Security.OAuth.MailChimp
+{
+    public class MailChimpAuthenticationHandler : OAuthHandler<MailChimpAuthenticationOptions>
+    {
         public MailChimpAuthenticationHandler([NotNull] HttpClient client)
-            : base(client) {
+            : base(client)
+        {
         }
 
         protected override async Task<AuthenticationTicket> CreateTicketAsync([NotNull] ClaimsIdentity identity,
-            [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens) {
+            [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens)
+        {
             var request = new HttpRequestMessage(HttpMethod.Get, Options.UserInformationEndpoint);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", tokens.AccessToken);
 
             var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
-            if (!response.IsSuccessStatusCode) {
+            if (!response.IsSuccessStatusCode)
+            {
                 Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
                                 "returned a {Status} response with the following payload: {Headers} {Body}.",
                                 /* Status: */ response.StatusCode,
@@ -51,7 +56,7 @@ namespace AspNet.Security.OAuth.MailChimp {
                     .AddOptionalClaim("urn:mailchimp:login_email", MailChimpAuthenticationHelper.GetLoginEmail(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim("urn:mailchimp:login_url", MailChimpAuthenticationHelper.GetLoginUrl(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim("urn:mailchimp:api_endpoint", MailChimpAuthenticationHelper.GetApiEndPoint(payload), Options.ClaimsIssuer);
-            
+
             var principal = new ClaimsPrincipal(identity);
             var ticket = new AuthenticationTicket(principal, properties, Options.AuthenticationScheme);
 

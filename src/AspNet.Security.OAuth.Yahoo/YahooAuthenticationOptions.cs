@@ -7,12 +7,15 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 
-namespace AspNet.Security.OAuth.Yahoo {
+namespace AspNet.Security.OAuth.Yahoo
+{
     /// <summary>
     /// Defines a set of options used by <see cref="YahooAuthenticationHandler"/>.
     /// </summary>
-    public class YahooAuthenticationOptions : OAuthOptions {
-        public YahooAuthenticationOptions() {
+    public class YahooAuthenticationOptions : OAuthOptions
+    {
+        public YahooAuthenticationOptions()
+        {
             AuthenticationScheme = YahooAuthenticationDefaults.AuthenticationScheme;
             DisplayName = YahooAuthenticationDefaults.DisplayName;
             ClaimsIssuer = YahooAuthenticationDefaults.Issuer;

@@ -4,32 +4,38 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
-using System;
 
-namespace AspNet.Security.OAuth.EVEOnline {
+namespace AspNet.Security.OAuth.EVEOnline
+{
     /// <summary>
     /// Defines a set of options used by <see cref="EVEOnlineAuthenticationHandler"/>.
     /// </summary>
-    public class EVEOnlineAuthenticationOptions : OAuthOptions {
-        public EVEOnlineAuthenticationOptions() {
+    public class EVEOnlineAuthenticationOptions : OAuthOptions
+    {
+        public EVEOnlineAuthenticationOptions()
+        {
             AuthenticationScheme = EVEOnlineAuthenticationDefaults.AuthenticationScheme;
             DisplayName = EVEOnlineAuthenticationDefaults.DisplayName;
             ClaimsIssuer = EVEOnlineAuthenticationDefaults.Issuer;
 
             CallbackPath = new PathString(EVEOnlineAuthenticationDefaults.CallbackPath);
 
-            Server = EVEOnlineAuthenticationServer.Tranquility;   
+            Server = EVEOnlineAuthenticationServer.Tranquility;
         }
 
         /// <summary>
         /// Sets the server used when communicating with EVE Online
         /// (by default, <see cref="EVEOnlineAuthenticationServer.Tranquility"/>).
         /// </summary>
-        public EVEOnlineAuthenticationServer Server {
-            set {
-                switch (value) {
+        public EVEOnlineAuthenticationServer Server
+        {
+            set
+            {
+                switch (value)
+                {
                     case EVEOnlineAuthenticationServer.Tranquility:
                         AuthorizationEndpoint = EVEOnlineAuthenticationDefaults.Tranquility.AuthorizationEndpoint;
                         TokenEndpoint = EVEOnlineAuthenticationDefaults.Tranquility.TokenEndpoint;

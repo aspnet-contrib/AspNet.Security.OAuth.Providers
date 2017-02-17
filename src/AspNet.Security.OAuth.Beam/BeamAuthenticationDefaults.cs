@@ -5,13 +5,14 @@
  */
 
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Authentication.OAuth;
 
-namespace AspNet.Security.OAuth.Beam {
+namespace AspNet.Security.OAuth.Beam
+{
     /// <summary>
     /// Default values used by the Beam authentication middleware.
     /// </summary>
-    public static class BeamAuthenticationDefaults {
+    public static class BeamAuthenticationDefaults
+    {
         /// <summary>
         /// Default value for <see cref="AuthenticationOptions.AuthenticationScheme"/>.
         /// </summary>

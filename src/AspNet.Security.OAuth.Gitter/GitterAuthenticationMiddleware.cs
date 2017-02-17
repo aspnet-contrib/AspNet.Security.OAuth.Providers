@@ -13,8 +13,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace AspNet.Security.OAuth.Gitter {
-    public class GitterAuthenticationMiddleware : OAuthMiddleware<GitterAuthenticationOptions> {
+namespace AspNet.Security.OAuth.Gitter
+{
+    public class GitterAuthenticationMiddleware : OAuthMiddleware<GitterAuthenticationOptions>
+    {
         public GitterAuthenticationMiddleware(
             [NotNull] RequestDelegate next,
             [NotNull] IDataProtectionProvider dataProtectionProvider,
@@ -22,10 +24,12 @@ namespace AspNet.Security.OAuth.Gitter {
             [NotNull] UrlEncoder encoder,
             [NotNull] IOptions<SharedAuthenticationOptions> sharedOptions,
             [NotNull] IOptions<GitterAuthenticationOptions> options)
-            : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options) {
+            : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options)
+        {
         }
 
-        protected override AuthenticationHandler<GitterAuthenticationOptions> CreateHandler() {
+        protected override AuthenticationHandler<GitterAuthenticationOptions> CreateHandler()
+        {
             return new GitterAuthenticationHandler(Backchannel);
         }
     }

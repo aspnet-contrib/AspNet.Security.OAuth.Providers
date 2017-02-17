@@ -13,8 +13,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace AspNet.Security.OAuth.Imgur {
-    public class ImgurAuthenticationMiddleware : OAuthMiddleware<ImgurAuthenticationOptions> {
+namespace AspNet.Security.OAuth.Imgur
+{
+    public class ImgurAuthenticationMiddleware : OAuthMiddleware<ImgurAuthenticationOptions>
+    {
         public ImgurAuthenticationMiddleware(
             [NotNull] RequestDelegate next,
             [NotNull] IDataProtectionProvider dataProtectionProvider,
@@ -22,10 +24,12 @@ namespace AspNet.Security.OAuth.Imgur {
             [NotNull] UrlEncoder encoder,
             [NotNull] IOptions<SharedAuthenticationOptions> sharedOptions,
             [NotNull] IOptions<ImgurAuthenticationOptions> options)
-            : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options) {
+            : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options)
+        {
         }
 
-        protected override AuthenticationHandler<ImgurAuthenticationOptions> CreateHandler() {
+        protected override AuthenticationHandler<ImgurAuthenticationOptions> CreateHandler()
+        {
             return new ImgurAuthenticationHandler(Backchannel);
         }
     }

@@ -7,12 +7,15 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 
-namespace AspNet.Security.OAuth.Vimeo {
+namespace AspNet.Security.OAuth.Vimeo
+{
     /// <summary>
     /// Defines a set of options used by <see cref="VimeoAuthenticationHandler"/>.
     /// </summary>
-    public class VimeoAuthenticationOptions : OAuthOptions {
-        public VimeoAuthenticationOptions() {
+    public class VimeoAuthenticationOptions : OAuthOptions
+    {
+        public VimeoAuthenticationOptions()
+        {
             AuthenticationScheme = VimeoAuthenticationDefaults.AuthenticationScheme;
             DisplayName = VimeoAuthenticationDefaults.DisplayName;
             ClaimsIssuer = VimeoAuthenticationDefaults.Issuer;

@@ -13,8 +13,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace AspNet.Security.OAuth.Instagram {
-    public class InstagramAuthenticationMiddleware : OAuthMiddleware<InstagramAuthenticationOptions> {
+namespace AspNet.Security.OAuth.Instagram
+{
+    public class InstagramAuthenticationMiddleware : OAuthMiddleware<InstagramAuthenticationOptions>
+    {
         public InstagramAuthenticationMiddleware(
             [NotNull] RequestDelegate next,
             [NotNull] IDataProtectionProvider dataProtectionProvider,
@@ -22,10 +24,12 @@ namespace AspNet.Security.OAuth.Instagram {
             [NotNull] UrlEncoder encoder,
             [NotNull] IOptions<SharedAuthenticationOptions> sharedOptions,
             [NotNull] IOptions<InstagramAuthenticationOptions> options)
-            : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options) {
+            : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options)
+        {
         }
 
-        protected override AuthenticationHandler<InstagramAuthenticationOptions> CreateHandler() {
+        protected override AuthenticationHandler<InstagramAuthenticationOptions> CreateHandler()
+        {
             return new InstagramAuthenticationHandler(Backchannel);
         }
     }

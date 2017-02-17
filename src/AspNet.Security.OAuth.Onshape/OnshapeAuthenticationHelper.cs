@@ -7,12 +7,14 @@
 using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
 
-namespace AspNet.Security.OAuth.Onshape {
+namespace AspNet.Security.OAuth.Onshape
+{
     /// <summary>
     /// Contains static methods that allow to extract user's information from a <see cref="JObject"/>
     /// instance retrieved from Onshape after a successful authentication process.
     /// </summary>
-    public static class OnshapeAuthenticationHelper {
+    public static class OnshapeAuthenticationHelper
+    {
         /// <summary>
         /// Gets the identifier corresponding to the authenticated user.
         /// </summary>

@@ -7,12 +7,14 @@
 using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
 
-namespace AspNet.Security.OAuth.Salesforce {
+namespace AspNet.Security.OAuth.Salesforce
+{
     /// <summary>
     /// Contains static methods that allow to extract user's information from a <see cref="JObject"/>
     /// instance retrieved from Salesforce after a successful authentication process.
     /// </summary>
-    public static class SalesforceAuthenticationHelper {
+    public static class SalesforceAuthenticationHelper
+    {
         /// <summary>
         /// Gets the Salesforce ID corresponding to the authenticated user.
         /// </summary>

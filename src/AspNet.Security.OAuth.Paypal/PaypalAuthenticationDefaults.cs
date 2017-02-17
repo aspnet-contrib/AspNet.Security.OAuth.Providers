@@ -5,13 +5,14 @@
  */
 
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Authentication.OAuth;
 
-namespace AspNet.Security.OAuth.Paypal {
+namespace AspNet.Security.OAuth.Paypal
+{
     /// <summary>
     /// Default values used by the Paypal authentication middleware.
     /// </summary>
-    public static class PaypalAuthenticationDefaults {
+    public static class PaypalAuthenticationDefaults
+    {
         /// <summary>
         /// Default value for <see cref="AuthenticationOptions.AuthenticationScheme"/>.
         /// </summary>

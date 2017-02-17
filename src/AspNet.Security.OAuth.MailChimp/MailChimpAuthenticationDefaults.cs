@@ -6,11 +6,13 @@
 
 using Microsoft.AspNetCore.Builder;
 
-namespace AspNet.Security.OAuth.MailChimp {
+namespace AspNet.Security.OAuth.MailChimp
+{
     /// <summary>
     /// Default values used by the MailChimp authentication middleware.
     /// </summary>
-    public static class MailChimpAuthenticationDefaults {
+    public static class MailChimpAuthenticationDefaults
+    {
         /// <summary>
         /// Default value for <see cref="AuthenticationOptions.AuthenticationScheme"/>.
         /// </summary>

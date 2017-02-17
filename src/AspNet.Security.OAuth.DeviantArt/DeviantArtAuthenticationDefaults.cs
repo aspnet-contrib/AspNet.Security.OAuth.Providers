@@ -5,13 +5,14 @@
  */
 
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Authentication.OAuth;
 
-namespace AspNet.Security.OAuth.DeviantArt {
+namespace AspNet.Security.OAuth.DeviantArt
+{
     /// <summary>
     /// Default values used by the DeviantArt authentication middleware.
     /// </summary>
-    public static class DeviantArtAuthenticationDefaults {
+    public static class DeviantArtAuthenticationDefaults
+    {
         /// <summary>
         /// Default value for <see cref="AuthenticationOptions.AuthenticationScheme"/>.
         /// </summary>

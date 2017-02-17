@@ -13,8 +13,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace AspNet.Security.OAuth.Twitch {
-    public class TwitchAuthenticationMiddleware : OAuthMiddleware<TwitchAuthenticationOptions> {
+namespace AspNet.Security.OAuth.Twitch
+{
+    public class TwitchAuthenticationMiddleware : OAuthMiddleware<TwitchAuthenticationOptions>
+    {
         public TwitchAuthenticationMiddleware(
             [NotNull] RequestDelegate next,
             [NotNull] IDataProtectionProvider dataProtectionProvider,
@@ -22,10 +24,12 @@ namespace AspNet.Security.OAuth.Twitch {
             [NotNull] UrlEncoder encoder,
             [NotNull] IOptions<SharedAuthenticationOptions> sharedOptions,
             [NotNull] IOptions<TwitchAuthenticationOptions> options)
-            : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options) {
+            : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options)
+        {
         }
 
-        protected override AuthenticationHandler<TwitchAuthenticationOptions> CreateHandler() {
+        protected override AuthenticationHandler<TwitchAuthenticationOptions> CreateHandler()
+        {
             return new TwitchAuthenticationHandler(Backchannel);
         }
     }

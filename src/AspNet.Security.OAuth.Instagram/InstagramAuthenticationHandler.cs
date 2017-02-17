@@ -22,17 +22,22 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 
-namespace AspNet.Security.OAuth.Instagram {
-    public class InstagramAuthenticationHandler : OAuthHandler<InstagramAuthenticationOptions> {
+namespace AspNet.Security.OAuth.Instagram
+{
+    public class InstagramAuthenticationHandler : OAuthHandler<InstagramAuthenticationOptions>
+    {
         public InstagramAuthenticationHandler([NotNull] HttpClient client)
-            : base(client) {
+            : base(client)
+        {
         }
 
         protected override async Task<AuthenticationTicket> CreateTicketAsync([NotNull] ClaimsIdentity identity,
-            [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens) {
+            [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens)
+        {
             var address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, "access_token", tokens.AccessToken);
 
-            if (Options.UseSignedRequests) {
+            if (Options.UseSignedRequests)
+            {
                 // Compute the HMAC256 signature.
                 var signature = ComputeSignature(address);
 
@@ -44,7 +49,8 @@ namespace AspNet.Security.OAuth.Instagram {
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
             var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
-            if (!response.IsSuccessStatusCode) {
+            if (!response.IsSuccessStatusCode)
+            {
                 Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
                                 "returned a {Status} response with the following payload: {Headers} {Body}.",
                                 /* Status: */ response.StatusCode,
@@ -68,8 +74,10 @@ namespace AspNet.Security.OAuth.Instagram {
             return context.Ticket;
         }
 
-        protected virtual string ComputeSignature(string address) {
-            using (var algorithm = new HMACSHA256(Encoding.UTF8.GetBytes(Options.ClientSecret))) {
+        protected virtual string ComputeSignature(string address)
+        {
+            using (var algorithm = new HMACSHA256(Encoding.UTF8.GetBytes(Options.ClientSecret)))
+            {
                 var query = new UriBuilder(address).Query;
 
                 // Extract the parameters from the query string.

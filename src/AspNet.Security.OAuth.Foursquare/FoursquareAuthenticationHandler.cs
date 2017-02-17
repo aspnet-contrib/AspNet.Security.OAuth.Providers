@@ -17,26 +17,32 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 
-namespace AspNet.Security.OAuth.Foursquare {
-    public class FoursquareAuthenticationHandler : OAuthHandler<FoursquareAuthenticationOptions> {
+namespace AspNet.Security.OAuth.Foursquare
+{
+    public class FoursquareAuthenticationHandler : OAuthHandler<FoursquareAuthenticationOptions>
+    {
         public FoursquareAuthenticationHandler([NotNull] HttpClient client)
-            : base(client) {
+            : base(client)
+        {
         }
 
         protected override async Task<AuthenticationTicket> CreateTicketAsync([NotNull] ClaimsIdentity identity,
-            [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens) {
+            [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens)
+        {
             // See https://developer.foursquare.com/overview/versioning
             // for more information about the mandatory "v" and "m" parameters.
-            var address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, new Dictionary<string, string> {
+            var address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, new Dictionary<string, string>
+            {
                 ["m"] = "foursquare",
                 ["v"] = Options.ApiVersion,
                 ["oauth_token"] = tokens.AccessToken,
             });
 
-            var request = new HttpRequestMessage(HttpMethod.Get, address);      
-      
+            var request = new HttpRequestMessage(HttpMethod.Get, address);
+
             var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
-            if (!response.IsSuccessStatusCode) {
+            if (!response.IsSuccessStatusCode)
+            {
                 Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
                                 "returned a {Status} response with the following payload: {Headers} {Body}.",
                                 /* Status: */ response.StatusCode,
@@ -47,7 +53,7 @@ namespace AspNet.Security.OAuth.Foursquare {
             }
 
             var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
-           
+
             identity.AddOptionalClaim(ClaimTypes.NameIdentifier, FoursquareAuthenticationHelper.GetIdentifier(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim(ClaimTypes.Surname, FoursquareAuthenticationHelper.GetLastName(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim(ClaimTypes.GivenName, FoursquareAuthenticationHelper.GetFirstName(payload), Options.ClaimsIssuer)
@@ -63,6 +69,6 @@ namespace AspNet.Security.OAuth.Foursquare {
             await Options.Events.CreatingTicket(context);
 
             return context.Ticket;
-        }              
+        }
     }
 }

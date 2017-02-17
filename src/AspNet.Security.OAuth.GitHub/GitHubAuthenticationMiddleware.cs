@@ -13,8 +13,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace AspNet.Security.OAuth.GitHub {
-    public class GitHubAuthenticationMiddleware : OAuthMiddleware<GitHubAuthenticationOptions> {
+namespace AspNet.Security.OAuth.GitHub
+{
+    public class GitHubAuthenticationMiddleware : OAuthMiddleware<GitHubAuthenticationOptions>
+    {
         public GitHubAuthenticationMiddleware(
             [NotNull] RequestDelegate next,
             [NotNull] IDataProtectionProvider dataProtectionProvider,
@@ -22,10 +24,12 @@ namespace AspNet.Security.OAuth.GitHub {
             [NotNull] UrlEncoder encoder,
             [NotNull] IOptions<SharedAuthenticationOptions> sharedOptions,
             [NotNull] IOptions<GitHubAuthenticationOptions> options)
-            : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options) {
+            : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options)
+        {
         }
 
-        protected override AuthenticationHandler<GitHubAuthenticationOptions> CreateHandler() {
+        protected override AuthenticationHandler<GitHubAuthenticationOptions> CreateHandler()
+        {
             return new GitHubAuthenticationHandler(Backchannel);
         }
     }

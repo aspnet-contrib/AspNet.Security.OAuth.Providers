@@ -7,12 +7,15 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 
-namespace AspNet.Security.OAuth.Untappd {
+namespace AspNet.Security.OAuth.Untappd
+{
     /// <summary>
     /// Defines a set of options used by <see cref="UntappdAuthenticationHandler"/>.
     /// </summary>
-    public class UntappdAuthenticationOptions : OAuthOptions {
-        public UntappdAuthenticationOptions() {
+    public class UntappdAuthenticationOptions : OAuthOptions
+    {
+        public UntappdAuthenticationOptions()
+        {
             AuthenticationScheme = UntappdAuthenticationDefaults.AuthenticationScheme;
             DisplayName = UntappdAuthenticationDefaults.DisplayName;
             ClaimsIssuer = UntappdAuthenticationDefaults.Issuer;

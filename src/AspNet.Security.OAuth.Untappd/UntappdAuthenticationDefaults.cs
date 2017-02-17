@@ -6,11 +6,13 @@
 
 using Microsoft.AspNetCore.Builder;
 
-namespace AspNet.Security.OAuth.Untappd {
+namespace AspNet.Security.OAuth.Untappd
+{
     /// <summary>
     /// Default values used by the Untappd authentication middleware.
     /// </summary>
-    public static class UntappdAuthenticationDefaults {
+    public static class UntappdAuthenticationDefaults
+    {
         /// <summary>
         /// Default value for <see cref="AuthenticationOptions.AuthenticationScheme"/>.
         /// </summary>

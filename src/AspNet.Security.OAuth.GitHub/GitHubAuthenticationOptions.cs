@@ -7,12 +7,15 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 
-namespace AspNet.Security.OAuth.GitHub {
+namespace AspNet.Security.OAuth.GitHub
+{
     /// <summary>
     /// Defines a set of options used by <see cref="GitHubAuthenticationHandler"/>.
     /// </summary>
-    public class GitHubAuthenticationOptions : OAuthOptions {
-        public GitHubAuthenticationOptions() {
+    public class GitHubAuthenticationOptions : OAuthOptions
+    {
+        public GitHubAuthenticationOptions()
+        {
             AuthenticationScheme = GitHubAuthenticationDefaults.AuthenticationScheme;
             DisplayName = GitHubAuthenticationDefaults.DisplayName;
             ClaimsIssuer = GitHubAuthenticationDefaults.Issuer;

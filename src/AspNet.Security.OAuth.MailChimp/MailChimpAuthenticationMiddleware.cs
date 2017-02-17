@@ -5,16 +5,18 @@
  */
 
 using System.Text.Encodings.Web;
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using JetBrains.Annotations;
 
-namespace AspNet.Security.OAuth.MailChimp {
-    public class MailChimpAuthenticationMiddleware : OAuthMiddleware<MailChimpAuthenticationOptions> {
+namespace AspNet.Security.OAuth.MailChimp
+{
+    public class MailChimpAuthenticationMiddleware : OAuthMiddleware<MailChimpAuthenticationOptions>
+    {
         public MailChimpAuthenticationMiddleware(
             [NotNull] RequestDelegate next,
             [NotNull] IDataProtectionProvider dataProtectionProvider,
@@ -22,10 +24,12 @@ namespace AspNet.Security.OAuth.MailChimp {
             [NotNull] UrlEncoder encoder,
             [NotNull] IOptions<SharedAuthenticationOptions> sharedOptions,
             [NotNull] IOptions<MailChimpAuthenticationOptions> options)
-            : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options) {
+            : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options)
+        {
         }
 
-        protected override AuthenticationHandler<MailChimpAuthenticationOptions> CreateHandler() {
+        protected override AuthenticationHandler<MailChimpAuthenticationOptions> CreateHandler()
+        {
             return new MailChimpAuthenticationHandler(Backchannel);
         }
     }

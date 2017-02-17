@@ -7,12 +7,15 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 
-namespace AspNet.Security.OAuth.Buffer {
+namespace AspNet.Security.OAuth.Buffer
+{
     /// <summary>
     /// Defines a set of options used by <see cref="BufferAuthenticationHandler"/>.
     /// </summary>
-    public class BufferAuthenticationOptions : OAuthOptions {
-        public BufferAuthenticationOptions() {
+    public class BufferAuthenticationOptions : OAuthOptions
+    {
+        public BufferAuthenticationOptions()
+        {
             AuthenticationScheme = BufferAuthenticationDefaults.AuthenticationScheme;
             DisplayName = BufferAuthenticationDefaults.DisplayName;
             ClaimsIssuer = BufferAuthenticationDefaults.Issuer;
