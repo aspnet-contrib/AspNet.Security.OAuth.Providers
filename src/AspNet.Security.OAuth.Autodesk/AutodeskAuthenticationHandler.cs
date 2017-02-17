@@ -15,14 +15,18 @@ using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http.Authentication;
 using Newtonsoft.Json.Linq;
 
-namespace AspNet.Security.OAuth.Autodesk {
-    public class AutodeskAuthenticationHandler : OAuthHandler<AutodeskAuthenticationOptions> {
+namespace AspNet.Security.OAuth.Autodesk
+{
+    public class AutodeskAuthenticationHandler : OAuthHandler<AutodeskAuthenticationOptions>
+    {
         public AutodeskAuthenticationHandler([NotNull] HttpClient client)
-            : base(client) {
+            : base(client)
+        {
         }
 
         protected override async Task<AuthenticationTicket> CreateTicketAsync([NotNull] ClaimsIdentity identity,
-            [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens) {
+            [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens)
+        {
             var request = new HttpRequestMessage(HttpMethod.Get, Options.UserInformationEndpoint);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", tokens.AccessToken);

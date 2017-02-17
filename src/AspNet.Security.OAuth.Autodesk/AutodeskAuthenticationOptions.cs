@@ -7,12 +7,15 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 
-namespace AspNet.Security.OAuth.Autodesk {
+namespace AspNet.Security.OAuth.Autodesk
+{
     /// <summary>
     /// Defines a set of options used by <see cref="AutodeskAuthenticationHandler"/>.
     /// </summary>
-    public class AutodeskAuthenticationOptions : OAuthOptions {
-        public AutodeskAuthenticationOptions() {
+    public class AutodeskAuthenticationOptions : OAuthOptions
+    {
+        public AutodeskAuthenticationOptions()
+        {
             AuthenticationScheme = AutodeskAuthenticationDefaults.AuthenticationScheme;
             DisplayName = AutodeskAuthenticationDefaults.DisplayName;
             ClaimsIssuer = AutodeskAuthenticationDefaults.Issuer;

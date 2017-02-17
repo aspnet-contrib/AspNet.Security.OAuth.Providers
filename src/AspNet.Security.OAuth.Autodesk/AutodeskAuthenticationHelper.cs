@@ -6,12 +6,14 @@
 
 using Newtonsoft.Json.Linq;
 
-namespace AspNet.Security.OAuth.Autodesk {
+namespace AspNet.Security.OAuth.Autodesk
+{
     /// <summary>
     /// Contains static methods that allow to extract user's information from a <see cref="JObject"/>
     /// instance retrieved from Autodesk after a successful authentication process.
     /// </summary>
-    public static class AutodeskAuthenticationHelper {
+    public static class AutodeskAuthenticationHelper
+    {
         /// <summary>
         /// Key for claim containing a boolean value indicating whether the user's email has been verified
         /// </summary>

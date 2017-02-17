@@ -13,8 +13,10 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using JetBrains.Annotations;
 
-namespace AspNet.Security.OAuth.Autodesk {
-    public class AutodeskAuthenticationMiddleware : OAuthMiddleware<AutodeskAuthenticationOptions> {
+namespace AspNet.Security.OAuth.Autodesk
+{
+    public class AutodeskAuthenticationMiddleware : OAuthMiddleware<AutodeskAuthenticationOptions>
+    {
         public AutodeskAuthenticationMiddleware(
             [NotNull] RequestDelegate next,
             [NotNull] IDataProtectionProvider dataProtectionProvider,
@@ -22,10 +24,12 @@ namespace AspNet.Security.OAuth.Autodesk {
             [NotNull] UrlEncoder encoder,
             [NotNull] IOptions<SharedAuthenticationOptions> sharedOptions,
             [NotNull] IOptions<AutodeskAuthenticationOptions> options)
-            : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options) {
+            : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options)
+        {
         }
 
-        protected override AuthenticationHandler<AutodeskAuthenticationOptions> CreateHandler() {
+        protected override AuthenticationHandler<AutodeskAuthenticationOptions> CreateHandler()
+        {
             return new AutodeskAuthenticationHandler(Backchannel);
         }
     }

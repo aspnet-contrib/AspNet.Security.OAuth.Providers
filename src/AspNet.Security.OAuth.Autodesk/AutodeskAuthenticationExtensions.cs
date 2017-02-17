@@ -9,11 +9,13 @@ using AspNet.Security.OAuth.Autodesk;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Options;
 
-namespace Microsoft.AspNetCore.Builder {
+namespace Microsoft.AspNetCore.Builder
+{
     /// <summary>
     /// Extension methods to add Autodesk authentication capabilities to an HTTP application pipeline.
     /// </summary>
-    public static class AutodeskAuthenticationExtensions {
+    public static class AutodeskAuthenticationExtensions
+    {
         /// <summary>
         /// Adds the <see cref="AutodeskAuthenticationMiddleware"/> middleware to the specified
         /// <see cref="IApplicationBuilder"/>, which enables Autodesk authentication capabilities.
@@ -23,7 +25,8 @@ namespace Microsoft.AspNetCore.Builder {
         /// <returns>A reference to this instance after the operation has completed.</returns>
         public static IApplicationBuilder UseAutodeskAuthentication(
             [NotNull] this IApplicationBuilder app,
-            [NotNull] AutodeskAuthenticationOptions options) {
+            [NotNull] AutodeskAuthenticationOptions options)
+        {
             if (app == null) {
                 throw new ArgumentNullException(nameof(app));
             }
@@ -44,7 +47,8 @@ namespace Microsoft.AspNetCore.Builder {
         /// <returns>A reference to this instance after the operation has completed.</returns>
         public static IApplicationBuilder UseAutodeskAuthentication(
             [NotNull] this IApplicationBuilder app,
-            [NotNull] Action<AutodeskAuthenticationOptions> configuration) {
+            [NotNull] Action<AutodeskAuthenticationOptions> configuration)
+        {
             if (app == null) {
                 throw new ArgumentNullException(nameof(app));
             }

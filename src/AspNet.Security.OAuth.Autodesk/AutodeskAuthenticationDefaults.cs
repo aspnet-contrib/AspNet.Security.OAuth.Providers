@@ -7,11 +7,13 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Builder;
 
-namespace AspNet.Security.OAuth.Autodesk {
+namespace AspNet.Security.OAuth.Autodesk
+{
     /// <summary>
     /// Default values used by the Autodesk authentication middleware.
     /// </summary>
-    public static class AutodeskAuthenticationDefaults {
+    public static class AutodeskAuthenticationDefaults
+    {
         /// <summary>
         /// Default value for <see cref="AuthenticationOptions.AuthenticationScheme"/>.
         /// </summary>
