@@ -5,13 +5,14 @@
  */
 
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Authentication.OAuth;
 
-namespace AspNet.Security.OAuth.Spotify {
+namespace AspNet.Security.OAuth.Spotify
+{
     /// <summary>
     /// Default values used by the Spotify authentication middleware.
     /// </summary>
-    public static class SpotifyAuthenticationDefaults {
+    public static class SpotifyAuthenticationDefaults
+    {
         /// <summary>
         /// Default value for <see cref="AuthenticationOptions.AuthenticationScheme"/>.
         /// </summary>

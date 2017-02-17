@@ -16,14 +16,18 @@ using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 
-namespace AspNet.Security.OAuth.Salesforce {
-    public class SalesforceAuthenticationHandler : OAuthHandler<SalesforceAuthenticationOptions> {
+namespace AspNet.Security.OAuth.Salesforce
+{
+    public class SalesforceAuthenticationHandler : OAuthHandler<SalesforceAuthenticationOptions>
+    {
         public SalesforceAuthenticationHandler([NotNull] HttpClient client)
-            : base(client) {
+            : base(client)
+        {
         }
 
         protected override async Task<AuthenticationTicket> CreateTicketAsync([NotNull] ClaimsIdentity identity,
-            [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens) {
+            [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens)
+        {
             // Note: unlike the other social providers, the userinfo endpoint is user-specific and can't be set globally.
             // For more information, see https://developer.salesforce.com/page/Digging_Deeper_into_OAuth_2.0_on_Force.com
             var request = new HttpRequestMessage(HttpMethod.Get, tokens.Response.Value<string>("id"));
@@ -32,7 +36,8 @@ namespace AspNet.Security.OAuth.Salesforce {
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
             var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
-            if (!response.IsSuccessStatusCode) {
+            if (!response.IsSuccessStatusCode)
+            {
                 Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
                                 "returned a {Status} response with the following payload: {Headers} {Body}.",
                                 /* Status: */ response.StatusCode,

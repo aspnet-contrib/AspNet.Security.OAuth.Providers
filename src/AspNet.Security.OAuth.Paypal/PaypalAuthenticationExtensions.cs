@@ -9,26 +9,31 @@ using AspNet.Security.OAuth.Paypal;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Options;
 
-namespace Microsoft.AspNetCore.Builder {
+namespace Microsoft.AspNetCore.Builder
+{
     /// <summary>
     /// Extension methods to add Paypal authentication capabilities to an HTTP application pipeline.
     /// </summary>
-    public static class PaypalAuthenticationExtensions {
+    public static class PaypalAuthenticationExtensions
+    {
         /// <summary>
         /// Adds the <see cref="PaypalAuthenticationMiddleware"/> middleware to the specified
         /// <see cref="IApplicationBuilder"/>, which enables Paypal authentication capabilities.
         /// </summary>
         /// <param name="app">The <see cref="IApplicationBuilder"/> to add the middleware to.</param>
-        /// <param name="options">A <see cref="PaypalAuthenticationOptions"/> that specifies options for the middleware.</param>        
+        /// <param name="options">A <see cref="PaypalAuthenticationOptions"/> that specifies options for the middleware.</param>
         /// <returns>A reference to this instance after the operation has completed.</returns>
         public static IApplicationBuilder UsePaypalAuthentication(
             [NotNull] this IApplicationBuilder app,
-            [NotNull] PaypalAuthenticationOptions options) {
-            if (app == null) {
+            [NotNull] PaypalAuthenticationOptions options)
+        {
+            if (app == null)
+            {
                 throw new ArgumentNullException(nameof(app));
             }
 
-            if (options == null) {
+            if (options == null)
+            {
                 throw new ArgumentNullException(nameof(options));
             }
 
@@ -44,12 +49,15 @@ namespace Microsoft.AspNetCore.Builder {
         /// <returns>A reference to this instance after the operation has completed.</returns>
         public static IApplicationBuilder UsePaypalAuthentication(
             [NotNull] this IApplicationBuilder app,
-            [NotNull] Action<PaypalAuthenticationOptions> configuration) {
-            if (app == null) {
+            [NotNull] Action<PaypalAuthenticationOptions> configuration)
+        {
+            if (app == null)
+            {
                 throw new ArgumentNullException(nameof(app));
             }
 
-            if (configuration == null) {
+            if (configuration == null)
+            {
                 throw new ArgumentNullException(nameof(configuration));
             }
 

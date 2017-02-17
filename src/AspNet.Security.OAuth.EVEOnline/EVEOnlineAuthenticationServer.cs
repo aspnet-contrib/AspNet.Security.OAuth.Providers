@@ -4,12 +4,14 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-namespace AspNet.Security.OAuth {
+namespace AspNet.Security.OAuth
+{
     /// <summary>
     /// Defines a list of servers used to determine the appropriate
     /// API endpoints when communicating with EVEOnline.
     /// </summary>
-    public enum EVEOnlineAuthenticationServer {
+    public enum EVEOnlineAuthenticationServer
+    {
         /// <summary>
         /// Live server.
         /// </summary>

@@ -7,12 +7,14 @@
 using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
 
-namespace AspNet.Security.OAuth.Twitch {
+namespace AspNet.Security.OAuth.Twitch
+{
     /// <summary>
     /// Contains static methods that allow to extract user's information from a <see cref="JObject"/>
     /// instance retrieved from Twitch after a successful authentication process.
     /// </summary>
-    public static class TwitchAuthenticationHelper {
+    public static class TwitchAuthenticationHelper
+    {
         /// <summary>
         /// Gets the identifier corresponding to the authenticated user.
         /// </summary>

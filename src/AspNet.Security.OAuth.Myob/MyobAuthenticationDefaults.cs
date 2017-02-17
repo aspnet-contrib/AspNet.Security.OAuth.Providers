@@ -6,11 +6,13 @@
 
 using Microsoft.AspNetCore.Builder;
 
-namespace AspNet.Security.OAuth.Myob {
+namespace AspNet.Security.OAuth.Myob
+{
     /// <summary>
     /// Default values used by the Myob authentication middleware.
     /// </summary>
-    public static class MyobAuthenticationDefaults {
+    public static class MyobAuthenticationDefaults
+    {
         /// <summary>
         /// Default value for <see cref="AuthenticationOptions.AuthenticationScheme"/>.
         /// </summary>

@@ -5,13 +5,14 @@
  */
 
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Authentication.OAuth;
 
-namespace AspNet.Security.OAuth.Buffer {
+namespace AspNet.Security.OAuth.Buffer
+{
     /// <summary>
     /// Default values used by the Buffer authentication middleware.
     /// </summary>
-    public static class BufferAuthenticationDefaults {
+    public static class BufferAuthenticationDefaults
+    {
         /// <summary>
         /// Default value for <see cref="AuthenticationOptions.AuthenticationScheme"/>.
         /// </summary>

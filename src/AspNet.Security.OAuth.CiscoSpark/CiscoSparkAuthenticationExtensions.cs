@@ -9,26 +9,31 @@ using AspNet.Security.OAuth.CiscoSpark;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Options;
 
-namespace Microsoft.AspNetCore.Builder {
+namespace Microsoft.AspNetCore.Builder
+{
     /// <summary>
     /// Extension methods to add Spark authentication capabilities to an HTTP application pipeline.
     /// </summary>
-    public static class CiscoSparkAuthenticationExtensions {
+    public static class CiscoSparkAuthenticationExtensions
+    {
         /// <summary>
         /// Adds the <see cref="CiscoSparkAuthenticationMiddleware"/> middleware to the specified
         /// <see cref="IApplicationBuilder"/>, which enables Spark authentication capabilities.
         /// </summary>
         /// <param name="app">The <see cref="IApplicationBuilder"/> to add the middleware to.</param>
-        /// <param name="options">A <see cref="CiscoSparkAuthenticationOptions"/> that specifies options for the middleware.</param>        
+        /// <param name="options">A <see cref="CiscoSparkAuthenticationOptions"/> that specifies options for the middleware.</param>
         /// <returns>A reference to this instance after the operation has completed.</returns>
         public static IApplicationBuilder UseCiscoSparkAuthentication(
             [NotNull] this IApplicationBuilder app,
-            [NotNull] CiscoSparkAuthenticationOptions options) {
-            if (app == null) {
+            [NotNull] CiscoSparkAuthenticationOptions options)
+        {
+            if (app == null)
+            {
                 throw new ArgumentNullException(nameof(app));
             }
 
-            if (options == null) {
+            if (options == null)
+            {
                 throw new ArgumentNullException(nameof(options));
             }
 
@@ -44,12 +49,15 @@ namespace Microsoft.AspNetCore.Builder {
         /// <returns>A reference to this instance after the operation has completed.</returns>
         public static IApplicationBuilder UseCiscoSparkAuthentication(
             [NotNull] this IApplicationBuilder app,
-            [NotNull] Action<CiscoSparkAuthenticationOptions> configuration) {
-            if (app == null) {
+            [NotNull] Action<CiscoSparkAuthenticationOptions> configuration)
+        {
+            if (app == null)
+            {
                 throw new ArgumentNullException(nameof(app));
             }
 
-            if (configuration == null) {
+            if (configuration == null)
+            {
                 throw new ArgumentNullException(nameof(configuration));
             }
 

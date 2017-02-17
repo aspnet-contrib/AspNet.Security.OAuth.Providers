@@ -7,12 +7,15 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 
-namespace AspNet.Security.OAuth.VisualStudio {
+namespace AspNet.Security.OAuth.VisualStudio
+{
     /// <summary>
     /// Defines a set of options used by <see cref="VisualStudioAuthenticationHandler"/>.
     /// </summary>
-    public class VisualStudioAuthenticationOptions : OAuthOptions {
-        public VisualStudioAuthenticationOptions() {
+    public class VisualStudioAuthenticationOptions : OAuthOptions
+    {
+        public VisualStudioAuthenticationOptions()
+        {
             AuthenticationScheme = VisualStudioAuthenticationDefaults.AuthenticationScheme;
             DisplayName = VisualStudioAuthenticationDefaults.DisplayName;
             ClaimsIssuer = VisualStudioAuthenticationDefaults.Issuer;

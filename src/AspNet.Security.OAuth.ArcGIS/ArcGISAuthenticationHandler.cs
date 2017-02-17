@@ -19,30 +19,36 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 
-namespace AspNet.Security.OAuth.ArcGIS {
-    public class ArcGISAuthenticationHandler : OAuthHandler<ArcGISAuthenticationOptions> {
+namespace AspNet.Security.OAuth.ArcGIS
+{
+    public class ArcGISAuthenticationHandler : OAuthHandler<ArcGISAuthenticationOptions>
+    {
         public ArcGISAuthenticationHandler([NotNull] HttpClient client)
-            : base(client) {
+            : base(client)
+        {
         }
 
         protected override async Task<AuthenticationTicket> CreateTicketAsync([NotNull] ClaimsIdentity identity,
-            [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens) {
+            [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens)
+        {
             // Note: the ArcGIS API doesn't support content negotiation via headers.
-            var address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, new Dictionary<string, string> {
+            var address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, new Dictionary<string, string>
+            {
                 ["f"] = "json",
                 ["token"] = tokens.AccessToken
             });
 
             var request = new HttpRequestMessage(HttpMethod.Get, address);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                        
-            // Request the token 
+
+            // Request the token
             var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
             var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
 
             // Note: error responses always return 200 status codes.
             var error = ArcGISAuthenticationHelper.GetError(payload);
-            if (error != null) {
+            if (error != null)
+            {
                 // See https://developers.arcgis.com/authentication/server-based-user-logins/ for more information
                 Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
                                 "returned a response with the following error code: {Code} {Message}.",

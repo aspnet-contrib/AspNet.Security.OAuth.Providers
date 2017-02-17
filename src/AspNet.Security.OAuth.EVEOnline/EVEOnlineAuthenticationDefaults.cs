@@ -6,11 +6,13 @@
 
 using Microsoft.AspNetCore.Builder;
 
-namespace AspNet.Security.OAuth.EVEOnline {
+namespace AspNet.Security.OAuth.EVEOnline
+{
     /// <summary>
     /// Default values used by the EVEOnline authentication middleware.
     /// </summary>
-    public static class EVEOnlineAuthenticationDefaults {
+    public static class EVEOnlineAuthenticationDefaults
+    {
         /// <summary>
         /// Default value for <see cref="AuthenticationOptions.AuthenticationScheme"/>.
         /// </summary>
@@ -34,7 +36,8 @@ namespace AspNet.Security.OAuth.EVEOnline {
         /// <summary>
         /// Default values for the Tranquility (live) server.
         /// </summary>
-        public static class Tranquility  {
+        public static class Tranquility
+        {
             /// <summary>
             /// Default value for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
             /// </summary>
@@ -54,7 +57,8 @@ namespace AspNet.Security.OAuth.EVEOnline {
         /// <summary>
         /// Default values for the Singularity (test) server.
         /// </summary>
-        public static class Singularity {
+        public static class Singularity
+        {
             /// <summary>
             /// Default value for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
             /// </summary>

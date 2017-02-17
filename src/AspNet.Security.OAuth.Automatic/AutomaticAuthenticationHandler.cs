@@ -18,20 +18,25 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 
-namespace AspNet.Security.OAuth.Automatic {
-    public class AutomaticAuthenticationHandler : OAuthHandler<AutomaticAuthenticationOptions> {
+namespace AspNet.Security.OAuth.Automatic
+{
+    public class AutomaticAuthenticationHandler : OAuthHandler<AutomaticAuthenticationOptions>
+    {
         public AutomaticAuthenticationHandler([NotNull] HttpClient client)
-            : base(client) {
+            : base(client)
+        {
         }
 
         protected override async Task<AuthenticationTicket> CreateTicketAsync([NotNull] ClaimsIdentity identity,
-            [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens) {
+            [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens)
+        {
             var request = new HttpRequestMessage(HttpMethod.Get, Options.UserInformationEndpoint);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", tokens.AccessToken);
 
             var response = await Backchannel.SendAsync(request, Context.RequestAborted);
-            if (!response.IsSuccessStatusCode) {
+            if (!response.IsSuccessStatusCode)
+            {
                 Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
                                 "returned a {Status} response with the following payload: {Headers} {Body}.",
                                 /* Status: */ response.StatusCode,
@@ -59,9 +64,11 @@ namespace AspNet.Security.OAuth.Automatic {
             return context.Ticket;
         }
 
-        protected override string BuildChallengeUrl(AuthenticationProperties properties, string redirectUri) {
+        protected override string BuildChallengeUrl(AuthenticationProperties properties, string redirectUri)
+        {
             // Note: the redirect_uri parameter is not allowed by Automatic and MUST NOT be sent.
-            return QueryHelpers.AddQueryString(Options.AuthorizationEndpoint, new Dictionary<string, string> {
+            return QueryHelpers.AddQueryString(Options.AuthorizationEndpoint, new Dictionary<string, string>
+            {
                 ["client_id"] = Options.ClientId,
                 ["response_type"] = "code",
                 ["scope"] = FormatScope(),

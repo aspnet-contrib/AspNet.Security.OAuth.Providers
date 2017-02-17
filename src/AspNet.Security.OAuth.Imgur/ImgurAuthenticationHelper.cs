@@ -7,12 +7,14 @@
 using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
 
-namespace AspNet.Security.OAuth.Imgur {
+namespace AspNet.Security.OAuth.Imgur
+{
     /// <summary>
     /// Contains static methods that allow to extract user's information from a <see cref="JObject"/>
     /// instance retrieved from Imgur after a successful authentication process.
     /// </summary>
-    public static class ImgurAuthenticationHelper {
+    public static class ImgurAuthenticationHelper
+    {
         /// <summary>
         /// Gets the id of the authenticated user.
         /// </summary>

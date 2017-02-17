@@ -16,20 +16,25 @@ using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 
-namespace AspNet.Security.OAuth.Asana {
-    public class AsanaAuthenticationHandler : OAuthHandler<AsanaAuthenticationOptions> {
+namespace AspNet.Security.OAuth.Asana
+{
+    public class AsanaAuthenticationHandler : OAuthHandler<AsanaAuthenticationOptions>
+    {
         public AsanaAuthenticationHandler([NotNull] HttpClient client)
-            : base(client) {
+            : base(client)
+        {
         }
 
         protected override async Task<AuthenticationTicket> CreateTicketAsync([NotNull] ClaimsIdentity identity,
-            [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens) {
+            [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens)
+        {
             var request = new HttpRequestMessage(HttpMethod.Get, Options.UserInformationEndpoint);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", tokens.AccessToken);
 
             var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
-            if (!response.IsSuccessStatusCode) {
+            if (!response.IsSuccessStatusCode)
+            {
                 Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
                                 "returned a {Status} response with the following payload: {Headers} {Body}.",
                                 /* Status: */ response.StatusCode,
@@ -40,7 +45,7 @@ namespace AspNet.Security.OAuth.Asana {
             }
 
             var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
-            
+
             identity.AddOptionalClaim(ClaimTypes.NameIdentifier, AsanaAuthenticationHelper.GetIdentifier(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim(ClaimTypes.Name, AsanaAuthenticationHelper.GetName(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim(ClaimTypes.Email, AsanaAuthenticationHelper.GetEmail(payload), Options.ClaimsIssuer);

@@ -9,26 +9,31 @@ using AspNet.Security.OAuth.Imgur;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Options;
 
-namespace Microsoft.AspNetCore.Builder {
+namespace Microsoft.AspNetCore.Builder
+{
     /// <summary>
     /// Extension methods to add Imgur authentication capabilities to an HTTP application pipeline.
     /// </summary>
-    public static class ImgurAuthenticationExtensions {
+    public static class ImgurAuthenticationExtensions
+    {
         /// <summary>
         /// Adds the <see cref="ImgurAuthenticationMiddleware"/> middleware to the specified
         /// <see cref="IApplicationBuilder"/>, which enables Imgur authentication capabilities.
         /// </summary>
         /// <param name="app">The <see cref="IApplicationBuilder"/> to add the middleware to.</param>
-        /// <param name="options">A <see cref="ImgurAuthenticationOptions"/> that specifies options for the middleware.</param>        
+        /// <param name="options">A <see cref="ImgurAuthenticationOptions"/> that specifies options for the middleware.</param>
         /// <returns>A reference to this instance after the operation has completed.</returns>
         public static IApplicationBuilder UseImgurAuthentication(
             [NotNull] this IApplicationBuilder app,
-            [NotNull] ImgurAuthenticationOptions options) {
-            if (app == null) {
+            [NotNull] ImgurAuthenticationOptions options)
+        {
+            if (app == null)
+            {
                 throw new ArgumentNullException(nameof(app));
             }
 
-            if (options == null) {
+            if (options == null)
+            {
                 throw new ArgumentNullException(nameof(options));
             }
 
@@ -44,12 +49,15 @@ namespace Microsoft.AspNetCore.Builder {
         /// <returns>A reference to this instance after the operation has completed.</returns>
         public static IApplicationBuilder UseImgurAuthentication(
             [NotNull] this IApplicationBuilder app,
-            [NotNull] Action<ImgurAuthenticationOptions> configuration) {
-            if (app == null) {
+            [NotNull] Action<ImgurAuthenticationOptions> configuration)
+        {
+            if (app == null)
+            {
                 throw new ArgumentNullException(nameof(app));
             }
 
-            if (configuration == null) {
+            if (configuration == null)
+            {
                 throw new ArgumentNullException(nameof(configuration));
             }
 

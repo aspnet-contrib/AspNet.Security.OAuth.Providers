@@ -16,21 +16,27 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 
-namespace AspNet.Security.OAuth.Vkontakte {
-    public class VkontakteAuthenticationHandler : OAuthHandler<VkontakteAuthenticationOptions> {
+namespace AspNet.Security.OAuth.Vkontakte
+{
+    public class VkontakteAuthenticationHandler : OAuthHandler<VkontakteAuthenticationOptions>
+    {
         public VkontakteAuthenticationHandler(HttpClient client)
-            : base(client) {
+            : base(client)
+        {
         }
 
-        protected override async Task<AuthenticationTicket> CreateTicketAsync([NotNull] ClaimsIdentity identity, [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens) {
+        protected override async Task<AuthenticationTicket> CreateTicketAsync([NotNull] ClaimsIdentity identity, [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens)
+        {
             var address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, "access_token", tokens.AccessToken);
 
-            if (Options.Fields.Count != 0) {
+            if (Options.Fields.Count != 0)
+            {
                 address = QueryHelpers.AddQueryString(address, "fields", string.Join(",", Options.Fields));
             }
 
             var response = await Backchannel.GetAsync(address, Context.RequestAborted);
-            if (!response.IsSuccessStatusCode) {
+            if (!response.IsSuccessStatusCode)
+            {
                 Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
                                 "returned a {Status} response with the following payload: {Headers} {Body}.",
                                 /* Status: */ response.StatusCode,

@@ -13,8 +13,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace AspNet.Security.OAuth.Foursquare {
-    public class FoursquareAuthenticationMiddleware : OAuthMiddleware<FoursquareAuthenticationOptions> {
+namespace AspNet.Security.OAuth.Foursquare
+{
+    public class FoursquareAuthenticationMiddleware : OAuthMiddleware<FoursquareAuthenticationOptions>
+    {
         public FoursquareAuthenticationMiddleware(
             [NotNull] RequestDelegate next,
             [NotNull] IDataProtectionProvider dataProtectionProvider,
@@ -22,10 +24,12 @@ namespace AspNet.Security.OAuth.Foursquare {
             [NotNull] UrlEncoder encoder,
             [NotNull] IOptions<SharedAuthenticationOptions> sharedOptions,
             [NotNull] IOptions<FoursquareAuthenticationOptions> options)
-            : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options) {
+            : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options)
+        {
         }
-        
-        protected override AuthenticationHandler<FoursquareAuthenticationOptions> CreateHandler() {
+
+        protected override AuthenticationHandler<FoursquareAuthenticationOptions> CreateHandler()
+        {
             return new FoursquareAuthenticationHandler(Backchannel);
         }
     }

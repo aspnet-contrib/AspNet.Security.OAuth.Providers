@@ -18,19 +18,24 @@ using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 
-namespace AspNet.Security.OAuth.Yammer {
-    public class YammerAuthenticationHandler : OAuthHandler<YammerAuthenticationOptions> {
+namespace AspNet.Security.OAuth.Yammer
+{
+    public class YammerAuthenticationHandler : OAuthHandler<YammerAuthenticationOptions>
+    {
         public YammerAuthenticationHandler(HttpClient client)
-            : base(client) {
+            : base(client)
+        {
         }
 
         protected override async Task<AuthenticationTicket> CreateTicketAsync([NotNull] ClaimsIdentity identity,
-            [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens) {
+            [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens)
+        {
             var request = new HttpRequestMessage(HttpMethod.Get, Options.UserInformationEndpoint);
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", tokens.AccessToken);
 
             var response = await Backchannel.SendAsync(request, Context.RequestAborted);
-            if (!response.IsSuccessStatusCode) {
+            if (!response.IsSuccessStatusCode)
+            {
                 Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
                                 "returned a {Status} response with the following payload: {Headers} {Body}.",
                                 /* Status: */ response.StatusCode,
@@ -59,11 +64,13 @@ namespace AspNet.Security.OAuth.Yammer {
             return context.Ticket;
         }
 
-        protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] string code, [NotNull] string redirectUri) {
+        protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] string code, [NotNull] string redirectUri)
+        {
             var request = new HttpRequestMessage(HttpMethod.Post, Options.TokenEndpoint);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-            request.Content = new FormUrlEncodedContent(new Dictionary<string, string> {
+            request.Content = new FormUrlEncodedContent(new Dictionary<string, string>
+            {
                 ["client_id"] = Options.ClientId,
                 ["redirect_uri"] = redirectUri,
                 ["client_secret"] = Options.ClientSecret,
@@ -72,7 +79,8 @@ namespace AspNet.Security.OAuth.Yammer {
             });
 
             var response = await Backchannel.SendAsync(request, Context.RequestAborted);
-            if (!response.IsSuccessStatusCode) {
+            if (!response.IsSuccessStatusCode)
+            {
                 Logger.LogError("An error occurred while retrieving an access token: the remote server " +
                                 "returned a {Status} response with the following payload: {Headers} {Body}.",
                                 /* Status: */ response.StatusCode,

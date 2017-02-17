@@ -7,12 +7,15 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 
-namespace AspNet.Security.OAuth.HealthGraph {
+namespace AspNet.Security.OAuth.HealthGraph
+{
     /// <summary>
     /// Defines a set of options used by <see cref="HealthGraphAuthenticationHandler"/>.
     /// </summary>
-    public class HealthGraphAuthenticationOptions : OAuthOptions {
-        public HealthGraphAuthenticationOptions() {
+    public class HealthGraphAuthenticationOptions : OAuthOptions
+    {
+        public HealthGraphAuthenticationOptions()
+        {
             AuthenticationScheme = HealthGraphAuthenticationDefaults.AuthenticationScheme;
             DisplayName = HealthGraphAuthenticationDefaults.DisplayName;
             ClaimsIssuer = HealthGraphAuthenticationDefaults.Issuer;

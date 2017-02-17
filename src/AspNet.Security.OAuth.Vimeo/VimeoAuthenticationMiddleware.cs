@@ -13,8 +13,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace AspNet.Security.OAuth.Vimeo {
-    public class VimeoAuthenticationMiddleware : OAuthMiddleware<VimeoAuthenticationOptions> {
+namespace AspNet.Security.OAuth.Vimeo
+{
+    public class VimeoAuthenticationMiddleware : OAuthMiddleware<VimeoAuthenticationOptions>
+    {
         public VimeoAuthenticationMiddleware(
             [NotNull] RequestDelegate next,
             [NotNull] IDataProtectionProvider dataProtectionProvider,
@@ -22,10 +24,12 @@ namespace AspNet.Security.OAuth.Vimeo {
             [NotNull] UrlEncoder encoder,
             [NotNull] IOptions<SharedAuthenticationOptions> sharedOptions,
             [NotNull] IOptions<VimeoAuthenticationOptions> options)
-            : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options) {
+            : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options)
+        {
         }
 
-        protected override AuthenticationHandler<VimeoAuthenticationOptions> CreateHandler() {
+        protected override AuthenticationHandler<VimeoAuthenticationOptions> CreateHandler()
+        {
             return new VimeoAuthenticationHandler(Backchannel);
         }
     }

@@ -7,12 +7,15 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 
-namespace AspNet.Security.OAuth.Onshape {
+namespace AspNet.Security.OAuth.Onshape
+{
     /// <summary>
     /// Defines a set of options used by <see cref="OnshapeAuthenticationHandler"/>.
     /// </summary>
-    public class OnshapeAuthenticationOptions : OAuthOptions {
-        public OnshapeAuthenticationOptions() {
+    public class OnshapeAuthenticationOptions : OAuthOptions
+    {
+        public OnshapeAuthenticationOptions()
+        {
             AuthenticationScheme = OnshapeAuthenticationDefaults.AuthenticationScheme;
             DisplayName = OnshapeAuthenticationDefaults.DisplayName;
             ClaimsIssuer = OnshapeAuthenticationDefaults.Issuer;

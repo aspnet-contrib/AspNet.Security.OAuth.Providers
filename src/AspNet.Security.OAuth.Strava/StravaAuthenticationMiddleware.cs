@@ -5,16 +5,18 @@
  */
 
 using System.Text.Encodings.Web;
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using JetBrains.Annotations;
 
-namespace AspNet.Security.OAuth.Strava {
-    public class StravaAuthenticationMiddleware : OAuthMiddleware<StravaAuthenticationOptions> {
+namespace AspNet.Security.OAuth.Strava
+{
+    public class StravaAuthenticationMiddleware : OAuthMiddleware<StravaAuthenticationOptions>
+    {
         public StravaAuthenticationMiddleware(
             [NotNull] RequestDelegate next,
             [NotNull] IDataProtectionProvider dataProtectionProvider,
@@ -22,10 +24,12 @@ namespace AspNet.Security.OAuth.Strava {
             [NotNull] UrlEncoder encoder,
             [NotNull] IOptions<SharedAuthenticationOptions> sharedOptions,
             [NotNull] IOptions<StravaAuthenticationOptions> options)
-            : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options) {
+            : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options)
+        {
         }
 
-        protected override AuthenticationHandler<StravaAuthenticationOptions> CreateHandler() {
+        protected override AuthenticationHandler<StravaAuthenticationOptions> CreateHandler()
+        {
             return new StravaAuthenticationHandler(Backchannel);
         }
     }

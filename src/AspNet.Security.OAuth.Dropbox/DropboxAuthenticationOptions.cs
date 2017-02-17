@@ -7,12 +7,15 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 
-namespace AspNet.Security.OAuth.Dropbox {
+namespace AspNet.Security.OAuth.Dropbox
+{
     /// <summary>
     /// Defines a set of options used by <see cref="DropboxAuthenticationHandler"/>.
     /// </summary>
-    public class DropboxAuthenticationOptions : OAuthOptions {
-        public DropboxAuthenticationOptions() {
+    public class DropboxAuthenticationOptions : OAuthOptions
+    {
+        public DropboxAuthenticationOptions()
+        {
             AuthenticationScheme = DropboxAuthenticationDefaults.AuthenticationScheme;
             DisplayName = DropboxAuthenticationDefaults.DisplayName;
             ClaimsIssuer = DropboxAuthenticationDefaults.Issuer;

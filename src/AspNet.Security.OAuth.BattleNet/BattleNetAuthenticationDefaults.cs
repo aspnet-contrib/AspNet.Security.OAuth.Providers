@@ -5,13 +5,14 @@
  */
 
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Authentication.OAuth;
 
-namespace AspNet.Security.OAuth.BattleNet {
+namespace AspNet.Security.OAuth.BattleNet
+{
     /// <summary>
     /// Default values used by the Battle.net authentication middleware.
     /// </summary>
-    public static class BattleNetAuthenticationDefaults {
+    public static class BattleNetAuthenticationDefaults
+    {
         /// <summary>
         /// Default value for <see cref="AuthenticationOptions.AuthenticationScheme"/>.
         /// </summary>
@@ -32,7 +33,8 @@ namespace AspNet.Security.OAuth.BattleNet {
         /// </summary>
         public const string CallbackPath = "/signin-battlenet";
 
-        public static class America {
+        public static class America
+        {
             /// <summary>
             /// Default value for <see cref="OAuthOptions.AuthorizationEndpoint"/> for US servers.
             /// </summary>
@@ -49,7 +51,8 @@ namespace AspNet.Security.OAuth.BattleNet {
             public const string UserInformationEndpoint = "https://us.api.battle.net/account/user";
         }
 
-        public static class Europe {
+        public static class Europe
+        {
             /// <summary>
             /// Default value for <see cref="OAuthOptions.AuthorizationEndpoint"/> for EU servers.
             /// </summary>
@@ -66,7 +69,8 @@ namespace AspNet.Security.OAuth.BattleNet {
             public const string UserInformationEndpoint = "https://eu.api.battle.net/account/user";
         }
 
-        public static class Korea {
+        public static class Korea
+        {
             /// <summary>
             /// Default value for <see cref="OAuthOptions.AuthorizationEndpoint"/> for KR servers.
             /// </summary>
@@ -83,7 +87,8 @@ namespace AspNet.Security.OAuth.BattleNet {
             public const string UserInformationEndpoint = "https://kr.api.battle.net/account/user";
         }
 
-        public static class Taiwan {
+        public static class Taiwan
+        {
             /// <summary>
             /// Default value for <see cref="OAuthOptions.AuthorizationEndpoint"/> for TW servers.
             /// </summary>
@@ -100,7 +105,8 @@ namespace AspNet.Security.OAuth.BattleNet {
             public const string UserInformationEndpoint = "https://tw.api.battle.net/account/user";
         }
 
-        public static class China {
+        public static class China
+        {
             /// <summary>
             /// Default value for <see cref="OAuthOptions.AuthorizationEndpoint"/> for CN servers.
             /// </summary>

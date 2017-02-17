@@ -13,8 +13,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace AspNet.Security.OAuth.Paypal {
-    public class PaypalAuthenticationMiddleware : OAuthMiddleware<PaypalAuthenticationOptions> {
+namespace AspNet.Security.OAuth.Paypal
+{
+    public class PaypalAuthenticationMiddleware : OAuthMiddleware<PaypalAuthenticationOptions>
+    {
         public PaypalAuthenticationMiddleware(
             [NotNull] RequestDelegate next,
             [NotNull] IDataProtectionProvider dataProtectionProvider,
@@ -22,10 +24,12 @@ namespace AspNet.Security.OAuth.Paypal {
             [NotNull] UrlEncoder encoder,
             [NotNull] IOptions<SharedAuthenticationOptions> sharedOptions,
             [NotNull] IOptions<PaypalAuthenticationOptions> options)
-            : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options) {
+            : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options)
+        {
         }
 
-        protected override AuthenticationHandler<PaypalAuthenticationOptions> CreateHandler() {
+        protected override AuthenticationHandler<PaypalAuthenticationOptions> CreateHandler()
+        {
             return new PaypalAuthenticationHandler(Backchannel);
         }
     }

@@ -7,12 +7,14 @@
 using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
 
-namespace AspNet.Security.OAuth.Vkontakte {
+namespace AspNet.Security.OAuth.Vkontakte
+{
     /// <summary>
     /// Contains static methods that allow to extract user's information from a <see cref="JObject"/>
     /// instance retrieved from Vkontakte after a successful authentication process.
     /// </summary>
-    public static class VkontakteAuthenticationHelper {
+    public static class VkontakteAuthenticationHelper
+    {
         /// <summary>
         /// Gets the identifier associated with the logged in user.
         /// </summary>

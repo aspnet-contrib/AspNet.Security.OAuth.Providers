@@ -8,12 +8,15 @@ using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 
-namespace AspNet.Security.OAuth.Salesforce {
+namespace AspNet.Security.OAuth.Salesforce
+{
     /// <summary>
     /// Defines a set of options used by <see cref="SalesforceAuthenticationHandler"/>.
     /// </summary>
-    public class SalesforceAuthenticationOptions : OAuthOptions {
-        public SalesforceAuthenticationOptions() {
+    public class SalesforceAuthenticationOptions : OAuthOptions
+    {
+        public SalesforceAuthenticationOptions()
+        {
             AuthenticationScheme = SalesforceAuthenticationDefaults.AuthenticationScheme;
             DisplayName = SalesforceAuthenticationDefaults.DisplayName;
             ClaimsIssuer = SalesforceAuthenticationDefaults.Issuer;
@@ -23,9 +26,12 @@ namespace AspNet.Security.OAuth.Salesforce {
             Environment = SalesforceAuthenticationDefaults.Environment;
         }
 
-        public SalesforceAuthenticationEnvironment Environment {
-            set {
-                switch (value) {
+        public SalesforceAuthenticationEnvironment Environment
+        {
+            set
+            {
+                switch (value)
+                {
                     case SalesforceAuthenticationEnvironment.Production:
                         AuthorizationEndpoint = SalesforceAuthenticationDefaults.Production.AuthorizationEndpoint;
                         TokenEndpoint = SalesforceAuthenticationDefaults.Production.TokenEndpoint;

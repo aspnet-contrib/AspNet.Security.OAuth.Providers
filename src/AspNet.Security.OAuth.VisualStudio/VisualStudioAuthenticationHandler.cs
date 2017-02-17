@@ -19,20 +19,25 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 
-namespace AspNet.Security.OAuth.VisualStudio {
-    public class VisualStudioAuthenticationHandler : OAuthHandler<VisualStudioAuthenticationOptions> {
+namespace AspNet.Security.OAuth.VisualStudio
+{
+    public class VisualStudioAuthenticationHandler : OAuthHandler<VisualStudioAuthenticationOptions>
+    {
         public VisualStudioAuthenticationHandler([NotNull] HttpClient client)
-            : base(client) {
+            : base(client)
+        {
         }
 
         protected override async Task<AuthenticationTicket> CreateTicketAsync([NotNull] ClaimsIdentity identity,
-            [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens) {
+            [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens)
+        {
             var request = new HttpRequestMessage(HttpMethod.Get, Options.UserInformationEndpoint);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", tokens.AccessToken);
 
             var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
-            if (!response.IsSuccessStatusCode) {
+            if (!response.IsSuccessStatusCode)
+            {
                 Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
                                 "returned a {Status} response with the following payload: {Headers} {Body}.",
                                 /* Status: */ response.StatusCode,
@@ -58,11 +63,13 @@ namespace AspNet.Security.OAuth.VisualStudio {
             return context.Ticket;
         }
 
-        protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] string code, [NotNull] string redirectUri) {
+        protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] string code, [NotNull] string redirectUri)
+        {
             var request = new HttpRequestMessage(HttpMethod.Post, Options.TokenEndpoint);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/x-www-form-urlencoded"));
 
-            request.Content = new FormUrlEncodedContent(new Dictionary<string, string> {
+            request.Content = new FormUrlEncodedContent(new Dictionary<string, string>
+            {
                 ["redirect_uri"] = redirectUri,
                 ["client_assertion"] = Options.ClientSecret,
                 ["assertion"] = code,
@@ -72,7 +79,8 @@ namespace AspNet.Security.OAuth.VisualStudio {
 
             var response = await Backchannel.SendAsync(request, Context.RequestAborted);
 
-            if (!response.IsSuccessStatusCode) {
+            if (!response.IsSuccessStatusCode)
+            {
                 Logger.LogError("An error occurred while retrieving an access token: the remote server " +
                                 "returned a {Status} response with the following payload: {Headers} {Body}.",
                                 /* Status: */ response.StatusCode,
@@ -87,8 +95,10 @@ namespace AspNet.Security.OAuth.VisualStudio {
             return OAuthTokenResponse.Success(payload);
         }
 
-        protected override string BuildChallengeUrl(AuthenticationProperties properties, string redirectUri) {
-            return QueryHelpers.AddQueryString(Options.AuthorizationEndpoint, new Dictionary<string, string> {
+        protected override string BuildChallengeUrl(AuthenticationProperties properties, string redirectUri)
+        {
+            return QueryHelpers.AddQueryString(Options.AuthorizationEndpoint, new Dictionary<string, string>
+            {
                 ["client_id"] = Options.ClientId,
                 ["response_type"] = "Assertion",
                 ["scope"] = FormatScope(),

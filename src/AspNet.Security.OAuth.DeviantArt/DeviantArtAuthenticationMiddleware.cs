@@ -13,8 +13,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace AspNet.Security.OAuth.DeviantArt {
-    public class DeviantArtAuthenticationMiddleware : OAuthMiddleware<DeviantArtAuthenticationOptions> {
+namespace AspNet.Security.OAuth.DeviantArt
+{
+    public class DeviantArtAuthenticationMiddleware : OAuthMiddleware<DeviantArtAuthenticationOptions>
+    {
         public DeviantArtAuthenticationMiddleware(
             [NotNull] RequestDelegate next,
             [NotNull] IDataProtectionProvider dataProtectionProvider,
@@ -22,10 +24,12 @@ namespace AspNet.Security.OAuth.DeviantArt {
             [NotNull] UrlEncoder encoder,
             [NotNull] IOptions<SharedAuthenticationOptions> sharedOptions,
             [NotNull] IOptions<DeviantArtAuthenticationOptions> options)
-            : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options) {
+            : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options)
+        {
         }
 
-        protected override AuthenticationHandler<DeviantArtAuthenticationOptions> CreateHandler() {
+        protected override AuthenticationHandler<DeviantArtAuthenticationOptions> CreateHandler()
+        {
             return new DeviantArtAuthenticationHandler(Backchannel);
         }
     }

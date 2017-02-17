@@ -7,12 +7,15 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 
-namespace AspNet.Security.OAuth.Paypal {
+namespace AspNet.Security.OAuth.Paypal
+{
     /// <summary>
     /// Defines a set of options used by <see cref="PaypalAuthenticationHandler"/>.
     /// </summary>
-    public class PaypalAuthenticationOptions : OAuthOptions {
-        public PaypalAuthenticationOptions() {
+    public class PaypalAuthenticationOptions : OAuthOptions
+    {
+        public PaypalAuthenticationOptions()
+        {
             AuthenticationScheme = PaypalAuthenticationDefaults.AuthenticationScheme;
             DisplayName = PaypalAuthenticationDefaults.DisplayName;
             ClaimsIssuer = PaypalAuthenticationDefaults.Issuer;

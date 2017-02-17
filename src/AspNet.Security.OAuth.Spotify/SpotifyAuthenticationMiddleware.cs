@@ -13,8 +13,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace AspNet.Security.OAuth.Spotify {
-    public class SpotifyAuthenticationMiddleware : OAuthMiddleware<SpotifyAuthenticationOptions> {
+namespace AspNet.Security.OAuth.Spotify
+{
+    public class SpotifyAuthenticationMiddleware : OAuthMiddleware<SpotifyAuthenticationOptions>
+    {
         public SpotifyAuthenticationMiddleware(
             [NotNull] RequestDelegate next,
             [NotNull] IDataProtectionProvider dataProtectionProvider,
@@ -22,10 +24,12 @@ namespace AspNet.Security.OAuth.Spotify {
             [NotNull] UrlEncoder encoder,
             [NotNull] IOptions<SharedAuthenticationOptions> sharedOptions,
             [NotNull] IOptions<SpotifyAuthenticationOptions> options)
-            : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options) {
+            : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options)
+        {
         }
 
-        protected override AuthenticationHandler<SpotifyAuthenticationOptions> CreateHandler() {
+        protected override AuthenticationHandler<SpotifyAuthenticationOptions> CreateHandler()
+        {
             return new SpotifyAuthenticationHandler(Backchannel);
         }
     }

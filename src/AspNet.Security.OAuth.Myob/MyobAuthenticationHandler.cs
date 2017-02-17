@@ -14,16 +14,20 @@ using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http.Authentication;
 using Newtonsoft.Json.Linq;
 
-namespace AspNet.Security.OAuth.Myob {
-    public class MyobAuthenticationHandler : OAuthHandler<MyobAuthenticationOptions> {
+namespace AspNet.Security.OAuth.Myob
+{
+    public class MyobAuthenticationHandler : OAuthHandler<MyobAuthenticationOptions>
+    {
         public MyobAuthenticationHandler([NotNull] HttpClient client)
-            : base(client) {
+            : base(client)
+        {
         }
 
         protected override async Task<AuthenticationTicket> CreateTicketAsync([NotNull] ClaimsIdentity identity,
-            [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens) {
+            [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens)
+        {
             // Note: MYOB doesn't provide a user information endpoint,
-            // so we rely on the details sent back in the token request. 
+            // so we rely on the details sent back in the token request.
             var user = (JObject) tokens.Response.SelectToken("user");
 
             identity.AddOptionalClaim(ClaimTypes.NameIdentifier, MyobAuthenticationHelper.GetIdentifier(user), Options.ClaimsIssuer)

@@ -7,12 +7,15 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 
-namespace AspNet.Security.OAuth.Imgur {
+namespace AspNet.Security.OAuth.Imgur
+{
     /// <summary>
     /// Defines a set of options used by <see cref="ImgurAuthenticationHandler"/>.
     /// </summary>
-    public class ImgurAuthenticationOptions : OAuthOptions {
-        public ImgurAuthenticationOptions() {
+    public class ImgurAuthenticationOptions : OAuthOptions
+    {
+        public ImgurAuthenticationOptions()
+        {
             AuthenticationScheme = ImgurAuthenticationDefaults.AuthenticationScheme;
             DisplayName = ImgurAuthenticationDefaults.DisplayName;
             ClaimsIssuer = ImgurAuthenticationDefaults.Issuer;

@@ -8,12 +8,14 @@ using System.Linq;
 using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
 
-namespace AspNet.Security.OAuth.GitHub {
+namespace AspNet.Security.OAuth.GitHub
+{
     /// <summary>
     /// Contains static methods that allow to extract user's information from a <see cref="JObject"/>
     /// instance retrieved from GitHub after a successful authentication process.
     /// </summary>
-    public static class GitHubAuthenticationHelper {
+    public static class GitHubAuthenticationHelper
+    {
         /// <summary>
         /// Gets the identifier corresponding to the authenticated user.
         /// </summary>
@@ -32,7 +34,8 @@ namespace AspNet.Security.OAuth.GitHub {
         /// <summary>
         /// Gets the primary email address contained in the given array.
         /// </summary>
-        public static string GetEmail([NotNull] JArray array) {
+        public static string GetEmail([NotNull] JArray array)
+        {
             return (from address in array.AsJEnumerable()
                     where address.Value<bool>("primary")
                     select address.Value<string>("email")).FirstOrDefault();

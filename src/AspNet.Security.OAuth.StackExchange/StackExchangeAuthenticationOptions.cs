@@ -9,12 +9,15 @@ using System.Net.Http;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 
-namespace AspNet.Security.OAuth.StackExchange {
+namespace AspNet.Security.OAuth.StackExchange
+{
     /// <summary>
     /// Defines a set of options used by <see cref="StackExchangeAuthenticationHandler"/>.
     /// </summary>
-    public class StackExchangeAuthenticationOptions : OAuthOptions {
-        public StackExchangeAuthenticationOptions() {
+    public class StackExchangeAuthenticationOptions : OAuthOptions
+    {
+        public StackExchangeAuthenticationOptions()
+        {
             AuthenticationScheme = StackExchangeAuthenticationDefaults.AuthenticationScheme;
             DisplayName = StackExchangeAuthenticationDefaults.DisplayName;
             ClaimsIssuer = StackExchangeAuthenticationDefaults.Issuer;
@@ -24,7 +27,7 @@ namespace AspNet.Security.OAuth.StackExchange {
             AuthorizationEndpoint = StackExchangeAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = StackExchangeAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = StackExchangeAuthenticationDefaults.UserInformationEndpoint;
-            BackchannelHttpHandler = new HttpClientHandler {AutomaticDecompression = DecompressionMethods.GZip};
+            BackchannelHttpHandler = new HttpClientHandler { AutomaticDecompression = DecompressionMethods.GZip };
         }
 
         /// <summary>

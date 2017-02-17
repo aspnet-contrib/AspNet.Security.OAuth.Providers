@@ -7,12 +7,14 @@
 using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
 
-namespace AspNet.Security.OAuth.LinkedIn {
+namespace AspNet.Security.OAuth.LinkedIn
+{
     /// <summary>
     /// Contains static methods that allow to extract user's information from a <see cref="JObject"/>
     /// instance retrieved from LinkedIn after a successful authentication process.
     /// </summary>
-    public class LinkedInAuthenticationHelper {
+    public class LinkedInAuthenticationHelper
+    {
         /// <summary>
         /// Gets the email address corresponding to the authenticated user.
         /// </summary>

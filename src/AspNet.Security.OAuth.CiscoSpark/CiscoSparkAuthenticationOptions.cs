@@ -7,12 +7,15 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 
-namespace AspNet.Security.OAuth.CiscoSpark {
+namespace AspNet.Security.OAuth.CiscoSpark
+{
     /// <summary>
     /// Defines a set of options used by <see cref="CiscoSparkAuthenticationHandler"/>.
     /// </summary>
-    public class CiscoSparkAuthenticationOptions : OAuthOptions {
-        public CiscoSparkAuthenticationOptions() {
+    public class CiscoSparkAuthenticationOptions : OAuthOptions
+    {
+        public CiscoSparkAuthenticationOptions()
+        {
             AuthenticationScheme = CiscoSparkAuthenticationDefaults.AuthenticationScheme;
             DisplayName = CiscoSparkAuthenticationDefaults.DisplayName;
             ClaimsIssuer = CiscoSparkAuthenticationDefaults.Issuer;

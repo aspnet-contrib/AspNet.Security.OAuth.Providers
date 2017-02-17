@@ -14,8 +14,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace AspNet.Security.OAuth.LinkedIn {
-    public class LinkedInAuthenticationMiddleware : OAuthMiddleware<LinkedInAuthenticationOptions> {
+namespace AspNet.Security.OAuth.LinkedIn
+{
+    public class LinkedInAuthenticationMiddleware : OAuthMiddleware<LinkedInAuthenticationOptions>
+    {
         public LinkedInAuthenticationMiddleware(
             [NotNull] RequestDelegate next,
             [NotNull] IDataProtectionProvider dataProtectionProvider,
@@ -23,14 +25,17 @@ namespace AspNet.Security.OAuth.LinkedIn {
             [NotNull] UrlEncoder encoder,
             [NotNull] IOptions<SharedAuthenticationOptions> sharedOptions,
             [NotNull] IOptions<LinkedInAuthenticationOptions> options)
-            : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options) {
-            if (Options.Fields.Count != 0 && !Options.UserInformationEndpoint.Contains("~")) {
+            : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options)
+        {
+            if (Options.Fields.Count != 0 && !Options.UserInformationEndpoint.Contains("~"))
+            {
                 throw new ArgumentException("The user information endpoint is improperly formatted. " +
                                             "The endpoint must contain a '~' to append the supplied fields.", nameof(options));
             }
         }
 
-        protected override AuthenticationHandler<LinkedInAuthenticationOptions> CreateHandler() {
+        protected override AuthenticationHandler<LinkedInAuthenticationOptions> CreateHandler()
+        {
             return new LinkedInAuthenticationHandler(Backchannel);
         }
     }

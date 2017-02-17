@@ -9,20 +9,25 @@ using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Mvc.Client.Extensions;
 
-namespace Mvc.Client.Controllers {
-    public class AuthenticationController : Controller {
+namespace Mvc.Client.Controllers
+{
+    public class AuthenticationController : Controller
+    {
         [HttpGet("~/signin")]
         public IActionResult SignIn() => View("SignIn", HttpContext.GetExternalProviders());
 
         [HttpPost("~/signin")]
-        public IActionResult SignIn([FromForm] string provider) {
+        public IActionResult SignIn([FromForm] string provider)
+        {
             // Note: the "provider" parameter corresponds to the external
             // authentication provider choosen by the user agent.
-            if (string.IsNullOrWhiteSpace(provider)) {
+            if (string.IsNullOrWhiteSpace(provider))
+            {
                 return BadRequest();
             }
 
-            if (!HttpContext.IsProviderSupported(provider)) {
+            if (!HttpContext.IsProviderSupported(provider))
+            {
                 return BadRequest();
             }
 
@@ -33,7 +38,8 @@ namespace Mvc.Client.Controllers {
         }
 
         [HttpGet("~/signout"), HttpPost("~/signout")]
-        public IActionResult SignOut() {
+        public IActionResult SignOut()
+        {
             // Instruct the cookies middleware to delete the local cookie created
             // when the user agent is redirected from the external identity provider
             // after a successful authentication flow (e.g Google or Facebook).

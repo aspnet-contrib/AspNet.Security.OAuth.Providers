@@ -7,12 +7,14 @@
 using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
 
-namespace AspNet.Security.OAuth.Asana {
+namespace AspNet.Security.OAuth.Asana
+{
     /// <summary>
     /// Contains static methods that allow to extract user's information from a <see cref="JObject"/>
     /// instance retrieved from Asana after a successful authentication process.
     /// </summary>
-    public static class AsanaAuthenticationHelper {
+    public static class AsanaAuthenticationHelper
+    {
         /// <summary>
         /// Gets the identifier corresponding to the authenticated user.
         /// </summary>

@@ -16,19 +16,24 @@ using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 
-namespace AspNet.Security.OAuth.LinkedIn {
-    public class LinkedInAuthenticationHandler : OAuthHandler<LinkedInAuthenticationOptions> {
+namespace AspNet.Security.OAuth.LinkedIn
+{
+    public class LinkedInAuthenticationHandler : OAuthHandler<LinkedInAuthenticationOptions>
+    {
         public LinkedInAuthenticationHandler([NotNull] HttpClient client)
-            : base(client) {
+            : base(client)
+        {
         }
 
         protected override async Task<AuthenticationTicket> CreateTicketAsync([NotNull] ClaimsIdentity identity,
-            [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens) {
+            [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens)
+        {
             var address = Options.UserInformationEndpoint;
 
             // If at least one field is specified,
             // append the fields to the endpoint URL.
-            if (Options.Fields.Count != 0) {
+            if (Options.Fields.Count != 0)
+            {
                 address = address.Insert(address.LastIndexOf("~") + 1, $":({ string.Join(",", Options.Fields)})");
             }
 
@@ -37,7 +42,8 @@ namespace AspNet.Security.OAuth.LinkedIn {
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", tokens.AccessToken);
 
             var response = await Backchannel.SendAsync(request, Context.RequestAborted);
-            if (!response.IsSuccessStatusCode) {
+            if (!response.IsSuccessStatusCode)
+            {
                 Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
                                 "returned a {Status} response with the following payload: {Headers} {Body}.",
                                 /* Status: */ response.StatusCode,

@@ -13,8 +13,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace AspNet.Security.OAuth.SoundCloud {
-    public class SoundCloudAuthenticationMiddleware : OAuthMiddleware<SoundCloudAuthenticationOptions> {
+namespace AspNet.Security.OAuth.SoundCloud
+{
+    public class SoundCloudAuthenticationMiddleware : OAuthMiddleware<SoundCloudAuthenticationOptions>
+    {
         public SoundCloudAuthenticationMiddleware(
             [NotNull] RequestDelegate next,
             [NotNull] IDataProtectionProvider dataProtectionProvider,
@@ -22,10 +24,12 @@ namespace AspNet.Security.OAuth.SoundCloud {
             [NotNull] UrlEncoder encoder,
             [NotNull] IOptions<SharedAuthenticationOptions> sharedOptions,
             [NotNull] IOptions<SoundCloudAuthenticationOptions> options)
-            : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options) {
+            : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options)
+        {
         }
 
-        protected override AuthenticationHandler<SoundCloudAuthenticationOptions> CreateHandler() {
+        protected override AuthenticationHandler<SoundCloudAuthenticationOptions> CreateHandler()
+        {
             return new SoundCloudAuthenticationHandler(Backchannel);
         }
     }

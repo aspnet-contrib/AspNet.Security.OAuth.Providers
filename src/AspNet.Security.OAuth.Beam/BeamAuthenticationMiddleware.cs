@@ -13,8 +13,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace AspNet.Security.OAuth.Beam {
-    public class BeamAuthenticationMiddleware : OAuthMiddleware<BeamAuthenticationOptions> {
+namespace AspNet.Security.OAuth.Beam
+{
+    public class BeamAuthenticationMiddleware : OAuthMiddleware<BeamAuthenticationOptions>
+    {
         public BeamAuthenticationMiddleware(
             [NotNull] RequestDelegate next,
             [NotNull] IDataProtectionProvider dataProtectionProvider,
@@ -22,10 +24,12 @@ namespace AspNet.Security.OAuth.Beam {
             [NotNull] UrlEncoder encoder,
             [NotNull] IOptions<SharedAuthenticationOptions> sharedOptions,
             [NotNull] IOptions<BeamAuthenticationOptions> options)
-            : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options) {
+            : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options)
+        {
         }
 
-        protected override AuthenticationHandler<BeamAuthenticationOptions> CreateHandler() {
+        protected override AuthenticationHandler<BeamAuthenticationOptions> CreateHandler()
+        {
             return new BeamAuthenticationHandler(Backchannel);
         }
     }

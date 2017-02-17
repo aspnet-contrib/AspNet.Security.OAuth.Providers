@@ -5,13 +5,14 @@
  */
 
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Authentication.OAuth;
 
-namespace AspNet.Security.OAuth.LinkedIn {
+namespace AspNet.Security.OAuth.LinkedIn
+{
     /// <summary>
     /// Default values used by the LinkedIn authentication middleware.
     /// </summary>
-    public class LinkedInAuthenticationDefaults {
+    public class LinkedInAuthenticationDefaults
+    {
         /// <summary>
         /// Default value for <see cref="AuthenticationOptions.AuthenticationScheme"/>.
         /// </summary>

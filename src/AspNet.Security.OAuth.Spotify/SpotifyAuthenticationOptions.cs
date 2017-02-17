@@ -7,12 +7,15 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 
-namespace AspNet.Security.OAuth.Spotify {
+namespace AspNet.Security.OAuth.Spotify
+{
     /// <summary>
     /// Defines a set of options used by <see cref="SpotifyAuthenticationHandler"/>.
     /// </summary>
-    public class SpotifyAuthenticationOptions : OAuthOptions {
-        public SpotifyAuthenticationOptions() {
+    public class SpotifyAuthenticationOptions : OAuthOptions
+    {
+        public SpotifyAuthenticationOptions()
+        {
             AuthenticationScheme = SpotifyAuthenticationDefaults.AuthenticationScheme;
             DisplayName = SpotifyAuthenticationDefaults.DisplayName;
             ClaimsIssuer = SpotifyAuthenticationDefaults.Issuer;

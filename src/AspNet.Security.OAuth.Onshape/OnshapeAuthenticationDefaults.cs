@@ -5,13 +5,14 @@
  */
 
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Authentication.OAuth;
 
-namespace AspNet.Security.OAuth.Onshape {
+namespace AspNet.Security.OAuth.Onshape
+{
     /// <summary>
     /// Default values used by the Onshape authentication middleware.
     /// </summary>
-    public static class OnshapeAuthenticationDefaults {
+    public static class OnshapeAuthenticationDefaults
+    {
         /// <summary>
         /// Default value for <see cref="AuthenticationOptions.AuthenticationScheme"/>.
         /// </summary>

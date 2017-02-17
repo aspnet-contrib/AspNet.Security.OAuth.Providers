@@ -5,13 +5,14 @@
  */
 
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Authentication.OAuth;
 
-namespace AspNet.Security.OAuth.WordPress {
+namespace AspNet.Security.OAuth.WordPress
+{
     /// <summary>
     /// Default values used by the WordPress authentication middleware.
     /// </summary>
-    public class WordPressAuthenticationDefaults {
+    public class WordPressAuthenticationDefaults
+    {
         /// <summary>
         /// Default value for <see cref="AuthenticationOptions.AuthenticationScheme"/>.
         /// </summary>

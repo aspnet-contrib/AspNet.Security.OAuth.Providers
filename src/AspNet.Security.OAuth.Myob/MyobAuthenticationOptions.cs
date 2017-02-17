@@ -7,12 +7,15 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 
-namespace AspNet.Security.OAuth.Myob {
+namespace AspNet.Security.OAuth.Myob
+{
     /// <summary>
     /// Defines a set of options used by <see cref="MyobAuthenticationHandler"/>.
     /// </summary>
-    public class MyobAuthenticationOptions : OAuthOptions {
-        public MyobAuthenticationOptions() {
+    public class MyobAuthenticationOptions : OAuthOptions
+    {
+        public MyobAuthenticationOptions()
+        {
             AuthenticationScheme = MyobAuthenticationDefaults.AuthenticationScheme;
             DisplayName = MyobAuthenticationDefaults.DisplayName;
             ClaimsIssuer = MyobAuthenticationDefaults.Issuer;

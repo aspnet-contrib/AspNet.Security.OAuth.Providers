@@ -7,12 +7,14 @@
 using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
 
-namespace AspNet.Security.OAuth.Beam {
+namespace AspNet.Security.OAuth.Beam
+{
     /// <summary>
     /// Contains static methods that allow to extract user's information from a <see cref="JObject"/>
     /// instance retrieved from Beam after a successful authentication process.
     /// </summary>
-    public static class BeamAuthenticationHelper {
+    public static class BeamAuthenticationHelper
+    {
         /// <summary>
         /// Gets the identifier corresponding to the authenticated user.
         /// </summary>

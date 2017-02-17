@@ -7,17 +7,19 @@
 using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
 
-namespace AspNet.Security.OAuth.Myob {
+namespace AspNet.Security.OAuth.Myob
+{
     /// <summary>
     /// Contains static methods that allow to extract user's information from a <see cref="JObject"/>
     /// instance retrieved from Myob after a successful authentication process.
     /// </summary>
-    public static class MyobAuthenticationHelper {
+    public static class MyobAuthenticationHelper
+    {
         /// <summary>
         /// Gets the identifier corresponding to the authenticated user.
         /// </summary>
         public static string GetIdentifier([NotNull] JObject user) => user.Value<string>("uid");
-        
+
         /// <summary>
         /// Gets the username corresponding to the authenticated user.
         /// </summary>

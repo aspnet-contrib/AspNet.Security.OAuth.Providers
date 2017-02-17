@@ -5,16 +5,18 @@
  */
 
 using System.Text.Encodings.Web;
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using JetBrains.Annotations;
 
-namespace AspNet.Security.OAuth.VisualStudio {
-    public class VisualStudioAuthenticationMiddleware : OAuthMiddleware<VisualStudioAuthenticationOptions> {
+namespace AspNet.Security.OAuth.VisualStudio
+{
+    public class VisualStudioAuthenticationMiddleware : OAuthMiddleware<VisualStudioAuthenticationOptions>
+    {
         public VisualStudioAuthenticationMiddleware(
             [NotNull] RequestDelegate next,
             [NotNull] IDataProtectionProvider dataProtectionProvider,
@@ -22,10 +24,12 @@ namespace AspNet.Security.OAuth.VisualStudio {
             [NotNull] UrlEncoder encoder,
             [NotNull] IOptions<SharedAuthenticationOptions> externalOptions,
             [NotNull] IOptions<VisualStudioAuthenticationOptions> options)
-            : base(next, dataProtectionProvider, loggerFactory, encoder, externalOptions, options) {
+            : base(next, dataProtectionProvider, loggerFactory, encoder, externalOptions, options)
+        {
         }
 
-        protected override AuthenticationHandler<VisualStudioAuthenticationOptions> CreateHandler() {
+        protected override AuthenticationHandler<VisualStudioAuthenticationOptions> CreateHandler()
+        {
             return new VisualStudioAuthenticationHandler(Backchannel);
         }
     }

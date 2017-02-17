@@ -7,12 +7,15 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 
-namespace AspNet.Security.OAuth.ArcGIS {
+namespace AspNet.Security.OAuth.ArcGIS
+{
     /// <summary>
     /// Defines a set of options used by <see cref="ArcGISAuthenticationHandler"/>.
     /// </summary>
-    public class ArcGISAuthenticationOptions : OAuthOptions {
-        public ArcGISAuthenticationOptions() {
+    public class ArcGISAuthenticationOptions : OAuthOptions
+    {
+        public ArcGISAuthenticationOptions()
+        {
             AuthenticationScheme = ArcGISAuthenticationDefaults.AuthenticationScheme;
             DisplayName = ArcGISAuthenticationDefaults.DisplayName;
             ClaimsIssuer = ArcGISAuthenticationDefaults.Issuer;

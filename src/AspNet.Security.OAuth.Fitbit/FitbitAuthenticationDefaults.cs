@@ -5,13 +5,14 @@
  */
 
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Authentication.OAuth;
 
-namespace AspNet.Security.OAuth.Fitbit {
+namespace AspNet.Security.OAuth.Fitbit
+{
     /// <summary>
     /// Default values used by the Fitbit authentication middleware.
     /// </summary>
-    public static class FitbitAuthenticationDefaults {
+    public static class FitbitAuthenticationDefaults
+    {
         /// <summary>
         /// Default value for <see cref="AuthenticationOptions.AuthenticationScheme"/>.
         /// </summary>

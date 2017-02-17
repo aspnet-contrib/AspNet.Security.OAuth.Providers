@@ -13,8 +13,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace AspNet.Security.OAuth.BattleNet {
-    public class BattleNetAuthenticationMiddleware : OAuthMiddleware<BattleNetAuthenticationOptions> {
+namespace AspNet.Security.OAuth.BattleNet
+{
+    public class BattleNetAuthenticationMiddleware : OAuthMiddleware<BattleNetAuthenticationOptions>
+    {
         public BattleNetAuthenticationMiddleware(
             [NotNull] RequestDelegate next,
             [NotNull] IDataProtectionProvider dataProtectionProvider,
@@ -22,10 +24,12 @@ namespace AspNet.Security.OAuth.BattleNet {
             [NotNull] UrlEncoder encoder,
             [NotNull] IOptions<SharedAuthenticationOptions> sharedOptions,
             [NotNull] IOptions<BattleNetAuthenticationOptions> options)
-            : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options) {
+            : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options)
+        {
         }
 
-        protected override AuthenticationHandler<BattleNetAuthenticationOptions> CreateHandler() {
+        protected override AuthenticationHandler<BattleNetAuthenticationOptions> CreateHandler()
+        {
             return new BattleNetAuthenticationHandler(Backchannel);
         }
     }

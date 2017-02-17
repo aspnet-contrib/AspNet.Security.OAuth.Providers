@@ -5,13 +5,14 @@
  */
 
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Authentication.OAuth;
 
-namespace AspNet.Security.OAuth.Instagram {
+namespace AspNet.Security.OAuth.Instagram
+{
     /// <summary>
     /// Default values used by the Instagram authentication middleware.
     /// </summary>
-    public static class InstagramAuthenticationDefaults {
+    public static class InstagramAuthenticationDefaults
+    {
         /// <summary>
         /// Default value for <see cref="AuthenticationOptions.AuthenticationScheme"/>.
         /// </summary>
