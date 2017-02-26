@@ -1,0 +1,20 @@
+<Project>
+  <Import Project="dependencies.props" />
+  <Import Project="..\version.props" />
+
+  <PropertyGroup>
+    <Product>Microsoft .NET Extensions</Product>
+    <WarningsAsErrors>true</WarningsAsErrors>
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
+    <PackageProjectUrl>https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers</PackageProjectUrl>
+    <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0.html</PackageLicenseUrl>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>git://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers</RepositoryUrl>
+    <VersionSuffix Condition="'$(VersionSuffix)'!='' AND '$(BuildNumber)' != ''">$(VersionSuffix)-$(BuildNumber)</VersionSuffix>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(TargetFrameworkIdentifier)'=='.NETFramework' AND '$(OutputType)'=='library'">
+    <PackageReference Include="NETStandard.Library" Version="$(NetStandardImplicitPackageVersion)" />
+  </ItemGroup>
+
+</Project>
