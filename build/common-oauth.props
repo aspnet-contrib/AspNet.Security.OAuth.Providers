@@ -9,7 +9,7 @@
 
     <ItemGroup>
         <ProjectReference Include="../AspNet.Security.OAuth.Extensions/AspNet.Security.OAuth.Extensions.csproj" />
-        <PackageReference Include="JetBrains.Annotations" Version="10.1.4" PrivateAssets="All" />
+        <PackageReference Include="JetBrains.Annotations" Version="10.2.1" PrivateAssets="All" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.OAuth" Version="1.0.0" />
     </ItemGroup>
 
