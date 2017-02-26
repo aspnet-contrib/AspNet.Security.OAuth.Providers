@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="..\..\build\common.props" />
+  <Import Project="..\..\build\common-oauth.props" />
 
   <PropertyGroup>
     <Description>ASP.NET Core security middleware enabling Dropbox authentication.</Description>
@@ -9,22 +9,5 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageTags>aspnetcore;authentication;dropbox;oauth;security</PackageTags>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Include="**\*.cs" />
-    <EmbeddedResource Include="**\*.resx" />
-    <EmbeddedResource Include="compiler\resources\**\*" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="../AspNet.Security.OAuth.Extensions/AspNet.Security.OAuth.Extensions.csproj" />
-    <PackageReference Include="JetBrains.Annotations" Version="10.1.4" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.OAuth" Version="1.0.0" />
-  </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net451' ">
-    <Reference Include="System" />
-    <Reference Include="Microsoft.CSharp" />
-  </ItemGroup>
 
 </Project>
