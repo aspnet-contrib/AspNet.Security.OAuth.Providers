@@ -1,5 +1,7 @@
-﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
+  <Import Project="..\..\build\common.props" />
+  
   <PropertyGroup>
     <Description>ASP.NET Core security middleware enabling Asana authentication.</Description>
     <Authors>Adam Reisinger</Authors>
