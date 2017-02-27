@@ -7,83 +7,83 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{C1352FD3-AE8
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{BAC7067D-88FE-4385-8AC9-1A325FFBDE69}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "AspNet.Security.OAuth.GitHub", "src\AspNet.Security.OAuth.GitHub\AspNet.Security.OAuth.GitHub.csproj", "{9DFEE19E-C170-4F20-93F3-EC952B1532F2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.GitHub", "src\AspNet.Security.OAuth.GitHub\AspNet.Security.OAuth.GitHub.csproj", "{9DFEE19E-C170-4F20-93F3-EC952B1532F2}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Mvc.Client", "samples\Mvc.Client\Mvc.Client.csproj", "{68631868-902A-46FB-9A44-BACF1812FBDE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mvc.Client", "samples\Mvc.Client\Mvc.Client.csproj", "{68631868-902A-46FB-9A44-BACF1812FBDE}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "AspNet.Security.OAuth.Extensions", "src\AspNet.Security.OAuth.Extensions\AspNet.Security.OAuth.Extensions.csproj", "{FE52A431-57AD-45FA-AA59-C63CB6EA3F31}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.Extensions", "src\AspNet.Security.OAuth.Extensions\AspNet.Security.OAuth.Extensions.csproj", "{FE52A431-57AD-45FA-AA59-C63CB6EA3F31}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "AspNet.Security.OAuth.LinkedIn", "src\AspNet.Security.OAuth.LinkedIn\AspNet.Security.OAuth.LinkedIn.csproj", "{0351689C-EAB7-42D0-966F-4021B89EF553}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.LinkedIn", "src\AspNet.Security.OAuth.LinkedIn\AspNet.Security.OAuth.LinkedIn.csproj", "{0351689C-EAB7-42D0-966F-4021B89EF553}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "AspNet.Security.OAuth.WordPress", "src\AspNet.Security.OAuth.WordPress\AspNet.Security.OAuth.WordPress.csproj", "{38E5DB77-7F35-4E3C-9719-8A25CE4130CA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.WordPress", "src\AspNet.Security.OAuth.WordPress\AspNet.Security.OAuth.WordPress.csproj", "{38E5DB77-7F35-4E3C-9719-8A25CE4130CA}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "AspNet.Security.OAuth.Yahoo", "src\AspNet.Security.OAuth.Yahoo\AspNet.Security.OAuth.Yahoo.csproj", "{F79E8D15-F296-424C-A50E-AE39EB2C609F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.Yahoo", "src\AspNet.Security.OAuth.Yahoo\AspNet.Security.OAuth.Yahoo.csproj", "{F79E8D15-F296-424C-A50E-AE39EB2C609F}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "AspNet.Security.OAuth.Fitbit", "src\AspNet.Security.OAuth.Fitbit\AspNet.Security.OAuth.Fitbit.csproj", "{BE72BFAD-2B7A-43D6-9B75-21456852C63A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.Fitbit", "src\AspNet.Security.OAuth.Fitbit\AspNet.Security.OAuth.Fitbit.csproj", "{BE72BFAD-2B7A-43D6-9B75-21456852C63A}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "AspNet.Security.OAuth.DeviantArt", "src\AspNet.Security.OAuth.DeviantArt\AspNet.Security.OAuth.DeviantArt.csproj", "{9E09DCBC-20DB-4CD8-8A6D-5FA1958EEF14}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.DeviantArt", "src\AspNet.Security.OAuth.DeviantArt\AspNet.Security.OAuth.DeviantArt.csproj", "{9E09DCBC-20DB-4CD8-8A6D-5FA1958EEF14}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "AspNet.Security.OAuth.Twitch", "src\AspNet.Security.OAuth.Twitch\AspNet.Security.OAuth.Twitch.csproj", "{01CFAA4D-C8E9-45A3-B8A6-3AF0BEC9048C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.Twitch", "src\AspNet.Security.OAuth.Twitch\AspNet.Security.OAuth.Twitch.csproj", "{01CFAA4D-C8E9-45A3-B8A6-3AF0BEC9048C}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "AspNet.Security.OAuth.Reddit", "src\AspNet.Security.OAuth.Reddit\AspNet.Security.OAuth.Reddit.csproj", "{43FDCE3F-5554-48EF-BB3D-1E8E7022E0C6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.Reddit", "src\AspNet.Security.OAuth.Reddit\AspNet.Security.OAuth.Reddit.csproj", "{43FDCE3F-5554-48EF-BB3D-1E8E7022E0C6}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "AspNet.Security.OAuth.Spotify", "src\AspNet.Security.OAuth.Spotify\AspNet.Security.OAuth.Spotify.csproj", "{535CD0A4-2117-4576-8552-4188D7E8E3D4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.Spotify", "src\AspNet.Security.OAuth.Spotify\AspNet.Security.OAuth.Spotify.csproj", "{535CD0A4-2117-4576-8552-4188D7E8E3D4}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "AspNet.Security.OAuth.Slack", "src\AspNet.Security.OAuth.Slack\AspNet.Security.OAuth.Slack.csproj", "{95266F79-613A-42C4-96E2-E1435AD9ED6E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.Slack", "src\AspNet.Security.OAuth.Slack\AspNet.Security.OAuth.Slack.csproj", "{95266F79-613A-42C4-96E2-E1435AD9ED6E}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "AspNet.Security.OAuth.Imgur", "src\AspNet.Security.OAuth.Imgur\AspNet.Security.OAuth.Imgur.csproj", "{E323D375-7972-4892-AD38-CEB8F512F3D2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.Imgur", "src\AspNet.Security.OAuth.Imgur\AspNet.Security.OAuth.Imgur.csproj", "{E323D375-7972-4892-AD38-CEB8F512F3D2}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "AspNet.Security.OAuth.Onshape", "src\AspNet.Security.OAuth.Onshape\AspNet.Security.OAuth.Onshape.csproj", "{4D3B96B2-89A2-4069-A758-E3547B76666A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.Onshape", "src\AspNet.Security.OAuth.Onshape\AspNet.Security.OAuth.Onshape.csproj", "{4D3B96B2-89A2-4069-A758-E3547B76666A}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "AspNet.Security.OAuth.Buffer", "src\AspNet.Security.OAuth.Buffer\AspNet.Security.OAuth.Buffer.csproj", "{9538F27E-1E40-41DB-B478-39E0458B933F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.Buffer", "src\AspNet.Security.OAuth.Buffer\AspNet.Security.OAuth.Buffer.csproj", "{9538F27E-1E40-41DB-B478-39E0458B933F}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "AspNet.Security.OAuth.Dropbox", "src\AspNet.Security.OAuth.Dropbox\AspNet.Security.OAuth.Dropbox.csproj", "{D506276B-5719-474A-A868-15ED65B4D3B6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.Dropbox", "src\AspNet.Security.OAuth.Dropbox\AspNet.Security.OAuth.Dropbox.csproj", "{D506276B-5719-474A-A868-15ED65B4D3B6}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "AspNet.Security.OAuth.Foursquare", "src\AspNet.Security.OAuth.Foursquare\AspNet.Security.OAuth.Foursquare.csproj", "{A0F9AC43-6E42-4E92-92A3-85C2E5CC0986}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.Foursquare", "src\AspNet.Security.OAuth.Foursquare\AspNet.Security.OAuth.Foursquare.csproj", "{A0F9AC43-6E42-4E92-92A3-85C2E5CC0986}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "AspNet.Security.OAuth.Asana", "src\AspNet.Security.OAuth.Asana\AspNet.Security.OAuth.Asana.csproj", "{DC58F830-EEE1-45BE-B5F4-AB2222E744A5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.Asana", "src\AspNet.Security.OAuth.Asana\AspNet.Security.OAuth.Asana.csproj", "{DC58F830-EEE1-45BE-B5F4-AB2222E744A5}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "AspNet.Security.OAuth.BattleNet", "src\AspNet.Security.OAuth.BattleNet\AspNet.Security.OAuth.BattleNet.csproj", "{6299EB3E-5E8C-4D54-AAEB-7B825C96411E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.BattleNet", "src\AspNet.Security.OAuth.BattleNet\AspNet.Security.OAuth.BattleNet.csproj", "{6299EB3E-5E8C-4D54-AAEB-7B825C96411E}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "AspNet.Security.OAuth.HealthGraph", "src\AspNet.Security.OAuth.HealthGraph\AspNet.Security.OAuth.HealthGraph.csproj", "{C20BE880-52CB-491C-977C-F08702376766}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.HealthGraph", "src\AspNet.Security.OAuth.HealthGraph\AspNet.Security.OAuth.HealthGraph.csproj", "{C20BE880-52CB-491C-977C-F08702376766}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "AspNet.Security.OAuth.SoundCloud", "src\AspNet.Security.OAuth.SoundCloud\AspNet.Security.OAuth.SoundCloud.csproj", "{6BC54AC2-5273-417E-B7E5-EF990F7A4A37}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.SoundCloud", "src\AspNet.Security.OAuth.SoundCloud\AspNet.Security.OAuth.SoundCloud.csproj", "{6BC54AC2-5273-417E-B7E5-EF990F7A4A37}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "AspNet.Security.OAuth.Instagram", "src\AspNet.Security.OAuth.Instagram\AspNet.Security.OAuth.Instagram.csproj", "{244F6383-BD8E-4B32-8741-F2F114499B1A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.Instagram", "src\AspNet.Security.OAuth.Instagram\AspNet.Security.OAuth.Instagram.csproj", "{244F6383-BD8E-4B32-8741-F2F114499B1A}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "AspNet.Security.OAuth.Beam", "src\AspNet.Security.OAuth.Beam\AspNet.Security.OAuth.Beam.csproj", "{5D24AAFC-5E31-45B6-A5C0-F2BAC88F3E20}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.Beam", "src\AspNet.Security.OAuth.Beam\AspNet.Security.OAuth.Beam.csproj", "{5D24AAFC-5E31-45B6-A5C0-F2BAC88F3E20}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "AspNet.Security.OAuth.Paypal", "src\AspNet.Security.OAuth.Paypal\AspNet.Security.OAuth.Paypal.csproj", "{9AA5F2CD-3AC4-4177-A8FE-82D67A0F36AC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.Paypal", "src\AspNet.Security.OAuth.Paypal\AspNet.Security.OAuth.Paypal.csproj", "{9AA5F2CD-3AC4-4177-A8FE-82D67A0F36AC}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "AspNet.Security.OAuth.Vimeo", "src\AspNet.Security.OAuth.Vimeo\AspNet.Security.OAuth.Vimeo.csproj", "{AC651C2B-C879-41E2-96E0-78D3F0888246}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.Vimeo", "src\AspNet.Security.OAuth.Vimeo\AspNet.Security.OAuth.Vimeo.csproj", "{AC651C2B-C879-41E2-96E0-78D3F0888246}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "AspNet.Security.OAuth.ArcGIS", "src\AspNet.Security.OAuth.ArcGIS\AspNet.Security.OAuth.ArcGIS.csproj", "{1302E67D-5448-407B-8B8D-709A0BA458E8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.ArcGIS", "src\AspNet.Security.OAuth.ArcGIS\AspNet.Security.OAuth.ArcGIS.csproj", "{1302E67D-5448-407B-8B8D-709A0BA458E8}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "AspNet.Security.OAuth.Salesforce", "src\AspNet.Security.OAuth.Salesforce\AspNet.Security.OAuth.Salesforce.csproj", "{5881BB63-89BD-4397-A61C-69B1844F7615}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.Salesforce", "src\AspNet.Security.OAuth.Salesforce\AspNet.Security.OAuth.Salesforce.csproj", "{5881BB63-89BD-4397-A61C-69B1844F7615}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "AspNet.Security.OAuth.Gitter", "src\AspNet.Security.OAuth.Gitter\AspNet.Security.OAuth.Gitter.csproj", "{EDD1BA76-D656-4513-BC65-FEC688CBB9F8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.Gitter", "src\AspNet.Security.OAuth.Gitter\AspNet.Security.OAuth.Gitter.csproj", "{EDD1BA76-D656-4513-BC65-FEC688CBB9F8}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "AspNet.Security.OAuth.Vkontakte", "src\AspNet.Security.OAuth.Vkontakte\AspNet.Security.OAuth.Vkontakte.csproj", "{B332222F-43B4-4B3E-8EB3-9BCE29901043}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.Vkontakte", "src\AspNet.Security.OAuth.Vkontakte\AspNet.Security.OAuth.Vkontakte.csproj", "{B332222F-43B4-4B3E-8EB3-9BCE29901043}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "AspNet.Security.OAuth.Automatic", "src\AspNet.Security.OAuth.Automatic\AspNet.Security.OAuth.Automatic.csproj", "{DD97337C-37C6-4F0E-A392-2DAD59246616}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.Automatic", "src\AspNet.Security.OAuth.Automatic\AspNet.Security.OAuth.Automatic.csproj", "{DD97337C-37C6-4F0E-A392-2DAD59246616}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "AspNet.Security.OAuth.EVEOnline", "src\AspNet.Security.OAuth.EVEOnline\AspNet.Security.OAuth.EVEOnline.csproj", "{B953D0C1-4C31-489D-A6C6-56A7C60AA3C6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.EVEOnline", "src\AspNet.Security.OAuth.EVEOnline\AspNet.Security.OAuth.EVEOnline.csproj", "{B953D0C1-4C31-489D-A6C6-56A7C60AA3C6}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "AspNet.Security.OAuth.CiscoSpark", "src\AspNet.Security.OAuth.CiscoSpark\AspNet.Security.OAuth.CiscoSpark.csproj", "{571B6C99-2EE7-4300-9E0D-20A3A9C36647}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.CiscoSpark", "src\AspNet.Security.OAuth.CiscoSpark\AspNet.Security.OAuth.CiscoSpark.csproj", "{571B6C99-2EE7-4300-9E0D-20A3A9C36647}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "AspNet.Security.OAuth.VisualStudio", "src\AspNet.Security.OAuth.VisualStudio\AspNet.Security.OAuth.VisualStudio.csproj", "{6CD2697C-CF93-4A00-8ABF-D3EFF0B9DFF9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.VisualStudio", "src\AspNet.Security.OAuth.VisualStudio\AspNet.Security.OAuth.VisualStudio.csproj", "{6CD2697C-CF93-4A00-8ABF-D3EFF0B9DFF9}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "AspNet.Security.OAuth.Myob", "src\AspNet.Security.OAuth.Myob\AspNet.Security.OAuth.Myob.csproj", "{6FE602FD-DD5F-4BE3-807C-9B13D3B718CE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.Myob", "src\AspNet.Security.OAuth.Myob\AspNet.Security.OAuth.Myob.csproj", "{6FE602FD-DD5F-4BE3-807C-9B13D3B718CE}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "AspNet.Security.OAuth.StackExchange", "src\AspNet.Security.OAuth.StackExchange\AspNet.Security.OAuth.StackExchange.csproj", "{AA05963A-91BA-4B9D-A532-B280E5A9AB88}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.StackExchange", "src\AspNet.Security.OAuth.StackExchange\AspNet.Security.OAuth.StackExchange.csproj", "{AA05963A-91BA-4B9D-A532-B280E5A9AB88}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "AspNet.Security.OAuth.Yammer", "src\AspNet.Security.OAuth.Yammer\AspNet.Security.OAuth.Yammer.csproj", "{D0713EFF-8FBA-4145-8E57-5DF1CFBBC0EF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.Yammer", "src\AspNet.Security.OAuth.Yammer\AspNet.Security.OAuth.Yammer.csproj", "{D0713EFF-8FBA-4145-8E57-5DF1CFBBC0EF}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "AspNet.Security.OAuth.Strava", "src\AspNet.Security.OAuth.Strava\AspNet.Security.OAuth.Strava.csproj", "{F276EB53-7758-4CEE-8013-61BA537B94C6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.Strava", "src\AspNet.Security.OAuth.Strava\AspNet.Security.OAuth.Strava.csproj", "{F276EB53-7758-4CEE-8013-61BA537B94C6}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "AspNet.Security.OAuth.Untappd", "src\AspNet.Security.OAuth.Untappd\AspNet.Security.OAuth.Untappd.csproj", "{C17F7C35-4CAD-408F-9031-44EF1A3CC379}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.Untappd", "src\AspNet.Security.OAuth.Untappd\AspNet.Security.OAuth.Untappd.csproj", "{C17F7C35-4CAD-408F-9031-44EF1A3CC379}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "AspNet.Security.OAuth.MailChimp", "src\AspNet.Security.OAuth.MailChimp\AspNet.Security.OAuth.MailChimp.csproj", "{337B29EB-54B4-43BF-8ADC-A5B3D11538AF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.MailChimp", "src\AspNet.Security.OAuth.MailChimp\AspNet.Security.OAuth.MailChimp.csproj", "{337B29EB-54B4-43BF-8ADC-A5B3D11538AF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

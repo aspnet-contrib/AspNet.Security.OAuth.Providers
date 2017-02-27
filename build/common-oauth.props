@@ -1,6 +1,10 @@
 <Project>
     <Import Project=".\common.props" />
 
+    <PropertyGroup>
+        <OutputType>Library</OutputType>
+    </PropertyGroup>
+
     <ItemGroup>
         <EmbeddedResource Include="compiler\resources\**\*" />
     </ItemGroup>
