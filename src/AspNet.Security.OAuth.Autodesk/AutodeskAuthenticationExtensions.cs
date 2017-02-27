@@ -27,11 +27,13 @@ namespace Microsoft.AspNetCore.Builder
             [NotNull] this IApplicationBuilder app,
             [NotNull] AutodeskAuthenticationOptions options)
         {
-            if (app == null) {
+            if (app == null)
+            {
                 throw new ArgumentNullException(nameof(app));
             }
 
-            if (options == null) {
+            if (options == null)
+            {
                 throw new ArgumentNullException(nameof(options));
             }
 
@@ -49,11 +51,13 @@ namespace Microsoft.AspNetCore.Builder
             [NotNull] this IApplicationBuilder app,
             [NotNull] Action<AutodeskAuthenticationOptions> configuration)
         {
-            if (app == null) {
+            if (app == null)
+            {
                 throw new ArgumentNullException(nameof(app));
             }
 
-            if (configuration == null) {
+            if (configuration == null)
+            {
                 throw new ArgumentNullException(nameof(configuration));
             }
 

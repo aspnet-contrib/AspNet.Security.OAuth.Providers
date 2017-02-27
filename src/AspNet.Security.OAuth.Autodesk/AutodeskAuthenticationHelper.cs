@@ -15,16 +15,6 @@ namespace AspNet.Security.OAuth.Autodesk
     public static class AutodeskAuthenticationHelper
     {
         /// <summary>
-        /// Key for claim containing a boolean value indicating whether the user's email has been verified
-        /// </summary>
-        public static readonly string EmailVerifiedClaim = "urn:autodesk:emailverified";
-
-        /// <summary>
-        /// Key for claim containing a boolean value indicating whether the user has enabled two factor authentication
-        /// </summary>
-        public static readonly string TwoFactorEnabledClaim = "urn:autodesk:twofactorenabled";
-
-        /// <summary>
         /// Unique user identifier
         /// </summary>
         /// <remarks>

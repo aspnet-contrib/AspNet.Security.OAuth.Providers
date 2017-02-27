@@ -41,8 +41,8 @@ namespace AspNet.Security.OAuth.Autodesk
             identity.AddOptionalClaim(ClaimTypes.GivenName, AutodeskAuthenticationHelper.GetFirstName(payload), Options.ClaimsIssuer);
             identity.AddOptionalClaim(ClaimTypes.Surname, AutodeskAuthenticationHelper.GetLastName(payload), Options.ClaimsIssuer);
             identity.AddOptionalClaim(ClaimTypes.Email, AutodeskAuthenticationHelper.GetEmailAddress(payload), ClaimValueTypes.Email, Options.ClaimsIssuer);
-            identity.AddOptionalClaim(AutodeskAuthenticationHelper.EmailVerifiedClaim, AutodeskAuthenticationHelper.GetEmailVerified(payload), ClaimValueTypes.Boolean, Options.ClaimsIssuer);
-            identity.AddOptionalClaim(AutodeskAuthenticationHelper.TwoFactorEnabledClaim, AutodeskAuthenticationHelper.GetTwoFactorEnabled(payload), ClaimValueTypes.Boolean, Options.ClaimsIssuer);
+            identity.AddOptionalClaim(AutodeskAuthenticationConstants.Claims.EmailVerified, AutodeskAuthenticationHelper.GetEmailVerified(payload), ClaimValueTypes.Boolean, Options.ClaimsIssuer);
+            identity.AddOptionalClaim(AutodeskAuthenticationConstants.Claims.TwoFactorEnabled, AutodeskAuthenticationHelper.GetTwoFactorEnabled(payload), ClaimValueTypes.Boolean, Options.ClaimsIssuer);
             
             var principal = new ClaimsPrincipal(identity);
             var ticket = new AuthenticationTicket(principal, properties, Options.AuthenticationScheme);

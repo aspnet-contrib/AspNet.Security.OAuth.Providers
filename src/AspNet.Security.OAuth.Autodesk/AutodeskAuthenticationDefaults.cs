@@ -52,6 +52,6 @@ namespace AspNet.Security.OAuth.Autodesk
         /// <summary>
         /// Default value for <see cref="OAuthOptions.Scope"/>.
         /// </summary>
-        public static readonly IEnumerable<string> Scope = new[] { "user-profile:read" };
+        public static readonly IEnumerable<string> Scope = new[] { AutodeskAuthenticationConstants.Scopes.UserProfileRead };
     }
 }
