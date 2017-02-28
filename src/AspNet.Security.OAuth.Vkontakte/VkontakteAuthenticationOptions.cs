@@ -20,15 +20,15 @@ namespace AspNet.Security.OAuth.Vkontakte
         /// </summary>
         public VkontakteAuthenticationOptions()
         {
-            AuthenticationScheme = VkontakteAuthenticationDefault.AuthenticationScheme;
-            DisplayName = VkontakteAuthenticationDefault.DisplayName;
-            ClaimsIssuer = VkontakteAuthenticationDefault.Issuer;
+            AuthenticationScheme = VkontakteAuthenticationDefaults.AuthenticationScheme;
+            DisplayName = VkontakteAuthenticationDefaults.DisplayName;
+            ClaimsIssuer = VkontakteAuthenticationDefaults.Issuer;
 
             CallbackPath = new PathString("/signin-vkontakte");
 
-            AuthorizationEndpoint = VkontakteAuthenticationDefault.AuthorizationEndpoint;
-            TokenEndpoint = VkontakteAuthenticationDefault.TokenEndpoint;
-            UserInformationEndpoint = VkontakteAuthenticationDefault.UserInformationEndpoint;
+            AuthorizationEndpoint = VkontakteAuthenticationDefaults.AuthorizationEndpoint;
+            TokenEndpoint = VkontakteAuthenticationDefaults.TokenEndpoint;
+            UserInformationEndpoint = VkontakteAuthenticationDefaults.UserInformationEndpoint;
         }
 
         /// <summary>
