@@ -55,6 +55,13 @@ namespace Mvc.Client
                 Scope = { "user:email" }
             });
 
+            app.UseMailRuAuthentication(new AspNet.Security.OAuth.MailRu.MailRuAuthenticationOptions
+            {
+                ClientId = "752584",
+                ClientSecret = "11bf7fb7b2a4311be039af55347c5613",
+                SignKey = "54615a82a49bfd273c04ff99e4527965",
+            });
+
             app.UseMvc();
         }
     }
