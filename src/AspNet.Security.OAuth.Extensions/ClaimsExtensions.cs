@@ -13,6 +13,11 @@ namespace AspNet.Security.OAuth.Extensions
     {
         public static ClaimsIdentity AddOptionalClaim(this ClaimsIdentity identity, string type, string value, string issuer)
         {
+            return AddOptionalClaim(identity, type, value, ClaimValueTypes.String, issuer);
+        }
+
+        public static ClaimsIdentity AddOptionalClaim(this ClaimsIdentity identity, string type, string value, string valueType, string issuer)
+        {
             if (identity == null)
             {
                 throw new ArgumentNullException(nameof(identity));
@@ -24,7 +29,7 @@ namespace AspNet.Security.OAuth.Extensions
                 return identity;
             }
 
-            identity.AddClaim(new Claim(type, value, ClaimValueTypes.String, issuer ?? ClaimsIdentity.DefaultIssuer));
+            identity.AddClaim(new Claim(type, value, valueType, issuer ?? ClaimsIdentity.DefaultIssuer));
             return identity;
         }
     }
