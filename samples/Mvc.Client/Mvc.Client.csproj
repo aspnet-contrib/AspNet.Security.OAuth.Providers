@@ -47,6 +47,7 @@
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.WordPress\AspNet.Security.OAuth.WordPress.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Yahoo\AspNet.Security.OAuth.Yahoo.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Yammer\AspNet.Security.OAuth.Yammer.csproj" />
+    <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Yandex\AspNet.Security.OAuth.Yandex.csproj" />
   </ItemGroup>
 
   <ItemGroup>
