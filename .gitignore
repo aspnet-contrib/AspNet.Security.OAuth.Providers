@@ -13,6 +13,7 @@ target/
 *.user
 *.sln.docstates
 project.lock.json
+.idea
 
 # Build results
 

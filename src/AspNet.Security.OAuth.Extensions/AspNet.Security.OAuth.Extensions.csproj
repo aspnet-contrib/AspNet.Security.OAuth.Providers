@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\build\common.props" />
+  
+  <PropertyGroup>
+    <Description>ASP.NET Core extensions making OAuth2 authentication easier to use.</Description>
+    <Authors>Kévin Chalet;Jerrie Pelser</Authors>
+    <TargetFrameworks>net451;netstandard1.3</TargetFrameworks>
+    <OutputType>Library</OutputType>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PackageTags>aspnetcore;authentication;oauth;security</PackageTags>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <EmbeddedResource Include="compiler\resources\**\*" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net451' ">
+    <Reference Include="System" />
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.3' ">
+    <PackageReference Include="System.Security.Claims" Version="4.0.1" />
+  </ItemGroup>
+
+</Project>

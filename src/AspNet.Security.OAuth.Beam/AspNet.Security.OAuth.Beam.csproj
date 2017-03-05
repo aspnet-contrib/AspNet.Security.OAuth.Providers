@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\build\common-oauth.props" />
+
+  <PropertyGroup>
+    <Description>ASP.NET Core security middleware enabling Beam authentication.</Description>
+    <Authors>Stefan Pohl</Authors>
+    <TargetFrameworks>net451;netstandard1.3</TargetFrameworks>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PackageTags>aspnetcore;authentication;beam;oauth;security</PackageTags>
+  </PropertyGroup>
+
+</Project>

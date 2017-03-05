@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\build\common-oauth.props" />
+
+  <PropertyGroup>
+    <Description>ASP.NET Core security middleware enabling MYOB authentication.</Description>
+    <Authors>Jordan Knight</Authors>
+    <TargetFrameworks>net451;netstandard1.3</TargetFrameworks>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PackageTags>accountright;aspnetcore;authentication;essentials;exo;myob;oauth;security</PackageTags>
+  </PropertyGroup>
+
+</Project>

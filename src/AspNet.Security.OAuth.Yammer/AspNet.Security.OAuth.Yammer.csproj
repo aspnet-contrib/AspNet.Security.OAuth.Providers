@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\build\common-oauth.props" />
+
+  <PropertyGroup>
+    <Description>ASP.NET Core security middleware enabling Yammer authentication.</Description>
+    <Authors>Albert Zakiev</Authors>
+    <TargetFrameworks>net451;netstandard1.3</TargetFrameworks>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PackageTags>aspnetcore;authentication;oauth;security;yammer</PackageTags>
+  </PropertyGroup>
+
+</Project>
