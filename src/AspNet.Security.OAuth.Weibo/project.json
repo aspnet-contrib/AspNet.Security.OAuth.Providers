@@ -1,0 +1,46 @@
+﻿{
+  "version": "1.0.0-beta3-*",
+  "description": "ASP.NET Core middleware that enables an application to support Weibo's OAuth authentication workflow.",
+
+  "packOptions": {
+    "owners": [ "zhengchun" ],
+    "projectUrl": "https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers",
+    "iconUrl": "https://avatars3.githubusercontent.com/u/7998081?s=64",
+    "licenseUrl": "http://www.apache.org/licenses/LICENSE-2.0.html",
+
+    "repository": {
+      "type": "git",
+      "url": "git://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers"
+    },
+
+    "tags": [
+      "aspnetcore",
+      "authentication",
+      "github",
+      "oauth",
+      "security"
+    ]
+  },
+
+  "buildOptions": {
+    "warningsAsErrors": true,
+    "nowarn": [ "CS1591" ],
+    "xmlDoc": true
+  },
+
+  "dependencies": {
+    "AspNet.Security.OAuth.Extensions": { "target": "project", "type": "build" },
+    "Microsoft.AspNetCore.Authentication.OAuth": "1.0.0",
+    "JetBrains.Annotations": { "type": "build", "version": "10.1.4" }
+  },
+
+  "frameworks": {
+    "net451": {},
+    "netstandard1.3": {
+      "imports": [
+        "dotnet5.4",
+        "portable-net451+win8"
+      ]
+    }
+  }
+}
