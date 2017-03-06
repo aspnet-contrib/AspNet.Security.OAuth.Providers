@@ -20,36 +20,6 @@ namespace AspNet.Security.OAuth.Weibo
             UserInformationEndpoint = WeiboAuthenticationDefaults.UserInformationEndpoint;
 
             Scope.Add("email");
-        }
-
-        /// <summary>
-        /// The App Key
-        /// </summary>
-        public string AppKey
-        {
-            get
-            {
-                return ClientId;
-            }
-            set
-            {
-                ClientId = value;
-            }
-        }
-
-        /// <summary>
-        /// The App Secret.
-        /// </summary>
-        public string AppSecret
-        {
-            get
-            {
-                return ClientSecret;
-            }
-            set
-            {
-                ClientSecret = value;
-            }
-        }
+        }       
     }
 }

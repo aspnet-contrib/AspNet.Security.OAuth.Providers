@@ -6,7 +6,7 @@
     "owners": [ "zhengchun" ],
     "projectUrl": "https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers",
     "iconUrl": "https://avatars3.githubusercontent.com/u/7998081?s=64",
-    "licenseUrl": "http://opensource.org/licenses/MIT",
+    "licenseUrl": "http://www.apache.org/licenses/LICENSE-2.0.html",
 
     "repository": {
       "type": "git",
@@ -30,7 +30,8 @@
 
   "dependencies": {
     "AspNet.Security.OAuth.Extensions": { "target": "project", "type": "build" },
-    "Microsoft.AspNetCore.Authentication.OAuth": "1.0.0"
+    "Microsoft.AspNetCore.Authentication.OAuth": "1.0.0",
+    "JetBrains.Annotations": { "type": "build", "version": "10.1.4" }
   },
 
   "frameworks": {

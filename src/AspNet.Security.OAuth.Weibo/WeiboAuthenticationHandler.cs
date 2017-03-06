@@ -10,14 +10,15 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using AspNet.Security.OAuth.Extensions;
 using Newtonsoft.Json.Linq;
+using JetBrains.Annotations;
 
 namespace AspNet.Security.OAuth.Weibo
 {
     public class WeiboAuthenticationHandler : OAuthHandler<WeiboAuthenticationOptions>
     {
-        public WeiboAuthenticationHandler(HttpClient client) : base(client) { }
+        public WeiboAuthenticationHandler([NotNull] HttpClient client) : base(client) { }
 
-        protected override async Task<AuthenticationTicket> CreateTicketAsync(ClaimsIdentity identity, AuthenticationProperties properties, OAuthTokenResponse tokens)
+        protected override async Task<AuthenticationTicket> CreateTicketAsync([NotNull] ClaimsIdentity identity, [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens)
         {
             var queryString = new Dictionary<string, string>()
             {

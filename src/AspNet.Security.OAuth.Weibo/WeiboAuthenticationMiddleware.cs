@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Authentication;
+using JetBrains.Annotations;
 
 namespace AspNet.Security.OAuth.Weibo
 {
@@ -16,43 +17,14 @@ namespace AspNet.Security.OAuth.Weibo
     public class WeiboAuthenticationMiddleware : OAuthMiddleware<WeiboAuthenticationOptions>
     {
         public WeiboAuthenticationMiddleware(
-        RequestDelegate next,
-        IDataProtectionProvider dataProtectionProvider,
-        ILoggerFactory loggerFactory,
-        UrlEncoder encoder,
-        IOptions<SharedAuthenticationOptions> sharedOptions,
-        IOptions<WeiboAuthenticationOptions> options)
-             : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options)
+            [NotNull] RequestDelegate next,
+            [NotNull] IDataProtectionProvider dataProtectionProvider,
+            [NotNull] ILoggerFactory loggerFactory,
+            [NotNull] UrlEncoder encoder,
+            [NotNull] IOptions<SharedAuthenticationOptions> sharedOptions,
+            [NotNull] IOptions<WeiboAuthenticationOptions> options)
+            : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options)
         {
-            if (next == null)
-            {
-                throw new ArgumentNullException(nameof(next));
-            }
-
-            if (dataProtectionProvider == null)
-            {
-                throw new ArgumentNullException(nameof(dataProtectionProvider));
-            }
-
-            if (loggerFactory == null)
-            {
-                throw new ArgumentNullException(nameof(loggerFactory));
-            }
-
-            if (encoder == null)
-            {
-                throw new ArgumentNullException(nameof(encoder));
-            }
-
-            if (sharedOptions == null)
-            {
-                throw new ArgumentNullException(nameof(sharedOptions));
-            }
-
-            if (options == null)
-            {
-                throw new ArgumentNullException(nameof(options));
-            }
         }
 
         protected override AuthenticationHandler<WeiboAuthenticationOptions> CreateHandler()

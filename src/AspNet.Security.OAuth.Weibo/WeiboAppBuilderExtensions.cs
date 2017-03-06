@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.Extensions.Options;
 using AspNet.Security.OAuth.Weibo;
+using JetBrains.Annotations;
 
 namespace Microsoft.AspNetCore.Builder
 {
@@ -13,7 +14,7 @@ namespace Microsoft.AspNetCore.Builder
         /// <param name="app"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        public static IApplicationBuilder UseWeiboAuthentication(this IApplicationBuilder app, WeiboAuthenticationOptions options)
+        public static IApplicationBuilder UseWeiboAuthentication([NotNull] this IApplicationBuilder app, [NotNull] WeiboAuthenticationOptions options)
         {
             if (app == null)
             {
@@ -29,7 +30,7 @@ namespace Microsoft.AspNetCore.Builder
         /// <param name="app"></param>
         /// <param name="configuration"></param>
         /// <returns></returns>
-        public static IApplicationBuilder UseWeiboAuthentication(this IApplicationBuilder app, Action<WeiboAuthenticationOptions> configuration)
+        public static IApplicationBuilder UseWeiboAuthentication([NotNull] this IApplicationBuilder app, [NotNull] Action<WeiboAuthenticationOptions> configuration)
         {
             if (app == null)
             {
