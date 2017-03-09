@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0-beta3-*",
+  "version": "1.0.0-beta3-final",
 
   "description": "ASP.NET Core security middleware enabling Dropbox authentication.",
   "authors": [ "S Hana" ],
