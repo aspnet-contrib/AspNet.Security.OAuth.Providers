@@ -1,7 +1,8 @@
 {
-    "version": "1.0.0-beta3-*",
-    "description": "ASP.NET Core security middleware enabling MailChimp authentication.",
-    "authors": [ "Igor Simovic" ],
+  "version": "1.0.0-rc1-*",
+
+  "description": "ASP.NET Core security middleware enabling MailChimp authentication.",
+  "authors": [ "Igor Simovic" ],
 
   "packOptions": {
     "owners": [ "Kévin Chalet", "Jerrie Pelser" ],

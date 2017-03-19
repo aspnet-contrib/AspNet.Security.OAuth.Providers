@@ -1,5 +1,5 @@
 ﻿{
-  "version": "1.0.0-beta3-*",
+  "version": "1.0.0-rc1-*",
 
   "description": "ASP.NET Core security middleware enabling Gitter authentication.",
   "authors": [ "Maxime Roussin-Bélanger" ],
