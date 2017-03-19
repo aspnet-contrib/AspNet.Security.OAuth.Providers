@@ -55,6 +55,12 @@ namespace Mvc.Client
                 Scope = { "user:email" }
             });
 
+            app.UseYandexAuthentication(new AspNet.Security.OAuth.Yandex.YandexAuthenticationOptions
+            {
+                ClientId = "b175e700d5f54c5b8c984d5008f618a3",
+                ClientSecret = "293d2e9b71564bbe96c47941301c2b2e"
+            });
+
             app.UseMvc();
         }
     }
