@@ -5,7 +5,7 @@ using JetBrains.Annotations;
 
 namespace Microsoft.AspNetCore.Builder
 {
-    public static class WeiboAppBuilderExtensions
+    public static class WeiboAuthenticationExtensions
     {
         /// <summary>
         ///  Adds the <see cref="WeiboAuthenticationMiddleware"/> middleware to the specified <see cref="IApplicationBuilder"/>,

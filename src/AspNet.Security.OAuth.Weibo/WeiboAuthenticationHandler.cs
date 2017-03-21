@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Security.Claims;
 using System.Net.Http;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Authentication.OAuth;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http.Authentication;
-using System.Security.Claims;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using AspNet.Security.OAuth.Extensions;
@@ -26,14 +26,19 @@ namespace AspNet.Security.OAuth.Weibo
                 {"uid",tokens.Response.Value<string>("uid") }
             };
             var endpoint = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, queryString);
+
             var response = await Backchannel.GetAsync(endpoint, Context.RequestAborted);
             if (!response.IsSuccessStatusCode)
             {
-                Logger.LogError($"An error occurred while retrieving the user information: the remote server returned a " +
-                    $"{response.StatusCode} response with the following payload: {await response.Content.ReadAsStringAsync()}.");
+                Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
+                               "returned a {Status} response with the following payload: {Headers} {Body}.",
+                               /* Status: */ response.StatusCode,
+                               /* Headers: */ response.Headers.ToString(),
+                               /* Body: */ await response.Content.ReadAsStringAsync());
 
-                throw new HttpRequestException("An error occurred when retrieving user information.");
+                throw new HttpRequestException("An error occurred while retrieving the user profile.");
             }
+
             var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
 
             identity.AddOptionalClaim(ClaimTypes.NameIdentifier, WeiboAuthenticationHelper.GetId(payload), Options.ClaimsIssuer)
