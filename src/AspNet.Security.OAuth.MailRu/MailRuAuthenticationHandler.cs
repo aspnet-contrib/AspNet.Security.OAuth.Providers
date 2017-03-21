@@ -6,6 +6,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
@@ -16,6 +17,7 @@ using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http.Authentication;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 
@@ -31,18 +33,16 @@ namespace AspNet.Security.OAuth.MailRu
         protected override async Task<AuthenticationTicket> CreateTicketAsync([NotNull] ClaimsIdentity identity,
             [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens)
         {
-            // Mail.ru REST API rules:
-            //   1. method name (users.getInfo) is passed as param
-            //   2. MD5 hash computed over all params (ordered alphabetically),
-            //        concatenated 'name1=value1name2=value2...signkey' without separators (like &)
-            //   3. MD5 Hash value passed as 'sig' param
+            var prms = new Dictionary<string, string>
+            {
+                ["app_id"] = Options.ClientId,
+                ["method"] = "users.getInfo",
+                ["format"] = "json",
+                ["secure"] = "1",
+                ["session_key"] = tokens.AccessToken,
+            };
 
-            var requestParams = "app_id=" + Options.ClientId + "&format=json&method=users.getInfo&secure=1&session_key=" + tokens.AccessToken;
-            var md5 = System.Security.Cryptography.MD5.Create();
-            var sigBytes = md5.ComputeHash(Encoding.ASCII.GetBytes(requestParams.Replace("&", string.Empty) + Options.SignKey));
-            var sig = BitConverter.ToString(sigBytes).Replace("-", string.Empty).ToLowerInvariant();
-
-            var url = Options.UserInformationEndpoint + "?" + requestParams + "&sig=" + sig;
+            var url = BuildUrlWithSignature(Options.UserInformationEndpoint, prms, Options.SignKey);
 
             var request = new HttpRequestMessage(HttpMethod.Get, url);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -107,6 +107,25 @@ namespace AspNet.Security.OAuth.MailRu
             var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
 
             return OAuthTokenResponse.Success(payload);
+        }
+
+        protected virtual string BuildUrlWithSignature(string baseUrl, IDictionary<string, string> parameters, string signKey)
+        {
+            // Mail.ru REST API rules (RU manual: http://api.mail.ru/docs/guides/restapi/):
+            //   1. method name (users.getInfo) is passed as param
+            //   2. MD5 hash computed over all params (ordered alphabetically),
+            //        concatenated 'name1=value1name2=value2...signkey' without separator (without &)
+            //   3. MD5 Hash value passed as 'sig' param
+
+            using (var md5 = System.Security.Cryptography.MD5.Create())
+            {
+                var sigText = string.Concat(parameters.OrderBy(x => x.Key).Select(x => x.Key + "=" + x.Value)) + signKey;
+                var sigBytes = md5.ComputeHash(Encoding.ASCII.GetBytes(sigText));
+                var sig = BitConverter.ToString(sigBytes).Replace("-", string.Empty).ToLowerInvariant();
+
+                var result = QueryHelpers.AddQueryString(baseUrl, parameters);
+                return QueryHelpers.AddQueryString(result, "sig", sig);
+            }
         }
     }
 }
