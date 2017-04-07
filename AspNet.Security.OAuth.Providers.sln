@@ -93,6 +93,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.Weibo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.Weixin", "src\AspNet.Security.OAuth.Weixin\AspNet.Security.OAuth.Weixin.csproj", "{4B03B049-8D29-4C8A-BA00-88B93D3C0BC1}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.Bitbucket", "src\AspNet.Security.OAuth.Bitbucket\AspNet.Security.OAuth.Bitbucket.csproj", "{9AC900E8-6D03-412B-8D9B-302FD0FBD059}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -271,6 +273,10 @@ Global
 		{4B03B049-8D29-4C8A-BA00-88B93D3C0BC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4B03B049-8D29-4C8A-BA00-88B93D3C0BC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4B03B049-8D29-4C8A-BA00-88B93D3C0BC1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9AC900E8-6D03-412B-8D9B-302FD0FBD059}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9AC900E8-6D03-412B-8D9B-302FD0FBD059}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9AC900E8-6D03-412B-8D9B-302FD0FBD059}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9AC900E8-6D03-412B-8D9B-302FD0FBD059}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -319,5 +325,6 @@ Global
 		{15B9B8C8-6935-423A-9328-E5D5E48F26AA} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 		{2E69E8B9-6D16-4B81-B9A7-9EB106A75D8C} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 		{4B03B049-8D29-4C8A-BA00-88B93D3C0BC1} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
+		{9AC900E8-6D03-412B-8D9B-302FD0FBD059} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 	EndGlobalSection
 EndGlobal
