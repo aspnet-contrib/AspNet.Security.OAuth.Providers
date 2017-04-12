@@ -25,8 +25,6 @@ namespace AspNet.Security.OAuth.VisualStudio
             AuthorizationEndpoint = VisualStudioAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = VisualStudioAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = VisualStudioAuthenticationDefaults.UserInformationEndpoint;
-
-            Scope.Add("vso.profile");
         }
     }
 }
