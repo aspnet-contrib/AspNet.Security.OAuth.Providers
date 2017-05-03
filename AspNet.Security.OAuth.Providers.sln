@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.4
+VisualStudioVersion = 15.0.26228.10
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}"
 EndProject
@@ -90,6 +90,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.Yandex", "src\AspNet.Security.OAuth.Yandex\AspNet.Security.OAuth.Yandex.csproj", "{15B9B8C8-6935-423A-9328-E5D5E48F26AA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.Weibo", "src\AspNet.Security.OAuth.Weibo\AspNet.Security.OAuth.Weibo.csproj", "{2E69E8B9-6D16-4B81-B9A7-9EB106A75D8C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.Discord", "src\AspNet.Security.OAuth.Discord\AspNet.Security.OAuth.Discord.csproj", "{86614CB9-0768-40BF-8C27-699E3990B733}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -265,6 +267,10 @@ Global
 		{2E69E8B9-6D16-4B81-B9A7-9EB106A75D8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2E69E8B9-6D16-4B81-B9A7-9EB106A75D8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2E69E8B9-6D16-4B81-B9A7-9EB106A75D8C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{86614CB9-0768-40BF-8C27-699E3990B733}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{86614CB9-0768-40BF-8C27-699E3990B733}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{86614CB9-0768-40BF-8C27-699E3990B733}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{86614CB9-0768-40BF-8C27-699E3990B733}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
