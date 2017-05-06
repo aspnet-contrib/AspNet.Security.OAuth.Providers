@@ -32,7 +32,8 @@ namespace AspNet.Security.OAuth.LinkedIn
         /// Gets the list of fields to retrieve from the user information endpoint.
         /// See https://developer.linkedin.com/docs/fields/basic-profile for more information.
         /// </summary>
-        public ICollection<string> Fields { get; } = new HashSet<string> {
+        public ISet<string> Fields { get; } = new HashSet<string>
+        {
             "id",
             "formatted-name",
             "email-address"

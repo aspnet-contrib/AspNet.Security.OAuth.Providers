@@ -35,7 +35,8 @@ namespace AspNet.Security.OAuth.Vkontakte
         /// Gets the list of fields to retrieve from the user information endpoint.
         /// See https://vk.com/dev/fields for more information.
         /// </summary>
-        public ICollection<string> Fields { get; } = new HashSet<string> {
+        public ISet<string> Fields { get; } = new HashSet<string>
+        {
             "uid",
             "first_name",
             "last_name",
