@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Amazon\AspNet.Security.OAuth.Amazon.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.ArcGIS\AspNet.Security.OAuth.ArcGIS.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Asana\AspNet.Security.OAuth.Asana.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Autodesk\AspNet.Security.OAuth.Autodesk.csproj" />

@@ -48,6 +48,7 @@ We would love it if you could help contributing to this repository. Please look 
 * [Kévin Chalet](https://github.com/PinpointTownes)
 * [Konstantin Mamaev](https://github.com/MrMeison)
 * [Mariusz Zieliński](https://github.com/mariozski)
+* [Martin Costello](https://github.com/martincostello)
 * [Maxime Roussin-Bélanger](https://github.com/Lorac)
 * [Michael Knowles](https://github.com/mjknowles)
 * [Robert Shade](https://github.com/robert-shade)
