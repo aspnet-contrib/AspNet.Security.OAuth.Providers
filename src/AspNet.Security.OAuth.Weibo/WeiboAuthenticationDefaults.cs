@@ -19,6 +19,11 @@ namespace AspNet.Security.OAuth.Weibo
         public const string AuthenticationScheme = "Weibo";
 
         /// <summary>
+        /// Default value for <see cref="RemoteAuthenticationOptions.DisplayName"/>.
+        /// </summary>
+        public const string DisplayName = "Weibo";
+
+        /// <summary>
         /// Default value for <see cref="RemoteAuthenticationOptions.CallbackPath"/>.
         /// </summary>
         public const string CallbackPath = "/signin-weibo";

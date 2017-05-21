@@ -10,14 +10,14 @@ using Microsoft.AspNetCore.Http;
 namespace AspNet.Security.OAuth.Weibo
 {
     /// <summary>
-    /// Configuration options for <see cref="WeiboAuthenticationMiddleware"/>.
+    /// Defines a set of options used by <see cref="WeiboAuthenticationHandler"/>.
     /// </summary>
     public class WeiboAuthenticationOptions : OAuthOptions
     {
         public WeiboAuthenticationOptions()
         {
             AuthenticationScheme = WeiboAuthenticationDefaults.AuthenticationScheme;
-            DisplayName = AuthenticationScheme;
+            DisplayName = WeiboAuthenticationDefaults.DisplayName;
             ClaimsIssuer = WeiboAuthenticationDefaults.Issuer;
             CallbackPath = new PathString(WeiboAuthenticationDefaults.CallbackPath);
 
