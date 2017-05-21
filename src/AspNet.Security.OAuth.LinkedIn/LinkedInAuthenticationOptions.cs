@@ -35,6 +35,8 @@ namespace AspNet.Security.OAuth.LinkedIn
         public ISet<string> Fields { get; } = new HashSet<string>
         {
             "id",
+            "first-name",
+            "last-name",
             "formatted-name",
             "email-address"
         };
