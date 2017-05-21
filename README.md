@@ -26,7 +26,7 @@ See [https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers/tree/dev/
 
 **AspNet.Security.OAuth.Providers** is actively maintained by **[Kévin Chalet](https://github.com/PinpointTownes)** ([@PinpointTownes](https://twitter.com/PinpointTownes)).
 
-We would love it if you could help contributing to this repository. Please look at [CONTRIBUTING.md](CONTRIBUTING.md).
+We would love it if you could help contributing to this repository.
 
 **Special thanks to our contributors:**
 
@@ -34,9 +34,11 @@ We would love it if you could help contributing to this repository. Please look 
 * [Adam Reisinger](https://github.com/Res42)
 * [Albert Zakiev](https://github.com/serber)
 * [Albireo](https://github.com/kappa7194)
+* [Anders Blankholm](https://github.com/ablankholm)
 * [Andrew Lock](https://github.com/andrewlock)
 * [Andrew Mattie](https://github.com/amattie)
 * [Dave Timmins](https://github.com/davetimmins)
+* [Dmitry Popov](https://github.com/justdmitry)
 * [Eric Green](https://github.com/ericgreenmix)
 * [Ethan Celletti](https://github.com/Gekctek)
 * [Igor Simovic](https://github.com/igorsimovic)
@@ -48,14 +50,17 @@ We would love it if you could help contributing to this repository. Please look 
 * [Kévin Chalet](https://github.com/PinpointTownes)
 * [Konstantin Mamaev](https://github.com/MrMeison)
 * [Mariusz Zieliński](https://github.com/mariozski)
+* [Martin Costello](https://github.com/martincostello)
 * [Maxime Roussin-Bélanger](https://github.com/Lorac)
 * [Michael Knowles](https://github.com/mjknowles)
 * [Robert Shade](https://github.com/robert-shade)
 * [Sinan](https://github.com/SH2015)
 * [Stefan](https://github.com/Schlurcher)
+* [Steffen Wenz](https://github.com/swenz)
 * [Tathagata Chakraborty](https://github.com/tatx)
 * [Tommy Parnell](https://github.com/tparnell8)
 * [Yannic Smeets](https://github.com/yannicsmeets)
+* [zhengchun](https://github.com/zhengchun)
 
 ## Support
 
