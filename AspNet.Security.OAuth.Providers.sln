@@ -103,6 +103,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.Disco
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.Patreon", "src\AspNet.Security.OAuth.Patreon\AspNet.Security.OAuth.Patreon.csproj", "{ED8A220C-45FE-45C6-9B8F-BB009ACE972E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.QQ", "src\AspNet.Security.OAuth.QQ\AspNet.Security.OAuth.QQ.csproj", "{7C2E82CE-F6EC-41A8-AA22-3466505F95D8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -297,6 +299,10 @@ Global
 		{ED8A220C-45FE-45C6-9B8F-BB009ACE972E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ED8A220C-45FE-45C6-9B8F-BB009ACE972E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ED8A220C-45FE-45C6-9B8F-BB009ACE972E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C2E82CE-F6EC-41A8-AA22-3466505F95D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C2E82CE-F6EC-41A8-AA22-3466505F95D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C2E82CE-F6EC-41A8-AA22-3466505F95D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C2E82CE-F6EC-41A8-AA22-3466505F95D8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -349,5 +355,6 @@ Global
 		{C66A6EDB-D29A-49EE-841E-75F239DE5A04} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 		{86614CB9-0768-40BF-8C27-699E3990B733} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 		{ED8A220C-45FE-45C6-9B8F-BB009ACE972E} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
+		{7C2E82CE-F6EC-41A8-AA22-3466505F95D8} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 	EndGlobalSection
 EndGlobal
