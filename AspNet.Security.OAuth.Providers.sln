@@ -99,6 +99,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.Amazo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.Discord", "src\AspNet.Security.OAuth.Discord\AspNet.Security.OAuth.Discord.csproj", "{86614CB9-0768-40BF-8C27-699E3990B733}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.Odnoklassniki", "src\AspNet.Security.OAuth.Odnoklassniki\AspNet.Security.OAuth.Odnoklassniki.csproj", "{195031A1-69C8-4EBF-96F3-853B3312C4C3}"
+EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "shared", "shared", "{CA7BFFF8-0DC9-4621-8DFE-D3E6A116C509}"
 EndProject
 Global
@@ -291,6 +293,10 @@ Global
 		{86614CB9-0768-40BF-8C27-699E3990B733}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{86614CB9-0768-40BF-8C27-699E3990B733}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{86614CB9-0768-40BF-8C27-699E3990B733}.Release|Any CPU.Build.0 = Release|Any CPU
+		{195031A1-69C8-4EBF-96F3-853B3312C4C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{195031A1-69C8-4EBF-96F3-853B3312C4C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{195031A1-69C8-4EBF-96F3-853B3312C4C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{195031A1-69C8-4EBF-96F3-853B3312C4C3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -342,5 +348,6 @@ Global
 		{9AC900E8-6D03-412B-8D9B-302FD0FBD059} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 		{C66A6EDB-D29A-49EE-841E-75F239DE5A04} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 		{86614CB9-0768-40BF-8C27-699E3990B733} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
+		{195031A1-69C8-4EBF-96F3-853B3312C4C3} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 	EndGlobalSection
 EndGlobal
