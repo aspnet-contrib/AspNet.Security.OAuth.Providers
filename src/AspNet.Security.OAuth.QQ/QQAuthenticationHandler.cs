@@ -62,11 +62,11 @@ namespace AspNet.Security.OAuth.QQ
             identity.AddOptionalClaim(ClaimTypes.NameIdentifier, openid, Options.ClaimsIssuer)
                     .AddOptionalClaim(ClaimTypes.Name, QQAuthenticationHelper.GetNickname(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim(ClaimTypes.Gender, QQAuthenticationHelper.GetGender(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:qq:figureurl", QQAuthenticationHelper.GetFigureUrl(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:qq:figureurl_1", QQAuthenticationHelper.GetFigureUrl1(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:qq:figureurl_2", QQAuthenticationHelper.GetFigureUrl2(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:qq:figureurl_qq_1", QQAuthenticationHelper.GetFigureQQUrl1(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:qq:figureurl_qq_2", QQAuthenticationHelper.GetFigureQQUrl2(payload), Options.ClaimsIssuer);
+                    .AddOptionalClaim("urn:qq:picture", QQAuthenticationHelper.GetPicture(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim("urn:qq:picture_medium", QQAuthenticationHelper.GetPictureMedium(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim("urn:qq:picture_full", QQAuthenticationHelper.GetPictureFull(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim("urn:qq:avatar", QQAuthenticationHelper.GetAvatar(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim("urn:qq:avatar_full", QQAuthenticationHelper.GetAvatarFull(payload), Options.ClaimsIssuer);
 
             var principal = new ClaimsPrincipal(identity);
             var ticket = new AuthenticationTicket(principal, properties, Options.AuthenticationScheme);

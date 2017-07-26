@@ -20,29 +20,29 @@ namespace AspNet.Security.OAuth.QQ
         public static string GetNickname(JObject user) => user.Value<string>("nickname");
 
         /// <summary>
-        /// Gets the user's qq space avatar url(30px*30px).
+        /// Gets the user's qq profile picture url(30px*30px).
         /// </summary>
-        public static string GetFigureUrl(JObject user) => user.Value<string>("figureurl");
+        public static string GetPicture(JObject user) => user.Value<string>("figureurl");
 
         /// <summary>
-        /// Gets the user's qq space avatar url(50px*50px).
+        /// Gets the user's qq profile pictureurl(50px*50px).
         /// </summary>
-        public static string GetFigureUrl1(JObject user) => user.Value<string>("figureurl_1");
+        public static string GetPictureMedium(JObject user) => user.Value<string>("figureurl_1");
 
         /// <summary>
-        /// Gets the user's qq space avatar url(100px*100px).
+        /// Gets the user's qq profile picture url(100px*100px).
         /// </summary>
-        public static string GetFigureUrl2(JObject user) => user.Value<string>("figureurl_2");
+        public static string GetPictureFull(JObject user) => user.Value<string>("figureurl_2");
 
         /// <summary>
         /// Gets the user's avatar url(40px*40px).
         /// </summary>
-        public static string GetFigureQQUrl1(JObject user) => user.Value<string>("figureurl_qq_1");
+        public static string GetAvatar(JObject user) => user.Value<string>("figureurl_qq_1");
 
         /// <summary>
         /// Gets the user's qq space avatar url(100px*100px).
         /// </summary>
-        public static string GetFigureQQUrl2(JObject user) => user.Value<string>("figureurl_qq_2");
+        public static string GetAvatarFull(JObject user) => user.Value<string>("figureurl_qq_2");
 
         /// <summary>
         /// Gets the user's gender.
