@@ -4,12 +4,16 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Security.Claims;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 using AspNet.Security.OAuth.Extensions;
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http.Authentication;
@@ -21,23 +25,17 @@ namespace AspNet.Security.OAuth.Odnoklassniki
 {
     public class OdnoklassnikiAuthenticationHandler : OAuthHandler<OdnoklassnikiAuthenticationOptions>
     {
-        public OdnoklassnikiAuthenticationHandler(HttpClient client)
+        public OdnoklassnikiAuthenticationHandler([NotNull] HttpClient client)
             : base(client)
         {
         }
 
-        protected override async Task<AuthenticationTicket> CreateTicketAsync(ClaimsIdentity identity, AuthenticationProperties properties, OAuthTokenResponse tokens)
+        protected override async Task<AuthenticationTicket> CreateTicketAsync([NotNull] ClaimsIdentity identity, [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens)
         {
+            // Call API methods using access_token instead of session_key parameter
             var address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, "access_token", tokens.AccessToken);
 
-            // Signing.
-            // Call API methods using access_token instead of session_key parameter
-            // Calculate every request signature parameter sig using a little bit different way described in
-            // https://apiok.ru/dev/methods/
-            // session_secret_key = MD5(access_token + application_secret_key)
-            // sig = MD5(request_params_composed_string + session_secret_key)
-            // Don't include access_token into request_params_composed_string
-            var args = new Dictionary<string, string>
+            var queryString = new Dictionary<string, string>
             {
                 { "application_key", Options.ClientPublic },
                 { "__online", "false" }
@@ -45,15 +43,12 @@ namespace AspNet.Security.OAuth.Odnoklassniki
 
             if (Options.Fields.Count != 0)
             {
-                args.Add("fields", string.Join(",", Options.Fields));
+                queryString.Add("fields", string.Join(",", Options.Fields));
             }
 
-            var signature = string.Concat(args.OrderBy(x => x.Key).Select(x => $"{x.Key}={x.Value}"));
-            signature = (signature + (tokens.AccessToken + Options.ClientSecret).GetMd5Hash()).GetMd5Hash();
+            queryString.Add("sig", ComputeSignature(tokens.AccessToken, queryString));
 
-            args.Add("sig", signature);
-
-            address = QueryHelpers.AddQueryString(address, args);
+            address = QueryHelpers.AddQueryString(address, queryString);
 
             HttpResponseMessage response = await Backchannel.GetAsync(address, Context.RequestAborted);
             if (!response.IsSuccessStatusCode)
@@ -84,9 +79,37 @@ namespace AspNet.Security.OAuth.Odnoklassniki
             return context.Ticket;
         }
 
-        protected override string FormatScope()
+        protected override string FormatScope() => string.Join(",", Options.Scope);
+
+        protected string ComputeSignature(string accessToken, IEnumerable<KeyValuePair<string, string>> parameters)
         {
-            return string.Join(",", Options.Scope);
+            // Signing.
+            // Calculate every request signature parameter sig as described in
+            // https://apiok.ru/en/dev/methods/
+            // * session_secret_key = MD5(access_token + application_secret_key), convert the value to the lower case;
+            // * take session_key/access_token away from the list of parameters, if applicable;
+            // * parameters are sorted lexicographically by keys;
+            // * parameters are joined in the format key=value;
+            // * sig = MD5(parameters_value + session_secret_key);
+            // * the sig value is changed to the lower case.
+
+            var parametersValue = string.Concat(from parameter in parameters
+                                                orderby parameter.Key
+                                                select $"{parameter.Key}={parameter.Value}");
+
+            var utf8nobom = new UTF8Encoding(false);
+
+            string GetMd5Hash(string input)
+            {
+                using (var provider = MD5.Create())
+                {
+                    var bytes = utf8nobom.GetBytes(input);
+                    bytes = provider.ComputeHash(bytes);
+                    return BitConverter.ToString(bytes).Replace("-", "").ToLowerInvariant();
+                }
+            }
+
+            return GetMd5Hash(parametersValue + GetMd5Hash(accessToken + Options.ClientSecret));
         }
     }
 }

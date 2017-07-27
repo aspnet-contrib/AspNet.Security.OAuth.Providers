@@ -4,9 +4,6 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using System;
-using System.Security.Cryptography;
-using System.Text;
 using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
 
@@ -18,8 +15,6 @@ namespace AspNet.Security.OAuth.Odnoklassniki
     /// </summary>
     public static class OdnoklassnikiAuthenticationHelper
     {
-        private static readonly Encoding _utf8nobom = new UTF8Encoding(false);
-
         /// <summary>
         /// Gets the identifier associated with the logged in user.
         /// </summary>
@@ -49,15 +44,5 @@ namespace AspNet.Security.OAuth.Odnoklassniki
         /// Gets the URL of the user profile picture.
         /// </summary>
         public static string GetLink([NotNull] JObject user) => user.Value<string>("pic_1");
-
-        internal static string GetMd5Hash(this string input)
-        {
-            using (var provider = MD5.Create())
-            {
-                var bytes = _utf8nobom.GetBytes(input);
-                bytes = provider.ComputeHash(bytes);
-                return BitConverter.ToString(bytes).Replace("-", "").ToLowerInvariant();
-            }
-        }
     }
 }

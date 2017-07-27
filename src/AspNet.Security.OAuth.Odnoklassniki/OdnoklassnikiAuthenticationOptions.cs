@@ -34,6 +34,9 @@ namespace AspNet.Security.OAuth.Odnoklassniki
             Scope.Add("GET_EMAIL");
         }
 
+        /// <summary>
+        /// Gets or sets the provider-assigned application public key.
+        /// </summary>
         public string ClientPublic { get; set; }
 
         /// <summary>

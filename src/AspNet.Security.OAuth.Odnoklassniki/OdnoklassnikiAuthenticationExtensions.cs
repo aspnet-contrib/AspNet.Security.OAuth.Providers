@@ -11,8 +11,18 @@ using Microsoft.Extensions.Options;
 
 namespace Microsoft.AspNetCore.Builder
 {
+    /// <summary>
+    /// Extension methods to add Odnoklassniki authentication capabilities to an HTTP application pipeline.
+    /// </summary>
     public static class OdnoklassnikiAuthenticationExtensions
     {
+        /// <summary>
+        /// Adds the <see cref="OdnoklassnikiAuthenticationMiddleware"/> middleware to the specified
+        /// <see cref="IApplicationBuilder"/>, which enables Odnoklassniki authentication capabilities.
+        /// </summary>
+        /// <param name="app">The <see cref="IApplicationBuilder"/> to add the middleware to.</param>
+        /// <param name="options">A <see cref="OdnoklassnikiAuthenticationOptions"/> that specifies options for the middleware.</param>
+        /// <returns>A reference to this instance after the operation has completed.</returns>
         public static IApplicationBuilder UseOdnoklassnikiAuthentication(
             [NotNull] this IApplicationBuilder app,
             [NotNull] OdnoklassnikiAuthenticationOptions options)
@@ -30,6 +40,12 @@ namespace Microsoft.AspNetCore.Builder
             return app.UseMiddleware<OdnoklassnikiAuthenticationMiddleware>(Options.Create(options));
         }
 
+        /// <summary>
+        /// Adds the <see cref="OdnoklassnikiAuthenticationMiddleware"/> middleware to the specified <see cref="IApplicationBuilder"/>, which enables Odnoklassniki authentication capabilities.
+        /// </summary>
+        /// <param name="app">The <see cref="IApplicationBuilder"/> to add the middleware to.</param>
+        /// <param name="configuration">An action delegate to configure the provided <see cref="OdnoklassnikiAuthenticationOptions"/>.</param>
+        /// <returns>A reference to this instance after the operation has completed.</returns>
         public static IApplicationBuilder UseOdnoklassnikiAuthentication(
             [NotNull] this IApplicationBuilder app,
             [NotNull] Action<OdnoklassnikiAuthenticationOptions> configuration)
