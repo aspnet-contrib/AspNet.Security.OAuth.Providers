@@ -35,9 +35,9 @@ namespace AspNet.Security.OAuth.Odnoklassniki
         }
 
         /// <summary>
-        /// Gets or sets the provider-assigned application public key.
+        /// Gets or sets the application key used to retrieve user details from Odnoklassniki's API.
         /// </summary>
-        public string ClientPublic { get; set; }
+        public string ApplicationKey { get; set; }
 
         /// <summary>
         /// Gets the list of fields to retrieve from the user information endpoint.

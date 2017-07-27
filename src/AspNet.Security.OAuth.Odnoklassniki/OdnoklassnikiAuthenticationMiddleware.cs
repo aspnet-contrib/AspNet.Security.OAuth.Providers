@@ -28,9 +28,9 @@ namespace AspNet.Security.OAuth.Odnoklassniki
             [NotNull] IOptions<OdnoklassnikiAuthenticationOptions> options)
             : base(next, dataProtectionProvider, loggerFactory, encoder, sharedOptions, options)
         {
-            if (string.IsNullOrEmpty(Options.ClientPublic))
+            if (string.IsNullOrEmpty(Options.ApplicationKey))
             {
-                throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, "The '{0}' option must be provided.", nameof(Options.ClientPublic)));
+                throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, "The '{0}' option must be provided.", nameof(Options.ApplicationKey)));
             }
         }
 

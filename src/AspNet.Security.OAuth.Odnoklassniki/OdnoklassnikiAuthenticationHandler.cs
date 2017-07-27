@@ -37,7 +37,7 @@ namespace AspNet.Security.OAuth.Odnoklassniki
 
             var queryString = new Dictionary<string, string>
             {
-                { "application_key", Options.ClientPublic },
+                { "application_key", Options.ApplicationKey },
                 { "__online", "false" }
             };
 
