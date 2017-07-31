@@ -3,7 +3,7 @@
   <PropertyGroup>
     <AspNetCoreVersion>1.0.0</AspNetCoreVersion>
     <JetBrainsVersion>10.3.0</JetBrainsVersion>
-    <NetStandardImplicitPackageVersion>1.6.0</NetStandardImplicitPackageVersion>
+    <NetStandardImplicitPackageVersion>1.6.1</NetStandardImplicitPackageVersion>
     <RuntimeFrameworkVersion>1.0.0</RuntimeFrameworkVersion>
   </PropertyGroup>
 
