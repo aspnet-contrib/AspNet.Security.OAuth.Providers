@@ -13,7 +13,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AspNet.Security.OAuth.Extensions\AspNet.Security.OAuth.Extensions.csproj" PrivateAssets="All" />
+    <Compile Include="..\..\shared\AspNet.Security.OAuth.Extensions\*.cs" />
   </ItemGroup>
 
   <ItemGroup>

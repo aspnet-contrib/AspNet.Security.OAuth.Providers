@@ -9,7 +9,7 @@ using System.Security.Claims;
 
 namespace AspNet.Security.OAuth.Extensions
 {
-    public static class ClaimsExtensions
+    internal static class ClaimsExtensions
     {
         public static ClaimsIdentity AddOptionalClaim(this ClaimsIdentity identity, string name, string value, string issuer)
         {
