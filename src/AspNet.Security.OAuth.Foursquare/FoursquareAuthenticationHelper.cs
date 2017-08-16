@@ -4,6 +4,7 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using System;
 using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
 
@@ -16,58 +17,114 @@ namespace AspNet.Security.OAuth.Foursquare
     public static class FoursquareAuthenticationHelper
     {
         /// <summary>
-        /// Gets the identifier corresponding to the authenticated user.
+        /// Gets the identifier corresponding to the authenticated payload.
         /// </summary>
-        public static string GetIdentifier([NotNull] JObject payload) => payload.Value<JObject>("response")
-                                                                               ?.Value<JObject>("user")
-                                                                               ?.Value<string>("id");
+        public static string GetIdentifier([NotNull] JObject payload)
+        {
+            if (payload == null)
+            {
+                throw new ArgumentNullException(nameof(payload));
+            }
+
+            return payload.Value<JObject>("response")
+                         ?.Value<JObject>("payload")?.Value<string>("id");
+        }
 
         /// <summary>
-        /// Gets the last name associated with the authenticated user.
+        /// Gets the last name associated with the authenticated payload.
         /// </summary>
-        public static string GetLastName([NotNull] JObject payload) => payload.Value<JObject>("response")
-                                                                             ?.Value<JObject>("user")
-                                                                             ?.Value<string>("lastName");
+        public static string GetLastName([NotNull] JObject payload)
+        {
+            if (payload == null)
+            {
+                throw new ArgumentNullException(nameof(payload));
+            }
+
+            return payload.Value<JObject>("response")
+                         ?.Value<JObject>("payload")?.Value<string>("lastName");
+        }
 
         /// <summary>
-        /// Gets the first name associated with the authenticated user.
+        /// Gets the first name associated with the authenticated payload.
         /// </summary>
-        public static string GetFirstName([NotNull] JObject payload) => payload.Value<JObject>("response")
-                                                                              ?.Value<JObject>("user")
-                                                                              ?.Value<string>("firstName");
+        public static string GetFirstName([NotNull] JObject payload)
+        {
+            if (payload == null)
+            {
+                throw new ArgumentNullException(nameof(payload));
+            }
+
+            return payload.Value<JObject>("response")
+                         ?.Value<JObject>("payload")?.Value<string>("firstName");
+        }
 
         /// <summary>
-        /// Gets the username associated with the authenticated user.
+        /// Gets the payloadname associated with the authenticated payload.
         /// </summary>
-        public static string GetUserName([NotNull] JObject payload) => $"{GetFirstName(payload)} {GetLastName(payload)}";
+        public static string GetUserName([NotNull] JObject payload)
+        {
+            if (payload == null)
+            {
+                throw new ArgumentNullException(nameof(payload));
+            }
+
+            return $"{GetFirstName(payload)} {GetLastName(payload)}";
+        }
 
         /// <summary>
-        /// Gets the gender associated with the authenticated user.
+        /// Gets the gender associated with the authenticated payload.
         /// </summary>
-        public static string GetGender([NotNull] JObject payload) => payload.Value<JObject>("response")
-                                                                           ?.Value<JObject>("user")
-                                                                           ?.Value<string>("gender");
+        public static string GetGender([NotNull] JObject payload)
+        {
+            if (payload == null)
+            {
+                throw new ArgumentNullException(nameof(payload));
+            }
+
+            return payload.Value<JObject>("response")
+                         ?.Value<JObject>("payload")?.Value<string>("gender");
+        }
 
         /// <summary>
-        /// Gets the canonical URL corresponding to the authenticated user.
+        /// Gets the canonical URL corresponding to the authenticated payload.
         /// </summary>
-        public static string GetCanonicalUrl([NotNull] JObject payload) => payload.Value<JObject>("response")
-                                                                                 ?.Value<JObject>("user")
-                                                                                 ?.Value<string>("canonicalUrl");
+        public static string GetCanonicalUrl([NotNull] JObject payload)
+        {
+            if (payload == null)
+            {
+                throw new ArgumentNullException(nameof(payload));
+            }
+
+            return payload.Value<JObject>("response")
+                         ?.Value<JObject>("payload")?.Value<string>("canonicalUrl");
+        }
 
         /// <summary>
-        /// Gets the home city associated with the authenticated user.
+        /// Gets the home city associated with the authenticated payload.
         /// </summary>
-        public static string GetHomeCity([NotNull] JObject payload) => payload.Value<JObject>("response")
-                                                                             ?.Value<JObject>("user")
-                                                                             ?.Value<string>("homeCity");
+        public static string GetHomeCity([NotNull] JObject payload)
+        {
+            if (payload == null)
+            {
+                throw new ArgumentNullException(nameof(payload));
+            }
+
+            return payload.Value<JObject>("response")
+                         ?.Value<JObject>("payload")?.Value<string>("homeCity");
+        }
 
         /// <summary>
-        /// Gets the email associated with the authenticated user.
+        /// Gets the email associated with the authenticated payload.
         /// </summary>
-        public static string GetContactEmail([NotNull] JObject payload) => payload.Value<JObject>("response")
-                                                                                 ?.Value<JObject>("user")
-                                                                                 ?.Value<JObject>("contact")
-                                                                                 ?.Value<string>("email");
+        public static string GetContactEmail([NotNull] JObject payload)
+        {
+            if (payload == null)
+            {
+                throw new ArgumentNullException(nameof(payload));
+            }
+
+            return payload.Value<JObject>("response")?.Value<JObject>("payload")
+                         ?.Value<JObject>("contact")?.Value<string>("email");
+        }
     }
 }

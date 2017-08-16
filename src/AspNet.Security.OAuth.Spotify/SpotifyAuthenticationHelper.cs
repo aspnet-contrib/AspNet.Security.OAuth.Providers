@@ -4,6 +4,7 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using System;
 using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
 
@@ -18,23 +19,53 @@ namespace AspNet.Security.OAuth.Spotify
         /// <summary>
         /// Gets the identifier corresponding to the authenticated user.
         /// </summary>
-        public static string GetIdentifier([NotNull] JObject user) => user.Value<string>("id");
+        public static string GetIdentifier([NotNull] JObject user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return user.Value<string>("id");
+        }
 
         /// <summary>
         /// Gets the name corresponding to the authenticated user.
         /// </summary>
-        public static string GetName([NotNull] JObject user) => user.Value<string>("display_name");
+        public static string GetName([NotNull] JObject user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return user.Value<string>("display_name");
+        }
 
         /// <summary>
         /// Gets the URL corresponding to the authenticated user.
         /// </summary>
-        public static string GetLink([NotNull] JObject user) => user.Value<JObject>("external_urls")
-                                                                   ?.Value<string>("spotify");
+        public static string GetLink([NotNull] JObject user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return user.Value<JObject>("external_urls")?.Value<string>("spotify");
+        }
 
         /// <summary>
         /// Gets the profile picture URL corresponding to the authenticated user.
         /// </summary>
-        public static string GetProfilePictureUrl([NotNull] JObject user) => user.Value<JArray>("images")
-                                                                                ?.First?.Value<string>("url");
+        public static string GetProfilePictureUrl([NotNull] JObject user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return user.Value<JArray>("images")?.First?.Value<string>("url");
+        }
     }
 }

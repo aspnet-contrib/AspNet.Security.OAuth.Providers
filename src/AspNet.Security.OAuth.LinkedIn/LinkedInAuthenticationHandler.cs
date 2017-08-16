@@ -75,8 +75,6 @@ namespace AspNet.Security.OAuth.LinkedIn
                     .AddOptionalClaim("urn:linkedin:numconnections", LinkedInAuthenticationHelper.GetNumConnections(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim("urn:linkedin:numconnectionscapped", LinkedInAuthenticationHelper.GetNumConnectionsCapped(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim("urn:linkedin:currentshare", LinkedInAuthenticationHelper.GetCurrentShare(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:linkedin:sitestandardprofilerequest", LinkedInAuthenticationHelper.GetSiteStandardProfileRequest(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:linkedin:apistandardprofilerequest", LinkedInAuthenticationHelper.GetApiStandardProfileRequest(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim("urn:linkedin:pictureurls", LinkedInAuthenticationHelper.GetPictureUrls(payload), Options.ClaimsIssuer);
 
             var principal = new ClaimsPrincipal(identity);

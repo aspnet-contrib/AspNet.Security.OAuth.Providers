@@ -4,6 +4,7 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using System;
 using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
 
@@ -16,40 +17,82 @@ namespace AspNet.Security.OAuth.Yahoo
     public class YahooAuthenticationHelper
     {
         /// <summary>
-        /// Gets the family name corresponding to the authenticated user.
+        /// Gets the family name corresponding to the authenticated payload.
         /// </summary>
-        public static string GetFamilyName([NotNull] JObject payload) => payload.Value<JObject>("profile")
-                                                                               ?.Value<string>("familyName");
+        public static string GetFamilyName([NotNull] JObject payload)
+        {
+            if (payload == null)
+            {
+                throw new ArgumentNullException(nameof(payload));
+            }
+
+            return payload.Value<JObject>("profile")?.Value<string>("familyName");
+        }
 
         /// <summary>
-        /// Gets the given name corresponding to the authenticated user.
+        /// Gets the given name corresponding to the authenticated payload.
         /// </summary>
-        public static string GetGivenName([NotNull] JObject payload) => payload.Value<JObject>("profile")
-                                                                              ?.Value<string>("givenName");
+        public static string GetGivenName([NotNull] JObject payload)
+        {
+            if (payload == null)
+            {
+                throw new ArgumentNullException(nameof(payload));
+            }
+
+            return payload.Value<JObject>("profile")?.Value<string>("givenName");
+        }
 
         /// <summary>
-        /// Gets the identifier corresponding to the authenticated user.
+        /// Gets the identifier corresponding to the authenticated payload.
         /// </summary>
-        public static string GetIdentifier([NotNull] JObject payload) => payload.Value<JObject>("profile")
-                                                                               ?.Value<string>("guid");
+        public static string GetIdentifier([NotNull] JObject payload)
+        {
+            if (payload == null)
+            {
+                throw new ArgumentNullException(nameof(payload));
+            }
+
+            return payload.Value<JObject>("profile")?.Value<string>("guid");
+        }
 
         /// <summary>
-        /// Gets the nickname corresponding to the authenticated user.
+        /// Gets the nickname corresponding to the authenticated payload.
         /// </summary>
-        public static string GetNickname([NotNull] JObject payload) => payload.Value<JObject>("profile")
-                                                                             ?.Value<string>("nickname");
+        public static string GetNickname([NotNull] JObject payload)
+        {
+            if (payload == null)
+            {
+                throw new ArgumentNullException(nameof(payload));
+            }
+
+            return payload.Value<JObject>("profile")?.Value<string>("nickname");
+        }
 
         /// <summary>
-        /// Gets the profile image URL corresponding to the authenticated user.
+        /// Gets the profile image URL corresponding to the authenticated payload.
         /// </summary>
-        public static string GetProfileImageUrl([NotNull] JObject payload) => payload.Value<JObject>("profile")
-                                                                                    ?.Value<JObject>("image")
-                                                                                    ?.Value<string>("imageUrl");
+        public static string GetProfileImageUrl([NotNull] JObject payload)
+        {
+            if (payload == null)
+            {
+                throw new ArgumentNullException(nameof(payload));
+            }
+
+            return payload.Value<JObject>("profile")
+                         ?.Value<JObject>("image")?.Value<string>("imageUrl");
+        }
 
         /// <summary>
-        /// Gets the profile URL corresponding to the authenticated user.
+        /// Gets the profile URL corresponding to the authenticated payload.
         /// </summary>
-        public static string GetProfileUrl([NotNull] JObject payload) => payload.Value<JObject>("profile")
-                                                                               ?.Value<string>("profileUrl");
+        public static string GetProfileUrl([NotNull] JObject payload)
+        {
+            if (payload == null)
+            {
+                throw new ArgumentNullException(nameof(payload));
+            }
+
+            return payload.Value<JObject>("profile")?.Value<string>("profileUrl");
+        }
     }
 }

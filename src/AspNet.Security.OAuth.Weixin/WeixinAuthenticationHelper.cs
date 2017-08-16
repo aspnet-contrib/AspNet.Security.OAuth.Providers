@@ -4,6 +4,7 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using System;
 using Newtonsoft.Json.Linq;
 
 namespace AspNet.Security.OAuth.Weixin
@@ -17,48 +18,117 @@ namespace AspNet.Security.OAuth.Weixin
         /// <summary>
         /// Gets the user identifier.
         /// </summary>
-        public static string GetOpenId(JObject user) => user.Value<string>("openid");
+        public static string GetOpenId(JObject user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return user.Value<string>("openid");
+        }
 
         /// <summary>
         /// Gets the nickname associated with the user profile.
         /// </summary>
-        public static string GetNickname(JObject user) => user.Value<string>("nickname");
+        public static string GetNickname(JObject user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return user.Value<string>("nickname");
+        }
 
         /// <summary>
         /// Gets the gender associated with the user profile.
         /// </summary>
-        public static string GetSex(JObject user) => user.Value<string>("sex");
+        public static string GetSex(JObject user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return user.Value<string>("sex");
+        }
 
         /// <summary>
         /// Gets the province associated with the user profile.
         /// </summary>
-        public static string GetProvince(JObject user) => user.Value<string>("province");
+        public static string GetProvince(JObject user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return user.Value<string>("province");
+        }
 
         /// <summary>
         /// Gets the city associated with the user profile.
         /// </summary>
-        public static string GetCity(JObject user) => user.Value<string>("city");
+        public static string GetCity(JObject user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return user.Value<string>("city");
+        }
 
         /// <summary>
         /// Gets the country associated with the user profile.
         /// </summary>
-        public static string GetCountry(JObject user) => user.Value<string>("country");
+        public static string GetCountry(JObject user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return user.Value<string>("country");
+        }
 
         /// <summary>
         /// Gets the avatar image url associated with the user profile.
         /// </summary>
-        public static string GetHeadimgUrl(JObject user) => user.Value<string>("headimgurl");
+        public static string GetHeadimgUrl(JObject user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return user.Value<string>("headimgurl");
+        }
 
         /// <summary>
         /// Gets the union id associated with the application.
         /// </summary>
-        public static string GetUnionid(JObject user) => user.Value<string>("unionid");
+        public static string GetUnionid(JObject user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return user.Value<string>("unionid");
+        }
 
         /// <summary>
         /// Gets the privilege associated with the user profile.
         /// </summary>
         public static string GetPrivilege(JObject user)
         {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+                
             var value = user.Value<JArray>("privilege");
             if (value == null)
             {

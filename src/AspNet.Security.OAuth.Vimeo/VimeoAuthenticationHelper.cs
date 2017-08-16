@@ -4,6 +4,7 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using System;
 using System.Linq;
 using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
@@ -19,18 +20,40 @@ namespace AspNet.Security.OAuth.Vimeo
         /// <summary>
         /// Gets the identifier corresponding to the authenticated user.
         /// </summary>
-        public static string GetIdentifier([NotNull] JObject user) => user.Value<string>("uri")
-                                                                         ?.Split('/')
-                                                                         ?.LastOrDefault();
+        public static string GetIdentifier([NotNull] JObject user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return user.Value<string>("uri")?.Split('/')?.LastOrDefault();
+        }
 
         /// <summary>
         /// Gets the full name corresponding to the authenticated user.
         /// </summary>
-        public static string GetFullName([NotNull] JObject user) => user.Value<string>("name");
+        public static string GetFullName([NotNull] JObject user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return user.Value<string>("name");
+        }
 
         /// <summary>
         /// Gets the profile url corresponding to the authenticated user.
         /// </summary>
-        public static string GetProfileUrl([NotNull] JObject user) => user.Value<string>("link");
+        public static string GetProfileUrl([NotNull] JObject user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return user.Value<string>("link");
+        }
     }
 }

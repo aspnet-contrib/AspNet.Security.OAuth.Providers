@@ -4,6 +4,7 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using System;
 using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
 
@@ -18,31 +19,79 @@ namespace AspNet.Security.OAuth.Gitter
         /// <summary>
         /// Gets the username corresponding to the authenticated user.
         /// </summary>
-        public static string GetUsername([NotNull] JObject user) => user.Value<string>("username");
+        public static string GetUsername([NotNull] JObject user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return user.Value<string>("username");
+        }
 
         /// <summary>
         /// Gets the identifier corresponding to the authenticated user.
         /// </summary>
-        public static string GetIdentifier([NotNull] JObject user) => user.Value<string>("id");
+        public static string GetIdentifier([NotNull] JObject user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return user.Value<string>("id");
+        }
 
         /// <summary>
         /// Gets the display name corresponding to the authenticated user.
         /// </summary>
-        public static string GetDisplayName([NotNull] JObject user) => user.Value<string>("displayName");
+        public static string GetDisplayName([NotNull] JObject user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return user.Value<string>("displayName");
+        }
 
         /// <summary>
         /// Gets the URL corresponding to the authenticated user.
         /// </summary>
-        public static string GetLink([NotNull] JObject user) => user.Value<string>("url");
+        public static string GetLink([NotNull] JObject user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return user.Value<string>("url");
+        }
 
         /// <summary>
         /// Gets the small url avatar corresponding to the authenticated user.
         /// </summary>
-        public static string GetAvatarUrlSmall([NotNull] JObject user) => user.Value<string>("avatarUrlSmall");
+        public static string GetAvatarUrlSmall([NotNull] JObject user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return user.Value<string>("avatarUrlSmall");
+        }
 
         /// <summary>
         /// Gets the medium url avatar corresponding to the authenticated user.
         /// </summary>
-        public static string GetAvatarUrlMedium([NotNull] JObject user) => user.Value<string>("avatarUrlMedium");
+        public static string GetAvatarUrlMedium([NotNull] JObject user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return user.Value<string>("avatarUrlMedium");
+        }
     }
 }

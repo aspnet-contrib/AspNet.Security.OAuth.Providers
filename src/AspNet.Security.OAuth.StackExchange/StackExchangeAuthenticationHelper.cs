@@ -4,6 +4,7 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using System;
 using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
 
@@ -18,21 +19,53 @@ namespace AspNet.Security.OAuth.StackExchange
         /// <summary>
         /// Gets the identifier corresponding to the authenticated user.
         /// </summary>
-        public static string GetIdentifier([NotNull] JObject user) => user["items"]?[0]?.Value<string>("account_id");
+        public static string GetIdentifier([NotNull] JObject user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return user["items"]?[0]?.Value<string>("account_id");
+        }
 
         /// <summary>
         /// Gets the display name corresponding to the authenticated user.
         /// </summary>
-        public static string GetDisplayName([NotNull] JObject user) => user["items"]?[0]?.Value<string>("display_name");
+        public static string GetDisplayName([NotNull] JObject user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return user["items"]?[0]?.Value<string>("display_name");
+        }
 
         /// <summary>
         /// Gets the URL corresponding to the authenticated user.
         /// </summary>
-        public static string GetLink([NotNull] JObject user) => user["items"]?[0]?.Value<string>("link");
+        public static string GetLink([NotNull] JObject user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return user["items"]?[0]?.Value<string>("link");
+        }
 
         /// <summary>
         /// Gets the website URL associated with the authenticated user.
         /// </summary>
-        public static string GetWebsiteUrl([NotNull] JObject user) => user["items"]?[0]?.Value<string>("website_url");
+        public static string GetWebsiteUrl([NotNull] JObject user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return user["items"]?[0]?.Value<string>("website_url");
+        }
     }
 }
