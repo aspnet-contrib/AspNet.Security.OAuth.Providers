@@ -5,6 +5,7 @@
  */
 
 using AspNet.Security.OAuth.GitHub;
+using AspNet.Security.OAuth.Patreon;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -50,9 +51,15 @@ namespace Mvc.Client
 
             app.UseGitHubAuthentication(new GitHubAuthenticationOptions
             {
-                ClientId = "49e302895d8b09ea5656",
-                ClientSecret = "98f1bf028608901e9df91d64ee61536fe562064b",
+                ClientId = "0c90627999fa87bf29a5",
+                ClientSecret = "52f2c61676604201f2d605111b5b63ba33a80e4b",
                 Scope = { "user:email" }
+            });
+
+            app.UsePatreonAuthentication(new PatreonAuthenticationOptions()
+            {
+                ClientId = "cd47987eb2ccf2ecdfca1f18e692d6324c88507920af0dbc3dc176e4253b74ae",
+                ClientSecret = "61145be9f187e052cf9426cc3eadc53963c3205ed7c5df72b214c860739d22a2"
             });
 
             app.UseMvc();
