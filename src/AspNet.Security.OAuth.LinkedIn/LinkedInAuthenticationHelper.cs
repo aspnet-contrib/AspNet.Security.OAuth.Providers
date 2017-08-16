@@ -130,12 +130,12 @@ namespace AspNet.Security.OAuth.LinkedIn
         /// Gets the URL representing the resource one would request
         /// for programmatic access to the member's profile.
         /// </summary>
-        public static string GetApiStandardProfileRequest([NotNull] JObject user) => user.Value<string>("apiStandardProfileRequest");
+        public static string GetApiStandardProfileRequest([NotNull] JObject user) => user["apiStandardProfileRequest"]?.ToString();
 
         /// <summary>
         /// Gets the URL to the member's authenticated profile on LinkedIn.
         /// Note: one must be logged into LinkedIn to view this URL.
         /// </summary>
-        public static string GetSiteStandardProfileRequest([NotNull] JObject user) => user.Value<string>("siteStandardProfileRequest");
+        public static string GetSiteStandardProfileRequest([NotNull] JObject user) => user["siteStandardProfileRequest"]?.Value<string>("url");
     }
 }
