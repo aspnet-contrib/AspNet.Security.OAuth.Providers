@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\build\packages.props" />
+
+  <PropertyGroup>
+    <TargetFrameworks>net451;netstandard1.3</TargetFrameworks>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Description>ASP.NET Core security middleware enabling Intuit authentication.</Description>
+    <Authors>Mark O'Grady</Authors>
+    <PackageTags>aspnetcore;authentication;intuit;oauth;security</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="JetBrains.Annotations" Version="11.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.OAuth" Version="1.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AspNet.Security.OAuth.Extensions\AspNet.Security.OAuth.Extensions.csproj" />
+  </ItemGroup>
+
+ 
+
+</Project>
