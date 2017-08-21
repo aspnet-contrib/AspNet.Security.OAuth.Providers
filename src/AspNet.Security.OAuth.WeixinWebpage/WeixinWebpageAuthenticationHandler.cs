@@ -36,7 +36,8 @@ namespace AspNet.Security.OAuth.WeixinWebpage
             switch (Options.Scope.SingleOrDefault())
             {
                 case "snsapi_base":
-                    identity.AddOptionalClaim("urn:weixin:openid", tokens.Response.Value<string>("openid"), Options.ClaimsIssuer);
+                    identity.AddOptionalClaim(ClaimTypes.NameIdentifier, tokens.Response.Value<string>("openid"), Options.ClaimsIssuer)
+                            .AddOptionalClaim("urn:weixin:openid", tokens.Response.Value<string>("openid"), Options.ClaimsIssuer);
                     break;
                 case "snsapi_userinfo":
                     var address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, new Dictionary<string, string>

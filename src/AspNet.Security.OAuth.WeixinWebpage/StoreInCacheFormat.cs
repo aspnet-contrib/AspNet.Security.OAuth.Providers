@@ -9,15 +9,17 @@ using System.Threading.Tasks;
 
 namespace AspNet.Security.OAuth.WeixinWebpage
 {
-    class StoreInCacheFormat : ISecureDataFormat<AuthenticationProperties>
+    internal class StoreInCacheFormat : ISecureDataFormat<AuthenticationProperties>
     {
-        IMemoryCache _cache;
-        TimeSpan timeout;
+        private IMemoryCache _cache;
+        private TimeSpan timeout;
+
         public StoreInCacheFormat(IMemoryCache cache, TimeSpan timeout)
         {
             this._cache = cache;
             this.timeout = timeout;
         }
+
         public string Protect(AuthenticationProperties data)
         {
             return Protect(data, purpose: null);
@@ -51,7 +53,11 @@ namespace AspNet.Security.OAuth.WeixinWebpage
                 key = purpose + key;
             }
 
-            return _cache.Get<AuthenticationProperties>(key);
+            var props = _cache.Get<AuthenticationProperties>(key);
+
+            //Weixin may return code multiple times
+            //copy props to prevent failure coursed by the changes to props.
+            return new AuthenticationProperties(new Dictionary<string, string>(props.Items));
         }
     }
 }
