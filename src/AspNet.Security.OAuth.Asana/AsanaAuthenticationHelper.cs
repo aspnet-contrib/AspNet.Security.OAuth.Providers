@@ -4,6 +4,7 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using System;
 using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
 
@@ -18,19 +19,40 @@ namespace AspNet.Security.OAuth.Asana
         /// <summary>
         /// Gets the identifier corresponding to the authenticated user.
         /// </summary>
-        public static string GetIdentifier([NotNull] JObject user) => user.Value<JObject>("data")
-                                                                         ?.Value<string>("id");
+        public static string GetIdentifier([NotNull] JObject user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return user.Value<JObject>("data")?.Value<string>("id");
+        }
 
         /// <summary>
         /// Gets the name corresponding to the authenticated user.
         /// </summary>
-        public static string GetName([NotNull] JObject user) => user.Value<JObject>("data")
-                                                                   ?.Value<string>("name");
+        public static string GetName([NotNull] JObject user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return user.Value<JObject>("data")?.Value<string>("name");
+        }
 
         /// <summary>
         /// Gets the email corresponding to the authenticated user.
         /// </summary>
-        public static string GetEmail([NotNull] JObject user) => user.Value<JObject>("data")
-                                                                    ?.Value<string>("email");
+        public static string GetEmail([NotNull] JObject user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return user.Value<JObject>("data")?.Value<string>("email");
+        }
     }
 }

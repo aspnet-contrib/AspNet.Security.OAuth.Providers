@@ -4,6 +4,7 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using System;
 using System.Linq;
 using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
@@ -19,24 +20,53 @@ namespace AspNet.Security.OAuth.GitHub
         /// <summary>
         /// Gets the identifier corresponding to the authenticated user.
         /// </summary>
-        public static string GetIdentifier([NotNull] JObject user) => user.Value<string>("id");
+        public static string GetIdentifier([NotNull] JObject user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return user.Value<string>("id");
+        }
 
         /// <summary>
         /// Gets the login corresponding to the authenticated user.
         /// </summary>
-        public static string GetLogin([NotNull] JObject user) => user.Value<string>("login");
+        public static string GetLogin([NotNull] JObject user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return user.Value<string>("login");
+        }
 
         /// <summary>
         /// Gets the email address corresponding to the authenticated user.
         /// </summary>
-        public static string GetEmail([NotNull] JObject user) => user.Value<string>("email");
+        public static string GetEmail([NotNull] JObject user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return user.Value<string>("email");
+        }
 
         /// <summary>
         /// Gets the primary email address contained in the given array.
         /// </summary>
-        public static string GetEmail([NotNull] JArray array)
+        public static string GetEmail([NotNull] JArray payload)
         {
-            return (from address in array.AsJEnumerable()
+            if (payload == null)
+            {
+                throw new ArgumentNullException(nameof(payload));
+            }
+
+            return (from address in payload.AsJEnumerable()
                     where address.Value<bool>("primary")
                     select address.Value<string>("email")).FirstOrDefault();
         }
@@ -44,11 +74,27 @@ namespace AspNet.Security.OAuth.GitHub
         /// <summary>
         /// Gets the name corresponding to the authenticated user.
         /// </summary>
-        public static string GetName([NotNull] JObject user) => user.Value<string>("name");
+        public static string GetName([NotNull] JObject user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return user.Value<string>("name");
+        }
 
         /// <summary>
         /// Gets the URL corresponding to the authenticated user.
         /// </summary>
-        public static string GetLink([NotNull] JObject user) => user.Value<string>("url");
+        public static string GetLink([NotNull] JObject user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return user.Value<string>("url");
+        }
     }
 }

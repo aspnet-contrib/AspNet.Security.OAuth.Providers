@@ -4,6 +4,7 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using System;
 using System.Linq;
 using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
@@ -19,34 +20,79 @@ namespace AspNet.Security.OAuth.Paypal
         /// <summary>
         /// Gets the identifier corresponding to the authenticated user.
         /// </summary>
-        public static string GetIdentifier([NotNull] JObject user) => user.Value<string>("user_id")
-                                                                         ?.Split('/')
-                                                                         ?.LastOrDefault();
+        public static string GetIdentifier([NotNull] JObject user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return user.Value<string>("user_id")?.Split('/')?.LastOrDefault();
+        }
 
         /// <summary>
         /// Gets the full name corresponding to the authenticated user.
         /// </summary>
-        public static string GetFullName([NotNull] JObject user) => user.Value<string>("name");
+        public static string GetFullName([NotNull] JObject user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return user.Value<string>("name");
+        }
 
         /// <summary>
         /// Gets the given name corresponding to the authenticated user.
         /// </summary>
-        public static string GetGivenName([NotNull] JObject user) => user.Value<string>("given_name");
+        public static string GetGivenName([NotNull] JObject user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return user.Value<string>("given_name");
+        }
 
         /// <summary>
         /// Gets the family name corresponding to the authenticated user.
         /// </summary>
-        public static string GetFamilyName([NotNull] JObject user) => user.Value<string>("family_name");
+        public static string GetFamilyName([NotNull] JObject user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return user.Value<string>("family_name");
+        }
 
         /// <summary>
         /// Gets the email address corresponding to the authenticated user.
         /// </summary>
-        public static string GetEmail([NotNull] JObject user) => user.Value<string>("email");
+        public static string GetEmail([NotNull] JObject user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return user.Value<string>("email");
+        }
 
         /// <summary>
         /// Gets the URL corresponding to the authenticated user.
         /// </summary>
-        public static string GetLink([NotNull] JObject user) => user.Value<string>("user_id");
+        public static string GetLink([NotNull] JObject user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
 
+            return user.Value<string>("user_id");
+        }
     }
 }

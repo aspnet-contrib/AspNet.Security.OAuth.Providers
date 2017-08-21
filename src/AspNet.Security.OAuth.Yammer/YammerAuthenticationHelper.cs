@@ -4,6 +4,7 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using System;
 using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
 
@@ -18,36 +19,92 @@ namespace AspNet.Security.OAuth.Yammer
         /// <summary>
         /// Gets the identifier corresponding to the authenticated user.
         /// </summary>
-        public static string GetId([NotNull] JObject payload) => payload.Value<string>("id");
+        public static string GetId([NotNull] JObject user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return user.Value<string>("id");
+        }
 
         /// <summary>
         /// Gets the first name corresponding to the authenticated user.
         /// </summary>
-        public static string GetFirstName([NotNull] JObject payload) => payload.Value<string>("first_name");
+        public static string GetFirstName([NotNull] JObject user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return user.Value<string>("first_name");
+        }
 
         /// <summary>
         /// Gets the last name corresponding to the authenticated user.
         /// </summary>
-        public static string GetLastName([NotNull] JObject payload) => payload.Value<string>("last_name");
+        public static string GetLastName([NotNull] JObject user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return user.Value<string>("last_name");
+        }
 
         /// <summary>
         /// Gets the login corresponding to the authenticated user.
         /// </summary>
-        public static string GetName([NotNull] JObject payload) => payload.Value<string>("name");
+        public static string GetName([NotNull] JObject user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return user.Value<string>("name");
+        }
 
         /// <summary>
         /// Gets the email address corresponding to the authenticated user.
         /// </summary>
-        public static string GetEmail([NotNull] JObject payload) => payload.Value<string>("email");
+        public static string GetEmail([NotNull] JObject user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return user.Value<string>("email");
+        }
 
         /// <summary>
         /// Gets the job title corresponding to the authenticated user.
         /// </summary>
-        public static string GetJobTitle([NotNull] JObject payload) => payload.Value<string>("job_title");
+        public static string GetJobTitle([NotNull] JObject user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return user.Value<string>("job_title");
+        }
 
         /// <summary>
         /// Gets the web link corresponding to the authenticated user.
         /// </summary>
-        public static string GetLink([NotNull] JObject payload) => payload.Value<string>("web_url");
+        public static string GetLink([NotNull] JObject user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return user.Value<string>("web_url");
+        }
     }
 }

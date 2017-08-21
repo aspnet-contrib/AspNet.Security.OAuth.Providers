@@ -4,6 +4,7 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using System;
 using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
 
@@ -18,31 +19,79 @@ namespace AspNet.Security.OAuth.Salesforce
         /// <summary>
         /// Gets the Salesforce ID corresponding to the authenticated user.
         /// </summary>
-        public static string GetUserIdentifier([NotNull] JObject user) => user.Value<string>("user_id");
+        public static string GetUserIdentifier([NotNull] JObject user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return user.Value<string>("user_id");
+        }
 
         /// <summary>
         /// Gets the user's name.
         /// </summary>
-        public static string GetUserName([NotNull] JObject user) => user.Value<string>("user_name");
+        public static string GetUserName([NotNull] JObject user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return user.Value<string>("user_name");
+        }
 
         /// <summary>
         /// Gets the user's email.
         /// </summary>
-        public static string GetEmail([NotNull] JObject user) => user.Value<string>("email");
+        public static string GetEmail([NotNull] JObject user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return user.Value<string>("email");
+        }
 
         /// <summary>
         /// Gets the user's thumbnail photo.
         /// </summary>
-        public static string GetThumbnailPhoto([NotNull] JObject user) => user["photos"]?.Value<string>("thumbnail");
+        public static string GetThumbnailPhoto([NotNull] JObject user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return user["photos"]?.Value<string>("thumbnail");
+        }
 
         /// <summary>
         /// Gets the user's UTC offset, in milliseconds.
         /// </summary>
-        public static int GetUtcOffset([NotNull] JObject user) => user.Value<int>("utcOffset");
+        public static int GetUtcOffset([NotNull] JObject user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return user.Value<int>("utcOffset");
+        }
 
         /// <summary>
         /// Gets the REST URL returned from the identity service.
         /// </summary>
-        public static string GetRestUrl([NotNull] JObject user) => user["urls"]?.Value<string>("rest");
+        public static string GetRestUrl([NotNull] JObject user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return user["urls"]?.Value<string>("rest");
+        }
     }
 }
