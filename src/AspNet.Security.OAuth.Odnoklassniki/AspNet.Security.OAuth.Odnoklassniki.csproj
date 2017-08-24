@@ -1,5 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+  <Import Project="..\..\shared\AspNet.Security.OAuth.Extensions\AspNet.Security.OAuth.Extensions.projitems" Label="Shared" />
+
   <Import Project="..\..\build\packages.props" />
 
   <PropertyGroup>
@@ -11,10 +13,6 @@
     <Authors>Andrew Nefedkin</Authors>
     <PackageTags>aspnetcore;authentication;oauth;odnoklassniki;security</PackageTags>
   </PropertyGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\AspNet.Security.OAuth.Extensions\AspNet.Security.OAuth.Extensions.csproj" PrivateAssets="All" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="JetBrains.Annotations" Version="$(JetBrainsVersion)" PrivateAssets="All" />
