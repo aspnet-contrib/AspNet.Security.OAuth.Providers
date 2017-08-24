@@ -31,6 +31,7 @@
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.LinkedIn\AspNet.Security.OAuth.LinkedIn.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.MailChimp\AspNet.Security.OAuth.MailChimp.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Myob\AspNet.Security.OAuth.Myob.csproj" />
+    <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Odnoklassniki\AspNet.Security.OAuth.Odnoklassniki.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Onshape\AspNet.Security.OAuth.Onshape.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Paypal\AspNet.Security.OAuth.Paypal.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Reddit\AspNet.Security.OAuth.Reddit.csproj" />
