@@ -18,25 +18,15 @@ using Newtonsoft.Json.Linq;
 
 namespace AspNet.Security.OAuth.Amazon
 {
-    /// <summary>
-    /// A class representing an authentication handler for Amazon.
-    /// </summary>
     public class AmazonAuthenticationHandler : OAuthHandler<AmazonAuthenticationOptions>
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AmazonAuthenticationHandler"/> class.
-        /// </summary>
-        /// <param name="client">The <see cref="HttpClient"/> to use.</param>
         public AmazonAuthenticationHandler([NotNull] HttpClient client)
             : base(client)
         {
         }
 
-        /// <inheritdoc />
-        protected override async Task<AuthenticationTicket> CreateTicketAsync(
-            [NotNull] ClaimsIdentity identity,
-            [NotNull] AuthenticationProperties properties, 
-            [NotNull] OAuthTokenResponse tokens)
+        protected override async Task<AuthenticationTicket> CreateTicketAsync([NotNull] ClaimsIdentity identity,
+            [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens)
         {
             var endpoint = Options.UserInformationEndpoint;
 

@@ -4,6 +4,7 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using System;
 using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
 
@@ -18,20 +19,40 @@ namespace AspNet.Security.OAuth.Strava
         /// <summary>
         /// Gets the identifier corresponding to the authenticated user.
         /// </summary>
-        public static string GetIdentifier([NotNull] JObject user) => user.Value<string>("id");
+        public static string GetIdentifier([NotNull] JObject user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return user.Value<string>("id");
+        }
 
         /// <summary>
         /// Gets the username corresponding to the authenticated user.
         /// </summary>
-        /// <param name="user"></param>
-        /// <returns></returns>
-        public static string GetUsername([NotNull] JObject user) => user.Value<string>("username");
+        public static string GetUsername([NotNull] JObject user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return user.Value<string>("username");
+        }
 
         /// <summary>
         /// Gets the email corresponding to the authenticated user.
         /// </summary>
-        /// <param name="user"></param>
-        /// <returns></returns>
-        public static string GetEmail([NotNull] JObject user) => user.Value<string>("email");
+        public static string GetEmail([NotNull] JObject user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return user.Value<string>("email");
+        }
     }
 }

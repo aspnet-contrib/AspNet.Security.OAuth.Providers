@@ -4,6 +4,7 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using System;
 using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
 
@@ -18,31 +19,79 @@ namespace AspNet.Security.OAuth.Automatic
         /// <summary>
         /// Gets the identifier corresponding to the authenticated user.
         /// </summary>
-        public static string GetIdentifier([NotNull] JObject user) => user.Value<string>("id");
+        public static string GetIdentifier([NotNull] JObject user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return user.Value<string>("id");
+        }
 
         /// <summary>
         /// Gets the first name corresponding to the authenticated user.
         /// </summary>
-        public static string GetGivenName([NotNull] JObject user) => user.Value<string>("first_name");
+        public static string GetGivenName([NotNull] JObject user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return user.Value<string>("first_name");
+        }
 
         /// <summary>
         /// Gets the last name corresponding to the authenticated user.
         /// </summary>
-        public static string GetFamilyName([NotNull] JObject user) => user.Value<string>("last_name");
+        public static string GetFamilyName([NotNull] JObject user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return user.Value<string>("last_name");
+        }
 
         /// <summary>
         /// Gets the login corresponding to the authenticated user.
         /// </summary>
-        public static string GetLogin([NotNull] JObject user) => user.Value<string>("username");
+        public static string GetLogin([NotNull] JObject user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return user.Value<string>("username");
+        }
 
         /// <summary>
         /// Gets the email address corresponding to the authenticated user.
         /// </summary>
-        public static string GetEmail([NotNull] JObject user) => user.Value<string>("email");
+        public static string GetEmail([NotNull] JObject user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return user.Value<string>("email");
+        }
 
         /// <summary>
         /// Gets the url corresponding to the authenticated user.
         /// </summary>
-        public static string GetUrl([NotNull] JObject user) => user.Value<string>("url");
+        public static string GetUrl([NotNull] JObject user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return user.Value<string>("url");
+        }
     }
 }

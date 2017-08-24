@@ -4,6 +4,8 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using System;
+using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
 
 namespace AspNet.Security.OAuth.Autodesk
@@ -17,36 +19,92 @@ namespace AspNet.Security.OAuth.Autodesk
         /// <summary>
         /// Gets the unique user identifier corresponding to the authenticated user.
         /// </summary>
-        public static string GetUserId(JObject user) => user.Value<string>("userId");
+        public static string GetUserId([NotNull] JObject user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return user.Value<string>("userId");
+        }
 
         /// <summary>
         /// Gets the username corresponding to the authenticated user (e.g. John Doe or john.doe)
         /// </summary>
-        public static string GetUserName(JObject user) => user.Value<string>("userName");
+        public static string GetUserName([NotNull] JObject user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return user.Value<string>("userName");
+        }
 
         /// <summary>
         /// Gets the email address associated with the authenticated user (e.g. john.doe@autodesk.com)
         /// </summary>
-        public static string GetEmailAddress(JObject user) => user.Value<string>("emailId");
+        public static string GetEmailAddress([NotNull] JObject user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return user.Value<string>("emailId");
+        }
 
         /// <summary>
         /// Gets the first name of the authenticated user (e.g. John)
         /// </summary>
-        public static string GetFirstName(JObject user) => user.Value<string>("firstName");
+        public static string GetFirstName([NotNull] JObject user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return user.Value<string>("firstName");
+        }
 
         /// <summary>
         /// Gets the last name of the authenticated user (e.g. Doe)
         /// </summary>
-        public static string GetLastName(JObject user) => user.Value<string>("lastName");
+        public static string GetLastName([NotNull] JObject user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return user.Value<string>("lastName");
+        }
 
         /// <summary>
         /// Gets a boolean value indicating whether or not the user's email address has been verified.
         /// </summary>
-        public static string GetEmailVerified(JObject user) => user.Value<string>("emailVerified");
+        public static string GetEmailVerified([NotNull] JObject user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return user.Value<string>("emailVerified");
+        }
 
         /// <summary>
         /// Gets a boolean value indicating whether or not the user has enabled two-factor authentication.
         /// </summary>
-        public static string GetTwoFactorEnabled(JObject user) => user.Value<string>("2FaEnabled");
+        public static string GetTwoFactorEnabled([NotNull] JObject user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return user.Value<string>("2FaEnabled");
+        }
     }
 }
