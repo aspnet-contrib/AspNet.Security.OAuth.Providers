@@ -63,7 +63,7 @@ namespace AspNet.Security.OAuth.GitHub
                 var address = await GetEmailAsync(tokens);
                 if (!string.IsNullOrEmpty(address))
                 {
-                    identity.AddClaim(new Claim(ClaimTypes.Email, address, Options.ClaimsIssuer));
+                    identity.AddClaim(new Claim(ClaimTypes.Email, address, ClaimValueTypes.String, Options.ClaimsIssuer));
                 }
             }
 

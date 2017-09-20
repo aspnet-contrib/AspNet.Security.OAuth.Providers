@@ -3,18 +3,14 @@
   <Import Project="..\..\build\packages.props" />
 
   <PropertyGroup>
-    <TargetFrameworks>net451;netstandard1.3</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
   </PropertyGroup>
 
   <PropertyGroup>
     <Description>ASP.NET Core security middleware enabling Strava authentication.</Description>
-    <Authors>James Holcomb</Authors>
+    <Authors>James Holcomb,Jack Thorpe</Authors>
     <PackageTags>aspnetcore;authentication;oauth;security;strava</PackageTags>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Include="..\..\shared\AspNet.Security.OAuth.Extensions\*.cs" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="JetBrains.Annotations" Version="$(JetBrainsVersion)" PrivateAssets="All" />
