@@ -4,7 +4,9 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using Microsoft.AspNetCore.Builder;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
 
 namespace AspNet.Security.OAuth.GitHub
@@ -16,8 +18,6 @@ namespace AspNet.Security.OAuth.GitHub
     {
         public GitHubAuthenticationOptions()
         {
-            AuthenticationScheme = GitHubAuthenticationDefaults.AuthenticationScheme;
-            DisplayName = GitHubAuthenticationDefaults.DisplayName;
             ClaimsIssuer = GitHubAuthenticationDefaults.Issuer;
 
             CallbackPath = new PathString(GitHubAuthenticationDefaults.CallbackPath);
@@ -25,6 +25,12 @@ namespace AspNet.Security.OAuth.GitHub
             AuthorizationEndpoint = GitHubAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = GitHubAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = GitHubAuthenticationDefaults.UserInformationEndpoint;
+
+            ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
+            ClaimActions.MapJsonKey(ClaimTypes.Name, "login");
+            ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
+            ClaimActions.MapJsonKey("urn:github:name", "name");
+            ClaimActions.MapJsonKey("urn:github:url", "url");
         }
 
         /// <summary>

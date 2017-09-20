@@ -4,8 +4,9 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Mvc.Client.Extensions;
 
@@ -14,10 +15,10 @@ namespace Mvc.Client.Controllers
     public class AuthenticationController : Controller
     {
         [HttpGet("~/signin")]
-        public IActionResult SignIn() => View("SignIn", HttpContext.GetExternalProviders());
+        public async Task<IActionResult> SignIn() => View("SignIn", await HttpContext.GetExternalProvidersAsync());
 
         [HttpPost("~/signin")]
-        public IActionResult SignIn([FromForm] string provider)
+        public async Task<IActionResult> SignIn([FromForm] string provider)
         {
             // Note: the "provider" parameter corresponds to the external
             // authentication provider choosen by the user agent.
@@ -26,7 +27,7 @@ namespace Mvc.Client.Controllers
                 return BadRequest();
             }
 
-            if (!HttpContext.IsProviderSupported(provider))
+            if (!await HttpContext.IsProviderSupportedAsync(provider))
             {
                 return BadRequest();
             }

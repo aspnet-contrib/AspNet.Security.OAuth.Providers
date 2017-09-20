@@ -4,24 +4,29 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
+using System.Text.Encodings.Web;
 using System.Threading.Tasks;
-using AspNet.Security.OAuth.Extensions;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
 
 namespace AspNet.Security.OAuth.GitHub
 {
     public class GitHubAuthenticationHandler : OAuthHandler<GitHubAuthenticationOptions>
     {
-        public GitHubAuthenticationHandler([NotNull] HttpClient client)
-            : base(client)
+        public GitHubAuthenticationHandler(
+            [NotNull] IOptionsMonitor<GitHubAuthenticationOptions> options,
+            [NotNull] ILoggerFactory logger,
+            [NotNull] UrlEncoder encoder,
+            [NotNull] ISystemClock clock)
+            : base(options, logger, encoder, clock)
         {
         }
 
@@ -46,27 +51,25 @@ namespace AspNet.Security.OAuth.GitHub
 
             var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
 
-            identity.AddOptionalClaim(ClaimTypes.NameIdentifier, GitHubAuthenticationHelper.GetIdentifier(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim(ClaimTypes.Name, GitHubAuthenticationHelper.GetLogin(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim(ClaimTypes.Email, GitHubAuthenticationHelper.GetEmail(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:github:name", GitHubAuthenticationHelper.GetName(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:github:url", GitHubAuthenticationHelper.GetLink(payload), Options.ClaimsIssuer);
+            var principal = new ClaimsPrincipal(identity);
+            var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload);
+            context.RunClaimActions(payload);
 
             // When the email address is not public, retrieve it from
             // the emails endpoint if the user:email scope is specified.
             if (!string.IsNullOrEmpty(Options.UserEmailsEndpoint) &&
                 !identity.HasClaim(claim => claim.Type == ClaimTypes.Email) && Options.Scope.Contains("user:email"))
             {
-                identity.AddOptionalClaim(ClaimTypes.Email, await GetEmailAsync(tokens), Options.ClaimsIssuer);
+                var address = await GetEmailAsync(tokens);
+                if (!string.IsNullOrEmpty(address))
+                {
+                    identity.AddClaim(new Claim(ClaimTypes.Email, address, Options.ClaimsIssuer));
+                }
             }
 
-            var principal = new ClaimsPrincipal(identity);
-            var ticket = new AuthenticationTicket(principal, properties, Options.AuthenticationScheme);
-
-            var context = new OAuthCreatingTicketContext(ticket, Context, Options, Backchannel, tokens, payload);
             await Options.Events.CreatingTicket(context);
 
-            return context.Ticket;
+            return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
         }
 
         protected virtual async Task<string> GetEmailAsync([NotNull] OAuthTokenResponse tokens)
@@ -91,7 +94,9 @@ namespace AspNet.Security.OAuth.GitHub
 
             var payload = JArray.Parse(await response.Content.ReadAsStringAsync());
 
-            return GitHubAuthenticationHelper.GetEmail(payload);
+            return (from address in payload.AsJEnumerable()
+                    where address.Value<bool>("primary")
+                    select address.Value<string>("email")).FirstOrDefault();
         }
     }
 }
