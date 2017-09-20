@@ -7,63 +7,101 @@
 using System;
 using AspNet.Security.OAuth.Vkontakte;
 using JetBrains.Annotations;
-using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Authentication;
+
+namespace Microsoft.Extensions.DependencyInjection
+{
+    /// <summary>
+    /// Extension methods to add Vkontakte authentication handler.
+    /// </summary>
+    public static class VkontakteAuthenticationOptionsExtensions
+    {
+        /// <summary>
+        /// Adds the <see cref="VkontakteAuthenticationHandler"/> to the specified
+        /// <see cref="AuthenticationBuilder"/>, which enables Vkontakte authentication capabilities.
+        /// </summary>
+        /// <param name="builder">The authentication builder.</param>
+        /// <returns>A reference to this instance after the operation has completed.</returns>
+        public static AuthenticationBuilder AddVkontakte([NotNull] this AuthenticationBuilder builder)
+            => builder.AddVkontakte(VkontakteAuthenticationDefaults.AuthenticationScheme, _ => { });
+
+        /// <summary>
+        /// Adds the <see cref="VkontakteAuthenticationHandler"/> to the specified
+        /// <see cref="AuthenticationBuilder"/>, which enables Vkontakte authentication capabilities.
+        /// </summary>
+        /// <param name="builder">The authentication builder.</param>
+        /// <param name="configureOptions">An action delegate to configure the provided <see cref="VkontakteAuthenticationOptions"/>.</param>
+        /// <returns>A reference to this instance after the operation has completed.</returns>
+        public static AuthenticationBuilder AddVkontakte(
+            [NotNull] this AuthenticationBuilder builder,
+            [CanBeNull] Action<VkontakteAuthenticationOptions> configureOptions)
+            => builder.AddVkontakte(VkontakteAuthenticationDefaults.AuthenticationScheme, configureOptions);
+
+        /// <summary>
+        /// Adds the <see cref="VkontakteAuthenticationHandler"/> to the specified
+        /// <see cref="AuthenticationBuilder"/>, which enables Vkontakte authentication capabilities.
+        /// </summary>
+        /// <param name="builder">The authentication builder.</param>
+        /// <param name="authenticationScheme"></param>
+        /// <param name="configureOptions">An action delegate to configure the provided <see cref="VkontakteAuthenticationOptions"/>.</param>
+        /// <returns>A reference to this instance after the operation has completed.</returns>
+        public static AuthenticationBuilder AddVkontakte(
+            [NotNull] this AuthenticationBuilder builder,
+            [NotNull] string authenticationScheme,
+            [CanBeNull] Action<VkontakteAuthenticationOptions> configureOptions)
+            => builder.AddVkontakte(authenticationScheme, VkontakteAuthenticationDefaults.DisplayName, configureOptions);
+
+        /// <summary>
+        /// Adds the <see cref="VkontakteAuthenticationHandler"/> to the specified
+        /// <see cref="AuthenticationBuilder"/>, which enables Vkontakte authentication capabilities.
+        /// </summary>
+        /// <param name="builder">The authentication builder.</param>
+        /// <param name="authenticationScheme">The name of the scheme being added.</param>
+        /// <param name="displayName">The display name for the scheme.</param>
+        /// <param name="configureOptions">An action delegate to configure the provided <see cref="VkontakteAuthenticationOptions"/>.</param>
+        /// <returns>A reference to this instance after the operation has completed.</returns>
+        public static AuthenticationBuilder AddVkontakte(
+            [NotNull] this AuthenticationBuilder builder,
+            [NotNull] string authenticationScheme,
+            [CanBeNull] string displayName,
+            [CanBeNull] Action<VkontakteAuthenticationOptions> configureOptions)
+            => builder.AddOAuth<VkontakteAuthenticationOptions, VkontakteAuthenticationHandler>(authenticationScheme, displayName, configureOptions);
+    }
+}
 
 namespace Microsoft.AspNetCore.Builder
 {
     /// <summary>
     /// Extension methods to add Vkontakte authentication capabilities to an HTTP application pipeline.
     /// </summary>
-    public static class VkontakteAuthenticationExtensions
+    public static class VkontakteAppBuilderExtensions
     {
         /// <summary>
-        /// Adds the <see cref="VkontakteAuthenticationMiddleware"/> middleware to the specified
-        /// <see cref="IApplicationBuilder"/>, which enables Vkontakte authentication capabilities.
+        /// Obsolete, see https://go.microsoft.com/fwlink/?linkid=845470
         /// </summary>
-        /// <param name="app">The <see cref="IApplicationBuilder"/> to add the middleware to.</param>
-        /// <param name="options">A <see cref="VkontakteAuthenticationOptions"/> that specifies options for the middleware.</param>
+        /// <param name="app">The <see cref="IApplicationBuilder"/> to add the handler to.</param>
+        /// <param name="options">A <see cref="VkontakteAuthenticationOptions"/> that specifies options for the handler.</param>
         /// <returns>A reference to this instance after the operation has completed.</returns>
+        [Obsolete("See https://go.microsoft.com/fwlink/?linkid=845470", true)]
         public static IApplicationBuilder UseVkontakteAuthentication(
             [NotNull] this IApplicationBuilder app,
             [NotNull] VkontakteAuthenticationOptions options)
         {
-            if (app == null)
-            {
-                throw new ArgumentNullException(nameof(app));
-            }
-
-            if (options == null)
-            {
-                throw new ArgumentNullException(nameof(options));
-            }
-
-            return app.UseMiddleware<VkontakteAuthenticationMiddleware>(Options.Create(options));
+            throw new NotSupportedException("This method is no longer supported, see https://go.microsoft.com/fwlink/?linkid=845470");
         }
 
         /// <summary>
-        /// Adds the <see cref="VkontakteAuthenticationMiddleware"/> middleware to the specified <see cref="IApplicationBuilder"/>, which enables Vkontakte authentication capabilities.
+        /// Obsolete, see https://go.microsoft.com/fwlink/?linkid=845470
         /// </summary>
-        /// <param name="app">The <see cref="IApplicationBuilder"/> to add the middleware to.</param>
+        /// <param name="app">The <see cref="IApplicationBuilder"/> to add the handler to.</param>
         /// <param name="configuration">An action delegate to configure the provided <see cref="VkontakteAuthenticationOptions"/>.</param>
         /// <returns>A reference to this instance after the operation has completed.</returns>
+        [Obsolete("See https://go.microsoft.com/fwlink/?linkid=845470", true)]
         public static IApplicationBuilder UseVkontakteAuthentication(
             [NotNull] this IApplicationBuilder app,
             [NotNull] Action<VkontakteAuthenticationOptions> configuration)
         {
-            if (app == null)
-            {
-                throw new ArgumentNullException(nameof(app));
-            }
-
-            if (configuration == null)
-            {
-                throw new ArgumentNullException(nameof(configuration));
-            }
-
-            var options = new VkontakteAuthenticationOptions();
-            configuration(options);
-
-            return app.UseMiddleware<VkontakteAuthenticationMiddleware>(Options.Create(options));
+            throw new NotSupportedException("This method is no longer supported, see https://go.microsoft.com/fwlink/?linkid=845470");
         }
     }
 }

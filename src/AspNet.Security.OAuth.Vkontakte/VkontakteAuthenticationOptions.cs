@@ -5,13 +5,15 @@
  */
 
 using System.Collections.Generic;
-using Microsoft.AspNetCore.Builder;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
 
 namespace AspNet.Security.OAuth.Vkontakte
 {
     /// <summary>
-    /// Configuration options for <see cref="VkontakteAuthenticationMiddleware"/>.
+    /// Configuration options for <see cref="VkontakteAuthenticationHandler"/>.
     /// </summary>
     public class VkontakteAuthenticationOptions : OAuthOptions
     {
@@ -20,8 +22,6 @@ namespace AspNet.Security.OAuth.Vkontakte
         /// </summary>
         public VkontakteAuthenticationOptions()
         {
-            AuthenticationScheme = VkontakteAuthenticationDefaults.AuthenticationScheme;
-            DisplayName = VkontakteAuthenticationDefaults.DisplayName;
             ClaimsIssuer = VkontakteAuthenticationDefaults.Issuer;
 
             CallbackPath = new PathString("/signin-vkontakte");
@@ -29,20 +29,29 @@ namespace AspNet.Security.OAuth.Vkontakte
             AuthorizationEndpoint = VkontakteAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = VkontakteAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = VkontakteAuthenticationDefaults.UserInformationEndpoint;
+
+            Scope.Add("email");
+
+            ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "uid");
+            ClaimActions.MapJsonKey(ClaimTypes.GivenName, "first_name");
+            ClaimActions.MapJsonKey(ClaimTypes.Surname, "last_name");
+            ClaimActions.MapJsonKey(ClaimTypes.Name, "screen_name");
+            ClaimActions.MapJsonKey("urn:vkontakte:photo_thumb", "photo_50");
+            ClaimActions.MapJsonKey("urn:vkontakte:photo", "photo_max");
         }
 
         /// <summary>
         /// Gets the list of fields to retrieve from the user information endpoint.
-        /// See https://vk.com/dev/fields for more information.
+        /// See https://vk.com/dev/objects/user for more information.
         /// </summary>
         public ISet<string> Fields { get; } = new HashSet<string>
         {
             "uid",
             "first_name",
             "last_name",
-            "photo_rec",
-            "photo",
-            "hash"
+            "screen_name",
+            "photo_50",
+            "photo_max"
         };
     }
 }
