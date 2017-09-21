@@ -7,46 +7,46 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 
-namespace AspNet.Security.OAuth.Vkontakte
+namespace AspNet.Security.OAuth.Odnoklassniki
 {
     /// <summary>
-    /// Default values used by the Vkontakte authentication middleware.
+    /// Default values used by the Odnoklassniki authentication middleware.
     /// </summary>
-    public static class VkontakteAuthenticationDefaults
+    public static class OdnoklassnikiAuthenticationDefaults
     {
         /// <summary>
-        /// Default value for <see cref="AuthenticationScheme.Name"/>.
+        /// Default value for <see cref="AuthenticationScheme.Name"/>
         /// </summary>
-        public const string AuthenticationScheme = "Vkontakte";
+        public const string AuthenticationScheme = "Odnoklassniki";
 
         /// <summary>
-        /// Default value for <see cref="AuthenticationScheme.DisplayName"/>.
+        /// Default value for <see cref="AuthenticationScheme.DisplayName"/>
         /// </summary>
-        public const string DisplayName = "Vkontakte";
+        public const string DisplayName = "Odnoklassniki";
 
         /// <summary>
-        /// Default value for <see cref="AuthenticationSchemeOptions.ClaimsIssuer"/>.
+        /// Default value for <see cref="AuthenticationSchemeOptions.ClaimsIssuer"/>
         /// </summary>
-        public const string Issuer = "Vkontakte";
+        public const string Issuer = "Odnoklassniki";
 
         /// <summary>
         /// Default value for <see cref="RemoteAuthenticationOptions.CallbackPath"/>.
         /// </summary>
-        public const string CallbackPath = "/signin-vkontakte";
+        public const string CallbackPath = "/signin-odnoklassniki";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
         /// </summary>
-        public const string AuthorizationEndpoint = "https://oauth.vk.com/authorize";
+        public const string AuthorizationEndpoint = "https://connect.ok.ru/oauth/authorize";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.TokenEndpoint"/>.
         /// </summary>
-        public const string TokenEndpoint = "https://oauth.vk.com/access_token";
+        public const string TokenEndpoint = "https://api.ok.ru/oauth/token.do";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
         /// </summary>
-        public const string UserInformationEndpoint = "https://api.vk.com/method/users.get.json";
+        public const string UserInformationEndpoint = "https://api.ok.ru/api/users/getCurrentUser";
     }
 }

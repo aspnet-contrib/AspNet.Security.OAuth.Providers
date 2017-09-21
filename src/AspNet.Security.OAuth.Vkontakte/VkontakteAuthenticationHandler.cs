@@ -6,22 +6,26 @@
 
 using System.Net.Http;
 using System.Security.Claims;
+using System.Text.Encodings.Web;
 using System.Threading.Tasks;
-using AspNet.Security.OAuth.Extensions;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
 
 namespace AspNet.Security.OAuth.Vkontakte
 {
     public class VkontakteAuthenticationHandler : OAuthHandler<VkontakteAuthenticationOptions>
     {
-        public VkontakteAuthenticationHandler(HttpClient client)
-            : base(client)
+        public VkontakteAuthenticationHandler(
+            [NotNull] IOptionsMonitor<VkontakteAuthenticationOptions> options,
+            [NotNull] ILoggerFactory logger,
+            [NotNull] UrlEncoder encoder,
+            [NotNull] ISystemClock clock)
+            : base(options, logger, encoder, clock)
         {
         }
 
@@ -49,19 +53,21 @@ namespace AspNet.Security.OAuth.Vkontakte
             var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
             var user = (JObject) payload["response"][0];
 
-            var ticket = new AuthenticationTicket(new ClaimsPrincipal(identity), properties, Options.AuthenticationScheme);
-            var context = new OAuthCreatingTicketContext(ticket, Context, Options, Backchannel, tokens, user);
+            var context = new OAuthCreatingTicketContext(new ClaimsPrincipal(identity), properties, Context, Scheme, Options, Backchannel, tokens, user);
+            context.RunClaimActions(payload);
 
-            identity.AddOptionalClaim(ClaimTypes.NameIdentifier, VkontakteAuthenticationHelper.GetId(user), Options.ClaimsIssuer)
-                    .AddOptionalClaim(ClaimTypes.GivenName, VkontakteAuthenticationHelper.GetFirstName(user), Options.ClaimsIssuer)
-                    .AddOptionalClaim(ClaimTypes.Surname, VkontakteAuthenticationHelper.GetLastName(user), Options.ClaimsIssuer)
-                    .AddOptionalClaim(ClaimTypes.Hash, VkontakteAuthenticationHelper.GetHash(user), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:vkontakte:photo:link", VkontakteAuthenticationHelper.GetPhoto(user), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:vkontakte:photo_thumb:link", VkontakteAuthenticationHelper.GetPhotoThumbnail(user), Options.ClaimsIssuer);
+            if (!identity.HasClaim(claim => claim.Type == ClaimTypes.Email) && Options.Scope.Contains("email"))
+            {
+                var email = tokens.Response["email"]?.Value<string>();
+                if (!string.IsNullOrEmpty(email))
+                {
+                    identity.AddClaim(new Claim(ClaimTypes.Email, email, ClaimValueTypes.Email, Options.ClaimsIssuer));
+                }
+            }
 
-            await Options.Events.CreatingTicket(context);
+            await Events.CreatingTicket(context);
 
-            return context.Ticket;
+            return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
         }
     }
 }

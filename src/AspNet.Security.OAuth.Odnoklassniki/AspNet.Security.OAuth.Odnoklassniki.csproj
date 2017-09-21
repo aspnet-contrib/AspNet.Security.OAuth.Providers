@@ -7,9 +7,9 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Description>ASP.NET Core security middleware enabling Vkontakte authentication.</Description>
-    <Authors>Albert Zakiev</Authors>
-    <PackageTags>aspnetcore;authentication;oauth;security;vkontakte</PackageTags>
+    <Description>ASP.NET Core security middleware enabling Odboklassniki authentication.</Description>
+    <Authors>Andrew Nefedkin</Authors>
+    <PackageTags>aspnetcore;authentication;oauth;odnoklassniki;security</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
