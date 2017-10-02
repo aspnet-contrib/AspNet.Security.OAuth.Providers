@@ -4,7 +4,9 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using Microsoft.AspNetCore.Builder;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
 
 namespace AspNet.Security.OAuth.QQ
@@ -16,8 +18,6 @@ namespace AspNet.Security.OAuth.QQ
     {
         public QQAuthenticationOptions()
         {
-            AuthenticationScheme = QQAuthenticationDefaults.AuthenticationScheme;
-            DisplayName = AuthenticationScheme;
             ClaimsIssuer = QQAuthenticationDefaults.Issuer;
             CallbackPath = new PathString(QQAuthenticationDefaults.CallbackPath);
 
@@ -27,6 +27,14 @@ namespace AspNet.Security.OAuth.QQ
             UserInformationEndpoint = QQAuthenticationDefaults.UserInformationEndpoint;
 
             Scope.Add("get_user_info");
+
+            ClaimActions.MapJsonKey(ClaimTypes.Name, "nickname");
+            ClaimActions.MapJsonKey(ClaimTypes.Gender, "gender");
+            ClaimActions.MapJsonKey("urn:qq:picture", "figureurl");
+            ClaimActions.MapJsonKey("urn:qq:picture_medium", "figureurl_1");
+            ClaimActions.MapJsonKey("urn:qq:picture_full", "figureurl_2");
+            ClaimActions.MapJsonKey("urn:qq:avatar", "figureurl_qq_1");
+            ClaimActions.MapJsonKey("urn:qq:avatar_full", "figureurl_qq_2");
         }
 
         /// <summary>
