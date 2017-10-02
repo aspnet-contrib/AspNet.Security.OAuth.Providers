@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\build\packages.props" />
+
+  <PropertyGroup>
+    <TargetFrameworks>net451;netstandard1.3</TargetFrameworks>
+  </PropertyGroup>
+  
+  <PropertyGroup>
+    <Description>ASP.NET Core security middleware enabling Patreon authentication.</Description>
+    <Authors>Antoine Bichon</Authors>
+    <PackageTags>aspnetcore;authentication;oauth;patreon;security</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\shared\AspNet.Security.OAuth.Extensions\*.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="JetBrains.Annotations" Version="$(JetBrainsVersion)" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.OAuth" Version="$(AspNetCoreVersion)" />
+  </ItemGroup>
+
+</Project>
