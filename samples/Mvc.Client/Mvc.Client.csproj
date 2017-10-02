@@ -9,6 +9,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Amazon\AspNet.Security.OAuth.Amazon.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.GitHub\AspNet.Security.OAuth.GitHub.csproj" />
+    <ProjectReference Include="..\..\src\AspNet.Security.OAuth.LinkedIn\AspNet.Security.OAuth.LinkedIn.csproj" />
   </ItemGroup>
 
   <ItemGroup>
