@@ -5,8 +5,9 @@
  */
 
 using System.Collections.Generic;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OAuth;
 
 namespace AspNet.Security.OAuth.Amazon
 {
@@ -20,11 +21,9 @@ namespace AspNet.Security.OAuth.Amazon
         /// </summary>
         public AmazonAuthenticationOptions()
         {
-            AuthenticationScheme = AmazonAuthenticationDefaults.AuthenticationScheme;
-            DisplayName = AmazonAuthenticationDefaults.DisplayName;
             ClaimsIssuer = AmazonAuthenticationDefaults.Issuer;
 
-            CallbackPath = new PathString(AmazonAuthenticationDefaults.CallbackPath);
+            CallbackPath = AmazonAuthenticationDefaults.CallbackPath;
 
             AuthorizationEndpoint = AmazonAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = AmazonAuthenticationDefaults.TokenEndpoint;
@@ -32,16 +31,20 @@ namespace AspNet.Security.OAuth.Amazon
 
             Scope.Add("profile");
             Scope.Add("profile:user_id");
+
+            Fields.Add("email");
+            Fields.Add("name");
+            Fields.Add("user_id");
+
+            ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
+            ClaimActions.MapJsonKey(ClaimTypes.Name, "name");
+            ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "user_id");
+            ClaimActions.MapJsonKey(ClaimTypes.PostalCode, "postal_code");
         }
 
         /// <summary>
         /// Gets the list of fields to retrieve from the user information endpoint.
         /// </summary>
-        public ISet<string> Fields { get; } = new HashSet<string>
-        {
-            "email",
-            "name",
-            "user_id"
-        };
+        public ISet<string> Fields { get; } = new HashSet<string>();
     }
 }
