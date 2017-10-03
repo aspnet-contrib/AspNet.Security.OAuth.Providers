@@ -4,7 +4,9 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using Microsoft.AspNetCore.Builder;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
 
 namespace AspNet.Security.OAuth.WordPress
@@ -16,10 +18,7 @@ namespace AspNet.Security.OAuth.WordPress
     {
         public WordPressAuthenticationOptions()
         {
-            AuthenticationScheme = WordPressAuthenticationDefaults.AuthenticationScheme;
-            DisplayName = WordPressAuthenticationDefaults.DisplayName;
             ClaimsIssuer = WordPressAuthenticationDefaults.Issuer;
-
             CallbackPath = new PathString(WordPressAuthenticationDefaults.CallbackPath);
 
             AuthorizationEndpoint = WordPressAuthenticationDefaults.AuthorizationEndpoint;
@@ -29,6 +28,14 @@ namespace AspNet.Security.OAuth.WordPress
             // Note: limit by default to 'auth' scope only,
             // otherwise too many permissions are requested.
             Scope.Add("auth");
+
+            ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "ID");
+            ClaimActions.MapJsonKey(ClaimTypes.Name, "username");
+            ClaimActions.MapJsonKey("urn:wordpress:email", "email");
+            ClaimActions.MapJsonKey("urn:wordpress:displayname", "display_name");
+            ClaimActions.MapJsonKey("urn:wordpress:profileurl", "profile_URL");
+            ClaimActions.MapJsonKey("urn:wordpress:avatarurl", "avatar_URL");
+            ClaimActions.MapJsonKey("urn:wordpress:primaryblog", "primary_blog");
         }
     }
 }
