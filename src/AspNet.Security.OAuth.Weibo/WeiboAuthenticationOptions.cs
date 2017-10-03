@@ -4,7 +4,9 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using Microsoft.AspNetCore.Builder;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
 
 namespace AspNet.Security.OAuth.Weibo
@@ -16,8 +18,6 @@ namespace AspNet.Security.OAuth.Weibo
     {
         public WeiboAuthenticationOptions()
         {
-            AuthenticationScheme = WeiboAuthenticationDefaults.AuthenticationScheme;
-            DisplayName = WeiboAuthenticationDefaults.DisplayName;
             ClaimsIssuer = WeiboAuthenticationDefaults.Issuer;
             CallbackPath = new PathString(WeiboAuthenticationDefaults.CallbackPath);
 
@@ -26,6 +26,16 @@ namespace AspNet.Security.OAuth.Weibo
             UserInformationEndpoint = WeiboAuthenticationDefaults.UserInformationEndpoint;
 
             Scope.Add("email");
-        }       
+
+            ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
+            ClaimActions.MapJsonKey(ClaimTypes.Name, "name");
+            ClaimActions.MapJsonKey(ClaimTypes.Gender, "gender");
+            ClaimActions.MapJsonKey("urn:weibo:screen_name", "screen_name");
+            ClaimActions.MapJsonKey("urn:weibo:profile_image_url", "profile_image_url");
+            ClaimActions.MapJsonKey("urn:weibo:avatar_large", "avatar_large");
+            ClaimActions.MapJsonKey("urn:weibo:avatar_hd", "avatar_hd");
+            ClaimActions.MapJsonKey("urn:weibo:cover_image_phone", "cover_image_phone");
+            ClaimActions.MapJsonKey("urn:weibo:location", "location");
+        }
     }
 }
