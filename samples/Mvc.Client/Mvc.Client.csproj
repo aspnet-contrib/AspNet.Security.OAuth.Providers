@@ -21,6 +21,7 @@
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Reddit\AspNet.Security.OAuth.Reddit.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Strava\AspNet.Security.OAuth.Strava.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Twitch\AspNet.Security.OAuth.Twitch.csproj" />
+    <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Vimeo\AspNet.Security.OAuth.Vimeo.csproj" />
   </ItemGroup>
 
   <ItemGroup>

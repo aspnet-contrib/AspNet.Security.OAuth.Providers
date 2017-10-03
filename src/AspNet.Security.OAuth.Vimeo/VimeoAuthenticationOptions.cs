@@ -4,7 +4,10 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using Microsoft.AspNetCore.Builder;
+using System.Linq;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
 
 namespace AspNet.Security.OAuth.Vimeo
@@ -16,15 +19,16 @@ namespace AspNet.Security.OAuth.Vimeo
     {
         public VimeoAuthenticationOptions()
         {
-            AuthenticationScheme = VimeoAuthenticationDefaults.AuthenticationScheme;
-            DisplayName = VimeoAuthenticationDefaults.DisplayName;
             ClaimsIssuer = VimeoAuthenticationDefaults.Issuer;
-
             CallbackPath = new PathString(VimeoAuthenticationDefaults.CallbackPath);
 
             AuthorizationEndpoint = VimeoAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = VimeoAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = VimeoAuthenticationDefaults.UserInformationEndpoint;
+
+            ClaimActions.MapJsonKey("urn:vimeo:fullname", "name");
+            ClaimActions.MapJsonKey("urn:vimeo:profileurl", "link");
+            ClaimActions.MapCustomJson(ClaimTypes.NameIdentifier, user => user.Value<string>("uri")?.Split('/')?.LastOrDefault());
         }
     }
 }
