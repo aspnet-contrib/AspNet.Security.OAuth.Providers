@@ -4,7 +4,10 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using Microsoft.AspNetCore.Builder;
+using System.Linq;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
 
 namespace AspNet.Security.OAuth.Paypal
@@ -16,8 +19,6 @@ namespace AspNet.Security.OAuth.Paypal
     {
         public PaypalAuthenticationOptions()
         {
-            AuthenticationScheme = PaypalAuthenticationDefaults.AuthenticationScheme;
-            DisplayName = PaypalAuthenticationDefaults.DisplayName;
             ClaimsIssuer = PaypalAuthenticationDefaults.Issuer;
 
             CallbackPath = new PathString(PaypalAuthenticationDefaults.CallbackPath);
@@ -29,6 +30,12 @@ namespace AspNet.Security.OAuth.Paypal
             Scope.Add("openid");
             Scope.Add("profile");
             Scope.Add("email");
+
+            ClaimActions.MapJsonKey(ClaimTypes.Name, "name");
+            ClaimActions.MapJsonKey(ClaimTypes.GivenName, "given_name");
+            ClaimActions.MapJsonKey(ClaimTypes.Surname, "family_name");
+            ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
+            ClaimActions.MapCustomJson(ClaimTypes.NameIdentifier, user => user.Value<string>("user_id")?.Split('/')?.LastOrDefault());
         }
     }
 }
