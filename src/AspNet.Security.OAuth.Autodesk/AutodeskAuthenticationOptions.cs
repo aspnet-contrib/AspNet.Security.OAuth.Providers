@@ -4,7 +4,9 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using Microsoft.AspNetCore.Builder;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
 
 namespace AspNet.Security.OAuth.Autodesk
@@ -16,17 +18,22 @@ namespace AspNet.Security.OAuth.Autodesk
     {
         public AutodeskAuthenticationOptions()
         {
-            AuthenticationScheme = AutodeskAuthenticationDefaults.AuthenticationScheme;
-            DisplayName = AutodeskAuthenticationDefaults.DisplayName;
             ClaimsIssuer = AutodeskAuthenticationDefaults.Issuer;
-
             CallbackPath = new PathString(AutodeskAuthenticationDefaults.CallbackPath);
 
             AuthorizationEndpoint = AutodeskAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = AutodeskAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = AutodeskAuthenticationDefaults.UserInformationEndpoint;
 
-            Scope.Add(AutodeskAuthenticationConstants.Scopes.UserProfileRead);
+            Scope.Add("user-profile:read");
+
+            ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "userId");
+            ClaimActions.MapJsonKey(ClaimTypes.Name, "userName");
+            ClaimActions.MapJsonKey(ClaimTypes.GivenName, "firstName");
+            ClaimActions.MapJsonKey(ClaimTypes.Surname, "lastName");
+            ClaimActions.MapJsonKey(ClaimTypes.Email, "emailId");
+            ClaimActions.MapJsonKey("urn:autodesk:emailverified", "emailVerified");
+            ClaimActions.MapJsonKey("urn:autodesk:twofactorenabled", "2FaEnabled");
         }
     }
 }
