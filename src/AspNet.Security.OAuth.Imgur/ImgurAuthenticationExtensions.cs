@@ -7,9 +7,9 @@
 using System;
 using AspNet.Security.OAuth.Imgur;
 using JetBrains.Annotations;
-using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Authentication;
 
-namespace Microsoft.AspNetCore.Builder
+namespace Microsoft.Extensions.DependencyInjection
 {
     /// <summary>
     /// Extension methods to add Imgur authentication capabilities to an HTTP application pipeline.
@@ -17,54 +17,60 @@ namespace Microsoft.AspNetCore.Builder
     public static class ImgurAuthenticationExtensions
     {
         /// <summary>
-        /// Adds the <see cref="ImgurAuthenticationMiddleware"/> middleware to the specified
-        /// <see cref="IApplicationBuilder"/>, which enables Imgur authentication capabilities.
+        /// Adds the <see cref="ImgurAuthenticationHandler"/> to the specified
+        /// <see cref="AuthenticationBuilder"/>, which enables Imgur authentication capabilities.
         /// </summary>
-        /// <param name="app">The <see cref="IApplicationBuilder"/> to add the middleware to.</param>
-        /// <param name="options">A <see cref="ImgurAuthenticationOptions"/> that specifies options for the middleware.</param>
+        /// <param name="builder">The authentication builder.</param>
         /// <returns>A reference to this instance after the operation has completed.</returns>
-        public static IApplicationBuilder UseImgurAuthentication(
-            [NotNull] this IApplicationBuilder app,
-            [NotNull] ImgurAuthenticationOptions options)
+        public static AuthenticationBuilder AddImgur([NotNull] this AuthenticationBuilder builder)
         {
-            if (app == null)
-            {
-                throw new ArgumentNullException(nameof(app));
-            }
-
-            if (options == null)
-            {
-                throw new ArgumentNullException(nameof(options));
-            }
-
-            return app.UseMiddleware<ImgurAuthenticationMiddleware>(Options.Create(options));
+            return builder.AddImgur(ImgurAuthenticationDefaults.AuthenticationScheme, options => { });
         }
 
         /// <summary>
-        /// Adds the <see cref="ImgurAuthenticationMiddleware"/> middleware to the specified
-        /// <see cref="IApplicationBuilder"/>, which enables Imgur authentication capabilities.
+        /// Adds the <see cref="ImgurAuthenticationHandler"/> to the specified
+        /// <see cref="AuthenticationBuilder"/>, which enables Imgur authentication capabilities.
         /// </summary>
-        /// <param name="app">The <see cref="IApplicationBuilder"/> to add the middleware to.</param>
-        /// <param name="configuration">An action delegate to configure the provided <see cref="ImgurAuthenticationOptions"/>.</param>
+        /// <param name="builder">The authentication builder.</param>
+        /// <param name="configuration">The delegate used to configure the OpenID 2.0 options.</param>
         /// <returns>A reference to this instance after the operation has completed.</returns>
-        public static IApplicationBuilder UseImgurAuthentication(
-            [NotNull] this IApplicationBuilder app,
+        public static AuthenticationBuilder AddImgur(
+            [NotNull] this AuthenticationBuilder builder,
             [NotNull] Action<ImgurAuthenticationOptions> configuration)
         {
-            if (app == null)
-            {
-                throw new ArgumentNullException(nameof(app));
-            }
+            return builder.AddImgur(ImgurAuthenticationDefaults.AuthenticationScheme, configuration);
+        }
 
-            if (configuration == null)
-            {
-                throw new ArgumentNullException(nameof(configuration));
-            }
+        /// <summary>
+        /// Adds <see cref="ImgurAuthenticationHandler"/> to the specified
+        /// <see cref="AuthenticationBuilder"/>, which enables Imgur authentication capabilities.
+        /// </summary>
+        /// <param name="builder">The authentication builder.</param>
+        /// <param name="scheme">The authentication scheme associated with this instance.</param>
+        /// <param name="configuration">The delegate used to configure the Imgur options.</param>
+        /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
+        public static AuthenticationBuilder AddImgur(
+            [NotNull] this AuthenticationBuilder builder, [NotNull] string scheme,
+            [NotNull] Action<ImgurAuthenticationOptions> configuration)
+        {
+            return builder.AddImgur(scheme, ImgurAuthenticationDefaults.DisplayName, configuration);
+        }
 
-            var options = new ImgurAuthenticationOptions();
-            configuration(options);
-
-            return app.UseMiddleware<ImgurAuthenticationMiddleware>(Options.Create(options));
+        /// <summary>
+        /// Adds <see cref="ImgurAuthenticationHandler"/> to the specified
+        /// <see cref="AuthenticationBuilder"/>, which enables Imgur authentication capabilities.
+        /// </summary>
+        /// <param name="builder">The authentication builder.</param>
+        /// <param name="scheme">The authentication scheme associated with this instance.</param>
+        /// <param name="name">The optional display name associated with this instance.</param>
+        /// <param name="configuration">The delegate used to configure the Imgur options.</param>
+        /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
+        public static AuthenticationBuilder AddImgur(
+            [NotNull] this AuthenticationBuilder builder,
+            [NotNull] string scheme, [CanBeNull] string name,
+            [NotNull] Action<ImgurAuthenticationOptions> configuration)
+        {
+            return builder.AddOAuth<ImgurAuthenticationOptions, ImgurAuthenticationHandler>(scheme, name, configuration);
         }
     }
 }
