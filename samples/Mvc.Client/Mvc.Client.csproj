@@ -23,6 +23,7 @@
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Twitch\AspNet.Security.OAuth.Twitch.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Vimeo\AspNet.Security.OAuth.Vimeo.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Weibo\AspNet.Security.OAuth.Weibo.csproj" />
+    <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Weixin\AspNet.Security.OAuth.Weixin.csproj" />
   </ItemGroup>
 
   <ItemGroup>
