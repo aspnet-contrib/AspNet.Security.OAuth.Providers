@@ -5,7 +5,9 @@
  */
 
 using System;
-using Microsoft.AspNetCore.Builder;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
 
 namespace AspNet.Security.OAuth.BattleNet
@@ -17,13 +19,14 @@ namespace AspNet.Security.OAuth.BattleNet
     {
         public BattleNetAuthenticationOptions()
         {
-            AuthenticationScheme = BattleNetAuthenticationDefaults.AuthenticationScheme;
-            DisplayName = BattleNetAuthenticationDefaults.DisplayName;
             ClaimsIssuer = BattleNetAuthenticationDefaults.Issuer;
 
             CallbackPath = new PathString(BattleNetAuthenticationDefaults.CallbackPath);
 
             Region = BattleNetAuthenticationRegion.America;
+
+            ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
+            ClaimActions.MapJsonKey(ClaimTypes.Name, "battletag");
         }
 
         /// <summary>
