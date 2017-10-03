@@ -3,9 +3,13 @@
  * See https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers
  * for more information concerning the license and the contributors participating to this project.
  */
-
-using Microsoft.AspNetCore.Builder;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using Newtonsoft.Json.Linq;
 
 namespace AspNet.Security.OAuth.Strava
 {
@@ -16,8 +20,6 @@ namespace AspNet.Security.OAuth.Strava
     {
         public StravaAuthenticationOptions()
         {
-            AuthenticationScheme = StravaAuthenticationDefaults.AuthenticationScheme;
-            DisplayName = StravaAuthenticationDefaults.DisplayName;
             ClaimsIssuer = StravaAuthenticationDefaults.Issuer;
 
             CallbackPath = new PathString(StravaAuthenticationDefaults.CallbackPath);
@@ -27,6 +29,21 @@ namespace AspNet.Security.OAuth.Strava
             UserInformationEndpoint = StravaAuthenticationDefaults.UserInformationEndpoint;
 
             Scope.Add("public");
+
+            ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
+            ClaimActions.MapJsonKey(ClaimTypes.Name, "username");
+            ClaimActions.MapJsonKey(ClaimTypes.GivenName, "firstname");
+            ClaimActions.MapJsonKey(ClaimTypes.Surname, "lastname");
+            ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
+            ClaimActions.MapJsonKey(ClaimTypes.StateOrProvince, "state");
+            ClaimActions.MapJsonKey(ClaimTypes.Country, "country");
+            ClaimActions.MapJsonKey(ClaimTypes.Gender, "sex");
+            ClaimActions.MapJsonKey("urn:strava:city", "city");
+            ClaimActions.MapJsonKey("urn:strava:profile", "profile");
+            ClaimActions.MapJsonKey("urn:strava:profile-medium", "profile_medium");
+            ClaimActions.MapJsonKey("urn:strava:created-at", "created_at");
+            ClaimActions.MapJsonKey("urn:strava:updated-at", "updated_at");
+            ClaimActions.MapJsonKey("urn:strava:premium", "premium");
         }
     }
 }
