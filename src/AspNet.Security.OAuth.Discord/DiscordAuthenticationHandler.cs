@@ -7,21 +7,25 @@
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
+using System.Text.Encodings.Web;
 using System.Threading.Tasks;
-using AspNet.Security.OAuth.Extensions;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
 
 namespace AspNet.Security.OAuth.Discord
 {
     public class DiscordAuthenticationHandler : OAuthHandler<DiscordAuthenticationOptions>
     {
-        public DiscordAuthenticationHandler([NotNull] HttpClient client)
-            : base(client)
+        public DiscordAuthenticationHandler(
+            [NotNull] IOptionsMonitor<DiscordAuthenticationOptions> options,
+            [NotNull] ILoggerFactory logger,
+            [NotNull] UrlEncoder encoder,
+            [NotNull] ISystemClock clock)
+            : base(options, logger, encoder, clock)
         {
         }
 
@@ -33,21 +37,25 @@ namespace AspNet.Security.OAuth.Discord
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", tokens.AccessToken);
 
             var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
-            response.EnsureSuccessStatusCode();
+            if (!response.IsSuccessStatusCode)
+            {
+                Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
+                                "returned a {Status} response with the following payload: {Headers} {Body}.",
+                                /* Status: */ response.StatusCode,
+                                /* Headers: */ response.Headers.ToString(),
+                                /* Body: */ await response.Content.ReadAsStringAsync());
+
+                throw new HttpRequestException("An error occurred while retrieving the user profile.");
+            }
 
             var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
 
-            identity.AddOptionalClaim(ClaimTypes.NameIdentifier, DiscordAuthenticationHelper.GetIdentifier(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim(ClaimTypes.Email, DiscordAuthenticationHelper.GetEmail(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim(ClaimTypes.Name, DiscordAuthenticationHelper.GetUsername(payload), Options.ClaimsIssuer);
-
             var principal = new ClaimsPrincipal(identity);
-            var ticket = new AuthenticationTicket(principal, properties, Options.AuthenticationScheme);
+            var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload);
+            context.RunClaimActions(payload);
 
-            var context = new OAuthCreatingTicketContext(ticket, Context, Options, Backchannel, tokens, payload);
             await Options.Events.CreatingTicket(context);
-
-            return context.Ticket;
+            return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
         }
     }
 }
