@@ -8,21 +8,28 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Security.Claims;
+using System.Text.Encodings.Web;
 using System.Threading.Tasks;
-using AspNet.Security.OAuth.Extensions;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
 
 namespace AspNet.Security.OAuth.Weixin
 {
     public class WeixinAuthenticationHandler : OAuthHandler<WeixinAuthenticationOptions>
     {
-        public WeixinAuthenticationHandler([NotNull] HttpClient client) : base(client) { }
+        public WeixinAuthenticationHandler(
+            [NotNull] IOptionsMonitor<WeixinAuthenticationOptions> options,
+            [NotNull] ILoggerFactory logger,
+            [NotNull] UrlEncoder encoder,
+            [NotNull] ISystemClock clock)
+            : base(options, logger, encoder, clock)
+        {
+        }
 
         protected override async Task<AuthenticationTicket> CreateTicketAsync([NotNull] ClaimsIdentity identity, [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens)
         {
@@ -56,23 +63,12 @@ namespace AspNet.Security.OAuth.Weixin
                 throw new HttpRequestException("An error occurred while retrieving user information.");
             }
 
-            identity.AddOptionalClaim(ClaimTypes.NameIdentifier, WeixinAuthenticationHelper.GetUnionid(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim(ClaimTypes.Name, WeixinAuthenticationHelper.GetNickname(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim(ClaimTypes.Gender, WeixinAuthenticationHelper.GetSex(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim(ClaimTypes.Country, WeixinAuthenticationHelper.GetCountry(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:weixin:openid", WeixinAuthenticationHelper.GetOpenId(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:weixin:province", WeixinAuthenticationHelper.GetProvince(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:weixin:city", WeixinAuthenticationHelper.GetCity(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:weixin:headimgurl", WeixinAuthenticationHelper.GetHeadimgUrl(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:weixin:privilege", WeixinAuthenticationHelper.GetPrivilege(payload), Options.ClaimsIssuer);
-
             var principal = new ClaimsPrincipal(identity);
-            var ticket = new AuthenticationTicket(principal, properties, Options.AuthenticationScheme);
-
-            var context = new OAuthCreatingTicketContext(ticket, Context, Options, Backchannel, tokens);
+            var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload);
+            context.RunClaimActions(payload);
 
             await Options.Events.CreatingTicket(context);
-            return context.Ticket;
+            return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
         }
 
         protected override async Task<OAuthTokenResponse> ExchangeCodeAsync(string code, string redirectUri)
