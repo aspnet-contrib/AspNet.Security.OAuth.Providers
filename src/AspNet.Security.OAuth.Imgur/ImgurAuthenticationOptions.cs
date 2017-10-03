@@ -4,7 +4,9 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using Microsoft.AspNetCore.Builder;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
 
 namespace AspNet.Security.OAuth.Imgur
@@ -16,15 +18,19 @@ namespace AspNet.Security.OAuth.Imgur
     {
         public ImgurAuthenticationOptions()
         {
-            AuthenticationScheme = ImgurAuthenticationDefaults.AuthenticationScheme;
-            DisplayName = ImgurAuthenticationDefaults.DisplayName;
             ClaimsIssuer = ImgurAuthenticationDefaults.Issuer;
-
             CallbackPath = new PathString(ImgurAuthenticationDefaults.CallbackPath);
 
             AuthorizationEndpoint = ImgurAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = ImgurAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = ImgurAuthenticationDefaults.UserInformationEndpoint;
+
+            ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
+            ClaimActions.MapJsonKey(ClaimTypes.Name, "url");
+            ClaimActions.MapJsonKey("urn:imgur:bio", "bio");
+            ClaimActions.MapJsonKey("urn:imgur:reputation", "reputation");
+            ClaimActions.MapJsonKey("urn:imgur:created", "created");
+            ClaimActions.MapJsonKey("urn:imgur:proexpiration", "pro_expiration");
         }
     }
 }
