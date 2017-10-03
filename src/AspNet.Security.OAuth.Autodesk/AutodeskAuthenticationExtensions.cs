@@ -7,9 +7,9 @@
 using System;
 using AspNet.Security.OAuth.Autodesk;
 using JetBrains.Annotations;
-using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Authentication;
 
-namespace Microsoft.AspNetCore.Builder
+namespace Microsoft.Extensions.DependencyInjection
 {
     /// <summary>
     /// Extension methods to add Autodesk authentication capabilities to an HTTP application pipeline.
@@ -17,54 +17,60 @@ namespace Microsoft.AspNetCore.Builder
     public static class AutodeskAuthenticationExtensions
     {
         /// <summary>
-        /// Adds the <see cref="AutodeskAuthenticationMiddleware"/> middleware to the specified
-        /// <see cref="IApplicationBuilder"/>, which enables Autodesk authentication capabilities.
+        /// Adds the <see cref="AutodeskAuthenticationHandler"/> to the specified
+        /// <see cref="AuthenticationBuilder"/>, which enables Autodesk authentication capabilities.
         /// </summary>
-        /// <param name="app">The <see cref="IApplicationBuilder"/> to add the middleware to.</param>
-        /// <param name="options">A <see cref="AutodeskAuthenticationOptions"/> that specifies options for the middleware.</param>        
+        /// <param name="builder">The authentication builder.</param>
         /// <returns>A reference to this instance after the operation has completed.</returns>
-        public static IApplicationBuilder UseAutodeskAuthentication(
-            [NotNull] this IApplicationBuilder app,
-            [NotNull] AutodeskAuthenticationOptions options)
+        public static AuthenticationBuilder AddAutodesk([NotNull] this AuthenticationBuilder builder)
         {
-            if (app == null)
-            {
-                throw new ArgumentNullException(nameof(app));
-            }
-
-            if (options == null)
-            {
-                throw new ArgumentNullException(nameof(options));
-            }
-
-            return app.UseMiddleware<AutodeskAuthenticationMiddleware>(Options.Create(options));
+            return builder.AddAutodesk(AutodeskAuthenticationDefaults.AuthenticationScheme, options => { });
         }
 
         /// <summary>
-        /// Adds the <see cref="AutodeskAuthenticationMiddleware"/> middleware to the specified
-        /// <see cref="IApplicationBuilder"/>, which enables Autodesk authentication capabilities.
+        /// Adds the <see cref="AutodeskAuthenticationHandler"/> to the specified
+        /// <see cref="AuthenticationBuilder"/>, which enables Autodesk authentication capabilities.
         /// </summary>
-        /// <param name="app">The <see cref="IApplicationBuilder"/> to add the middleware to.</param>
-        /// <param name="configuration">An action delegate to configure the provided <see cref="AutodeskAuthenticationOptions"/>.</param>
+        /// <param name="builder">The authentication builder.</param>
+        /// <param name="configuration">The delegate used to configure the OpenID 2.0 options.</param>
         /// <returns>A reference to this instance after the operation has completed.</returns>
-        public static IApplicationBuilder UseAutodeskAuthentication(
-            [NotNull] this IApplicationBuilder app,
+        public static AuthenticationBuilder AddAutodesk(
+            [NotNull] this AuthenticationBuilder builder,
             [NotNull] Action<AutodeskAuthenticationOptions> configuration)
         {
-            if (app == null)
-            {
-                throw new ArgumentNullException(nameof(app));
-            }
+            return builder.AddAutodesk(AutodeskAuthenticationDefaults.AuthenticationScheme, configuration);
+        }
 
-            if (configuration == null)
-            {
-                throw new ArgumentNullException(nameof(configuration));
-            }
+        /// <summary>
+        /// Adds <see cref="AutodeskAuthenticationHandler"/> to the specified
+        /// <see cref="AuthenticationBuilder"/>, which enables Autodesk authentication capabilities.
+        /// </summary>
+        /// <param name="builder">The authentication builder.</param>
+        /// <param name="scheme">The authentication scheme associated with this instance.</param>
+        /// <param name="configuration">The delegate used to configure the Autodesk options.</param>
+        /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
+        public static AuthenticationBuilder AddAutodesk(
+            [NotNull] this AuthenticationBuilder builder, [NotNull] string scheme,
+            [NotNull] Action<AutodeskAuthenticationOptions> configuration)
+        {
+            return builder.AddAutodesk(scheme, AutodeskAuthenticationDefaults.DisplayName, configuration);
+        }
 
-            var options = new AutodeskAuthenticationOptions();
-            configuration(options);
-
-            return app.UseMiddleware<AutodeskAuthenticationMiddleware>(Options.Create(options));
+        /// <summary>
+        /// Adds <see cref="AutodeskAuthenticationHandler"/> to the specified
+        /// <see cref="AuthenticationBuilder"/>, which enables Autodesk authentication capabilities.
+        /// </summary>
+        /// <param name="builder">The authentication builder.</param>
+        /// <param name="scheme">The authentication scheme associated with this instance.</param>
+        /// <param name="name">The optional display name associated with this instance.</param>
+        /// <param name="configuration">The delegate used to configure the Autodesk options.</param>
+        /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
+        public static AuthenticationBuilder AddAutodesk(
+            [NotNull] this AuthenticationBuilder builder,
+            [NotNull] string scheme, [CanBeNull] string name,
+            [NotNull] Action<AutodeskAuthenticationOptions> configuration)
+        {
+            return builder.AddOAuth<AutodeskAuthenticationOptions, AutodeskAuthenticationHandler>(scheme, name, configuration);
         }
     }
 }

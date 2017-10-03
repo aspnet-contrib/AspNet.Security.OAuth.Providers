@@ -4,7 +4,9 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using Microsoft.AspNetCore.Builder;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
 
 namespace AspNet.Security.OAuth.Twitch
@@ -16,10 +18,7 @@ namespace AspNet.Security.OAuth.Twitch
     {
         public TwitchAuthenticationOptions()
         {
-            AuthenticationScheme = TwitchAuthenticationDefaults.AuthenticationScheme;
-            DisplayName = TwitchAuthenticationDefaults.DisplayName;
             ClaimsIssuer = TwitchAuthenticationDefaults.Issuer;
-
             CallbackPath = new PathString(TwitchAuthenticationDefaults.CallbackPath);
 
             AuthorizationEndpoint = TwitchAuthenticationDefaults.AuthorizationEndPoint;
@@ -27,6 +26,9 @@ namespace AspNet.Security.OAuth.Twitch
             UserInformationEndpoint = TwitchAuthenticationDefaults.UserInformationEndpoint;
 
             Scope.Add("user_read");
+
+            ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "_id");
+            ClaimActions.MapJsonKey(ClaimTypes.Name, "name");
         }
     }
 }

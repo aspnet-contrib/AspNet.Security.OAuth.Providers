@@ -4,7 +4,9 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using Microsoft.AspNetCore.Builder;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
 
 namespace AspNet.Security.OAuth.Asana
@@ -16,15 +18,16 @@ namespace AspNet.Security.OAuth.Asana
     {
         public AsanaAuthenticationOptions()
         {
-            AuthenticationScheme = AsanaAuthenticationDefaults.AuthenticationScheme;
-            DisplayName = AsanaAuthenticationDefaults.DisplayName;
             ClaimsIssuer = AsanaAuthenticationDefaults.Issuer;
-
             CallbackPath = new PathString(AsanaAuthenticationDefaults.CallbackPath);
 
             AuthorizationEndpoint = AsanaAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = AsanaAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = AsanaAuthenticationDefaults.UserInformationEndpoint;
+
+            ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
+            ClaimActions.MapJsonKey(ClaimTypes.Name, "name");
+            ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
         }
     }
 }
