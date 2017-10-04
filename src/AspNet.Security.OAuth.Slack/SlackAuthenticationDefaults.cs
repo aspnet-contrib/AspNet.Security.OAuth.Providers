@@ -45,8 +45,8 @@ namespace AspNet.Security.OAuth.Slack
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
-        /// For more info about this endpoint, see https://api.slack.com/methods/auth.test.
+        /// For more info about this endpoint, see https://api.slack.com/methods/users.identity.
         /// </summary>
-        public const string UserInformationEndpoint = "https://slack.com/api/auth.test";
+        public const string UserInformationEndpoint = "https://slack.com/api/users.identity";
     }
 }
