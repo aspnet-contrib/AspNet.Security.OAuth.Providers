@@ -17,6 +17,40 @@ namespace AspNet.Security.OAuth.Slack
     public static class SlackAuthenticationHelper
     {
         /// <summary>
+        /// Returns a unique identifer for the authenticated user.
+        /// </summary>
+        /// <remarks>
+        /// According to the Slack API documentation at https://api.slack.com/methods/users.identity, user IDs are
+        /// not guaranteed to be globally unique across all Slack users.  The combination of user ID and team ID, 
+        /// on the other hand, is guaranteed to be globally unique.
+        /// </remarks>
+        public static string GetUniqueIdentifier([NotNull] JObject user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            string userId = user.Value<JObject>("user")?.Value<string>("id");
+            string teamId = user.Value<JObject>("team")?.Value<string>("id");
+
+            return $"{teamId}|{userId}";
+        }
+
+        /// <summary>
+        /// Gets the email address corresponding to the authenticated user.
+        /// </summary>
+        public static string GetUserEmail([NotNull] JObject user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return user.Value<JObject>("user")?.Value<string>("email");
+        }
+
+        /// <summary>
         /// Gets the identifier corresponding to the authenticated user.
         /// </summary>
         public static string GetUserIdentifier([NotNull] JObject user)
@@ -26,7 +60,7 @@ namespace AspNet.Security.OAuth.Slack
                 throw new ArgumentNullException(nameof(user));
             }
 
-            return user.Value<string>("user_id");
+            return user.Value<JObject>("user")?.Value<string>("id");
         }
 
         /// <summary>
@@ -39,7 +73,7 @@ namespace AspNet.Security.OAuth.Slack
                 throw new ArgumentNullException(nameof(user));
             }
 
-            return user.Value<string>("user");
+            return user.Value<JObject>("user")?.Value<string>("name");
         }
 
         /// <summary>
@@ -52,7 +86,7 @@ namespace AspNet.Security.OAuth.Slack
                 throw new ArgumentNullException(nameof(user));
             }
 
-            return user.Value<string>("team_id");
+            return user.Value<JObject>("team")?.Value<string>("id");
         }
 
         /// <summary>
@@ -65,85 +99,7 @@ namespace AspNet.Security.OAuth.Slack
                 throw new ArgumentNullException(nameof(user));
             }
 
-            return user.Value<string>("team");
-        }
-
-        /// <summary>
-        /// Gets the URL corresponding to the authenticated user.
-        /// </summary>
-        public static string GetTeamLink([NotNull] JObject user)
-        {
-            if (user == null)
-            {
-                throw new ArgumentNullException(nameof(user));
-            }
-
-            return user.Value<string>("url");
-        }
-
-        /// <summary>
-        /// Gets the identifier associated with the bot.
-        /// </summary>
-        public static string GetBotUserId([NotNull] JObject user)
-        {
-            if (user == null)
-            {
-                throw new ArgumentNullException(nameof(user));
-            }
-
-            return user["bot"]?.Value<string>("bot_user_id");
-        }
-
-        /// <summary>
-        /// Gets the access token associated with the bot.
-        /// </summary>
-        public static string GetBotAccessToken([NotNull] JObject user)
-        {
-            if (user == null)
-            {
-                throw new ArgumentNullException(nameof(user));
-            }
-
-            return user["bot"]?.Value<string>("bot_access_token");
-        }
-
-        /// <summary>
-        /// Gets the channel name of the selected webhook.
-        /// </summary>
-        public static string GetWebhookChannel([NotNull] JObject user)
-        {
-            if (user == null)
-            {
-                throw new ArgumentNullException(nameof(user));
-            }
-
-            return user["incoming_webhook"]?.Value<string>("channel");
-        }
-
-        /// <summary>
-        /// Gets the URL of the selected webhook.
-        /// </summary>
-        public static string GetWebhookURL([NotNull] JObject user)
-        {
-            if (user == null)
-            {
-                throw new ArgumentNullException(nameof(user));
-            }
-
-            return user["incoming_webhook"]?.Value<string>("url");
-        }
-
-        /// <summary>
-        /// Gets the channel configuration URL of the selected webhook.
-        /// </summary>
-        public static string GetWebhookConfigurationURL([NotNull] JObject user)
-        {
-            if (user == null)
-            {
-                throw new ArgumentNullException(nameof(user));
-            }
-
-            return user["incoming_webhook"]?.Value<string>("configuration_url");
+            return user.Value<JObject>("team")?.Value<string>("name");
         }
     }
 }
