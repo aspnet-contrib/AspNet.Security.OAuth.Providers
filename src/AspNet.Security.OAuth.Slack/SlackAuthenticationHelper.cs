@@ -31,10 +31,7 @@ namespace AspNet.Security.OAuth.Slack
                 throw new ArgumentNullException(nameof(user));
             }
 
-            string userId = user.Value<JObject>("user")?.Value<string>("id");
-            string teamId = user.Value<JObject>("team")?.Value<string>("id");
-
-            return $"{teamId}|{userId}";
+            return $"{GetTeamIdentifier(user)}|{GetUserIdentifier(user)}";
         }
 
         /// <summary>
