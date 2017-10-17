@@ -54,6 +54,12 @@ namespace AspNet.Security.OAuth.Vkontakte
             var payloadContainer = JObject.Parse(await response.Content.ReadAsStringAsync());
             var payload = payloadContainer["response"].First as JObject;
 
+            if (tokens.Response["email"] != null)
+            {
+                string email = tokens.Response["email"].Value<string>();
+                payload.Add("email", email);
+            }
+
             var principal = new ClaimsPrincipal(identity);
 
             var context = new OAuthCreatingTicketContext(principal,
