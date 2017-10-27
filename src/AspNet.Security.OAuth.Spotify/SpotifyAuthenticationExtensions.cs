@@ -7,9 +7,9 @@
 using System;
 using AspNet.Security.OAuth.Spotify;
 using JetBrains.Annotations;
-using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Authentication;
 
-namespace Microsoft.AspNetCore.Builder
+namespace Microsoft.Extensions.DependencyInjection
 {
     /// <summary>
     /// Extension methods to add Spotify authentication capabilities to an HTTP application pipeline.
@@ -17,54 +17,60 @@ namespace Microsoft.AspNetCore.Builder
     public static class SpotifyAuthenticationExtensions
     {
         /// <summary>
-        /// Adds the <see cref="SpotifyAuthenticationMiddleware"/> middleware to the specified
-        /// <see cref="IApplicationBuilder"/>, which enables Spotify authentication capabilities.
+        /// Adds <see cref="SpotifyAuthenticationHandler"/> to the specified
+        /// <see cref="AuthenticationBuilder"/>, which enables Spotify authentication capabilities.
         /// </summary>
-        /// <param name="app">The <see cref="IApplicationBuilder"/> to add the middleware to.</param>
-        /// <param name="options">A <see cref="SpotifyAuthenticationOptions"/> that specifies options for the middleware.</param>
-        /// <returns>A reference to this instance after the operation has completed.</returns>
-        public static IApplicationBuilder UseSpotifyAuthentication(
-            [NotNull] this IApplicationBuilder app,
-            [NotNull] SpotifyAuthenticationOptions options)
+        /// <param name="builder">The authentication builder.</param>
+        /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
+        public static AuthenticationBuilder AddSpotify([NotNull] this AuthenticationBuilder builder)
         {
-            if (app == null)
-            {
-                throw new ArgumentNullException(nameof(app));
-            }
-
-            if (options == null)
-            {
-                throw new ArgumentNullException(nameof(options));
-            }
-
-            return app.UseMiddleware<SpotifyAuthenticationMiddleware>(Options.Create(options));
+            return builder.AddSpotify(SpotifyAuthenticationDefaults.AuthenticationScheme, options => { });
         }
 
         /// <summary>
-        /// Adds the <see cref="SpotifyAuthenticationMiddleware"/> middleware to the specified
-        /// <see cref="IApplicationBuilder"/>, which enables Spotify authentication capabilities.
+        /// Adds <see cref="SpotifyAuthenticationHandler"/> to the specified
+        /// <see cref="AuthenticationBuilder"/>, which enables Spotify authentication capabilities.
         /// </summary>
-        /// <param name="app">The <see cref="IApplicationBuilder"/> to add the middleware to.</param>
-        /// <param name="configuration">An action delegate to configure the provided <see cref="SpotifyAuthenticationOptions"/>.</param>
-        /// <returns>A reference to this instance after the operation has completed.</returns>
-        public static IApplicationBuilder UseSpotifyAuthentication(
-            [NotNull] this IApplicationBuilder app,
+        /// <param name="builder">The authentication builder.</param>
+        /// <param name="configuration">The delegate used to configure the OpenID 2.0 options.</param>
+        /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
+        public static AuthenticationBuilder AddSpotify(
+            [NotNull] this AuthenticationBuilder builder,
             [NotNull] Action<SpotifyAuthenticationOptions> configuration)
         {
-            if (app == null)
-            {
-                throw new ArgumentNullException(nameof(app));
-            }
+            return builder.AddSpotify(SpotifyAuthenticationDefaults.AuthenticationScheme, configuration);
+        }
 
-            if (configuration == null)
-            {
-                throw new ArgumentNullException(nameof(configuration));
-            }
+        /// <summary>
+        /// Adds <see cref="SpotifyAuthenticationHandler"/> to the specified
+        /// <see cref="AuthenticationBuilder"/>, which enables Spotify authentication capabilities.
+        /// </summary>
+        /// <param name="builder">The authentication builder.</param>
+        /// <param name="scheme">The authentication scheme associated with this instance.</param>
+        /// <param name="configuration">The delegate used to configure the Spotify options.</param>
+        /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
+        public static AuthenticationBuilder AddSpotify(
+            [NotNull] this AuthenticationBuilder builder, [NotNull] string scheme,
+            [NotNull] Action<SpotifyAuthenticationOptions> configuration)
+        {
+            return builder.AddSpotify(scheme, SpotifyAuthenticationDefaults.DisplayName, configuration);
+        }
 
-            var options = new SpotifyAuthenticationOptions();
-            configuration(options);
-
-            return app.UseMiddleware<SpotifyAuthenticationMiddleware>(Options.Create(options));
+        /// <summary>
+        /// Adds <see cref="SpotifyAuthenticationHandler"/> to the specified
+        /// <see cref="AuthenticationBuilder"/>, which enables Spotify authentication capabilities.
+        /// </summary>
+        /// <param name="builder">The authentication builder.</param>
+        /// <param name="scheme">The authentication scheme associated with this instance.</param>
+        /// <param name="name">The optional display name associated with this instance.</param>
+        /// <param name="configuration">The delegate used to configure the Spotify options.</param>
+        /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
+        public static AuthenticationBuilder AddSpotify(
+            [NotNull] this AuthenticationBuilder builder,
+            [NotNull] string scheme, [CanBeNull] string name,
+            [NotNull] Action<SpotifyAuthenticationOptions> configuration)
+        {
+            return builder.AddOAuth<SpotifyAuthenticationOptions, SpotifyAuthenticationHandler>(scheme, name, configuration);
         }
     }
 }
