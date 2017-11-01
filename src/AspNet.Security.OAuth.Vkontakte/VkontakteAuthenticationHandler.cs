@@ -6,14 +6,14 @@
 
 using System.Net.Http;
 using System.Security.Claims;
-using System.Threading.Tasks;
 using System.Text.Encodings.Web;
+using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
 
 namespace AspNet.Security.OAuth.Vkontakte
@@ -50,15 +50,9 @@ namespace AspNet.Security.OAuth.Vkontakte
 
                 throw new HttpRequestException("An error occurred while retrieving the user profile.");
             }
-            
+
             var payloadContainer = JObject.Parse(await response.Content.ReadAsStringAsync());
             var payload = payloadContainer["response"].First as JObject;
-
-            if (tokens.Response["email"] != null)
-            {
-                string email = tokens.Response["email"].Value<string>();
-                payload.Add("email", email);
-            }
 
             var principal = new ClaimsPrincipal(identity);
 
