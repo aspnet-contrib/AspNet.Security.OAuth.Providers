@@ -3,7 +3,15 @@
   <Import Project="..\..\build\dependencies.props" />
 
   <PropertyGroup>
-    <TargetFrameworks>net461;netcoreapp2.0</TargetFrameworks>
+    <TargetFrameworks>netcoreapp2.0</TargetFrameworks>
+    <ApplicationIcon />
+    <OutputType>Exe</OutputType>
+    <StartupObject />
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netcoreapp2.0|AnyCPU'">
+    <DefineConstants>TRACE;DEBUG;NETCOREAPP2_0</DefineConstants>
+    <OutputPath>bin\Debug\netcoreapp2.0\</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,6 +21,7 @@
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Autodesk\AspNet.Security.OAuth.Autodesk.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.BattleNet\AspNet.Security.OAuth.BattleNet.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Discord\AspNet.Security.OAuth.Discord.csproj" />
+    <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Dribbble\AspNet.Security.OAuth.Dribbble.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Dropbox\AspNet.Security.OAuth.Dropbox.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.GitHub\AspNet.Security.OAuth.GitHub.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Imgur\AspNet.Security.OAuth.Imgur.csproj" />

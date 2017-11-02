@@ -4,6 +4,7 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using AspNet.Security.OAuth.Dribbble;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,6 +24,12 @@ namespace Mvc.Client
             {
                 options.LoginPath = "/login";
                 options.LogoutPath = "/signout";
+            })
+
+            .AddDribbble(options =>
+            {
+                options.ClientId = "27d597ab03b5b6cd4065b436645349144c1a98c83f81bfd650047349d15b9202";
+                options.ClientSecret = "3bb0dea86113286fd2fc6eb0857413073f28688a8c44e06aa4834c924215f183";
             })
 
             .AddGoogle(options =>
