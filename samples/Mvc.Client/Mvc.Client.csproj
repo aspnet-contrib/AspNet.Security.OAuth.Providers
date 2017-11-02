@@ -11,6 +11,7 @@
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.ArcGIS\AspNet.Security.OAuth.ArcGIS.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Asana\AspNet.Security.OAuth.Asana.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Autodesk\AspNet.Security.OAuth.Autodesk.csproj" />
+    <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Automatic\AspNet.Security.OAuth.Automatic.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.BattleNet\AspNet.Security.OAuth.BattleNet.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Discord\AspNet.Security.OAuth.Discord.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Dropbox\AspNet.Security.OAuth.Dropbox.csproj" />
