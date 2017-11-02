@@ -7,9 +7,9 @@
 using System;
 using AspNet.Security.OAuth.Buffer;
 using JetBrains.Annotations;
-using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Authentication;
 
-namespace Microsoft.AspNetCore.Builder
+namespace Microsoft.Extensions.DependencyInjection
 {
     /// <summary>
     /// Extension methods to add Buffer authentication capabilities to an HTTP application pipeline.
@@ -17,54 +17,60 @@ namespace Microsoft.AspNetCore.Builder
     public static class BufferAuthenticationExtensions
     {
         /// <summary>
-        /// Adds the <see cref="BufferAuthenticationMiddleware"/> middleware to the specified
-        /// <see cref="IApplicationBuilder"/>, which enables Buffer authentication capabilities.
+        /// Adds <see cref="BufferAuthenticationHandler"/> to the specified
+        /// <see cref="AuthenticationBuilder"/>, which enables Buffer authentication capabilities.
         /// </summary>
-        /// <param name="app">The <see cref="IApplicationBuilder"/> to add the middleware to.</param>
-        /// <param name="options">A <see cref="BufferAuthenticationOptions"/> that specifies options for the middleware.</param>
-        /// <returns>A reference to this instance after the operation has completed.</returns>
-        public static IApplicationBuilder UseBufferAuthentication(
-            [NotNull] this IApplicationBuilder app,
-            [NotNull] BufferAuthenticationOptions options)
+        /// <param name="builder">The authentication builder.</param>
+        /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
+        public static AuthenticationBuilder AddBuffer([NotNull] this AuthenticationBuilder builder)
         {
-            if (app == null)
-            {
-                throw new ArgumentNullException(nameof(app));
-            }
-
-            if (options == null)
-            {
-                throw new ArgumentNullException(nameof(options));
-            }
-
-            return app.UseMiddleware<BufferAuthenticationMiddleware>(Options.Create(options));
+            return builder.AddBuffer(BufferAuthenticationDefaults.AuthenticationScheme, options => { });
         }
 
         /// <summary>
-        /// Adds the <see cref="BufferAuthenticationMiddleware"/> middleware to the specified
-        /// <see cref="IApplicationBuilder"/>, which enables Buffer authentication capabilities.
+        /// Adds <see cref="BufferAuthenticationHandler"/> to the specified
+        /// <see cref="AuthenticationBuilder"/>, which enables Buffer authentication capabilities.
         /// </summary>
-        /// <param name="app">The <see cref="IApplicationBuilder"/> to add the middleware to.</param>
-        /// <param name="configuration">An action delegate to configure the provided <see cref="BufferAuthenticationOptions"/>.</param>
-        /// <returns>A reference to this instance after the operation has completed.</returns>
-        public static IApplicationBuilder UseBufferAuthentication(
-            [NotNull] this IApplicationBuilder app,
+        /// <param name="builder">The authentication builder.</param>
+        /// <param name="configuration">The delegate used to configure the OpenID 2.0 options.</param>
+        /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
+        public static AuthenticationBuilder AddBuffer(
+            [NotNull] this AuthenticationBuilder builder,
             [NotNull] Action<BufferAuthenticationOptions> configuration)
         {
-            if (app == null)
-            {
-                throw new ArgumentNullException(nameof(app));
-            }
+            return builder.AddBuffer(BufferAuthenticationDefaults.AuthenticationScheme, configuration);
+        }
 
-            if (configuration == null)
-            {
-                throw new ArgumentNullException(nameof(configuration));
-            }
+        /// <summary>
+        /// Adds <see cref="BufferAuthenticationHandler"/> to the specified
+        /// <see cref="AuthenticationBuilder"/>, which enables Buffer authentication capabilities.
+        /// </summary>
+        /// <param name="builder">The authentication builder.</param>
+        /// <param name="scheme">The authentication scheme associated with this instance.</param>
+        /// <param name="configuration">The delegate used to configure the Buffer options.</param>
+        /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
+        public static AuthenticationBuilder AddBuffer(
+            [NotNull] this AuthenticationBuilder builder, [NotNull] string scheme,
+            [NotNull] Action<BufferAuthenticationOptions> configuration)
+        {
+            return builder.AddBuffer(scheme, BufferAuthenticationDefaults.DisplayName, configuration);
+        }
 
-            var options = new BufferAuthenticationOptions();
-            configuration(options);
-
-            return app.UseMiddleware<BufferAuthenticationMiddleware>(Options.Create(options));
+        /// <summary>
+        /// Adds <see cref="BufferAuthenticationHandler"/> to the specified
+        /// <see cref="AuthenticationBuilder"/>, which enables Buffer authentication capabilities.
+        /// </summary>
+        /// <param name="builder">The authentication builder.</param>
+        /// <param name="scheme">The authentication scheme associated with this instance.</param>
+        /// <param name="name">The optional display name associated with this instance.</param>
+        /// <param name="configuration">The delegate used to configure the Buffer options.</param>
+        /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
+        public static AuthenticationBuilder AddBuffer(
+            [NotNull] this AuthenticationBuilder builder,
+            [NotNull] string scheme, [CanBeNull] string name,
+            [NotNull] Action<BufferAuthenticationOptions> configuration)
+        {
+            return builder.AddOAuth<BufferAuthenticationOptions, BufferAuthenticationHandler>(scheme, name, configuration);
         }
     }
 }
