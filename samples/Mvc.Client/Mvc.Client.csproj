@@ -13,6 +13,7 @@
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Autodesk\AspNet.Security.OAuth.Autodesk.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Automatic\AspNet.Security.OAuth.Automatic.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.BattleNet\AspNet.Security.OAuth.BattleNet.csproj" />
+    <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Beam\AspNet.Security.OAuth.Beam.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Discord\AspNet.Security.OAuth.Discord.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Dropbox\AspNet.Security.OAuth.Dropbox.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.GitHub\AspNet.Security.OAuth.GitHub.csproj" />
