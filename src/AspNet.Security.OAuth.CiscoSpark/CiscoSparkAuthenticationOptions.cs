@@ -4,8 +4,11 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using Microsoft.AspNetCore.Builder;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json.Linq;
 
 namespace AspNet.Security.OAuth.CiscoSpark
 {
@@ -16,15 +19,16 @@ namespace AspNet.Security.OAuth.CiscoSpark
     {
         public CiscoSparkAuthenticationOptions()
         {
-            AuthenticationScheme = CiscoSparkAuthenticationDefaults.AuthenticationScheme;
-            DisplayName = CiscoSparkAuthenticationDefaults.DisplayName;
             ClaimsIssuer = CiscoSparkAuthenticationDefaults.Issuer;
-
             CallbackPath = new PathString(CiscoSparkAuthenticationDefaults.CallbackPath);
 
             AuthorizationEndpoint = CiscoSparkAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = CiscoSparkAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = CiscoSparkAuthenticationDefaults.UserInformationEndpoint;
+
+            ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
+            ClaimActions.MapJsonKey(ClaimTypes.Name, "displayName");
+            ClaimActions.MapCustomJson(ClaimTypes.Email, user => user.Value<JArray>("emails")?.First?.Value<string>());
         }
     }
 }
