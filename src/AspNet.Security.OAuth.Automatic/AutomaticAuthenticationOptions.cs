@@ -4,7 +4,9 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using Microsoft.AspNetCore.Builder;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
 
 namespace AspNet.Security.OAuth.Automatic
@@ -16,15 +18,19 @@ namespace AspNet.Security.OAuth.Automatic
     {
         public AutomaticAuthenticationOptions()
         {
-            AuthenticationScheme = AutomaticAuthenticationDefaults.AuthenticationScheme;
-            DisplayName = AutomaticAuthenticationDefaults.DisplayName;
             ClaimsIssuer = AutomaticAuthenticationDefaults.Issuer;
-
             CallbackPath = new PathString(AutomaticAuthenticationDefaults.CallbackPath);
 
             AuthorizationEndpoint = AutomaticAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = AutomaticAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = AutomaticAuthenticationDefaults.UserInformationEndpoint;
+
+            ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
+            ClaimActions.MapJsonKey(ClaimTypes.GivenName, "first_name");
+            ClaimActions.MapJsonKey(ClaimTypes.Surname, "last_name");
+            ClaimActions.MapJsonKey(ClaimTypes.Name, "username");
+            ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
+            ClaimActions.MapJsonKey(ClaimTypes.Uri, "url");
         }
     }
 }
