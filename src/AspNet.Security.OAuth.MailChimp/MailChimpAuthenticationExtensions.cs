@@ -4,10 +4,10 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using System;
 using AspNet.Security.OAuth.MailChimp;
-using JetBrains.Annotations;
-using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace Microsoft.AspNetCore.Builder
 {
@@ -17,54 +17,60 @@ namespace Microsoft.AspNetCore.Builder
     public static class MailChimpAuthenticationExtensions
     {
         /// <summary>
-        /// Adds the <see cref="MailChimpAuthenticationMiddleware"/> middleware to the specified
-        /// <see cref="IApplicationBuilder"/>, which enables MailChimp authentication capabilities.
+        /// Adds the <see cref="MailChimpAuthenticationHandler"/> to the specified
+        /// <see cref="AuthenticationBuilder"/>, which enables MailChimp authentication capabilities.
         /// </summary>
-        /// <param name="app">The <see cref="IApplicationBuilder"/> to add the middleware to.</param>
-        /// <param name="options">A <see cref="MailChimpAuthenticationOptions"/> that specifies options for the middleware.</param>
+        /// <param name="builder">The authentication builder.</param>
         /// <returns>A reference to this instance after the operation has completed.</returns>
-        public static IApplicationBuilder UseMailChimpAuthentication(
-            [NotNull] this IApplicationBuilder app,
-            [NotNull] MailChimpAuthenticationOptions options)
+        public static AuthenticationBuilder AddMailChimp(this AuthenticationBuilder builder)
         {
-            if (app == null)
-            {
-                throw new ArgumentNullException(nameof(app));
-            }
-
-            if (options == null)
-            {
-                throw new ArgumentNullException(nameof(options));
-            }
-
-            return app.UseMiddleware<MailChimpAuthenticationMiddleware>(Options.Create(options));
+            return builder.AddMailChimp(MailChimpAuthenticationDefaults.AuthenticationScheme, options => { });
         }
 
         /// <summary>
-        /// Adds the <see cref="MailChimpAuthenticationMiddleware"/> middleware to the specified
-        /// <see cref="IApplicationBuilder"/>, which enables MailChimp authentication capabilities.
+        /// Adds the <see cref="MailChimpAuthenticationHandler"/> to the specified
+        /// <see cref="AuthenticationBuilder"/>, which enables MailChimp authentication capabilities.
         /// </summary>
-        /// <param name="app">The <see cref="IApplicationBuilder"/> to add the middleware to.</param>
-        /// <param name="configuration">An action delegate to configure the provided <see cref="MailChimpAuthenticationOptions"/>.</param>
+        /// <param name="builder">The authentication builder.</param>
+        /// <param name="configuration">The delegate used to configure the OpenID 2.0 options.</param>
         /// <returns>A reference to this instance after the operation has completed.</returns>
-        public static IApplicationBuilder UseMailChimpAuthentication(
-            [NotNull] this IApplicationBuilder app,
-            [NotNull] Action<MailChimpAuthenticationOptions> configuration)
+        public static AuthenticationBuilder AddMailChimp(
+            this AuthenticationBuilder builder,
+            Action<MailChimpAuthenticationOptions> configuration)
         {
-            if (app == null)
-            {
-                throw new ArgumentNullException(nameof(app));
-            }
+            return builder.AddMailChimp(MailChimpAuthenticationDefaults.AuthenticationScheme, configuration);
+        }
 
-            if (configuration == null)
-            {
-                throw new ArgumentNullException(nameof(configuration));
-            }
+        /// <summary>
+        /// Adds <see cref="MailChimpAuthenticationHandler"/> to the specified
+        /// <see cref="AuthenticationBuilder"/>, which enables MailChimp authentication capabilities.
+        /// </summary>
+        /// <param name="builder">The authentication builder.</param>
+        /// <param name="scheme">The authentication scheme associated with this instance.</param>
+        /// <param name="configuration">The delegate used to configure the MailChimp options.</param>
+        /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
+        public static AuthenticationBuilder AddMailChimp(
+            this AuthenticationBuilder builder, string scheme,
+            Action<MailChimpAuthenticationOptions> configuration)
+        {
+            return builder.AddMailChimp(scheme, MailChimpAuthenticationDefaults.DisplayName, configuration);
+        }
 
-            var options = new MailChimpAuthenticationOptions();
-            configuration(options);
-
-            return app.UseMiddleware<MailChimpAuthenticationMiddleware>(Options.Create(options));
+        /// <summary>
+        /// Adds <see cref="MailChimpAuthenticationHandler"/> to the specified
+        /// <see cref="AuthenticationBuilder"/>, which enables MailChimp authentication capabilities.
+        /// </summary>
+        /// <param name="builder">The authentication builder.</param>
+        /// <param name="scheme">The authentication scheme associated with this instance.</param>
+        /// <param name="name">The optional display name associated with this instance.</param>
+        /// <param name="configuration">The delegate used to configure the MailChimp options.</param>
+        /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
+        public static AuthenticationBuilder AddMailChimp(
+            this AuthenticationBuilder builder,
+            string scheme, string name,
+            Action<MailChimpAuthenticationOptions> configuration)
+        {
+            return builder.AddOAuth<MailChimpAuthenticationOptions, MailChimpAuthenticationHandler>(scheme, name, configuration);
         }
     }
 }

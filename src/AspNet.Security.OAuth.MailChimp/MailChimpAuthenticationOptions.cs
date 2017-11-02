@@ -4,8 +4,10 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
 
 namespace AspNet.Security.OAuth.MailChimp
 {
@@ -16,8 +18,6 @@ namespace AspNet.Security.OAuth.MailChimp
     {
         public MailChimpAuthenticationOptions()
         {
-            AuthenticationScheme = MailChimpAuthenticationDefaults.AuthenticationScheme;
-            DisplayName = MailChimpAuthenticationDefaults.DisplayName;
             ClaimsIssuer = MailChimpAuthenticationDefaults.Issuer;
 
             CallbackPath = new PathString(MailChimpAuthenticationDefaults.CallbackPath);
@@ -25,6 +25,10 @@ namespace AspNet.Security.OAuth.MailChimp
             AuthorizationEndpoint = MailChimpAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = MailChimpAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = MailChimpAuthenticationDefaults.UserInformationEndpoint;
+
+            ClaimActions.MapJsonSubKey(ClaimTypes.NameIdentifier, "login", "login_id");
+            ClaimActions.MapJsonKey(ClaimTypes.Name, "accountname");
+            ClaimActions.MapJsonSubKey(ClaimTypes.Email, "login", "login_email");
         }
     }
 }

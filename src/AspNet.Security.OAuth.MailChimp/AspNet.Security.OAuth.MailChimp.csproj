@@ -1,24 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="..\..\build\packages.props" />
-
   <PropertyGroup>
-    <TargetFrameworks>net451;netstandard1.3</TargetFrameworks>
+    <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <Description>ASP.NET Core security middleware enabling MailChimp authentication.</Description>
-    <Authors>Igor Simovic</Authors>
-    <PackageTags>aspnetcore;authentication;mailchimp;oauth;security</PackageTags>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <OutputPath></OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="..\..\shared\AspNet.Security.OAuth.Extensions\*.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="JetBrains.Annotations" Version="$(JetBrainsVersion)" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.OAuth" Version="$(AspNetCoreVersion)" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.OAuth" Version="2.0.0" />
   </ItemGroup>
 
 </Project>

@@ -10,8 +10,8 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netcoreapp2.0|AnyCPU'">
-    <DefineConstants>TRACE;DEBUG;NETCOREAPP2_0</DefineConstants>
-    <OutputPath>bin\Debug\netcoreapp2.0\</OutputPath>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <OutputPath></OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
@@ -26,6 +26,7 @@
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.GitHub\AspNet.Security.OAuth.GitHub.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Imgur\AspNet.Security.OAuth.Imgur.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.LinkedIn\AspNet.Security.OAuth.LinkedIn.csproj" />
+    <ProjectReference Include="..\..\src\AspNet.Security.OAuth.MailChimp\AspNet.Security.OAuth.MailChimp.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Paypal\AspNet.Security.OAuth.Paypal.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Reddit\AspNet.Security.OAuth.Reddit.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Strava\AspNet.Security.OAuth.Strava.csproj" />
