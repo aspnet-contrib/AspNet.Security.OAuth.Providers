@@ -7,9 +7,9 @@
 using System;
 using AspNet.Security.OAuth.Bitbucket;
 using JetBrains.Annotations;
-using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Authentication;
 
-namespace Microsoft.AspNetCore.Builder
+namespace Microsoft.Extensions.DependencyInjection
 {
     /// <summary>
     /// Extension methods to add Bitbucket authentication capabilities to an HTTP application pipeline.
@@ -17,54 +17,60 @@ namespace Microsoft.AspNetCore.Builder
     public static class BitbucketAuthenticationExtensions
     {
         /// <summary>
-        /// Adds the <see cref="BitbucketAuthenticationMiddleware"/> middleware to the specified
-        /// <see cref="IApplicationBuilder"/>, which enables Bitbucket authentication capabilities.
+        /// Adds <see cref="BitbucketAuthenticationHandler"/> to the specified
+        /// <see cref="AuthenticationBuilder"/>, which enables Bitbucket authentication capabilities.
         /// </summary>
-        /// <param name="app">The <see cref="IApplicationBuilder"/> to add the middleware to.</param>
-        /// <param name="options">A <see cref="BitbucketAuthenticationOptions"/> that specifies options for the middleware.</param>
-        /// <returns>A reference to this instance after the operation has completed.</returns>
-        public static IApplicationBuilder UseBitbucketAuthentication(
-            [NotNull] this IApplicationBuilder app,
-            [NotNull] BitbucketAuthenticationOptions options)
+        /// <param name="builder">The authentication builder.</param>
+        /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
+        public static AuthenticationBuilder AddBitbucket([NotNull] this AuthenticationBuilder builder)
         {
-            if (app == null)
-            {
-                throw new ArgumentNullException(nameof(app));
-            }
-
-            if (options == null)
-            {
-                throw new ArgumentNullException(nameof(options));
-            }
-
-            return app.UseMiddleware<BitbucketAuthenticationMiddleware>(Options.Create(options));
+            return builder.AddBitbucket(BitbucketAuthenticationDefaults.AuthenticationScheme, options => { });
         }
 
         /// <summary>
-        /// Adds the <see cref="BitbucketAuthenticationMiddleware"/> middleware to the specified
-        /// <see cref="IApplicationBuilder"/>, which enables Bitbucket authentication capabilities.
+        /// Adds <see cref="BitbucketAuthenticationHandler"/> to the specified
+        /// <see cref="AuthenticationBuilder"/>, which enables Bitbucket authentication capabilities.
         /// </summary>
-        /// <param name="app">The <see cref="IApplicationBuilder"/> to add the middleware to.</param>
-        /// <param name="configuration">An action delegate to configure the provided <see cref="BitbucketAuthenticationOptions"/>.</param>
-        /// <returns>A reference to this instance after the operation has completed.</returns>
-        public static IApplicationBuilder UseBitbucketAuthentication(
-            [NotNull] this IApplicationBuilder app,
+        /// <param name="builder">The authentication builder.</param>
+        /// <param name="configuration">The delegate used to configure the OpenID 2.0 options.</param>
+        /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
+        public static AuthenticationBuilder AddBitbucket(
+            [NotNull] this AuthenticationBuilder builder,
             [NotNull] Action<BitbucketAuthenticationOptions> configuration)
         {
-            if (app == null)
-            {
-                throw new ArgumentNullException(nameof(app));
-            }
+            return builder.AddBitbucket(BitbucketAuthenticationDefaults.AuthenticationScheme, configuration);
+        }
 
-            if (configuration == null)
-            {
-                throw new ArgumentNullException(nameof(configuration));
-            }
+        /// <summary>
+        /// Adds <see cref="BitbucketAuthenticationHandler"/> to the specified
+        /// <see cref="AuthenticationBuilder"/>, which enables Bitbucket authentication capabilities.
+        /// </summary>
+        /// <param name="builder">The authentication builder.</param>
+        /// <param name="scheme">The authentication scheme associated with this instance.</param>
+        /// <param name="configuration">The delegate used to configure the Bitbucket options.</param>
+        /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
+        public static AuthenticationBuilder AddBitbucket(
+            [NotNull] this AuthenticationBuilder builder, [NotNull] string scheme,
+            [NotNull] Action<BitbucketAuthenticationOptions> configuration)
+        {
+            return builder.AddBitbucket(scheme, BitbucketAuthenticationDefaults.DisplayName, configuration);
+        }
 
-            var options = new BitbucketAuthenticationOptions();
-            configuration(options);
-
-            return app.UseMiddleware<BitbucketAuthenticationMiddleware>(Options.Create(options));
+        /// <summary>
+        /// Adds <see cref="BitbucketAuthenticationHandler"/> to the specified
+        /// <see cref="AuthenticationBuilder"/>, which enables Bitbucket authentication capabilities.
+        /// </summary>
+        /// <param name="builder">The authentication builder.</param>
+        /// <param name="scheme">The authentication scheme associated with this instance.</param>
+        /// <param name="name">The optional display name associated with this instance.</param>
+        /// <param name="configuration">The delegate used to configure the Bitbucket options.</param>
+        /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
+        public static AuthenticationBuilder AddBitbucket(
+            [NotNull] this AuthenticationBuilder builder,
+            [NotNull] string scheme, [CanBeNull] string name,
+            [NotNull] Action<BitbucketAuthenticationOptions> configuration)
+        {
+            return builder.AddOAuth<BitbucketAuthenticationOptions, BitbucketAuthenticationHandler>(scheme, name, configuration);
         }
     }
 }
