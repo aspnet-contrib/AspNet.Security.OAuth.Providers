@@ -5,7 +5,9 @@
  */
 
 using System;
-using Microsoft.AspNetCore.Builder;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
 
 namespace AspNet.Security.OAuth.EVEOnline
@@ -17,13 +19,15 @@ namespace AspNet.Security.OAuth.EVEOnline
     {
         public EVEOnlineAuthenticationOptions()
         {
-            AuthenticationScheme = EVEOnlineAuthenticationDefaults.AuthenticationScheme;
-            DisplayName = EVEOnlineAuthenticationDefaults.DisplayName;
             ClaimsIssuer = EVEOnlineAuthenticationDefaults.Issuer;
-
             CallbackPath = new PathString(EVEOnlineAuthenticationDefaults.CallbackPath);
 
             Server = EVEOnlineAuthenticationServer.Tranquility;
+
+            ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "CharacterID");
+            ClaimActions.MapJsonKey(ClaimTypes.Name, "CharacterName");
+            ClaimActions.MapJsonKey(ClaimTypes.Expiration, "ExpiresOn");
+            ClaimActions.MapJsonKey("urn:eveonline:scopes", "Scopes");
         }
 
         /// <summary>
