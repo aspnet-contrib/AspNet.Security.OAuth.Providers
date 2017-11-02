@@ -7,21 +7,25 @@
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
+using System.Text.Encodings.Web;
 using System.Threading.Tasks;
-using AspNet.Security.OAuth.Extensions;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
 
 namespace AspNet.Security.OAuth.EVEOnline
 {
     public class EVEOnlineAuthenticationHandler : OAuthHandler<EVEOnlineAuthenticationOptions>
     {
-        public EVEOnlineAuthenticationHandler([NotNull] HttpClient client)
-            : base(client)
+        public EVEOnlineAuthenticationHandler(
+            [NotNull] IOptionsMonitor<EVEOnlineAuthenticationOptions> options,
+            [NotNull] ILoggerFactory logger,
+            [NotNull] UrlEncoder encoder,
+            [NotNull] ISystemClock clock)
+            : base(options, logger, encoder, clock)
         {
         }
 
@@ -46,18 +50,13 @@ namespace AspNet.Security.OAuth.EVEOnline
 
             var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
 
-            identity.AddOptionalClaim(ClaimTypes.NameIdentifier, EVEOnlineAuthenticationHelper.GetIdentifier(payload), Options.ClaimsIssuer);
-            identity.AddOptionalClaim(ClaimTypes.Name, EVEOnlineAuthenticationHelper.GetName(payload), Options.ClaimsIssuer);
-            identity.AddOptionalClaim(ClaimTypes.Expiration, EVEOnlineAuthenticationHelper.GetTokenExpiration(payload), Options.ClaimsIssuer);
-            identity.AddOptionalClaim("urn:eveonline:scopes", EVEOnlineAuthenticationHelper.GetTokenScopes(payload), Options.ClaimsIssuer);
-
             var principal = new ClaimsPrincipal(identity);
-            var ticket = new AuthenticationTicket(principal, properties, Options.AuthenticationScheme);
+            var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload);
+            context.RunClaimActions(payload);
 
-            var context = new OAuthCreatingTicketContext(ticket, Context, Options, Backchannel, tokens, payload);
             await Options.Events.CreatingTicket(context);
 
-            return context.Ticket;
+            return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
         }
     }
 }
