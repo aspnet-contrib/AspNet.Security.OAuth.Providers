@@ -4,10 +4,10 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using System;
 using AspNet.Security.OAuth.Gitter;
-using JetBrains.Annotations;
-using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace Microsoft.AspNetCore.Builder
 {
@@ -17,54 +17,60 @@ namespace Microsoft.AspNetCore.Builder
     public static class GitterAuthenticationExtensions
     {
         /// <summary>
-        /// Adds the <see cref="GitterAuthenticationMiddleware"/> middleware to the specified
-        /// <see cref="IApplicationBuilder"/>, which enables GitHub authentication capabilities.
+        /// Adds the <see cref="GitterAuthenticationHandler"/> to the specified
+        /// <see cref="AuthenticationBuilder"/>, which enables Gitter authentication capabilities.
         /// </summary>
-        /// <param name="app">The <see cref="IApplicationBuilder"/> to add the middleware to.</param>
-        /// <param name="options">A <see cref="GitterAuthenticationOptions"/> that specifies options for the middleware.</param>
+        /// <param name="builder">The authentication builder.</param>
         /// <returns>A reference to this instance after the operation has completed.</returns>
-        public static IApplicationBuilder UseGitterAuthentication(
-            [NotNull] this IApplicationBuilder app,
-            [NotNull] GitterAuthenticationOptions options)
+        public static AuthenticationBuilder AddGitter(this AuthenticationBuilder builder)
         {
-            if (app == null)
-            {
-                throw new ArgumentNullException(nameof(app));
-            }
-
-            if (options == null)
-            {
-                throw new ArgumentNullException(nameof(options));
-            }
-
-            return app.UseMiddleware<GitterAuthenticationMiddleware>(Options.Create(options));
+            return builder.AddGitter(GitterAuthenticationDefaults.AuthenticationScheme, options => { });
         }
 
         /// <summary>
-        /// Adds the <see cref="GitterAuthenticationMiddleware"/> middleware to the specified
-        /// <see cref="IApplicationBuilder"/>, which enables Gitter authentication capabilities.
+        /// Adds the <see cref="GitterAuthenticationHandler"/> to the specified
+        /// <see cref="AuthenticationBuilder"/>, which enables Gitter authentication capabilities.
         /// </summary>
-        /// <param name="app">The <see cref="IApplicationBuilder"/> to add the middleware to.</param>
-        /// <param name="configuration">An action delegate to configure the provided <see cref="GitterAuthenticationOptions"/>.</param>
+        /// <param name="builder">The authentication builder.</param>
+        /// <param name="configuration">The delegate used to configure the OpenID 2.0 options.</param>
         /// <returns>A reference to this instance after the operation has completed.</returns>
-        public static IApplicationBuilder UseGitterAuthentication(
-            [NotNull] this IApplicationBuilder app,
-            [NotNull] Action<GitterAuthenticationOptions> configuration)
+        public static AuthenticationBuilder AddGitter(
+            this AuthenticationBuilder builder,
+            Action<GitterAuthenticationOptions> configuration)
         {
-            if (app == null)
-            {
-                throw new ArgumentNullException(nameof(app));
-            }
+            return builder.AddGitter(GitterAuthenticationDefaults.AuthenticationScheme, configuration);
+        }
 
-            if (configuration == null)
-            {
-                throw new ArgumentNullException(nameof(configuration));
-            }
+        /// <summary>
+        /// Adds <see cref="GitterAuthenticationHandler"/> to the specified
+        /// <see cref="AuthenticationBuilder"/>, which enables Gitter authentication capabilities.
+        /// </summary>
+        /// <param name="builder">The authentication builder.</param>
+        /// <param name="scheme">The authentication scheme associated with this instance.</param>
+        /// <param name="configuration">The delegate used to configure the Gitter options.</param>
+        /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
+        public static AuthenticationBuilder AddGitter(
+            this AuthenticationBuilder builder, string scheme,
+            Action<GitterAuthenticationOptions> configuration)
+        {
+            return builder.AddGitter(scheme, GitterAuthenticationDefaults.DisplayName, configuration);
+        }
 
-            var options = new GitterAuthenticationOptions();
-            configuration(options);
-
-            return app.UseMiddleware<GitterAuthenticationMiddleware>(Options.Create(options));
+        /// <summary>
+        /// Adds <see cref="GitterAuthenticationHandler"/> to the specified
+        /// <see cref="AuthenticationBuilder"/>, which enables Gitter authentication capabilities.
+        /// </summary>
+        /// <param name="builder">The authentication builder.</param>
+        /// <param name="scheme">The authentication scheme associated with this instance.</param>
+        /// <param name="name">The optional display name associated with this instance.</param>
+        /// <param name="configuration">The delegate used to configure the Gitter options.</param>
+        /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
+        public static AuthenticationBuilder AddGitter(
+            this AuthenticationBuilder builder,
+            string scheme, string name,
+            Action<GitterAuthenticationOptions> configuration)
+        {
+            return builder.AddOAuth<GitterAuthenticationOptions, GitterAuthenticationHandler>(scheme, name, configuration);
         }
     }
 }
