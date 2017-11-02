@@ -4,7 +4,9 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using Microsoft.AspNetCore.Builder;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
 
 namespace AspNet.Security.OAuth.DeviantArt
@@ -16,10 +18,7 @@ namespace AspNet.Security.OAuth.DeviantArt
     {
         public DeviantArtAuthenticationOptions()
         {
-            AuthenticationScheme = DeviantArtAuthenticationDefaults.AuthenticationScheme;
-            DisplayName = DeviantArtAuthenticationDefaults.DisplayName;
             ClaimsIssuer = DeviantArtAuthenticationDefaults.Issuer;
-
             CallbackPath = new PathString(DeviantArtAuthenticationDefaults.CallbackPath);
 
             AuthorizationEndpoint = DeviantArtAuthenticationDefaults.AuthorizationEndpoint;
@@ -27,6 +26,10 @@ namespace AspNet.Security.OAuth.DeviantArt
             UserInformationEndpoint = DeviantArtAuthenticationDefaults.UserInformationEndpoint;
 
             Scope.Add("user");
+
+            ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "userid");
+            ClaimActions.MapJsonKey(ClaimTypes.Name, "username");
+            ClaimActions.MapJsonKey("urn:DeviantArt:name", "username");
         }
     }
 }

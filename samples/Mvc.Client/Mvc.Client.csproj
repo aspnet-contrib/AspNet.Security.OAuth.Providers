@@ -17,6 +17,7 @@
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Bitbucket\AspNet.Security.OAuth.Bitbucket.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Buffer\AspNet.Security.OAuth.Buffer.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.CiscoSpark\AspNet.Security.OAuth.CiscoSpark.csproj" />
+    <ProjectReference Include="..\..\src\AspNet.Security.OAuth.DeviantArt\AspNet.Security.OAuth.DeviantArt.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Discord\AspNet.Security.OAuth.Discord.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Dropbox\AspNet.Security.OAuth.Dropbox.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.GitHub\AspNet.Security.OAuth.GitHub.csproj" />
