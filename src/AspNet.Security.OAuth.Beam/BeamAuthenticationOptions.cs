@@ -4,7 +4,9 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using Microsoft.AspNetCore.Builder;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
 
 namespace AspNet.Security.OAuth.Beam
@@ -16,15 +18,16 @@ namespace AspNet.Security.OAuth.Beam
     {
         public BeamAuthenticationOptions()
         {
-            AuthenticationScheme = BeamAuthenticationDefaults.AuthenticationScheme;
-            DisplayName = BeamAuthenticationDefaults.DisplayName;
             ClaimsIssuer = BeamAuthenticationDefaults.Issuer;
-
             CallbackPath = new PathString(BeamAuthenticationDefaults.CallbackPath);
 
             AuthorizationEndpoint = BeamAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = BeamAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = BeamAuthenticationDefaults.UserInformationEndpoint;
+
+            ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
+            ClaimActions.MapJsonKey(ClaimTypes.Name, "name");
+            ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
         }
     }
 }
