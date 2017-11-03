@@ -4,7 +4,10 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using Microsoft.AspNetCore.Builder;
+
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
 
 namespace AspNet.Security.OAuth.Myob
@@ -16,14 +19,14 @@ namespace AspNet.Security.OAuth.Myob
     {
         public MyobAuthenticationOptions()
         {
-            AuthenticationScheme = MyobAuthenticationDefaults.AuthenticationScheme;
-            DisplayName = MyobAuthenticationDefaults.DisplayName;
             ClaimsIssuer = MyobAuthenticationDefaults.Issuer;
-
             CallbackPath = new PathString(MyobAuthenticationDefaults.CallbackPath);
 
             AuthorizationEndpoint = MyobAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = MyobAuthenticationDefaults.TokenEndpoint;
+
+            ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "uid");
+            ClaimActions.MapJsonKey(ClaimTypes.Name, "username");
         }
     }
 }
