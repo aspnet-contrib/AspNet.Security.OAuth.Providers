@@ -4,7 +4,10 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using Microsoft.AspNetCore.Builder;
+
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
 
 namespace AspNet.Security.OAuth.HealthGraph
@@ -16,8 +19,6 @@ namespace AspNet.Security.OAuth.HealthGraph
     {
         public HealthGraphAuthenticationOptions()
         {
-            AuthenticationScheme = HealthGraphAuthenticationDefaults.AuthenticationScheme;
-            DisplayName = HealthGraphAuthenticationDefaults.DisplayName;
             ClaimsIssuer = HealthGraphAuthenticationDefaults.Issuer;
 
             CallbackPath = new PathString(HealthGraphAuthenticationDefaults.CallbackPath);
@@ -25,6 +26,8 @@ namespace AspNet.Security.OAuth.HealthGraph
             AuthorizationEndpoint = HealthGraphAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = HealthGraphAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = HealthGraphAuthenticationDefaults.UserInformationEndpoint;
+
+            ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "userID");
         }
     }
 }
