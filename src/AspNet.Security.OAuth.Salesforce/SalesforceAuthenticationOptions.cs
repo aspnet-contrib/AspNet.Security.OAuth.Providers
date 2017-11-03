@@ -5,7 +5,9 @@
  */
 
 using System;
-using Microsoft.AspNetCore.Builder;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
 
 namespace AspNet.Security.OAuth.Salesforce
@@ -17,13 +19,18 @@ namespace AspNet.Security.OAuth.Salesforce
     {
         public SalesforceAuthenticationOptions()
         {
-            AuthenticationScheme = SalesforceAuthenticationDefaults.AuthenticationScheme;
-            DisplayName = SalesforceAuthenticationDefaults.DisplayName;
             ClaimsIssuer = SalesforceAuthenticationDefaults.Issuer;
 
             CallbackPath = new PathString(SalesforceAuthenticationDefaults.CallbackPath);
 
             Environment = SalesforceAuthenticationDefaults.Environment;
+
+            ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "user_id");
+            ClaimActions.MapJsonKey(ClaimTypes.Name, "user_name");
+            ClaimActions.MapJsonKey("urn:salesforce:email", "email");
+            ClaimActions.MapJsonKey("urn:salesforce:thumbnail_photo", "thumbnail");
+            ClaimActions.MapJsonKey("urn:salesforce:utc_offset", "utcOffset");
+            ClaimActions.MapCustomJson("urn:salesforce:rest_url", user => user["urls"]?.Value<string>("rest"));
         }
 
         public SalesforceAuthenticationEnvironment Environment

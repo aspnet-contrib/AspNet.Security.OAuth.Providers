@@ -7,21 +7,25 @@
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
+using System.Text.Encodings.Web;
 using System.Threading.Tasks;
-using AspNet.Security.OAuth.Extensions;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
 
 namespace AspNet.Security.OAuth.Salesforce
 {
     public class SalesforceAuthenticationHandler : OAuthHandler<SalesforceAuthenticationOptions>
     {
-        public SalesforceAuthenticationHandler([NotNull] HttpClient client)
-            : base(client)
+        public SalesforceAuthenticationHandler(
+            [NotNull] IOptionsMonitor<SalesforceAuthenticationOptions> options,
+            [NotNull] ILoggerFactory logger,
+            [NotNull] UrlEncoder encoder,
+            [NotNull] ISystemClock clock)
+            : base(options, logger, encoder, clock)
         {
         }
 
@@ -49,20 +53,12 @@ namespace AspNet.Security.OAuth.Salesforce
 
             var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
 
-            identity.AddOptionalClaim(ClaimTypes.NameIdentifier, SalesforceAuthenticationHelper.GetUserIdentifier(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim(ClaimTypes.Name, SalesforceAuthenticationHelper.GetUserName(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:salesforce:email", SalesforceAuthenticationHelper.GetEmail(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:salesforce:thumbnail_photo", SalesforceAuthenticationHelper.GetThumbnailPhoto(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:salesforce:utc_offset", SalesforceAuthenticationHelper.GetUtcOffset(payload).ToString(), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:salesforce:rest_url", SalesforceAuthenticationHelper.GetRestUrl(payload), Options.ClaimsIssuer);
-
             var principal = new ClaimsPrincipal(identity);
-            var ticket = new AuthenticationTicket(principal, properties, Options.AuthenticationScheme);
+            var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload);
+            context.RunClaimActions(payload);
 
-            var context = new OAuthCreatingTicketContext(ticket, Context, Options, Backchannel, tokens, payload);
             await Options.Events.CreatingTicket(context);
-
-            return context.Ticket;
+            return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
         }
     }
 }
