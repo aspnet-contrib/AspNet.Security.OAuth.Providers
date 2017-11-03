@@ -4,7 +4,9 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using Microsoft.AspNetCore.Builder;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
 
 namespace AspNet.Security.OAuth.Onshape
@@ -16,8 +18,6 @@ namespace AspNet.Security.OAuth.Onshape
     {
         public OnshapeAuthenticationOptions()
         {
-            AuthenticationScheme = OnshapeAuthenticationDefaults.AuthenticationScheme;
-            DisplayName = OnshapeAuthenticationDefaults.DisplayName;
             ClaimsIssuer = OnshapeAuthenticationDefaults.Issuer;
 
             CallbackPath = new PathString(OnshapeAuthenticationDefaults.CallbackPath);
@@ -25,6 +25,9 @@ namespace AspNet.Security.OAuth.Onshape
             AuthorizationEndpoint = OnshapeAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = OnshapeAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = OnshapeAuthenticationDefaults.UserInformationEndpoint;
+
+            ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
+            ClaimActions.MapJsonKey(ClaimTypes.Name, "name");
         }
     }
 }
