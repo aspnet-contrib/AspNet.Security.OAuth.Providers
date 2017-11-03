@@ -7,9 +7,9 @@
 using System;
 using AspNet.Security.OAuth.Patreon;
 using JetBrains.Annotations;
-using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Authentication;
 
-namespace Microsoft.AspNetCore.Builder
+namespace Microsoft.Extensions.DependencyInjection
 {
     /// <summary>
     /// Extension methods to add Patreon authentication capabilities to an HTTP application pipeline.
@@ -17,60 +17,60 @@ namespace Microsoft.AspNetCore.Builder
     public static class PatreonAuthenticationExtensions
     {
         /// <summary>
-        /// Adds the <see cref="PatreonAuthenticationMiddleware"/> middleware to the specified
-        /// <see cref="IApplicationBuilder"/>, which enables Patreon authentication capabilities.
+        /// Adds <see cref="PatreonAuthenticationHandler"/> to the specified
+        /// <see cref="AuthenticationBuilder"/>, which enables Patreon authentication capabilities.
         /// </summary>
-        /// <param name="app">The <see cref="IApplicationBuilder"/> to add the middleware to.</param>
-        /// <param name="options">A <see cref="PatreonAuthenticationOptions"/> that specifies options for the middleware.</param>
-        /// <returns>A reference to this instance after the operation has completed.</returns>
-        /// <exception cref="ArgumentNullException">
-        /// <paramref name="app"/> or <paramref name="options"/> is <see langword="null"/>.
-        /// </exception>
-        public static IApplicationBuilder UsePatreonAuthentication(
-            [NotNull] this IApplicationBuilder app,
-            [NotNull] PatreonAuthenticationOptions options)
+        /// <param name="builder">The authentication builder.</param>
+        /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
+        public static AuthenticationBuilder AddPatreon([NotNull] this AuthenticationBuilder builder)
         {
-            if (app == null)
-            {
-                throw new ArgumentNullException(nameof(app));
-            }
-
-            if (options == null)
-            {
-                throw new ArgumentNullException(nameof(options));
-            }
-
-            return app.UseMiddleware<PatreonAuthenticationMiddleware>(Options.Create(options));
+            return builder.AddPatreon(PatreonAuthenticationDefaults.AuthenticationScheme, options => { });
         }
 
         /// <summary>
-        /// Adds the <see cref="PatreonAuthenticationMiddleware"/> middleware to the specified
-        /// <see cref="IApplicationBuilder"/>, which enables Patreon authentication capabilities.
+        /// Adds <see cref="PatreonAuthenticationHandler"/> to the specified
+        /// <see cref="AuthenticationBuilder"/>, which enables Patreon authentication capabilities.
         /// </summary>
-        /// <param name="app">The <see cref="IApplicationBuilder"/> to add the middleware to.</param>
-        /// <param name="configuration">An action delegate to configure the provided <see cref="PatreonAuthenticationOptions"/>.</param>
-        /// <returns>A reference to this instance after the operation has completed.</returns>
-        /// <exception cref="ArgumentNullException">
-        /// <paramref name="app"/> or <paramref name="configuration"/> is <see langword="null"/>.
-        /// </exception>
-        public static IApplicationBuilder UsePatreonAuthentication(
-            [NotNull] this IApplicationBuilder app,
+        /// <param name="builder">The authentication builder.</param>
+        /// <param name="configuration">The delegate used to configure the OpenID 2.0 options.</param>
+        /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
+        public static AuthenticationBuilder AddPatreon(
+            [NotNull] this AuthenticationBuilder builder,
             [NotNull] Action<PatreonAuthenticationOptions> configuration)
         {
-            if (app == null)
-            {
-                throw new ArgumentNullException(nameof(app));
-            }
+            return builder.AddPatreon(PatreonAuthenticationDefaults.AuthenticationScheme, configuration);
+        }
 
-            if (configuration == null)
-            {
-                throw new ArgumentNullException(nameof(configuration));
-            }
+        /// <summary>
+        /// Adds <see cref="PatreonAuthenticationHandler"/> to the specified
+        /// <see cref="AuthenticationBuilder"/>, which enables Patreon authentication capabilities.
+        /// </summary>
+        /// <param name="builder">The authentication builder.</param>
+        /// <param name="scheme">The authentication scheme associated with this instance.</param>
+        /// <param name="configuration">The delegate used to configure the Patreon options.</param>
+        /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
+        public static AuthenticationBuilder AddPatreon(
+            [NotNull] this AuthenticationBuilder builder, [NotNull] string scheme,
+            [NotNull] Action<PatreonAuthenticationOptions> configuration)
+        {
+            return builder.AddPatreon(scheme, PatreonAuthenticationDefaults.DisplayName, configuration);
+        }
 
-            var options = new PatreonAuthenticationOptions();
-            configuration(options);
-
-            return app.UseMiddleware<PatreonAuthenticationMiddleware>(Options.Create(options));
+        /// <summary>
+        /// Adds <see cref="PatreonAuthenticationHandler"/> to the specified
+        /// <see cref="AuthenticationBuilder"/>, which enables Patreon authentication capabilities.
+        /// </summary>
+        /// <param name="builder">The authentication builder.</param>
+        /// <param name="scheme">The authentication scheme associated with this instance.</param>
+        /// <param name="name">The optional display name associated with this instance.</param>
+        /// <param name="configuration">The delegate used to configure the Patreon options.</param>
+        /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
+        public static AuthenticationBuilder AddPatreon(
+            [NotNull] this AuthenticationBuilder builder,
+            [NotNull] string scheme, [CanBeNull] string name,
+            [NotNull] Action<PatreonAuthenticationOptions> configuration)
+        {
+            return builder.AddOAuth<PatreonAuthenticationOptions, PatreonAuthenticationHandler>(scheme, name, configuration);
         }
     }
 }
