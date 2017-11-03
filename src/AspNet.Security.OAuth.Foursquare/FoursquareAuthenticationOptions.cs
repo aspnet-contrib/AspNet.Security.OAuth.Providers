@@ -4,8 +4,11 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using Microsoft.AspNetCore.Builder;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json.Linq;
 
 namespace AspNet.Security.OAuth.Foursquare
 {
@@ -16,15 +19,20 @@ namespace AspNet.Security.OAuth.Foursquare
     {
         public FoursquareAuthenticationOptions()
         {
-            AuthenticationScheme = FoursquareAuthenticationDefaults.AuthenticationScheme;
-            DisplayName = FoursquareAuthenticationDefaults.DisplayName;
             ClaimsIssuer = FoursquareAuthenticationDefaults.Issuer;
-
             CallbackPath = new PathString(FoursquareAuthenticationDefaults.CallbackPath);
 
             AuthorizationEndpoint = FoursquareAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = FoursquareAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = FoursquareAuthenticationDefaults.UserInformationEndpoint;
+
+            ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
+            ClaimActions.MapJsonKey(ClaimTypes.Surname, "lastName");
+            ClaimActions.MapJsonKey(ClaimTypes.GivenName, "firstName");
+            ClaimActions.MapJsonKey(ClaimTypes.Gender, "gender");
+            ClaimActions.MapJsonKey(ClaimTypes.Uri, "canonicalUrl");
+            ClaimActions.MapCustomJson(ClaimTypes.Name, user => $"{user.Value<string>("firstName")} {user.Value<string>("lastName")}");
+            ClaimActions.MapCustomJson(ClaimTypes.Email, user => user.Value<JObject>("contact")?.Value<string>("email"));
         }
 
         /// <summary>

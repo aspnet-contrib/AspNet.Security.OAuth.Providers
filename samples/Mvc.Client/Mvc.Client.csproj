@@ -22,6 +22,7 @@
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Dropbox\AspNet.Security.OAuth.Dropbox.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.EVEOnline\AspNet.Security.OAuth.EVEOnline.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Fitbit\AspNet.Security.OAuth.Fitbit.csproj" />
+    <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Foursquare\AspNet.Security.OAuth.Foursquare.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.GitHub\AspNet.Security.OAuth.GitHub.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Imgur\AspNet.Security.OAuth.Imgur.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.LinkedIn\AspNet.Security.OAuth.LinkedIn.csproj" />
