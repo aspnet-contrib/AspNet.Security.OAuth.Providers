@@ -4,7 +4,10 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using Microsoft.AspNetCore.Builder;
+
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
 
 namespace AspNet.Security.OAuth.Patreon
@@ -16,8 +19,6 @@ namespace AspNet.Security.OAuth.Patreon
     {
         public PatreonAuthenticationOptions()
         {
-            AuthenticationScheme = PatreonAuthenticationDefaults.AuthenticationScheme;
-            DisplayName = PatreonAuthenticationDefaults.DisplayName;
             ClaimsIssuer = PatreonAuthenticationDefaults.Issuer;
 
             CallbackPath = new PathString(PatreonAuthenticationDefaults.CallbackPath);
@@ -29,6 +30,11 @@ namespace AspNet.Security.OAuth.Patreon
             Scope.Add("users");
             Scope.Add("pledges-to-me");
             Scope.Add("my-campaign");
+
+            ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
+            ClaimActions.MapCustomJson(ClaimTypes.Name, user => user["attributes"]?.Value<string>("full_name"));
+            ClaimActions.MapCustomJson(ClaimTypes.Webpage, user => user["attributes"]?.Value<string>("url"));
+            ClaimActions.MapCustomJson("urn:patreon:avatar", user => user["attributes"]?.Value<string>("thumb_url"));
         }
     }
 }
