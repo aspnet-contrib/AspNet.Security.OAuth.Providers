@@ -7,9 +7,9 @@
 using System;
 using AspNet.Security.OAuth.Onshape;
 using JetBrains.Annotations;
-using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Authentication;
 
-namespace Microsoft.AspNetCore.Builder
+namespace Microsoft.Extensions.DependencyInjection
 {
     /// <summary>
     /// Extension methods to add Onshape authentication capabilities to an HTTP application pipeline.
@@ -17,54 +17,60 @@ namespace Microsoft.AspNetCore.Builder
     public static class OnshapeAuthenticationExtensions
     {
         /// <summary>
-        /// Adds the <see cref="OnshapeAuthenticationMiddleware"/> middleware to the specified
-        /// <see cref="IApplicationBuilder"/>, which enables Onshape authentication capabilities.
+        /// Adds <see cref="OnshapeAuthenticationHandler"/> to the specified
+        /// <see cref="AuthenticationBuilder"/>, which enables Onshape authentication capabilities.
         /// </summary>
-        /// <param name="app">The <see cref="IApplicationBuilder"/> to add the middleware to.</param>
-        /// <param name="options">A <see cref="OnshapeAuthenticationOptions"/> that specifies options for the middleware.</param>
-        /// <returns>A reference to this instance after the operation has completed.</returns>
-        public static IApplicationBuilder UseOnshapeAuthentication(
-            [NotNull] this IApplicationBuilder app,
-            [NotNull] OnshapeAuthenticationOptions options)
+        /// <param name="builder">The authentication builder.</param>
+        /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
+        public static AuthenticationBuilder AddOnshape([NotNull] this AuthenticationBuilder builder)
         {
-            if (app == null)
-            {
-                throw new ArgumentNullException(nameof(app));
-            }
-
-            if (options == null)
-            {
-                throw new ArgumentNullException(nameof(options));
-            }
-
-            return app.UseMiddleware<OnshapeAuthenticationMiddleware>(Options.Create(options));
+            return builder.AddOnshape(OnshapeAuthenticationDefaults.AuthenticationScheme, options => { });
         }
 
         /// <summary>
-        /// Adds the <see cref="OnshapeAuthenticationMiddleware"/> middleware to the specified
-        /// <see cref="IApplicationBuilder"/>, which enables Onshape authentication capabilities.
+        /// Adds <see cref="OnshapeAuthenticationHandler"/> to the specified
+        /// <see cref="AuthenticationBuilder"/>, which enables Onshape authentication capabilities.
         /// </summary>
-        /// <param name="app">The <see cref="IApplicationBuilder"/> to add the middleware to.</param>
-        /// <param name="configuration">An action delegate to configure the provided <see cref="OnshapeAuthenticationOptions"/>.</param>
-        /// <returns>A reference to this instance after the operation has completed.</returns>
-        public static IApplicationBuilder UseOnshapeAuthentication(
-            [NotNull] this IApplicationBuilder app,
+        /// <param name="builder">The authentication builder.</param>
+        /// <param name="configuration">The delegate used to configure the OpenID 2.0 options.</param>
+        /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
+        public static AuthenticationBuilder AddOnshape(
+            [NotNull] this AuthenticationBuilder builder,
             [NotNull] Action<OnshapeAuthenticationOptions> configuration)
         {
-            if (app == null)
-            {
-                throw new ArgumentNullException(nameof(app));
-            }
+            return builder.AddOnshape(OnshapeAuthenticationDefaults.AuthenticationScheme, configuration);
+        }
 
-            if (configuration == null)
-            {
-                throw new ArgumentNullException(nameof(configuration));
-            }
+        /// <summary>
+        /// Adds <see cref="OnshapeAuthenticationHandler"/> to the specified
+        /// <see cref="AuthenticationBuilder"/>, which enables Onshape authentication capabilities.
+        /// </summary>
+        /// <param name="builder">The authentication builder.</param>
+        /// <param name="scheme">The authentication scheme associated with this instance.</param>
+        /// <param name="configuration">The delegate used to configure the Onshape options.</param>
+        /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
+        public static AuthenticationBuilder AddOnshape(
+            [NotNull] this AuthenticationBuilder builder, [NotNull] string scheme,
+            [NotNull] Action<OnshapeAuthenticationOptions> configuration)
+        {
+            return builder.AddOnshape(scheme, OnshapeAuthenticationDefaults.DisplayName, configuration);
+        }
 
-            var options = new OnshapeAuthenticationOptions();
-            configuration(options);
-
-            return app.UseMiddleware<OnshapeAuthenticationMiddleware>(Options.Create(options));
+        /// <summary>
+        /// Adds <see cref="OnshapeAuthenticationHandler"/> to the specified
+        /// <see cref="AuthenticationBuilder"/>, which enables Onshape authentication capabilities.
+        /// </summary>
+        /// <param name="builder">The authentication builder.</param>
+        /// <param name="scheme">The authentication scheme associated with this instance.</param>
+        /// <param name="name">The optional display name associated with this instance.</param>
+        /// <param name="configuration">The delegate used to configure the Onshape options.</param>
+        /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
+        public static AuthenticationBuilder AddOnshape(
+            [NotNull] this AuthenticationBuilder builder,
+            [NotNull] string scheme, [CanBeNull] string name,
+            [NotNull] Action<OnshapeAuthenticationOptions> configuration)
+        {
+            return builder.AddOAuth<OnshapeAuthenticationOptions, OnshapeAuthenticationHandler>(scheme, name, configuration);
         }
     }
 }
