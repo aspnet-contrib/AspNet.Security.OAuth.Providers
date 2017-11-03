@@ -9,22 +9,26 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
+using System.Text.Encodings.Web;
 using System.Threading.Tasks;
-using AspNet.Security.OAuth.Extensions;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
 
 namespace AspNet.Security.OAuth.StackExchange
 {
     public class StackExchangeAuthenticationHandler : OAuthHandler<StackExchangeAuthenticationOptions>
     {
-        public StackExchangeAuthenticationHandler([NotNull] HttpClient client)
-            : base(client)
+        public StackExchangeAuthenticationHandler(
+            [NotNull] IOptionsMonitor<StackExchangeAuthenticationOptions> options,
+            [NotNull] ILoggerFactory logger,
+            [NotNull] UrlEncoder encoder,
+            [NotNull] ISystemClock clock)
+            : base(options, logger, encoder, clock)
         {
         }
 
@@ -55,19 +59,12 @@ namespace AspNet.Security.OAuth.StackExchange
 
             var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
 
-            // Note: the email claim cannot be retrieved from StackExchange's user information endpoint.
-            identity.AddOptionalClaim(ClaimTypes.NameIdentifier, StackExchangeAuthenticationHelper.GetIdentifier(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim(ClaimTypes.Name, StackExchangeAuthenticationHelper.GetDisplayName(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim(ClaimTypes.Webpage, StackExchangeAuthenticationHelper.GetWebsiteUrl(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:stackexchange:link", StackExchangeAuthenticationHelper.GetLink(payload), Options.ClaimsIssuer);
-
             var principal = new ClaimsPrincipal(identity);
-            var ticket = new AuthenticationTicket(principal, properties, Options.AuthenticationScheme);
+            var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload);
+            context.RunClaimActions(payload.Value<JObject>("items"));
 
-            var context = new OAuthCreatingTicketContext(ticket, Context, Options, Backchannel, tokens, payload);
             await Options.Events.CreatingTicket(context);
-
-            return context.Ticket;
+            return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
         }
 
         protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] string code, [NotNull] string redirectUri)
@@ -101,7 +98,7 @@ namespace AspNet.Security.OAuth.StackExchange
             var payload = new JObject();
             foreach (var item in content)
             {
-                payload[item.Key] = (string) item.Value;
+                payload[item.Key] = (string)item.Value;
             }
 
             return OAuthTokenResponse.Success(payload);
