@@ -4,22 +4,26 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using System.Net.Http;
 using System.Security.Claims;
+using System.Text.Encodings.Web;
 using System.Threading.Tasks;
-using AspNet.Security.OAuth.Extensions;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.AspNetCore.Http.Authentication;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
 
 namespace AspNet.Security.OAuth.Myob
 {
     public class MyobAuthenticationHandler : OAuthHandler<MyobAuthenticationOptions>
     {
-        public MyobAuthenticationHandler([NotNull] HttpClient client)
-            : base(client)
+        public MyobAuthenticationHandler(
+            [NotNull] IOptionsMonitor<MyobAuthenticationOptions> options,
+            [NotNull] ILoggerFactory logger,
+            [NotNull] UrlEncoder encoder,
+            [NotNull] ISystemClock clock)
+            : base(options, logger, encoder, clock)
         {
         }
 
@@ -30,16 +34,12 @@ namespace AspNet.Security.OAuth.Myob
             // so we rely on the details sent back in the token request.
             var user = (JObject) tokens.Response.SelectToken("user");
 
-            identity.AddOptionalClaim(ClaimTypes.NameIdentifier, MyobAuthenticationHelper.GetIdentifier(user), Options.ClaimsIssuer)
-                    .AddOptionalClaim(ClaimTypes.Name, MyobAuthenticationHelper.GetUsername(user), Options.ClaimsIssuer);
-
             var principal = new ClaimsPrincipal(identity);
-            var ticket = new AuthenticationTicket(principal, properties, Options.AuthenticationScheme);
+            var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, user);
+            context.RunClaimActions(user);
 
-            var context = new OAuthCreatingTicketContext(ticket, Context, Options, Backchannel, tokens, user);
             await Options.Events.CreatingTicket(context);
-
-            return context.Ticket;
+            return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
         }
     }
 }
