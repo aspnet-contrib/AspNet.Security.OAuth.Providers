@@ -6,7 +6,9 @@
 
 using System.Net;
 using System.Net.Http;
-using Microsoft.AspNetCore.Builder;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
 
 namespace AspNet.Security.OAuth.StackExchange
@@ -18,8 +20,6 @@ namespace AspNet.Security.OAuth.StackExchange
     {
         public StackExchangeAuthenticationOptions()
         {
-            AuthenticationScheme = StackExchangeAuthenticationDefaults.AuthenticationScheme;
-            DisplayName = StackExchangeAuthenticationDefaults.DisplayName;
             ClaimsIssuer = StackExchangeAuthenticationDefaults.Issuer;
 
             CallbackPath = new PathString(StackExchangeAuthenticationDefaults.CallbackPath);
@@ -28,6 +28,11 @@ namespace AspNet.Security.OAuth.StackExchange
             TokenEndpoint = StackExchangeAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = StackExchangeAuthenticationDefaults.UserInformationEndpoint;
             BackchannelHttpHandler = new HttpClientHandler { AutomaticDecompression = DecompressionMethods.GZip };
+
+            ClaimActions.MapCustomJson(ClaimTypes.NameIdentifier, user => user[0]?.Value<string>("account_id"));
+            ClaimActions.MapCustomJson(ClaimTypes.Name, user => user[0]?.Value<string>("display_name"));
+            ClaimActions.MapCustomJson(ClaimTypes.Webpage, user => user[0]?.Value<string>("website_url"));
+            ClaimActions.MapCustomJson("urn:stackexchange:link", user => user[0]?.Value<string>("link"));
         }
 
         /// <summary>
