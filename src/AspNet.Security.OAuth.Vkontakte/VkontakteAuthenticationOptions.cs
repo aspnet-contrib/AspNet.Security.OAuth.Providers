@@ -4,31 +4,35 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using System.Collections.Generic;
-using Microsoft.AspNetCore.Builder;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
+using System.Collections.Generic;
 
 namespace AspNet.Security.OAuth.Vkontakte
 {
     /// <summary>
-    /// Configuration options for <see cref="VkontakteAuthenticationMiddleware"/>.
+    /// Defines a set of options used by <see cref="VkontakteAuthenticationHandler"/>.
     /// </summary>
     public class VkontakteAuthenticationOptions : OAuthOptions
     {
-        /// <summary>
-        /// Initializes a new <see cref="VkontakteAuthenticationOptions"/>.
-        /// </summary>
         public VkontakteAuthenticationOptions()
         {
-            AuthenticationScheme = VkontakteAuthenticationDefaults.AuthenticationScheme;
-            DisplayName = VkontakteAuthenticationDefaults.DisplayName;
             ClaimsIssuer = VkontakteAuthenticationDefaults.Issuer;
 
-            CallbackPath = new PathString("/signin-vkontakte");
+            CallbackPath = new PathString(VkontakteAuthenticationDefaults.CallbackPath);
 
             AuthorizationEndpoint = VkontakteAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = VkontakteAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = VkontakteAuthenticationDefaults.UserInformationEndpoint;
+
+            ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "uid");
+            ClaimActions.MapJsonKey(ClaimTypes.GivenName, "first_name");
+            ClaimActions.MapJsonKey(ClaimTypes.Surname, "last_name");
+            ClaimActions.MapJsonKey(ClaimTypes.Hash, "hash");
+            ClaimActions.MapJsonKey("urn:vkontakte:photo:link", "photo");
+            ClaimActions.MapJsonKey("urn:vkontakte:photo_thumb:link", "photo_rec");
         }
 
         /// <summary>
