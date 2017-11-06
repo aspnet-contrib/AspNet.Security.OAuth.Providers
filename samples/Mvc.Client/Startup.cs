@@ -19,6 +19,12 @@ namespace Mvc.Client
                 options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
             })
 
+            .AddGitter(options =>
+            {
+                options.ClientId = "6b7d7522f4fe4383e4c7ebe3e2491c679fa7e474";
+                options.ClientSecret = "eb4313bb8aa6fa6428da13f67804b03c0c0b31bc";
+            })
+
             .AddCookie(options =>
             {
                 options.LoginPath = "/login";
