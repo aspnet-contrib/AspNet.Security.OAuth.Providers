@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.16
+VisualStudioVersion = 15.0.27004.2002
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}"
 EndProject
@@ -104,6 +104,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.Patreon", "src\AspNet.Security.OAuth.Patreon\AspNet.Security.OAuth.Patreon.csproj", "{ED8A220C-45FE-45C6-9B8F-BB009ACE972E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.QQ", "src\AspNet.Security.OAuth.QQ\AspNet.Security.OAuth.QQ.csproj", "{7C2E82CE-F6EC-41A8-AA22-3466505F95D8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.MailRu", "src\AspNet.Security.OAuth.MailRu\AspNet.Security.OAuth.MailRu.csproj", "{23D1BC63-ABAD-436F-B2D0-0A4971A1E4A0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -303,6 +305,10 @@ Global
 		{7C2E82CE-F6EC-41A8-AA22-3466505F95D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7C2E82CE-F6EC-41A8-AA22-3466505F95D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7C2E82CE-F6EC-41A8-AA22-3466505F95D8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23D1BC63-ABAD-436F-B2D0-0A4971A1E4A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23D1BC63-ABAD-436F-B2D0-0A4971A1E4A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23D1BC63-ABAD-436F-B2D0-0A4971A1E4A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23D1BC63-ABAD-436F-B2D0-0A4971A1E4A0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -356,5 +362,9 @@ Global
 		{86614CB9-0768-40BF-8C27-699E3990B733} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 		{ED8A220C-45FE-45C6-9B8F-BB009ACE972E} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 		{7C2E82CE-F6EC-41A8-AA22-3466505F95D8} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
+		{23D1BC63-ABAD-436F-B2D0-0A4971A1E4A0} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FD94A165-92AA-4729-843D-410CFECC73B8}
 	EndGlobalSection
 EndGlobal
