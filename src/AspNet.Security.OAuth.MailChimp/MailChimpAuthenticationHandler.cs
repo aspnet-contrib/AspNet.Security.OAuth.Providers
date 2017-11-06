@@ -7,21 +7,25 @@
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
+using System.Text.Encodings.Web;
 using System.Threading.Tasks;
-using AspNet.Security.OAuth.Extensions;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
 
 namespace AspNet.Security.OAuth.MailChimp
 {
     public class MailChimpAuthenticationHandler : OAuthHandler<MailChimpAuthenticationOptions>
     {
-        public MailChimpAuthenticationHandler([NotNull] HttpClient client)
-            : base(client)
+        public MailChimpAuthenticationHandler(
+            [NotNull] IOptionsMonitor<MailChimpAuthenticationOptions> options,
+            [NotNull] ILoggerFactory logger,
+            [NotNull] UrlEncoder encoder,
+            [NotNull] ISystemClock clock)
+            : base(options, logger, encoder, clock)
         {
         }
 
@@ -46,24 +50,12 @@ namespace AspNet.Security.OAuth.MailChimp
 
             var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
 
-            identity.AddOptionalClaim(ClaimTypes.NameIdentifier, MailChimpAuthenticationHelper.GetIdentifier(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim(ClaimTypes.Name, MailChimpAuthenticationHelper.GetName(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim(ClaimTypes.Email, MailChimpAuthenticationHelper.GetEmail(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim(ClaimTypes.Role, MailChimpAuthenticationHelper.GetRole(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:mailchimp:dc", MailChimpAuthenticationHelper.GetDataCenter(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:mailchimp:account_name", MailChimpAuthenticationHelper.GetAccountName(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:mailchimp:login_id", MailChimpAuthenticationHelper.GetLoginId(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:mailchimp:login_email", MailChimpAuthenticationHelper.GetLoginEmail(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:mailchimp:login_url", MailChimpAuthenticationHelper.GetLoginUrl(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:mailchimp:api_endpoint", MailChimpAuthenticationHelper.GetApiEndPoint(payload), Options.ClaimsIssuer);
-
             var principal = new ClaimsPrincipal(identity);
-            var ticket = new AuthenticationTicket(principal, properties, Options.AuthenticationScheme);
+            var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload);
+            context.RunClaimActions(payload);
 
-            var context = new OAuthCreatingTicketContext(ticket, Context, Options, Backchannel, tokens, payload);
             await Options.Events.CreatingTicket(context);
-
-            return context.Ticket;
+            return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
         }
     }
 }

@@ -29,6 +29,7 @@
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Imgur\AspNet.Security.OAuth.Imgur.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Instagram\AspNet.Security.OAuth.Instagram.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.LinkedIn\AspNet.Security.OAuth.LinkedIn.csproj" />
+    <ProjectReference Include="..\..\src\AspNet.Security.OAuth.MailChimp\AspNet.Security.OAuth.MailChimp.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Myob\AspNet.Security.OAuth.Myob.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Onshape\AspNet.Security.OAuth.Onshape.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Patreon\AspNet.Security.OAuth.Patreon.csproj" />
