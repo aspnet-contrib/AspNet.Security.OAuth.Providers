@@ -24,6 +24,7 @@
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Fitbit\AspNet.Security.OAuth.Fitbit.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Foursquare\AspNet.Security.OAuth.Foursquare.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.GitHub\AspNet.Security.OAuth.GitHub.csproj" />
+    <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Gitter\AspNet.Security.OAuth.Gitter.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.HealthGraph\AspNet.Security.OAuth.HealthGraph.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Imgur\AspNet.Security.OAuth.Imgur.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Instagram\AspNet.Security.OAuth.Instagram.csproj" />

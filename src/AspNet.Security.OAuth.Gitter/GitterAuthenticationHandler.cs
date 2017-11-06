@@ -7,21 +7,25 @@
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
+using System.Text.Encodings.Web;
 using System.Threading.Tasks;
-using AspNet.Security.OAuth.Extensions;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
 
 namespace AspNet.Security.OAuth.Gitter
 {
     public class GitterAuthenticationHandler : OAuthHandler<GitterAuthenticationOptions>
     {
-        public GitterAuthenticationHandler([NotNull] HttpClient client)
-            : base(client)
+        public GitterAuthenticationHandler(
+            [NotNull] IOptionsMonitor<GitterAuthenticationOptions> options,
+            [NotNull] ILoggerFactory logger,
+            [NotNull] UrlEncoder encoder,
+            [NotNull] ISystemClock clock)
+            : base(options, logger, encoder, clock)
         {
         }
 
@@ -30,7 +34,7 @@ namespace AspNet.Security.OAuth.Gitter
         {
             var request = new HttpRequestMessage(HttpMethod.Get, Options.UserInformationEndpoint);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            request.Headers.Authorization = new AuthenticationHeaderValue(tokens.TokenType, tokens.AccessToken);
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", tokens.AccessToken);
 
             var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
             if (!response.IsSuccessStatusCode)
@@ -44,23 +48,14 @@ namespace AspNet.Security.OAuth.Gitter
                 throw new HttpRequestException("An error occurred while retrieving the user profile.");
             }
 
-            var payload = JArray.Parse(await response.Content.ReadAsStringAsync());
-            var user = (JObject) payload[0];
-
-            identity.AddOptionalClaim(ClaimTypes.NameIdentifier, GitterAuthenticationHelper.GetIdentifier(user), Options.ClaimsIssuer)
-                    .AddOptionalClaim(ClaimTypes.Name, GitterAuthenticationHelper.GetUsername(user), Options.ClaimsIssuer)
-                    .AddOptionalClaim(ClaimTypes.Webpage, GitterAuthenticationHelper.GetLink(user), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:gitter:displayname", GitterAuthenticationHelper.GetDisplayName(user), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:gitter:avatarurlsmall", GitterAuthenticationHelper.GetAvatarUrlSmall(user), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:gitter:avatarurlmedium", GitterAuthenticationHelper.GetAvatarUrlMedium(user), Options.ClaimsIssuer);
+            var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
 
             var principal = new ClaimsPrincipal(identity);
-            var ticket = new AuthenticationTicket(principal, properties, Options.AuthenticationScheme);
+            var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload);
+            context.RunClaimActions(payload);
 
-            var context = new OAuthCreatingTicketContext(ticket, Context, Options, Backchannel, tokens, user);
             await Options.Events.CreatingTicket(context);
-
-            return context.Ticket;
+            return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
         }
     }
 }

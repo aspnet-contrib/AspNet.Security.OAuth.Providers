@@ -3,18 +3,14 @@
   <Import Project="..\..\build\packages.props" />
 
   <PropertyGroup>
-    <TargetFrameworks>net451;netstandard1.3</TargetFrameworks>
+    <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
   <PropertyGroup>
     <Description>ASP.NET Core security middleware enabling Gitter authentication.</Description>
-    <Authors>Maxime Roussin-Bélanger</Authors>
+    <Authors>Maxime Roussin-Bélanger;Hayden Hancock</Authors>
     <PackageTags>aspnetcore;authentication;gitter;oauth;security</PackageTags>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Include="..\..\shared\AspNet.Security.OAuth.Extensions\*.cs" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="JetBrains.Annotations" Version="$(JetBrainsVersion)" PrivateAssets="All" />
