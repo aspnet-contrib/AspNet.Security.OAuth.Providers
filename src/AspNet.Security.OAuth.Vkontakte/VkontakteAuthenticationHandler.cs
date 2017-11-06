@@ -49,7 +49,13 @@ namespace AspNet.Security.OAuth.Vkontakte
             var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
             var user = (JObject) payload["response"][0];
 
+            if (tokens.Response["email"] != null)
+            {
+                user.Add("email", tokens.Response["email"]);
+            }
+
             identity.AddOptionalClaim(ClaimTypes.NameIdentifier, VkontakteAuthenticationHelper.GetId(user), Options.ClaimsIssuer)
+                    .AddOptionalClaim(ClaimTypes.Email, VkontakteAuthenticationHelper.GetEmail(user), Options.ClaimsIssuer)
                     .AddOptionalClaim(ClaimTypes.GivenName, VkontakteAuthenticationHelper.GetFirstName(user), Options.ClaimsIssuer)
                     .AddOptionalClaim(ClaimTypes.Surname, VkontakteAuthenticationHelper.GetLastName(user), Options.ClaimsIssuer)
                     .AddOptionalClaim(ClaimTypes.Hash, VkontakteAuthenticationHelper.GetHash(user), Options.ClaimsIssuer)

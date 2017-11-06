@@ -43,6 +43,19 @@ namespace AspNet.Security.OAuth.Vkontakte
         }
 
         /// <summary>
+        /// Gets the email address associated with the logged in user.
+        /// </summary>
+        public static string GetEmail([NotNull] JObject user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return user.Value<string>("email");
+        }
+
+        /// <summary>
         /// Gets the first name associated with the logged in user.
         /// </summary>
         public static string GetFirstName([NotNull] JObject user)
