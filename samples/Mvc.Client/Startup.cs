@@ -19,10 +19,10 @@ namespace Mvc.Client
                 options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
             })
 
-            .AddGitter(options =>
+            .AddMailChimp(options =>
             {
-                options.ClientId = "6b7d7522f4fe4383e4c7ebe3e2491c679fa7e474";
-                options.ClientSecret = "eb4313bb8aa6fa6428da13f67804b03c0c0b31bc";
+                options.ClientId = "905623788572";
+                options.ClientSecret = "db5f66004b314934374edf6e6f2fdc3c2f65f7e04dba1e5586";
             })
 
             .AddCookie(options =>
