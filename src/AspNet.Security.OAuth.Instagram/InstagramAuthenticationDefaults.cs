@@ -4,7 +4,8 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OAuth;
 
 namespace AspNet.Security.OAuth.Instagram
 {
@@ -14,17 +15,17 @@ namespace AspNet.Security.OAuth.Instagram
     public static class InstagramAuthenticationDefaults
     {
         /// <summary>
-        /// Default value for <see cref="AuthenticationOptions.AuthenticationScheme"/>.
+        /// Default value for <see cref="AuthenticationScheme.Name"/>.
         /// </summary>
         public const string AuthenticationScheme = "Instagram";
 
         /// <summary>
-        /// Default value for <see cref="RemoteAuthenticationOptions.DisplayName"/>.
+        /// Default value for <see cref="AuthenticationScheme.DisplayName"/>.
         /// </summary>
         public const string DisplayName = "Instagram";
 
         /// <summary>
-        /// Default value for <see cref="AuthenticationOptions.ClaimsIssuer"/>.
+        /// Default value for <see cref="AuthenticationSchemeOptions.ClaimsIssuer"/>.
         /// </summary>
         public const string Issuer = "Instagram";
 
