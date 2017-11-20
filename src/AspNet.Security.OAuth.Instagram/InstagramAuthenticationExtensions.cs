@@ -7,9 +7,9 @@
 using System;
 using AspNet.Security.OAuth.Instagram;
 using JetBrains.Annotations;
-using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Authentication;
 
-namespace Microsoft.AspNetCore.Builder
+namespace Microsoft.Extensions.DependencyInjection
 {
     /// <summary>
     /// Extension methods to add Instagram authentication capabilities to an HTTP application pipeline.
@@ -17,54 +17,60 @@ namespace Microsoft.AspNetCore.Builder
     public static class InstagramAuthenticationExtensions
     {
         /// <summary>
-        /// Adds the <see cref="InstagramAuthenticationMiddleware"/> middleware to the specified
-        /// <see cref="IApplicationBuilder"/>, which enables Instagram authentication capabilities.
+        /// Adds the <see cref="InstagramAuthenticationHandler"/> to the specified
+        /// <see cref="AuthenticationBuilder"/>, which enables Instagram authentication capabilities.
         /// </summary>
-        /// <param name="app">The <see cref="IApplicationBuilder"/> to add the middleware to.</param>
-        /// <param name="options">A <see cref="InstagramAuthenticationOptions"/> that specifies options for the middleware.</param>
+        /// <param name="builder">The authentication builder.</param>
         /// <returns>A reference to this instance after the operation has completed.</returns>
-        public static IApplicationBuilder UseInstagramAuthentication(
-            [NotNull] this IApplicationBuilder app,
-            [NotNull] InstagramAuthenticationOptions options)
+        public static AuthenticationBuilder AddInstagram([NotNull] this AuthenticationBuilder builder)
         {
-            if (app == null)
-            {
-                throw new ArgumentNullException(nameof(app));
-            }
-
-            if (options == null)
-            {
-                throw new ArgumentNullException(nameof(options));
-            }
-
-            return app.UseMiddleware<InstagramAuthenticationMiddleware>(Options.Create(options));
+            return builder.AddInstagram(InstagramAuthenticationDefaults.AuthenticationScheme, options => { });
         }
 
         /// <summary>
-        /// Adds the <see cref="InstagramAuthenticationMiddleware"/> middleware to the specified
-        /// <see cref="IApplicationBuilder"/>, which enables Instagram authentication capabilities.
+        /// Adds the <see cref="InstagramAuthenticationHandler"/> to the specified
+        /// <see cref="AuthenticationBuilder"/>, which enables Instagram authentication capabilities.
         /// </summary>
-        /// <param name="app">The <see cref="IApplicationBuilder"/> to add the middleware to.</param>
-        /// <param name="configuration">An action delegate to configure the provided <see cref="InstagramAuthenticationOptions"/>.</param>
+        /// <param name="builder">The authentication builder.</param>
+        /// <param name="configuration">The delegate used to configure the OpenID 2.0 options.</param>
         /// <returns>A reference to this instance after the operation has completed.</returns>
-        public static IApplicationBuilder UseInstagramAuthentication(
-            [NotNull] this IApplicationBuilder app,
+        public static AuthenticationBuilder AddInstagram(
+            [NotNull] this AuthenticationBuilder builder,
             [NotNull] Action<InstagramAuthenticationOptions> configuration)
         {
-            if (app == null)
-            {
-                throw new ArgumentNullException(nameof(app));
-            }
+            return builder.AddInstagram(InstagramAuthenticationDefaults.AuthenticationScheme, configuration);
+        }
 
-            if (configuration == null)
-            {
-                throw new ArgumentNullException(nameof(configuration));
-            }
+        /// <summary>
+        /// Adds <see cref="InstagramAuthenticationHandler"/> to the specified
+        /// <see cref="AuthenticationBuilder"/>, which enables Instagram authentication capabilities.
+        /// </summary>
+        /// <param name="builder">The authentication builder.</param>
+        /// <param name="scheme">The authentication scheme associated with this instance.</param>
+        /// <param name="configuration">The delegate used to configure the Instagram options.</param>
+        /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
+        public static AuthenticationBuilder AddInstagram(
+            [NotNull] this AuthenticationBuilder builder, [NotNull] string scheme,
+            [NotNull] Action<InstagramAuthenticationOptions> configuration)
+        {
+            return builder.AddInstagram(scheme, InstagramAuthenticationDefaults.DisplayName, configuration);
+        }
 
-            var options = new InstagramAuthenticationOptions();
-            configuration(options);
-
-            return app.UseMiddleware<InstagramAuthenticationMiddleware>(Options.Create(options));
+        /// <summary>
+        /// Adds <see cref="InstagramAuthenticationHandler"/> to the specified
+        /// <see cref="AuthenticationBuilder"/>, which enables Instagram authentication capabilities.
+        /// </summary>
+        /// <param name="builder">The authentication builder.</param>
+        /// <param name="scheme">The authentication scheme associated with this instance.</param>
+        /// <param name="name">The optional display name associated with this instance.</param>
+        /// <param name="configuration">The delegate used to configure the Instagram options.</param>
+        /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
+        public static AuthenticationBuilder AddInstagram(
+            [NotNull] this AuthenticationBuilder builder,
+            [NotNull] string scheme, [CanBeNull] string name,
+            [NotNull] Action<InstagramAuthenticationOptions> configuration)
+        {
+            return builder.AddOAuth<InstagramAuthenticationOptions, InstagramAuthenticationHandler>(scheme, name, configuration);
         }
     }
 }
