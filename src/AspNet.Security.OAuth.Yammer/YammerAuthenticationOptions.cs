@@ -4,7 +4,9 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using Microsoft.AspNetCore.Builder;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
 
 namespace AspNet.Security.OAuth.Yammer
@@ -16,8 +18,6 @@ namespace AspNet.Security.OAuth.Yammer
     {
         public YammerAuthenticationOptions()
         {
-            AuthenticationScheme = YammerAuthenticationDefaults.AuthenticationScheme;
-            DisplayName = YammerAuthenticationDefaults.DisplayName;
             ClaimsIssuer = YammerAuthenticationDefaults.Issuer;
 
             CallbackPath = new PathString("/signin-yammer");
@@ -25,6 +25,14 @@ namespace AspNet.Security.OAuth.Yammer
             AuthorizationEndpoint = YammerAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = YammerAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = YammerAuthenticationDefaults.UserInformationEndpoint;
+
+            ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
+            ClaimActions.MapJsonKey(ClaimTypes.GivenName, "first_name");
+            ClaimActions.MapJsonKey(ClaimTypes.Surname, "last_name");
+            ClaimActions.MapJsonKey(ClaimTypes.Name, "name");
+            ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
+            ClaimActions.MapJsonKey("urn:yammer:link", "web_url");
+            ClaimActions.MapJsonKey("urn:yammer:job_title", "job_title");
         }
     }
 }
