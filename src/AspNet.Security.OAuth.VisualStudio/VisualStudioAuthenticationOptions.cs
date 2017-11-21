@@ -4,7 +4,9 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using Microsoft.AspNetCore.Builder;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
 
 namespace AspNet.Security.OAuth.VisualStudio
@@ -16,8 +18,6 @@ namespace AspNet.Security.OAuth.VisualStudio
     {
         public VisualStudioAuthenticationOptions()
         {
-            AuthenticationScheme = VisualStudioAuthenticationDefaults.AuthenticationScheme;
-            DisplayName = VisualStudioAuthenticationDefaults.DisplayName;
             ClaimsIssuer = VisualStudioAuthenticationDefaults.Issuer;
 
             CallbackPath = new PathString(VisualStudioAuthenticationDefaults.CallbackPath);
@@ -25,6 +25,11 @@ namespace AspNet.Security.OAuth.VisualStudio
             AuthorizationEndpoint = VisualStudioAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = VisualStudioAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = VisualStudioAuthenticationDefaults.UserInformationEndpoint;
+
+            ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
+            ClaimActions.MapJsonKey(ClaimTypes.Email, "emailAddress");
+            ClaimActions.MapJsonKey(ClaimTypes.Name, "publicAlias");
+            ClaimActions.MapJsonKey(ClaimTypes.GivenName, "displayName");
         }
     }
 }
