@@ -26,6 +26,7 @@
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.GitHub\AspNet.Security.OAuth.GitHub.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.HealthGraph\AspNet.Security.OAuth.HealthGraph.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Imgur\AspNet.Security.OAuth.Imgur.csproj" />
+    <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Instagram\AspNet.Security.OAuth.Instagram.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.LinkedIn\AspNet.Security.OAuth.LinkedIn.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Myob\AspNet.Security.OAuth.Myob.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Onshape\AspNet.Security.OAuth.Onshape.csproj" />
@@ -34,15 +35,19 @@
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Reddit\AspNet.Security.OAuth.Reddit.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Salesforce\AspNet.Security.OAuth.Salesforce.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Slack\AspNet.Security.OAuth.Slack.csproj" />
+    <ProjectReference Include="..\..\src\AspNet.Security.OAuth.SoundCloud\AspNet.Security.OAuth.SoundCloud.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.StackExchange\AspNet.Security.OAuth.StackExchange.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Strava\AspNet.Security.OAuth.Strava.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Twitch\AspNet.Security.OAuth.Twitch.csproj" />
+    <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Untappd\AspNet.Security.OAuth.Untappd.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Vimeo\AspNet.Security.OAuth.Vimeo.csproj" />
+    <ProjectReference Include="..\..\src\AspNet.Security.OAuth.VisualStudio\AspNet.Security.OAuth.VisualStudio.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Vkontakte\AspNet.Security.OAuth.Vkontakte.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Weibo\AspNet.Security.OAuth.Weibo.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Weixin\AspNet.Security.OAuth.Weixin.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.WordPress\AspNet.Security.OAuth.WordPress.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Yahoo\AspNet.Security.OAuth.Yahoo.csproj" />
+    <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Yammer\AspNet.Security.OAuth.Yammer.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Yandex\AspNet.Security.OAuth.Yandex.csproj" />
   </ItemGroup>
 

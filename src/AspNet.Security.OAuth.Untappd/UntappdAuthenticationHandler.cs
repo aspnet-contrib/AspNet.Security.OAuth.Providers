@@ -7,21 +7,25 @@
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
+using System.Text.Encodings.Web;
 using System.Threading.Tasks;
-using AspNet.Security.OAuth.Extensions;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
 
 namespace AspNet.Security.OAuth.Untappd
 {
     public class UntappdAuthenticationHandler : OAuthHandler<UntappdAuthenticationOptions>
     {
-        public UntappdAuthenticationHandler([NotNull] HttpClient client)
-            : base(client)
+        public UntappdAuthenticationHandler(
+            [NotNull] IOptionsMonitor<UntappdAuthenticationOptions> options,
+            [NotNull] ILoggerFactory logger,
+            [NotNull] UrlEncoder encoder,
+            [NotNull] ISystemClock clock)
+            : base(options, logger, encoder, clock)
         {
         }
 
@@ -46,20 +50,13 @@ namespace AspNet.Security.OAuth.Untappd
 
             var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
 
-            identity.AddOptionalClaim(ClaimTypes.NameIdentifier, UntappdAuthenticationHelper.GetIdentifier(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim(ClaimTypes.GivenName, UntappdAuthenticationHelper.GetFirstName(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim(ClaimTypes.Surname, UntappdAuthenticationHelper.GetLastName(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim(ClaimTypes.Name, UntappdAuthenticationHelper.GetUsername(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim(ClaimTypes.Webpage, UntappdAuthenticationHelper.GetUrl(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:untappd:link", UntappdAuthenticationHelper.GetAvatar(payload), Options.ClaimsIssuer);
-
             var principal = new ClaimsPrincipal(identity);
-            var ticket = new AuthenticationTicket(principal, properties, Options.AuthenticationScheme);
+            var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload);
+            context.RunClaimActions(payload.Value<JObject>("user"));
 
-            var context = new OAuthCreatingTicketContext(ticket, Context, Options, Backchannel, tokens, payload);
             await Options.Events.CreatingTicket(context);
 
-            return context.Ticket;
+            return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
         }
     }
 }
