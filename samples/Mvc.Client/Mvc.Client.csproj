@@ -39,6 +39,7 @@
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.StackExchange\AspNet.Security.OAuth.StackExchange.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Strava\AspNet.Security.OAuth.Strava.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Twitch\AspNet.Security.OAuth.Twitch.csproj" />
+    <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Untappd\AspNet.Security.OAuth.Untappd.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Vimeo\AspNet.Security.OAuth.Vimeo.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Vkontakte\AspNet.Security.OAuth.Vkontakte.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Weibo\AspNet.Security.OAuth.Weibo.csproj" />
