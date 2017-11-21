@@ -4,7 +4,9 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using Microsoft.AspNetCore.Builder;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
 
 namespace AspNet.Security.OAuth.SoundCloud
@@ -16,8 +18,6 @@ namespace AspNet.Security.OAuth.SoundCloud
     {
         public SoundCloudAuthenticationOptions()
         {
-            AuthenticationScheme = SoundCloudAuthenticationDefaults.AuthenticationScheme;
-            DisplayName = SoundCloudAuthenticationDefaults.DisplayName;
             ClaimsIssuer = SoundCloudAuthenticationDefaults.Issuer;
 
             CallbackPath = new PathString(SoundCloudAuthenticationDefaults.CallbackPath);
@@ -25,6 +25,13 @@ namespace AspNet.Security.OAuth.SoundCloud
             AuthorizationEndpoint = SoundCloudAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = SoundCloudAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = SoundCloudAuthenticationDefaults.UserInformationEndpoint;
+
+            ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
+            ClaimActions.MapJsonKey(ClaimTypes.Name, "username");
+            ClaimActions.MapJsonKey(ClaimTypes.Country, "country");
+            ClaimActions.MapJsonKey("urn:soundcloud:fullname", "full_name");
+            ClaimActions.MapJsonKey("urn:soundcloud:city", "city");
+            ClaimActions.MapJsonKey("urn:soundcloud:profileurl", "permalink_url");
         }
     }
 }
