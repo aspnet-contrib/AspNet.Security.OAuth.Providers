@@ -8,7 +8,7 @@
 
   <PropertyGroup>
     <Description>ASP.NET Core security middleware enabling StackExchange authentication.</Description>
-    <Authors>Andrew Lock</Authors>
+    <Authors>Andrew Lock;Chino Chang</Authors>
     <PackageTags>aspnetcore;authentication;stackexchange;oauth;security</PackageTags>
   </PropertyGroup>
 

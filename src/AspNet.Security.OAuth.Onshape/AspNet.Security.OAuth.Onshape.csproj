@@ -8,7 +8,7 @@
 
   <PropertyGroup>
     <Description>ASP.NET Core security middleware enabling Onshape authentication.</Description>
-    <Authors>Tathagata Chakraborty</Authors>
+    <Authors>Tathagata Chakraborty;Chino Chang</Authors>
     <PackageTags>aspnetcore;authentication;oauth;onshape;security</PackageTags>
   </PropertyGroup>
 

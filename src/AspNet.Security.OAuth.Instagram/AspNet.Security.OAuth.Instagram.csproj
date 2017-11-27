@@ -8,7 +8,7 @@
 
   <PropertyGroup>
     <Description>ASP.NET Core security middleware enabling Instagram authentication.</Description>
-    <Authors>Yannic Smeets</Authors>
+    <Authors>Yannic Smeets;Chino Chang</Authors>
     <PackageTags>aspnetcore;authentication;instagram;oauth;security</PackageTags>
   </PropertyGroup>
 

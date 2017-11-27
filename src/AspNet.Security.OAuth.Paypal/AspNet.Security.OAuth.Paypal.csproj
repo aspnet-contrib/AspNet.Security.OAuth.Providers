@@ -8,7 +8,7 @@
 
   <PropertyGroup>
     <Description>ASP.NET Core security middleware enabling Paypal authentication.</Description>
-    <Authors>Yannic Smeets</Authors>
+    <Authors>Yannic Smeets;Chino Chang</Authors>
     <PackageTags>aspnetcore;authentication;oauth;paypal;security</PackageTags>
   </PropertyGroup>
 

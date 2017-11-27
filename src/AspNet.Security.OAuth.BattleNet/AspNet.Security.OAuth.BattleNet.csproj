@@ -8,7 +8,7 @@
 
   <PropertyGroup>
     <Description>ASP.NET Core security middleware enabling Battle.net authentication.</Description>
-    <Authors>Gekctek</Authors>
+    <Authors>Gekctek;Chino Chang</Authors>
     <PackageTags>aspnetcore;authentication;battlenet;oauth;security</PackageTags>
   </PropertyGroup>
 

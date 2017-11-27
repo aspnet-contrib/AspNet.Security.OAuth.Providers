@@ -8,7 +8,7 @@
 
   <PropertyGroup>
     <Description>ASP.NET Core security middleware enabling Asana authentication.</Description>
-    <Authors>Adam Reisinger</Authors>
+    <Authors>Adam Reisinger;Chino Chang</Authors>
     <PackageTags>asana;aspnetcore;authentication;oauth;security</PackageTags>
   </PropertyGroup>
 
