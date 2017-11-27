@@ -62,15 +62,15 @@ namespace Microsoft.Extensions.DependencyInjection
         /// </summary>
         /// <param name="builder">The authentication builder.</param>
         /// <param name="scheme">The authentication scheme associated with this instance.</param>
-        /// <param name="name">The optional display name associated with this instance.</param>
+        /// <param name="caption">The optional display name associated with this instance.</param>
         /// <param name="configuration">The delegate used to configure the Beam options.</param>
         /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
         public static AuthenticationBuilder AddBeam(
             [NotNull] this AuthenticationBuilder builder,
-            [NotNull] string scheme, [CanBeNull] string name,
+            [NotNull] string scheme, [CanBeNull] string caption,
             [NotNull] Action<BeamAuthenticationOptions> configuration)
         {
-            return builder.AddOAuth<BeamAuthenticationOptions, BeamAuthenticationHandler>(scheme, name, configuration);
+            return builder.AddOAuth<BeamAuthenticationOptions, BeamAuthenticationHandler>(scheme, caption, configuration);
         }
     }
 }

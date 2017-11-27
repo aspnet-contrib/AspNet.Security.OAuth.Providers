@@ -62,15 +62,15 @@ namespace Microsoft.Extensions.DependencyInjection
         /// </summary>
         /// <param name="builder">The authentication builder.</param>
         /// <param name="scheme">The authentication scheme associated with this instance.</param>
-        /// <param name="name">The optional display name associated with this instance.</param>
+        /// <param name="caption">The optional display name associated with this instance.</param>
         /// <param name="configuration">The delegate used to configure the Bitbucket options.</param>
         /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
         public static AuthenticationBuilder AddBitbucket(
             [NotNull] this AuthenticationBuilder builder,
-            [NotNull] string scheme, [CanBeNull] string name,
+            [NotNull] string scheme, [CanBeNull] string caption,
             [NotNull] Action<BitbucketAuthenticationOptions> configuration)
         {
-            return builder.AddOAuth<BitbucketAuthenticationOptions, BitbucketAuthenticationHandler>(scheme, name, configuration);
+            return builder.AddOAuth<BitbucketAuthenticationOptions, BitbucketAuthenticationHandler>(scheme, caption, configuration);
         }
     }
 }

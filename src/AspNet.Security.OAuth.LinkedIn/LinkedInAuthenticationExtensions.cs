@@ -17,7 +17,7 @@ namespace Microsoft.Extensions.DependencyInjection
     public static class LinkedInAuthenticationExtensions
     {
         /// <summary>
-        /// Adds the <see cref="LinkedInAuthenticationHandler"/> middleware to the specified
+        /// Adds <see cref="LinkedInAuthenticationHandler"/> to the specified
         /// <see cref="AuthenticationBuilder"/>, which enables LinkedIn authentication capabilities.
         /// </summary>
         /// <param name="builder">The <see cref="AuthenticationBuilder"/> to add the middleware to.</param>
@@ -28,7 +28,7 @@ namespace Microsoft.Extensions.DependencyInjection
         }
 
         /// <summary>
-        /// Adds the <see cref="LinkedInAuthenticationHandler"/> middleware to the specified
+        /// Adds <see cref="LinkedInAuthenticationHandler"/> to the specified
         /// <see cref="AuthenticationBuilder"/>, which enables LinkedIn authentication capabilities.
         /// </summary>
         /// <param name="builder">The <see cref="AuthenticationBuilder"/> to add the middleware to.</param>
@@ -62,15 +62,15 @@ namespace Microsoft.Extensions.DependencyInjection
         /// </summary>
         /// <param name="builder">The authentication builder.</param>
         /// <param name="scheme">The authentication scheme associated with this instance.</param>
-        /// <param name="name">The optional display name associated with this instance.</param>
+        /// <param name="caption">The optional display name associated with this instance.</param>
         /// <param name="configuration">The delegate used to configure the LinkedIn options.</param>
         /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
         public static AuthenticationBuilder AddLinkedIn(
             [NotNull] this AuthenticationBuilder builder,
-            [NotNull] string scheme, [CanBeNull] string name,
+            [NotNull] string scheme, [CanBeNull] string caption,
             [NotNull] Action<LinkedInAuthenticationOptions> configuration)
         {
-            return builder.AddOAuth<LinkedInAuthenticationOptions, LinkedInAuthenticationHandler>(scheme, name, configuration);
+            return builder.AddOAuth<LinkedInAuthenticationOptions, LinkedInAuthenticationHandler>(scheme, caption, configuration);
         }
     }
 }

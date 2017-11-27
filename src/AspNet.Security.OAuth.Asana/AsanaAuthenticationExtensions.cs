@@ -17,7 +17,7 @@ namespace Microsoft.Extensions.DependencyInjection
     public static class AsanaAuthenticationExtensions
     {
         /// <summary>
-        /// Adds the <see cref="AsanaAuthenticationHandler"/> to the specified
+        /// Adds <see cref="AsanaAuthenticationHandler"/> to the specified
         /// <see cref="AuthenticationBuilder"/>, which enables Asana authentication capabilities.
         /// </summary>
         /// <param name="builder">The authentication builder.</param>
@@ -28,7 +28,7 @@ namespace Microsoft.Extensions.DependencyInjection
         }
 
         /// <summary>
-        /// Adds the <see cref="AsanaAuthenticationHandler"/> to the specified
+        /// Adds <see cref="AsanaAuthenticationHandler"/> to the specified
         /// <see cref="AuthenticationBuilder"/>, which enables Asana authentication capabilities.
         /// </summary>
         /// <param name="builder">The authentication builder.</param>
@@ -62,15 +62,15 @@ namespace Microsoft.Extensions.DependencyInjection
         /// </summary>
         /// <param name="builder">The authentication builder.</param>
         /// <param name="scheme">The authentication scheme associated with this instance.</param>
-        /// <param name="name">The optional display name associated with this instance.</param>
+        /// <param name="caption">The optional display name associated with this instance.</param>
         /// <param name="configuration">The delegate used to configure the Asana options.</param>
         /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
         public static AuthenticationBuilder AddAsana(
             [NotNull] this AuthenticationBuilder builder,
-            [NotNull] string scheme, [CanBeNull] string name,
+            [NotNull] string scheme, [CanBeNull] string caption,
             [NotNull] Action<AsanaAuthenticationOptions> configuration)
         {
-            return builder.AddOAuth<AsanaAuthenticationOptions, AsanaAuthenticationHandler>(scheme, name, configuration);
+            return builder.AddOAuth<AsanaAuthenticationOptions, AsanaAuthenticationHandler>(scheme, caption, configuration);
         }
     }
 }
