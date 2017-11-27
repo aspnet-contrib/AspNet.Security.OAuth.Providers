@@ -8,7 +8,7 @@
 
   <PropertyGroup>
     <Description>ASP.NET Core security middleware enabling DeviantArt authentication.</Description>
-    <Authors>Tommy Parnell</Authors>
+    <Authors>Tommy Parnell;Chino Chang</Authors>
     <PackageTags>aspnetcore;authentication;deviantart;oauth;security</PackageTags>
   </PropertyGroup>
 

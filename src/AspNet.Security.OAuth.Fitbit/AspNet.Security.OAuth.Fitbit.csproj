@@ -8,7 +8,7 @@
 
   <PropertyGroup>
     <Description>ASP.NET Core security middleware enabling Fitbit authentication.</Description>
-    <Authors>Jason Loeffler</Authors>
+    <Authors>Jason Loeffler;Chino Chang</Authors>
     <PackageTags>aspnetcore;authentication;fitbit;oauth;security</PackageTags>
   </PropertyGroup>
 

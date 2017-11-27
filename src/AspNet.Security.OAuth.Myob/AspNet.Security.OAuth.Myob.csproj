@@ -8,7 +8,7 @@
 
   <PropertyGroup>
     <Description>ASP.NET Core security middleware enabling MYOB authentication.</Description>
-    <Authors>Jordan Knight</Authors>
+    <Authors>Jordan Knight;Chino Chang</Authors>
     <PackageTags>accountright;aspnetcore;authentication;essentials;exo;myob;oauth;security</PackageTags>
   </PropertyGroup>
 

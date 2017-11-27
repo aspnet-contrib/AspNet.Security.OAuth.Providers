@@ -8,7 +8,7 @@
 
   <PropertyGroup>
     <Description>ASP.NET Core security middleware enabling EVEOnline authentication.</Description>
-    <Authors>Mariusz Zieliński</Authors>
+    <Authors>Mariusz Zieliński;Chino Chang</Authors>
     <PackageTags>aspnetcore;authentication;eveonline;oauth;security</PackageTags>
   </PropertyGroup>
 

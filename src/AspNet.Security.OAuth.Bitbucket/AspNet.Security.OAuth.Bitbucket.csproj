@@ -8,7 +8,7 @@
 
   <PropertyGroup>
     <Description>ASP.NET Core security middleware enabling Bitbucket authentication.</Description>
-    <Authors>Steffen Wenz</Authors>
+    <Authors>Steffen Wenz;Chino Chang</Authors>
     <PackageTags>aspnetcore;authentication;bitbucket;oauth;security</PackageTags>
   </PropertyGroup>
 

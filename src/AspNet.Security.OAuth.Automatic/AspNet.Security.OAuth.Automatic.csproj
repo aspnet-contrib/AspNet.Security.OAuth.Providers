@@ -8,7 +8,7 @@
 
   <PropertyGroup>
     <Description>ASP.NET Core security middleware enabling Automatic authentication.</Description>
-    <Authors>Jesse Mandel</Authors>
+    <Authors>Jesse Mandel;Chino Chang</Authors>
     <PackageTags>aspnetcore;authentication;automatic;oauth;security</PackageTags>
   </PropertyGroup>
 

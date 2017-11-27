@@ -8,7 +8,7 @@
 
   <PropertyGroup>
     <Description>ASP.NET Core security middleware enabling Foursquare authentication.</Description>
-    <Authors>Abhinav Nigam</Authors>
+    <Authors>Abhinav Nigam;Chino Chang</Authors>
     <PackageTags>aspnetcore;authentication;foursquare;oauth;security</PackageTags>
   </PropertyGroup>
 

@@ -8,7 +8,7 @@
 
   <PropertyGroup>
     <Description>ASP.NET Core security middleware enabling Beam authentication.</Description>
-    <Authors>Stefan Pohl</Authors>
+    <Authors>Stefan Pohl;Chino Chang</Authors>
     <PackageTags>aspnetcore;authentication;beam;oauth;security</PackageTags>
   </PropertyGroup>
 

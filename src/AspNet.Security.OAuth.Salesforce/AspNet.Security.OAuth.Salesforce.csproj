@@ -8,7 +8,7 @@
 
   <PropertyGroup>
     <Description>ASP.NET Core security middleware enabling Salesforce authentication.</Description>
-    <Authors>Andrew Mattie</Authors>
+    <Authors>Andrew Mattie;Chino Chang</Authors>
     <PackageTags>aspnetcore;authentication;oauth;salesforce;security</PackageTags>
   </PropertyGroup>
 
