@@ -1,17 +1,8 @@
 <Project>
 
   <PropertyGroup>
-    <JetBrainsVersion>10.3.0</JetBrainsVersion>
-  </PropertyGroup>
-
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard1.3' Or '$(TargetFramework)' == 'net451' ">
-    <AspNetCoreVersion>1.0.0</AspNetCoreVersion>
-    <NetStandardImplicitPackageVersion>1.6.0</NetStandardImplicitPackageVersion>
-    <RuntimeFrameworkVersion>1.0.0</RuntimeFrameworkVersion>
-  </PropertyGroup>
-
-  <PropertyGroup Condition=" '$(AspNetCoreVersion)' == '' ">
     <AspNetCoreVersion>2.0.0</AspNetCoreVersion>
+    <JetBrainsVersion>10.3.0</JetBrainsVersion>
     <NetStandardImplicitPackageVersion>2.0.0</NetStandardImplicitPackageVersion>
     <RuntimeFrameworkVersion>2.0.0</RuntimeFrameworkVersion>
   </PropertyGroup>
