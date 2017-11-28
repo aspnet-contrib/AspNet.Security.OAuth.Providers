@@ -12,6 +12,7 @@
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Asana\AspNet.Security.OAuth.Asana.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Autodesk\AspNet.Security.OAuth.Autodesk.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Automatic\AspNet.Security.OAuth.Automatic.csproj" />
+    <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Baidu\AspNet.Security.OAuth.Baidu.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.BattleNet\AspNet.Security.OAuth.BattleNet.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Beam\AspNet.Security.OAuth.Beam.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Bitbucket\AspNet.Security.OAuth.Bitbucket.csproj" />
