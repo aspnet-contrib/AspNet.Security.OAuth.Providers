@@ -26,16 +26,15 @@ namespace AspNet.Security.OAuth.Slack
             TokenEndpoint = SlackAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = SlackAuthenticationDefaults.UserInformationEndpoint;
 
-            ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "user_id");
-            ClaimActions.MapJsonKey(ClaimTypes.Name, "user");
-            ClaimActions.MapJsonKey("urn:slack:team_id", "team_id");
-            ClaimActions.MapJsonKey("urn:slack:team_name", "team");
-            ClaimActions.MapJsonKey("urn:slack:team_url", "url");
-            ClaimActions.MapCustomJson("urn:slack:bot:user_id", user => user["bot"]?.Value<string>("bot_user_id"));
-            ClaimActions.MapCustomJson("urn:slack:bot:access_token", user => user["bot"]?.Value<string>("bot_access_token"));
-            ClaimActions.MapCustomJson("urn:slack:webhook:channel", user => user["incoming_webhook"]?.Value<string>("channel"));
-            ClaimActions.MapCustomJson("urn:slack:webhook:url", user => user["incoming_webhook"]?.Value<string>("url"));
-            ClaimActions.MapCustomJson("urn:slack:webhook:configuration_url", user => user["incoming_webhook"]?.Value<string>("configuration_url"));
+            ClaimActions.MapCustomJson(ClaimTypes.NameIdentifier, user =>
+                string.Concat(user["team"]["id"], "|", user["user"]["id"]));
+            ClaimActions.MapJsonSubKey(ClaimTypes.Name, "user", "name");
+            ClaimActions.MapJsonSubKey(ClaimTypes.Email, "user", "email");
+            ClaimActions.MapJsonSubKey("urn:slack:user_id", "user", "id");
+            ClaimActions.MapJsonSubKey("urn:slack:team_id", "team", "id");
+            ClaimActions.MapJsonSubKey("urn:slack:team_name", "team", "name");
+
+            Scope.Add("identity.basic");
         }
     }
 }
