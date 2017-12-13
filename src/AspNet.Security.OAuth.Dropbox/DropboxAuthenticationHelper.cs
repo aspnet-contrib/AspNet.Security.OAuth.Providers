@@ -26,7 +26,7 @@ namespace AspNet.Security.OAuth.Dropbox
                 throw new ArgumentNullException(nameof(user));
             }
 
-            return user.Value<string>("uid");
+            return user.Value<string>("account_id");
         }
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace AspNet.Security.OAuth.Dropbox
                 throw new ArgumentNullException(nameof(user));
             }
 
-            return user.Value<string>("display_name");
+            return user.Value<JObject>("name")?.Value<string>("display_name");
         }
 
         /// <summary>
