@@ -37,5 +37,11 @@ namespace AspNet.Security.OAuth.Weibo
             ClaimActions.MapJsonKey("urn:weibo:cover_image_phone", "cover_image_phone");
             ClaimActions.MapJsonKey("urn:weibo:location", "location");
         }
+
+        /// <summary>
+        /// Gets or sets the address of the endpoint exposing
+        /// the email addresses associated with the logged in user.
+        /// </summary>
+        public string UserEmailsEndpoint { get; set; } = WeiboAuthenticationDefaults.UserEmailsEndpoint;
     }
 }
