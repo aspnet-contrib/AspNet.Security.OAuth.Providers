@@ -54,7 +54,7 @@ namespace AspNet.Security.OAuth.Patreon
             var principal = new ClaimsPrincipal(identity);
             var ticket = new AuthenticationTicket(principal, properties, Options.AuthenticationScheme);
 
-            var context = new OAuthCreatingTicketContext(ticket, Context, Options, Backchannel, tokens);
+            var context = new OAuthCreatingTicketContext(ticket, Context, Options, Backchannel, tokens, payload);
             await Options.Events.CreatingTicket(context);
 
             return context.Ticket;

@@ -49,9 +49,6 @@ namespace AspNet.Security.OAuth.Vkontakte
             var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
             var user = (JObject) payload["response"][0];
 
-            var ticket = new AuthenticationTicket(new ClaimsPrincipal(identity), properties, Options.AuthenticationScheme);
-            var context = new OAuthCreatingTicketContext(ticket, Context, Options, Backchannel, tokens, user);
-
             identity.AddOptionalClaim(ClaimTypes.NameIdentifier, VkontakteAuthenticationHelper.GetId(user), Options.ClaimsIssuer)
                     .AddOptionalClaim(ClaimTypes.GivenName, VkontakteAuthenticationHelper.GetFirstName(user), Options.ClaimsIssuer)
                     .AddOptionalClaim(ClaimTypes.Surname, VkontakteAuthenticationHelper.GetLastName(user), Options.ClaimsIssuer)
@@ -59,6 +56,10 @@ namespace AspNet.Security.OAuth.Vkontakte
                     .AddOptionalClaim("urn:vkontakte:photo:link", VkontakteAuthenticationHelper.GetPhoto(user), Options.ClaimsIssuer)
                     .AddOptionalClaim("urn:vkontakte:photo_thumb:link", VkontakteAuthenticationHelper.GetPhotoThumbnail(user), Options.ClaimsIssuer);
 
+            var principal = new ClaimsPrincipal(identity);
+            var ticket = new AuthenticationTicket(principal, properties, Options.AuthenticationScheme);
+
+            var context = new OAuthCreatingTicketContext(ticket, Context, Options, Backchannel, tokens, user);
             await Options.Events.CreatingTicket(context);
 
             return context.Ticket;
