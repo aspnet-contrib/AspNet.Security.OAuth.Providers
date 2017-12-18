@@ -36,6 +36,7 @@
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Paypal\AspNet.Security.OAuth.Paypal.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Reddit\AspNet.Security.OAuth.Reddit.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Salesforce\AspNet.Security.OAuth.Salesforce.csproj" />
+    <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Shopify\AspNet.Security.OAuth.Shopify.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Slack\AspNet.Security.OAuth.Slack.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.SoundCloud\AspNet.Security.OAuth.SoundCloud.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.StackExchange\AspNet.Security.OAuth.StackExchange.csproj" />

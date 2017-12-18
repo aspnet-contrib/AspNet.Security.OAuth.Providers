@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.16
+VisualStudioVersion = 15.0.27004.2009
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}"
 EndProject
@@ -100,6 +100,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.Patreon", "src\AspNet.Security.OAuth.Patreon\AspNet.Security.OAuth.Patreon.csproj", "{ED8A220C-45FE-45C6-9B8F-BB009ACE972E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.QQ", "src\AspNet.Security.OAuth.QQ\AspNet.Security.OAuth.QQ.csproj", "{7C2E82CE-F6EC-41A8-AA22-3466505F95D8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.Shopify", "src\AspNet.Security.OAuth.Shopify\AspNet.Security.OAuth.Shopify.csproj", "{4D360329-84C7-4342-9462-46F742485E0F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -295,6 +297,10 @@ Global
 		{7C2E82CE-F6EC-41A8-AA22-3466505F95D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7C2E82CE-F6EC-41A8-AA22-3466505F95D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7C2E82CE-F6EC-41A8-AA22-3466505F95D8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4D360329-84C7-4342-9462-46F742485E0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D360329-84C7-4342-9462-46F742485E0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D360329-84C7-4342-9462-46F742485E0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D360329-84C7-4342-9462-46F742485E0F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -347,5 +353,9 @@ Global
 		{86614CB9-0768-40BF-8C27-699E3990B733} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 		{ED8A220C-45FE-45C6-9B8F-BB009ACE972E} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 		{7C2E82CE-F6EC-41A8-AA22-3466505F95D8} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
+		{4D360329-84C7-4342-9462-46F742485E0F} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {01FFE8B9-2867-4ECE-9660-8745BABB5540}
 	EndGlobalSection
 EndGlobal

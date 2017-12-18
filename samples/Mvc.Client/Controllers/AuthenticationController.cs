@@ -5,6 +5,7 @@
  */
 
 using System.Threading.Tasks;
+using AspNet.Security.OAuth.Shopify;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
@@ -15,7 +16,11 @@ namespace Mvc.Client.Controllers
     public class AuthenticationController : Controller
     {
         [HttpGet("~/signin")]
-        public async Task<IActionResult> SignIn() => View("SignIn", await HttpContext.GetExternalProvidersAsync());
+        public async Task<IActionResult> SignIn()
+        {
+            var providers = await HttpContext.GetExternalProvidersAsync();
+            return View("SignIn", providers);
+        }
 
         [HttpPost("~/signin")]
         public async Task<IActionResult> SignIn([FromForm] string provider)
@@ -35,7 +40,21 @@ namespace Mvc.Client.Controllers
             // Instruct the middleware corresponding to the requested external identity
             // provider to redirect the user agent to its own authorization endpoint.
             // Note: the authenticationScheme parameter must match the value configured in Startup.cs
-            return Challenge(new AuthenticationProperties { RedirectUri = "/" }, provider);
+            if (provider == ShopifyAuthenticationDefaults.AuthenticationScheme)
+            {
+                var authProps = new AuthenticationProperties
+                {
+                    RedirectUri = "/",
+                    Items = { [ShopifyAuthenticationDefaults.ShopNameAuthenticationProperty] = "the-cat-ball-test" }
+                };
+
+                return Challenge(authProps, provider);
+            }
+
+            return Challenge(new AuthenticationProperties
+            {
+                RedirectUri = "/",
+            }, provider);
         }
 
         [HttpGet("~/signout"), HttpPost("~/signout")]

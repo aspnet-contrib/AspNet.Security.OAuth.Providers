@@ -42,6 +42,13 @@ namespace Mvc.Client
                 options.ClientId = "49e302895d8b09ea5656";
                 options.ClientSecret = "98f1bf028608901e9df91d64ee61536fe562064b";
                 options.Scope.Add("user:email");
+            })
+            
+            .AddShopify(options =>
+            {
+                options.ApiKey = "275f6ff4f18729971335761c6a025bfe";
+                options.ApiSecretKey = "35b8276265bfbda78fe8af7a89805792";
+
             });
 
             services.AddMvc();
