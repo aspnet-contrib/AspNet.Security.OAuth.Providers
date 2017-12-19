@@ -4,6 +4,7 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
@@ -49,6 +50,8 @@ namespace Mvc.Client
                 options.ApiKey = "275f6ff4f18729971335761c6a025bfe";
                 options.ApiSecretKey = "35b8276265bfbda78fe8af7a89805792";
 
+                options.Scope.Add("read_customers");
+                options.Scope.Add("read_orders");
             });
 
             services.AddMvc();

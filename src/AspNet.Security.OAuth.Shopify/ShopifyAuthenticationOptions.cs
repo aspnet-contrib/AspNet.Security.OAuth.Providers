@@ -14,10 +14,8 @@ namespace AspNet.Security.OAuth.Shopify
     /// <inheritdoc />
     public class ShopifyAuthenticationOptions : OAuthOptions
     {
-        public string ShopifyScope { get; set; } = "read_customers";
-
         /// <summary>
-        /// An alias for ClientId
+        /// An alias for <see cref="OAuthOptions.ClientId"/>
         /// </summary>
         public string ApiKey
         {
@@ -26,7 +24,7 @@ namespace AspNet.Security.OAuth.Shopify
         }
 
         /// <summary>
-        /// An alias for ClientSecret
+        /// An alias for <see cref="OAuthOptions.ClientSecret"/>
         /// </summary>
         public string ApiSecretKey
         {
@@ -45,13 +43,18 @@ namespace AspNet.Security.OAuth.Shopify
             AuthorizationEndpoint = ShopifyAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = ShopifyAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = ShopifyAuthenticationDefaults.UserInformationEndpoint;
-
-            Scope.Add(ShopifyScope);
-
-            // ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
-            // ClaimActions.MapJsonKey(ClaimTypes.Name, "full_name");
-            ClaimActions.MapJsonSubKey(ClaimTypes.Dns, "shop", "myshopify_domain");
-            ClaimActions.MapJsonSubKey(ClaimTypes.NameIdentifier, "shop", "id", "long");
+            
+            ClaimActions.MapJsonSubKey(ClaimTypes.NameIdentifier, "shop", "myshopify_domain");
+            ClaimActions.MapJsonSubKey(ClaimTypes.Name, "shop", "name");
+            ClaimActions.MapJsonSubKey(ClaimTypes.Webpage, "shop", "domain");
+            ClaimActions.MapJsonSubKey(ClaimTypes.Email, "shop", "email");
+            ClaimActions.MapJsonSubKey(ClaimTypes.Country, "shop", "country_code");
+            ClaimActions.MapJsonSubKey(ClaimTypes.StateOrProvince, "shop", "province_code");
+            ClaimActions.MapJsonSubKey(ClaimTypes.PostalCode, "shop", "zip");
+            ClaimActions.MapJsonSubKey(ClaimTypes.Locality, "shop", "primary_locale");
+            ClaimActions.MapJsonSubKey(ShopifyAuthenticationDefaults.ShopifyPlanNameClaimType, "shop", "plan_name");
+            ClaimActions.MapJsonSubKey(ShopifyAuthenticationDefaults.ShopifyEligableForPaymentsClaimType, "shop", "eligible_for_payments", "boolean");
+            ClaimActions.MapJsonSubKey(ShopifyAuthenticationDefaults.ShopifyTimezoneClaimType, "shop", "timezone");
         }
     }
 }

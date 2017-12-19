@@ -40,21 +40,31 @@ namespace Mvc.Client.Controllers
             // Instruct the middleware corresponding to the requested external identity
             // provider to redirect the user agent to its own authorization endpoint.
             // Note: the authenticationScheme parameter must match the value configured in Startup.cs
-            if (provider == ShopifyAuthenticationDefaults.AuthenticationScheme)
+            if (provider != ShopifyAuthenticationDefaults.AuthenticationScheme)
             {
-                var authProps = new AuthenticationProperties
+                return Challenge(new AuthenticationProperties
                 {
                     RedirectUri = "/",
-                    Items = { [ShopifyAuthenticationDefaults.ShopNameAuthenticationProperty] = "the-cat-ball-test" }
-                };
-
-                return Challenge(authProps, provider);
+                }, provider);
             }
 
-            return Challenge(new AuthenticationProperties
+
+            // Shopify OAuth differs from most (all?) others in that you need to know the host name of the
+            // shop in order to construct the authorization endpoint. This can be aquired either from the
+            // user directly, or provided by the shopify app store during app install/activation.
+            var authProps = new ShopifyAuthenticationProperties("the-cat-ball-test") // Put your shop name here.
             {
                 RedirectUri = "/",
-            }, provider);
+
+                // Override OAuthOptions.Scope. Must be fully formatted.
+                //Scope = "read_customers,read_orders"
+
+                // Set to true for a per-user, online-only, token. The retured token has an expiration date
+                // and should not be persisted. An offline token is requested by default.
+                //RequestPerUserToken = true
+            };
+
+            return Challenge(authProps, provider);
         }
 
         [HttpGet("~/signout"), HttpPost("~/signout")]
