@@ -2,11 +2,25 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>Chris Boaro</Authors>
+    <Product>aspnet-contrib</Product>
+    <Company>Chris Boaro</Company>
+    <Description>ASP.NET Core security middleware enabling Shopify authentication.</Description>
+    <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0.html</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers</PackageProjectUrl>
+    <PackageIconUrl>https://avatars3.githubusercontent.com/u/7998081?s=64</PackageIconUrl>
+    <RepositoryUrl>git://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>aspnetcore;authentication;shopify;oauth;security</PackageTags>
+    <AssemblyVersion>1.0.1.0</AssemblyVersion>
+    <FileVersion>1.0.1.0</FileVersion>
+    <SignAssembly>false</SignAssembly>
+    <AssemblyOriginatorKeyFile>key.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <OutputPath>bin\Debug\netstandard2.0\</OutputPath>
-    <DocumentationFile>bin\Debugobj\Debug\netstandard2.0\AspNet.Security.OAuth.GitHub.xml</DocumentationFile>
+    <DocumentationFile>bin\Debugobj\Debug\netstandard2.0\AspNet.Security.OAuth.Shopify.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

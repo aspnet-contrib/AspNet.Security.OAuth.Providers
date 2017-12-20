@@ -47,8 +47,8 @@ namespace Mvc.Client
             
             .AddShopify(options =>
             {
-                options.ApiKey = "275f6ff4f18729971335761c6a025bfe";
-                options.ApiSecretKey = "3effddaafa2d8885451318a18a6988f0";
+                options.ApiKey = "9489b7555256142d9d723711c4614df7";
+                options.ApiSecretKey = "2aa67425c36ad047f579ee594a59269d";
 
                 options.Scope.Add("read_customers");
                 options.Scope.Add("read_orders");

@@ -11,6 +11,9 @@ using Microsoft.AspNetCore.Authentication;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
+    /// <summary>
+    /// Extension methods to add Shopify authentication capabilities to an HTTP application pipeline.
+    /// </summary>
     public static class ShopifyAuthenticationExtensions
     {
         /// <summary>

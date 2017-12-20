@@ -80,15 +80,15 @@ namespace AspNet.Security.OAuth.Shopify
                 isPersistent = false;
 
                 var expires = DateTimeOffset.Now.AddSeconds(Convert.ToInt32(val.ToString()));
-                identity.AddClaim(new Claim(ClaimTypes.Expiration, expires.ToString("O"), "dateTime"));
+                identity.AddClaim(new Claim(ClaimTypes.Expiration, expires.ToString("O"), ShopifyAuthenticationOptions.XmlSchemaDateTime));
 
                 actualScope = tokens.Response["associated_user_scope"].ToString();
-
+                
                 var userData = tokens.Response["associated_user"].ToString();
-                identity.AddClaim(new Claim(ClaimTypes.UserData, userData, "json"));
+                identity.AddClaim(new Claim(ClaimTypes.UserData, userData));
             }
 
-            identity.AddClaim(new Claim(ClaimTypes.IsPersistent, isPersistent.ToString(), "boolean"));
+            identity.AddClaim(new Claim(ClaimTypes.IsPersistent, isPersistent.ToString(), ShopifyAuthenticationOptions.XmlSchemaBoolean));
             identity.AddClaim(new Claim(ShopifyAuthenticationDefaults.ShopifyScopeClaimType, actualScope));
 
             var principal = new ClaimsPrincipal(identity);

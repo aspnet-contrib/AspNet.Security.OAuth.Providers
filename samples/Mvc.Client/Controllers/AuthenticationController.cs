@@ -52,7 +52,7 @@ namespace Mvc.Client.Controllers
             // Shopify OAuth differs from most (all?) others in that you need to know the host name of the
             // shop in order to construct the authorization endpoint. This can be aquired either from the
             // user directly, or provided by the shopify app store during app install/activation.
-            var authProps = new ShopifyAuthenticationProperties("the-cat-ball-test") // Put your shop name here.
+            var authProps = new ShopifyAuthenticationProperties("ctest-205") // Put your shop name here.
             {
                 RedirectUri = "/",
 

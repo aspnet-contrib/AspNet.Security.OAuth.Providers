@@ -15,6 +15,16 @@ namespace AspNet.Security.OAuth.Shopify
     public class ShopifyAuthenticationOptions : OAuthOptions
     {
         /// <summary>
+        /// Claim valueType used for boolean claims.
+        /// </summary>
+        public const string XmlSchemaBoolean = "http://www.w3.org/2001/XMLSchema#boolean";
+
+        /// <summary>
+        /// Claim valueType used for dateTime claims (iso format)
+        /// </summary>
+        public const string XmlSchemaDateTime = "http://www.w3.org/2001/XMLSchema#dateTime";
+
+        /// <summary>
         /// An alias for <see cref="OAuthOptions.ClientId"/>
         /// </summary>
         public string ApiKey
@@ -39,7 +49,6 @@ namespace AspNet.Security.OAuth.Shopify
         {
             ClaimsIssuer = ShopifyAuthenticationDefaults.Issuer;
             CallbackPath = new PathString(ShopifyAuthenticationDefaults.CallbackPath);
-
             AuthorizationEndpoint = ShopifyAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = ShopifyAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = ShopifyAuthenticationDefaults.UserInformationEndpoint;
@@ -53,7 +62,7 @@ namespace AspNet.Security.OAuth.Shopify
             ClaimActions.MapJsonSubKey(ClaimTypes.PostalCode, "shop", "zip");
             ClaimActions.MapJsonSubKey(ClaimTypes.Locality, "shop", "primary_locale");
             ClaimActions.MapJsonSubKey(ShopifyAuthenticationDefaults.ShopifyPlanNameClaimType, "shop", "plan_name");
-            ClaimActions.MapJsonSubKey(ShopifyAuthenticationDefaults.ShopifyEligableForPaymentsClaimType, "shop", "eligible_for_payments", "boolean");
+            ClaimActions.MapJsonSubKey(ShopifyAuthenticationDefaults.ShopifyEligableForPaymentsClaimType, "shop", "eligible_for_payments", XmlSchemaBoolean);
             ClaimActions.MapJsonSubKey(ShopifyAuthenticationDefaults.ShopifyTimezoneClaimType, "shop", "timezone");
         }
     }
