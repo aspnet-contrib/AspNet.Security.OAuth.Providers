@@ -25,6 +25,8 @@ namespace AspNet.Security.OAuth.Discord
             AuthorizationEndpoint = DiscordAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = DiscordAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = DiscordAuthenticationDefaults.UserInformationEndpoint;
+
+            Scope.Add("identify");
         }
     }
 }
