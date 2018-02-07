@@ -64,7 +64,7 @@ namespace AspNet.Security.OAuth.Instagram
                 throw new HttpRequestException("An error occurred while retrieving the user profile.");
             }
 
-            var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
+            var payload = JObject.Parse(await response.Content.ReadAsStringAsync()).Value<JObject>("data");
 
             var principal = new ClaimsPrincipal(identity);
             var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload);
