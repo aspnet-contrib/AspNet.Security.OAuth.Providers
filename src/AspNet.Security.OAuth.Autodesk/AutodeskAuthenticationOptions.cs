@@ -32,8 +32,8 @@ namespace AspNet.Security.OAuth.Autodesk
             ClaimActions.MapJsonKey(ClaimTypes.GivenName, "firstName");
             ClaimActions.MapJsonKey(ClaimTypes.Surname, "lastName");
             ClaimActions.MapJsonKey(ClaimTypes.Email, "emailId");
-            ClaimActions.MapJsonKey("urn:autodesk:emailverified", "emailVerified");
-            ClaimActions.MapJsonKey("urn:autodesk:twofactorenabled", "2FaEnabled");
+            ClaimActions.MapJsonKey(AutodeskClaimTypes.Emailverified, "emailVerified");
+            ClaimActions.MapJsonKey(AutodeskClaimTypes.TwoFactorEnabled, "2FaEnabled");
         }
     }
 }
