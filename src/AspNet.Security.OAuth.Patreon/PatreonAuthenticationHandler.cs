@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
+using static AspNet.Security.OAuth.Patreon.PatreonAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.Patreon
 {
@@ -49,7 +50,7 @@ namespace AspNet.Security.OAuth.Patreon
             identity.AddOptionalClaim(ClaimTypes.NameIdentifier, PatreonAuthenticationHelper.GetUserIdentifier(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim(ClaimTypes.Name, PatreonAuthenticationHelper.GetUserName(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim(ClaimTypes.Webpage, PatreonAuthenticationHelper.GetLink(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:patreon:avatar", PatreonAuthenticationHelper.GetAvatarLink(payload), Options.ClaimsIssuer);
+                    .AddOptionalClaim(Claims.Avatar, PatreonAuthenticationHelper.GetAvatarLink(payload), Options.ClaimsIssuer);
 
             var principal = new ClaimsPrincipal(identity);
             var ticket = new AuthenticationTicket(principal, properties, Options.AuthenticationScheme);

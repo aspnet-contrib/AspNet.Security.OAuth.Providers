@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
+using static AspNet.Security.OAuth.Untappd.UntappdAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.Untappd
 {
@@ -51,7 +52,7 @@ namespace AspNet.Security.OAuth.Untappd
                     .AddOptionalClaim(ClaimTypes.Surname, UntappdAuthenticationHelper.GetLastName(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim(ClaimTypes.Name, UntappdAuthenticationHelper.GetUsername(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim(ClaimTypes.Webpage, UntappdAuthenticationHelper.GetUrl(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:untappd:link", UntappdAuthenticationHelper.GetAvatar(payload), Options.ClaimsIssuer);
+                    .AddOptionalClaim(Claims.Avatar, UntappdAuthenticationHelper.GetAvatar(payload), Options.ClaimsIssuer);
 
             var principal = new ClaimsPrincipal(identity);
             var ticket = new AuthenticationTicket(principal, properties, Options.AuthenticationScheme);

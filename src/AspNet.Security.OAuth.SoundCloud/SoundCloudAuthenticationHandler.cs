@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
+using static AspNet.Security.OAuth.SoundCloud.SoundCloudAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.SoundCloud
 {
@@ -51,9 +52,9 @@ namespace AspNet.Security.OAuth.SoundCloud
             identity.AddOptionalClaim(ClaimTypes.NameIdentifier, SoundCloudAuthenticationHelper.GetIdentifier(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim(ClaimTypes.Name, SoundCloudAuthenticationHelper.GetUserName(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim(ClaimTypes.Country, SoundCloudAuthenticationHelper.GetCountry(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:soundcloud:fullname", SoundCloudAuthenticationHelper.GetFullName(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:soundcloud:city", SoundCloudAuthenticationHelper.GetCity(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:soundcloud:profileurl", SoundCloudAuthenticationHelper.GetProfileUrl(payload), Options.ClaimsIssuer);
+                    .AddOptionalClaim(Claims.FullName, SoundCloudAuthenticationHelper.GetFullName(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim(Claims.City, SoundCloudAuthenticationHelper.GetCity(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim(Claims.ProfileUrl, SoundCloudAuthenticationHelper.GetProfileUrl(payload), Options.ClaimsIssuer);
 
             var principal = new ClaimsPrincipal(identity);
             var ticket = new AuthenticationTicket(principal, properties, Options.AuthenticationScheme);

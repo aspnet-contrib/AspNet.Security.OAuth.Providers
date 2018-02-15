@@ -4,17 +4,17 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-namespace AspNet.Security.OAuth.Autodesk
+namespace AspNet.Security.OAuth.Fitbit
 {
     /// <summary>
-    /// Contains constants specific to the <see cref="AutodeskAuthenticationHandler"/>.
+    /// Contains constants specific to the <see cref="FitbitAuthenticationHandler"/>.
     /// </summary>
-    public static class AutodeskAuthenticationConstants
+    public static class FitbitAuthenticationConstants
     {
         public static class Claims
         {
-            public const string EmailVerified = "urn:autodesk:emailverified";
-            public const string TwoFactorEnabled = "urn:autodesk:twofactorenabled";
+            public const string Avatar = "urn:fitbit:avatar";
+            public const string Avatar150 = "urn:fitbit:avatar150";
         }
     }
 }

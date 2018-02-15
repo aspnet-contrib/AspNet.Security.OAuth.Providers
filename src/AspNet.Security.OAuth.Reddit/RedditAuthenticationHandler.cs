@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
+using static AspNet.Security.OAuth.Reddit.RedditAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.Reddit
 {
@@ -59,7 +60,7 @@ namespace AspNet.Security.OAuth.Reddit
 
             identity.AddOptionalClaim(ClaimTypes.NameIdentifier, RedditAuthenticationHelper.GetIdentifier(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim(ClaimTypes.Name, RedditAuthenticationHelper.GetName(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:reddit:over18", RedditAuthenticationHelper.GetOver18(payload), Options.ClaimsIssuer);
+                    .AddOptionalClaim(Claims.Over18, RedditAuthenticationHelper.GetOver18(payload), Options.ClaimsIssuer);
 
             var principal = new ClaimsPrincipal(identity);
             var ticket = new AuthenticationTicket(principal, properties, Options.AuthenticationScheme);

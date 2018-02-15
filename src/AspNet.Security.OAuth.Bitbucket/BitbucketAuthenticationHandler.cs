@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
+using static AspNet.Security.OAuth.Bitbucket.BitbucketAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.Bitbucket
 {
@@ -49,8 +50,8 @@ namespace AspNet.Security.OAuth.Bitbucket
             identity.AddOptionalClaim(ClaimTypes.NameIdentifier, BitbucketAuthenticationHelper.GetIdentifier(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim(ClaimTypes.Name, BitbucketAuthenticationHelper.GetLogin(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim(ClaimTypes.Email, BitbucketAuthenticationHelper.GetEmail(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:bitbucket:name", BitbucketAuthenticationHelper.GetName(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:bitbucket:url", BitbucketAuthenticationHelper.GetLink(payload), Options.ClaimsIssuer);
+                    .AddOptionalClaim(Claims.DisplayName, BitbucketAuthenticationHelper.GetName(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim(Claims.Website, BitbucketAuthenticationHelper.GetLink(payload), Options.ClaimsIssuer);
 
             // When the email address is not public, retrieve it from
             // the emails endpoint if the user:email scope is specified.

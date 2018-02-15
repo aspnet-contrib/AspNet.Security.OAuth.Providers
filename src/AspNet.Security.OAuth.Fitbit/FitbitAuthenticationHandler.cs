@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
+using static AspNet.Security.OAuth.Fitbit.FitbitAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.Fitbit
 {
@@ -51,8 +52,8 @@ namespace AspNet.Security.OAuth.Fitbit
 
             identity.AddOptionalClaim(ClaimTypes.NameIdentifier, FitbitAuthenticationHelper.GetIdentifier(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim(ClaimTypes.Name, FitbitAuthenticationHelper.GetLogin(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:fitbit:avatar", FitbitAuthenticationHelper.GetAvatar(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:fitbit:avatar150", FitbitAuthenticationHelper.GetAvatar150(payload), Options.ClaimsIssuer);
+                    .AddOptionalClaim(Claims.Avatar, FitbitAuthenticationHelper.GetAvatar(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim(Claims.Avatar150, FitbitAuthenticationHelper.GetAvatar150(payload), Options.ClaimsIssuer);
 
             var principal = new ClaimsPrincipal(identity);
             var ticket = new AuthenticationTicket(principal, properties, Options.AuthenticationScheme);

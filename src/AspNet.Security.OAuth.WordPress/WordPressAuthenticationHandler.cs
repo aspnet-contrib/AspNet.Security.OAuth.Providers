@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
+using static AspNet.Security.OAuth.WordPress.WordPressAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.WordPress
 {
@@ -48,11 +49,11 @@ namespace AspNet.Security.OAuth.WordPress
 
             identity.AddOptionalClaim(ClaimTypes.NameIdentifier, WordPressAuthenticationHelper.GetIdentifier(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim(ClaimTypes.Name, WordPressAuthenticationHelper.GetUsername(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:wordpress:email", WordPressAuthenticationHelper.GetEmail(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:wordpress:displayname", WordPressAuthenticationHelper.GetDisplayName(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:wordpress:profileurl", WordPressAuthenticationHelper.GetProfileUrl(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:wordpress:avatarurl", WordPressAuthenticationHelper.GetAvatarUrl(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:wordpress:primaryblog", WordPressAuthenticationHelper.GetPrimaryBlog(payload), Options.ClaimsIssuer);
+                    .AddOptionalClaim(Claims.Email, WordPressAuthenticationHelper.GetEmail(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim(Claims.DisplayName, WordPressAuthenticationHelper.GetDisplayName(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim(Claims.ProfileUrl, WordPressAuthenticationHelper.GetProfileUrl(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim(Claims.AvatarUrl, WordPressAuthenticationHelper.GetAvatarUrl(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim(Claims.PrimaryBlog, WordPressAuthenticationHelper.GetPrimaryBlog(payload), Options.ClaimsIssuer);
 
             var principal = new ClaimsPrincipal(identity);
             var ticket = new AuthenticationTicket(principal, properties, Options.AuthenticationScheme);

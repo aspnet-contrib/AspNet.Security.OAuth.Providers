@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
+using static AspNet.Security.OAuth.DeviantArt.DeviantArtAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.DeviantArt
 {
@@ -48,7 +49,7 @@ namespace AspNet.Security.OAuth.DeviantArt
 
             identity.AddOptionalClaim(ClaimTypes.NameIdentifier, DeviantArtAuthenticationHelper.GetIdentifier(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim(ClaimTypes.Name, DeviantArtAuthenticationHelper.GetLogin(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:DeviantArt:name", DeviantArtAuthenticationHelper.GetName(payload), Options.ClaimsIssuer);
+                    .AddOptionalClaim(Claims.Username, DeviantArtAuthenticationHelper.GetName(payload), Options.ClaimsIssuer);
 
             var principal = new ClaimsPrincipal(identity);
             var ticket = new AuthenticationTicket(principal, properties, Options.AuthenticationScheme);

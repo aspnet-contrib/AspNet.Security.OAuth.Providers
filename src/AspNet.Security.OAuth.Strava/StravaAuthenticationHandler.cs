@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
+using static AspNet.Security.OAuth.Strava.StravaAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.Strava
 {
@@ -48,7 +49,18 @@ namespace AspNet.Security.OAuth.Strava
 
             identity.AddOptionalClaim(ClaimTypes.NameIdentifier, StravaAuthenticationHelper.GetIdentifier(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim(ClaimTypes.Name, StravaAuthenticationHelper.GetUsername(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim(ClaimTypes.Email, StravaAuthenticationHelper.GetEmail(payload), Options.ClaimsIssuer);
+                    .AddOptionalClaim(ClaimTypes.Email, StravaAuthenticationHelper.GetEmail(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim(ClaimTypes.GivenName, StravaAuthenticationHelper.GetFirstName(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim(ClaimTypes.Surname, StravaAuthenticationHelper.GetLastName(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim(ClaimTypes.StateOrProvince, StravaAuthenticationHelper.GetState(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim(ClaimTypes.Country, StravaAuthenticationHelper.GetCountry(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim(ClaimTypes.Gender, StravaAuthenticationHelper.GetGender(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim(Claims.City, StravaAuthenticationHelper.GetCity(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim(Claims.Profile, StravaAuthenticationHelper.GetProfile(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim(Claims.ProfileMedium, StravaAuthenticationHelper.GetProfileMedium(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim(Claims.CreatedAt, StravaAuthenticationHelper.GetCreationDate(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim(Claims.UpdatedAt, StravaAuthenticationHelper.GetModificationDate(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim(Claims.Premium, StravaAuthenticationHelper.GetPremium(payload), Options.ClaimsIssuer);
 
             var principal = new ClaimsPrincipal(identity);
             var ticket = new AuthenticationTicket(principal, properties, Options.AuthenticationScheme);

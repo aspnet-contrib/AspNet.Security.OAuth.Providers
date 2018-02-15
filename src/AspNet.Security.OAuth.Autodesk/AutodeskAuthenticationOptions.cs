@@ -26,7 +26,7 @@ namespace AspNet.Security.OAuth.Autodesk
             TokenEndpoint = AutodeskAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = AutodeskAuthenticationDefaults.UserInformationEndpoint;
 
-            Scope.Add(AutodeskAuthenticationConstants.Scopes.UserProfileRead);
+            Scope.Add("user-profile:read");
         }
     }
 }

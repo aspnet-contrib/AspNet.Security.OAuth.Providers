@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
+using static AspNet.Security.OAuth.Weibo.WeiboAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.Weibo
 {
@@ -57,12 +58,12 @@ namespace AspNet.Security.OAuth.Weibo
             identity.AddOptionalClaim(ClaimTypes.NameIdentifier, WeiboAuthenticationHelper.GetId(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim(ClaimTypes.Name, WeiboAuthenticationHelper.GetName(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim(ClaimTypes.Gender, WeiboAuthenticationHelper.GetGender(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:weibo:screen_name", WeiboAuthenticationHelper.GetScreenName(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:weibo:profile_image_url", WeiboAuthenticationHelper.GetProfileImageUrl(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:weibo:avatar_large", WeiboAuthenticationHelper.GetAvatarLarge(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:weibo:avatar_hd", WeiboAuthenticationHelper.GetAvatarHD(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:weibo:cover_image_phone", WeiboAuthenticationHelper.GetCoverImagePhone(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:weibo:location", WeiboAuthenticationHelper.GetLocation(payload), Options.ClaimsIssuer);
+                    .AddOptionalClaim(Claims.ScreenName, WeiboAuthenticationHelper.GetScreenName(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim(Claims.ProfileImageUrl, WeiboAuthenticationHelper.GetProfileImageUrl(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim(Claims.AvatarLarge, WeiboAuthenticationHelper.GetAvatarLarge(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim(Claims.AvatarHd, WeiboAuthenticationHelper.GetAvatarHD(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim(Claims.CoverImagePhone, WeiboAuthenticationHelper.GetCoverImagePhone(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim(Claims.Location, WeiboAuthenticationHelper.GetLocation(payload), Options.ClaimsIssuer);
 
             // When the email address is not public, retrieve it from
             // the emails endpoint if the user:email scope is specified.

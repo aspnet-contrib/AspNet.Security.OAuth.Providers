@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
+using static AspNet.Security.OAuth.Yammer.YammerAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.Yammer
 {
@@ -52,8 +53,8 @@ namespace AspNet.Security.OAuth.Yammer
                     .AddOptionalClaim(ClaimTypes.Surname, YammerAuthenticationHelper.GetLastName(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim(ClaimTypes.Name, YammerAuthenticationHelper.GetName(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim(ClaimTypes.Email, YammerAuthenticationHelper.GetEmail(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:yammer:link", YammerAuthenticationHelper.GetLink(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:yammer:job_title", YammerAuthenticationHelper.GetJobTitle(payload), Options.ClaimsIssuer);
+                    .AddOptionalClaim(Claims.WebUrl, YammerAuthenticationHelper.GetLink(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim(Claims.JobTitle, YammerAuthenticationHelper.GetJobTitle(payload), Options.ClaimsIssuer);
 
             var principal = new ClaimsPrincipal(identity);
             var ticket = new AuthenticationTicket(principal, properties, Options.AuthenticationScheme);

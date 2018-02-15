@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
+using static AspNet.Security.OAuth.Slack.SlackAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.Slack
 {
@@ -51,9 +52,9 @@ namespace AspNet.Security.OAuth.Slack
             identity.AddOptionalClaim(ClaimTypes.NameIdentifier, SlackAuthenticationHelper.GetUniqueIdentifier(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim(ClaimTypes.Name, SlackAuthenticationHelper.GetUserName(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim(ClaimTypes.Email, SlackAuthenticationHelper.GetUserEmail(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:slack:user_id", SlackAuthenticationHelper.GetUserIdentifier(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:slack:team_id", SlackAuthenticationHelper.GetTeamIdentifier(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:slack:team_name", SlackAuthenticationHelper.GetTeamName(payload), Options.ClaimsIssuer);
+                    .AddOptionalClaim(Claims.UserId, SlackAuthenticationHelper.GetUserIdentifier(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim(Claims.TeamId, SlackAuthenticationHelper.GetTeamIdentifier(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim(Claims.TeamName, SlackAuthenticationHelper.GetTeamName(payload), Options.ClaimsIssuer);
 
             var principal = new ClaimsPrincipal(identity);
             var ticket = new AuthenticationTicket(principal, properties, Options.AuthenticationScheme);

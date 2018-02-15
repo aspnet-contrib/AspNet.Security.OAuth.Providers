@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
+using static AspNet.Security.OAuth.GitHub.GitHubAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.GitHub
 {
@@ -49,8 +50,8 @@ namespace AspNet.Security.OAuth.GitHub
             identity.AddOptionalClaim(ClaimTypes.NameIdentifier, GitHubAuthenticationHelper.GetIdentifier(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim(ClaimTypes.Name, GitHubAuthenticationHelper.GetLogin(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim(ClaimTypes.Email, GitHubAuthenticationHelper.GetEmail(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:github:name", GitHubAuthenticationHelper.GetName(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:github:url", GitHubAuthenticationHelper.GetLink(payload), Options.ClaimsIssuer);
+                    .AddOptionalClaim(Claims.Name, GitHubAuthenticationHelper.GetName(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim(Claims.Url, GitHubAuthenticationHelper.GetLink(payload), Options.ClaimsIssuer);
 
             // When the email address is not public, retrieve it from
             // the emails endpoint if the user:email scope is specified.

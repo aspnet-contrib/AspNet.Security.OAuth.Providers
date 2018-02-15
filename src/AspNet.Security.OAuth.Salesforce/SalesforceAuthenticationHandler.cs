@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
+using static AspNet.Security.OAuth.Salesforce.SalesforceAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.Salesforce
 {
@@ -51,10 +52,10 @@ namespace AspNet.Security.OAuth.Salesforce
 
             identity.AddOptionalClaim(ClaimTypes.NameIdentifier, SalesforceAuthenticationHelper.GetUserIdentifier(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim(ClaimTypes.Name, SalesforceAuthenticationHelper.GetUserName(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:salesforce:email", SalesforceAuthenticationHelper.GetEmail(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:salesforce:thumbnail_photo", SalesforceAuthenticationHelper.GetThumbnailPhoto(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:salesforce:utc_offset", SalesforceAuthenticationHelper.GetUtcOffset(payload).ToString(), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:salesforce:rest_url", SalesforceAuthenticationHelper.GetRestUrl(payload), Options.ClaimsIssuer);
+                    .AddOptionalClaim(Claims.Email, SalesforceAuthenticationHelper.GetEmail(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim(Claims.ThumbnailPhoto, SalesforceAuthenticationHelper.GetThumbnailPhoto(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim(Claims.UtcOffset, SalesforceAuthenticationHelper.GetUtcOffset(payload).ToString(), Options.ClaimsIssuer)
+                    .AddOptionalClaim(Claims.RestUrl, SalesforceAuthenticationHelper.GetRestUrl(payload), Options.ClaimsIssuer);
 
             var principal = new ClaimsPrincipal(identity);
             var ticket = new AuthenticationTicket(principal, properties, Options.AuthenticationScheme);

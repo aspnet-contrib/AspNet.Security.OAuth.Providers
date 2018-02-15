@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
+using static AspNet.Security.OAuth.Vimeo.VimeoAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.Vimeo
 {
@@ -47,8 +48,8 @@ namespace AspNet.Security.OAuth.Vimeo
             var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
 
             identity.AddOptionalClaim(ClaimTypes.NameIdentifier, VimeoAuthenticationHelper.GetIdentifier(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:vimeo:fullname", VimeoAuthenticationHelper.GetFullName(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:vimeo:profileurl", VimeoAuthenticationHelper.GetProfileUrl(payload), Options.ClaimsIssuer);
+                    .AddOptionalClaim(Claims.FullName, VimeoAuthenticationHelper.GetFullName(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim(Claims.ProfileUrl, VimeoAuthenticationHelper.GetProfileUrl(payload), Options.ClaimsIssuer);
 
             var principal = new ClaimsPrincipal(identity);
             var ticket = new AuthenticationTicket(principal, properties, Options.AuthenticationScheme);

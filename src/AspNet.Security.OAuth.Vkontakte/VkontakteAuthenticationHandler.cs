@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
+using static AspNet.Security.OAuth.Vkontakte.VkontakteAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.Vkontakte
 {
@@ -64,8 +65,8 @@ namespace AspNet.Security.OAuth.Vkontakte
                     .AddOptionalClaim(ClaimTypes.GivenName, VkontakteAuthenticationHelper.GetFirstName(user), Options.ClaimsIssuer)
                     .AddOptionalClaim(ClaimTypes.Surname, VkontakteAuthenticationHelper.GetLastName(user), Options.ClaimsIssuer)
                     .AddOptionalClaim(ClaimTypes.Hash, VkontakteAuthenticationHelper.GetHash(user), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:vkontakte:photo:link", VkontakteAuthenticationHelper.GetPhoto(user), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:vkontakte:photo_thumb:link", VkontakteAuthenticationHelper.GetPhotoThumbnail(user), Options.ClaimsIssuer);
+                    .AddOptionalClaim(Claims.PhotoUrl, VkontakteAuthenticationHelper.GetPhoto(user), Options.ClaimsIssuer)
+                    .AddOptionalClaim(Claims.ThumbnailUrl, VkontakteAuthenticationHelper.GetPhotoThumbnail(user), Options.ClaimsIssuer);
 
             var principal = new ClaimsPrincipal(identity);
             var ticket = new AuthenticationTicket(principal, properties, Options.AuthenticationScheme);

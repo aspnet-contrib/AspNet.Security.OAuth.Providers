@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
+using static AspNet.Security.OAuth.Imgur.ImgurAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.Imgur
 {
@@ -48,9 +49,10 @@ namespace AspNet.Security.OAuth.Imgur
 
             identity.AddOptionalClaim(ClaimTypes.NameIdentifier, ImgurAuthenticationHelper.GetId(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim(ClaimTypes.Name, ImgurAuthenticationHelper.GetUrl(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:imgur:reputation", ImgurAuthenticationHelper.GetReputation(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:imgur:created", ImgurAuthenticationHelper.GetCreated(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:imgur:proexpiration", ImgurAuthenticationHelper.GetProExpiration(payload), Options.ClaimsIssuer);
+                    .AddOptionalClaim(Claims.Bio, ImgurAuthenticationHelper.GetBio(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim(Claims.Reputation, ImgurAuthenticationHelper.GetReputation(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim(Claims.Created, ImgurAuthenticationHelper.GetCreated(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim(Claims.ProExpiration, ImgurAuthenticationHelper.GetProExpiration(payload), Options.ClaimsIssuer);
 
             var principal = new ClaimsPrincipal(identity);
             var ticket = new AuthenticationTicket(principal, properties, Options.AuthenticationScheme);

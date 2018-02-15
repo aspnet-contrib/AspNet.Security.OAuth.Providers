@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
+using static AspNet.Security.OAuth.Yahoo.YahooAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.Yahoo
 {
@@ -51,10 +52,10 @@ namespace AspNet.Security.OAuth.Yahoo
 
             identity.AddOptionalClaim(ClaimTypes.NameIdentifier, YahooAuthenticationHelper.GetIdentifier(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim(ClaimTypes.Name, YahooAuthenticationHelper.GetNickname(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:yahoo:familyname", YahooAuthenticationHelper.GetFamilyName(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:yahoo:givenname", YahooAuthenticationHelper.GetGivenName(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:yahoo:profile", YahooAuthenticationHelper.GetProfileUrl(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:yahoo:profileimage", YahooAuthenticationHelper.GetProfileImageUrl(payload), Options.ClaimsIssuer);
+                    .AddOptionalClaim(Claims.FamilyName, YahooAuthenticationHelper.GetFamilyName(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim(Claims.GivenName, YahooAuthenticationHelper.GetGivenName(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim(Claims.ProfileUrl, YahooAuthenticationHelper.GetProfileUrl(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim(Claims.ImageUrl, YahooAuthenticationHelper.GetProfileImageUrl(payload), Options.ClaimsIssuer);
 
             var principal = new ClaimsPrincipal(identity);
             var ticket = new AuthenticationTicket(principal, properties, Options.AuthenticationScheme);

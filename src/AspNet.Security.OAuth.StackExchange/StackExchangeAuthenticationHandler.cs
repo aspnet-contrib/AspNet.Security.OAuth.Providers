@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
+using static AspNet.Security.OAuth.StackExchange.StackExchangeAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.StackExchange
 {
@@ -59,7 +60,7 @@ namespace AspNet.Security.OAuth.StackExchange
             identity.AddOptionalClaim(ClaimTypes.NameIdentifier, StackExchangeAuthenticationHelper.GetIdentifier(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim(ClaimTypes.Name, StackExchangeAuthenticationHelper.GetDisplayName(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim(ClaimTypes.Webpage, StackExchangeAuthenticationHelper.GetWebsiteUrl(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:stackexchange:link", StackExchangeAuthenticationHelper.GetLink(payload), Options.ClaimsIssuer);
+                    .AddOptionalClaim(Claims.Link, StackExchangeAuthenticationHelper.GetLink(payload), Options.ClaimsIssuer);
 
             var principal = new ClaimsPrincipal(identity);
             var ticket = new AuthenticationTicket(principal, properties, Options.AuthenticationScheme);

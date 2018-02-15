@@ -4,17 +4,17 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-namespace AspNet.Security.OAuth.Autodesk
+namespace AspNet.Security.OAuth.Bitbucket
 {
     /// <summary>
-    /// Contains constants specific to the <see cref="AutodeskAuthenticationHandler"/>.
+    /// Contains constants specific to the <see cref="BitbucketAuthenticationHandler"/>.
     /// </summary>
-    public static class AutodeskAuthenticationConstants
+    public static class BitbucketAuthenticationConstants
     {
         public static class Claims
         {
-            public const string EmailVerified = "urn:autodesk:emailverified";
-            public const string TwoFactorEnabled = "urn:autodesk:twofactorenabled";
+            public const string DisplayName = "urn:bitbucket:name";
+            public const string Website = "urn:bitbucket:url";
         }
     }
 }

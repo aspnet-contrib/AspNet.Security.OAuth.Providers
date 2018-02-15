@@ -56,6 +56,19 @@ namespace AspNet.Security.OAuth.Spotify
         }
 
         /// <summary>
+        /// Gets the product corresponding to the authenticated user.
+        /// </summary>
+        public static string GetProduct([NotNull] JObject user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return user.Value<string>("product");
+        }
+
+        /// <summary>
         /// Gets the profile picture URL corresponding to the authenticated user.
         /// </summary>
         public static string GetProfilePictureUrl([NotNull] JObject user)

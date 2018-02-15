@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
+using static AspNet.Security.OAuth.QQ.QQAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.QQ
 {
@@ -69,11 +70,11 @@ namespace AspNet.Security.OAuth.QQ
                 throw new HttpRequestException("An error occurred while retrieving user information.");
             }
 
-            identity.AddOptionalClaim("urn:qq:picture", QQAuthenticationHelper.GetPicture(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:qq:picture_medium", QQAuthenticationHelper.GetPictureMedium(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:qq:picture_full", QQAuthenticationHelper.GetPictureFull(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:qq:avatar", QQAuthenticationHelper.GetAvatar(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:qq:avatar_full", QQAuthenticationHelper.GetAvatarFull(payload), Options.ClaimsIssuer);
+            identity.AddOptionalClaim(Claims.PictureUrl, QQAuthenticationHelper.GetPicture(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim(Claims.PictureMediumUrl, QQAuthenticationHelper.GetPictureMedium(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim(Claims.PictureUrl, QQAuthenticationHelper.GetPictureFull(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim(Claims.AvatarUrl, QQAuthenticationHelper.GetAvatar(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim(Claims.AvatarFullUrl, QQAuthenticationHelper.GetAvatarFull(payload), Options.ClaimsIssuer);
 
             var principal = new ClaimsPrincipal(identity);
             var ticket = new AuthenticationTicket(principal, properties, Options.AuthenticationScheme);

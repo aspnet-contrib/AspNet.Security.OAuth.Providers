@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
+using static AspNet.Security.OAuth.Weixin.WeixinAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.Weixin
 {
@@ -60,11 +61,11 @@ namespace AspNet.Security.OAuth.Weixin
                     .AddOptionalClaim(ClaimTypes.Name, WeixinAuthenticationHelper.GetNickname(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim(ClaimTypes.Gender, WeixinAuthenticationHelper.GetSex(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim(ClaimTypes.Country, WeixinAuthenticationHelper.GetCountry(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:weixin:openid", WeixinAuthenticationHelper.GetOpenId(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:weixin:province", WeixinAuthenticationHelper.GetProvince(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:weixin:city", WeixinAuthenticationHelper.GetCity(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:weixin:headimgurl", WeixinAuthenticationHelper.GetHeadimgUrl(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:weixin:privilege", WeixinAuthenticationHelper.GetPrivilege(payload), Options.ClaimsIssuer);
+                    .AddOptionalClaim(Claims.OpenId, WeixinAuthenticationHelper.GetOpenId(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim(Claims.Province, WeixinAuthenticationHelper.GetProvince(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim(Claims.City, WeixinAuthenticationHelper.GetCity(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim(Claims.HeadImgUrl, WeixinAuthenticationHelper.GetHeadimgUrl(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim(Claims.Privilege, WeixinAuthenticationHelper.GetPrivilege(payload), Options.ClaimsIssuer);
 
             var principal = new ClaimsPrincipal(identity);
             var ticket = new AuthenticationTicket(principal, properties, Options.AuthenticationScheme);

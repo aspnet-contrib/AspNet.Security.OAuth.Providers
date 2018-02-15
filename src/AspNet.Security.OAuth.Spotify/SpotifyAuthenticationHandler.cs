@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
+using static AspNet.Security.OAuth.Spotify.SpotifyAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.Spotify
 {
@@ -48,8 +49,9 @@ namespace AspNet.Security.OAuth.Spotify
 
             identity.AddOptionalClaim(ClaimTypes.NameIdentifier, SpotifyAuthenticationHelper.GetIdentifier(payload), Options.ClaimsIssuer)
                     .AddOptionalClaim(ClaimTypes.Name, SpotifyAuthenticationHelper.GetName(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:spotify:url", SpotifyAuthenticationHelper.GetLink(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:spotify:profilepicture", SpotifyAuthenticationHelper.GetProfilePictureUrl(payload), Options.ClaimsIssuer);
+                    .AddOptionalClaim(Claims.Url, SpotifyAuthenticationHelper.GetLink(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim(Claims.Product, SpotifyAuthenticationHelper.GetProduct(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim(Claims.ProfilePicture, SpotifyAuthenticationHelper.GetProfilePictureUrl(payload), Options.ClaimsIssuer);
 
             var principal = new ClaimsPrincipal(identity);
             var ticket = new AuthenticationTicket(principal, properties, Options.AuthenticationScheme);
