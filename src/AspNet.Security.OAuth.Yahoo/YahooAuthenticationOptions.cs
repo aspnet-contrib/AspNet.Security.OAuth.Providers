@@ -27,10 +27,10 @@ namespace AspNet.Security.OAuth.Yahoo
 
             ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "guid");
             ClaimActions.MapJsonKey(ClaimTypes.Name, "nickname");
-            ClaimActions.MapJsonKey("urn:yahoo:familyname", "familyName");
-            ClaimActions.MapJsonKey("urn:yahoo:givenname", "givenName");
-            ClaimActions.MapJsonKey("urn:yahoo:profile", "profileUrl");
-            ClaimActions.MapJsonKey("urn:yahoo:profileimage", "imageUrl");
+            ClaimActions.MapJsonKey(YahooClaimTypes.FamilyName, "familyName");
+            ClaimActions.MapJsonKey(YahooClaimTypes.GivenName, "givenName");
+            ClaimActions.MapJsonKey(YahooClaimTypes.ProfileUrl, "profileUrl");
+            ClaimActions.MapJsonKey(YahooClaimTypes.ImageUrl, "imageUrl");
         }
     }
 }
