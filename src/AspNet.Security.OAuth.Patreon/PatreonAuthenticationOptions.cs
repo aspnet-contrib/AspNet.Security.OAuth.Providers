@@ -4,7 +4,6 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
@@ -34,7 +33,7 @@ namespace AspNet.Security.OAuth.Patreon
             ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
             ClaimActions.MapCustomJson(ClaimTypes.Name, user => user["attributes"]?.Value<string>("full_name"));
             ClaimActions.MapCustomJson(ClaimTypes.Webpage, user => user["attributes"]?.Value<string>("url"));
-            ClaimActions.MapCustomJson("urn:patreon:avatar", user => user["attributes"]?.Value<string>("thumb_url"));
+            ClaimActions.MapCustomJson(PatreonClaimTypes.Avatar, user => user["attributes"]?.Value<string>("thumb_url"));
         }
     }
 }
