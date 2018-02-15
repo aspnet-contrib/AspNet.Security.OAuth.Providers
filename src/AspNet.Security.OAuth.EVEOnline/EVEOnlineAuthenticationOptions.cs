@@ -27,7 +27,7 @@ namespace AspNet.Security.OAuth.EVEOnline
             ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "CharacterID");
             ClaimActions.MapJsonKey(ClaimTypes.Name, "CharacterName");
             ClaimActions.MapJsonKey(ClaimTypes.Expiration, "ExpiresOn");
-            ClaimActions.MapJsonKey("urn:eveonline:scopes", "Scopes");
+            ClaimActions.MapJsonKey(EVEOnlineClaimTypes.Scopes, "Scopes");
         }
 
         /// <summary>
