@@ -26,8 +26,8 @@ namespace AspNet.Security.OAuth.Vimeo
             TokenEndpoint = VimeoAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = VimeoAuthenticationDefaults.UserInformationEndpoint;
 
-            ClaimActions.MapJsonKey("urn:vimeo:fullname", "name");
-            ClaimActions.MapJsonKey("urn:vimeo:profileurl", "link");
+            ClaimActions.MapJsonKey(VimeoClaimTypes.FullName, "name");
+            ClaimActions.MapJsonKey(VimeoClaimTypes.ProfileUrl, "link");
             ClaimActions.MapCustomJson(ClaimTypes.NameIdentifier, user => user.Value<string>("uri")?.Split('/')?.LastOrDefault());
         }
     }
