@@ -31,7 +31,7 @@ namespace AspNet.Security.OAuth.Untappd
             ClaimActions.MapJsonKey(ClaimTypes.Surname, "last_name");
             ClaimActions.MapJsonKey(ClaimTypes.Name, "user_name");
             ClaimActions.MapJsonKey(ClaimTypes.Webpage, "url");
-            ClaimActions.MapJsonKey("urn:untappd:link", "user_avatar");
+            ClaimActions.MapJsonKey(UntappdClaimTypes.Avatar, "user_avatar");
         }
     }
 }
