@@ -29,8 +29,8 @@ namespace AspNet.Security.OAuth.GitHub
             ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
             ClaimActions.MapJsonKey(ClaimTypes.Name, "login");
             ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
-            ClaimActions.MapJsonKey("urn:github:name", "name");
-            ClaimActions.MapJsonKey("urn:github:url", "url");
+            ClaimActions.MapJsonKey(GitHubClaimTypes.Name, "name");
+            ClaimActions.MapJsonKey(GitHubClaimTypes.Url, "url");
         }
 
         /// <summary>
