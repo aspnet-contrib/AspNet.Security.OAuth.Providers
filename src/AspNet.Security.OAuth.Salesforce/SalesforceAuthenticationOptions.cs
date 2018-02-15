@@ -27,10 +27,10 @@ namespace AspNet.Security.OAuth.Salesforce
 
             ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "user_id");
             ClaimActions.MapJsonKey(ClaimTypes.Name, "user_name");
-            ClaimActions.MapJsonKey("urn:salesforce:email", "email");
-            ClaimActions.MapJsonKey("urn:salesforce:thumbnail_photo", "thumbnail");
-            ClaimActions.MapJsonKey("urn:salesforce:utc_offset", "utcOffset");
-            ClaimActions.MapCustomJson("urn:salesforce:rest_url", user => user["urls"]?.Value<string>("rest"));
+            ClaimActions.MapJsonKey(SalesforceClaimTypes.Email, "email");
+            ClaimActions.MapJsonKey(SalesforceClaimTypes.ThumbnailPhoto, "thumbnail");
+            ClaimActions.MapJsonKey(SalesforceClaimTypes.UtcOffset, "utcOffset");
+            ClaimActions.MapCustomJson(SalesforceClaimTypes.RestUrl, user => user["urls"]?.Value<string>("rest"));
         }
 
         public SalesforceAuthenticationEnvironment Environment
