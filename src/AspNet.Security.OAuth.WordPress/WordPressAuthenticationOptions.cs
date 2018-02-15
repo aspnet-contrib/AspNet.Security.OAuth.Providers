@@ -31,11 +31,11 @@ namespace AspNet.Security.OAuth.WordPress
 
             ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "ID");
             ClaimActions.MapJsonKey(ClaimTypes.Name, "username");
-            ClaimActions.MapJsonKey("urn:wordpress:email", "email");
-            ClaimActions.MapJsonKey("urn:wordpress:displayname", "display_name");
-            ClaimActions.MapJsonKey("urn:wordpress:profileurl", "profile_URL");
-            ClaimActions.MapJsonKey("urn:wordpress:avatarurl", "avatar_URL");
-            ClaimActions.MapJsonKey("urn:wordpress:primaryblog", "primary_blog");
+            ClaimActions.MapJsonKey(WordPressClaimTypes.Email, "email");
+            ClaimActions.MapJsonKey(WordPressClaimTypes.DisplayName, "display_name");
+            ClaimActions.MapJsonKey(WordPressClaimTypes.ProfileUrl, "profile_URL");
+            ClaimActions.MapJsonKey(WordPressClaimTypes.AvatarUrl, "avatar_URL");
+            ClaimActions.MapJsonKey(WordPressClaimTypes.PrimaryBlog, "primary_blog");
         }
     }
 }
