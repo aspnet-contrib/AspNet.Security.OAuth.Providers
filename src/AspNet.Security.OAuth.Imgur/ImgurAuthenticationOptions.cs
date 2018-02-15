@@ -27,10 +27,10 @@ namespace AspNet.Security.OAuth.Imgur
 
             ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
             ClaimActions.MapJsonKey(ClaimTypes.Name, "url");
-            ClaimActions.MapJsonKey("urn:imgur:bio", "bio");
-            ClaimActions.MapJsonKey("urn:imgur:reputation", "reputation");
-            ClaimActions.MapJsonKey("urn:imgur:created", "created");
-            ClaimActions.MapJsonKey("urn:imgur:proexpiration", "pro_expiration");
+            ClaimActions.MapJsonKey(ImgurClaimTypes.Bio, "bio");
+            ClaimActions.MapJsonKey(ImgurClaimTypes.Reputation, "reputation");
+            ClaimActions.MapJsonKey(ImgurClaimTypes.Created, "created");
+            ClaimActions.MapJsonKey(ImgurClaimTypes.ProExpiration, "pro_expiration");
         }
     }
 }
