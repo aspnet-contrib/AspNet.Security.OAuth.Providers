@@ -30,11 +30,11 @@ namespace AspNet.Security.OAuth.QQ
 
             ClaimActions.MapJsonKey(ClaimTypes.Name, "nickname");
             ClaimActions.MapJsonKey(ClaimTypes.Gender, "gender");
-            ClaimActions.MapJsonKey("urn:qq:picture", "figureurl");
-            ClaimActions.MapJsonKey("urn:qq:picture_medium", "figureurl_1");
-            ClaimActions.MapJsonKey("urn:qq:picture_full", "figureurl_2");
-            ClaimActions.MapJsonKey("urn:qq:avatar", "figureurl_qq_1");
-            ClaimActions.MapJsonKey("urn:qq:avatar_full", "figureurl_qq_2");
+            ClaimActions.MapJsonKey(QQClaimTypes.PictureUrl, "figureurl");
+            ClaimActions.MapJsonKey(QQClaimTypes.PictureMediumUrl, "figureurl_1");
+            ClaimActions.MapJsonKey(QQClaimTypes.PictureFullUrl, "figureurl_2");
+            ClaimActions.MapJsonKey(QQClaimTypes.AvatarUrl, "figureurl_qq_1");
+            ClaimActions.MapJsonKey(QQClaimTypes.AvatarFullUrl, "figureurl_qq_2");
         }
 
         /// <summary>
