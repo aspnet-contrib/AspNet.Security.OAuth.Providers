@@ -32,11 +32,11 @@ namespace AspNet.Security.OAuth.Weixin
             ClaimActions.MapJsonKey(ClaimTypes.Name, "nickname");
             ClaimActions.MapJsonKey(ClaimTypes.Gender, "sex");
             ClaimActions.MapJsonKey(ClaimTypes.Country, "country");
-            ClaimActions.MapJsonKey("urn:weixin:openid", "openid");
-            ClaimActions.MapJsonKey("urn:weixin:province", "province");
-            ClaimActions.MapJsonKey("urn:weixin:city", "city");
-            ClaimActions.MapJsonKey("urn:weixin:headimgurl", "headimgurl");
-            ClaimActions.MapJsonKey("urn:weixin:privilege", "privilege");
+            ClaimActions.MapJsonKey(WeixinClaimTypes.OpenId, "openid");
+            ClaimActions.MapJsonKey(WeixinClaimTypes.Province, "province");
+            ClaimActions.MapJsonKey(WeixinClaimTypes.City, "city");
+            ClaimActions.MapJsonKey(WeixinClaimTypes.HeadImgUrl, "headimgurl");
+            ClaimActions.MapJsonKey(WeixinClaimTypes.Privilege, "privilege");
         }
     }
 }
