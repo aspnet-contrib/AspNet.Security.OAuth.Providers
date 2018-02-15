@@ -29,7 +29,7 @@ namespace AspNet.Security.OAuth.DeviantArt
 
             ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "userid");
             ClaimActions.MapJsonKey(ClaimTypes.Name, "username");
-            ClaimActions.MapJsonKey("urn:DeviantArt:name", "username");
+            ClaimActions.MapJsonKey(DeviantArtClaimTypes.Username, "username");
         }
     }
 }
