@@ -32,7 +32,7 @@ namespace AspNet.Security.OAuth.StackExchange
             ClaimActions.MapCustomJson(ClaimTypes.NameIdentifier, user => user[0]?.Value<string>("account_id"));
             ClaimActions.MapCustomJson(ClaimTypes.Name, user => user[0]?.Value<string>("display_name"));
             ClaimActions.MapCustomJson(ClaimTypes.Webpage, user => user[0]?.Value<string>("website_url"));
-            ClaimActions.MapCustomJson("urn:stackexchange:link", user => user[0]?.Value<string>("link"));
+            ClaimActions.MapCustomJson(StackExchangeClaimTypes.Link, user => user[0]?.Value<string>("link"));
         }
 
         /// <summary>
