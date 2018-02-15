@@ -31,8 +31,8 @@ namespace AspNet.Security.OAuth.Vkontakte
             ClaimActions.MapJsonKey(ClaimTypes.GivenName, "first_name");
             ClaimActions.MapJsonKey(ClaimTypes.Surname, "last_name");
             ClaimActions.MapJsonKey(ClaimTypes.Hash, "hash");
-            ClaimActions.MapJsonKey("urn:vkontakte:photo:link", "photo");
-            ClaimActions.MapJsonKey("urn:vkontakte:photo_thumb:link", "photo_rec");
+            ClaimActions.MapJsonKey(VkontakteClaimTypes.PhotoUrl, "photo");
+            ClaimActions.MapJsonKey(VkontakteClaimTypes.ThumbnailUrl, "photo_rec");
         }
 
         /// <summary>
