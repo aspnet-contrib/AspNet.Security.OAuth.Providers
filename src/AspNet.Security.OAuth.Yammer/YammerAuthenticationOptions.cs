@@ -31,8 +31,8 @@ namespace AspNet.Security.OAuth.Yammer
             ClaimActions.MapJsonKey(ClaimTypes.Surname, "last_name");
             ClaimActions.MapJsonKey(ClaimTypes.Name, "name");
             ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
-            ClaimActions.MapJsonKey("urn:yammer:link", "web_url");
-            ClaimActions.MapJsonKey("urn:yammer:job_title", "job_title");
+            ClaimActions.MapJsonKey(YammerClaimTypes.WebUrl, "web_url");
+            ClaimActions.MapJsonKey(YammerClaimTypes.JobTitle, "job_title");
         }
     }
 }
