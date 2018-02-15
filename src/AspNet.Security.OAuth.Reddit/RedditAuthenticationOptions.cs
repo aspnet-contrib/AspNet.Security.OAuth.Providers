@@ -30,7 +30,7 @@ namespace AspNet.Security.OAuth.Reddit
 
             ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
             ClaimActions.MapJsonKey(ClaimTypes.Name, "name");
-            ClaimActions.MapJsonKey("urn:reddit:over18", "over_18");
+            ClaimActions.MapJsonKey(RedditClaimTypes.Over18, "over_18");
         }
 
         /// <summary>
