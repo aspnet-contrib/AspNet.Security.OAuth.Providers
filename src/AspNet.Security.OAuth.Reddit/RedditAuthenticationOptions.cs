@@ -8,6 +8,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
+using static AspNet.Security.OAuth.Reddit.RedditAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.Reddit
 {
@@ -30,7 +31,7 @@ namespace AspNet.Security.OAuth.Reddit
 
             ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
             ClaimActions.MapJsonKey(ClaimTypes.Name, "name");
-            ClaimActions.MapJsonKey("urn:reddit:over18", "over_18");
+            ClaimActions.MapJsonKey(Claims.Over18, "over_18");
         }
 
         /// <summary>

@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json.Linq;
+using static AspNet.Security.OAuth.Weixin.WeixinAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.Weixin
 {
@@ -33,11 +34,11 @@ namespace AspNet.Security.OAuth.Weixin
             ClaimActions.MapJsonKey(ClaimTypes.Name, "nickname");
             ClaimActions.MapJsonKey(ClaimTypes.Gender, "sex");
             ClaimActions.MapJsonKey(ClaimTypes.Country, "country");
-            ClaimActions.MapJsonKey("urn:weixin:openid", "openid");
-            ClaimActions.MapJsonKey("urn:weixin:province", "province");
-            ClaimActions.MapJsonKey("urn:weixin:city", "city");
-            ClaimActions.MapJsonKey("urn:weixin:headimgurl", "headimgurl");
-            ClaimActions.MapCustomJson("urn:weixin:privilege", user =>
+            ClaimActions.MapJsonKey(Claims.OpenId, "openid");
+            ClaimActions.MapJsonKey(Claims.Province, "province");
+            ClaimActions.MapJsonKey(Claims.City, "city");
+            ClaimActions.MapJsonKey(Claims.HeadImgUrl, "headimgurl");
+            ClaimActions.MapJsonKey(Claims.Privilege, user =>
             {
                 var value = user.Value<JArray>("privilege");
                 if (value == null)

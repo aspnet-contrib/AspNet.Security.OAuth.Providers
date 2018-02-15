@@ -9,6 +9,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
+using static AspNet.Security.OAuth.Vkontakte.VkontakteAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.Vkontakte
 {
@@ -31,8 +32,8 @@ namespace AspNet.Security.OAuth.Vkontakte
             ClaimActions.MapJsonKey(ClaimTypes.GivenName, "first_name");
             ClaimActions.MapJsonKey(ClaimTypes.Surname, "last_name");
             ClaimActions.MapJsonKey(ClaimTypes.Hash, "hash");
-            ClaimActions.MapJsonKey("urn:vkontakte:photo:link", "photo");
-            ClaimActions.MapJsonKey("urn:vkontakte:photo_thumb:link", "photo_rec");
+            ClaimActions.MapJsonKey(Claims.PhotoUrl, "photo");
+            ClaimActions.MapJsonKey(Claims.ThumbnailUrl, "photo_rec");
         }
 
         /// <summary>

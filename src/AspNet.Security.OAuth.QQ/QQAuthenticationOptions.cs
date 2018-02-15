@@ -8,6 +8,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
+using static AspNet.Security.OAuth.QQ.QQAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.QQ
 {
@@ -30,11 +31,11 @@ namespace AspNet.Security.OAuth.QQ
 
             ClaimActions.MapJsonKey(ClaimTypes.Name, "nickname");
             ClaimActions.MapJsonKey(ClaimTypes.Gender, "gender");
-            ClaimActions.MapJsonKey("urn:qq:picture", "figureurl");
-            ClaimActions.MapJsonKey("urn:qq:picture_medium", "figureurl_1");
-            ClaimActions.MapJsonKey("urn:qq:picture_full", "figureurl_2");
-            ClaimActions.MapJsonKey("urn:qq:avatar", "figureurl_qq_1");
-            ClaimActions.MapJsonKey("urn:qq:avatar_full", "figureurl_qq_2");
+            ClaimActions.MapJsonKey(Claims.PictureUrl, "figureurl");
+            ClaimActions.MapJsonKey(Claims.PictureMediumUrl, "figureurl_1");
+            ClaimActions.MapJsonKey(Claims.PictureFullUrl, "figureurl_2");
+            ClaimActions.MapJsonKey(Claims.AvatarUrl, "figureurl_qq_1");
+            ClaimActions.MapJsonKey(Claims.AvatarFullUrl, "figureurl_qq_2");
         }
 
         /// <summary>

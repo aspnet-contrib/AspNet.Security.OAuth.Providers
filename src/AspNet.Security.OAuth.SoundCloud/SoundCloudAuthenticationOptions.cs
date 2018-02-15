@@ -8,6 +8,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
+using static AspNet.Security.OAuth.SoundCloud.SoundCloudAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.SoundCloud
 {
@@ -29,9 +30,9 @@ namespace AspNet.Security.OAuth.SoundCloud
             ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
             ClaimActions.MapJsonKey(ClaimTypes.Name, "username");
             ClaimActions.MapJsonKey(ClaimTypes.Country, "country");
-            ClaimActions.MapJsonKey("urn:soundcloud:fullname", "full_name");
-            ClaimActions.MapJsonKey("urn:soundcloud:city", "city");
-            ClaimActions.MapJsonKey("urn:soundcloud:profileurl", "permalink_url");
+            ClaimActions.MapJsonKey(Claims.FullName, "full_name");
+            ClaimActions.MapJsonKey(Claims.City, "city");
+            ClaimActions.MapJsonKey(Claims.ProfileUrl, "permalink_url");
         }
     }
 }

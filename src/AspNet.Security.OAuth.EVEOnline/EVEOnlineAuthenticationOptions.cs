@@ -9,6 +9,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
+using static AspNet.Security.OAuth.EVEOnline.EVEOnlineAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.EVEOnline
 {
@@ -27,7 +28,7 @@ namespace AspNet.Security.OAuth.EVEOnline
             ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "CharacterID");
             ClaimActions.MapJsonKey(ClaimTypes.Name, "CharacterName");
             ClaimActions.MapJsonKey(ClaimTypes.Expiration, "ExpiresOn");
-            ClaimActions.MapJsonKey("urn:eveonline:scopes", "Scopes");
+            ClaimActions.MapJsonKey(Claims.Scopes, "Scopes");
         }
 
         /// <summary>

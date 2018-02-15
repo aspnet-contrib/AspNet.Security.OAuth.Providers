@@ -10,6 +10,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
+using static AspNet.Security.OAuth.StackExchange.StackExchangeAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.StackExchange
 {
@@ -32,7 +33,7 @@ namespace AspNet.Security.OAuth.StackExchange
             ClaimActions.MapCustomJson(ClaimTypes.NameIdentifier, user => user[0]?.Value<string>("account_id"));
             ClaimActions.MapCustomJson(ClaimTypes.Name, user => user[0]?.Value<string>("display_name"));
             ClaimActions.MapCustomJson(ClaimTypes.Webpage, user => user[0]?.Value<string>("website_url"));
-            ClaimActions.MapCustomJson("urn:stackexchange:link", user => user[0]?.Value<string>("link"));
+            ClaimActions.MapCustomJson(Claims.Link, user => user[0]?.Value<string>("link"));
         }
 
         /// <summary>

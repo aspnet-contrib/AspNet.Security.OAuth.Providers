@@ -8,6 +8,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
+using static AspNet.Security.OAuth.Slack.SlackAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.Slack
 {
@@ -30,9 +31,9 @@ namespace AspNet.Security.OAuth.Slack
                 string.Concat(user["team"]["id"], "|", user["user"]["id"]));
             ClaimActions.MapJsonSubKey(ClaimTypes.Name, "user", "name");
             ClaimActions.MapJsonSubKey(ClaimTypes.Email, "user", "email");
-            ClaimActions.MapJsonSubKey("urn:slack:user_id", "user", "id");
-            ClaimActions.MapJsonSubKey("urn:slack:team_id", "team", "id");
-            ClaimActions.MapJsonSubKey("urn:slack:team_name", "team", "name");
+            ClaimActions.MapJsonSubKey(Claims.UserId, "user", "id");
+            ClaimActions.MapJsonSubKey(Claims.TeamId, "team", "id");
+            ClaimActions.MapJsonSubKey(Claims.TeamName, "team", "name");
 
             Scope.Add("identity.basic");
         }

@@ -7,6 +7,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
+using static AspNet.Security.OAuth.Strava.StravaAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.Strava
 {
@@ -35,12 +36,12 @@ namespace AspNet.Security.OAuth.Strava
             ClaimActions.MapJsonKey(ClaimTypes.StateOrProvince, "state");
             ClaimActions.MapJsonKey(ClaimTypes.Country, "country");
             ClaimActions.MapJsonKey(ClaimTypes.Gender, "sex");
-            ClaimActions.MapJsonKey("urn:strava:city", "city");
-            ClaimActions.MapJsonKey("urn:strava:profile", "profile");
-            ClaimActions.MapJsonKey("urn:strava:profile-medium", "profile_medium");
-            ClaimActions.MapJsonKey("urn:strava:created-at", "created_at");
-            ClaimActions.MapJsonKey("urn:strava:updated-at", "updated_at");
-            ClaimActions.MapJsonKey("urn:strava:premium", "premium");
+            ClaimActions.MapJsonKey(Claims.City, "city");
+            ClaimActions.MapJsonKey(Claims.Profile, "profile");
+            ClaimActions.MapJsonKey(Claims.ProfileMedium, "profile_medium");
+            ClaimActions.MapJsonKey(Claims.CreatedAt, "created_at");
+            ClaimActions.MapJsonKey(Claims.UpdatedAt, "updated_at");
+            ClaimActions.MapJsonKey(Claims.Premium, "premium");
         }
     }
 }

@@ -8,6 +8,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
+using static AspNet.Security.OAuth.Yammer.YammerAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.Yammer
 {
@@ -31,8 +32,8 @@ namespace AspNet.Security.OAuth.Yammer
             ClaimActions.MapJsonKey(ClaimTypes.Surname, "last_name");
             ClaimActions.MapJsonKey(ClaimTypes.Name, "name");
             ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
-            ClaimActions.MapJsonKey("urn:yammer:link", "web_url");
-            ClaimActions.MapJsonKey("urn:yammer:job_title", "job_title");
+            ClaimActions.MapJsonKey(Claims.WebUrl, "web_url");
+            ClaimActions.MapJsonKey(Claims.JobTitle, "job_title");
         }
     }
 }
