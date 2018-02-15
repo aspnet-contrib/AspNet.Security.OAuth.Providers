@@ -29,8 +29,8 @@ namespace AspNet.Security.OAuth.Fitbit
 
             ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "encodedId");
             ClaimActions.MapJsonKey(ClaimTypes.Name, "displayName");
-            ClaimActions.MapJsonKey("urn:fitbit:avatar", "avatar");
-            ClaimActions.MapJsonKey("urn:fitbit:avatar150", "avatar150");
+            ClaimActions.MapJsonKey(FitbitClaimTypes.Avatar, "avatar");
+            ClaimActions.MapJsonKey(FitbitClaimTypes.Avatar150, "avatar150");
         }
     }
 }
