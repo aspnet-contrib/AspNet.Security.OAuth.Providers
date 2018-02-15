@@ -28,8 +28,8 @@ namespace AspNet.Security.OAuth.Bitbucket
             ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "account_id");
             ClaimActions.MapJsonKey(ClaimTypes.Name, "username");
             ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
-            ClaimActions.MapJsonKey("urn:bitbucket:name", "display_name");
-            ClaimActions.MapJsonKey("urn:bitbucket:url", "website");
+            ClaimActions.MapJsonKey(BitbucketClaimTypes.DisplayName, "display_name");
+            ClaimActions.MapJsonKey(BitbucketClaimTypes.Website, "website");
         }
 
         /// <summary>
