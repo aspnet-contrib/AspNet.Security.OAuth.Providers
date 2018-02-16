@@ -7,12 +7,15 @@
 namespace AspNet.Security.OAuth.Vimeo
 {
     /// <summary>
-    /// Contains claim types specific to the <see cref="VimeoAuthenticationHandler"/>.
+    /// Contains constants specific to the <see cref="VimeoAuthenticationHandler"/>.
     /// </summary>
-    public static class VimeoClaimTypes
+    public static class VimeoAuthenticationConstants
     {
-        public const string FullName = "urn:vimeo:fullname";
+        public static class Claims
+        {
+            public const string FullName = "urn:vimeo:fullname";
 
-        public const string ProfileUrl = "urn:vimeo:profileurl";
+            public const string ProfileUrl = "urn:vimeo:profileurl";
+        }
     }
 }

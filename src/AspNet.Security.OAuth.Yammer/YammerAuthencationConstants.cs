@@ -7,12 +7,15 @@
 namespace AspNet.Security.OAuth.Yammer
 {
     /// <summary>
-    /// Contains claim types specific to the <see cref="YammerAuthenticationHandler"/>.
+    /// Contains constants specific to the <see cref="YammerAuthenticationHandler"/>.
     /// </summary>
-    public static class YammerClaimTypes
+    public static class YammerAuthencationConstants
     {
-        public const string WebUrl = "urn:yammer:link";
+        public static class Claims
+        {
+            public const string WebUrl = "urn:yammer:link";
 
-        public const string JobTitle = "urn:yammer:job_title";
+            public const string JobTitle = "urn:yammer:job_title";
+        }
     }
 }

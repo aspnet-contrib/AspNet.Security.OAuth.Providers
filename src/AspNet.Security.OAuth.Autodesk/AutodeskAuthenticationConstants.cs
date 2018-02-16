@@ -7,12 +7,15 @@
 namespace AspNet.Security.OAuth.Autodesk
 {
     /// <summary>
-    /// Contains claim types specific to the <see cref="AutodeskAuthenticationHandler"/>.
+    /// Contains constants specific to the <see cref="AutodeskAuthenticationHandler"/>.
     /// </summary>
-    public static class AutodeskClaimTypes
+    public static class AutodeskAuthenticationConstants
     {
-        public const string Emailverified = "urn:autodesk:emailverified";
+        public static class Claims
+        {
+            public const string Emailverified = "urn:autodesk:emailverified";
 
-        public const string TwoFactorEnabled = "urn:autodesk:twofactorenabled";
+            public const string TwoFactorEnabled = "urn:autodesk:twofactorenabled";
+        }
     }
 }

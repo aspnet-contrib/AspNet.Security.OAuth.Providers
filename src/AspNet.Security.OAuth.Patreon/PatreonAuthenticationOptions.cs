@@ -8,6 +8,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
+using static AspNet.Security.OAuth.Patreon.PatreonAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.Patreon
 {
@@ -33,7 +34,7 @@ namespace AspNet.Security.OAuth.Patreon
             ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
             ClaimActions.MapCustomJson(ClaimTypes.Name, user => user["attributes"]?.Value<string>("full_name"));
             ClaimActions.MapCustomJson(ClaimTypes.Webpage, user => user["attributes"]?.Value<string>("url"));
-            ClaimActions.MapCustomJson(PatreonClaimTypes.Avatar, user => user["attributes"]?.Value<string>("thumb_url"));
+            ClaimActions.MapCustomJson(Claims.Avatar, user => user["attributes"]?.Value<string>("thumb_url"));
         }
     }
 }

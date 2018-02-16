@@ -9,6 +9,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
+using static AspNet.Security.OAuth.LinkedIn.LinkedInAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.LinkedIn
 {
@@ -32,22 +33,22 @@ namespace AspNet.Security.OAuth.LinkedIn
             ClaimActions.MapJsonKey(ClaimTypes.Name, "formattedName");
             ClaimActions.MapJsonKey(ClaimTypes.GivenName, "firstName");
             ClaimActions.MapJsonKey(ClaimTypes.Surname, "lastName");
-            ClaimActions.MapJsonKey(LinkedInClaimTypes.MaidenName, "maidenName");
-            ClaimActions.MapJsonKey(LinkedInClaimTypes.ProfileUrl, "publicProfileUrl");
-            ClaimActions.MapJsonKey(LinkedInClaimTypes.PictureUrl, "pictureUrl");
-            ClaimActions.MapJsonKey(LinkedInClaimTypes.Industry, "industry");
-            ClaimActions.MapJsonKey(LinkedInClaimTypes.Summary, "summary");
-            ClaimActions.MapJsonKey(LinkedInClaimTypes.Headline, "headline");
-            ClaimActions.MapCustomJson(LinkedInClaimTypes.Positions, user => user["positions"]?.ToString());
-            ClaimActions.MapJsonKey(LinkedInClaimTypes.PhoneticFirstName, "phoneticFirstName");
-            ClaimActions.MapJsonKey(LinkedInClaimTypes.PhoneticLastName, "phoneticLastName");
-            ClaimActions.MapJsonKey(LinkedInClaimTypes.FormattedPhoneticName, "formattedPhoneticName");
-            ClaimActions.MapCustomJson(LinkedInClaimTypes.Location, user => user["location"]?.ToString());
-            ClaimActions.MapJsonKey(LinkedInClaimTypes.Specialties, "specialties");
-            ClaimActions.MapJsonKey(LinkedInClaimTypes.NumConnections, "numConnections");
-            ClaimActions.MapJsonKey(LinkedInClaimTypes.NumConnectionsCapped, "numConnectionsCapped");
-            ClaimActions.MapJsonKey(LinkedInClaimTypes.CurrentShare, "currentShare");
-            ClaimActions.MapCustomJson(LinkedInClaimTypes.PictureUrls, user => user["pictureUrls"]?.ToString());
+            ClaimActions.MapJsonKey(Claims.MaidenName, "maidenName");
+            ClaimActions.MapJsonKey(Claims.ProfileUrl, "publicProfileUrl");
+            ClaimActions.MapJsonKey(Claims.PictureUrl, "pictureUrl");
+            ClaimActions.MapJsonKey(Claims.Industry, "industry");
+            ClaimActions.MapJsonKey(Claims.Summary, "summary");
+            ClaimActions.MapJsonKey(Claims.Headline, "headline");
+            ClaimActions.MapCustomJson(Claims.Positions, user => user["positions"]?.ToString());
+            ClaimActions.MapJsonKey(Claims.PhoneticFirstName, "phoneticFirstName");
+            ClaimActions.MapJsonKey(Claims.PhoneticLastName, "phoneticLastName");
+            ClaimActions.MapJsonKey(Claims.FormattedPhoneticName, "formattedPhoneticName");
+            ClaimActions.MapCustomJson(Claims.Location, user => user["location"]?.ToString());
+            ClaimActions.MapJsonKey(Claims.Specialties, "specialties");
+            ClaimActions.MapJsonKey(Claims.NumConnections, "numConnections");
+            ClaimActions.MapJsonKey(Claims.NumConnectionsCapped, "numConnectionsCapped");
+            ClaimActions.MapJsonKey(Claims.CurrentShare, "currentShare");
+            ClaimActions.MapCustomJson(Claims.PictureUrls, user => user["pictureUrls"]?.ToString());
         }
 
         /// <summary>

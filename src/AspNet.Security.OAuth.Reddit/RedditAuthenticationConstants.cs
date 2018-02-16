@@ -4,15 +4,16 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-namespace AspNet.Security.OAuth.Spotify
+namespace AspNet.Security.OAuth.Reddit
 {
     /// <summary>
-    /// Contains claim types specific to the <see cref="SpotifyAuthenticationOptions"/>.
+    /// Contains constants specific to the <see cref="RedditAuthenticationHandler"/>.
     /// </summary>
-    public static class SpotifyClaimTypes
+    public static class RedditAuthenticationConstants
     {
-        public const string Product = "urn:spotify:product";
-
-        public const string Url = "urn:spotify:url";
+        public static class Claims
+        {
+            public const string Over18 = "urn:reddit:over18";
+        }
     }
 }

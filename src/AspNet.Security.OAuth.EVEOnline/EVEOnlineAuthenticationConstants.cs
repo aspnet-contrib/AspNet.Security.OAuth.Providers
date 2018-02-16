@@ -4,13 +4,16 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-namespace AspNet.Security.OAuth.Untappd
+namespace AspNet.Security.OAuth.EVEOnline
 {
     /// <summary>
-    /// Contains claim types specific to the <see cref="UntappdAuthenticationHandler"/>.
+    /// Contains constants specific to the <see cref="EVEOnlineAuthenticationHandler"/>.
     /// </summary>
-    public static class UntappdClaimTypes
+    public static class EVEOnlineAuthenticationConstants
     {
-        public const string Avatar = "urn:untappd:link";
+        public static class Claims
+        {
+            public const string Scopes = "urn:eveonline:scopes";
+        }
     }
 }

@@ -7,12 +7,15 @@
 namespace AspNet.Security.OAuth.Vkontakte
 {
     /// <summary>
-    /// Contains claim types specific to the <see cref="VkontakteAuthenticationHandler"/>.
+    /// Contains constants specific to the <see cref="VkontakteAuthenticationHandler"/>.
     /// </summary>
-    public static class VkontakteClaimTypes
+    public static class VkontakteAuthenticationConstants
     {
-        public const string PhotoUrl = "urn:vkontakte:photo:link";
+        public static class Claims
+        {
+            public const string PhotoUrl = "urn:vkontakte:photo:link";
 
-        public const string ThumbnailUrl = "urn:vkontakte:photo_thumb:link";
+            public const string ThumbnailUrl = "urn:vkontakte:photo_thumb:link";
+        }
     }
 }

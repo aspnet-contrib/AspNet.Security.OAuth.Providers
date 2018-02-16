@@ -8,6 +8,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
+using static AspNet.Security.OAuth.Yahoo.YahooAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.Yahoo
 {
@@ -27,10 +28,10 @@ namespace AspNet.Security.OAuth.Yahoo
 
             ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "guid");
             ClaimActions.MapJsonKey(ClaimTypes.Name, "nickname");
-            ClaimActions.MapJsonKey(YahooClaimTypes.FamilyName, "familyName");
-            ClaimActions.MapJsonKey(YahooClaimTypes.GivenName, "givenName");
-            ClaimActions.MapJsonKey(YahooClaimTypes.ProfileUrl, "profileUrl");
-            ClaimActions.MapJsonKey(YahooClaimTypes.ImageUrl, "imageUrl");
+            ClaimActions.MapJsonKey(Claims.FamilyName, "familyName");
+            ClaimActions.MapJsonKey(Claims.GivenName, "givenName");
+            ClaimActions.MapJsonKey(Claims.ProfileUrl, "profileUrl");
+            ClaimActions.MapJsonKey(Claims.ImageUrl, "imageUrl");
         }
     }
 }

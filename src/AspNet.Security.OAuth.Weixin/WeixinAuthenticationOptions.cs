@@ -8,6 +8,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
+using static AspNet.Security.OAuth.Weixin.WeixinAuthencationConstants;
 
 namespace AspNet.Security.OAuth.Weixin
 {
@@ -32,11 +33,11 @@ namespace AspNet.Security.OAuth.Weixin
             ClaimActions.MapJsonKey(ClaimTypes.Name, "nickname");
             ClaimActions.MapJsonKey(ClaimTypes.Gender, "sex");
             ClaimActions.MapJsonKey(ClaimTypes.Country, "country");
-            ClaimActions.MapJsonKey(WeixinClaimTypes.OpenId, "openid");
-            ClaimActions.MapJsonKey(WeixinClaimTypes.Province, "province");
-            ClaimActions.MapJsonKey(WeixinClaimTypes.City, "city");
-            ClaimActions.MapJsonKey(WeixinClaimTypes.HeadImgUrl, "headimgurl");
-            ClaimActions.MapJsonKey(WeixinClaimTypes.Privilege, "privilege");
+            ClaimActions.MapJsonKey(Claims.OpenId, "openid");
+            ClaimActions.MapJsonKey(Claims.Province, "province");
+            ClaimActions.MapJsonKey(Claims.City, "city");
+            ClaimActions.MapJsonKey(Claims.HeadImgUrl, "headimgurl");
+            ClaimActions.MapJsonKey(Claims.Privilege, "privilege");
         }
     }
 }

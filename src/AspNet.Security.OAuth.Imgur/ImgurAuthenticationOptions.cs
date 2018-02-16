@@ -8,6 +8,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
+using static AspNet.Security.OAuth.Imgur.ImgurAuthencationConstants;
 
 namespace AspNet.Security.OAuth.Imgur
 {
@@ -27,10 +28,10 @@ namespace AspNet.Security.OAuth.Imgur
 
             ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
             ClaimActions.MapJsonKey(ClaimTypes.Name, "url");
-            ClaimActions.MapJsonKey(ImgurClaimTypes.Bio, "bio");
-            ClaimActions.MapJsonKey(ImgurClaimTypes.Reputation, "reputation");
-            ClaimActions.MapJsonKey(ImgurClaimTypes.Created, "created");
-            ClaimActions.MapJsonKey(ImgurClaimTypes.ProExpiration, "pro_expiration");
+            ClaimActions.MapJsonKey(Claims.Bio, "bio");
+            ClaimActions.MapJsonKey(Claims.Reputation, "reputation");
+            ClaimActions.MapJsonKey(Claims.Created, "created");
+            ClaimActions.MapJsonKey(Claims.ProExpiration, "pro_expiration");
         }
     }
 }

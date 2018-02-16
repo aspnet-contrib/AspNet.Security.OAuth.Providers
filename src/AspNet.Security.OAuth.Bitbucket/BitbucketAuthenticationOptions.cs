@@ -8,6 +8,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
+using static AspNet.Security.OAuth.Bitbucket.BitbucketAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.Bitbucket
 {
@@ -28,8 +29,8 @@ namespace AspNet.Security.OAuth.Bitbucket
             ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "account_id");
             ClaimActions.MapJsonKey(ClaimTypes.Name, "username");
             ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
-            ClaimActions.MapJsonKey(BitbucketClaimTypes.DisplayName, "display_name");
-            ClaimActions.MapJsonKey(BitbucketClaimTypes.Website, "website");
+            ClaimActions.MapJsonKey(Claims.DisplayName, "display_name");
+            ClaimActions.MapJsonKey(Claims.Website, "website");
         }
 
         /// <summary>

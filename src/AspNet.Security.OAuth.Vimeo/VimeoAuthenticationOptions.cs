@@ -9,6 +9,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
+using static AspNet.Security.OAuth.Vimeo.VimeoAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.Vimeo
 {
@@ -26,8 +27,8 @@ namespace AspNet.Security.OAuth.Vimeo
             TokenEndpoint = VimeoAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = VimeoAuthenticationDefaults.UserInformationEndpoint;
 
-            ClaimActions.MapJsonKey(VimeoClaimTypes.FullName, "name");
-            ClaimActions.MapJsonKey(VimeoClaimTypes.ProfileUrl, "link");
+            ClaimActions.MapJsonKey(Claims.FullName, "name");
+            ClaimActions.MapJsonKey(Claims.ProfileUrl, "link");
             ClaimActions.MapCustomJson(ClaimTypes.NameIdentifier, user => user.Value<string>("uri")?.Split('/')?.LastOrDefault());
         }
     }

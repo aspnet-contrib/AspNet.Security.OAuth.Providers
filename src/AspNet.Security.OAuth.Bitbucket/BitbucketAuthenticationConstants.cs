@@ -7,12 +7,15 @@
 namespace AspNet.Security.OAuth.Bitbucket
 {
     /// <summary>
-    /// Contains claim types specific to the <see cref="BitbucketAuthenticationHandler"/>.
+    /// Contains constants specific to the <see cref="BitbucketAuthenticationHandler"/>.
     /// </summary>
-    public static class BitbucketClaimTypes
+    public static class BitbucketAuthenticationConstants
     {
-        public const string DisplayName = "urn:bitbucket:name";
+        public static class Claims
+        {
+            public const string DisplayName = "urn:bitbucket:name";
 
-        public const string Website = "urn:bitbucket:url";
+            public const string Website = "urn:bitbucket:url";
+        }
     }
 }

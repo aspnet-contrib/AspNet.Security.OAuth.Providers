@@ -8,6 +8,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
+using static AspNet.Security.OAuth.GitHub.GitHubAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.GitHub
 {
@@ -29,8 +30,8 @@ namespace AspNet.Security.OAuth.GitHub
             ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
             ClaimActions.MapJsonKey(ClaimTypes.Name, "login");
             ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
-            ClaimActions.MapJsonKey(GitHubClaimTypes.Name, "name");
-            ClaimActions.MapJsonKey(GitHubClaimTypes.Url, "url");
+            ClaimActions.MapJsonKey(Claims.Name, "name");
+            ClaimActions.MapJsonKey(Claims.Url, "url");
         }
 
         /// <summary>

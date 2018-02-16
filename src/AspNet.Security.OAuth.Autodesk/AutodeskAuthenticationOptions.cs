@@ -8,6 +8,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
+using static AspNet.Security.OAuth.Autodesk.AutodeskAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.Autodesk
 {
@@ -32,8 +33,8 @@ namespace AspNet.Security.OAuth.Autodesk
             ClaimActions.MapJsonKey(ClaimTypes.GivenName, "firstName");
             ClaimActions.MapJsonKey(ClaimTypes.Surname, "lastName");
             ClaimActions.MapJsonKey(ClaimTypes.Email, "emailId");
-            ClaimActions.MapJsonKey(AutodeskClaimTypes.Emailverified, "emailVerified");
-            ClaimActions.MapJsonKey(AutodeskClaimTypes.TwoFactorEnabled, "2FaEnabled");
+            ClaimActions.MapJsonKey(Claims.Emailverified, "emailVerified");
+            ClaimActions.MapJsonKey(Claims.TwoFactorEnabled, "2FaEnabled");
         }
     }
 }
