@@ -9,7 +9,7 @@ namespace AspNet.Security.OAuth.Yammer
     /// <summary>
     /// Contains constants specific to the <see cref="YammerAuthenticationHandler"/>.
     /// </summary>
-    public static class YammerAuthencationConstants
+    public static class YammerAuthenticationConstants
     {
         public static class Claims
         {

@@ -13,7 +13,7 @@ namespace AspNet.Security.OAuth.Autodesk
     {
         public static class Claims
         {
-            public const string Emailverified = "urn:autodesk:emailverified";
+            public const string EmailVerified = "urn:autodesk:emailverified";
 
             public const string TwoFactorEnabled = "urn:autodesk:twofactorenabled";
         }

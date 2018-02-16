@@ -8,7 +8,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
-using static AspNet.Security.OAuth.Imgur.ImgurAuthencationConstants;
+using static AspNet.Security.OAuth.Imgur.ImgurAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.Imgur
 {

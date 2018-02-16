@@ -9,7 +9,7 @@ namespace AspNet.Security.OAuth.Weixin
     /// <summary>
     /// Contains constants specific to the <see cref="WeixinAuthenticationHandler"/>.
     /// </summary>
-    public static class WeixinAuthencationConstants
+    public static class WeixinAuthenticationConstants
     {
         public static class Claims
         {

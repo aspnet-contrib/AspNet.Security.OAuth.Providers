@@ -8,7 +8,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
-using static AspNet.Security.OAuth.Weixin.WeixinAuthencationConstants;
+using static AspNet.Security.OAuth.Weixin.WeixinAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.Weixin
 {

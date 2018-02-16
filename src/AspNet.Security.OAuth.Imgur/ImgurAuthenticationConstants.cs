@@ -9,7 +9,7 @@ namespace AspNet.Security.OAuth.Imgur
     /// <summary>
     /// Contains constants specific to the <see cref="ImgurAuthenticationHandler"/>.
     /// </summary>
-    public static class ImgurAuthencationConstants
+    public static class ImgurAuthenticationConstants
     {
         public static class Claims
         {

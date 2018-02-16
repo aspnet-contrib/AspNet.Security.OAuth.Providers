@@ -8,7 +8,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
-using static AspNet.Security.OAuth.Yammer.YammerAuthencationConstants;
+using static AspNet.Security.OAuth.Yammer.YammerAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.Yammer
 {
