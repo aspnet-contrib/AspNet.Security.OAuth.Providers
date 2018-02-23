@@ -60,7 +60,9 @@ namespace AspNet.Security.OAuth.LinkedIn
             "first-name",
             "last-name",
             "formatted-name",
-            "email-address"
+            "email-address",
+            "num-connections",
+            "picture-url"
         };
     }
 }
