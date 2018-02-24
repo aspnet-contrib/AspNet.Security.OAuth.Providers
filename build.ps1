@@ -1,4 +1,5 @@
 $ErrorActionPreference = "Stop"
+[Net.ServicePointManager]::SecurityProtocol = 'Ssl3, Tls, Tls11, Tls12'
 
 function DownloadWithRetry([string] $url, [string] $downloadLocation, [int] $retries)
 {
