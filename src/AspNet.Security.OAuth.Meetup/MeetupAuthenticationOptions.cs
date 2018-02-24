@@ -27,10 +27,27 @@ namespace AspNet.Security.OAuth.Meetup
             UserInformationEndpoint = MeetupAuthenticationDefaults.UserInformationEndpoint;
 
             ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
-            ClaimActions.MapJsonKey(ClaimTypes.Name, "login");
+            ClaimActions.MapJsonKey(ClaimTypes.Name, "name");
             ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
+
+			// Map custom claims
             ClaimActions.MapJsonKey("urn:meetup:name", "name");
-            ClaimActions.MapJsonKey("urn:meetup:url", "url");
+            ClaimActions.MapJsonKey("urn:meetup:status", "status");
+            ClaimActions.MapJsonKey("urn:meetup:lat", "lat");
+            ClaimActions.MapJsonKey("urn:meetup:lon", "lon");
+            ClaimActions.MapJsonKey("urn:meetup:joined", "joined");
+            ClaimActions.MapJsonKey("urn:meetup:city", "city");
+            ClaimActions.MapJsonKey("urn:meetup:country", "country");
+            ClaimActions.MapJsonKey("urn:meetup:localized_country_name", "localized_country_name");
+            ClaimActions.MapJsonKey("urn:meetup:state", "state");
+
+			// Map user's photo information returned as a nested object
+			ClaimActions.MapJsonSubKey("urn:meetup:photo.id", "photo", "id");
+			ClaimActions.MapJsonSubKey("urn:meetup:photo.highres_link", "photo", "highres_link");
+			ClaimActions.MapJsonSubKey("urn:meetup:photo.photo_link", "photo", "photo_link");
+			ClaimActions.MapJsonSubKey("urn:meetup:photo.thumb_link", "photo", "thumb_link");
+			ClaimActions.MapJsonSubKey("urn:meetup:photo.base_url", "photo", "base_url");
+			ClaimActions.MapJsonSubKey("urn:meetup:photo.type", "photo", "type");
         }
     }
 }
