@@ -8,8 +8,9 @@
 
   <PropertyGroup>
     <Description>ASP.NET Core security middleware enabling Meetup authentication.</Description>
-    <Authors>Kévin Chalet;Jerrie Pelser</Authors>
-    <PackageTags>aspnetcore;authentication;Meetup;oauth;security</PackageTags>
+    <Authors>Sung Kim</Authors>
+    <PackageTags>aspnetcore;authentication;meetup;oauth;security</PackageTags>
+    <Company>Sung Kim</Company>
   </PropertyGroup>
 
   <ItemGroup>
