@@ -8,6 +8,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json.Linq;
 
 namespace AspNet.Security.OAuth.Weixin
 {
@@ -36,7 +37,16 @@ namespace AspNet.Security.OAuth.Weixin
             ClaimActions.MapJsonKey("urn:weixin:province", "province");
             ClaimActions.MapJsonKey("urn:weixin:city", "city");
             ClaimActions.MapJsonKey("urn:weixin:headimgurl", "headimgurl");
-            ClaimActions.MapJsonKey("urn:weixin:privilege", "privilege");
+            ClaimActions.MapCustomJson("urn:weixin:privilege", user =>
+            {
+                var value = user.Value<JArray>("privilege");
+                if (value == null)
+                {
+                    return null;
+                }
+
+                return string.Join(",", value.ToObject<string[]>());
+            });
         }
     }
 }
