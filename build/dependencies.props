@@ -1,6 +1,6 @@
 <Project>
 
-  <PropertyGroup>
+  <PropertyGroup Label="Package Versions">
     <AspNetCoreVersion>2.0.0</AspNetCoreVersion>
     <JetBrainsVersion>10.3.0</JetBrainsVersion>
     <NetStandardImplicitPackageVersion>2.0.0</NetStandardImplicitPackageVersion>
