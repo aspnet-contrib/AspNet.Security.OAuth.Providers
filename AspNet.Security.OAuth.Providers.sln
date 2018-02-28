@@ -3,15 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{8DCAEA78-86AE-4183-93C0-41C7F8850AAA}"
-	ProjectSection(SolutionItems) = preProject
-		build\common.props = build\common.props
-		build\dependencies.props = build\dependencies.props
-		build\key.snk = build\key.snk
-		build\packages.props = build\packages.props
-		build\version.props = build\version.props
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{BAC7067D-88FE-4385-8AC9-1A325FFBDE69}"
@@ -366,8 +357,5 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8B8E5F19-7ECD-4DF4-99A3-479C97734789}
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {C7B54DE2-6407-4802-AD9C-CE54BF414C8C}
 	EndGlobalSection
 EndGlobal
