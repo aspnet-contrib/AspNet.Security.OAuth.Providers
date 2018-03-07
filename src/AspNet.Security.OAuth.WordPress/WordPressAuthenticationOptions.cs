@@ -8,6 +8,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
+using static AspNet.Security.OAuth.WordPress.WordPressAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.WordPress
 {
@@ -31,11 +32,11 @@ namespace AspNet.Security.OAuth.WordPress
 
             ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "ID");
             ClaimActions.MapJsonKey(ClaimTypes.Name, "username");
-            ClaimActions.MapJsonKey("urn:wordpress:email", "email");
-            ClaimActions.MapJsonKey("urn:wordpress:displayname", "display_name");
-            ClaimActions.MapJsonKey("urn:wordpress:profileurl", "profile_URL");
-            ClaimActions.MapJsonKey("urn:wordpress:avatarurl", "avatar_URL");
-            ClaimActions.MapJsonKey("urn:wordpress:primaryblog", "primary_blog");
+            ClaimActions.MapJsonKey(Claims.Email, "email");
+            ClaimActions.MapJsonKey(Claims.DisplayName, "display_name");
+            ClaimActions.MapJsonKey(Claims.ProfileUrl, "profile_URL");
+            ClaimActions.MapJsonKey(Claims.AvatarUrl, "avatar_URL");
+            ClaimActions.MapJsonKey(Claims.PrimaryBlog, "primary_blog");
         }
     }
 }

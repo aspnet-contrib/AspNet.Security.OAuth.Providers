@@ -8,6 +8,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
+using static AspNet.Security.OAuth.Weibo.WeiboAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.Weibo
 {
@@ -30,12 +31,12 @@ namespace AspNet.Security.OAuth.Weibo
             ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
             ClaimActions.MapJsonKey(ClaimTypes.Name, "name");
             ClaimActions.MapJsonKey(ClaimTypes.Gender, "gender");
-            ClaimActions.MapJsonKey("urn:weibo:screen_name", "screen_name");
-            ClaimActions.MapJsonKey("urn:weibo:profile_image_url", "profile_image_url");
-            ClaimActions.MapJsonKey("urn:weibo:avatar_large", "avatar_large");
-            ClaimActions.MapJsonKey("urn:weibo:avatar_hd", "avatar_hd");
-            ClaimActions.MapJsonKey("urn:weibo:cover_image_phone", "cover_image_phone");
-            ClaimActions.MapJsonKey("urn:weibo:location", "location");
+            ClaimActions.MapJsonKey(Claims.ScreenName, "screen_name");
+            ClaimActions.MapJsonKey(Claims.ProfileImageUrl, "profile_image_url");
+            ClaimActions.MapJsonKey(Claims.AvatarLarge, "avatar_large");
+            ClaimActions.MapJsonKey(Claims.AvatarHd, "avatar_hd");
+            ClaimActions.MapJsonKey(Claims.CoverImagePhone, "cover_image_phone");
+            ClaimActions.MapJsonKey(Claims.Location, "location");
         }
     }
 }

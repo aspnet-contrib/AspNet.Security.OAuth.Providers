@@ -8,6 +8,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
+using static AspNet.Security.OAuth.DeviantArt.DeviantArtAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.DeviantArt
 {
@@ -29,7 +30,7 @@ namespace AspNet.Security.OAuth.DeviantArt
 
             ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "userid");
             ClaimActions.MapJsonKey(ClaimTypes.Name, "username");
-            ClaimActions.MapJsonKey("urn:DeviantArt:name", "username");
+            ClaimActions.MapJsonKey(Claims.Username, "username");
         }
     }
 }

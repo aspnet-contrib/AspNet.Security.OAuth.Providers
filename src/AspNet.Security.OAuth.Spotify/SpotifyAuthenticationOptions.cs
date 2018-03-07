@@ -8,6 +8,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
+using static AspNet.Security.OAuth.Spotify.SpotifyAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.Spotify
 {
@@ -32,8 +33,8 @@ namespace AspNet.Security.OAuth.Spotify
             ClaimActions.MapJsonKey(ClaimTypes.DateOfBirth, "birthdate");
             ClaimActions.MapJsonKey(ClaimTypes.Country, "country");
             ClaimActions.MapJsonKey(ClaimTypes.Uri, "uri");
-            ClaimActions.MapJsonKey("urn:spotify:product", "product");
-            ClaimActions.MapJsonSubKey("urn:spotify:url", "external_urls", "spotify");
+            ClaimActions.MapJsonKey(Claims.Product, "product");
+            ClaimActions.MapJsonSubKey(Claims.Url, "external_urls", "spotify");
         }
     }
 }

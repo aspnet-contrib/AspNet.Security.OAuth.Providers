@@ -9,6 +9,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
+using static AspNet.Security.OAuth.Salesforce.SalesforceAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.Salesforce
 {
@@ -27,10 +28,10 @@ namespace AspNet.Security.OAuth.Salesforce
 
             ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "user_id");
             ClaimActions.MapJsonKey(ClaimTypes.Name, "user_name");
-            ClaimActions.MapJsonKey("urn:salesforce:email", "email");
-            ClaimActions.MapJsonKey("urn:salesforce:thumbnail_photo", "thumbnail");
-            ClaimActions.MapJsonKey("urn:salesforce:utc_offset", "utcOffset");
-            ClaimActions.MapCustomJson("urn:salesforce:rest_url", user => user["urls"]?.Value<string>("rest"));
+            ClaimActions.MapJsonKey(Claims.Email, "email");
+            ClaimActions.MapJsonKey(Claims.ThumbnailPhoto, "thumbnail");
+            ClaimActions.MapJsonKey(Claims.UtcOffset, "utcOffset");
+            ClaimActions.MapCustomJson(Claims.RestUrl, user => user["urls"]?.Value<string>("rest"));
         }
 
         public SalesforceAuthenticationEnvironment Environment

@@ -8,6 +8,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
+using static AspNet.Security.OAuth.Untappd.UntappdAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.Untappd
 {
@@ -31,7 +32,7 @@ namespace AspNet.Security.OAuth.Untappd
             ClaimActions.MapJsonKey(ClaimTypes.Surname, "last_name");
             ClaimActions.MapJsonKey(ClaimTypes.Name, "user_name");
             ClaimActions.MapJsonKey(ClaimTypes.Webpage, "url");
-            ClaimActions.MapJsonKey("urn:untappd:link", "user_avatar");
+            ClaimActions.MapJsonKey(Claims.Avatar, "user_avatar");
         }
     }
 }

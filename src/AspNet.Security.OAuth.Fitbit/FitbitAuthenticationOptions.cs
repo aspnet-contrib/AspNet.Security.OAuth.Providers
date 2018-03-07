@@ -8,6 +8,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
+using static AspNet.Security.OAuth.Fitbit.FitbitAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.Fitbit
 {
@@ -29,8 +30,8 @@ namespace AspNet.Security.OAuth.Fitbit
 
             ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "encodedId");
             ClaimActions.MapJsonKey(ClaimTypes.Name, "displayName");
-            ClaimActions.MapJsonKey("urn:fitbit:avatar", "avatar");
-            ClaimActions.MapJsonKey("urn:fitbit:avatar150", "avatar150");
+            ClaimActions.MapJsonKey(Claims.Avatar, "avatar");
+            ClaimActions.MapJsonKey(Claims.Avatar150, "avatar150");
         }
     }
 }
