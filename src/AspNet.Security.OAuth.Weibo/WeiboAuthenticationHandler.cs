@@ -74,6 +74,18 @@ namespace AspNet.Security.OAuth.Weibo
             var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload);
             context.RunClaimActions(payload);
 
+            // When the email address is not public, retrieve it from
+            // the emails endpoint if the user:email scope is specified.
+            if (!string.IsNullOrEmpty(Options.UserEmailsEndpoint) &&
+                !identity.HasClaim(claim => claim.Type == ClaimTypes.Email) && Options.Scope.Contains("user:email"))
+            {
+                var email = await GetEmailAsync(tokens);
+                if (!string.IsNullOrEmpty(email))
+                {
+                    identity.AddClaim(new Claim(ClaimTypes.Email, email, ClaimValueTypes.String, Options.ClaimsIssuer));
+                }
+            }
+
             await Options.Events.CreatingTicket(context);
             return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
         }
