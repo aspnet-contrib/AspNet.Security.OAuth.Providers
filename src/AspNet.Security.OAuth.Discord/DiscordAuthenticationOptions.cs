@@ -29,6 +29,8 @@ namespace AspNet.Security.OAuth.Discord
             ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
             ClaimActions.MapJsonKey(ClaimTypes.Name, "username");
             ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
+
+            Scope.Add("identify");
         }
     }
 }

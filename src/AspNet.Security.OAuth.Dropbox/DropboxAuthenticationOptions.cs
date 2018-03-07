@@ -26,8 +26,8 @@ namespace AspNet.Security.OAuth.Dropbox
             TokenEndpoint = DropboxAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = DropboxAuthenticationDefaults.UserInformationEndpoint;
 
-            ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "uid");
-            ClaimActions.MapJsonKey(ClaimTypes.Name, "display_name");
+            ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "account_id");
+            ClaimActions.MapJsonSubKey(ClaimTypes.Name, "name", "display_name");
             ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
         }
     }
