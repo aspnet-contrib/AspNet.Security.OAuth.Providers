@@ -2,6 +2,7 @@
 
   <PropertyGroup Label="Package Versions">
     <AspNetCoreVersion>1.0.0</AspNetCoreVersion>
+    <ClaimsVersion>4.0.1</ClaimsVersion>
     <JetBrainsVersion>10.3.0</JetBrainsVersion>
     <NetStandardImplicitPackageVersion>1.6.0</NetStandardImplicitPackageVersion>
     <RuntimeFrameworkVersion>1.0.0</RuntimeFrameworkVersion>
