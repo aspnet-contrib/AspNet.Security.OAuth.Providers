@@ -48,5 +48,10 @@ namespace AspNet.Security.OAuth.Weibo
         /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
         /// </summary>
         public const string UserInformationEndpoint = "https://api.weibo.com/2/users/show.json";
+
+        /// <summary>
+        /// Default value for <see cref="WeiboAuthenticationOptions.UserEmailsEndpoint"/>.
+        /// </summary>
+        public const string UserEmailsEndpoint = "https://api.weibo.com/2/account/profile/email.json";
     }
 }

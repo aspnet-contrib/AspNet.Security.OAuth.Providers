@@ -25,8 +25,6 @@ namespace AspNet.Security.OAuth.Weibo
             TokenEndpoint = WeiboAuthenticationDefaults.TokenEndpoint;           
             UserInformationEndpoint = WeiboAuthenticationDefaults.UserInformationEndpoint;
 
-            Scope.Add("email");
-
             ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
             ClaimActions.MapJsonKey(ClaimTypes.Name, "name");
             ClaimActions.MapJsonKey(ClaimTypes.Gender, "gender");
@@ -36,6 +34,14 @@ namespace AspNet.Security.OAuth.Weibo
             ClaimActions.MapJsonKey("urn:weibo:avatar_hd", "avatar_hd");
             ClaimActions.MapJsonKey("urn:weibo:cover_image_phone", "cover_image_phone");
             ClaimActions.MapJsonKey("urn:weibo:location", "location");
+
+            Scope.Add("email");
         }
+
+        /// <summary>
+        /// Gets or sets the address of the endpoint exposing
+        /// the email addresses associated with the logged in user.
+        /// </summary>
+        public string UserEmailsEndpoint { get; set; } = WeiboAuthenticationDefaults.UserEmailsEndpoint;
     }
 }

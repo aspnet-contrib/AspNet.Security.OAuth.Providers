@@ -54,7 +54,6 @@ namespace AspNet.Security.OAuth.Amazon
             context.RunClaimActions(payload);
 
             await Options.Events.CreatingTicket(context);
-
             return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
         }
     }
