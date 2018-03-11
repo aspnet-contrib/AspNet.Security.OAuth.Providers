@@ -58,5 +58,7 @@ namespace AspNet.Security.OAuth.Strava
 
             return context.Ticket;
         }
+
+        protected override string FormatScope() => string.Join(",", Options.Scope);
     }
 }
