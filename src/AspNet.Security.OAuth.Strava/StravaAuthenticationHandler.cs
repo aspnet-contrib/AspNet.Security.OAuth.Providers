@@ -4,6 +4,7 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
@@ -60,5 +61,7 @@ namespace AspNet.Security.OAuth.Strava
             await Options.Events.CreatingTicket(context);
             return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
         }
+
+        protected override string FormatScope() => !Options.Scope.Any() ? "public" : string.Join(",", Options.Scope);
     }
 }
