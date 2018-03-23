@@ -26,6 +26,8 @@ namespace AspNet.Security.OAuth.Vkontakte
             AuthorizationEndpoint = VkontakteAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = VkontakteAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = VkontakteAuthenticationDefaults.UserInformationEndpoint;
+            
+            ApiVersion = VkontakteAuthenticationDefaults.ApiVersion;
 
             ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "uid");
             ClaimActions.MapJsonKey(ClaimTypes.GivenName, "first_name");
@@ -48,5 +50,12 @@ namespace AspNet.Security.OAuth.Vkontakte
             "photo",
             "hash"
         };
+
+        /// <summary>
+        /// Gets or sets required VK API version
+        /// See https://vk.com/dev/versions for more information.
+        /// </summary>
+        /// <returns></returns>
+        public string ApiVersion { get; set; }
     }
 }
