@@ -37,12 +37,18 @@ namespace AspNet.Security.OAuth.Vkontakte
         /// </summary>
         public ISet<string> Fields { get; } = new HashSet<string>
         {
-            "uid",
+            "id",
             "first_name",
             "last_name",
             "photo_rec",
             "photo",
             "hash"
         };
+
+        /// <summary>
+        /// Gets or sets the VKontakte API version.
+        /// See https://vk.com/dev/versions for more information.
+        /// </summary>
+        public string ApiVersion { get; set; } = VkontakteAuthenticationDefaults.ApiVersion;
     }
 }

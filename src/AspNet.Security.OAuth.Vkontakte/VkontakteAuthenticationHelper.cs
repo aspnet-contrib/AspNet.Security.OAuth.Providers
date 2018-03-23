@@ -26,7 +26,7 @@ namespace AspNet.Security.OAuth.Vkontakte
                 throw new ArgumentNullException(nameof(user));
             }
 
-            return user.Value<string>("uid");
+            return user.Value<string>("id");
         }
 
         /// <summary>
