@@ -115,6 +115,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.Patre
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.QQ", "src\AspNet.Security.OAuth.QQ\AspNet.Security.OAuth.QQ.csproj", "{7C2E82CE-F6EC-41A8-AA22-3466505F95D8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.Baidu", "src\AspNet.Security.OAuth.Baidu\AspNet.Security.OAuth.Baidu.csproj", "{2C429D50-E0E6-4943-8F5D-8CBA3171C511}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -313,6 +315,10 @@ Global
 		{7C2E82CE-F6EC-41A8-AA22-3466505F95D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7C2E82CE-F6EC-41A8-AA22-3466505F95D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7C2E82CE-F6EC-41A8-AA22-3466505F95D8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C429D50-E0E6-4943-8F5D-8CBA3171C511}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C429D50-E0E6-4943-8F5D-8CBA3171C511}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C429D50-E0E6-4943-8F5D-8CBA3171C511}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C429D50-E0E6-4943-8F5D-8CBA3171C511}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -366,6 +372,7 @@ Global
 		{86614CB9-0768-40BF-8C27-699E3990B733} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 		{ED8A220C-45FE-45C6-9B8F-BB009ACE972E} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 		{7C2E82CE-F6EC-41A8-AA22-3466505F95D8} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
+		{2C429D50-E0E6-4943-8F5D-8CBA3171C511} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C7B54DE2-6407-4802-AD9C-CE54BF414C8C}
