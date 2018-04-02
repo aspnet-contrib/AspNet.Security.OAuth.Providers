@@ -4,7 +4,7 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
@@ -28,23 +28,21 @@ namespace AspNet.Security.OAuth.Vkontakte
             [NotNull] ISystemClock clock)
             : base(options, logger, encoder, clock)
         {
-            if (string.IsNullOrEmpty(Options.ApiVersion))
-            {
-                throw new ArgumentException("ApiVersion in VkontakteAuthenticationOptions can't be null or empty.");
-                
-            }
         }
 
         protected override async Task<AuthenticationTicket> CreateTicketAsync([NotNull] ClaimsIdentity identity,
             [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens)
         {
-            var address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, "access_token", tokens.AccessToken);
+            var address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, new Dictionary<string, string>
+            {
+                ["access_token"] = tokens.AccessToken,
+                ["v"] = !string.IsNullOrEmpty(Options.ApiVersion) ? Options.ApiVersion : VkontakteAuthenticationDefaults.ApiVersion
+            });
 
             if (Options.Fields.Count != 0)
             {
                 address = QueryHelpers.AddQueryString(address, "fields", string.Join(",", Options.Fields));
             }
-            address = QueryHelpers.AddQueryString(address, "v", Options.ApiVersion);
 
             var response = await Backchannel.GetAsync(address, Context.RequestAborted);
             if (!response.IsSuccessStatusCode)
@@ -68,9 +66,9 @@ namespace AspNet.Security.OAuth.Vkontakte
 
             var principal = new ClaimsPrincipal(identity);
             var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload);
-            context.RunClaimActions();
+            context.RunClaimActions(payload);
 
-            await Events.CreatingTicket(context);
+            await Options.Events.CreatingTicket(context);
             return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
         }
     }
