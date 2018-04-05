@@ -29,7 +29,7 @@ namespace AspNet.Security.OAuth.Vkontakte
             
             ApiVersion = VkontakteAuthenticationDefaults.ApiVersion;
 
-            ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "uid");
+            ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
             ClaimActions.MapJsonKey(ClaimTypes.GivenName, "first_name");
             ClaimActions.MapJsonKey(ClaimTypes.Surname, "last_name");
             ClaimActions.MapJsonKey(ClaimTypes.Hash, "hash");
@@ -43,7 +43,7 @@ namespace AspNet.Security.OAuth.Vkontakte
         /// </summary>
         public ISet<string> Fields { get; } = new HashSet<string>
         {
-            "uid",
+            "id",
             "first_name",
             "last_name",
             "photo_rec",
