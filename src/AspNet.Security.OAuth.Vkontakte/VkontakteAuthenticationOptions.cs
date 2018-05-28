@@ -41,7 +41,7 @@ namespace AspNet.Security.OAuth.Vkontakte
         /// </summary>
         public ISet<string> Fields { get; } = new HashSet<string>
         {
-            "uid",
+            "id",
             "first_name",
             "last_name",
             "photo_rec",
