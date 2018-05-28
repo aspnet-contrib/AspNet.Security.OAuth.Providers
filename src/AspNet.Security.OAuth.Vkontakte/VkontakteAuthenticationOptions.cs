@@ -27,7 +27,7 @@ namespace AspNet.Security.OAuth.Vkontakte
             TokenEndpoint = VkontakteAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = VkontakteAuthenticationDefaults.UserInformationEndpoint;
 
-            ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "uid");
+            ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
             ClaimActions.MapJsonKey(ClaimTypes.GivenName, "first_name");
             ClaimActions.MapJsonKey(ClaimTypes.Surname, "last_name");
             ClaimActions.MapJsonKey(ClaimTypes.Hash, "hash");
@@ -48,5 +48,11 @@ namespace AspNet.Security.OAuth.Vkontakte
             "photo",
             "hash"
         };
+
+        /// <summary>
+        /// Vkontakte for some reason decided to make this parameter mandatory
+        /// See https://vk.com/dev/authcode_flow_user for more information
+        /// </summary>
+        public string ApiVersion { get; set; } = "5.78";
     }
 }
