@@ -33,6 +33,7 @@ namespace AspNet.Security.OAuth.Vkontakte
             [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens)
         {
             var address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, "access_token", tokens.AccessToken);
+                address = QueryHelpers.AddQueryString(address, "v", Options.ApiVersion);
 
             if (Options.Fields.Count != 0)
             {
