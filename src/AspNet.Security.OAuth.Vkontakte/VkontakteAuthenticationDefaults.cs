@@ -48,5 +48,10 @@ namespace AspNet.Security.OAuth.Vkontakte
         /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
         /// </summary>
         public const string UserInformationEndpoint = "https://api.vk.com/method/users.get.json";
+
+        /// <summary>
+        /// Default API version.
+        /// </summary>
+        public const string ApiVersion = "5.78";
     }
 }
