@@ -36,7 +36,7 @@ namespace AspNet.Security.OAuth.Weixin
             ClaimActions.MapJsonKey("urn:weixin:province", "province");
             ClaimActions.MapJsonKey("urn:weixin:city", "city");
             ClaimActions.MapJsonKey("urn:weixin:headimgurl", "headimgurl");
-            ClaimActions.MapJsonKey("urn:weixin:privilege", "privilege");
+            ClaimActions.MapCustomJson("urn:weixin:privilege", jobj => jobj["privilege"].ToString());
         }
     }
 }
