@@ -36,16 +36,16 @@ namespace AspNet.Security.OAuth.Twitch
         /// <summary>
         /// Default value for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
         /// </summary>
-        public const string AuthorizationEndPoint = "https://api.twitch.tv/kraken/oauth2/authorize";
+        public const string AuthorizationEndPoint = "https://id.twitch.tv/oauth2/authorize";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.TokenEndpoint"/>.
         /// </summary>
-        public const string TokenEndpoint = "https://api.twitch.tv/kraken/oauth2/token";
+        public const string TokenEndpoint = "https://id.twitch.tv/oauth2/token";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
         /// </summary>
-        public const string UserInformationEndpoint = "https://api.twitch.tv/kraken/user/";
+        public const string UserInformationEndpoint = "https://api.twitch.tv/helix/user/";
     }
 }
