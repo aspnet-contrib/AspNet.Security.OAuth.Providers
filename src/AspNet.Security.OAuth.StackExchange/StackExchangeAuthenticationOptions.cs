@@ -30,10 +30,10 @@ namespace AspNet.Security.OAuth.StackExchange
             UserInformationEndpoint = StackExchangeAuthenticationDefaults.UserInformationEndpoint;
             BackchannelHttpHandler = new HttpClientHandler { AutomaticDecompression = DecompressionMethods.GZip };
 
-            ClaimActions.MapCustomJson(ClaimTypes.NameIdentifier, user => user[0]?.Value<string>("account_id"));
-            ClaimActions.MapCustomJson(ClaimTypes.Name, user => user[0]?.Value<string>("display_name"));
-            ClaimActions.MapCustomJson(ClaimTypes.Webpage, user => user[0]?.Value<string>("website_url"));
-            ClaimActions.MapCustomJson(Claims.Link, user => user[0]?.Value<string>("link"));
+            ClaimActions.MapCustomJson(ClaimTypes.NameIdentifier, user => user["items"]?[0]?.Value<string>("account_id"));
+            ClaimActions.MapCustomJson(ClaimTypes.Name, user => user["items"]?[0]?.Value<string>("display_name"));
+            ClaimActions.MapCustomJson(ClaimTypes.Webpage, user => user["items"]?[0]?.Value<string>("website_url"));
+            ClaimActions.MapCustomJson(Claims.Link, user => user["items"]?[0]?.Value<string>("link"));
         }
 
         /// <summary>
