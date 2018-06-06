@@ -7,9 +7,7 @@
     <NoWarn>$(NoWarn);CS1591</NoWarn>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <DebugType Condition=" '$(Configuration)' != 'Debug' ">pdbonly</DebugType>
-    <DebugType Condition=" '$(OS)' != 'Windows_NT' ">portable</DebugType>
+    <DebugType>portable</DebugType>
   </PropertyGroup>
 
 </Project>
