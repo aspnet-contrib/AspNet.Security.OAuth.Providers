@@ -38,7 +38,7 @@ namespace AspNet.Security.OAuth.Weixin
             ClaimActions.MapJsonKey(Claims.Province, "province");
             ClaimActions.MapJsonKey(Claims.City, "city");
             ClaimActions.MapJsonKey(Claims.HeadImgUrl, "headimgurl");
-            ClaimActions.MapJsonKey(Claims.Privilege, user =>
+            ClaimActions.MapCustomJson(Claims.Privilege, user =>
             {
                 var value = user.Value<JArray>("privilege");
                 if (value == null)
