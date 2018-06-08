@@ -25,10 +25,23 @@ namespace AspNet.Security.OAuth.Twitch
             TokenEndpoint = TwitchAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = TwitchAuthenticationDefaults.UserInformationEndpoint;
 
-            Scope.Add("user_read");
+            Scope.Add("user:read:email");
 
-            ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "_id");
-            ClaimActions.MapJsonKey(ClaimTypes.Name, "name");
+            ClaimActions.MapCustomJson(ClaimTypes.NameIdentifier, user =>
+            {
+                return user["data"]?[0]?["id"]?.ToObject<string>();
+            });
+
+            ClaimActions.MapCustomJson(ClaimTypes.Name, user =>
+            {
+                return user["data"]?[0]?["name"]?.ToObject<string>();
+            });
+
+            ClaimActions.MapCustomJson(ClaimTypes.Email, user =>
+            {
+                return user["data"]?[0]?["email"]?.ToObject<string>();
+            });
+
         }
     }
 }
