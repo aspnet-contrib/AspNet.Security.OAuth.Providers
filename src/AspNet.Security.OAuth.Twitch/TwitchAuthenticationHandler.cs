@@ -47,7 +47,11 @@ namespace AspNet.Security.OAuth.Twitch
             var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
 
             identity.AddOptionalClaim(ClaimTypes.NameIdentifier, TwitchAuthenticationHelper.GetIdentifier(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim(ClaimTypes.Name, TwitchAuthenticationHelper.GetName(payload), Options.ClaimsIssuer);
+                    .AddOptionalClaim(ClaimTypes.Name, TwitchAuthenticationHelper.GetName(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim(ClaimTypes.GivenName, TwitchAuthenticationHelper.GetDisplayName(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim(ClaimTypes.Email, TwitchAuthenticationHelper.GetEmail(payload), Options.ClaimsIssuer);
+                    
+
 
             var principal = new ClaimsPrincipal(identity);
             var ticket = new AuthenticationTicket(principal, properties, Options.AuthenticationScheme);

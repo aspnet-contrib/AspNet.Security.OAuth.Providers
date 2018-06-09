@@ -26,7 +26,7 @@ namespace AspNet.Security.OAuth.Twitch
                 throw new ArgumentNullException(nameof(user));
             }
 
-            return user.Value<string>("_id");
+            return user["data"]?[0]?["id"]?.ToObject<string>();
         }
 
         /// <summary>
@@ -39,7 +39,33 @@ namespace AspNet.Security.OAuth.Twitch
                 throw new ArgumentNullException(nameof(user));
             }
 
-            return user.Value<string>("name");
+            return user["data"]?[0]?["login"]?.ToObject<string>();
+        }
+
+        /// <summary>
+        /// Gets the display name corresponding to the authenticated user.
+        /// </summary>
+        public static string GetDisplayName([NotNull] JObject user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return user["data"]?[0]?["display_name"]?.ToObject<string>();
+        }
+
+        /// <summary>
+        /// Gets the email corresponding to the authenticated user.
+        /// </summary>
+        public static string GetEmail([NotNull] JObject user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return user["data"]?[0]?["email"]?.ToObject<string>();
         }
     }
 }
