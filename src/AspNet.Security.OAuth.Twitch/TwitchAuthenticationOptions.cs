@@ -62,6 +62,16 @@ namespace AspNet.Security.OAuth.Twitch
             {
                 return user["data"]?[0]?["description"]?.ToObject<string>();
             });
+
+            ClaimActions.MapCustomJson(Claims.ProfileImageURL, user =>
+            {
+                return user["data"]?[0]?["profile_image_url"]?.ToObject<string>();
+            });
+
+            ClaimActions.MapCustomJson(Claims.OfflineImageURL, user =>
+            {
+                return user["data"]?[0]?["offline_image_url"]?.ToObject<string>();
+            });
         }
     }
 }
