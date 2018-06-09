@@ -26,7 +26,7 @@ namespace AspNet.Security.OAuth.Twitch
                 throw new ArgumentNullException(nameof(user));
             }
 
-            return user["data"]?[0]?["id"]?.ToObject<string>();
+            return user["data"]?[0]?.Value<string>("id");
         }
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace AspNet.Security.OAuth.Twitch
                 throw new ArgumentNullException(nameof(user));
             }
 
-            return user["data"]?[0]?["login"]?.ToObject<string>();
+            return user["data"]?[0]?.Value<string>("login");
         }
 
         /// <summary>
@@ -52,7 +52,7 @@ namespace AspNet.Security.OAuth.Twitch
                 throw new ArgumentNullException(nameof(user));
             }
 
-            return user["data"]?[0]?["display_name"]?.ToObject<string>();
+            return user["data"]?[0]?.Value<string>("display_name");
         }
 
         /// <summary>
@@ -65,7 +65,72 @@ namespace AspNet.Security.OAuth.Twitch
                 throw new ArgumentNullException(nameof(user));
             }
 
-            return user["data"]?[0]?["email"]?.ToObject<string>();
+            return user["data"]?[0]?.Value<string>("email");
+        }
+
+        /// <summary>
+        /// Gets the account type corresponding to the authenticated user.
+        /// </summary>
+        public static string GetType([NotNull] JObject user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return user["data"]?[0]?.Value<string>("type");
+        }
+
+        /// <summary>
+        /// Gets the broadcaster type corresponding to the authenticated user.
+        /// </summary>
+        public static string GetBroadcastType([NotNull] JObject user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return user["data"]?[0]?.Value<string>("broadcaster_type");
+        }
+
+        /// <summary>
+        /// Gets the channel description corresponding to the authenticated user.
+        /// </summary>
+        public static string GetDescription([NotNull] JObject user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return user["data"]?[0]?.Value<string>("description");
+        }
+
+        /// <summary>
+        /// Gets the profile image url corresponding to the authenticated user.
+        /// </summary>
+        public static string GetProfileImageURL([NotNull] JObject user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return user["data"]?[0]?.Value<string>("profile_image_url");
+        }
+
+        /// <summary>
+        /// Gets the offline image url corresponding to the authenticated user.
+        /// </summary>
+        public static string GetOfflineImageURL([NotNull] JObject user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return user["data"]?[0]?.Value<string>("offline_image_url");
         }
     }
 }
