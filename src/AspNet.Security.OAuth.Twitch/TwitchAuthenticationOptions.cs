@@ -30,47 +30,47 @@ namespace AspNet.Security.OAuth.Twitch
 
             ClaimActions.MapCustomJson(ClaimTypes.NameIdentifier, user =>
             {
-                return user["data"]?[0]?["id"]?.ToObject<string>();
+                return user["data"]?[0]?.Value<string>("id");
             });
 
             ClaimActions.MapCustomJson(ClaimTypes.Name, user =>
             {
-                return user["data"]?[0]?["login"]?.ToObject<string>();
+                return user["data"]?[0]?.Value<string>("login");
             });
 
             ClaimActions.MapCustomJson(Claims.DisplayName, user =>
             {
-                return user["data"]?[0]?["display_name"]?.ToObject<string>();
+                return user["data"]?[0]?.Value<string>("display_name");
             });
 
             ClaimActions.MapCustomJson(ClaimTypes.Email, user =>
             {
-                return user["data"]?[0]?["email"]?.ToObject<string>();
+                return user["data"]?[0]?.Value<string>("email");
             });
 
             ClaimActions.MapCustomJson(Claims.Type, user =>
             {
-                return user["data"]?[0]?["type"]?.ToObject<string>();
+                return user["data"]?[0]?.Value<string>("type");
             });
 
             ClaimActions.MapCustomJson(Claims.BroadcasterType, user =>
             {
-                return user["data"]?[0]?["broadcaster_type"]?.ToObject<string>();
+                return user["data"]?[0]?.Value<string>("broadcaster_type");
             });
 
             ClaimActions.MapCustomJson(Claims.Description, user =>
             {
-                return user["data"]?[0]?["description"]?.ToObject<string>();
+                return user["data"]?[0]?.Value<string>("description");
             });
 
-            ClaimActions.MapCustomJson(Claims.ProfileImageURL, user =>
+            ClaimActions.MapCustomJson(Claims.ProfileImageUrl, user =>
             {
-                return user["data"]?[0]?["profile_image_url"]?.ToObject<string>();
+                return user["data"]?[0]?.Value<string>("profile_image_url");
             });
 
-            ClaimActions.MapCustomJson(Claims.OfflineImageURL, user =>
+            ClaimActions.MapCustomJson(Claims.OfflineImageUrl, user =>
             {
-                return user["data"]?[0]?["offline_image_url"]?.ToObject<string>();
+                return user["data"]?[0]?.Value<string>("offline_image_url");
             });
         }
     }

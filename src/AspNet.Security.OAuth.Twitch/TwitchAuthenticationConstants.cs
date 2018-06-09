@@ -15,8 +15,8 @@ namespace AspNet.Security.OAuth.Twitch
             public const string Type = "urn:twitch:type";
             public const string BroadcasterType = "urn:twitch:broadcastertype";
             public const string Description = "urn:twitch:description";
-            public const string ProfileImageURL = "urn:twitch:profileimageurl";
-            public const string OfflineImageURL = "urn:twitch:offlineimageurl";
+            public const string ProfileImageUrl = "urn:twitch:profileimageurl";
+            public const string OfflineImageUrl = "urn:twitch:offlineimageurl";
         }
     }
 }
