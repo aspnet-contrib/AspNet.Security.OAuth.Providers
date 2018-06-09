@@ -34,7 +34,12 @@ namespace AspNet.Security.OAuth.Twitch
 
             ClaimActions.MapCustomJson(ClaimTypes.Name, user =>
             {
-                return user["data"]?[0]?["name"]?.ToObject<string>();
+                return user["data"]?[0]?["login"]?.ToObject<string>();
+            });
+
+            ClaimActions.MapCustomJson(ClaimTypes.GivenName, user =>
+            {
+                return user["data"]?[0]?["display_name"]?.ToObject<string>();
             });
 
             ClaimActions.MapCustomJson(ClaimTypes.Email, user =>
