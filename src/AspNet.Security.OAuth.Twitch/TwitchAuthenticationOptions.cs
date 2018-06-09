@@ -8,6 +8,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
+using static AspNet.Security.OAuth.Twitch.TwitchAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.Twitch
 {
@@ -37,7 +38,7 @@ namespace AspNet.Security.OAuth.Twitch
                 return user["data"]?[0]?["login"]?.ToObject<string>();
             });
 
-            ClaimActions.MapCustomJson(ClaimTypes.GivenName, user =>
+            ClaimActions.MapCustomJson(Claims.DisplayName, user =>
             {
                 return user["data"]?[0]?["display_name"]?.ToObject<string>();
             });
@@ -47,6 +48,20 @@ namespace AspNet.Security.OAuth.Twitch
                 return user["data"]?[0]?["email"]?.ToObject<string>();
             });
 
+            ClaimActions.MapCustomJson(Claims.Type, user =>
+            {
+                return user["data"]?[0]?["type"]?.ToObject<string>();
+            });
+
+            ClaimActions.MapCustomJson(Claims.BroadcasterType, user =>
+            {
+                return user["data"]?[0]?["broadcaster_type"]?.ToObject<string>();
+            });
+
+            ClaimActions.MapCustomJson(Claims.Description, user =>
+            {
+                return user["data"]?[0]?["description"]?.ToObject<string>();
+            });
         }
     }
 }
