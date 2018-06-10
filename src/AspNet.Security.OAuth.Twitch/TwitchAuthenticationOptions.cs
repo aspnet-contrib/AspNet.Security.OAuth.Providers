@@ -26,7 +26,7 @@ namespace AspNet.Security.OAuth.Twitch
             TokenEndpoint = TwitchAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = TwitchAuthenticationDefaults.UserInformationEndpoint;
 
-            Scope.Add("user_read");
+            Scope.Add("user:read:email");
         }
     }
 }

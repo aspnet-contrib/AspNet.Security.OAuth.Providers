@@ -46,6 +46,6 @@ namespace AspNet.Security.OAuth.Twitch
         /// <summary>
         /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
         /// </summary>
-        public const string UserInformationEndpoint = "https://api.twitch.tv/helix/user/";
+        public const string UserInformationEndpoint = "https://api.twitch.tv/helix/users/";
     }
 }

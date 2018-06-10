@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
+using static AspNet.Security.OAuth.Twitch.TwitchAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.Twitch
 {
@@ -47,7 +48,16 @@ namespace AspNet.Security.OAuth.Twitch
             var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
 
             identity.AddOptionalClaim(ClaimTypes.NameIdentifier, TwitchAuthenticationHelper.GetIdentifier(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim(ClaimTypes.Name, TwitchAuthenticationHelper.GetName(payload), Options.ClaimsIssuer);
+                    .AddOptionalClaim(ClaimTypes.Name, TwitchAuthenticationHelper.GetName(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim(Claims.DisplayName, TwitchAuthenticationHelper.GetDisplayName(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim(ClaimTypes.Email, TwitchAuthenticationHelper.GetEmail(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim(Claims.Type, TwitchAuthenticationHelper.GetType(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim(Claims.BroadcasterType, TwitchAuthenticationHelper.GetBroadcastType(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim(Claims.Description, TwitchAuthenticationHelper.GetDescription(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim(Claims.ProfileImageUrl, TwitchAuthenticationHelper.GetProfileImageURL(payload), Options.ClaimsIssuer)
+                    .AddOptionalClaim(Claims.OfflineImageUrl, TwitchAuthenticationHelper.GetOfflineImageURL(payload), Options.ClaimsIssuer);
+                    
+
 
             var principal = new ClaimsPrincipal(identity);
             var ticket = new AuthenticationTicket(principal, properties, Options.AuthenticationScheme);
