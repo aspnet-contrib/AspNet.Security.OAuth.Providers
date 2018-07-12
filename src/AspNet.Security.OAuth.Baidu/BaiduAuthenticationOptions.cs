@@ -4,12 +4,10 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using System.Linq;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
-using Newtonsoft.Json.Linq;
 using static AspNet.Security.OAuth.Baidu.BaiduAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.Baidu
@@ -27,9 +25,6 @@ namespace AspNet.Security.OAuth.Baidu
             AuthorizationEndpoint = BaiduAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = BaiduAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = BaiduAuthenticationDefaults.UserInformationEndpoint;
-
-            //Scope.Add("snsapi_login");
-            //Scope.Add("snsapi_userinfo");
 
             Scope.Add("basic");
 

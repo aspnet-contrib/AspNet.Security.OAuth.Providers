@@ -18,12 +18,12 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
 
-namespace AspNet.Security.OAuth.Baidu
+namespace AspNet.Security.OAuth.Csdn
 {
-    public class BaiduAuthenticationHandler : OAuthHandler<BaiduAuthenticationOptions>
+    public class CsdnAuthenticationHandler : OAuthHandler<CsdnAuthenticationOptions>
     {
-        public BaiduAuthenticationHandler(
-            [NotNull] IOptionsMonitor<BaiduAuthenticationOptions> options,
+        public CsdnAuthenticationHandler(
+            [NotNull] IOptionsMonitor<CsdnAuthenticationOptions> options,
             [NotNull] ILoggerFactory logger,
             [NotNull] UrlEncoder encoder,
             [NotNull] ISystemClock clock)
@@ -35,7 +35,8 @@ namespace AspNet.Security.OAuth.Baidu
         {
             var address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, new Dictionary<string, string>
             {
-                ["access_token"] = tokens.AccessToken
+                ["access_token"] = tokens.AccessToken,
+                ["client_id"] = Options.ClientId
             });
 
             var response = await Backchannel.GetAsync(address);
@@ -72,7 +73,7 @@ namespace AspNet.Security.OAuth.Baidu
             return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
         }
 
-        protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] string code, [NotNull] string redirectUri)
+        protected override async Task<OAuthTokenResponse> ExchangeCodeAsync(string code, string redirectUri)
         {
             var address = QueryHelpers.AddQueryString(Options.TokenEndpoint, new Dictionary<string, string>()
             {
@@ -114,11 +115,11 @@ namespace AspNet.Security.OAuth.Baidu
             return QueryHelpers.AddQueryString(Options.AuthorizationEndpoint, new Dictionary<string, string>
             {
                 ["client_id"] = Options.ClientId,
-                ["scope"] = FormatScope(),
+                //["scope"] = FormatScope(),
                 ["response_type"] = "code",
                 ["redirect_uri"] = redirectUri,
-                ["state"] = Options.StateDataFormat.Protect(properties)
-            });
+                //["state"] = Options.StateDataFormat.Protect(properties)
+        });
         }
 
         protected override string FormatScope() => string.Join(",", Options.Scope);

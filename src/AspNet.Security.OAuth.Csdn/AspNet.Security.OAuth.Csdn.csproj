@@ -7,11 +7,9 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Description>ASP.NET Core security middleware enabling Baidu authentication.</Description>
-    <Authors>zhengchun;Chino Chang</Authors>
-    <PackageTags>aspnetcore;authentication;oauth;security;baidu</PackageTags>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <Description>ASP.NET Core security middleware enabling Csdn authentication.</Description>
+    <Authors>ArcherTrister</Authors>
+    <PackageTags>aspnetcore;authentication;oauth;security;csdn</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
