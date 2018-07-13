@@ -15,7 +15,7 @@
             /// <summary>
             /// 用户昵称
             /// </summary>
-            public const string NickName = "urn:qq:nick_name";
+            public const string NickName = "urn:alipay:nick_name";
 
             /// <summary>
             /// 用户头像地址
