@@ -1,0 +1,36 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\build\packages.props" />
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!--产品-->
+    <Product>Security.OAuth</Product>
+    <!--说明-->
+    <Description>ASP.NET Core security middleware enabling Alipay authentication.</Description>
+    <!--包ID-->
+    <PackageId>AspNet.Security.OAuth.Alipay</PackageId>
+    <!--标题 如果未指定，则改为使用包 ID-->
+    <!--<Title></Title>-->
+    <!--包版本-->
+    <!--<Version>1.0.0</Version>-->
+    <!--作者-->
+    <Authors>Archertrister</Authors>
+    <!--公司-->
+    <Company>LeXun</Company>
+    <!--标记-->
+    <PackageTags>aspnetcore;authentication;oauth;security;alipay</PackageTags>
+    <!--发行说明-->
+    <PackageReleaseNotes></PackageReleaseNotes>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="JetBrains.Annotations" Version="$(JetBrainsVersion)" PrivateAssets="All" />
+    <PackageReference Include="LeXun.Alipay.AopSdk.Core" Version="2.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.OAuth" Version="$(AspNetCoreVersion)" />
+  </ItemGroup>
+
+</Project>
