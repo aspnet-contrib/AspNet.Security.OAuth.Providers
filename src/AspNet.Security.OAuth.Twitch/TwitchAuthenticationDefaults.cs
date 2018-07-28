@@ -48,5 +48,12 @@ namespace AspNet.Security.OAuth.Twitch
         /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
         /// </summary>
         public const string UserInformationEndpoint = "https://api.twitch.tv/helix/users/";
+
+        /// <summary>
+        /// Default value for <see cref="TwitchAuthenticationOptions.ForceVerify"/>
+        /// true: Every authentication request need to be accepted by user interaction
+        /// false: Automated pass through if you already logged in
+        /// </summary>
+        public const bool ForceVerify = false;
     }
 }
