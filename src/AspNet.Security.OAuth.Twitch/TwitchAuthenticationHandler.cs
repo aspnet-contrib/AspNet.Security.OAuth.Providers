@@ -32,21 +32,15 @@ namespace AspNet.Security.OAuth.Twitch
         }
 
         protected override string BuildChallengeUrl(AuthenticationProperties properties, string redirectUri)
-        {
-            var scope = FormatScope();
-
-            var state = Options.StateDataFormat.Protect(properties);
-            var parameters = new Dictionary<string, string>
+            => QueryHelpers.AddQueryString(Options.AuthorizationEndpoint, new Dictionary<string, string>
             {
-                { "client_id", Options.ClientId },
-                { "scope", scope },
-                { "response_type", "code" },
-                { "redirect_uri", redirectUri },
-                { "state", state },
-                { "force_verify", Options.ForceVerify.ToString().ToLower()}
-            };
-            return QueryHelpers.AddQueryString(Options.AuthorizationEndpoint, parameters);
-        }
+                ["client_id"] = Options.ClientId,
+                ["scope"] = FormatScope(),
+                ["response_type"] = "code",
+                ["redirect_uri"] = redirectUri,
+                ["state"] = Options.StateDataFormat.Protect(properties),
+                ["force_verify"] = Options.ForceVerify ? "true" : "false"
+            });
 
         protected override async Task<AuthenticationTicket> CreateTicketAsync([NotNull] ClaimsIdentity identity,
             [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens)
