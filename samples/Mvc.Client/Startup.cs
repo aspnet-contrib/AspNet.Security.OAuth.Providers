@@ -42,6 +42,12 @@ namespace Mvc.Client
                 options.ClientId = "49e302895d8b09ea5656";
                 options.ClientSecret = "98f1bf028608901e9df91d64ee61536fe562064b";
                 options.Scope.Add("user:email");
+            })
+
+            .AddDropbox(options =>
+            {
+                options.ClientId = "jpk24g2uxfxe939";
+                options.ClientSecret = "qbxvkjk5la7mjp6";
             });
 
             services.AddMvc();
