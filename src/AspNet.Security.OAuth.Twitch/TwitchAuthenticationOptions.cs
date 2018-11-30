@@ -25,7 +25,6 @@ namespace AspNet.Security.OAuth.Twitch
             AuthorizationEndpoint = TwitchAuthenticationDefaults.AuthorizationEndPoint;
             TokenEndpoint = TwitchAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = TwitchAuthenticationDefaults.UserInformationEndpoint;
-            ForceVerify = TwitchAuthenticationDefaults.ForceVerify;
 
             Scope.Add("user:read:email");
 
