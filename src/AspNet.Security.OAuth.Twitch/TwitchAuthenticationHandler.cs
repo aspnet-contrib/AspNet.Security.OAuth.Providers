@@ -4,6 +4,7 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
@@ -13,6 +14,7 @@ using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http.Authentication;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 using static AspNet.Security.OAuth.Twitch.TwitchAuthenticationConstants;
@@ -25,6 +27,17 @@ namespace AspNet.Security.OAuth.Twitch
             : base(client)
         {
         }
+
+        protected override string BuildChallengeUrl(AuthenticationProperties properties, string redirectUri)
+            => QueryHelpers.AddQueryString(Options.AuthorizationEndpoint, new Dictionary<string, string>
+            {
+                ["client_id"] = Options.ClientId,
+                ["scope"] = FormatScope(),
+                ["response_type"] = "code",
+                ["redirect_uri"] = redirectUri,
+                ["state"] = Options.StateDataFormat.Protect(properties),
+                ["force_verify"] = Options.ForceVerify ? "true" : "false"
+            });
 
         protected override async Task<AuthenticationTicket> CreateTicketAsync([NotNull] ClaimsIdentity identity,
             [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens)
