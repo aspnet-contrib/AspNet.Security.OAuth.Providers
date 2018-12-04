@@ -60,6 +60,7 @@ We would love it if you could help contributing to this repository.
 * [Tathagata Chakraborty](https://github.com/tatx)
 * [Tommy Parnell](https://github.com/tparnell8)
 * [Yannic Smeets](https://github.com/yannicsmeets)
+* [zAfLu](https://github.com/zAfLu)
 * [zhengchun](https://github.com/zhengchun)
 
 ## Support
