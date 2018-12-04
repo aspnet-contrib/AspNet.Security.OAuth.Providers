@@ -4,20 +4,22 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Security.Claims;
-using System.Text.Encodings.Web;
-using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Primitives;
 using Newtonsoft.Json.Linq;
-
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Net.Http;
+using System.Security.Claims;
+using System.Text;
+using System.Text.Encodings.Web;
+using System.Threading.Tasks;
 namespace AspNet.Security.OAuth.Weixin
 {
     public class WeixinAuthenticationHandler : OAuthHandler<WeixinAuthenticationOptions>
@@ -30,7 +32,112 @@ namespace AspNet.Security.OAuth.Weixin
             : base(options, logger, encoder, clock)
         {
         }
+        protected override async Task<HandleRequestResult> HandleRemoteAuthenticateAsync()
+        {
+            var query = Request.Query;
 
+            var state = query["state"];
+            if (Options.AuthorizationEndpoint != WeixinAuthenticationDefaults.AuthorizationEndpoint)
+            {
+                state = query["oauthstate"];
+            }
+            var properties = Options.StateDataFormat.Unprotect(state);
+
+            if (properties == null)
+            {
+                return HandleRequestResult.Fail("The oauth state was missing or invalid.");
+            }
+
+            // OAuth2 10.12 CSRF
+            if (!ValidateCorrelationId(properties))
+            {
+                return HandleRequestResult.Fail("Correlation failed.");
+            }
+
+            var error = query["error"];
+            if (!StringValues.IsNullOrEmpty(error))
+            {
+                var failureMessage = new StringBuilder();
+                failureMessage.Append(error);
+                var errorDescription = query["error_description"];
+                if (!StringValues.IsNullOrEmpty(errorDescription))
+                {
+                    failureMessage.Append(";Description=").Append(errorDescription);
+                }
+                var errorUri = query["error_uri"];
+                if (!StringValues.IsNullOrEmpty(errorUri))
+                {
+                    failureMessage.Append(";Uri=").Append(errorUri);
+                }
+
+                return HandleRequestResult.Fail(failureMessage.ToString());
+            }
+
+            var code = query["code"];
+
+            if (StringValues.IsNullOrEmpty(code))
+            {
+                return HandleRequestResult.Fail("Code was not found.");
+            }
+
+            var tokens = await ExchangeCodeAsync(code, BuildRedirectUri(Options.CallbackPath));
+
+            if (tokens.Error != null)
+            {
+                return HandleRequestResult.Fail(tokens.Error);
+            }
+
+            if (string.IsNullOrEmpty(tokens.AccessToken))
+            {
+                return HandleRequestResult.Fail("Failed to retrieve access token.");
+            }
+
+            var identity = new ClaimsIdentity(ClaimsIssuer);
+
+            if (Options.SaveTokens)
+            {
+                var authTokens = new List<AuthenticationToken>();
+
+                authTokens.Add(new AuthenticationToken { Name = "access_token", Value = tokens.AccessToken });
+                if (!string.IsNullOrEmpty(tokens.RefreshToken))
+                {
+                    authTokens.Add(new AuthenticationToken { Name = "refresh_token", Value = tokens.RefreshToken });
+                }
+
+                if (!string.IsNullOrEmpty(tokens.TokenType))
+                {
+                    authTokens.Add(new AuthenticationToken { Name = "token_type", Value = tokens.TokenType });
+                }
+
+                if (!string.IsNullOrEmpty(tokens.ExpiresIn))
+                {
+                    int value;
+                    if (int.TryParse(tokens.ExpiresIn, NumberStyles.Integer, CultureInfo.InvariantCulture, out value))
+                    {
+                        // https://www.w3.org/TR/xmlschema-2/#dateTime
+                        // https://msdn.microsoft.com/en-us/library/az4se3k1(v=vs.110).aspx
+                        var expiresAt = Clock.UtcNow + TimeSpan.FromSeconds(value);
+                        authTokens.Add(new AuthenticationToken
+                        {
+                            Name = "expires_at",
+                            Value = expiresAt.ToString("o", CultureInfo.InvariantCulture)
+                        });
+                    }
+                }
+
+                properties.StoreTokens(authTokens);
+            }
+
+            var ticket = await CreateTicketAsync(identity, properties, tokens);
+            if (ticket != null)
+            {
+                return HandleRequestResult.Success(ticket);
+            }
+            else
+            {
+                return HandleRequestResult.Fail("Failed to retrieve user information from remote server.");
+            }
+        }
         protected override async Task<AuthenticationTicket> CreateTicketAsync([NotNull] ClaimsIdentity identity, [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens)
         {
             var address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, new Dictionary<string, string>
@@ -109,13 +216,20 @@ namespace AspNet.Security.OAuth.Weixin
 
         protected override string BuildChallengeUrl(AuthenticationProperties properties, string redirectUri)
         {
+            var oauthstate = Options.StateDataFormat.Protect(properties);
+            if (Options.AuthorizationEndpoint != WeixinAuthenticationDefaults.AuthorizationEndpoint)
+            {
+                //微信网页授权时将state存放到redirectUri中，防止"state参数过长"错误
+                redirectUri = redirectUri.Contains("?") ? $"{redirectUri}&{nameof(oauthstate)}={oauthstate}" : $"{redirectUri}?{nameof(oauthstate)}={oauthstate}";
+                oauthstate = "#wechat_redirect";//微信网页授权支持
+            }
             return QueryHelpers.AddQueryString(Options.AuthorizationEndpoint, new Dictionary<string, string>
             {
                 ["appid"] = Options.ClientId,
                 ["scope"] = FormatScope(),
                 ["response_type"] = "code",
                 ["redirect_uri"] = redirectUri,
-                ["state"] = Options.StateDataFormat.Protect(properties)
+                ["state"] = oauthstate
             });
         }
 
