@@ -58,7 +58,8 @@ namespace AspNet.Security.OAuth.Yahoo
             context.RunClaimActions(payload.Value<JObject>("profile"));
 
             await Options.Events.CreatingTicket(context);
-            return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);        }
+            return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
+        }
 
         protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] string code, [NotNull] string redirectUri)
         {
