@@ -37,12 +37,12 @@ namespace AspNet.Security.OAuth.LinkedIn
         /// <summary>
         /// Default value for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
         /// </summary>
-        public const string AuthorizationEndpoint = "https://www.linkedin.com/uas/oauth2/authorization";
+        public const string AuthorizationEndpoint = "https://www.linkedin.com/oauth/v2/authorization";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.TokenEndpoint"/>.
         /// </summary>
-        public const string TokenEndpoint = "https://www.linkedin.com/uas/oauth2/accessToken";
+        public const string TokenEndpoint = "https://www.linkedin.com/oauth/v2/accessToken";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
