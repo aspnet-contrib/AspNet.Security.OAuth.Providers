@@ -57,11 +57,11 @@ namespace AspNet.Security.OAuth.LinkedIn
         /// </summary>
         public ISet<string> Fields { get; } = new HashSet<string>
         {
-            "id",
-            "first-name",
-            "last-name",
-            "formatted-name",
-            "email-address"
+            ProfileFields.Id,
+            ProfileFields.FirstName,
+            ProfileFields.LastName,
+            ProfileFields.FormattedName,
+            LinkedInAuthenticationConstants.EmailAddressField
         };
     }
 }
