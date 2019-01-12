@@ -45,6 +45,7 @@
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Vimeo\AspNet.Security.OAuth.Vimeo.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.VisualStudio\AspNet.Security.OAuth.VisualStudio.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Vkontakte\AspNet.Security.OAuth.Vkontakte.csproj" />
+    <ProjectReference Include="..\..\src\AspNet.Security.OAuth.WeChat\AspNet.Security.OAuth.WeChat.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Weibo\AspNet.Security.OAuth.Weibo.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Weixin\AspNet.Security.OAuth.Weixin.csproj" />
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.WordPress\AspNet.Security.OAuth.WordPress.csproj" />

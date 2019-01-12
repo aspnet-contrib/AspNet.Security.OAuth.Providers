@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\build\packages.props" />
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Description>ASP.NET Core security middleware enabling WeChat Media Platform authentication.</Description>
+    <Authors>huww98;Chino Chang</Authors>
+    <PackageTags>aspnetcore;authentication;oauth;security;weixin</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="JetBrains.Annotations" Version="$(JetBrainsVersion)" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.OAuth" Version="$(AspNetCoreVersion)" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="$(AspNetCoreVersion)" />
+  </ItemGroup>
+
+</Project>
