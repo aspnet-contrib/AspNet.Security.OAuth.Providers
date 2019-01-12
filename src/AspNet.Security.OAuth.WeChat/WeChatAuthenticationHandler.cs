@@ -15,7 +15,6 @@ using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
@@ -24,17 +23,13 @@ namespace AspNet.Security.OAuth.WeChat
 {
     public class WeChatAuthenticationHandler : OAuthHandler<WeChatAuthenticationOptions>
     {
-        private readonly IMemoryCache _cache;
-
         public WeChatAuthenticationHandler(
             [NotNull] IOptionsMonitor<WeChatAuthenticationOptions> options,
             [NotNull] ILoggerFactory logger,
-            [NotNull] IMemoryCache cache,
             [NotNull] UrlEncoder encoder,
             [NotNull] ISystemClock clock)
             : base(options, logger, encoder, clock)
         {
-            _cache = cache;
         }
 
         protected override async Task<AuthenticationTicket> CreateTicketAsync([NotNull] ClaimsIdentity identity, [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens)
@@ -129,15 +124,13 @@ namespace AspNet.Security.OAuth.WeChat
 
         protected override string BuildChallengeUrl(AuthenticationProperties properties, string redirectUri)
         {
-            var stateDataFormat = new StoreInCacheFormat(_cache, Options.RemoteAuthenticationTimeout);
-
             return QueryHelpers.AddQueryString(Options.AuthorizationEndpoint, new Dictionary<string, string>
             {
                 { "appid", Options.ClientId },
                 { "redirect_uri", redirectUri },
                 { "response_type", "code" },
                 { "scope", FormatScope() },
-                { "state", stateDataFormat.Protect(properties) }
+                { "state", Options.StateDataFormat.Protect(properties) }
             }) + "#wechat_redirect" /*required*/;
         }
 

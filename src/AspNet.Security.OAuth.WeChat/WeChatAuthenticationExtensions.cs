@@ -8,6 +8,8 @@ using System;
 using AspNet.Security.OAuth.WeChat;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Options;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -70,6 +72,10 @@ namespace Microsoft.Extensions.DependencyInjection
             [NotNull] string scheme, [CanBeNull] string caption,
             [NotNull] Action<WeChatAuthenticationOptions> configuration)
         {
+            builder.Services.TryAddEnumerable(
+                ServiceDescriptor.Singleton<IPostConfigureOptions<WeChatAuthenticationOptions>,
+                    WeChatAuthenticationInitializer>());
+
             return builder.AddOAuth<WeChatAuthenticationOptions, WeChatAuthenticationHandler>(scheme, caption, configuration);
         }
     }
