@@ -42,66 +42,89 @@ namespace AspNet.Security.OAuth.StackExchange
                 ["site"] = Options.Site
             });
 
-            var request = new HttpRequestMessage(HttpMethod.Get, address);
-            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-            var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
-            if (!response.IsSuccessStatusCode)
+            HttpRequestMessage request = null;
+            HttpResponseMessage response = null;
+            try
             {
-                Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
-                                "returned a {Status} response with the following payload: {Headers} {Body}.",
-                                /* Status: */ response.StatusCode,
-                                /* Headers: */ response.Headers.ToString(),
-                                /* Body: */ await response.Content.ReadAsStringAsync());
+                request = new HttpRequestMessage(HttpMethod.Get, address);
+                request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-                throw new HttpRequestException("An error occurred while retrieving the user profile.");
+                response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
+                if (!response.IsSuccessStatusCode)
+                {
+                    Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
+                                    "returned a {Status} response with the following payload: {Headers} {Body}.",
+                                    /* Status: */ response.StatusCode,
+                                    /* Headers: */ response.Headers.ToString(),
+                                    /* Body: */ await response.Content.ReadAsStringAsync());
+
+                    throw new HttpRequestException("An error occurred while retrieving the user profile.");
+                }
+
+                var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
+
+                var principal = new ClaimsPrincipal(identity);
+                var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload);
+                context.RunClaimActions(payload.Value<JObject>("items"));
+
+                await Options.Events.CreatingTicket(context);
+                return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
             }
-
-            var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
-
-            var principal = new ClaimsPrincipal(identity);
-            var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload);
-            context.RunClaimActions(payload.Value<JObject>("items"));
-
-            await Options.Events.CreatingTicket(context);
-            return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
+            finally
+            {
+                request?.Dispose();
+                response?.Dispose();
+            }
         }
 
         protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] string code, [NotNull] string redirectUri)
         {
-            var request = new HttpRequestMessage(HttpMethod.Post, Options.TokenEndpoint);
-            request.Content = new FormUrlEncodedContent(new Dictionary<string, string>
+            HttpRequestMessage request = null;
+            HttpResponseMessage response = null;
+            FormUrlEncodedContent formUrlEncodedContent = null;
+            try
             {
-                ["client_id"] = Options.ClientId,
-                ["redirect_uri"] = redirectUri,
-                ["client_secret"] = Options.ClientSecret,
-                ["code"] = code,
-                ["grant_type"] = "authorization_code"
-            });
+                request = new HttpRequestMessage(HttpMethod.Post, Options.TokenEndpoint);
+                formUrlEncodedContent = new FormUrlEncodedContent(new Dictionary<string, string>
+                {
+                    ["client_id"] = Options.ClientId,
+                    ["redirect_uri"] = redirectUri,
+                    ["client_secret"] = Options.ClientSecret,
+                    ["code"] = code,
+                    ["grant_type"] = "authorization_code"
+                });
+                request.Content = formUrlEncodedContent;
 
-            var response = await Backchannel.SendAsync(request, Context.RequestAborted);
-            if (!response.IsSuccessStatusCode)
-            {
-                Logger.LogError("An error occurred while retrieving an access token: the remote server " +
-                                "returned a {Status} response with the following payload: {Headers} {Body}.",
-                                /* Status: */ response.StatusCode,
-                                /* Headers: */ response.Headers.ToString(),
-                                /* Body: */ await response.Content.ReadAsStringAsync());
+                response = await Backchannel.SendAsync(request, Context.RequestAborted);
+                if (!response.IsSuccessStatusCode)
+                {
+                    Logger.LogError("An error occurred while retrieving an access token: the remote server " +
+                                    "returned a {Status} response with the following payload: {Headers} {Body}.",
+                                    /* Status: */ response.StatusCode,
+                                    /* Headers: */ response.Headers.ToString(),
+                                    /* Body: */ await response.Content.ReadAsStringAsync());
 
-                return OAuthTokenResponse.Failed(new Exception("An error occurred while retrieving an access token."));
+                    return OAuthTokenResponse.Failed(new Exception("An error occurred while retrieving an access token."));
+                }
+
+                // Note: StackExchange's token endpoint doesn't return JSON but uses application/x-www-form-urlencoded.
+                // Since OAuthTokenResponse expects a JSON payload, a JObject is manually created using the returned values.
+                var content = QueryHelpers.ParseQuery(await response.Content.ReadAsStringAsync());
+
+                var payload = new JObject();
+                foreach (var item in content)
+                {
+                    payload[item.Key] = (string)item.Value;
+                }
+
+                return OAuthTokenResponse.Success(payload);
             }
-
-            // Note: StackExchange's token endpoint doesn't return JSON but uses application/x-www-form-urlencoded.
-            // Since OAuthTokenResponse expects a JSON payload, a JObject is manually created using the returned values.
-            var content = QueryHelpers.ParseQuery(await response.Content.ReadAsStringAsync());
-
-            var payload = new JObject();
-            foreach (var item in content)
+            finally
             {
-                payload[item.Key] = (string)item.Value;
+                formUrlEncodedContent?.Dispose();
+                request?.Dispose();
+                response?.Dispose();
             }
-
-            return OAuthTokenResponse.Success(payload);
         }
     }
 }

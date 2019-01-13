@@ -34,31 +34,41 @@ namespace AspNet.Security.OAuth.Salesforce
         {
             // Note: unlike the other social providers, the userinfo endpoint is user-specific and can't be set globally.
             // For more information, see https://developer.salesforce.com/page/Digging_Deeper_into_OAuth_2.0_on_Force.com
-            var request = new HttpRequestMessage(HttpMethod.Get, tokens.Response.Value<string>("id"));
-
-            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", tokens.AccessToken);
-            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-            var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
-            if (!response.IsSuccessStatusCode)
+            HttpRequestMessage request = null;
+            HttpResponseMessage response = null;
+            try
             {
-                Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
-                                "returned a {Status} response with the following payload: {Headers} {Body}.",
-                                /* Status: */ response.StatusCode,
-                                /* Headers: */ response.Headers.ToString(),
-                                /* Body: */ await response.Content.ReadAsStringAsync());
+                request = new HttpRequestMessage(HttpMethod.Get, tokens.Response.Value<string>("id"));
 
-                throw new HttpRequestException("An error occurred while retrieving the user from the Salesforce identity service.");
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", tokens.AccessToken);
+                request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
+                if (!response.IsSuccessStatusCode)
+                {
+                    Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
+                                    "returned a {Status} response with the following payload: {Headers} {Body}.",
+                                    /* Status: */ response.StatusCode,
+                                    /* Headers: */ response.Headers.ToString(),
+                                    /* Body: */ await response.Content.ReadAsStringAsync());
+
+                    throw new HttpRequestException("An error occurred while retrieving the user from the Salesforce identity service.");
+                }
+
+                var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
+
+                var principal = new ClaimsPrincipal(identity);
+                var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload);
+                context.RunClaimActions(payload);
+
+                await Options.Events.CreatingTicket(context);
+                return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
             }
-
-            var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
-
-            var principal = new ClaimsPrincipal(identity);
-            var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload);
-            context.RunClaimActions(payload);
-
-            await Options.Events.CreatingTicket(context);
-            return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
+            finally
+            {
+                request?.Dispose();
+                response?.Dispose();
+            }
         }
     }
 }

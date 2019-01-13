@@ -36,37 +36,47 @@ namespace AspNet.Security.OAuth.Reddit
         protected override async Task<AuthenticationTicket> CreateTicketAsync([NotNull] ClaimsIdentity identity,
             [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens)
         {
-            var request = new HttpRequestMessage(HttpMethod.Get, Options.UserInformationEndpoint);
-            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            request.Headers.Authorization = new AuthenticationHeaderValue("bearer", tokens.AccessToken);
-
-            // When a custom user agent is specified in the options, add it to the request headers
-            // to override the default (generic) user agent used by the OAuth2 base middleware.
-            if (!string.IsNullOrEmpty(Options.UserAgent))
+            HttpRequestMessage request = null;
+            HttpResponseMessage response = null;
+            try
             {
-                request.Headers.UserAgent.ParseAdd(Options.UserAgent);
-            }
+                request = new HttpRequestMessage(HttpMethod.Get, Options.UserInformationEndpoint);
+                request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                request.Headers.Authorization = new AuthenticationHeaderValue("bearer", tokens.AccessToken);
 
-            var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
-            if (!response.IsSuccessStatusCode)
+                // When a custom user agent is specified in the options, add it to the request headers
+                // to override the default (generic) user agent used by the OAuth2 base middleware.
+                if (!string.IsNullOrEmpty(Options.UserAgent))
+                {
+                    request.Headers.UserAgent.ParseAdd(Options.UserAgent);
+                }
+
+                response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
+                if (!response.IsSuccessStatusCode)
+                {
+                    Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
+                                    "returned a {Status} response with the following payload: {Headers} {Body}.",
+                                    /* Status: */ response.StatusCode,
+                                    /* Headers: */ response.Headers.ToString(),
+                                    /* Body: */ await response.Content.ReadAsStringAsync());
+
+                    throw new HttpRequestException("An error occurred while retrieving the user profile.");
+                }
+
+                var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
+
+                var principal = new ClaimsPrincipal(identity);
+                var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload);
+                context.RunClaimActions(payload);
+
+                await Options.Events.CreatingTicket(context);
+                return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
+            }
+            finally
             {
-                Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
-                                "returned a {Status} response with the following payload: {Headers} {Body}.",
-                                /* Status: */ response.StatusCode,
-                                /* Headers: */ response.Headers.ToString(),
-                                /* Body: */ await response.Content.ReadAsStringAsync());
-
-                throw new HttpRequestException("An error occurred while retrieving the user profile.");
+                request?.Dispose();
+                response?.Dispose();
             }
-
-            var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
-
-            var principal = new ClaimsPrincipal(identity);
-            var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload);
-            context.RunClaimActions(payload);
-
-            await Options.Events.CreatingTicket(context);
-            return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
         }
 
         protected override string BuildChallengeUrl(AuthenticationProperties properties, string redirectUri)
@@ -90,39 +100,52 @@ namespace AspNet.Security.OAuth.Reddit
         {
             var credentials = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{Options.ClientId}:{Options.ClientSecret}"));
 
-            var request = new HttpRequestMessage(HttpMethod.Post, Options.TokenEndpoint);
-            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            request.Headers.Authorization = new AuthenticationHeaderValue("Basic", credentials);
-
-            // When a custom user agent is specified in the options, add it to the request headers
-            // to override the default (generic) user agent used by the OAuth2 base middleware.
-            if (!string.IsNullOrEmpty(Options.UserAgent))
+            HttpRequestMessage request = null;
+            HttpResponseMessage response = null;
+            FormUrlEncodedContent formUrlEncodedContent = null;
+            try
             {
-                request.Headers.UserAgent.ParseAdd(Options.UserAgent);
+                request = new HttpRequestMessage(HttpMethod.Post, Options.TokenEndpoint);
+                request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                request.Headers.Authorization = new AuthenticationHeaderValue("Basic", credentials);
+
+                // When a custom user agent is specified in the options, add it to the request headers
+                // to override the default (generic) user agent used by the OAuth2 base middleware.
+                if (!string.IsNullOrEmpty(Options.UserAgent))
+                {
+                    request.Headers.UserAgent.ParseAdd(Options.UserAgent);
+                }
+
+                formUrlEncodedContent = new FormUrlEncodedContent(new Dictionary<string, string>
+                {
+                    ["grant_type"] = "authorization_code",
+                    ["redirect_uri"] = redirectUri,
+                    ["code"] = code
+                });
+                request.Content = formUrlEncodedContent;
+
+                response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
+                if (!response.IsSuccessStatusCode)
+                {
+                    Logger.LogError("An error occurred while retrieving an access token: the remote server " +
+                                    "returned a {Status} response with the following payload: {Headers} {Body}.",
+                                    /* Status: */ response.StatusCode,
+                                    /* Headers: */ response.Headers.ToString(),
+                                    /* Body: */ await response.Content.ReadAsStringAsync());
+
+                    return OAuthTokenResponse.Failed(new Exception("An error occurred while retrieving an access token."));
+                }
+
+                var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
+
+                return OAuthTokenResponse.Success(payload);
             }
-
-            request.Content = new FormUrlEncodedContent(new Dictionary<string, string>
+            finally
             {
-                ["grant_type"] = "authorization_code",
-                ["redirect_uri"] = redirectUri,
-                ["code"] = code
-            });
-
-            var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
-            if (!response.IsSuccessStatusCode)
-            {
-                Logger.LogError("An error occurred while retrieving an access token: the remote server " +
-                                "returned a {Status} response with the following payload: {Headers} {Body}.",
-                                /* Status: */ response.StatusCode,
-                                /* Headers: */ response.Headers.ToString(),
-                                /* Body: */ await response.Content.ReadAsStringAsync());
-
-                return OAuthTokenResponse.Failed(new Exception("An error occurred while retrieving an access token."));
+                formUrlEncodedContent?.Dispose();
+                request?.Dispose();
+                response?.Dispose();
             }
-
-            var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
-
-            return OAuthTokenResponse.Success(payload);
         }
     }
 }

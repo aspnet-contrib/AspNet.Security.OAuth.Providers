@@ -41,29 +41,39 @@ namespace AspNet.Security.OAuth.LinkedIn
                 address = address.Insert(address.LastIndexOf("~") + 1, $":({ string.Join(",", Options.Fields)})");
             }
 
-            var request = new HttpRequestMessage(HttpMethod.Get, address);
-            request.Headers.Add("x-li-format", "json");
-            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", tokens.AccessToken);
-
-            var response = await Backchannel.SendAsync(request, Context.RequestAborted);
-            if (!response.IsSuccessStatusCode)
+            HttpRequestMessage request = null;
+            HttpResponseMessage response = null;
+            try
             {
-                Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
-                                "returned a {Status} response with the following payload: {Headers} {Body}.",
-                                /* Status: */ response.StatusCode,
-                                /* Headers: */ response.Headers.ToString(),
-                                /* Body: */ await response.Content.ReadAsStringAsync());
+                request = new HttpRequestMessage(HttpMethod.Get, address);
+                request.Headers.Add("x-li-format", "json");
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", tokens.AccessToken);
 
-                throw new HttpRequestException("An error occurred while retrieving the user profile.");
+                response = await Backchannel.SendAsync(request, Context.RequestAborted);
+                if (!response.IsSuccessStatusCode)
+                {
+                    Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
+                                    "returned a {Status} response with the following payload: {Headers} {Body}.",
+                                    /* Status: */ response.StatusCode,
+                                    /* Headers: */ response.Headers.ToString(),
+                                    /* Body: */ await response.Content.ReadAsStringAsync());
+
+                    throw new HttpRequestException("An error occurred while retrieving the user profile.");
+                }
+
+                var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
+                var principal = new ClaimsPrincipal(identity);
+                var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload);
+                context.RunClaimActions(payload);
+
+                await Options.Events.CreatingTicket(context);
+                return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
             }
-
-            var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
-            var principal = new ClaimsPrincipal(identity);
-            var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload);
-            context.RunClaimActions(payload);
-
-            await Options.Events.CreatingTicket(context);
-            return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
+            finally
+            {
+                request?.Dispose();
+                response?.Dispose();
+            }
         }
     }
 }

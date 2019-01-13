@@ -44,32 +44,40 @@ namespace AspNet.Security.OAuth.Vkontakte
                 address = QueryHelpers.AddQueryString(address, "fields", string.Join(",", Options.Fields));
             }
 
-            var response = await Backchannel.GetAsync(address, Context.RequestAborted);
-            if (!response.IsSuccessStatusCode)
+            HttpResponseMessage response = null;
+            try
             {
-                Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
-                                "returned a {Status} response with the following payload: {Headers} {Body}.",
-                                /* Status: */ response.StatusCode,
-                                /* Headers: */ response.Headers.ToString(),
-                                /* Body: */ await response.Content.ReadAsStringAsync());
+                response = await Backchannel.GetAsync(address, Context.RequestAborted);
+                if (!response.IsSuccessStatusCode)
+                {
+                    Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
+                                    "returned a {Status} response with the following payload: {Headers} {Body}.",
+                                    /* Status: */ response.StatusCode,
+                                    /* Headers: */ response.Headers.ToString(),
+                                    /* Body: */ await response.Content.ReadAsStringAsync());
 
-                throw new HttpRequestException("An error occurred while retrieving the user profile.");
+                    throw new HttpRequestException("An error occurred while retrieving the user profile.");
+                }
+
+                var container = JObject.Parse(await response.Content.ReadAsStringAsync());
+                var payload = container["response"].First as JObject;
+
+                if (tokens.Response["email"] != null)
+                {
+                    payload.Add("email", tokens.Response["email"]);
+                }
+
+                var principal = new ClaimsPrincipal(identity);
+                var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload);
+                context.RunClaimActions(payload);
+
+                await Options.Events.CreatingTicket(context);
+                return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
             }
-
-            var container = JObject.Parse(await response.Content.ReadAsStringAsync());
-            var payload = container["response"].First as JObject;
-
-            if (tokens.Response["email"] != null)
+            finally
             {
-                payload.Add("email", tokens.Response["email"]);
+                response?.Dispose();
             }
-
-            var principal = new ClaimsPrincipal(identity);
-            var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload);
-            context.RunClaimActions(payload);
-
-            await Options.Events.CreatingTicket(context);
-            return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
         }
     }
 }

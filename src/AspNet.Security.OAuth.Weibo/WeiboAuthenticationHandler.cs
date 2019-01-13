@@ -41,41 +41,51 @@ namespace AspNet.Security.OAuth.Weibo
                 ["uid"] = tokens.Response.Value<string>("uid")
             });
 
-            var request = new HttpRequestMessage(HttpMethod.Get, address);
-            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-            var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
-            if (!response.IsSuccessStatusCode)
+            HttpRequestMessage request = null;
+            HttpResponseMessage response = null;
+            try
             {
-                Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
-                                "returned a {Status} response with the following payload: {Headers} {Body}.",
-                                /* Status: */ response.StatusCode,
-                                /* Headers: */ response.Headers.ToString(),
-                                /* Body: */ await response.Content.ReadAsStringAsync());
+                request = new HttpRequestMessage(HttpMethod.Get, address);
+                request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-                throw new HttpRequestException("An error occurred while retrieving the user profile.");
-            }
-
-            var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
-
-            // When the email address is not public, retrieve it from
-            // the emails endpoint if the user:email scope is specified.
-            if (!string.IsNullOrEmpty(Options.UserEmailsEndpoint) &&
-                !identity.HasClaim(claim => claim.Type == ClaimTypes.Email) && Options.Scope.Contains("user:email"))
-            {
-                var email = await GetEmailAsync(tokens);
-                if (!string.IsNullOrEmpty(address))
+                response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
+                if (!response.IsSuccessStatusCode)
                 {
-                    identity.AddClaim(new Claim(ClaimTypes.Email, email, ClaimValueTypes.String, Options.ClaimsIssuer));
+                    Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
+                                    "returned a {Status} response with the following payload: {Headers} {Body}.",
+                                    /* Status: */ response.StatusCode,
+                                    /* Headers: */ response.Headers.ToString(),
+                                    /* Body: */ await response.Content.ReadAsStringAsync());
+
+                    throw new HttpRequestException("An error occurred while retrieving the user profile.");
                 }
+
+                var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
+
+                // When the email address is not public, retrieve it from
+                // the emails endpoint if the user:email scope is specified.
+                if (!string.IsNullOrEmpty(Options.UserEmailsEndpoint) &&
+                    !identity.HasClaim(claim => claim.Type == ClaimTypes.Email) && Options.Scope.Contains("user:email"))
+                {
+                    var email = await GetEmailAsync(tokens);
+                    if (!string.IsNullOrEmpty(address))
+                    {
+                        identity.AddClaim(new Claim(ClaimTypes.Email, email, ClaimValueTypes.String, Options.ClaimsIssuer));
+                    }
+                }
+
+                var principal = new ClaimsPrincipal(identity);
+                var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload);
+                context.RunClaimActions(payload);
+
+                await Options.Events.CreatingTicket(context);
+                return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
             }
-
-            var principal = new ClaimsPrincipal(identity);
-            var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload);
-            context.RunClaimActions(payload);
-
-            await Options.Events.CreatingTicket(context);
-            return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
+            finally
+            {
+                request?.Dispose();
+                response?.Dispose();
+            }
         }
 
         protected override string FormatScope() => string.Join(",", Options.Scope);
@@ -88,26 +98,36 @@ namespace AspNet.Security.OAuth.Weibo
                 ["access_token"] = tokens.AccessToken
             });
 
-            var request = new HttpRequestMessage(HttpMethod.Get, address);
-            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-            // Failed requests shouldn't cause an error: in this case, return null to indicate that the email address cannot be retrieved.
-            var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
-            if (!response.IsSuccessStatusCode)
+            HttpRequestMessage request = null;
+            HttpResponseMessage response = null;
+            try
             {
-                Logger.LogWarning("An error occurred while retrieving the email address associated with the logged in user: " +
-                                  "the remote server returned a {Status} response with the following payload: {Headers} {Body}.",
-                                  /* Status: */ response.StatusCode,
-                                  /* Headers: */ response.Headers.ToString(),
-                                  /* Body: */ await response.Content.ReadAsStringAsync());
+                request = new HttpRequestMessage(HttpMethod.Get, address);
+                request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-                return null;
+                // Failed requests shouldn't cause an error: in this case, return null to indicate that the email address cannot be retrieved.
+                response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
+                if (!response.IsSuccessStatusCode)
+                {
+                    Logger.LogWarning("An error occurred while retrieving the email address associated with the logged in user: " +
+                                      "the remote server returned a {Status} response with the following payload: {Headers} {Body}.",
+                                      /* Status: */ response.StatusCode,
+                                      /* Headers: */ response.Headers.ToString(),
+                                      /* Body: */ await response.Content.ReadAsStringAsync());
+
+                    return null;
+                }
+
+                var payload = JArray.Parse(await response.Content.ReadAsStringAsync());
+
+                return (from email in payload.AsJEnumerable()
+                        select email.Value<string>("email")).FirstOrDefault();
             }
-
-            var payload = JArray.Parse(await response.Content.ReadAsStringAsync());
-
-            return (from email in payload.AsJEnumerable()
-                    select email.Value<string>("email")).FirstOrDefault();
+            finally
+            {
+                request?.Dispose();
+                response?.Dispose();
+            }
         }
     }
 }

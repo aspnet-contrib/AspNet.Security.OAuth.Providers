@@ -33,69 +33,89 @@ namespace AspNet.Security.OAuth.GitHub
         protected override async Task<AuthenticationTicket> CreateTicketAsync([NotNull] ClaimsIdentity identity,
             [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens)
         {
-            var request = new HttpRequestMessage(HttpMethod.Get, Options.UserInformationEndpoint);
-            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", tokens.AccessToken);
-
-            var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
-            if (!response.IsSuccessStatusCode)
+            HttpRequestMessage request = null;
+            HttpResponseMessage response = null;
+            try
             {
-                Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
-                                "returned a {Status} response with the following payload: {Headers} {Body}.",
-                                /* Status: */ response.StatusCode,
-                                /* Headers: */ response.Headers.ToString(),
-                                /* Body: */ await response.Content.ReadAsStringAsync());
+                request = new HttpRequestMessage(HttpMethod.Get, Options.UserInformationEndpoint);
+                request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", tokens.AccessToken);
 
-                throw new HttpRequestException("An error occurred while retrieving the user profile.");
-            }
-
-            var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
-
-            var principal = new ClaimsPrincipal(identity);
-            var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload);
-            context.RunClaimActions(payload);
-
-            // When the email address is not public, retrieve it from
-            // the emails endpoint if the user:email scope is specified.
-            if (!string.IsNullOrEmpty(Options.UserEmailsEndpoint) &&
-                !identity.HasClaim(claim => claim.Type == ClaimTypes.Email) && Options.Scope.Contains("user:email"))
-            {
-                var address = await GetEmailAsync(tokens);
-                if (!string.IsNullOrEmpty(address))
+                response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
+                if (!response.IsSuccessStatusCode)
                 {
-                    identity.AddClaim(new Claim(ClaimTypes.Email, address, ClaimValueTypes.String, Options.ClaimsIssuer));
-                }
-            }
+                    Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
+                                    "returned a {Status} response with the following payload: {Headers} {Body}.",
+                                    /* Status: */ response.StatusCode,
+                                    /* Headers: */ response.Headers.ToString(),
+                                    /* Body: */ await response.Content.ReadAsStringAsync());
 
-            await Options.Events.CreatingTicket(context);
-            return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
+                    throw new HttpRequestException("An error occurred while retrieving the user profile.");
+                }
+
+                var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
+
+                var principal = new ClaimsPrincipal(identity);
+                var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload);
+                context.RunClaimActions(payload);
+
+                // When the email address is not public, retrieve it from
+                // the emails endpoint if the user:email scope is specified.
+                if (!string.IsNullOrEmpty(Options.UserEmailsEndpoint) &&
+                    !identity.HasClaim(claim => claim.Type == ClaimTypes.Email) && Options.Scope.Contains("user:email"))
+                {
+                    var address = await GetEmailAsync(tokens);
+                    if (!string.IsNullOrEmpty(address))
+                    {
+                        identity.AddClaim(new Claim(ClaimTypes.Email, address, ClaimValueTypes.String, Options.ClaimsIssuer));
+                    }
+                }
+
+                await Options.Events.CreatingTicket(context);
+                return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
+            }
+            finally
+            {
+                request?.Dispose();
+                response?.Dispose();
+            }
         }
 
         protected virtual async Task<string> GetEmailAsync([NotNull] OAuthTokenResponse tokens)
         {
             // See https://developer.github.com/v3/users/emails/ for more information about the /user/emails endpoint.
-            var request = new HttpRequestMessage(HttpMethod.Get, Options.UserEmailsEndpoint);
-            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", tokens.AccessToken);
-
-            // Failed requests shouldn't cause an error: in this case, return null to indicate that the email address cannot be retrieved.
-            var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
-            if (!response.IsSuccessStatusCode)
+            HttpRequestMessage request = null;
+            HttpResponseMessage response = null;
+            try
             {
-                Logger.LogWarning("An error occurred while retrieving the email address associated with the logged in user: " +
-                                  "the remote server returned a {Status} response with the following payload: {Headers} {Body}.",
-                                  /* Status: */ response.StatusCode,
-                                  /* Headers: */ response.Headers.ToString(),
-                                  /* Body: */ await response.Content.ReadAsStringAsync());
+                request = new HttpRequestMessage(HttpMethod.Get, Options.UserEmailsEndpoint);
+                request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", tokens.AccessToken);
 
-                return null;
+                // Failed requests shouldn't cause an error: in this case, return null to indicate that the email address cannot be retrieved.
+                response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
+                if (!response.IsSuccessStatusCode)
+                {
+                    Logger.LogWarning("An error occurred while retrieving the email address associated with the logged in user: " +
+                                      "the remote server returned a {Status} response with the following payload: {Headers} {Body}.",
+                                      /* Status: */ response.StatusCode,
+                                      /* Headers: */ response.Headers.ToString(),
+                                      /* Body: */ await response.Content.ReadAsStringAsync());
+
+                    return null;
+                }
+
+                var payload = JArray.Parse(await response.Content.ReadAsStringAsync());
+
+                return (from address in payload.AsJEnumerable()
+                        where address.Value<bool>("primary")
+                        select address.Value<string>("email")).FirstOrDefault();
             }
-
-            var payload = JArray.Parse(await response.Content.ReadAsStringAsync());
-
-            return (from address in payload.AsJEnumerable()
-                    where address.Value<bool>("primary")
-                    select address.Value<string>("email")).FirstOrDefault();
+            finally
+            {
+                request?.Dispose();
+                response?.Dispose();
+            }
         }
     }
 }

@@ -39,36 +39,44 @@ namespace AspNet.Security.OAuth.Weixin
                 ["openid"] = tokens.Response.Value<string>("openid")
             });
 
-            var response = await Backchannel.GetAsync(address);
-            if (!response.IsSuccessStatusCode)
+            HttpResponseMessage response = null;
+            try
             {
-                Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
-                                "returned a {Status} response with the following payload: {Headers} {Body}.",
-                                /* Status: */ response.StatusCode,
-                                /* Headers: */ response.Headers.ToString(),
-                                /* Body: */ await response.Content.ReadAsStringAsync());
+                response = await Backchannel.GetAsync(address);
+                if (!response.IsSuccessStatusCode)
+                {
+                    Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
+                                    "returned a {Status} response with the following payload: {Headers} {Body}.",
+                                    /* Status: */ response.StatusCode,
+                                    /* Headers: */ response.Headers.ToString(),
+                                    /* Body: */ await response.Content.ReadAsStringAsync());
 
-                throw new HttpRequestException("An error occurred while retrieving user information.");
+                    throw new HttpRequestException("An error occurred while retrieving user information.");
+                }
+
+                var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
+                if (!string.IsNullOrEmpty(payload.Value<string>("errcode")))
+                {
+                    Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
+                                    "returned a {Status} response with the following payload: {Headers} {Body}.",
+                                    /* Status: */ response.StatusCode,
+                                    /* Headers: */ response.Headers.ToString(),
+                                    /* Body: */ await response.Content.ReadAsStringAsync());
+
+                    throw new HttpRequestException("An error occurred while retrieving user information.");
+                }
+
+                var principal = new ClaimsPrincipal(identity);
+                var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload);
+                context.RunClaimActions(payload);
+
+                await Options.Events.CreatingTicket(context);
+                return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
             }
-
-            var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
-            if (!string.IsNullOrEmpty(payload.Value<string>("errcode")))
+            finally
             {
-                Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
-                                "returned a {Status} response with the following payload: {Headers} {Body}.",
-                                /* Status: */ response.StatusCode,
-                                /* Headers: */ response.Headers.ToString(),
-                                /* Body: */ await response.Content.ReadAsStringAsync());
-
-                throw new HttpRequestException("An error occurred while retrieving user information.");
+                response?.Dispose();
             }
-
-            var principal = new ClaimsPrincipal(identity);
-            var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload);
-            context.RunClaimActions(payload);
-
-            await Options.Events.CreatingTicket(context);
-            return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
         }
 
         protected override async Task<OAuthTokenResponse> ExchangeCodeAsync(string code, string redirectUri)
@@ -81,30 +89,38 @@ namespace AspNet.Security.OAuth.Weixin
                 ["grant_type"] = "authorization_code"
             });
 
-            var response = await Backchannel.GetAsync(address);
-            if (!response.IsSuccessStatusCode)
+            HttpResponseMessage response = null;
+            try
             {
-                Logger.LogError("An error occurred while retrieving an access token: the remote server " +
-                                "returned a {Status} response with the following payload: {Headers} {Body}.",
-                                /* Status: */ response.StatusCode,
-                                /* Headers: */ response.Headers.ToString(),
-                                /* Body: */ await response.Content.ReadAsStringAsync());
+                response = await Backchannel.GetAsync(address);
+                if (!response.IsSuccessStatusCode)
+                {
+                    Logger.LogError("An error occurred while retrieving an access token: the remote server " +
+                                    "returned a {Status} response with the following payload: {Headers} {Body}.",
+                                    /* Status: */ response.StatusCode,
+                                    /* Headers: */ response.Headers.ToString(),
+                                    /* Body: */ await response.Content.ReadAsStringAsync());
 
-                return OAuthTokenResponse.Failed(new Exception("An error occurred while retrieving an access token."));
+                    return OAuthTokenResponse.Failed(new Exception("An error occurred while retrieving an access token."));
+                }
+
+                var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
+                if (!string.IsNullOrEmpty(payload.Value<string>("errcode")))
+                {
+                    Logger.LogError("An error occurred while retrieving an access token: the remote server " +
+                                    "returned a {Status} response with the following payload: {Headers} {Body}.",
+                                    /* Status: */ response.StatusCode,
+                                    /* Headers: */ response.Headers.ToString(),
+                                    /* Body: */ await response.Content.ReadAsStringAsync());
+
+                    return OAuthTokenResponse.Failed(new Exception("An error occurred while retrieving an access token."));
+                }
+                return OAuthTokenResponse.Success(payload);
             }
-
-            var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
-            if (!string.IsNullOrEmpty(payload.Value<string>("errcode")))
+            finally
             {
-                Logger.LogError("An error occurred while retrieving an access token: the remote server " +
-                                "returned a {Status} response with the following payload: {Headers} {Body}.",
-                                /* Status: */ response.StatusCode,
-                                /* Headers: */ response.Headers.ToString(),
-                                /* Body: */ await response.Content.ReadAsStringAsync());
-
-                return OAuthTokenResponse.Failed(new Exception("An error occurred while retrieving an access token."));
+                response?.Dispose();
             }
-            return OAuthTokenResponse.Success(payload);
         }
 
         protected override string BuildChallengeUrl(AuthenticationProperties properties, string redirectUri)

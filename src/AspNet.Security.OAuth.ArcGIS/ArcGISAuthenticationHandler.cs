@@ -41,33 +41,44 @@ namespace AspNet.Security.OAuth.ArcGIS
                 ["f"] = "json",
                 ["token"] = tokens.AccessToken
             });
-
-            var request = new HttpRequestMessage(HttpMethod.Get, address);
-            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-            // Request the token
-            var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
-            var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
-
-            // Note: error responses always return 200 status codes.
-            var error = payload.Value<JObject>("error");
-            if (error != null)
+            HttpRequestMessage request = null;
+            HttpResponseMessage response = null;
+            try
             {
-                // See https://developers.arcgis.com/authentication/server-based-user-logins/ for more information
-                Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
-                                "returned a response with the following error code: {Code} {Message}.",
-                                /* Code: */ error.Value<string>("code"),
-                                /* Message: */ error.Value<string>("message"));
+                request = new HttpRequestMessage(HttpMethod.Get, address);
+                request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-                throw new InvalidOperationException("An error occurred while retrieving the user profile.");
+                // Request the token
+                response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
+                var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
+
+                // Note: error responses always return 200 status codes.
+                var error = payload.Value<JObject>("error");
+                if (error != null)
+                {
+                    // See https://developers.arcgis.com/authentication/server-based-user-logins/ for more information
+                    Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
+                                    "returned a response with the following error code: {Code} {Message}.",
+                                    /* Code: */ error.Value<string>("code"),
+                                    /* Message: */ error.Value<string>("message"));
+
+                    throw new InvalidOperationException("An error occurred while retrieving the user profile.");
+                }
+
+                var principal = new ClaimsPrincipal(identity);
+                var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload);
+                context.RunClaimActions(payload);
+
+                await Options.Events.CreatingTicket(context);
+                return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
             }
+            finally
+            {
+                request?.Dispose();
+                response?.Dispose();
 
-            var principal = new ClaimsPrincipal(identity);
-            var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload);
-            context.RunClaimActions(payload);
-
-            await Options.Events.CreatingTicket(context);
-            return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
+            }
         }
+
     }
 }

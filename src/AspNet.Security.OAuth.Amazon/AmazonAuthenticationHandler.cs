@@ -40,21 +40,31 @@ namespace AspNet.Security.OAuth.Amazon
                 endpoint = QueryHelpers.AddQueryString(endpoint, "fields", string.Join(",", Options.Fields));
             }
 
-            var request = new HttpRequestMessage(HttpMethod.Get, endpoint);
-            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", tokens.AccessToken);
+            HttpRequestMessage request = null;
+            HttpResponseMessage response = null;
+            try
+            {
+                request = new HttpRequestMessage(HttpMethod.Get, endpoint);
+                request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", tokens.AccessToken);
 
-            var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
-            response.EnsureSuccessStatusCode();
+                response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
+                response.EnsureSuccessStatusCode();
 
-            var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
+                var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
 
-            var principal = new ClaimsPrincipal(identity);
-            var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload);
-            context.RunClaimActions(payload);
+                var principal = new ClaimsPrincipal(identity);
+                var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload);
+                context.RunClaimActions(payload);
 
-            await Options.Events.CreatingTicket(context);
-            return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
+                await Options.Events.CreatingTicket(context);
+                return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
+            }
+            finally
+            {
+                request?.Dispose();
+                response?.Dispose();
+            }
         }
     }
 }
