@@ -61,7 +61,7 @@ namespace AspNet.Security.OAuth.Weibo
             // When the email address is not public, retrieve it from
             // the emails endpoint if the user:email scope is specified.
             if (!string.IsNullOrEmpty(Options.UserEmailsEndpoint) &&
-                !identity.HasClaim(claim => claim.Type == ClaimTypes.Email) && Options.Scope.Contains("user:email"))
+                !identity.HasClaim(claim => claim.Type == ClaimTypes.Email) && Options.Scope.Contains("email"))
             {
                 var email = await GetEmailAsync(tokens);
                 if (!string.IsNullOrEmpty(address))
