@@ -49,7 +49,7 @@ namespace AspNet.Security.OAuth.BattleNet
             /// <summary>
             /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/> for US servers.
             /// </summary>
-            public const string UserInformationEndpoint = "https://us.api.battle.net/account/user";
+            public const string UserInformationEndpoint = "https://us.battle.net/oauth/userinfo";
         }
 
         public static class Europe
@@ -67,7 +67,7 @@ namespace AspNet.Security.OAuth.BattleNet
             /// <summary>
             /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/> for EU servers.
             /// </summary>
-            public const string UserInformationEndpoint = "https://eu.api.battle.net/account/user";
+            public const string UserInformationEndpoint = "https://eu.battle.net/oauth/userinfo";
         }
 
         public static class Korea
@@ -85,7 +85,7 @@ namespace AspNet.Security.OAuth.BattleNet
             /// <summary>
             /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/> for KR servers.
             /// </summary>
-            public const string UserInformationEndpoint = "https://kr.api.battle.net/account/user";
+            public const string UserInformationEndpoint = "https://kr.battle.net/oauth/userinfo";
         }
 
         public static class Taiwan
@@ -103,7 +103,7 @@ namespace AspNet.Security.OAuth.BattleNet
             /// <summary>
             /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/> for TW servers.
             /// </summary>
-            public const string UserInformationEndpoint = "https://tw.api.battle.net/account/user";
+            public const string UserInformationEndpoint = "https://tw.battle.net/oauth/userinfo";
         }
 
         public static class China
@@ -121,7 +121,7 @@ namespace AspNet.Security.OAuth.BattleNet
             /// <summary>
             /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/> for CN servers.
             /// </summary>
-            public const string UserInformationEndpoint = "https://api.battlenet.com.cn/account/user";
+            public const string UserInformationEndpoint = "https://www.battlenet.com.cn/oauth/userinfo";
         }
     }
 }
