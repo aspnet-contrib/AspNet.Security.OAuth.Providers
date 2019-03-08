@@ -6,6 +6,7 @@
 
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Mvc.Client
@@ -50,7 +51,8 @@ namespace Mvc.Client
                 options.ClientSecret = "qbxvkjk5la7mjp6";
             });
 
-            services.AddMvc();
+            services.AddMvc()
+                    .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
         }
 
         public void Configure(IApplicationBuilder app)
@@ -59,7 +61,7 @@ namespace Mvc.Client
 
             app.UseAuthentication();
 
-            app.UseMvc();
+            app.UseMvcWithDefaultRoute();
         }
     }
 }

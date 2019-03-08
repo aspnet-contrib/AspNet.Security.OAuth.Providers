@@ -8,9 +8,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
-#if NETCOREAPP3_0
 using System.Text.Json;
-#endif
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication;
@@ -18,9 +16,6 @@ using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-#if !NETCOREAPP3_0
-using Newtonsoft.Json.Linq;
-#endif
 
 namespace AspNet.Security.OAuth.SoundCloud
 {
@@ -55,10 +50,7 @@ namespace AspNet.Security.OAuth.SoundCloud
                 throw new HttpRequestException("An error occurred while retrieving the user profile.");
             }
 
-            var json = await response.Content.ReadAsStringAsync();
-
-#if NETCOREAPP3_0
-            using (var payload = JsonDocument.Parse(json))
+            using (var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync()))
             {
                 var principal = new ClaimsPrincipal(identity);
                 var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload.RootElement);
@@ -67,16 +59,6 @@ namespace AspNet.Security.OAuth.SoundCloud
                 await Options.Events.CreatingTicket(context);
                 return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
             }
-#else
-            var payload = JObject.Parse(json);
-
-            var principal = new ClaimsPrincipal(identity);
-            var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload);
-            context.RunClaimActions(payload);
-
-            await Options.Events.CreatingTicket(context);
-            return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
-#endif
         }
     }
 }
