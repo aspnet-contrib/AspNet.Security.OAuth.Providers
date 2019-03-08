@@ -9,13 +9,13 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
+using System.Text.Json;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json.Linq;
 
 namespace AspNet.Security.OAuth.Bitbucket
 {
@@ -49,26 +49,27 @@ namespace AspNet.Security.OAuth.Bitbucket
                 throw new HttpRequestException("An error occurred while retrieving the user profile.");
             }
 
-            var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
-
-            var principal = new ClaimsPrincipal(identity);
-            var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload);
-            context.RunClaimActions(payload);
-
-            // When the email address is not public, retrieve it from
-            // the emails endpoint if the user:email scope is specified.
-            if (!string.IsNullOrEmpty(Options.UserEmailsEndpoint) &&
-                !identity.HasClaim(claim => claim.Type == ClaimTypes.Email) && Options.Scope.Contains("email"))
+            using (var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync()))
             {
-                var address = await GetEmailAsync(tokens);
-                if (!string.IsNullOrEmpty(address))
-                {
-                    identity.AddClaim(new Claim(ClaimTypes.Email, address, ClaimValueTypes.String, Options.ClaimsIssuer));
-                }
-            }
+                var principal = new ClaimsPrincipal(identity);
+                var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload.RootElement);
+                context.RunClaimActions();
 
-            await Options.Events.CreatingTicket(context);
-            return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
+                // When the email address is not public, retrieve it from
+                // the emails endpoint if the user:email scope is specified.
+                if (!string.IsNullOrEmpty(Options.UserEmailsEndpoint) &&
+                    !identity.HasClaim(claim => claim.Type == ClaimTypes.Email) && Options.Scope.Contains("email"))
+                {
+                    var address = await GetEmailAsync(tokens);
+                    if (!string.IsNullOrEmpty(address))
+                    {
+                        identity.AddClaim(new Claim(ClaimTypes.Email, address, ClaimValueTypes.String, Options.ClaimsIssuer));
+                    }
+                }
+
+                await Options.Events.CreatingTicket(context);
+                return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
+            }
         }
 
         protected virtual async Task<string> GetEmailAsync([NotNull] OAuthTokenResponse tokens)
@@ -90,11 +91,12 @@ namespace AspNet.Security.OAuth.Bitbucket
                 return null;
             }
 
-            var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
-
-            return (from address in payload.Value<JArray>("values")
-                    where address.Value<bool>("is_primary")
-                    select address.Value<string>("email")).FirstOrDefault();
+            using (var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync()))
+            {
+                return (from address in payload.RootElement.GetProperty("values").EnumerateArray()
+                        where address.GetProperty("is_primary").GetBoolean()
+                        select address.GetString("email")).FirstOrDefault();
+            }
         }
     }
 }

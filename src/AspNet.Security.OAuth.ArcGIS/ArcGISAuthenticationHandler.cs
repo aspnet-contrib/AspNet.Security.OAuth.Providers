@@ -10,6 +10,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
+using System.Text.Json;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication;
@@ -17,7 +18,6 @@ using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json.Linq;
 
 namespace AspNet.Security.OAuth.ArcGIS
 {
@@ -47,27 +47,28 @@ namespace AspNet.Security.OAuth.ArcGIS
 
             // Request the token
             var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
-            var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
 
-            // Note: error responses always return 200 status codes.
-            var error = payload.Value<JObject>("error");
-            if (error != null)
+            using (var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync()))
             {
-                // See https://developers.arcgis.com/authentication/server-based-user-logins/ for more information
-                Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
-                                "returned a response with the following error code: {Code} {Message}.",
-                                /* Code: */ error.Value<string>("code"),
-                                /* Message: */ error.Value<string>("message"));
+                // Note: error responses always return 200 status codes.
+                if (payload.RootElement.TryGetProperty("error", out var error))
+                {
+                    // See https://developers.arcgis.com/authentication/server-based-user-logins/ for more information
+                    Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
+                                    "returned a response with the following error code: {Code} {Message}.",
+                                    /* Code: */ error.GetString("code"),
+                                    /* Message: */ error.GetString("message"));
 
-                throw new InvalidOperationException("An error occurred while retrieving the user profile.");
+                    throw new InvalidOperationException("An error occurred while retrieving the user profile.");
+                }
+
+                var principal = new ClaimsPrincipal(identity);
+                var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload.RootElement);
+                context.RunClaimActions();
+
+                await Options.Events.CreatingTicket(context);
+                return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
             }
-
-            var principal = new ClaimsPrincipal(identity);
-            var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload);
-            context.RunClaimActions(payload);
-
-            await Options.Events.CreatingTicket(context);
-            return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
         }
     }
 }
