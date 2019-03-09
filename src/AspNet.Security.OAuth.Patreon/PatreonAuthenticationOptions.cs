@@ -5,6 +5,7 @@
  */
 
 using System.Security.Claims;
+using System.Text.Json;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
@@ -32,42 +33,19 @@ namespace AspNet.Security.OAuth.Patreon
             Scope.Add("my-campaign");
 
             ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
+            ClaimActions.MapCustomJson(ClaimTypes.Name, user => GetUserAttribute(user, "full_name"));
+            ClaimActions.MapCustomJson(ClaimTypes.Webpage, user => GetUserAttribute(user, "url"));
+            ClaimActions.MapCustomJson(Claims.Avatar, user => GetUserAttribute(user, "thumb_url"));
+        }
 
-            ClaimActions.MapCustomJson(
-                ClaimTypes.Name,
-                user =>
-                {
-                    if (user.TryGetProperty("attributes", out var attributes))
-                    {
-                        return attributes.GetString("full_name");
-                    }
+        private static string GetUserAttribute(JsonElement user, string key)
+        {
+            if (!user.TryGetProperty("attributes", out var attributes))
+            {
+                return null;
+            }
 
-                    return null;
-                });
-
-            ClaimActions.MapCustomJson(
-                ClaimTypes.Webpage,
-                user =>
-                {
-                    if (user.TryGetProperty("attributes", out var attributes))
-                    {
-                        return attributes.GetString("url");
-                    }
-
-                    return null;
-                });
-
-            ClaimActions.MapCustomJson(
-                Claims.Avatar,
-                user =>
-                {
-                    if (user.TryGetProperty("attributes", out var attributes))
-                    {
-                        return attributes.GetString("thumb_url");
-                    }
-
-                    return null;
-                });
+            return attributes.GetString(key);
         }
     }
 }

@@ -67,8 +67,8 @@ namespace AspNet.Security.OAuth.Instagram
             using (var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync()))
             {
                 var principal = new ClaimsPrincipal(identity);
-                var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload.RootElement.GetProperty("data"));
-                context.RunClaimActions();
+                var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload.RootElement);
+                context.RunClaimActions(payload.RootElement.GetProperty("data"));
 
                 await Options.Events.CreatingTicket(context);
                 return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);

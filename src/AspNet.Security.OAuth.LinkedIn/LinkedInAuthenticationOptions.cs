@@ -39,49 +39,16 @@ namespace AspNet.Security.OAuth.LinkedIn
             ClaimActions.MapJsonKey(Claims.Industry, "industry");
             ClaimActions.MapJsonKey(Claims.Summary, "summary");
             ClaimActions.MapJsonKey(Claims.Headline, "headline");
+            ClaimActions.MapCustomJson(Claims.Positions, user => user.GetString("positions"));
             ClaimActions.MapJsonKey(Claims.PhoneticFirstName, "phoneticFirstName");
             ClaimActions.MapJsonKey(Claims.PhoneticLastName, "phoneticLastName");
             ClaimActions.MapJsonKey(Claims.FormattedPhoneticName, "formattedPhoneticName");
+            ClaimActions.MapCustomJson(Claims.Location, user => user.GetString("location"));
             ClaimActions.MapJsonKey(Claims.Specialties, "specialties");
             ClaimActions.MapJsonKey(Claims.NumConnections, "numConnections");
             ClaimActions.MapJsonKey(Claims.NumConnectionsCapped, "numConnectionsCapped");
             ClaimActions.MapJsonKey(Claims.CurrentShare, "currentShare");
-
-            ClaimActions.MapCustomJson(
-                Claims.Positions,
-                user =>
-                {
-                    if (user.TryGetProperty("positions", out var positions))
-                    {
-                        return positions.ToString();
-                    }
-
-                    return null;
-                });
-
-            ClaimActions.MapCustomJson(
-                Claims.Location,
-                user =>
-                {
-                    if (user.TryGetProperty("location", out var positions))
-                    {
-                        return positions.ToString();
-                    }
-
-                    return null;
-                });
-
-            ClaimActions.MapCustomJson(
-                Claims.PictureUrls,
-                user =>
-                {
-                    if (user.TryGetProperty("pictureUrls", out var positions))
-                    {
-                        return positions.ToString();
-                    }
-
-                    return null;
-                });
+            ClaimActions.MapCustomJson(Claims.PictureUrls, user => user.GetString("pictureUrls"));
         }
 
         /// <summary>

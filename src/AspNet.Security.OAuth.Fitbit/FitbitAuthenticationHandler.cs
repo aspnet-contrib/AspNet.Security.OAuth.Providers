@@ -90,6 +90,7 @@ namespace AspNet.Security.OAuth.Fitbit
             }
 
             var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
+
             return OAuthTokenResponse.Success(payload);
         }
     }

@@ -92,7 +92,6 @@ namespace AspNet.Security.OAuth.GitHub
                 return null;
             }
 
-            // TODO Review if this is correct for parsing a raw array
             using (var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync()))
             {
                 return (from address in payload.RootElement.EnumerateArray()
