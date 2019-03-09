@@ -1,8 +1,7 @@
 <Project>
 
   <PropertyGroup Label="Package Versions">
-    <AspNetCoreVersion Condition=" '$(TargetFramework)' != 'netcoreapp3.0' ">2.0.0</AspNetCoreVersion>
-    <AspNetCoreVersion Condition=" '$(TargetFramework)' == 'netcoreapp3.0' ">3.0.0-preview3-19153-02</AspNetCoreVersion>
+    <AspNetCoreVersion>3.0.0-preview3-19153-02</AspNetCoreVersion>
     <JetBrainsVersion>10.3.0</JetBrainsVersion>
     <NetStandardImplicitPackageVersion>2.0.0</NetStandardImplicitPackageVersion>
     <RuntimeFrameworkVersion>2.0.0</RuntimeFrameworkVersion>
