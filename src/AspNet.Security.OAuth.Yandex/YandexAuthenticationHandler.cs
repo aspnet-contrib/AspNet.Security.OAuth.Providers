@@ -89,10 +89,8 @@ namespace AspNet.Security.OAuth.Yandex
                 return OAuthTokenResponse.Failed(new Exception("An error occurred while retrieving an access token."));
             }
 
-            using (var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync()))
-            {
-                return OAuthTokenResponse.Success(payload);
-            }
+            var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
+            return OAuthTokenResponse.Success(payload);
         }
     }
 }
