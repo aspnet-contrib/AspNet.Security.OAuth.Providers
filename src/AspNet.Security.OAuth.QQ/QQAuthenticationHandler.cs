@@ -6,10 +6,12 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.IO;
+using System.IO.Pipelines;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
+using System.Text.Json;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication;
@@ -17,7 +19,7 @@ using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json.Linq;
+using Microsoft.Extensions.Primitives;
 
 namespace AspNet.Security.OAuth.QQ
 {
@@ -64,25 +66,26 @@ namespace AspNet.Security.OAuth.QQ
                 throw new HttpRequestException("An error occurred while retrieving user information.");
             }
 
-            var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
-
-            var status = payload.Value<int>("ret");
-            if (status != 0)
+            using (var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync()))
             {
-                Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
-                                "returned a {Status} response with the following message: {Message}.",
-                                /* Status: */ status,
-                                /* Message: */ payload.Value<string>("msg"));
+                var status = payload.RootElement.GetProperty("ret").GetInt32();
+                if (status != 0)
+                {
+                    Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
+                                    "returned a {Status} response with the following message: {Message}.",
+                                    /* Status: */ status,
+                                    /* Message: */ payload.RootElement.GetString("msg"));
 
-                throw new HttpRequestException("An error occurred while retrieving user information.");
+                    throw new HttpRequestException("An error occurred while retrieving user information.");
+                }
+
+                var principal = new ClaimsPrincipal(identity);
+                var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload.RootElement);
+                context.RunClaimActions();
+
+                await Options.Events.CreatingTicket(context);
+                return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
             }
-
-            var principal = new ClaimsPrincipal(identity);
-            var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload);
-            context.RunClaimActions(payload);
-
-            await Options.Events.CreatingTicket(context);
-            return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
         }
 
         protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] string code, [NotNull] string redirectUri)
@@ -110,10 +113,16 @@ namespace AspNet.Security.OAuth.QQ
                 return OAuthTokenResponse.Failed(new Exception("An error occurred while retrieving an access token."));
             }
 
-            var payload = JObject.FromObject(QueryHelpers.ParseQuery(await response.Content.ReadAsStringAsync())
-                .ToDictionary(pair => pair.Key, k => k.Value.ToString()));
+            var content = QueryHelpers.ParseQuery(await response.Content.ReadAsStringAsync());
 
-            return OAuthTokenResponse.Success(payload);
+            // HACK Work out the best way to do this with System.Text.Json
+            using (var stream = new MemoryStream())
+            {
+                CopyPayload(content, stream);
+
+                var payload = JsonDocument.Parse(stream);
+                return OAuthTokenResponse.Success(payload);
+            }
         }
 
         private async Task<string> GetUserIdentifierAsync(OAuthTokenResponse tokens)
@@ -141,11 +150,27 @@ namespace AspNet.Security.OAuth.QQ
                 body = body.Substring(index, body.LastIndexOf("}") - index + 1);
             }
 
-            var payload = JObject.Parse(body);
+            var payload = JsonDocument.Parse(body);
 
-            return payload.Value<string>("openid");
+            return payload.RootElement.GetString("openid");
         }
 
         protected override string FormatScope() => string.Join(",", Options.Scope);
+
+        private void CopyPayload(Dictionary<string, StringValues> content, Stream stream)
+        {
+            var output = new StreamPipeWriter(stream);
+            var writer = new Utf8JsonWriter(output);
+
+            writer.WriteStartObject();
+
+            foreach (var item in content)
+            {
+                writer.WriteString(item.Key, item.Value);
+            }
+
+            writer.Flush();
+            stream.Seek(0, SeekOrigin.Begin);
+        }
     }
 }

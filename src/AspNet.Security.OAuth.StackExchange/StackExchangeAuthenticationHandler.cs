@@ -6,10 +6,13 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.IO.Pipelines;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
+using System.Text.Json;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication;
@@ -17,7 +20,7 @@ using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json.Linq;
+using Microsoft.Extensions.Primitives;
 
 namespace AspNet.Security.OAuth.StackExchange
 {
@@ -57,14 +60,15 @@ namespace AspNet.Security.OAuth.StackExchange
                 throw new HttpRequestException("An error occurred while retrieving the user profile.");
             }
 
-            var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
+            using (var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync()))
+            {
+                var principal = new ClaimsPrincipal(identity);
+                var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload.RootElement);
+                context.RunClaimActions(payload.RootElement.GetProperty("items"));
 
-            var principal = new ClaimsPrincipal(identity);
-            var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload);
-            context.RunClaimActions(payload.Value<JObject>("items"));
-
-            await Options.Events.CreatingTicket(context);
-            return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
+                await Options.Events.CreatingTicket(context);
+                return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
+            }
         }
 
         protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] string code, [NotNull] string redirectUri)
@@ -92,16 +96,33 @@ namespace AspNet.Security.OAuth.StackExchange
             }
 
             // Note: StackExchange's token endpoint doesn't return JSON but uses application/x-www-form-urlencoded.
-            // Since OAuthTokenResponse expects a JSON payload, a JObject is manually created using the returned values.
+            // Since OAuthTokenResponse expects a JSON payload, a response is manually created using the returned values.
             var content = QueryHelpers.ParseQuery(await response.Content.ReadAsStringAsync());
 
-            var payload = new JObject();
+            // HACK Work out the best way to do this with System.Text.Json
+            using (var stream = new MemoryStream())
+            {
+                CopyPayload(content, stream);
+
+                var copy = JsonDocument.Parse(stream);
+                return OAuthTokenResponse.Success(copy);
+            }
+        }
+
+        private void CopyPayload(Dictionary<string, StringValues> content, Stream stream)
+        {
+            var output = new StreamPipeWriter(stream);
+            var writer = new Utf8JsonWriter(output);
+
+            writer.WriteStartObject();
+
             foreach (var item in content)
             {
-                payload[item.Key] = (string)item.Value;
+                writer.WriteString(item.Key, item.Value);
             }
 
-            return OAuthTokenResponse.Success(payload);
+            writer.Flush();
+            stream.Seek(0, SeekOrigin.Begin);
         }
     }
 }

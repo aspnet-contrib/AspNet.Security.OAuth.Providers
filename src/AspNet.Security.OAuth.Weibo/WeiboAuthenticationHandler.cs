@@ -10,6 +10,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
+using System.Text.Json;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication;
@@ -17,7 +18,6 @@ using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json.Linq;
 
 namespace AspNet.Security.OAuth.Weibo
 {
@@ -38,7 +38,7 @@ namespace AspNet.Security.OAuth.Weibo
             var address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, new Dictionary<string, string>
             {
                 ["access_token"] = tokens.AccessToken,
-                ["uid"] = tokens.Response.Value<string>("uid")
+                ["uid"] = tokens.Response.RootElement.GetString("uid")
             });
 
             var request = new HttpRequestMessage(HttpMethod.Get, address);
@@ -56,26 +56,27 @@ namespace AspNet.Security.OAuth.Weibo
                 throw new HttpRequestException("An error occurred while retrieving the user profile.");
             }
 
-            var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
-
-            // When the email address is not public, retrieve it from
-            // the emails endpoint if the user:email scope is specified.
-            if (!string.IsNullOrEmpty(Options.UserEmailsEndpoint) &&
-                !identity.HasClaim(claim => claim.Type == ClaimTypes.Email) && Options.Scope.Contains("email"))
+            using (var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync()))
             {
-                var email = await GetEmailAsync(tokens);
-                if (!string.IsNullOrEmpty(address))
+                // When the email address is not public, retrieve it from
+                // the emails endpoint if the user:email scope is specified.
+                if (!string.IsNullOrEmpty(Options.UserEmailsEndpoint) &&
+                    !identity.HasClaim(claim => claim.Type == ClaimTypes.Email) && Options.Scope.Contains("email"))
                 {
-                    identity.AddClaim(new Claim(ClaimTypes.Email, email, ClaimValueTypes.String, Options.ClaimsIssuer));
+                    var email = await GetEmailAsync(tokens);
+                    if (!string.IsNullOrEmpty(address))
+                    {
+                        identity.AddClaim(new Claim(ClaimTypes.Email, email, ClaimValueTypes.String, Options.ClaimsIssuer));
+                    }
                 }
+
+                var principal = new ClaimsPrincipal(identity);
+                var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload.RootElement);
+                context.RunClaimActions();
+
+                await Options.Events.CreatingTicket(context);
+                return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
             }
-
-            var principal = new ClaimsPrincipal(identity);
-            var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload);
-            context.RunClaimActions(payload);
-
-            await Options.Events.CreatingTicket(context);
-            return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
         }
 
         protected override string FormatScope() => string.Join(",", Options.Scope);
@@ -104,10 +105,11 @@ namespace AspNet.Security.OAuth.Weibo
                 return null;
             }
 
-            var payload = JArray.Parse(await response.Content.ReadAsStringAsync());
-
-            return (from email in payload.AsJEnumerable()
-                    select email.Value<string>("email")).FirstOrDefault();
+            using (var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync()))
+            {
+                return (from email in payload.RootElement.EnumerateArray()
+                        select email.GetString("email")).FirstOrDefault();
+            }
         }
     }
 }

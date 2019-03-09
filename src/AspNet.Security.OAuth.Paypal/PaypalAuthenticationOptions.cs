@@ -35,7 +35,7 @@ namespace AspNet.Security.OAuth.Paypal
             ClaimActions.MapJsonKey(ClaimTypes.GivenName, "given_name");
             ClaimActions.MapJsonKey(ClaimTypes.Surname, "family_name");
             ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
-            ClaimActions.MapCustomJson(ClaimTypes.NameIdentifier, user => user.Value<string>("user_id")?.Split('/')?.LastOrDefault());
+            ClaimActions.MapCustomJson(ClaimTypes.NameIdentifier, user => user.GetString("user_id")?.Split('/')?.LastOrDefault());
         }
     }
 }

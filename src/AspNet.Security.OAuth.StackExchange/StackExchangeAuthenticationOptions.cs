@@ -4,9 +4,11 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Security.Claims;
+using System.Text.Json;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
@@ -30,10 +32,10 @@ namespace AspNet.Security.OAuth.StackExchange
             UserInformationEndpoint = StackExchangeAuthenticationDefaults.UserInformationEndpoint;
             BackchannelHttpHandler = new HttpClientHandler { AutomaticDecompression = DecompressionMethods.GZip };
 
-            ClaimActions.MapCustomJson(ClaimTypes.NameIdentifier, user => user["items"]?[0]?.Value<string>("account_id"));
-            ClaimActions.MapCustomJson(ClaimTypes.Name, user => user["items"]?[0]?.Value<string>("display_name"));
-            ClaimActions.MapCustomJson(ClaimTypes.Webpage, user => user["items"]?[0]?.Value<string>("website_url"));
-            ClaimActions.MapCustomJson(Claims.Link, user => user["items"]?[0]?.Value<string>("link"));
+            ClaimActions.MapCustomJson(ClaimTypes.NameIdentifier, user => GetUserProperty(user, "account_id"));
+            ClaimActions.MapCustomJson(ClaimTypes.Name, user => GetUserProperty(user, "display_name"));
+            ClaimActions.MapCustomJson(ClaimTypes.Webpage, user => GetUserProperty(user, "website_url"));
+            ClaimActions.MapCustomJson(Claims.Link, user => GetUserProperty(user, "link"));
         }
 
         /// <summary>
@@ -47,5 +49,17 @@ namespace AspNet.Security.OAuth.StackExchange
         /// By default, this property is set to "StackOverflow".
         /// </summary>
         public string Site { get; set; } = "StackOverflow";
+
+        private static string GetUserProperty(JsonElement user, string key)
+        {
+            if (!user.TryGetProperty("items", out var items) || items.Type != JsonValueType.Array)
+            {
+                return null;
+            }
+
+            return items.EnumerateArray()
+                        .Select((p) => p.GetString(key))
+                        .FirstOrDefault();
+        }
     }
 }

@@ -31,7 +31,18 @@ namespace AspNet.Security.OAuth.Salesforce
             ClaimActions.MapJsonKey(Claims.Email, "email");
             ClaimActions.MapJsonKey(Claims.ThumbnailPhoto, "thumbnail");
             ClaimActions.MapJsonKey(Claims.UtcOffset, "utcOffset");
-            ClaimActions.MapCustomJson(Claims.RestUrl, user => user["urls"]?.Value<string>("rest"));
+
+            ClaimActions.MapCustomJson(
+                Claims.RestUrl,
+                user =>
+                {
+                    if (user.TryGetProperty("urls", out var urls))
+                    {
+                        return urls.GetString("rest");
+                    }
+
+                    return null;
+                });
         }
 
         public SalesforceAuthenticationEnvironment Environment
