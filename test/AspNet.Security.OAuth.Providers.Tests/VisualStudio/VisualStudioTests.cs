@@ -22,7 +22,7 @@ namespace AspNet.Security.OAuth.VisualStudio
 
         public override string DefaultScheme => VisualStudioAuthenticationDefaults.AuthenticationScheme;
 
-        public override void RegisterAuthentication(AuthenticationBuilder builder)
+        protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
         {
             builder.AddVisualStudio(options => ConfigureDefaults(builder, options));
         }

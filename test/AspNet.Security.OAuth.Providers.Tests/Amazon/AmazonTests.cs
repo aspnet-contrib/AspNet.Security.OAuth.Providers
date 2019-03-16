@@ -22,7 +22,7 @@ namespace AspNet.Security.OAuth.Amazon
 
         public override string DefaultScheme => AmazonAuthenticationDefaults.AuthenticationScheme;
 
-        public override void RegisterAuthentication(AuthenticationBuilder builder)
+        protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
         {
             builder.AddAmazon(options => ConfigureDefaults(builder, options));
         }

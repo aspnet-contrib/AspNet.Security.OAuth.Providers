@@ -52,7 +52,7 @@ namespace AspNet.Security.OAuth
         /// Registers authentication for the test.
         /// </summary>
         /// <param name="builder">The authentication builder to register authentication with.</param>
-        public abstract void RegisterAuthentication(AuthenticationBuilder builder);
+        protected internal abstract void RegisterAuthentication(AuthenticationBuilder builder);
 
         /// <summary>
         /// Configures the default authentication options.

@@ -22,7 +22,7 @@ namespace AspNet.Security.OAuth.Spotify
 
         public override string DefaultScheme => SpotifyAuthenticationDefaults.AuthenticationScheme;
 
-        public override void RegisterAuthentication(AuthenticationBuilder builder)
+        protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
         {
             builder.AddSpotify(options => ConfigureDefaults(builder, options));
         }

@@ -22,7 +22,7 @@ namespace AspNet.Security.OAuth.Instagram
 
         public override string DefaultScheme => InstagramAuthenticationDefaults.AuthenticationScheme;
 
-        public override void RegisterAuthentication(AuthenticationBuilder builder)
+        protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
         {
             builder.AddInstagram(options => ConfigureDefaults(builder, options));
         }

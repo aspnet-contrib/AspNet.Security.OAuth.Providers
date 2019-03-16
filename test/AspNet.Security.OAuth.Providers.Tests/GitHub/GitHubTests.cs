@@ -23,7 +23,7 @@ namespace AspNet.Security.OAuth.GitHub
 
         public override string DefaultScheme => GitHubAuthenticationDefaults.AuthenticationScheme;
 
-        public override void RegisterAuthentication(AuthenticationBuilder builder)
+        protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
         {
             builder.AddGitHub(options =>
             {
