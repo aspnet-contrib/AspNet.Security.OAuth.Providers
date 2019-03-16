@@ -27,8 +27,11 @@ namespace AspNet.Security.OAuth.Amazon
             builder.AddAmazon(options => ConfigureDefaults(builder, options));
         }
 
-        [Fact]
-        public async Task Can_Sign_In_Using_Amazon()
+        [Theory]
+        [InlineData(ClaimTypes.NameIdentifier, "my-id")]
+        [InlineData(ClaimTypes.Name, "John Smith")]
+        [InlineData(ClaimTypes.Email, "john@john-smith.local")]
+        public async Task Can_Sign_In_Using_Amazon(string claimType, string claimValue)
         {
             // Arrange
             ConfigureTokenEndpoint();
@@ -40,11 +43,7 @@ namespace AspNet.Security.OAuth.Amazon
                 var claims = await AuthenticateUserAsync(server);
 
                 // Assert
-                AssertClaims(
-                    claims,
-                    (ClaimTypes.NameIdentifier, "my-id"),
-                    (ClaimTypes.Name, "John Smith"),
-                    (ClaimTypes.Email, "john@john-smith.local"));
+                AssertClaim(claims, claimType, claimValue);
             }
         }
 

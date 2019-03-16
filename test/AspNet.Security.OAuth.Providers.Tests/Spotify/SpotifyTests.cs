@@ -27,8 +27,16 @@ namespace AspNet.Security.OAuth.Spotify
             builder.AddSpotify(options => ConfigureDefaults(builder, options));
         }
 
-        [Fact]
-        public async Task Can_Sign_In_Using_Spotify()
+        [Theory]
+        [InlineData(ClaimTypes.NameIdentifier, "wizzler")]
+        [InlineData(ClaimTypes.Name, "JM Wizzler")]
+        [InlineData(ClaimTypes.Email, "email@example.com")]
+        [InlineData(ClaimTypes.DateOfBirth, "1937-06-01")]
+        [InlineData(ClaimTypes.Country, "SE")]
+        [InlineData(ClaimTypes.Uri, "spotify:user:wizzler")]
+        [InlineData("urn:spotify:product", "premium")]
+        [InlineData("urn:spotify:url", "https://open.spotify.com/user/wizzler")]
+        public async Task Can_Sign_In_Using_Spotify(string claimType, string claimValue)
         {
             // Arrange
             ConfigureTokenEndpoint();
@@ -40,16 +48,7 @@ namespace AspNet.Security.OAuth.Spotify
                 var claims = await AuthenticateUserAsync(server);
 
                 // Assert
-                AssertClaims(
-                    claims,
-                    (ClaimTypes.NameIdentifier, "wizzler"),
-                    (ClaimTypes.Name, "JM Wizzler"),
-                    (ClaimTypes.Email, "email@example.com"),
-                    (ClaimTypes.DateOfBirth, "1937-06-01"),
-                    (ClaimTypes.Country, "SE"),
-                    (ClaimTypes.Uri, "spotify:user:wizzler"),
-                    ("urn:spotify:product", "premium"),
-                    ("urn:spotify:url", "https://open.spotify.com/user/wizzler"));
+                AssertClaim(claims, claimType, claimValue);
             }
         }
 

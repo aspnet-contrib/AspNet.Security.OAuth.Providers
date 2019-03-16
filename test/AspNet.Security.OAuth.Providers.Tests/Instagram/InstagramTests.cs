@@ -27,8 +27,10 @@ namespace AspNet.Security.OAuth.Instagram
             builder.AddInstagram(options => ConfigureDefaults(builder, options));
         }
 
-        [Fact]
-        public async Task Can_Sign_In_Using_Instagram()
+        [Theory]
+        [InlineData(ClaimTypes.NameIdentifier, "my-id")]
+        [InlineData(ClaimTypes.Name, "John Smith")]
+        public async Task Can_Sign_In_Using_Instagram(string claimType, string claimValue)
         {
             // Arrange
             ConfigureTokenEndpoint();
@@ -40,10 +42,7 @@ namespace AspNet.Security.OAuth.Instagram
                 var claims = await AuthenticateUserAsync(server);
 
                 // Assert
-                AssertClaims(
-                    claims,
-                    (ClaimTypes.NameIdentifier, "my-id"),
-                    (ClaimTypes.Name, "John Smith"));
+                AssertClaim(claims, claimType, claimValue);
             }
         }
 

@@ -147,6 +147,11 @@ namespace AspNet.Security.OAuth
             return claims.ToDictionary((key) => key.Type, (value) => value);
         }
 
+        protected void AssertClaim(IDictionary<string, Claim> actual, string claim, string value)
+        {
+            AssertClaims(actual, (claim, value));
+        }
+
         protected void AssertClaims(IDictionary<string, Claim> actual, params (string claim, string value)[] expected)
         {
             AssertClaims(actual, expected.Select(item => new KeyValuePair<string, string>(item.claim, item.value)));

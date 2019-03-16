@@ -32,8 +32,11 @@ namespace AspNet.Security.OAuth.GitHub
             });
         }
 
-        [Fact]
-        public async Task Can_Sign_In_Using_GitHub()
+        [Theory]
+        [InlineData(ClaimTypes.Name, "my-id")]
+        [InlineData(ClaimTypes.Email, "john@john-smith.local")]
+        [InlineData("urn:github:name", "John Smith")]
+        public async Task Can_Sign_In_Using_GitHub(string claimType, string claimValue)
         {
             // Arrange
             ConfigureTokenEndpoint();
@@ -46,11 +49,7 @@ namespace AspNet.Security.OAuth.GitHub
                 var claims = await AuthenticateUserAsync(server);
 
                 // Assert
-                AssertClaims(
-                    claims,
-                    (ClaimTypes.Name, "my-id"),
-                    ("urn:github:name", "John Smith"),
-                    (ClaimTypes.Email, "john@john-smith.local"));
+                AssertClaim(claims, claimType, claimValue);
             }
         }
 
