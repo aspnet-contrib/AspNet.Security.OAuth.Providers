@@ -6,7 +6,6 @@
 
 using System.Security.Claims;
 using System.Threading.Tasks;
-using JustEat.HttpClientInterception;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
@@ -33,16 +32,12 @@ namespace AspNet.Security.OAuth.GitHub
         }
 
         [Theory]
-        [InlineData(ClaimTypes.Name, "my-id")]
-        [InlineData(ClaimTypes.Email, "john@john-smith.local")]
-        [InlineData("urn:github:name", "John Smith")]
+        [InlineData(ClaimTypes.Name, "octocat")]
+        [InlineData(ClaimTypes.Email, "octocat@github.com")]
+        [InlineData("urn:github:name", "monalisa octocat")]
         public async Task Can_Sign_In_Using_GitHub(string claimType, string claimValue)
         {
             // Arrange
-            ConfigureTokenEndpoint();
-            ConfigureUserEndpoint();
-            ConfigureEmailsEndpoint();
-
             using (var server = CreateTestServer())
             {
                 // Act
@@ -51,38 +46,6 @@ namespace AspNet.Security.OAuth.GitHub
                 // Assert
                 AssertClaim(claims, claimType, claimValue);
             }
-        }
-
-        private void ConfigureTokenEndpoint()
-            => ConfigureTokenEndpoint("https://github.com/login/oauth/access_token");
-
-        private void ConfigureUserEndpoint()
-        {
-            // See https://developer.github.com/v3/users/#get-the-authenticated-user
-            ConfigureUserEndpoint(
-                "https://api.github.com/user",
-                new
-                {
-                    login = "my-id",
-                    name = "John Smith",
-                });
-        }
-
-        private void ConfigureEmailsEndpoint()
-        {
-            var builder = new HttpRequestInterceptionBuilder()
-                .Requests().ForGet().ForUrl("https://api.github.com/user/emails")
-                .Responds().WithJsonContent(
-                    new[]
-                    {
-                        new
-                        {
-                            email = "john@john-smith.local",
-                            primary = true,
-                        }
-                    });
-
-            Interceptor.Register(builder);
         }
     }
 }

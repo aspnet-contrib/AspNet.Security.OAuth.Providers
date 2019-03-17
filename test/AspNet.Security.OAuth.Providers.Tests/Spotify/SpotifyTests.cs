@@ -39,9 +39,6 @@ namespace AspNet.Security.OAuth.Spotify
         public async Task Can_Sign_In_Using_Spotify(string claimType, string claimValue)
         {
             // Arrange
-            ConfigureTokenEndpoint();
-            ConfigureUserEndpoint();
-
             using (var server = CreateTestServer())
             {
                 // Act
@@ -50,39 +47,6 @@ namespace AspNet.Security.OAuth.Spotify
                 // Assert
                 AssertClaim(claims, claimType, claimValue);
             }
-        }
-
-        private void ConfigureTokenEndpoint()
-            => ConfigureTokenEndpoint("https://accounts.spotify.com/api/token");
-
-        private void ConfigureUserEndpoint()
-        {
-            // See https://developer.spotify.com/documentation/web-api/reference/users-profile/get-current-users-profile/
-            ConfigureUserEndpoint(
-                "https://api.spotify.com/v1/me",
-                new
-                {
-                    birthdate = "1937-06-01",
-                    country = "SE",
-                    display_name = "JM Wizzler",
-                    email = "email@example.com",
-                    external_urls = new { spotify = "https://open.spotify.com/user/wizzler" },
-                    followers = new { href = (string)null, total = 3829 },
-                    href = "https://api.spotify.com/v1/users/wizzler",
-                    images = new[]
-                    {
-                        new
-                        {
-                            height = (string)null,
-                            url = "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-frc3/t1.0-1/1970403_10152215092574354_1798272330_n.jpg",
-                            width = (string)null
-                        }
-                    },
-                    id = "wizzler",
-                    product = "premium",
-                    type = "user",
-                    uri = "spotify:user:wizzler",
-                });
         }
     }
 }

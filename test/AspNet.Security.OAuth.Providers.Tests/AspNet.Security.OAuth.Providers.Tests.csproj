@@ -6,14 +6,14 @@
     <IsTestProject>true</IsTestProject>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="xunit.runner.json" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="xunit.runner.json;**\bundle.json" Exclude="bin\**\bundle.json" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\**\*.csproj" />
   </ItemGroup>
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="JustEat.HttpClientInterception" Version="1.2.1" />
+    <PackageReference Include="JustEat.HttpClientInterception" Version="2.0.0-beta1" />
     <PackageReference Include="MartinCostello.Logging.XUnit" Version="0.1.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="2.2.0" />

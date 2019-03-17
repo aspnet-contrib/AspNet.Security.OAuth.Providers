@@ -4,7 +4,6 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using JustEat.HttpClientInterception;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 
@@ -23,35 +22,6 @@ namespace AspNet.Security.OAuth
             options.ClientSecret = "my-client-secret";
 
             base.ConfigureDefaults(builder, options);
-        }
-
-        protected void ConfigureTokenEndpoint(string uriString, object content = null)
-        {
-            if (content == null)
-            {
-                content = new
-                {
-                    access_token = "secret-access-token",
-                    token_type = "access",
-                    refresh_token = "secret-refresh-token",
-                    expires_in = "300",
-                };
-            }
-
-            var builder = new HttpRequestInterceptionBuilder()
-                .Requests().ForPost().ForUrl(uriString)
-                .Responds().WithJsonContent(content);
-
-            Interceptor.Register(builder);
-        }
-
-        protected void ConfigureUserEndpoint(string uriString, object content)
-        {
-            var builder = new HttpRequestInterceptionBuilder()
-                .Requests().ForGet().ForUrl(uriString)
-                .Responds().WithJsonContent(content);
-
-            Interceptor.Register(builder);
         }
     }
 }

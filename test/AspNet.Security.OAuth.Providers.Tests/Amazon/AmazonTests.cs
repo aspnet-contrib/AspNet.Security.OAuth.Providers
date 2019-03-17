@@ -34,9 +34,6 @@ namespace AspNet.Security.OAuth.Amazon
         public async Task Can_Sign_In_Using_Amazon(string claimType, string claimValue)
         {
             // Arrange
-            ConfigureTokenEndpoint();
-            ConfigureUserEndpoint();
-
             using (var server = CreateTestServer())
             {
                 // Act
@@ -45,21 +42,6 @@ namespace AspNet.Security.OAuth.Amazon
                 // Assert
                 AssertClaim(claims, claimType, claimValue);
             }
-        }
-
-        private void ConfigureTokenEndpoint()
-            => ConfigureTokenEndpoint("https://api.amazon.com/auth/o2/token");
-
-        private void ConfigureUserEndpoint()
-        {
-            ConfigureUserEndpoint(
-                "https://api.amazon.com/user/profile?fields=email,name,user_id",
-                new
-                {
-                    user_id = "my-id",
-                    name = "John Smith",
-                    email = "john@john-smith.local",
-                });
         }
     }
 }

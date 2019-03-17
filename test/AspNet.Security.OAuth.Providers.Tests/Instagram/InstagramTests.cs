@@ -33,9 +33,6 @@ namespace AspNet.Security.OAuth.Instagram
         public async Task Can_Sign_In_Using_Instagram(string claimType, string claimValue)
         {
             // Arrange
-            ConfigureTokenEndpoint();
-            ConfigureUserEndpoint();
-
             using (var server = CreateTestServer())
             {
                 // Act
@@ -44,23 +41,6 @@ namespace AspNet.Security.OAuth.Instagram
                 // Assert
                 AssertClaim(claims, claimType, claimValue);
             }
-        }
-
-        private void ConfigureTokenEndpoint()
-            => ConfigureTokenEndpoint("https://api.instagram.com/oauth/access_token");
-
-        private void ConfigureUserEndpoint()
-        {
-            ConfigureUserEndpoint(
-                "https://api.instagram.com/v1/users/self?access_token=secret-access-token",
-                new
-                {
-                    data = new
-                    {
-                        id = "my-id",
-                        full_name = "John Smith",
-                    }
-                });
         }
     }
 }

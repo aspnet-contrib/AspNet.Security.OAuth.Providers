@@ -35,9 +35,6 @@ namespace AspNet.Security.OAuth.VisualStudio
         public async Task Can_Sign_In_Using_Visual_Studio(string claimType, string claimValue)
         {
             // Arrange
-            ConfigureTokenEndpoint();
-            ConfigureUserEndpoint();
-
             using (var server = CreateTestServer())
             {
                 // Act
@@ -46,22 +43,6 @@ namespace AspNet.Security.OAuth.VisualStudio
                 // Assert
                 AssertClaim(claims, claimType, claimValue);
             }
-        }
-
-        private void ConfigureTokenEndpoint()
-            => ConfigureTokenEndpoint("https://app.vssps.visualstudio.com/oauth2/token");
-
-        private void ConfigureUserEndpoint()
-        {
-            ConfigureUserEndpoint(
-                "https://app.vssps.visualstudio.com/_apis/profile/profiles/me",
-                new
-                {
-                    id = "my-id",
-                    publicAlias = "John Smith",
-                    displayName = "John",
-                    emailAddress = "john@john-smith.local",
-                });
         }
     }
 }

@@ -6,6 +6,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -30,6 +31,13 @@ namespace AspNet.Security.OAuth
     public abstract class AuthenticationTests<TOptions> : ITestOutputHelperAccessor
         where TOptions : RemoteAuthenticationOptions
     {
+        protected AuthenticationTests()
+        {
+            Interceptor = new HttpClientInterceptorOptions()
+                .ThrowsOnMissingRegistration()
+                .RegisterBundle(Path.Combine(GetType().Name.Replace("Tests", string.Empty), "bundle.json"));
+        }
+
         /// <summary>
         /// Gets or sets the xunit test output helper to route application logs to.
         /// </summary>
@@ -38,10 +46,7 @@ namespace AspNet.Security.OAuth
         /// <summary>
         /// Gets the interceptor to use for configuring stubbed HTTP responses.
         /// </summary>
-        public HttpClientInterceptorOptions Interceptor { get; } = new HttpClientInterceptorOptions()
-        {
-            ThrowOnMissingRegistration = true
-        };
+        public HttpClientInterceptorOptions Interceptor { get; }
 
         /// <summary>
         /// Gets the name of the authentication scheme being tested.
