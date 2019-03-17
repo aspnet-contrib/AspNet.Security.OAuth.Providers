@@ -54,6 +54,11 @@ namespace AspNet.Security.OAuth
         public abstract string DefaultScheme { get; }
 
         /// <summary>
+        /// Gets the optional redirect URI to use for OAuth flows.
+        /// </summary>
+        protected virtual string RedirectUri { get; }
+
+        /// <summary>
         /// Registers authentication for the test.
         /// </summary>
         /// <param name="builder">The authentication builder to register authentication with.</param>
@@ -102,7 +107,7 @@ namespace AspNet.Security.OAuth
 
             // Arrange - Force a request chain that challenges the request to the authentication
             // handler and returns an authentication cookie to log the user in to the application.
-            using (var client = server.CreateDefaultClient(new LoopbackRedirectHandler()))
+            using (var client = server.CreateDefaultClient(new LoopbackRedirectHandler() { RedirectUri = RedirectUri }))
             {
                 // Act
                 using (var result = await client.GetAsync("/me"))

@@ -17,6 +17,8 @@ namespace AspNet.Security.OAuth.Infrastructure
     /// </summary>
     internal sealed class LoopbackRedirectHandler : DelegatingHandler
     {
+        public string RedirectUri { get; set; }
+
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             var result = await base.SendAsync(request, cancellationToken);
@@ -29,7 +31,7 @@ namespace AspNet.Security.OAuth.Infrastructure
                 // successfully authenticated with the external login page they were redirected to.
                 var queryString = HttpUtility.ParseQueryString(result.Headers.Location.Query);
 
-                string location = queryString["redirect_uri"];
+                string location = queryString["redirect_uri"] ?? RedirectUri;
                 string state = queryString["state"];
 
                 queryString.Clear();
