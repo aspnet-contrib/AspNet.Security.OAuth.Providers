@@ -1,5 +1,5 @@
 {
-  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/fa8cee60cbebfa7890d50eac53001ac1f94f045a/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
+  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
   "items": [
     {
       "uri": "https://accounts.spotify.com/api/token",
