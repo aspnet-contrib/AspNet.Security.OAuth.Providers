@@ -17,6 +17,7 @@ using AspNet.Security.OAuth.Infrastructure;
 using JustEat.HttpClientInterception;
 using MartinCostello.Logging.XUnit;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
@@ -25,13 +26,13 @@ using Xunit.Abstractions;
 namespace AspNet.Security.OAuth
 {
     /// <summary>
-    /// The base class for integration tests for authentication providers.
+    /// The base class for integration tests for OAuth-based authentication providers.
     /// </summary>
     /// <typeparam name="TOptions">The options type for the authentication provider being tested.</typeparam>
-    public abstract class AuthenticationTests<TOptions> : ITestOutputHelperAccessor
-        where TOptions : RemoteAuthenticationOptions
+    public abstract class OAuthTests<TOptions> : ITestOutputHelperAccessor
+        where TOptions : OAuthOptions
     {
-        protected AuthenticationTests()
+        protected OAuthTests()
         {
             Interceptor = new HttpClientInterceptorOptions()
                 .ThrowsOnMissingRegistration()
@@ -71,6 +72,8 @@ namespace AspNet.Security.OAuth
         /// <param name="options">The authentication options to configure.</param>
         protected virtual void ConfigureDefaults(AuthenticationBuilder builder, TOptions options)
         {
+            options.ClientId = "my-client-id";
+            options.ClientSecret = "my-client-secret";
             options.Backchannel = CreateBackchannel(builder);
         }
 
@@ -157,23 +160,10 @@ namespace AspNet.Security.OAuth
             return claims.ToDictionary((key) => key.Type, (value) => value);
         }
 
-        protected void AssertClaim(IDictionary<string, Claim> actual, string claim, string value)
+        protected void AssertClaim(IDictionary<string, Claim> actual, string claimType, string claimValue)
         {
-            AssertClaims(actual, (claim, value));
-        }
-
-        protected void AssertClaims(IDictionary<string, Claim> actual, params (string claim, string value)[] expected)
-        {
-            AssertClaims(actual, expected.Select(item => new KeyValuePair<string, string>(item.claim, item.value)));
-        }
-
-        protected void AssertClaims(IDictionary<string, Claim> actual, IEnumerable<KeyValuePair<string, string>> expected)
-        {
-            foreach (var claim in expected)
-            {
-                actual.ShouldContainKey(claim.Key);
-                actual[claim.Key].Value.ShouldBe(claim.Value);
-            }
+            actual.ShouldContainKey(claimType);
+            actual[claimType].Value.ShouldBe(claimValue);
         }
     }
 }

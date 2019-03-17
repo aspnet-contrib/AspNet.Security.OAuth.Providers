@@ -9,6 +9,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Xml.Linq;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -32,8 +33,8 @@ namespace AspNet.Security.OAuth.Infrastructure
         /// <returns>
         /// The test application to use for the authentication provider.
         /// </returns>
-        public static WebApplicationFactory<Program> CreateApplication<TOptions>(AuthenticationTests<TOptions> tests, Action<IServiceCollection> configureServices = null)
-            where TOptions : RemoteAuthenticationOptions
+        public static WebApplicationFactory<Program> CreateApplication<TOptions>(OAuthTests<TOptions> tests, Action<IServiceCollection> configureServices = null)
+            where TOptions : OAuthOptions
         {
             return new TestApplicationFactory()
                 .WithWebHostBuilder(builder =>
@@ -47,8 +48,8 @@ namespace AspNet.Security.OAuth.Infrastructure
                 });
         }
 
-        private static void Configure<TOptions>(IWebHostBuilder builder, AuthenticationTests<TOptions> tests)
-            where TOptions : RemoteAuthenticationOptions
+        private static void Configure<TOptions>(IWebHostBuilder builder, OAuthTests<TOptions> tests)
+            where TOptions : OAuthOptions
         {
             // Use a dummy content root
             builder.UseContentRoot(".");
