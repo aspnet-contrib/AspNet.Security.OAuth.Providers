@@ -36,7 +36,7 @@ namespace AspNet.Security.OAuth.Infrastructure
 
                 queryString.Clear();
 
-                queryString.Add("code", Guid.NewGuid().ToString());
+                queryString.Add("code", "a6ed8e7f-471f-44f1-903b-65946475f351");
                 queryString.Add("state", state);
 
                 var builder = new UriBuilder(location)
