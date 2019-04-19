@@ -1,4 +1,4 @@
-dotnet: 3.0.100-preview3-010431
+#dotnet: 3.0.100-preview4-011136
 language: csharp
 mono: none
 sudo: false
