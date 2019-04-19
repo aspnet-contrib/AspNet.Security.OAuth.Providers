@@ -1,0 +1,8 @@
+{
+  "sdk": {
+    "version": "3.0.100-preview4-011136"
+  },
+  "msbuild-sdks": {
+    "Internal.AspNetCore.Sdk": "3.0.0-build-20190416.2"
+  }
+}
