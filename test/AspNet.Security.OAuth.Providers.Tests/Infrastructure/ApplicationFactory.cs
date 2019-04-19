@@ -86,8 +86,10 @@ namespace AspNet.Security.OAuth.Infrastructure
         {
             // Configure a single HTTP resource that challenges the client if unauthenticated
             // or returns the logged in user's claims as XML if the request is authenticated.
+            app.UseRouting();
+
             app.UseAuthentication()
-               .UseRouting(endpoints =>
+               .UseEndpoints(endpoints =>
                {
                    endpoints.MapGet(
                        "/me",
