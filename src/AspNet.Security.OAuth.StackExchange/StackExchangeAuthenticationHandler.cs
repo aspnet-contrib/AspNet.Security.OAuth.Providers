@@ -73,15 +73,17 @@ namespace AspNet.Security.OAuth.StackExchange
 
         protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] string code, [NotNull] string redirectUri)
         {
-            var request = new HttpRequestMessage(HttpMethod.Post, Options.TokenEndpoint);
-            request.Content = new FormUrlEncodedContent(new Dictionary<string, string>
+            var request = new HttpRequestMessage(HttpMethod.Post, Options.TokenEndpoint)
             {
-                ["client_id"] = Options.ClientId,
-                ["redirect_uri"] = redirectUri,
-                ["client_secret"] = Options.ClientSecret,
-                ["code"] = code,
-                ["grant_type"] = "authorization_code"
-            });
+                Content = new FormUrlEncodedContent(new Dictionary<string, string>
+                {
+                    ["client_id"] = Options.ClientId,
+                    ["redirect_uri"] = redirectUri,
+                    ["client_secret"] = Options.ClientSecret,
+                    ["code"] = code,
+                    ["grant_type"] = "authorization_code"
+                })
+            };
 
             var response = await Backchannel.SendAsync(request, Context.RequestAborted);
             if (!response.IsSuccessStatusCode)

@@ -19,8 +19,18 @@ using Microsoft.Extensions.Options;
 
 namespace AspNet.Security.OAuth.Amazon
 {
+    /// <summary>
+    /// Defines a handler for authentication using Amazon.
+    /// </summary>
     public class AmazonAuthenticationHandler : OAuthHandler<AmazonAuthenticationOptions>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AmazonAuthenticationHandler"/> class.
+        /// </summary>
+        /// <param name="options">The authentication options.</param>
+        /// <param name="logger">The logger to use.</param>
+        /// <param name="encoder">The URL encoder to use.</param>
+        /// <param name="clock">The system clock to use.</param>
         public AmazonAuthenticationHandler(
             [NotNull] IOptionsMonitor<AmazonAuthenticationOptions> options,
             [NotNull] ILoggerFactory logger,
@@ -30,6 +40,7 @@ namespace AspNet.Security.OAuth.Amazon
         {
         }
 
+        /// <inheritdoc />
         protected override async Task<AuthenticationTicket> CreateTicketAsync([NotNull] ClaimsIdentity identity,
             [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens)
         {
