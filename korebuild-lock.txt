@@ -1,2 +1,2 @@
-version:3.0.0-build-20190416.2
-commithash:cba9dd9b9f15caf38dc1f739a09881d0540d430d
+version:3.0.0-build-20190504.3
+commithash:65389c06f82dbd2c6ec79c0da34df25eca48db5c

@@ -5,6 +5,7 @@
  */
 
 using System;
+using System.Buffers;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Pipelines;
@@ -118,7 +119,7 @@ namespace AspNet.Security.OAuth.QQ
             // HACK Work out the best way to do this with System.Text.Json
             using (var stream = new MemoryStream())
             {
-                CopyPayload(content, stream);
+                await CopyPayloadAsync(content, stream);
 
                 var payload = JsonDocument.Parse(stream);
                 return OAuthTokenResponse.Success(payload);
@@ -150,27 +151,40 @@ namespace AspNet.Security.OAuth.QQ
                 body = body.Substring(index, body.LastIndexOf("}") - index + 1);
             }
 
-            var payload = JsonDocument.Parse(body);
-
-            return payload.RootElement.GetString("openid");
+            using (var payload = JsonDocument.Parse(body))
+            {
+                return payload.RootElement.GetString("openid");
+            }
         }
 
         protected override string FormatScope() => string.Join(",", Options.Scope);
 
-        private void CopyPayload(Dictionary<string, StringValues> content, Stream stream)
+        private async Task CopyPayloadAsync(Dictionary<string, StringValues> content, Stream stream)
         {
             var output = new StreamPipeWriter(stream);
-            var writer = new Utf8JsonWriter(output);
 
-            writer.WriteStartObject();
+            await CopyPayloadAsync(content, output);
 
-            foreach (var item in content)
-            {
-                writer.WriteString(item.Key, item.Value);
-            }
+            await output.FlushAsync();
+            output.Complete();
 
-            writer.Flush();
             stream.Seek(0, SeekOrigin.Begin);
+        }
+
+        private async Task CopyPayloadAsync(Dictionary<string, StringValues> content, IBufferWriter<byte> bufferWriter)
+        {
+            await using (var writer = new Utf8JsonWriter(bufferWriter))
+            {
+                writer.WriteStartObject();
+
+                foreach (var item in content)
+                {
+                    writer.WriteString(item.Key, item.Value);
+                }
+
+                writer.WriteEndObject();
+                await writer.FlushAsync();
+            }
         }
     }
 }

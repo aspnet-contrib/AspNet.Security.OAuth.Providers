@@ -5,9 +5,11 @@
  */
 
 using System;
+using System.Buffers;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Pipelines;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
@@ -38,12 +40,17 @@ namespace AspNet.Security.OAuth.StackExchange
         protected override async Task<AuthenticationTicket> CreateTicketAsync([NotNull] ClaimsIdentity identity,
             [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens)
         {
-            var address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, new Dictionary<string, string>
+            var queryArguments = new Dictionary<string, string>
             {
                 ["access_token"] = tokens.AccessToken,
-                ["key"] = Options.RequestKey,
-                ["site"] = Options.Site
-            });
+                ["site"] = Options.Site,
+            };
+            if (!string.IsNullOrEmpty(Options.RequestKey))
+            {
+                queryArguments["key"] = Options.RequestKey;
+            }
+
+            var address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, queryArguments);
 
             var request = new HttpRequestMessage(HttpMethod.Get, address);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -64,7 +71,7 @@ namespace AspNet.Security.OAuth.StackExchange
             {
                 var principal = new ClaimsPrincipal(identity);
                 var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload.RootElement);
-                context.RunClaimActions(payload.RootElement.GetProperty("items"));
+                context.RunClaimActions(payload.RootElement.GetProperty("items").EnumerateArray().First());
 
                 await Options.Events.CreatingTicket(context);
                 return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
@@ -104,27 +111,39 @@ namespace AspNet.Security.OAuth.StackExchange
             // HACK Work out the best way to do this with System.Text.Json
             using (var stream = new MemoryStream())
             {
-                CopyPayload(content, stream);
+                await CopyPayloadAsync(content, stream);
 
                 var copy = JsonDocument.Parse(stream);
                 return OAuthTokenResponse.Success(copy);
             }
         }
 
-        private void CopyPayload(Dictionary<string, StringValues> content, Stream stream)
+        private async Task CopyPayloadAsync(Dictionary<string, StringValues> content, Stream stream)
         {
             var output = new StreamPipeWriter(stream);
-            var writer = new Utf8JsonWriter(output);
 
-            writer.WriteStartObject();
+            await CopyPayloadAsync(content, output);
 
-            foreach (var item in content)
-            {
-                writer.WriteString(item.Key, item.Value);
-            }
+            await output.FlushAsync();
+            output.Complete();
 
-            writer.Flush();
             stream.Seek(0, SeekOrigin.Begin);
+        }
+
+        private async Task CopyPayloadAsync(Dictionary<string, StringValues> content, IBufferWriter<byte> bufferWriter)
+        {
+            await using (var writer = new Utf8JsonWriter(bufferWriter))
+            {
+                writer.WriteStartObject();
+
+                foreach (var item in content)
+                {
+                    writer.WriteString(item.Key, item.Value);
+                }
+
+                writer.WriteEndObject();
+                await writer.FlushAsync();
+            }
         }
     }
 }

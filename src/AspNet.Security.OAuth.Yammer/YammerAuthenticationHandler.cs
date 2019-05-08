@@ -5,6 +5,7 @@
  */
 
 using System;
+using System.Buffers;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Pipelines;
@@ -102,27 +103,38 @@ namespace AspNet.Security.OAuth.Yammer
             // HACK Work out the best way to do this with System.Text.Json
             using (var stream = new MemoryStream())
             {
-                WriteAccessToken(accessToken, stream);
+                await WriteAccessTokenAsync(accessToken, stream);
 
                 var copy = JsonDocument.Parse(stream);
                 return OAuthTokenResponse.Success(copy);
             }
         }
 
-        private void WriteAccessToken(string token, Stream stream)
+        private async Task WriteAccessTokenAsync(string token, Stream stream)
         {
             var output = new StreamPipeWriter(stream);
-            var writer = new Utf8JsonWriter(output);
 
-            writer.WriteStartObject();
-            writer.WriteString("access_token", token);
-            writer.WriteString("token_type", string.Empty);
-            writer.WriteString("refresh_token", string.Empty);
-            writer.WriteString("expires_in", string.Empty);
-            writer.WriteEndObject();
+            await WriteAccessTokenAsync(token, output);
 
-            writer.Flush();
+            await output.FlushAsync();
+            output.Complete();
+
             stream.Seek(0, SeekOrigin.Begin);
+        }
+
+        private async Task WriteAccessTokenAsync(string token, IBufferWriter<byte> bufferWriter)
+        {
+            await using (var writer = new Utf8JsonWriter(bufferWriter))
+            {
+                writer.WriteStartObject();
+                writer.WriteString("access_token", token);
+                writer.WriteString("token_type", string.Empty);
+                writer.WriteString("refresh_token", string.Empty);
+                writer.WriteString("expires_in", string.Empty);
+                writer.WriteEndObject();
+
+                await writer.FlushAsync();
+            }
         }
     }
 }
