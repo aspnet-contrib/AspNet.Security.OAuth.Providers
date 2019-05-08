@@ -7,8 +7,6 @@
 using System;
 using System.Buffers;
 using System.Collections.Generic;
-using System.IO;
-using System.IO.Pipelines;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -108,30 +106,14 @@ namespace AspNet.Security.OAuth.StackExchange
             // Since OAuthTokenResponse expects a JSON payload, a response is manually created using the returned values.
             var content = QueryHelpers.ParseQuery(await response.Content.ReadAsStringAsync());
 
-            // HACK Work out the best way to do this with System.Text.Json
-            using (var stream = new MemoryStream())
-            {
-                await CopyPayloadAsync(content, stream);
-
-                var copy = JsonDocument.Parse(stream);
-                return OAuthTokenResponse.Success(copy);
-            }
+            var copy = await CopyPayloadAsync(content);
+            return OAuthTokenResponse.Success(copy);
         }
 
-        private async Task CopyPayloadAsync(Dictionary<string, StringValues> content, Stream stream)
+        private async Task<JsonDocument> CopyPayloadAsync(Dictionary<string, StringValues> content)
         {
-            var output = new StreamPipeWriter(stream);
+            var bufferWriter = new ArrayBufferWriter<byte>();
 
-            await CopyPayloadAsync(content, output);
-
-            await output.FlushAsync();
-            output.Complete();
-
-            stream.Seek(0, SeekOrigin.Begin);
-        }
-
-        private async Task CopyPayloadAsync(Dictionary<string, StringValues> content, IBufferWriter<byte> bufferWriter)
-        {
             await using (var writer = new Utf8JsonWriter(bufferWriter))
             {
                 writer.WriteStartObject();
@@ -144,6 +126,8 @@ namespace AspNet.Security.OAuth.StackExchange
                 writer.WriteEndObject();
                 await writer.FlushAsync();
             }
+
+            return JsonDocument.Parse(bufferWriter.WrittenMemory);
         }
     }
 }

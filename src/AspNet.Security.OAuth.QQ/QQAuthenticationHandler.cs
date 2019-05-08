@@ -7,8 +7,6 @@
 using System;
 using System.Buffers;
 using System.Collections.Generic;
-using System.IO;
-using System.IO.Pipelines;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
@@ -116,14 +114,8 @@ namespace AspNet.Security.OAuth.QQ
 
             var content = QueryHelpers.ParseQuery(await response.Content.ReadAsStringAsync());
 
-            // HACK Work out the best way to do this with System.Text.Json
-            using (var stream = new MemoryStream())
-            {
-                await CopyPayloadAsync(content, stream);
-
-                var payload = JsonDocument.Parse(stream);
-                return OAuthTokenResponse.Success(payload);
-            }
+            var payload = await CopyPayloadAsync(content);
+            return OAuthTokenResponse.Success(payload);
         }
 
         private async Task<string> GetUserIdentifierAsync(OAuthTokenResponse tokens)
@@ -159,20 +151,10 @@ namespace AspNet.Security.OAuth.QQ
 
         protected override string FormatScope() => string.Join(",", Options.Scope);
 
-        private async Task CopyPayloadAsync(Dictionary<string, StringValues> content, Stream stream)
+        private async Task<JsonDocument> CopyPayloadAsync(Dictionary<string, StringValues> content)
         {
-            var output = new StreamPipeWriter(stream);
+            var bufferWriter = new ArrayBufferWriter<byte>();
 
-            await CopyPayloadAsync(content, output);
-
-            await output.FlushAsync();
-            output.Complete();
-
-            stream.Seek(0, SeekOrigin.Begin);
-        }
-
-        private async Task CopyPayloadAsync(Dictionary<string, StringValues> content, IBufferWriter<byte> bufferWriter)
-        {
             await using (var writer = new Utf8JsonWriter(bufferWriter))
             {
                 writer.WriteStartObject();
@@ -185,6 +167,8 @@ namespace AspNet.Security.OAuth.QQ
                 writer.WriteEndObject();
                 await writer.FlushAsync();
             }
+
+            return JsonDocument.Parse(bufferWriter.WrittenMemory);
         }
     }
 }
