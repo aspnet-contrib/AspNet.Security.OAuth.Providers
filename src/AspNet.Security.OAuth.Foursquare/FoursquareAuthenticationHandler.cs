@@ -38,7 +38,7 @@ namespace AspNet.Security.OAuth.Foursquare
             var address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, new Dictionary<string, string>
             {
                 ["m"] = "foursquare",
-                ["v"] = Options.ApiVersion,
+                ["v"] = !string.IsNullOrEmpty(Options.ApiVersion) ? Options.ApiVersion : FoursquareAuthenticationDefaults.ApiVersion,
                 ["oauth_token"] = tokens.AccessToken,
             });
 
