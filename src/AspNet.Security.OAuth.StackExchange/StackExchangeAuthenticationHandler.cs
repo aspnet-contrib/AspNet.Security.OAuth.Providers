@@ -35,12 +35,17 @@ namespace AspNet.Security.OAuth.StackExchange
         protected override async Task<AuthenticationTicket> CreateTicketAsync([NotNull] ClaimsIdentity identity,
             [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens)
         {
-            var address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, new Dictionary<string, string>
+            var queryArguments = new Dictionary<string, string>
             {
                 ["access_token"] = tokens.AccessToken,
-                ["key"] = Options.RequestKey,
-                ["site"] = Options.Site
-            });
+                ["site"] = Options.Site,
+            };
+            if (!string.IsNullOrEmpty(Options.RequestKey))
+            {
+                queryArguments["key"] = Options.RequestKey;
+            }
+
+            var address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, queryArguments);
 
             var request = new HttpRequestMessage(HttpMethod.Get, address);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -61,7 +66,7 @@ namespace AspNet.Security.OAuth.StackExchange
 
             var principal = new ClaimsPrincipal(identity);
             var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload);
-            context.RunClaimActions(payload.Value<JObject>("items"));
+            context.RunClaimActions(payload.Value<JArray>("items")?[0] as JObject);
 
             await Options.Events.CreatingTicket(context);
             return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
