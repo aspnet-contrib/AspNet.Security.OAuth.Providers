@@ -171,7 +171,7 @@ namespace AspNet.Security.OAuth
             if (DateTimeOffset.TryParse(actualValue, out var actualAsDate) &&
                 DateTimeOffset.TryParse(claimValue, out var expectedAsDate))
             {
-                actualAsDate.ShouldBe(expectedAsDate);
+                actualAsDate.UtcDateTime.ShouldBe(expectedAsDate.UtcDateTime);
             }
             else
             {
