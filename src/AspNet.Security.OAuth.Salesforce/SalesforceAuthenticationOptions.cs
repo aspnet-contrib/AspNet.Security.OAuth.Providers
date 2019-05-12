@@ -27,11 +27,11 @@ namespace AspNet.Security.OAuth.Salesforce
             Environment = SalesforceAuthenticationDefaults.Environment;
 
             ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "user_id");
-            ClaimActions.MapJsonKey(ClaimTypes.Name, "user_name");
+            ClaimActions.MapJsonKey(ClaimTypes.Name, "username");
             ClaimActions.MapJsonKey(Claims.Email, "email");
-            ClaimActions.MapJsonKey(Claims.ThumbnailPhoto, "thumbnail");
             ClaimActions.MapJsonKey(Claims.UtcOffset, "utcOffset");
             ClaimActions.MapCustomJson(Claims.RestUrl, user => user["urls"]?.Value<string>("rest"));
+            ClaimActions.MapCustomJson(Claims.ThumbnailPhoto, user => user["photos"]?.Value<string>("thumbnail"));
         }
 
         public SalesforceAuthenticationEnvironment Environment
