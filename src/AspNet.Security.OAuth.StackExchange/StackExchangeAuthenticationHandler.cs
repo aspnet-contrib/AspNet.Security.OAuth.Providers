@@ -35,6 +35,12 @@ namespace AspNet.Security.OAuth.StackExchange
         protected override async Task<AuthenticationTicket> CreateTicketAsync([NotNull] ClaimsIdentity identity,
             [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens)
         {
+            if (string.IsNullOrEmpty(Options.Site))
+            {
+                throw new InvalidOperationException(
+                    $"No site was specified for the {nameof(StackExchangeAuthenticationOptions.Site)} property of {nameof(StackExchangeAuthenticationOptions)}.");
+            }
+
             var queryArguments = new Dictionary<string, string>
             {
                 ["access_token"] = tokens.AccessToken,
