@@ -88,24 +88,24 @@ namespace AspNet.Security.OAuth.Infrastructure
             // or returns the logged in user's claims as XML if the request is authenticated.
             app.UseAuthentication();
 
-            app.Map("/me", (app2) =>
-                    app2.Run(async context =>
+            app.Map("/me", childApp => childApp.Run(
+                async context =>
+                {
+                    if (context.User.Identity.IsAuthenticated)
                     {
-                        if (context.User.Identity.IsAuthenticated)
-                        {
-                            var xml = IdentityToXmlString(context.User);
-                            var buffer = Encoding.UTF8.GetBytes(xml.ToString());
+                        var xml = IdentityToXmlString(context.User);
+                        var buffer = Encoding.UTF8.GetBytes(xml.ToString());
 
-                            context.Response.StatusCode = 200;
-                            context.Response.ContentType = "text/xml";
+                        context.Response.StatusCode = 200;
+                        context.Response.ContentType = "text/xml";
                                
-                            await context.Response.Body.WriteAsync(buffer, 0, buffer.Length);
-                        }
-                        else
-                        {
-                            await context.ChallengeAsync();
-                        }
-                    }));
+                        await context.Response.Body.WriteAsync(buffer, 0, buffer.Length);
+                    }
+                    else
+                    {
+                        await context.ChallengeAsync();
+                    }
+                }));
         }
 
         private static string IdentityToXmlString(ClaimsPrincipal user)
