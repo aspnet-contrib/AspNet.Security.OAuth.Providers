@@ -15,7 +15,6 @@ env:
     - DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
     - DOTNET_CLI_TELEMETRY_OPTOUT: 1
     - NUGET_XMLDOC_MODE: skip
-mono: none
 os:
   - linux
   - osx
