@@ -74,15 +74,17 @@ namespace AspNet.Security.OAuth.StackExchange
 
         protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] string code, [NotNull] string redirectUri)
         {
-            var request = new HttpRequestMessage(HttpMethod.Post, Options.TokenEndpoint);
-            request.Content = new FormUrlEncodedContent(new Dictionary<string, string>
+            var request = new HttpRequestMessage(HttpMethod.Post, Options.TokenEndpoint)
             {
-                ["client_id"] = Options.ClientId,
-                ["redirect_uri"] = redirectUri,
-                ["client_secret"] = Options.ClientSecret,
-                ["code"] = code,
-                ["grant_type"] = "authorization_code"
-            });
+                Content = new FormUrlEncodedContent(new Dictionary<string, string>
+                {
+                    ["client_id"] = Options.ClientId,
+                    ["redirect_uri"] = redirectUri,
+                    ["client_secret"] = Options.ClientSecret,
+                    ["code"] = code,
+                    ["grant_type"] = "authorization_code"
+                })
+            };
 
             var response = await Backchannel.SendAsync(request, Context.RequestAborted);
             if (!response.IsSuccessStatusCode)
@@ -97,7 +99,7 @@ namespace AspNet.Security.OAuth.StackExchange
             }
 
             // Note: StackExchange's token endpoint doesn't return JSON but uses application/x-www-form-urlencoded.
-            // Since OAuthTokenResponse expects a JSON payload, a JObject is manually created using the returned values.
+            // Since OAuthTokenResponse expects a JSON payload, a response is manually created using the returned values.
             var content = QueryHelpers.ParseQuery(await response.Content.ReadAsStringAsync());
 
             var payload = new JObject();

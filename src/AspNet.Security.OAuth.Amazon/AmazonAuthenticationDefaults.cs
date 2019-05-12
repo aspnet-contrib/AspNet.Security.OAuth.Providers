@@ -6,7 +6,6 @@
 
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.AspNetCore.Builder;
 
 namespace AspNet.Security.OAuth.Amazon
 {

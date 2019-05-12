@@ -17,12 +17,11 @@ namespace AspNet.Security.OAuth.Amazon
     public class AmazonAuthenticationOptions : OAuthOptions
     {
         /// <summary>
-        /// Initialize a new instance of the <see cref="AmazonAuthenticationOptions"/> class.
+        /// Initializes a new instance of the <see cref="AmazonAuthenticationOptions"/> class.
         /// </summary>
         public AmazonAuthenticationOptions()
         {
             ClaimsIssuer = AmazonAuthenticationDefaults.Issuer;
-
             CallbackPath = AmazonAuthenticationDefaults.CallbackPath;
 
             AuthorizationEndpoint = AmazonAuthenticationDefaults.AuthorizationEndpoint;
