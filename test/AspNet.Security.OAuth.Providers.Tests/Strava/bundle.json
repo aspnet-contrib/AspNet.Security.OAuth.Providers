@@ -1,0 +1,36 @@
+{
+  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
+  "items": [
+    {
+      "uri": "https://www.strava.com/oauth/token",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "secret-access-token",
+        "token_type": "access",
+        "refresh_token": "secret-refresh-token",
+        "expires_in": "300"
+      }
+    },
+    {
+      "uri": "https://www.strava.com/api/v3/athlete",
+      "contentFormat": "json",
+      "contentJson": {
+        "id": "my-id",
+        "username": "John Smith",
+        "firstname": "John",
+        "lastname": "Smith",
+        "email": "john@john-smith.local",
+        "state": "Washington",
+        "country": "US",
+        "sex": "Male",
+        "city": "Seattle",
+        "profile": "https://strava.local/images/JohnSmith.png",
+        "profile_medium": "https://strava.local/images/JohnSmith-medium.png",
+        "created_at": "2019-03-17T16:12:00+00:00",
+        "updated_at": "2019-03-17T16:13:00+00:00",
+        "premium": false
+      }
+    }
+  ]
+}

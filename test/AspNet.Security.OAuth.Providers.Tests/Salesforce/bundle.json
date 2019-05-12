@@ -1,0 +1,57 @@
+{
+  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
+  "items": [
+    {
+      "comment": "https://help.salesforce.com/articleView?id=remoteaccess_oauth_jwt_flow.htm&type=0",
+      "uri": "https://login.salesforce.com/services/oauth2/token",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "00Dxx0000001gPL!AR8AQJXg5oj8jXSgxJfA0lBog.39AsX.LVpxezPwuX5VAIrrbbHMuol7GQxnMeYMN7cj8EoWr78nt1u44zU31IbYNNJguseu",
+        "scope": "web openid api id",
+        "instance_url": "https://yourInstance.salesforce.com",
+        "id": "https://test-instance.salesforce.com/id/00Dxx0000001gPLEAY/005xx000001SwiUAAS",
+        "token_type": "Bearer"
+      }
+    },
+    {
+      "comment": "https://help.salesforce.com/articleView?id=remoteaccess_using_openid.htm&type=5",
+      "uri": "https://test-instance.salesforce.com/id/00Dxx0000001gPLEAY/005xx000001SwiUAAS",
+      "contentFormat": "json",
+      "contentJson": {
+        "id": "https://yourInstance.salesforce.com/id/00Dx0000001T0zk/005x0000001S2b9",
+        "asserted_user": true,
+        "user_id": "005x0000001S2b9",
+        "username": "alanvan",
+        "organization_id": "00Dx0000001T0zk",
+        "nick_name": "admin1.2777578168398293E12foofoofoofoo",
+        "display_name": "Alan Van",
+        "email": "admin@2060747062579699.com",
+        "status": {
+          "created_date": null,
+          "body": null
+        },
+        "photos": {
+          "picture": "https://yourInstance.salesforce.com/profilephoto/005/F",
+          "thumbnail": "https://yourInstance.salesforce.com/profilephoto/005/T"
+        },
+        "urls": {
+          "enterprise": "https://yourInstance.salesforce.com/services/Soap/c/{version}/00Dx0000001T0zk",
+          "metadata": "https://yourInstance.salesforce.com/services/Soap/m/{version}/00Dx0000001T0zk",
+          "partner": "https://yourInstance.salesforce.com/services/Soap/u/{version}/00Dx0000001T0zk",
+          "rest": "https://yourInstance.salesforce.com/services/data/v{version}/",
+          "sobjects": "https://yourInstance.salesforce.com/services/data/v{version}/sobjects/",
+          "search": "https://yourInstance.salesforce.com/services/data/v{version}/search/",
+          "query": "https://yourInstance.salesforce.com/services/data/v{version}/query/",
+          "profile": "https://yourInstance.salesforce.com/005x0000001S2b9"
+        },
+        "active": true,
+        "user_type": "STANDARD",
+        "language": "en_US",
+        "locale": "en_US",
+        "utcOffset": -28800000,
+        "last_modified_date": "2010-06-28T20:54:09.000+0000"
+      }
+    }
+  ]
+}

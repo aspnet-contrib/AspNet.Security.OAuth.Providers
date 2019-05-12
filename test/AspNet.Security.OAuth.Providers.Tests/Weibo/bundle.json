@@ -1,0 +1,41 @@
+{
+  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
+  "items": [
+    {
+      "uri": "https://api.weibo.com/oauth2/access_token",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "secret-access-token",
+        "token_type": "access",
+        "refresh_token": "secret-refresh-token",
+        "expires_in": "300",
+        "uid": "67f4fbf2-c5a5-4ba5-8694-6838b9603d9e"
+      }
+    },
+    {
+      "uri": "https://api.weibo.com/2/users/show.json?access_token=secret-access-token&uid=67f4fbf2-c5a5-4ba5-8694-6838b9603d9e",
+      "contentFormat": "json",
+      "contentJson": {
+        "id": "my-id",
+        "name": "John Smith",
+        "gender": "male",
+        "screen_name": "JohnSmith",
+        "profile_image_url": "https://weibo.local/profile.png",
+        "avatar_large": "Avatar Large",
+        "avatar_hd": "Avatar HD",
+        "cover_image_phone": "Nokia 3310",
+        "location": "The Cloud"
+      }
+    },
+    {
+      "uri": "https://api.weibo.com/2/account/profile/email.json?access_token=secret-access-token",
+      "contentFormat": "json",
+      "contentJson": [
+        {
+          "email": "john@john-smith.local"
+        }
+      ]
+    }
+  ]
+}

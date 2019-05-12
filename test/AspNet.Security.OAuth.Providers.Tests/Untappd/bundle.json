@@ -1,0 +1,31 @@
+{
+  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
+  "items": [
+    {
+      "uri": "https://untappd.com/oauth/authorize",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "secret-access-token",
+        "token_type": "access",
+        "refresh_token": "secret-refresh-token",
+        "expires_in": "300"
+      }
+    },
+    {
+      "uri": "https://api.untappd.com/v4/user/info",
+      "contentFormat": "json",
+      "contentJson": {
+        "user": {
+          "id": "my-id",
+          "first_name": "John",
+          "last_name": "Smith",
+          "user_name": "John Smith",
+          "email": "john@john-smith.local",
+          "url": "https://untappd.local/JohnSmith",
+          "user_avatar": "https://untappd.local/john-smith.png"
+        }
+      }
+    }
+  ]
+}

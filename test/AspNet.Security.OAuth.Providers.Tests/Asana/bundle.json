@@ -1,0 +1,27 @@
+{
+  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
+  "items": [
+    {
+      "uri": "https://app.asana.com/-/oauth_token",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "secret-access-token",
+        "token_type": "access",
+        "refresh_token": "secret-refresh-token",
+        "expires_in": "300"
+      }
+    },
+    {
+      "uri": "https://app.asana.com/api/1.0/users/me",
+      "contentFormat": "json",
+      "contentJson": {
+        "data": {
+          "id": "my-id",
+          "name": "John Smith",
+          "email": "john@john-smith.local"
+        }
+      }
+    }
+  ]
+}
