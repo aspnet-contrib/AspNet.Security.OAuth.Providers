@@ -2,9 +2,9 @@
 
   <PropertyGroup Label="Package Versions">
     <AspNetCoreVersion>2.0.0</AspNetCoreVersion>
+    <GoogleProviderVersion>2.2.2</GoogleProviderVersion>
     <JetBrainsVersion>10.3.0</JetBrainsVersion>
-    <NetStandardImplicitPackageVersion>2.0.0</NetStandardImplicitPackageVersion>
-    <RuntimeFrameworkVersion>2.0.0</RuntimeFrameworkVersion>
+    <TwitterProviderVersion>2.2.0</TwitterProviderVersion>
   </PropertyGroup>
 
 </Project>
