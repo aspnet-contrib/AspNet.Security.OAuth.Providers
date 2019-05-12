@@ -60,7 +60,7 @@ namespace AspNet.Security.OAuth.Foursquare
 
             var principal = new ClaimsPrincipal(identity);
             var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload);
-            context.RunClaimActions(payload.Value<JObject>("response")?.Value<JObject>("payload"));
+            context.RunClaimActions(payload.Value<JObject>("response")?.Value<JObject>("user"));
 
             await Options.Events.CreatingTicket(context);
             return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
