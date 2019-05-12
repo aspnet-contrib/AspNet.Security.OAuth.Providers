@@ -1,0 +1,49 @@
+{
+  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
+  "items": [
+    {
+      "comment": "https://www.dropbox.com/developers/documentation/http/documentation#oa2-token",
+      "uri": "https://api.dropboxapi.com/oauth2/token",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "ABCDEFG",
+        "token_type": "bearer",
+        "account_id": "dbid:AAH4f99T0taONIb-OurWxbNQ6ywGRopQngc",
+        "uid": "12345"
+      }
+    },
+    {
+      "comment": "https://www.dropbox.com/developers/documentation/http/documentation#users-get_current_account",
+      "uri": "https://api.dropboxapi.com/2/users/get_current_account",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "account_id": "dbid:AAH4f99T0taONIb-OurWxbNQ6ywGRopQngc",
+        "name": {
+          "given_name": "Franz",
+          "surname": "Ferdinand",
+          "familiar_name": "Franz",
+          "display_name": "Franz Ferdinand (Personal)",
+          "abbreviated_name": "FF"
+        },
+        "email": "franz@gmail.com",
+        "email_verified": false,
+        "disabled": false,
+        "locale": "en",
+        "referral_link": "https://db.tt/ZITNuhtI",
+        "is_paired": false,
+        "account_type": {
+          ".tag": "basic"
+        },
+        "root_info": {
+          ".tag": "user",
+          "root_namespace_id": "3235641",
+          "home_namespace_id": "3235641"
+        },
+        "profile_photo_url": "https://dl-web.dropbox.com/account_photo/get/dbid%3AAAH4f99T0taONIb-OurWxbNQ6ywGRopQngc?vers=1453416673259\u0026size=128x128",
+        "country": "US"
+      }
+    }
+  ]
+}

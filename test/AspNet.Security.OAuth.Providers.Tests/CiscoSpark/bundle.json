@@ -1,0 +1,27 @@
+{
+  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
+  "items": [
+    {
+      "uri": "https://api.ciscospark.com/v1/access_token",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "secret-access-token",
+        "token_type": "access",
+        "refresh_token": "secret-refresh-token",
+        "expires_in": "300"
+      }
+    },
+    {
+      "uri": "https://api.ciscospark.com/v1/people/me",
+      "contentFormat": "json",
+      "contentJson": {
+        "id": "my-id",
+        "displayName": "John Smith",
+        "emails": [
+          "john@john-smith.local"
+        ]
+      }
+    }
+  ]
+}

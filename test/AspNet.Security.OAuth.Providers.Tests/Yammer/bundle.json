@@ -1,0 +1,44 @@
+{
+  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
+  "items": [
+    {
+      "comment": "https://developer.yammer.com/docs/oauth-2",
+      "uri": "https://www.yammer.com/oauth2/access_token",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": {
+          "view_subscriptions": true,
+          "expires_at": null,
+          "authorized_at": "2011/04/06 16:25:46 +0000",
+          "modify_subscriptions": true,
+          "modify_messages": true,
+          "network_permalink": "yammer-inc.com",
+          "view_members": true,
+          "view_tags": true,
+          "network_id": 155465488,
+          "user_id": 1014216,
+          "view_groups": true,
+          "token": "ajsdfiasd7f6asdf8o",
+          "network_name": "Yammer",
+          "view_messages": true,
+          "created_at": "2011/04/06 16:25:46 +0000"
+        }
+      }
+    },
+    {
+      "comment": "https://developer.yammer.com/docs/userscurrentjson",
+      "uri": "https://www.yammer.com/api/v1/users/current.json",
+      "contentFormat": "json",
+      "contentJson": {
+        "id": "my-id",
+        "name": "John Smith",
+        "email": "john@john-smith.local",
+        "first_name": "John",
+        "last_name": "Smith",
+        "web_url": "https://www.yammer.com",
+        "job_title": "Developer"
+      }
+    }
+  ]
+}

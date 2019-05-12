@@ -1,0 +1,45 @@
+{
+  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
+  "items": [
+    {
+      "uri": "https://foursquare.com/oauth2/access_token",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "secret-access-token",
+        "token_type": "access",
+        "refresh_token": "secret-refresh-token",
+        "expires_in": "300"
+      }
+    },
+    {
+      "uri": "https://api.foursquare.com/v2/users/self?m=foursquare&v=20150927&oauth_token=secret-access-token",
+      "contentFormat": "json",
+      "contentJson": {
+        "meta": {
+          "code": 200,
+          "requestId": "5cd83c44351e3d1d4e51989c"
+        },
+        "notifications": [
+          {
+            "type": "notificationTray",
+            "item": { "unreadCount": 0 }
+          }
+        ],
+        "response": {
+          "user": {
+            "id": "my-id",
+            "lastName": "Smith",
+            "firstName": "John",
+            "gender": "Male",
+            "name": "John Smith",
+            "canonicalUrl": "https://foursquare.local/john-smith",
+            "contact": {
+              "email": "john@john-smith.local"
+            }
+          }
+        }
+      }
+    }
+  ]
+}

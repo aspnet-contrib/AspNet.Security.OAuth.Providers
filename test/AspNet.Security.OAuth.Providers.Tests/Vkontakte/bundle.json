@@ -1,0 +1,32 @@
+{
+  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
+  "items": [
+    {
+      "uri": "https://oauth.vk.com/access_token",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "secret-access-token",
+        "token_type": "access",
+        "refresh_token": "secret-refresh-token",
+        "email": "john@john-smith.local"
+      }
+    },
+    {
+      "uri": "https://api.vk.com/method/users.get.json?access_token=secret-access-token&v=5.78&fields=id,first_name,last_name,photo_rec,photo,hash",
+      "contentFormat": "json",
+      "contentJson": {
+        "response": [
+          {
+            "id": "my-id",
+            "first_name": "John",
+            "last_name": "Smith",
+            "hash": "1fRE977YklVfdpwiJRZWW2+oEKo=",
+            "photo": "https://vk.local/photo.png",
+            "photo_rec": "https://vk.local/thumbnail.png"
+          }
+        ]
+      }
+    }
+  ]
+}
