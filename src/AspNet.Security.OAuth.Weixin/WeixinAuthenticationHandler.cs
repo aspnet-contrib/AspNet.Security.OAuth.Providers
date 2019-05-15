@@ -4,24 +4,22 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using JetBrains.Annotations;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.AspNetCore.Http.Internal;
-using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using Microsoft.Extensions.Primitives;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Net.Http;
 using System.Security.Claims;
-using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OAuth;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using Newtonsoft.Json.Linq;
+
 namespace AspNet.Security.OAuth.Weixin
 {
     public class WeixinAuthenticationHandler : OAuthHandler<WeixinAuthenticationOptions>
@@ -34,17 +32,18 @@ namespace AspNet.Security.OAuth.Weixin
             : base(options, logger, encoder, clock)
         {
         }
+        private const string OauthState = "oauthstate";
         protected override async Task<HandleRequestResult> HandleRemoteAuthenticateAsync()
         {
-            if (Options.AuthorizationEndpoint != WeixinAuthenticationDefaults.AuthorizationEndpoint)
+            if (!IsWeixinAuthorizationEndpointInUse())
             {
-                var oauthstate = Request.Query["oauthstate"];
-                Request.Query = new QueryCollection(Request.Query.Select(c =>
+                var state = Request.Query[OauthState];
+                var query = Request.Query.ToDictionary(c => c.Key, c => c.Value, StringComparer.OrdinalIgnoreCase);
+                if (query.ContainsKey("sata"))
                 {
-                    if (c.Key == "state")
-                        return new KeyValuePair<string, StringValues>("state", oauthstate);
-                    return c;
-                }).ToDictionary(c => c.Key, c => c.Value));
+                    query["sata"] = state;
+                    Request.QueryString = QueryString.Create(query);
+                }
             }
             return await base.HandleRemoteAuthenticateAsync();
         }
@@ -126,12 +125,12 @@ namespace AspNet.Security.OAuth.Weixin
 
         protected override string BuildChallengeUrl(AuthenticationProperties properties, string redirectUri)
         {
-            var oauthstate = Options.StateDataFormat.Protect(properties);
-            if (Options.AuthorizationEndpoint != WeixinAuthenticationDefaults.AuthorizationEndpoint)
+            var state = Options.StateDataFormat.Protect(properties);
+            if (!IsWeixinAuthorizationEndpointInUse())
             {
                 //Store state in redirectUri when authorizing Wechat Web pages to prevent "too long state parameters" error
-                redirectUri = redirectUri.Contains("?") ? $"{redirectUri}&{nameof(oauthstate)}={oauthstate}" : $"{redirectUri}?{nameof(oauthstate)}={oauthstate}";
-                oauthstate = "#wechat_redirect";//The Parameters Necessary for Web Authorization of Wechat
+                redirectUri = QueryHelpers.AddQueryString(redirectUri, OauthState, state);
+                state = "#wechat_redirect";//The Parameters Necessary for Web Authorization of Wechat
             }
             return QueryHelpers.AddQueryString(Options.AuthorizationEndpoint, new Dictionary<string, string>
             {
@@ -139,10 +138,14 @@ namespace AspNet.Security.OAuth.Weixin
                 ["scope"] = FormatScope(),
                 ["response_type"] = "code",
                 ["redirect_uri"] = redirectUri,
-                ["state"] = oauthstate
+                ["state"] = state
             });
         }
 
         protected override string FormatScope() => string.Join(",", Options.Scope);
+        private bool IsWeixinAuthorizationEndpointInUse()
+        {
+            return string.Equals(Options.AuthorizationEndpoint, WeixinAuthenticationDefaults.AuthorizationEndpoint, StringComparison.OrdinalIgnoreCase);
+        }
     }
 }
