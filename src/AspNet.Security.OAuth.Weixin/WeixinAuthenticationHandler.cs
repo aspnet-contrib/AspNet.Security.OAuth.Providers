@@ -129,9 +129,9 @@ namespace AspNet.Security.OAuth.Weixin
             var oauthstate = Options.StateDataFormat.Protect(properties);
             if (Options.AuthorizationEndpoint != WeixinAuthenticationDefaults.AuthorizationEndpoint)
             {
-                //微信网页授权时将state存放到redirectUri中，防止"state参数过长"错误
+                //Store state in redirectUri when authorizing Wechat Web pages to prevent "too long state parameters" error
                 redirectUri = redirectUri.Contains("?") ? $"{redirectUri}&{nameof(oauthstate)}={oauthstate}" : $"{redirectUri}?{nameof(oauthstate)}={oauthstate}";
-                oauthstate = "#wechat_redirect";//微信网页授权支持
+                oauthstate = "#wechat_redirect";//The Parameters Necessary for Web Authorization of Wechat
             }
             return QueryHelpers.AddQueryString(Options.AuthorizationEndpoint, new Dictionary<string, string>
             {
