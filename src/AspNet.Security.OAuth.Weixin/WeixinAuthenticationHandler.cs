@@ -32,17 +32,22 @@ namespace AspNet.Security.OAuth.Weixin
             : base(options, logger, encoder, clock)
         {
         }
-        private const string OauthState = "oauthstate";
+
+        private const string OauthState = "_oauthstate";
+        private const string State = "state";
+
         protected override async Task<HandleRequestResult> HandleRemoteAuthenticateAsync()
         {
             if (!IsWeixinAuthorizationEndpointInUse())
             {
-                var state = Request.Query[OauthState];
-                var query = Request.Query.ToDictionary(c => c.Key, c => c.Value, StringComparer.OrdinalIgnoreCase);
-                if (query.ContainsKey("sata"))
+                if (Request.Query.TryGetValue(OauthState, out var stateValue))
                 {
-                    query["sata"] = state;
-                    Request.QueryString = QueryString.Create(query);
+                    var query = Request.Query.ToDictionary(c => c.Key, c => c.Value, StringComparer.OrdinalIgnoreCase);
+                    if (query.TryGetValue(State, out var _))
+                    {
+                        query[State] = stateValue;
+                        Request.QueryString = QueryString.Create(query);
+                    }
                 }
             }
             return await base.HandleRemoteAuthenticateAsync();
@@ -125,24 +130,34 @@ namespace AspNet.Security.OAuth.Weixin
 
         protected override string BuildChallengeUrl(AuthenticationProperties properties, string redirectUri)
         {
-            var state = Options.StateDataFormat.Protect(properties);
+            var stateValue = Options.StateDataFormat.Protect(properties);
+            var addRedirectHash = false;
             if (!IsWeixinAuthorizationEndpointInUse())
             {
                 //Store state in redirectUri when authorizing Wechat Web pages to prevent "too long state parameters" error
-                redirectUri = QueryHelpers.AddQueryString(redirectUri, OauthState, state);
-                state = "#wechat_redirect";//The Parameters Necessary for Web Authorization of Wechat
+                redirectUri = QueryHelpers.AddQueryString(redirectUri, OauthState, stateValue);
+                addRedirectHash = true;
             }
-            return QueryHelpers.AddQueryString(Options.AuthorizationEndpoint, new Dictionary<string, string>
+
+            redirectUri = QueryHelpers.AddQueryString(Options.AuthorizationEndpoint, new Dictionary<string, string>
             {
                 ["appid"] = Options.ClientId,
                 ["scope"] = FormatScope(),
                 ["response_type"] = "code",
                 ["redirect_uri"] = redirectUri,
-                ["state"] = state
+                [State] = addRedirectHash ? OauthState : stateValue
             });
+
+            if (addRedirectHash)
+            {
+                // The parameters necessary for Web Authorization of Wechat
+                redirectUri += "#wechat_redirect";
+            }
+            return redirectUri;
         }
 
         protected override string FormatScope() => string.Join(",", Options.Scope);
+
         private bool IsWeixinAuthorizationEndpointInUse()
         {
             return string.Equals(Options.AuthorizationEndpoint, WeixinAuthenticationDefaults.AuthorizationEndpoint, StringComparison.OrdinalIgnoreCase);
