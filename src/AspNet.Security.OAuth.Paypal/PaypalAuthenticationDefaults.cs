@@ -47,6 +47,6 @@ namespace AspNet.Security.OAuth.Paypal
         /// <summary>
         /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
         /// </summary>
-        public const string UserInformationEndpoint = "https://api.paypal.com/v1/identity/openidconnect/userinfo?schema=openid";
+        public const string UserInformationEndpoint = "https://api.paypal.com/v1/identity/oauth2/userinfo";
     }
 }

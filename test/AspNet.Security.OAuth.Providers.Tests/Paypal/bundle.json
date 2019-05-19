@@ -14,7 +14,7 @@
     },
     {
       "comment": "https://developer.paypal.com/docs/api/identity/v1/#userinfo",
-      "uri": "https://api.paypal.com/v1/identity/openidconnect/userinfo?schema=openid",
+      "uri": "https://api.paypal.com/v1/identity/oauth2/userinfo",
       "contentFormat": "json",
       "contentJson": {
         "user_id": "https://www.paypal.com/webapps/auth/identity/user/mWq6_1sU85v5EG9yHdPxJRrhGHrnMJ-1PQKtX6pcsmA",
@@ -30,7 +30,16 @@
           "country": "US"
         },
         "verified_account": "true",
-        "email": "user1@example.com"
+        "emails": [
+          {
+            "value": "user1@example.com",
+            "primary": true
+          },
+          {
+            "value": "user2@example.com",
+            "primary": false
+          }
+        ]
       }
     }
   ]
