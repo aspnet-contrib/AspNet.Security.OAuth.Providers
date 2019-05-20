@@ -1,0 +1,26 @@
+{
+  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
+  "items": [
+    {
+      "uri": "https://api.amazon.com/auth/o2/token",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "secret-access-token",
+        "token_type": "access",
+        "refresh_token": "secret-refresh-token",
+        "expires_in": "300"
+      }
+    },
+    {
+      "uri": "https://api.amazon.com/user/profile?fields=email,name,user_id,postal_code",
+      "contentFormat": "json",
+      "contentJson": {
+        "user_id": "my-id",
+        "name": "John Smith",
+        "email": "john@john-smith.local",
+        "postal_code": "90210"
+      }
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
+  "items": [
+    {
+      "uri": "https://developer.api.autodesk.com/authentication/v1/gettoken",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "secret-access-token",
+        "token_type": "access",
+        "refresh_token": "secret-refresh-token",
+        "expires_in": "300"
+      }
+    },
+    {
+      "uri": "https://developer.api.autodesk.com/userprofile/v1/users/@me",
+      "contentFormat": "json",
+      "contentJson": {
+        "userId": "my-id",
+        "userName": "John Smith",
+        "firstName": "John",
+        "lastName": "Smith",
+        "emailId": "john@john-smith.local",
+        "emailVerified": true,
+        "2FaEnabled": false
+      }
+    }
+  ]
+}

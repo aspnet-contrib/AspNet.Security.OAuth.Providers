@@ -1,0 +1,31 @@
+{
+  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
+  "items": [
+    {
+      "comment": "https://docs.microsoft.com/en-us/linkedin/shared/authentication/authorization-code-flow?context=linkedin/consumer/context",
+      "uri": "https://www.linkedin.com/oauth/v2/accessToken",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "secret-access-token",
+        "expires_in": "300"
+      }
+    },
+    {
+      "comment": "https://developer.linkedin.com/docs/signin-with-linkedin",
+      "uri": "https://api.linkedin.com/v1/people/~:(id,first-name,last-name,formatted-name,email-address)",
+      "contentFormat": "json",
+      "contentJson": {
+        "firstName": "Frodo",
+        "headline": "Jewelery Repossession in Middle Earth",
+        "id": "1R2RtA",
+        "lastName": "Baggins",
+        "formattedName": "Frodo Baggins",
+        "emailAddress": "frodo@shire.middleearth",
+        "siteStandardProfileRequest": {
+          "url": "https://www.linkedin.com/profile/view?id=frodo-baggins"
+        }
+      }
+    }
+  ]
+}

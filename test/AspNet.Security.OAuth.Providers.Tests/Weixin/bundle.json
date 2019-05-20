@@ -1,0 +1,35 @@
+{
+  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
+  "items": [
+    {
+      "uri": "https://api.weixin.qq.com/sns/oauth2/access_token?appid=my-client-id&secret=my-client-secret&code=a6ed8e7f-471f-44f1-903b-65946475f351&grant_type=authorization_code",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "secret-access-token",
+        "token_type": "access",
+        "refresh_token": "secret-refresh-token",
+        "expires_in": "300",
+        "openid": "my-open-id"
+      }
+    },
+    {
+      "uri": "https://api.weixin.qq.com/sns/userinfo?access_token=secret-access-token&openid=my-open-id",
+      "contentFormat": "json",
+      "contentJson": {
+        "unionid": "my-id",
+        "nickname": "John Smith",
+        "sex": "Male",
+        "country": "CN",
+        "openid": "my-open-id",
+        "province": "Hebei",
+        "city": "Beijing",
+        "headimgurl": "https://weixin.qq.local/image.png",
+        "privilege": [
+          "a",
+          "b",
+          "c"
+        ]
+      }
+    }
+  ]
+}

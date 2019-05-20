@@ -1,0 +1,37 @@
+{
+  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
+  "items": [
+    {
+      "comment": "https://api.slack.com/docs/oauth#flow",
+      "uri": "https://slack.com/api/oauth.access",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "xoxp-23984754863-2348975623103",
+        "scope": "read"
+      }
+    },
+    {
+      "comment": "https://api.slack.com/methods/users.identity",
+      "uri": "https://slack.com/api/users.identity?token=xoxp-23984754863-2348975623103",
+      "contentFormat": "json",
+      "contentJson": {
+        "ok": true,
+        "user": {
+          "name": "Sonny Whether",
+          "id": "U0G9QF9C6",
+          "email": "bobby@example.com",
+          "image_24": "https://cdn.example.com/sonny_24.jpg",
+          "image_32": "https://cdn.example.com/sonny_32.jpg",
+          "image_48": "https://cdn.example.com/sonny_48.jpg",
+          "image_72": "https://cdn.example.com/sonny_72.jpg",
+          "image_192": "https://cdn.example.com/sonny_192.jpg"
+        },
+        "team": {
+          "name": "Captain Fabian's Naval Supply",
+          "id": "T0G9PQBBK"
+        }
+      }
+    }
+  ]
+}

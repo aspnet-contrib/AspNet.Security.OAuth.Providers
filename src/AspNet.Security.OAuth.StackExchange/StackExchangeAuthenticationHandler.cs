@@ -35,12 +35,23 @@ namespace AspNet.Security.OAuth.StackExchange
         protected override async Task<AuthenticationTicket> CreateTicketAsync([NotNull] ClaimsIdentity identity,
             [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens)
         {
-            var address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, new Dictionary<string, string>
+            if (string.IsNullOrEmpty(Options.Site))
+            {
+                throw new InvalidOperationException(
+                    $"No site was specified for the {nameof(StackExchangeAuthenticationOptions.Site)} property of {nameof(StackExchangeAuthenticationOptions)}.");
+            }
+
+            var queryArguments = new Dictionary<string, string>
             {
                 ["access_token"] = tokens.AccessToken,
-                ["key"] = Options.RequestKey,
-                ["site"] = Options.Site
-            });
+                ["site"] = Options.Site,
+            };
+            if (!string.IsNullOrEmpty(Options.RequestKey))
+            {
+                queryArguments["key"] = Options.RequestKey;
+            }
+
+            var address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, queryArguments);
 
             var request = new HttpRequestMessage(HttpMethod.Get, address);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -61,7 +72,7 @@ namespace AspNet.Security.OAuth.StackExchange
 
             var principal = new ClaimsPrincipal(identity);
             var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload);
-            context.RunClaimActions(payload.Value<JObject>("items"));
+            context.RunClaimActions(payload.Value<JArray>("items")?[0] as JObject);
 
             await Options.Events.CreatingTicket(context);
             return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
@@ -69,15 +80,17 @@ namespace AspNet.Security.OAuth.StackExchange
 
         protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] string code, [NotNull] string redirectUri)
         {
-            var request = new HttpRequestMessage(HttpMethod.Post, Options.TokenEndpoint);
-            request.Content = new FormUrlEncodedContent(new Dictionary<string, string>
+            var request = new HttpRequestMessage(HttpMethod.Post, Options.TokenEndpoint)
             {
-                ["client_id"] = Options.ClientId,
-                ["redirect_uri"] = redirectUri,
-                ["client_secret"] = Options.ClientSecret,
-                ["code"] = code,
-                ["grant_type"] = "authorization_code"
-            });
+                Content = new FormUrlEncodedContent(new Dictionary<string, string>
+                {
+                    ["client_id"] = Options.ClientId,
+                    ["redirect_uri"] = redirectUri,
+                    ["client_secret"] = Options.ClientSecret,
+                    ["code"] = code,
+                    ["grant_type"] = "authorization_code"
+                })
+            };
 
             var response = await Backchannel.SendAsync(request, Context.RequestAborted);
             if (!response.IsSuccessStatusCode)
@@ -92,7 +105,7 @@ namespace AspNet.Security.OAuth.StackExchange
             }
 
             // Note: StackExchange's token endpoint doesn't return JSON but uses application/x-www-form-urlencoded.
-            // Since OAuthTokenResponse expects a JSON payload, a JObject is manually created using the returned values.
+            // Since OAuthTokenResponse expects a JSON payload, a response is manually created using the returned values.
             var content = QueryHelpers.ParseQuery(await response.Content.ReadAsStringAsync());
 
             var payload = new JObject();
