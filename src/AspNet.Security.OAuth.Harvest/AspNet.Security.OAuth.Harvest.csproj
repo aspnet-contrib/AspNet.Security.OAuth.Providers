@@ -9,7 +9,7 @@
   <PropertyGroup>
     <Description>ASP.NET Core security middleware enabling Harvest authentication.</Description>
     <Authors>Volodymyr Baydalka</Authors>
-    <PackageTags>aspnetcore;authentication;github;oauth;security</PackageTags>
+    <PackageTags>aspnetcore;authentication;harvest;oauth;security</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>

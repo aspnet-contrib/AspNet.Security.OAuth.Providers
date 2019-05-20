@@ -14,7 +14,7 @@ namespace Microsoft.Extensions.DependencyInjection
     /// <summary>
     /// Extension methods to add GitHub authentication capabilities to an HTTP application pipeline.
     /// </summary>
-    public static class GitHubAuthenticationExtensions
+    public static class HarvestAuthenticationExtensions
     {
         /// <summary>
         /// Adds <see cref="HarvestAuthenticationHandler"/> to the specified
