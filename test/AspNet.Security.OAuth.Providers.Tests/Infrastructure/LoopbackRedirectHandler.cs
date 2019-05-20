@@ -35,14 +35,12 @@ namespace AspNet.Security.OAuth.Infrastructure
                 string state = queryString["state"];
 
                 queryString.Clear();
-
+                var builder = new UriBuilder(location);
+                // Retain the parameters of redirect_uri
+                queryString = HttpUtility.ParseQueryString(builder.Query);
                 queryString.Add("code", "a6ed8e7f-471f-44f1-903b-65946475f351");
                 queryString.Add("state", state);
-
-                var builder = new UriBuilder(location)
-                {
-                    Query = queryString.ToString(),
-                };
+                builder.Query = queryString.ToString();
 
                 var redirectRequest = new HttpRequestMessage(request.Method, builder.Uri);
 
