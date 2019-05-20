@@ -4,7 +4,9 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using Microsoft.AspNetCore.Builder;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
 
 namespace AspNet.Security.OAuth.Buffer
@@ -16,15 +18,14 @@ namespace AspNet.Security.OAuth.Buffer
     {
         public BufferAuthenticationOptions()
         {
-            AuthenticationScheme = BufferAuthenticationDefaults.AuthenticationScheme;
-            DisplayName = BufferAuthenticationDefaults.DisplayName;
             ClaimsIssuer = BufferAuthenticationDefaults.Issuer;
-
             CallbackPath = new PathString(BufferAuthenticationDefaults.CallbackPath);
 
             AuthorizationEndpoint = BufferAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = BufferAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = BufferAuthenticationDefaults.UserInformationEndpoint;
+
+            ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
         }
     }
 }

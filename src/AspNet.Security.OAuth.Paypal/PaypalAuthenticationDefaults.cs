@@ -4,7 +4,8 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OAuth;
 
 namespace AspNet.Security.OAuth.Paypal
 {
@@ -14,17 +15,17 @@ namespace AspNet.Security.OAuth.Paypal
     public static class PaypalAuthenticationDefaults
     {
         /// <summary>
-        /// Default value for <see cref="AuthenticationOptions.AuthenticationScheme"/>.
+        /// Default value for <see cref="AuthenticationScheme.Name"/>.
         /// </summary>
         public const string AuthenticationScheme = "Paypal";
 
         /// <summary>
-        /// Default value for <see cref="RemoteAuthenticationOptions.DisplayName"/>.
+        /// Default value for <see cref="AuthenticationScheme.DisplayName"/>.
         /// </summary>
         public const string DisplayName = "Paypal";
 
         /// <summary>
-        /// Default value for <see cref="AuthenticationOptions.ClaimsIssuer"/>.
+        /// Default value for <see cref="AuthenticationSchemeOptions.ClaimsIssuer"/>.
         /// </summary>
         public const string Issuer = "Paypal";
 
@@ -46,6 +47,6 @@ namespace AspNet.Security.OAuth.Paypal
         /// <summary>
         /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
         /// </summary>
-        public const string UserInformationEndpoint = "https://api.paypal.com/v1/identity/openidconnect/userinfo?schema=openid";
+        public const string UserInformationEndpoint = "https://api.paypal.com/v1/identity/oauth2/userinfo";
     }
 }

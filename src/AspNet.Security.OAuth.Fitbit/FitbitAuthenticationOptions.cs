@@ -4,8 +4,11 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using Microsoft.AspNetCore.Builder;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
+using static AspNet.Security.OAuth.Fitbit.FitbitAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.Fitbit
 {
@@ -16,10 +19,7 @@ namespace AspNet.Security.OAuth.Fitbit
     {
         public FitbitAuthenticationOptions()
         {
-            AuthenticationScheme = FitbitAuthenticationDefaults.AuthenticationScheme;
-            DisplayName = FitbitAuthenticationDefaults.Displayname;
             ClaimsIssuer = FitbitAuthenticationDefaults.Issuer;
-
             CallbackPath = new PathString(FitbitAuthenticationDefaults.CallbackPath);
 
             AuthorizationEndpoint = FitbitAuthenticationDefaults.AuthorizationEndpoint;
@@ -27,6 +27,11 @@ namespace AspNet.Security.OAuth.Fitbit
             UserInformationEndpoint = FitbitAuthenticationDefaults.UserInformationEndpoint;
 
             Scope.Add("profile");
+
+            ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "encodedId");
+            ClaimActions.MapJsonKey(ClaimTypes.Name, "displayName");
+            ClaimActions.MapJsonKey(Claims.Avatar, "avatar");
+            ClaimActions.MapJsonKey(Claims.Avatar150, "avatar150");
         }
     }
 }

@@ -4,7 +4,9 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using Microsoft.AspNetCore.Builder;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
 
 namespace AspNet.Security.OAuth.Dropbox
@@ -16,8 +18,6 @@ namespace AspNet.Security.OAuth.Dropbox
     {
         public DropboxAuthenticationOptions()
         {
-            AuthenticationScheme = DropboxAuthenticationDefaults.AuthenticationScheme;
-            DisplayName = DropboxAuthenticationDefaults.DisplayName;
             ClaimsIssuer = DropboxAuthenticationDefaults.Issuer;
 
             CallbackPath = new PathString(DropboxAuthenticationDefaults.CallbackPath);
@@ -25,6 +25,10 @@ namespace AspNet.Security.OAuth.Dropbox
             AuthorizationEndpoint = DropboxAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = DropboxAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = DropboxAuthenticationDefaults.UserInformationEndpoint;
+
+            ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "account_id");
+            ClaimActions.MapJsonSubKey(ClaimTypes.Name, "name", "display_name");
+            ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
         }
     }
 }

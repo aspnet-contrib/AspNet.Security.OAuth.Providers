@@ -7,9 +7,9 @@
 using System;
 using AspNet.Security.OAuth.LinkedIn;
 using JetBrains.Annotations;
-using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Authentication;
 
-namespace Microsoft.AspNetCore.Builder
+namespace Microsoft.Extensions.DependencyInjection
 {
     /// <summary>
     /// Extension methods to add LinkedIn authentication capabilities to an HTTP application pipeline.
@@ -17,54 +17,60 @@ namespace Microsoft.AspNetCore.Builder
     public static class LinkedInAuthenticationExtensions
     {
         /// <summary>
-        /// Adds the <see cref="LinkedInAuthenticationMiddleware"/> middleware to the specified
-        /// <see cref="IApplicationBuilder"/>, which enables LinkedIn authentication capabilities.
+        /// Adds <see cref="LinkedInAuthenticationHandler"/> to the specified
+        /// <see cref="AuthenticationBuilder"/>, which enables LinkedIn authentication capabilities.
         /// </summary>
-        /// <param name="app">The <see cref="IApplicationBuilder"/> to add the middleware to.</param>
-        /// <param name="options">A <see cref="LinkedInAuthenticationOptions"/> that specifies options for the middleware.</param>
+        /// <param name="builder">The <see cref="AuthenticationBuilder"/> to add the middleware to.</param>
         /// <returns>A reference to this instance after the operation has completed.</returns>
-        public static IApplicationBuilder UseLinkedInAuthentication(
-            [NotNull] this IApplicationBuilder app,
-            [NotNull] LinkedInAuthenticationOptions options)
+        public static AuthenticationBuilder AddLinkedIn([NotNull] this AuthenticationBuilder builder)
         {
-            if (app == null)
-            {
-                throw new ArgumentNullException(nameof(app));
-            }
-
-            if (options == null)
-            {
-                throw new ArgumentNullException(nameof(options));
-            }
-
-            return app.UseMiddleware<LinkedInAuthenticationMiddleware>(Options.Create(options));
+            return builder.AddLinkedIn(LinkedInAuthenticationDefaults.AuthenticationScheme, options => {});
         }
 
         /// <summary>
-        /// Adds the <see cref="LinkedInAuthenticationMiddleware"/> middleware to the specified
-        /// <see cref="IApplicationBuilder"/>, which enables LinkedIn authentication capabilities.
+        /// Adds <see cref="LinkedInAuthenticationHandler"/> to the specified
+        /// <see cref="AuthenticationBuilder"/>, which enables LinkedIn authentication capabilities.
         /// </summary>
-        /// <param name="app">The <see cref="IApplicationBuilder"/> to add the middleware to.</param>
-        /// <param name="configuration">An action delegate to configure the provided <see cref="LinkedInAuthenticationOptions"/>.</param>
+        /// <param name="builder">The <see cref="AuthenticationBuilder"/> to add the middleware to.</param>
+        /// <param name="configuration">The delegate used to configure the OpenID 2.0 options.</param>
         /// <returns>A reference to this instance after the operation has completed.</returns>
-        public static IApplicationBuilder UseLinkedInAuthentication(
-            [NotNull] this IApplicationBuilder app,
+        public static AuthenticationBuilder AddLinkedIn(
+            [NotNull] this AuthenticationBuilder builder,
             [NotNull] Action<LinkedInAuthenticationOptions> configuration)
         {
-            if (app == null)
-            {
-                throw new ArgumentNullException(nameof(app));
-            }
+            return builder.AddLinkedIn(LinkedInAuthenticationDefaults.AuthenticationScheme, configuration);
+        }
 
-            if (configuration == null)
-            {
-                throw new ArgumentNullException(nameof(configuration));
-            }
+        /// <summary>
+        /// Adds <see cref="LinkedInAuthenticationHandler"/> to the specified
+        /// <see cref="AuthenticationBuilder"/>, which enables LinkedIn authentication capabilities.
+        /// </summary>
+        /// <param name="builder">The authentication builder.</param>
+        /// <param name="scheme">The authentication scheme associated with this instance.</param>
+        /// <param name="configuration">The delegate used to configure the LinkedIn options.</param>
+        /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
+        public static AuthenticationBuilder AddLinkedIn(
+            [NotNull] this AuthenticationBuilder builder, [NotNull] string scheme,
+            [NotNull] Action<LinkedInAuthenticationOptions> configuration)
+        {
+            return builder.AddLinkedIn(scheme, LinkedInAuthenticationDefaults.DisplayName, configuration);
+        }
 
-            var options = new LinkedInAuthenticationOptions();
-            configuration(options);
-
-            return app.UseMiddleware<LinkedInAuthenticationMiddleware>(Options.Create(options));
+        /// <summary>
+        /// Adds <see cref="LinkedInAuthenticationHandler"/> to the specified
+        /// <see cref="AuthenticationBuilder"/>, which enables LinkedIn authentication capabilities.
+        /// </summary>
+        /// <param name="builder">The authentication builder.</param>
+        /// <param name="scheme">The authentication scheme associated with this instance.</param>
+        /// <param name="caption">The optional display name associated with this instance.</param>
+        /// <param name="configuration">The delegate used to configure the LinkedIn options.</param>
+        /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
+        public static AuthenticationBuilder AddLinkedIn(
+            [NotNull] this AuthenticationBuilder builder,
+            [NotNull] string scheme, [CanBeNull] string caption,
+            [NotNull] Action<LinkedInAuthenticationOptions> configuration)
+        {
+            return builder.AddOAuth<LinkedInAuthenticationOptions, LinkedInAuthenticationHandler>(scheme, caption, configuration);
         }
     }
 }

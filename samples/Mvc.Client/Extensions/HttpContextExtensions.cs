@@ -5,37 +5,40 @@
  */
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Authentication;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Mvc.Client.Extensions
 {
     public static class HttpContextExtensions
     {
-        public static IEnumerable<AuthenticationDescription> GetExternalProviders(this HttpContext context)
+        public static async Task<AuthenticationScheme[]> GetExternalProvidersAsync(this HttpContext context)
         {
             if (context == null)
             {
                 throw new ArgumentNullException(nameof(context));
             }
 
-            return from description in context.Authentication.GetAuthenticationSchemes()
-                   where !string.IsNullOrWhiteSpace(description.DisplayName)
-                   select description;
+            var schemes = context.RequestServices.GetRequiredService<IAuthenticationSchemeProvider>();
+
+            return (from scheme in await schemes.GetAllSchemesAsync()
+                    where !string.IsNullOrEmpty(scheme.DisplayName)
+                    select scheme).ToArray();
         }
 
-        public static bool IsProviderSupported(this HttpContext context, string provider)
+        public static async Task<bool> IsProviderSupportedAsync(this HttpContext context, string provider)
         {
             if (context == null)
             {
                 throw new ArgumentNullException(nameof(context));
             }
 
-            return (from description in context.GetExternalProviders()
-                    where string.Equals(description.AuthenticationScheme, provider, StringComparison.OrdinalIgnoreCase)
-                    select description).Any();
+            return (from scheme in await context.GetExternalProvidersAsync()
+                    where string.Equals(scheme.Name, provider, StringComparison.OrdinalIgnoreCase)
+                    select scheme).Any();
         }
     }
 }

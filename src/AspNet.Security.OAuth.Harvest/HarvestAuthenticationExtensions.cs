@@ -7,64 +7,70 @@
 using System;
 using AspNet.Security.OAuth.Harvest;
 using JetBrains.Annotations;
-using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Authentication;
 
-namespace Microsoft.AspNetCore.Builder
+namespace Microsoft.Extensions.DependencyInjection
 {
     /// <summary>
-    /// Extension methods to add Harvest authentication capabilities to an HTTP application pipeline.
+    /// Extension methods to add GitHub authentication capabilities to an HTTP application pipeline.
     /// </summary>
-    public static class HarvestAuthenticationExtensions
+    public static class GitHubAuthenticationExtensions
     {
         /// <summary>
-        /// Adds the <see cref="HarvestAuthenticationMiddleware"/> middleware to the specified
-        /// <see cref="IApplicationBuilder"/>, which enables Harvest authentication capabilities.
+        /// Adds <see cref="HarvestAuthenticationHandler"/> to the specified
+        /// <see cref="AuthenticationBuilder"/>, which enables GitHub authentication capabilities.
         /// </summary>
-        /// <param name="app">The <see cref="IApplicationBuilder"/> to add the middleware to.</param>
-        /// <param name="options">A <see cref="HarvestAuthenticationOptions"/> that specifies options for the middleware.</param>
-        /// <returns>A reference to this instance after the operation has completed.</returns>
-        public static IApplicationBuilder UseHarvestAuthentication(
-            [NotNull] this IApplicationBuilder app,
-            [NotNull] HarvestAuthenticationOptions options)
+        /// <param name="builder">The authentication builder.</param>
+        /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
+        public static AuthenticationBuilder AddHarvest([NotNull] this AuthenticationBuilder builder)
         {
-            if (app == null)
-            {
-                throw new ArgumentNullException(nameof(app));
-            }
-
-            if (options == null)
-            {
-                throw new ArgumentNullException(nameof(options));
-            }
-
-            return app.UseMiddleware<HarvestAuthenticationMiddleware>(Options.Create(options));
+            return builder.AddHarvest(HarvestAuthenticationDefaults.AuthenticationScheme, options => { });
         }
 
         /// <summary>
-        /// Adds the <see cref="HarvestAuthenticationMiddleware"/> middleware to the specified
-        /// <see cref="IApplicationBuilder"/>, which enables Harvest authentication capabilities.
+        /// Adds <see cref="HarvestAuthenticationHandler"/> to the specified
+        /// <see cref="AuthenticationBuilder"/>, which enables GitHub authentication capabilities.
         /// </summary>
-        /// <param name="app">The <see cref="IApplicationBuilder"/> to add the middleware to.</param>
-        /// <param name="configuration">An action delegate to configure the provided <see cref="HarvestAuthenticationOptions"/>.</param>
-        /// <returns>A reference to this instance after the operation has completed.</returns>
-        public static IApplicationBuilder UseHarvestAuthentication(
-            [NotNull] this IApplicationBuilder app,
+        /// <param name="builder">The authentication builder.</param>
+        /// <param name="configuration">The delegate used to configure the OpenID 2.0 options.</param>
+        /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
+        public static AuthenticationBuilder AddHarvest(
+            [NotNull] this AuthenticationBuilder builder,
             [NotNull] Action<HarvestAuthenticationOptions> configuration)
         {
-            if (app == null)
-            {
-                throw new ArgumentNullException(nameof(app));
-            }
+            return builder.AddHarvest(HarvestAuthenticationDefaults.AuthenticationScheme, configuration);
+        }
 
-            if (configuration == null)
-            {
-                throw new ArgumentNullException(nameof(configuration));
-            }
+        /// <summary>
+        /// Adds <see cref="HarvestAuthenticationHandler"/> to the specified
+        /// <see cref="AuthenticationBuilder"/>, which enables GitHub authentication capabilities.
+        /// </summary>
+        /// <param name="builder">The authentication builder.</param>
+        /// <param name="scheme">The authentication scheme associated with this instance.</param>
+        /// <param name="configuration">The delegate used to configure the GitHub options.</param>
+        /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
+        public static AuthenticationBuilder AddHarvest(
+            [NotNull] this AuthenticationBuilder builder, [NotNull] string scheme,
+            [NotNull] Action<HarvestAuthenticationOptions> configuration)
+        {
+            return builder.AddHarvest(scheme, HarvestAuthenticationDefaults.DisplayName, configuration);
+        }
 
-            var options = new HarvestAuthenticationOptions();
-            configuration(options);
-
-            return app.UseMiddleware<HarvestAuthenticationMiddleware>(Options.Create(options));
+        /// <summary>
+        /// Adds <see cref="HarvestAuthenticationHandler"/> to the specified
+        /// <see cref="AuthenticationBuilder"/>, which enables GitHub authentication capabilities.
+        /// </summary>
+        /// <param name="builder">The authentication builder.</param>
+        /// <param name="scheme">The authentication scheme associated with this instance.</param>
+        /// <param name="caption">The optional display name associated with this instance.</param>
+        /// <param name="configuration">The delegate used to configure the GitHub options.</param>
+        /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
+        public static AuthenticationBuilder AddHarvest(
+            [NotNull] this AuthenticationBuilder builder,
+            [NotNull] string scheme, [CanBeNull] string caption,
+            [NotNull] Action<HarvestAuthenticationOptions> configuration)
+        {
+            return builder.AddOAuth<HarvestAuthenticationOptions, HarvestAuthenticationHandler>(scheme, caption, configuration);
         }
     }
 }

@@ -1,10 +1,15 @@
 <Project>
 
-  <PropertyGroup>
-    <AspNetCoreVersion>1.0.0</AspNetCoreVersion>
-    <JetBrainsVersion>10.3.0</JetBrainsVersion>
-    <NetStandardImplicitPackageVersion>1.6.0</NetStandardImplicitPackageVersion>
-    <RuntimeFrameworkVersion>1.0.0</RuntimeFrameworkVersion>
+  <PropertyGroup Label="Package Versions">
+    <AspNetCoreVersion>2.0.0</AspNetCoreVersion>
+    <DotNetTestSdkVersion>16.1.0</DotNetTestSdkVersion>
+    <GoogleProviderVersion>2.2.2</GoogleProviderVersion>
+    <JetBrainsVersion>2019.1.1</JetBrainsVersion>
+    <JustEatHttpClientInterceptionVersion>2.0.1</JustEatHttpClientInterceptionVersion>
+    <MartinCostelloLoggingXUnitVersion>0.1.0</MartinCostelloLoggingXUnitVersion>
+    <ShouldlyVersion>3.0.2</ShouldlyVersion>
+    <TwitterProviderVersion>2.2.0</TwitterProviderVersion>
+    <XunitVersion>2.4.1</XunitVersion>
   </PropertyGroup>
 
 </Project>

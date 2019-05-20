@@ -4,8 +4,11 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using Microsoft.AspNetCore.Builder;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
+using static AspNet.Security.OAuth.Slack.SlackAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.Slack
 {
@@ -16,8 +19,6 @@ namespace AspNet.Security.OAuth.Slack
     {
         public SlackAuthenticationOptions()
         {
-            AuthenticationScheme = SlackAuthenticationDefaults.AuthenticationScheme;
-            DisplayName = SlackAuthenticationDefaults.DisplayName;
             ClaimsIssuer = SlackAuthenticationDefaults.Issuer;
 
             CallbackPath = new PathString(SlackAuthenticationDefaults.CallbackPath);
@@ -25,6 +26,16 @@ namespace AspNet.Security.OAuth.Slack
             AuthorizationEndpoint = SlackAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = SlackAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = SlackAuthenticationDefaults.UserInformationEndpoint;
+
+            ClaimActions.MapCustomJson(ClaimTypes.NameIdentifier, user =>
+                string.Concat(user["team"]["id"], "|", user["user"]["id"]));
+            ClaimActions.MapJsonSubKey(ClaimTypes.Name, "user", "name");
+            ClaimActions.MapJsonSubKey(ClaimTypes.Email, "user", "email");
+            ClaimActions.MapJsonSubKey(Claims.UserId, "user", "id");
+            ClaimActions.MapJsonSubKey(Claims.TeamId, "team", "id");
+            ClaimActions.MapJsonSubKey(Claims.TeamName, "team", "name");
+
+            Scope.Add("identity.basic");
         }
     }
 }

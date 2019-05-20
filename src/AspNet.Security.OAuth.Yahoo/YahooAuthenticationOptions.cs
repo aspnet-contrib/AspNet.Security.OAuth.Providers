@@ -4,8 +4,11 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using Microsoft.AspNetCore.Builder;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
+using static AspNet.Security.OAuth.Yahoo.YahooAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.Yahoo
 {
@@ -16,15 +19,19 @@ namespace AspNet.Security.OAuth.Yahoo
     {
         public YahooAuthenticationOptions()
         {
-            AuthenticationScheme = YahooAuthenticationDefaults.AuthenticationScheme;
-            DisplayName = YahooAuthenticationDefaults.DisplayName;
             ClaimsIssuer = YahooAuthenticationDefaults.Issuer;
-
             CallbackPath = new PathString(YahooAuthenticationDefaults.CallbackPath);
 
             AuthorizationEndpoint = YahooAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = YahooAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = YahooAuthenticationDefaults.UserInformationEndpoint;
+
+            ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "guid");
+            ClaimActions.MapJsonKey(ClaimTypes.Name, "nickname");
+            ClaimActions.MapJsonKey(Claims.FamilyName, "familyName");
+            ClaimActions.MapJsonKey(Claims.GivenName, "givenName");
+            ClaimActions.MapJsonKey(Claims.ProfileUrl, "profileUrl");
+            ClaimActions.MapJsonKey(Claims.ImageUrl, "imageUrl");
         }
     }
 }

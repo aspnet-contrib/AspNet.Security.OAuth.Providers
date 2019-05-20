@@ -4,8 +4,11 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using Microsoft.AspNetCore.Builder;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
+using static AspNet.Security.OAuth.Untappd.UntappdAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.Untappd
 {
@@ -16,8 +19,6 @@ namespace AspNet.Security.OAuth.Untappd
     {
         public UntappdAuthenticationOptions()
         {
-            AuthenticationScheme = UntappdAuthenticationDefaults.AuthenticationScheme;
-            DisplayName = UntappdAuthenticationDefaults.DisplayName;
             ClaimsIssuer = UntappdAuthenticationDefaults.Issuer;
 
             CallbackPath = new PathString(UntappdAuthenticationDefaults.CallbackPath);
@@ -25,6 +26,13 @@ namespace AspNet.Security.OAuth.Untappd
             AuthorizationEndpoint = UntappdAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = UntappdAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = UntappdAuthenticationDefaults.UserInformationEndpoint;
+
+            ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
+            ClaimActions.MapJsonKey(ClaimTypes.GivenName, "first_name");
+            ClaimActions.MapJsonKey(ClaimTypes.Surname, "last_name");
+            ClaimActions.MapJsonKey(ClaimTypes.Name, "user_name");
+            ClaimActions.MapJsonKey(ClaimTypes.Webpage, "url");
+            ClaimActions.MapJsonKey(Claims.Avatar, "user_avatar");
         }
     }
 }

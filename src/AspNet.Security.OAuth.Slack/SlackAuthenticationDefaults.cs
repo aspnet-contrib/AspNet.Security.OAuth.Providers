@@ -4,7 +4,8 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OAuth;
 
 namespace AspNet.Security.OAuth.Slack
 {
@@ -14,17 +15,17 @@ namespace AspNet.Security.OAuth.Slack
     public static class SlackAuthenticationDefaults
     {
         /// <summary>
-        /// Default value for <see cref="AuthenticationOptions.AuthenticationScheme"/>.
+        /// Default value for <see cref="AuthenticationScheme.Name"/>.
         /// </summary>
         public const string AuthenticationScheme = "Slack";
 
         /// <summary>
-        /// Default value for <see cref="RemoteAuthenticationOptions.DisplayName"/>.
+        /// Default value for <see cref="AuthenticationScheme.DisplayName"/>.
         /// </summary>
         public const string DisplayName = "Slack";
 
         /// <summary>
-        /// Default value for <see cref="AuthenticationOptions.ClaimsIssuer"/>.
+        /// Default value for <see cref="AuthenticationSchemeOptions.ClaimsIssuer"/>.
         /// </summary>
         public const string Issuer = "Slack";
 
@@ -45,8 +46,8 @@ namespace AspNet.Security.OAuth.Slack
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
-        /// For more info about this endpoint, see https://api.slack.com/methods/auth.test.
+        /// For more info about this endpoint, see https://api.slack.com/methods/users.identity.
         /// </summary>
-        public const string UserInformationEndpoint = "https://slack.com/api/auth.test";
+        public const string UserInformationEndpoint = "https://slack.com/api/users.identity";
     }
 }

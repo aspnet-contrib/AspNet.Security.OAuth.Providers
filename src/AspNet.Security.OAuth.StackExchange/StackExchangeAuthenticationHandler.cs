@@ -9,34 +9,49 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
+using System.Text.Encodings.Web;
 using System.Threading.Tasks;
-using AspNet.Security.OAuth.Extensions;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
 
 namespace AspNet.Security.OAuth.StackExchange
 {
     public class StackExchangeAuthenticationHandler : OAuthHandler<StackExchangeAuthenticationOptions>
     {
-        public StackExchangeAuthenticationHandler([NotNull] HttpClient client)
-            : base(client)
+        public StackExchangeAuthenticationHandler(
+            [NotNull] IOptionsMonitor<StackExchangeAuthenticationOptions> options,
+            [NotNull] ILoggerFactory logger,
+            [NotNull] UrlEncoder encoder,
+            [NotNull] ISystemClock clock)
+            : base(options, logger, encoder, clock)
         {
         }
 
         protected override async Task<AuthenticationTicket> CreateTicketAsync([NotNull] ClaimsIdentity identity,
             [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens)
         {
-            var address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, new Dictionary<string, string>
+            if (string.IsNullOrEmpty(Options.Site))
+            {
+                throw new InvalidOperationException(
+                    $"No site was specified for the {nameof(StackExchangeAuthenticationOptions.Site)} property of {nameof(StackExchangeAuthenticationOptions)}.");
+            }
+
+            var queryArguments = new Dictionary<string, string>
             {
                 ["access_token"] = tokens.AccessToken,
-                ["key"] = Options.RequestKey,
-                ["site"] = Options.Site
-            });
+                ["site"] = Options.Site,
+            };
+            if (!string.IsNullOrEmpty(Options.RequestKey))
+            {
+                queryArguments["key"] = Options.RequestKey;
+            }
+
+            var address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, queryArguments);
 
             var request = new HttpRequestMessage(HttpMethod.Get, address);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -55,32 +70,27 @@ namespace AspNet.Security.OAuth.StackExchange
 
             var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
 
-            // Note: the email claim cannot be retrieved from StackExchange's user information endpoint.
-            identity.AddOptionalClaim(ClaimTypes.NameIdentifier, StackExchangeAuthenticationHelper.GetIdentifier(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim(ClaimTypes.Name, StackExchangeAuthenticationHelper.GetDisplayName(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim(ClaimTypes.Webpage, StackExchangeAuthenticationHelper.GetWebsiteUrl(payload), Options.ClaimsIssuer)
-                    .AddOptionalClaim("urn:stackexchange:link", StackExchangeAuthenticationHelper.GetLink(payload), Options.ClaimsIssuer);
-
             var principal = new ClaimsPrincipal(identity);
-            var ticket = new AuthenticationTicket(principal, properties, Options.AuthenticationScheme);
+            var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload);
+            context.RunClaimActions(payload.Value<JArray>("items")?[0] as JObject);
 
-            var context = new OAuthCreatingTicketContext(ticket, Context, Options, Backchannel, tokens, payload);
             await Options.Events.CreatingTicket(context);
-
-            return context.Ticket;
+            return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
         }
 
         protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] string code, [NotNull] string redirectUri)
         {
-            var request = new HttpRequestMessage(HttpMethod.Post, Options.TokenEndpoint);
-            request.Content = new FormUrlEncodedContent(new Dictionary<string, string>
+            var request = new HttpRequestMessage(HttpMethod.Post, Options.TokenEndpoint)
             {
-                ["client_id"] = Options.ClientId,
-                ["redirect_uri"] = redirectUri,
-                ["client_secret"] = Options.ClientSecret,
-                ["code"] = code,
-                ["grant_type"] = "authorization_code"
-            });
+                Content = new FormUrlEncodedContent(new Dictionary<string, string>
+                {
+                    ["client_id"] = Options.ClientId,
+                    ["redirect_uri"] = redirectUri,
+                    ["client_secret"] = Options.ClientSecret,
+                    ["code"] = code,
+                    ["grant_type"] = "authorization_code"
+                })
+            };
 
             var response = await Backchannel.SendAsync(request, Context.RequestAborted);
             if (!response.IsSuccessStatusCode)
@@ -95,13 +105,13 @@ namespace AspNet.Security.OAuth.StackExchange
             }
 
             // Note: StackExchange's token endpoint doesn't return JSON but uses application/x-www-form-urlencoded.
-            // Since OAuthTokenResponse expects a JSON payload, a JObject is manually created using the returned values.
+            // Since OAuthTokenResponse expects a JSON payload, a response is manually created using the returned values.
             var content = QueryHelpers.ParseQuery(await response.Content.ReadAsStringAsync());
 
             var payload = new JObject();
             foreach (var item in content)
             {
-                payload[item.Key] = (string) item.Value;
+                payload[item.Key] = (string)item.Value;
             }
 
             return OAuthTokenResponse.Success(payload);

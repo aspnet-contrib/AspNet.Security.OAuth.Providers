@@ -4,8 +4,12 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using Microsoft.AspNetCore.Builder;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json.Linq;
+using static AspNet.Security.OAuth.Weixin.WeixinAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.Weixin
 {
@@ -16,8 +20,6 @@ namespace AspNet.Security.OAuth.Weixin
     {
         public WeixinAuthenticationOptions()
         {
-            AuthenticationScheme = WeixinAuthenticationDefaults.AuthenticationScheme;
-            DisplayName = WeixinAuthenticationDefaults.DisplayName;
             ClaimsIssuer = WeixinAuthenticationDefaults.Issuer;
             CallbackPath = new PathString(WeixinAuthenticationDefaults.CallbackPath);
 
@@ -27,6 +29,25 @@ namespace AspNet.Security.OAuth.Weixin
 
             Scope.Add("snsapi_login");
             Scope.Add("snsapi_userinfo");
+
+            ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "unionid");
+            ClaimActions.MapJsonKey(ClaimTypes.Name, "nickname");
+            ClaimActions.MapJsonKey(ClaimTypes.Gender, "sex");
+            ClaimActions.MapJsonKey(ClaimTypes.Country, "country");
+            ClaimActions.MapJsonKey(Claims.OpenId, "openid");
+            ClaimActions.MapJsonKey(Claims.Province, "province");
+            ClaimActions.MapJsonKey(Claims.City, "city");
+            ClaimActions.MapJsonKey(Claims.HeadImgUrl, "headimgurl");
+            ClaimActions.MapCustomJson(Claims.Privilege, user =>
+            {
+                var value = user.Value<JArray>("privilege");
+                if (value == null)
+                {
+                    return null;
+                }
+
+                return string.Join(",", value.ToObject<string[]>());
+            });
         }
     }
 }

@@ -4,8 +4,11 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using Microsoft.AspNetCore.Builder;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
+using static AspNet.Security.OAuth.Weibo.WeiboAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.Weibo
 {
@@ -16,8 +19,6 @@ namespace AspNet.Security.OAuth.Weibo
     {
         public WeiboAuthenticationOptions()
         {
-            AuthenticationScheme = WeiboAuthenticationDefaults.AuthenticationScheme;
-            DisplayName = WeiboAuthenticationDefaults.DisplayName;
             ClaimsIssuer = WeiboAuthenticationDefaults.Issuer;
             CallbackPath = new PathString(WeiboAuthenticationDefaults.CallbackPath);
 
@@ -25,7 +26,23 @@ namespace AspNet.Security.OAuth.Weibo
             TokenEndpoint = WeiboAuthenticationDefaults.TokenEndpoint;           
             UserInformationEndpoint = WeiboAuthenticationDefaults.UserInformationEndpoint;
 
+            ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
+            ClaimActions.MapJsonKey(ClaimTypes.Name, "name");
+            ClaimActions.MapJsonKey(ClaimTypes.Gender, "gender");
+            ClaimActions.MapJsonKey(Claims.ScreenName, "screen_name");
+            ClaimActions.MapJsonKey(Claims.ProfileImageUrl, "profile_image_url");
+            ClaimActions.MapJsonKey(Claims.AvatarLarge, "avatar_large");
+            ClaimActions.MapJsonKey(Claims.AvatarHd, "avatar_hd");
+            ClaimActions.MapJsonKey(Claims.CoverImagePhone, "cover_image_phone");
+            ClaimActions.MapJsonKey(Claims.Location, "location");
+
             Scope.Add("email");
-        }       
+        }
+
+        /// <summary>
+        /// Gets or sets the address of the endpoint exposing
+        /// the email addresses associated with the logged in user.
+        /// </summary>
+        public string UserEmailsEndpoint { get; set; } = WeiboAuthenticationDefaults.UserEmailsEndpoint;
     }
 }

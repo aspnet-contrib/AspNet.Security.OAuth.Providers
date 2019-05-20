@@ -4,7 +4,9 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using Microsoft.AspNetCore.Builder;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
 
 namespace AspNet.Security.OAuth.Instagram
@@ -16,8 +18,6 @@ namespace AspNet.Security.OAuth.Instagram
     {
         public InstagramAuthenticationOptions()
         {
-            AuthenticationScheme = InstagramAuthenticationDefaults.AuthenticationScheme;
-            DisplayName = InstagramAuthenticationDefaults.DisplayName;
             ClaimsIssuer = InstagramAuthenticationDefaults.Issuer;
 
             CallbackPath = new PathString(InstagramAuthenticationDefaults.CallbackPath);
@@ -27,6 +27,9 @@ namespace AspNet.Security.OAuth.Instagram
             UserInformationEndpoint = InstagramAuthenticationDefaults.UserInformationEndpoint;
 
             Scope.Add("basic");
+            
+            ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
+            ClaimActions.MapJsonKey(ClaimTypes.Name, "full_name");
         }
 
         /// <summary>

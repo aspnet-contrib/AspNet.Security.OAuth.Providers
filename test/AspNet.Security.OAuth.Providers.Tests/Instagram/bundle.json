@@ -1,0 +1,26 @@
+{
+  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
+  "items": [
+    {
+      "uri": "https://api.instagram.com/oauth/access_token",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "secret-access-token",
+        "token_type": "access",
+        "refresh_token": "secret-refresh-token",
+        "expires_in": "300"
+      }
+    },
+    {
+      "uri": "https://api.instagram.com/v1/users/self?access_token=secret-access-token",
+      "contentFormat": "json",
+      "contentJson": {
+        "data": {
+          "id": "my-id",
+          "full_name": "John Smith"
+        }
+      }
+    }
+  ]
+}

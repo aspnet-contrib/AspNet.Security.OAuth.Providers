@@ -4,8 +4,11 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using Microsoft.AspNetCore.Builder;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
+using static AspNet.Security.OAuth.Reddit.RedditAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.Reddit
 {
@@ -16,8 +19,6 @@ namespace AspNet.Security.OAuth.Reddit
     {
         public RedditAuthenticationOptions()
         {
-            AuthenticationScheme = RedditAuthenticationDefaults.AuthenticationScheme;
-            DisplayName = RedditAuthenticationDefaults.DisplayName;
             ClaimsIssuer = RedditAuthenticationDefaults.Issuer;
 
             CallbackPath = new PathString(RedditAuthenticationDefaults.CallbackPath);
@@ -27,6 +28,10 @@ namespace AspNet.Security.OAuth.Reddit
             UserInformationEndpoint = RedditAuthenticationDefaults.UserInformationEndpoint;
 
             Scope.Add("identity");
+
+            ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
+            ClaimActions.MapJsonKey(ClaimTypes.Name, "name");
+            ClaimActions.MapJsonKey(Claims.Over18, "over_18");
         }
 
         /// <summary>

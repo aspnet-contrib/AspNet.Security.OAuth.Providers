@@ -5,8 +5,9 @@
  */
 
 using System.Collections.Generic;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OAuth;
 
 namespace AspNet.Security.OAuth.Amazon
 {
@@ -16,15 +17,12 @@ namespace AspNet.Security.OAuth.Amazon
     public class AmazonAuthenticationOptions : OAuthOptions
     {
         /// <summary>
-        /// Initialize a new instance of the <see cref="AmazonAuthenticationOptions"/> class.
+        /// Initializes a new instance of the <see cref="AmazonAuthenticationOptions"/> class.
         /// </summary>
         public AmazonAuthenticationOptions()
         {
-            AuthenticationScheme = AmazonAuthenticationDefaults.AuthenticationScheme;
-            DisplayName = AmazonAuthenticationDefaults.DisplayName;
             ClaimsIssuer = AmazonAuthenticationDefaults.Issuer;
-
-            CallbackPath = new PathString(AmazonAuthenticationDefaults.CallbackPath);
+            CallbackPath = AmazonAuthenticationDefaults.CallbackPath;
 
             AuthorizationEndpoint = AmazonAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = AmazonAuthenticationDefaults.TokenEndpoint;
@@ -32,6 +30,11 @@ namespace AspNet.Security.OAuth.Amazon
 
             Scope.Add("profile");
             Scope.Add("profile:user_id");
+
+            ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
+            ClaimActions.MapJsonKey(ClaimTypes.Name, "name");
+            ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "user_id");
+            ClaimActions.MapJsonKey(ClaimTypes.PostalCode, "postal_code");
         }
 
         /// <summary>

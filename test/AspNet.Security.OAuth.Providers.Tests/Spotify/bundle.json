@@ -1,0 +1,44 @@
+{
+  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
+  "items": [
+    {
+      "uri": "https://accounts.spotify.com/api/token",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "secret-access-token",
+        "token_type": "access",
+        "refresh_token": "secret-refresh-token",
+        "expires_in": "300"
+      }
+    },
+    {
+      "comment": "https://developer.spotify.com/documentation/web-api/reference/users-profile/get-current-users-profile/",
+      "uri": "https://api.spotify.com/v1/me",
+      "contentFormat": "json",
+      "contentJson": {
+        "birthdate": "1937-06-01",
+        "country": "SE",
+        "display_name": "JM Wizzler",
+        "email": "email@example.com",
+        "external_urls": { "spotify": "https://open.spotify.com/user/wizzler" },
+        "followers": {
+          "href": null,
+          "total": 3829
+        },
+        "href": "https://api.spotify.com/v1/users/wizzler",
+        "id": "wizzler",
+        "images": [
+          {
+            "height": null,
+            "url": "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-frc3/t1.0-1/1970403_10152215092574354_1798272330_n.jpg",
+            "width": null
+          }
+        ],
+        "product": "premium",
+        "type": "user",
+        "uri": "spotify:user:wizzler"
+      }
+    }
+  ]
+}

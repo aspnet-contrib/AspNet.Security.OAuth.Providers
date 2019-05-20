@@ -4,8 +4,11 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
+using System.Linq;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OAuth;
+using Newtonsoft.Json.Linq;
 
 namespace AspNet.Security.OAuth.Paypal
 {
@@ -16,11 +19,8 @@ namespace AspNet.Security.OAuth.Paypal
     {
         public PaypalAuthenticationOptions()
         {
-            AuthenticationScheme = PaypalAuthenticationDefaults.AuthenticationScheme;
-            DisplayName = PaypalAuthenticationDefaults.DisplayName;
             ClaimsIssuer = PaypalAuthenticationDefaults.Issuer;
-
-            CallbackPath = new PathString(PaypalAuthenticationDefaults.CallbackPath);
+            CallbackPath = PaypalAuthenticationDefaults.CallbackPath;
 
             AuthorizationEndpoint = PaypalAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = PaypalAuthenticationDefaults.TokenEndpoint;
@@ -29,6 +29,12 @@ namespace AspNet.Security.OAuth.Paypal
             Scope.Add("openid");
             Scope.Add("profile");
             Scope.Add("email");
+
+            ClaimActions.MapJsonKey(ClaimTypes.Name, "name");
+            ClaimActions.MapJsonKey(ClaimTypes.GivenName, "given_name");
+            ClaimActions.MapJsonKey(ClaimTypes.Surname, "family_name");
+            ClaimActions.MapCustomJson(ClaimTypes.NameIdentifier, user => user.Value<string>("user_id")?.Split('/')?.LastOrDefault());
+            ClaimActions.MapCustomJson(ClaimTypes.Email, user => user.Value<JArray>("emails")?.FirstOrDefault(email => email.Value<bool>("primary"))?.Value<string>("value"));
         }
     }
 }

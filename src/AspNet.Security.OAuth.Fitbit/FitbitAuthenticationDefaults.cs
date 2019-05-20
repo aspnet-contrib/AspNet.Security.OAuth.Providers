@@ -4,7 +4,8 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OAuth;
 
 namespace AspNet.Security.OAuth.Fitbit
 {
@@ -14,17 +15,17 @@ namespace AspNet.Security.OAuth.Fitbit
     public static class FitbitAuthenticationDefaults
     {
         /// <summary>
-        /// Default value for <see cref="AuthenticationOptions.AuthenticationScheme"/>.
+        /// Default value for <see cref="AuthenticationScheme.Name"/>.
         /// </summary>
         public const string AuthenticationScheme = "Fitbit";
 
         /// <summary>
-        /// Default value for <see cref="RemoteAuthenticationOptions.DisplayName"/>.
+        /// Default value for <see cref="AuthenticationScheme.DisplayName"/>.
         /// </summary>
-        public const string Displayname = "Fitbit";
+        public const string DisplayName = "Fitbit";
 
         /// <summary>
-        /// Default value for <see cref="AuthenticationOptions.ClaimsIssuer"/>.
+        /// Default value for <see cref="AuthenticationSchemeOptions.ClaimsIssuer"/>.
         /// </summary>
         public const string Issuer = "Fitbit";
 

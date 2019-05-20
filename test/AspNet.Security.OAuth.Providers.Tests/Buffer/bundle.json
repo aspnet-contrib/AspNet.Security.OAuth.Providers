@@ -1,0 +1,23 @@
+{
+  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
+  "items": [
+    {
+      "uri": "https://api.bufferapp.com/1/oauth2/token.json",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "secret-access-token",
+        "token_type": "access",
+        "refresh_token": "secret-refresh-token",
+        "expires_in": "300"
+      }
+    },
+    {
+      "uri": "https://api.bufferapp.com/1/user.json",
+      "contentFormat": "json",
+      "contentJson": {
+        "id": "my-id"
+      }
+    }
+  ]
+}

@@ -4,7 +4,8 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OAuth;
 
 namespace AspNet.Security.OAuth.LinkedIn
 {
@@ -14,17 +15,17 @@ namespace AspNet.Security.OAuth.LinkedIn
     public class LinkedInAuthenticationDefaults
     {
         /// <summary>
-        /// Default value for <see cref="AuthenticationOptions.AuthenticationScheme"/>.
+        /// Default value for <see cref="AuthenticationScheme.Name"/>.
         /// </summary>
         public const string AuthenticationScheme = "LinkedIn";
 
         /// <summary>
-        /// Default value for <see cref="RemoteAuthenticationOptions.DisplayName"/>.
+        /// Default value for <see cref="AuthenticationScheme.DisplayName"/>.
         /// </summary>
         public const string DisplayName = "LinkedIn";
 
         /// <summary>
-        /// Default value for <see cref="AuthenticationOptions.ClaimsIssuer"/>.
+        /// Default value for <see cref="AuthenticationSchemeOptions.ClaimsIssuer"/>.
         /// </summary>
         public const string Issuer = "LinkedIn";
 
@@ -36,12 +37,12 @@ namespace AspNet.Security.OAuth.LinkedIn
         /// <summary>
         /// Default value for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
         /// </summary>
-        public const string AuthorizationEndpoint = "https://www.linkedin.com/uas/oauth2/authorization";
+        public const string AuthorizationEndpoint = "https://www.linkedin.com/oauth/v2/authorization";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.TokenEndpoint"/>.
         /// </summary>
-        public const string TokenEndpoint = "https://www.linkedin.com/uas/oauth2/accessToken";
+        public const string TokenEndpoint = "https://www.linkedin.com/oauth/v2/accessToken";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.

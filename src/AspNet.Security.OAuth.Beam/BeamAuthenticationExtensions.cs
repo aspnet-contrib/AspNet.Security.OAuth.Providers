@@ -7,9 +7,9 @@
 using System;
 using AspNet.Security.OAuth.Beam;
 using JetBrains.Annotations;
-using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Authentication;
 
-namespace Microsoft.AspNetCore.Builder
+namespace Microsoft.Extensions.DependencyInjection
 {
     /// <summary>
     /// Extension methods to add Beam authentication capabilities to an HTTP application pipeline.
@@ -17,54 +17,60 @@ namespace Microsoft.AspNetCore.Builder
     public static class BeamAuthenticationExtensions
     {
         /// <summary>
-        /// Adds the <see cref="BeamAuthenticationMiddleware"/> middleware to the specified
-        /// <see cref="IApplicationBuilder"/>, which enables Beam authentication capabilities.
+        /// Adds <see cref="BeamAuthenticationHandler"/> to the specified
+        /// <see cref="AuthenticationBuilder"/>, which enables Beam authentication capabilities.
         /// </summary>
-        /// <param name="app">The <see cref="IApplicationBuilder"/> to add the middleware to.</param>
-        /// <param name="options">A <see cref="BeamAuthenticationOptions"/> that specifies options for the middleware.</param>
-        /// <returns>A reference to this instance after the operation has completed.</returns>
-        public static IApplicationBuilder UseBeamAuthentication(
-            [NotNull] this IApplicationBuilder app,
-            [NotNull] BeamAuthenticationOptions options)
+        /// <param name="builder">The authentication builder.</param>
+        /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
+        public static AuthenticationBuilder AddBeam([NotNull] this AuthenticationBuilder builder)
         {
-            if (app == null)
-            {
-                throw new ArgumentNullException(nameof(app));
-            }
-
-            if (options == null)
-            {
-                throw new ArgumentNullException(nameof(options));
-            }
-
-            return app.UseMiddleware<BeamAuthenticationMiddleware>(Options.Create(options));
+            return builder.AddBeam(BeamAuthenticationDefaults.AuthenticationScheme, options => { });
         }
 
         /// <summary>
-        /// Adds the <see cref="BeamAuthenticationMiddleware"/> middleware to the specified
-        /// <see cref="IApplicationBuilder"/>, which enables Beam authentication capabilities.
+        /// Adds <see cref="BeamAuthenticationHandler"/> to the specified
+        /// <see cref="AuthenticationBuilder"/>, which enables Beam authentication capabilities.
         /// </summary>
-        /// <param name="app">The <see cref="IApplicationBuilder"/> to add the middleware to.</param>
-        /// <param name="configuration">An action delegate to configure the provided <see cref="BeamAuthenticationOptions"/>.</param>
-        /// <returns>A reference to this instance after the operation has completed.</returns>
-        public static IApplicationBuilder UseBeamAuthentication(
-            [NotNull] this IApplicationBuilder app,
+        /// <param name="builder">The authentication builder.</param>
+        /// <param name="configuration">The delegate used to configure the OpenID 2.0 options.</param>
+        /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
+        public static AuthenticationBuilder AddBeam(
+            [NotNull] this AuthenticationBuilder builder,
             [NotNull] Action<BeamAuthenticationOptions> configuration)
         {
-            if (app == null)
-            {
-                throw new ArgumentNullException(nameof(app));
-            }
+            return builder.AddBeam(BeamAuthenticationDefaults.AuthenticationScheme, configuration);
+        }
 
-            if (configuration == null)
-            {
-                throw new ArgumentNullException(nameof(configuration));
-            }
+        /// <summary>
+        /// Adds <see cref="BeamAuthenticationHandler"/> to the specified
+        /// <see cref="AuthenticationBuilder"/>, which enables Beam authentication capabilities.
+        /// </summary>
+        /// <param name="builder">The authentication builder.</param>
+        /// <param name="scheme">The authentication scheme associated with this instance.</param>
+        /// <param name="configuration">The delegate used to configure the Beam options.</param>
+        /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
+        public static AuthenticationBuilder AddBeam(
+            [NotNull] this AuthenticationBuilder builder, [NotNull] string scheme,
+            [NotNull] Action<BeamAuthenticationOptions> configuration)
+        {
+            return builder.AddBeam(scheme, BeamAuthenticationDefaults.DisplayName, configuration);
+        }
 
-            var options = new BeamAuthenticationOptions();
-            configuration(options);
-
-            return app.UseMiddleware<BeamAuthenticationMiddleware>(Options.Create(options));
+        /// <summary>
+        /// Adds <see cref="BeamAuthenticationHandler"/> to the specified
+        /// <see cref="AuthenticationBuilder"/>, which enables Beam authentication capabilities.
+        /// </summary>
+        /// <param name="builder">The authentication builder.</param>
+        /// <param name="scheme">The authentication scheme associated with this instance.</param>
+        /// <param name="caption">The optional display name associated with this instance.</param>
+        /// <param name="configuration">The delegate used to configure the Beam options.</param>
+        /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
+        public static AuthenticationBuilder AddBeam(
+            [NotNull] this AuthenticationBuilder builder,
+            [NotNull] string scheme, [CanBeNull] string caption,
+            [NotNull] Action<BeamAuthenticationOptions> configuration)
+        {
+            return builder.AddOAuth<BeamAuthenticationOptions, BeamAuthenticationHandler>(scheme, caption, configuration);
         }
     }
 }

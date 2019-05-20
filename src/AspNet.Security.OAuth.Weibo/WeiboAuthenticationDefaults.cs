@@ -4,7 +4,8 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OAuth;
 
 namespace AspNet.Security.OAuth.Weibo
 {
@@ -14,12 +15,12 @@ namespace AspNet.Security.OAuth.Weibo
     public static class WeiboAuthenticationDefaults
     {
         /// <summary>
-        /// Default value for <see cref="AuthenticationOptions.AuthenticationScheme"/>.
+        /// Default value for <see cref="AuthenticationScheme.Name"/>.
         /// </summary>
         public const string AuthenticationScheme = "Weibo";
 
         /// <summary>
-        /// Default value for <see cref="RemoteAuthenticationOptions.DisplayName"/>.
+        /// Default value for <see cref="AuthenticationScheme.DisplayName"/>.
         /// </summary>
         public const string DisplayName = "Weibo";
 
@@ -29,7 +30,7 @@ namespace AspNet.Security.OAuth.Weibo
         public const string CallbackPath = "/signin-weibo";
 
         /// <summary>
-        /// Default value for <see cref="AuthenticationOptions.ClaimsIssuer"/>.
+        /// Default value for <see cref="AuthenticationSchemeOptions.ClaimsIssuer"/>.
         /// </summary>
         public const string Issuer = "Weibo";
 
@@ -47,5 +48,10 @@ namespace AspNet.Security.OAuth.Weibo
         /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
         /// </summary>
         public const string UserInformationEndpoint = "https://api.weibo.com/2/users/show.json";
+
+        /// <summary>
+        /// Default value for <see cref="WeiboAuthenticationOptions.UserEmailsEndpoint"/>.
+        /// </summary>
+        public const string UserEmailsEndpoint = "https://api.weibo.com/2/account/profile/email.json";
     }
 }

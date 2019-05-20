@@ -1,0 +1,30 @@
+{
+  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
+  "items": [
+    {
+      "uri": "https://graph.qq.com/oauth2.0/token?client_id=my-client-id&client_secret=my-client-secret&redirect_uri=http%3A%2F%2Flocalhost%2Fsignin-qq&code=a6ed8e7f-471f-44f1-903b-65946475f351&grant_type=authorization_code",
+      "contentString": "access_token=secret-access-token&token_type=access&refresh_token=secret-refresh-token"
+    },
+    {
+      "uri": "https://graph.qq.com/oauth2.0/me?access_token=secret-access-token",
+      "contentFormat": "json",
+      "contentJson": {
+        "openid": "my-open-id"
+      }
+    },
+    {
+      "uri": "https://graph.qq.com/user/get_user_info?oauth_consumer_key=my-client-id&access_token=secret-access-token&openid=my-open-id",
+      "contentFormat": "json",
+      "contentJson": {
+        "ret": 0,
+        "nickname": "John Smith",
+        "gender": "Male",
+        "figureurl": "https://qq.local/picture.png",
+        "figureurl_1": "https://qq.local/picture-medium.png",
+        "figureurl_2": "https://qq.local/picture-large.png",
+        "figureurl_qq_1": "https://qq.local/avatar.png",
+        "figureurl_qq_2": "https://qq.local/avatar-large.png"
+      }
+    }
+  ]
+}

@@ -4,8 +4,11 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using Microsoft.AspNetCore.Builder;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
+using static AspNet.Security.OAuth.Bitbucket.BitbucketAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.Bitbucket
 {
@@ -16,15 +19,18 @@ namespace AspNet.Security.OAuth.Bitbucket
     {
         public BitbucketAuthenticationOptions()
         {
-            AuthenticationScheme = BitbucketAuthenticationDefaults.AuthenticationScheme;
-            DisplayName = BitbucketAuthenticationDefaults.DisplayName;
             ClaimsIssuer = BitbucketAuthenticationDefaults.Issuer;
-
             CallbackPath = new PathString(BitbucketAuthenticationDefaults.CallbackPath);
 
             AuthorizationEndpoint = BitbucketAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = BitbucketAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = BitbucketAuthenticationDefaults.UserInformationEndpoint;
+
+            ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "account_id");
+            ClaimActions.MapJsonKey(ClaimTypes.Name, "username");
+            ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
+            ClaimActions.MapJsonKey(Claims.DisplayName, "display_name");
+            ClaimActions.MapJsonKey(Claims.Website, "website");
         }
 
         /// <summary>

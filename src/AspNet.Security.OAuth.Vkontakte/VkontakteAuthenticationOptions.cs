@@ -5,30 +5,36 @@
  */
 
 using System.Collections.Generic;
-using Microsoft.AspNetCore.Builder;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
+using static AspNet.Security.OAuth.Vkontakte.VkontakteAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.Vkontakte
 {
     /// <summary>
-    /// Configuration options for <see cref="VkontakteAuthenticationMiddleware"/>.
+    /// Defines a set of options used by <see cref="VkontakteAuthenticationHandler"/>.
     /// </summary>
     public class VkontakteAuthenticationOptions : OAuthOptions
     {
-        /// <summary>
-        /// Initializes a new <see cref="VkontakteAuthenticationOptions"/>.
-        /// </summary>
         public VkontakteAuthenticationOptions()
         {
-            AuthenticationScheme = VkontakteAuthenticationDefaults.AuthenticationScheme;
-            DisplayName = VkontakteAuthenticationDefaults.DisplayName;
             ClaimsIssuer = VkontakteAuthenticationDefaults.Issuer;
 
-            CallbackPath = new PathString("/signin-vkontakte");
+            CallbackPath = new PathString(VkontakteAuthenticationDefaults.CallbackPath);
 
             AuthorizationEndpoint = VkontakteAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = VkontakteAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = VkontakteAuthenticationDefaults.UserInformationEndpoint;
+
+            ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
+            ClaimActions.MapJsonKey(ClaimTypes.GivenName, "first_name");
+            ClaimActions.MapJsonKey(ClaimTypes.Surname, "last_name");
+            ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
+            ClaimActions.MapJsonKey(ClaimTypes.Hash, "hash");
+            ClaimActions.MapJsonKey(Claims.PhotoUrl, "photo");
+            ClaimActions.MapJsonKey(Claims.ThumbnailUrl, "photo_rec");
         }
 
         /// <summary>
@@ -37,12 +43,18 @@ namespace AspNet.Security.OAuth.Vkontakte
         /// </summary>
         public ISet<string> Fields { get; } = new HashSet<string>
         {
-            "uid",
+            "id",
             "first_name",
             "last_name",
             "photo_rec",
             "photo",
             "hash"
         };
+
+        /// <summary>
+        /// Gets or sets the VKontakte API version.
+        /// See https://vk.com/dev/versions for more information.
+        /// </summary>
+        public string ApiVersion { get; set; } = VkontakteAuthenticationDefaults.ApiVersion;
     }
 }

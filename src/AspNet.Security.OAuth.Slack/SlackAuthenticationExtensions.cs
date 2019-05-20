@@ -7,9 +7,9 @@
 using System;
 using AspNet.Security.OAuth.Slack;
 using JetBrains.Annotations;
-using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Authentication;
 
-namespace Microsoft.AspNetCore.Builder
+namespace Microsoft.Extensions.DependencyInjection
 {
     /// <summary>
     /// Extension methods to add Slack authentication capabilities to an HTTP application pipeline.
@@ -17,54 +17,60 @@ namespace Microsoft.AspNetCore.Builder
     public static class SlackAuthenticationExtensions
     {
         /// <summary>
-        /// Adds the <see cref="SlackAuthenticationMiddleware"/> middleware to the specified
-        /// <see cref="IApplicationBuilder"/>, which enables Slack authentication capabilities.
+        /// Adds <see cref="SlackAuthenticationHandler"/> to the specified
+        /// <see cref="AuthenticationBuilder"/>, which enables Slack authentication capabilities.
         /// </summary>
-        /// <param name="app">The <see cref="IApplicationBuilder"/> to add the middleware to.</param>
-        /// <param name="options">A <see cref="SlackAuthenticationOptions"/> that specifies options for the middleware.</param>
-        /// <returns>A reference to this instance after the operation has completed.</returns>
-        public static IApplicationBuilder UseSlackAuthentication(
-            [NotNull] this IApplicationBuilder app,
-            [NotNull] SlackAuthenticationOptions options)
+        /// <param name="builder">The authentication builder.</param>
+        /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
+        public static AuthenticationBuilder AddSlack([NotNull] this AuthenticationBuilder builder)
         {
-            if (app == null)
-            {
-                throw new ArgumentNullException(nameof(app));
-            }
-
-            if (options == null)
-            {
-                throw new ArgumentNullException(nameof(options));
-            }
-
-            return app.UseMiddleware<SlackAuthenticationMiddleware>(Options.Create(options));
+            return builder.AddSlack(SlackAuthenticationDefaults.AuthenticationScheme, options => { });
         }
 
         /// <summary>
-        /// Adds the <see cref="SlackAuthenticationMiddleware"/> middleware to the specified
-        /// <see cref="IApplicationBuilder"/>, which enables Slack authentication capabilities.
+        /// Adds <see cref="SlackAuthenticationHandler"/> to the specified
+        /// <see cref="AuthenticationBuilder"/>, which enables Slack authentication capabilities.
         /// </summary>
-        /// <param name="app">The <see cref="IApplicationBuilder"/> to add the middleware to.</param>
-        /// <param name="configuration">An action delegate to configure the provided <see cref="SlackAuthenticationOptions"/>.</param>
-        /// <returns>A reference to this instance after the operation has completed.</returns>
-        public static IApplicationBuilder UseSlackAuthentication(
-            [NotNull] this IApplicationBuilder app,
+        /// <param name="builder">The authentication builder.</param>
+        /// <param name="configuration">The delegate used to configure the OpenID 2.0 options.</param>
+        /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
+        public static AuthenticationBuilder AddSlack(
+            [NotNull] this AuthenticationBuilder builder,
             [NotNull] Action<SlackAuthenticationOptions> configuration)
         {
-            if (app == null)
-            {
-                throw new ArgumentNullException(nameof(app));
-            }
+            return builder.AddSlack(SlackAuthenticationDefaults.AuthenticationScheme, configuration);
+        }
 
-            if (configuration == null)
-            {
-                throw new ArgumentNullException(nameof(configuration));
-            }
+        /// <summary>
+        /// Adds <see cref="SlackAuthenticationHandler"/> to the specified
+        /// <see cref="AuthenticationBuilder"/>, which enables Slack authentication capabilities.
+        /// </summary>
+        /// <param name="builder">The authentication builder.</param>
+        /// <param name="scheme">The authentication scheme associated with this instance.</param>
+        /// <param name="configuration">The delegate used to configure the Slack options.</param>
+        /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
+        public static AuthenticationBuilder AddSlack(
+            [NotNull] this AuthenticationBuilder builder, [NotNull] string scheme,
+            [NotNull] Action<SlackAuthenticationOptions> configuration)
+        {
+            return builder.AddSlack(scheme, SlackAuthenticationDefaults.DisplayName, configuration);
+        }
 
-            var options = new SlackAuthenticationOptions();
-            configuration(options);
-
-            return app.UseMiddleware<SlackAuthenticationMiddleware>(Options.Create(options));
+        /// <summary>
+        /// Adds <see cref="SlackAuthenticationHandler"/> to the specified
+        /// <see cref="AuthenticationBuilder"/>, which enables Slack authentication capabilities.
+        /// </summary>
+        /// <param name="builder">The authentication builder.</param>
+        /// <param name="scheme">The authentication scheme associated with this instance.</param>
+        /// <param name="caption">The optional display name associated with this instance.</param>
+        /// <param name="configuration">The delegate used to configure the Slack options.</param>
+        /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
+        public static AuthenticationBuilder AddSlack(
+            [NotNull] this AuthenticationBuilder builder,
+            [NotNull] string scheme, [CanBeNull] string caption,
+            [NotNull] Action<SlackAuthenticationOptions> configuration)
+        {
+            return builder.AddOAuth<SlackAuthenticationOptions, SlackAuthenticationHandler>(scheme, caption, configuration);
         }
     }
 }

@@ -7,9 +7,9 @@
 using System;
 using AspNet.Security.OAuth.Yandex;
 using JetBrains.Annotations;
-using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Authentication;
 
-namespace Microsoft.AspNetCore.Builder
+namespace Microsoft.Extensions.DependencyInjection
 {
     /// <summary>
     /// Extension methods to add Yandex authentication capabilities to an HTTP application pipeline.
@@ -17,54 +17,60 @@ namespace Microsoft.AspNetCore.Builder
     public static class YandexAuthenticationExtensions
     {
         /// <summary>
-        /// Adds the <see cref="YandexAuthenticationMiddleware"/> middleware to the specified
-        /// <see cref="IApplicationBuilder"/>, which enables Yandex authentication capabilities.
+        /// Adds <see cref="YandexAuthenticationHandler"/> to the specified
+        /// <see cref="AuthenticationBuilder"/>, which enables Yandex authentication capabilities.
         /// </summary>
-        /// <param name="app">The <see cref="IApplicationBuilder"/> to add the middleware to.</param>
-        /// <param name="options">A <see cref="YandexAuthenticationOptions"/> that specifies options for the middleware.</param>
+        /// <param name="builder">The authentication builder.</param>
         /// <returns>A reference to this instance after the operation has completed.</returns>
-        public static IApplicationBuilder UseYandexAuthentication(
-            [NotNull] this IApplicationBuilder app,
-            [NotNull] YandexAuthenticationOptions options)
+        public static AuthenticationBuilder AddYandex([NotNull] this AuthenticationBuilder builder)
         {
-            if (app == null)
-            {
-                throw new ArgumentNullException(nameof(app));
-            }
-
-            if (options == null)
-            {
-                throw new ArgumentNullException(nameof(options));
-            }
-
-            return app.UseMiddleware<YandexAuthenticationMiddleware>(Options.Create(options));
+            return builder.AddYandex(YandexAuthenticationDefaults.AuthenticationScheme, options => { });
         }
 
         /// <summary>
-        /// Adds the <see cref="YandexAuthenticationMiddleware"/> middleware to the specified
-        /// <see cref="IApplicationBuilder"/>, which enables Yandex authentication capabilities.
+        /// Adds <see cref="YandexAuthenticationHandler"/> to the specified
+        /// <see cref="AuthenticationBuilder"/>, which enables Yandex authentication capabilities.
         /// </summary>
-        /// <param name="app">The <see cref="IApplicationBuilder"/> to add the middleware to.</param>
-        /// <param name="configuration">An action delegate to configure the provided <see cref="YandexAuthenticationOptions"/>.</param>
+        /// <param name="builder">The authentication builder.</param>
+        /// <param name="configuration">The delegate used to configure the OpenID 2.0 options.</param>
         /// <returns>A reference to this instance after the operation has completed.</returns>
-        public static IApplicationBuilder UseYandexAuthentication(
-            [NotNull] this IApplicationBuilder app,
+        public static AuthenticationBuilder AddYandex(
+            [NotNull] this AuthenticationBuilder builder,
             [NotNull] Action<YandexAuthenticationOptions> configuration)
         {
-            if (app == null)
-            {
-                throw new ArgumentNullException(nameof(app));
-            }
+            return builder.AddYandex(YandexAuthenticationDefaults.AuthenticationScheme, configuration);
+        }
 
-            if (configuration == null)
-            {
-                throw new ArgumentNullException(nameof(configuration));
-            }
+        /// <summary>
+        /// Adds <see cref="YandexAuthenticationHandler"/> to the specified
+        /// <see cref="AuthenticationBuilder"/>, which enables Yandex authentication capabilities.
+        /// </summary>
+        /// <param name="builder">The authentication builder.</param>
+        /// <param name="scheme">The authentication scheme associated with this instance.</param>
+        /// <param name="configuration">The delegate used to configure the Yandex options.</param>
+        /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
+        public static AuthenticationBuilder AddYandex(
+            [NotNull] this AuthenticationBuilder builder, [NotNull] string scheme,
+            [NotNull] Action<YandexAuthenticationOptions> configuration)
+        {
+            return builder.AddYandex(scheme, YandexAuthenticationDefaults.DisplayName, configuration);
+        }
 
-            var options = new YandexAuthenticationOptions();
-            configuration(options);
-
-            return app.UseMiddleware<YandexAuthenticationMiddleware>(Options.Create(options));
+        /// <summary>
+        /// Adds <see cref="YandexAuthenticationHandler"/> to the specified
+        /// <see cref="AuthenticationBuilder"/>, which enables Yandex authentication capabilities.
+        /// </summary>
+        /// <param name="builder">The authentication builder.</param>
+        /// <param name="scheme">The authentication scheme associated with this instance.</param>
+        /// <param name="caption">The optional display name associated with this instance.</param>
+        /// <param name="configuration">The delegate used to configure the Yandex options.</param>
+        /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
+        public static AuthenticationBuilder AddYandex(
+            [NotNull] this AuthenticationBuilder builder,
+            [NotNull] string scheme, [CanBeNull] string caption,
+            [NotNull] Action<YandexAuthenticationOptions> configuration)
+        {
+            return builder.AddOAuth<YandexAuthenticationOptions, YandexAuthenticationHandler>(scheme, caption, configuration);
         }
     }
 }

@@ -5,8 +5,11 @@
  */
 
 using System.Collections.Generic;
-using Microsoft.AspNetCore.Builder;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
+using static AspNet.Security.OAuth.LinkedIn.LinkedInAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.LinkedIn
 {
@@ -17,8 +20,6 @@ namespace AspNet.Security.OAuth.LinkedIn
     {
         public LinkedInAuthenticationOptions()
         {
-            AuthenticationScheme = LinkedInAuthenticationDefaults.AuthenticationScheme;
-            DisplayName = LinkedInAuthenticationDefaults.DisplayName;
             ClaimsIssuer = LinkedInAuthenticationDefaults.Issuer;
 
             CallbackPath = new PathString(LinkedInAuthenticationDefaults.CallbackPath);
@@ -26,6 +27,28 @@ namespace AspNet.Security.OAuth.LinkedIn
             AuthorizationEndpoint = LinkedInAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = LinkedInAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = LinkedInAuthenticationDefaults.UserInformationEndpoint;
+
+            ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
+            ClaimActions.MapJsonKey(ClaimTypes.Email, "emailAddress");
+            ClaimActions.MapJsonKey(ClaimTypes.Name, "formattedName");
+            ClaimActions.MapJsonKey(ClaimTypes.GivenName, "firstName");
+            ClaimActions.MapJsonKey(ClaimTypes.Surname, "lastName");
+            ClaimActions.MapJsonKey(Claims.MaidenName, "maidenName");
+            ClaimActions.MapJsonKey(Claims.ProfileUrl, "publicProfileUrl");
+            ClaimActions.MapJsonKey(Claims.PictureUrl, "pictureUrl");
+            ClaimActions.MapJsonKey(Claims.Industry, "industry");
+            ClaimActions.MapJsonKey(Claims.Summary, "summary");
+            ClaimActions.MapJsonKey(Claims.Headline, "headline");
+            ClaimActions.MapCustomJson(Claims.Positions, user => user["positions"]?.ToString());
+            ClaimActions.MapJsonKey(Claims.PhoneticFirstName, "phoneticFirstName");
+            ClaimActions.MapJsonKey(Claims.PhoneticLastName, "phoneticLastName");
+            ClaimActions.MapJsonKey(Claims.FormattedPhoneticName, "formattedPhoneticName");
+            ClaimActions.MapCustomJson(Claims.Location, user => user["location"]?.ToString());
+            ClaimActions.MapJsonKey(Claims.Specialties, "specialties");
+            ClaimActions.MapJsonKey(Claims.NumConnections, "numConnections");
+            ClaimActions.MapJsonKey(Claims.NumConnectionsCapped, "numConnectionsCapped");
+            ClaimActions.MapJsonKey(Claims.CurrentShare, "currentShare");
+            ClaimActions.MapCustomJson(Claims.PictureUrls, user => user["pictureUrls"]?.ToString());
         }
 
         /// <summary>
@@ -34,11 +57,11 @@ namespace AspNet.Security.OAuth.LinkedIn
         /// </summary>
         public ISet<string> Fields { get; } = new HashSet<string>
         {
-            "id",
-            "first-name",
-            "last-name",
-            "formatted-name",
-            "email-address"
+            ProfileFields.Id,
+            ProfileFields.FirstName,
+            ProfileFields.LastName,
+            ProfileFields.FormattedName,
+            LinkedInAuthenticationConstants.EmailAddressField
         };
     }
 }

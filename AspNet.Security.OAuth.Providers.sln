@@ -1,8 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26730.16
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28803.156
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{8DCAEA78-86AE-4183-93C0-41C7F8850AAA}"
+	ProjectSection(SolutionItems) = preProject
+		build\common.props = build\common.props
+		build\dependencies.props = build\dependencies.props
+		build\key.snk = build\key.snk
+		build\packages.props = build\packages.props
+		build\version.props = build\version.props
+	EndProjectSection
+EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{BAC7067D-88FE-4385-8AC9-1A325FFBDE69}"
@@ -10,8 +19,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.GitHub", "src\AspNet.Security.OAuth.GitHub\AspNet.Security.OAuth.GitHub.csproj", "{9DFEE19E-C170-4F20-93F3-EC952B1532F2}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mvc.Client", "samples\Mvc.Client\Mvc.Client.csproj", "{68631868-902A-46FB-9A44-BACF1812FBDE}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.Extensions", "shared\AspNet.Security.OAuth.Extensions\AspNet.Security.OAuth.Extensions.csproj", "{FE52A431-57AD-45FA-AA59-C63CB6EA3F31}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.LinkedIn", "src\AspNet.Security.OAuth.LinkedIn\AspNet.Security.OAuth.LinkedIn.csproj", "{0351689C-EAB7-42D0-966F-4021B89EF553}"
 EndProject
@@ -99,9 +106,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.Amazo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.Discord", "src\AspNet.Security.OAuth.Discord\AspNet.Security.OAuth.Discord.csproj", "{86614CB9-0768-40BF-8C27-699E3990B733}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "shared", "shared", "{CA7BFFF8-0DC9-4621-8DFE-D3E6A116C509}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.Patreon", "src\AspNet.Security.OAuth.Patreon\AspNet.Security.OAuth.Patreon.csproj", "{ED8A220C-45FE-45C6-9B8F-BB009ACE972E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.Harvest", "src\AspNet.Security.OAuth.Harvest\AspNet.Security.OAuth.Harvest.csproj", "{D50C810D-7B5E-4332-A0FF-765101B09B23}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.QQ", "src\AspNet.Security.OAuth.QQ\AspNet.Security.OAuth.QQ.csproj", "{7C2E82CE-F6EC-41A8-AA22-3466505F95D8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{D7CEAA0A-50F4-4BE9-90B8-EED43F4CB39B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.Providers.Tests", "test\AspNet.Security.OAuth.Providers.Tests\AspNet.Security.OAuth.Providers.Tests.csproj", "{842A4AA5-A82B-468E-9C25-BCD63C9C8E48}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -117,10 +130,6 @@ Global
 		{68631868-902A-46FB-9A44-BACF1812FBDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{68631868-902A-46FB-9A44-BACF1812FBDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{68631868-902A-46FB-9A44-BACF1812FBDE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FE52A431-57AD-45FA-AA59-C63CB6EA3F31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FE52A431-57AD-45FA-AA59-C63CB6EA3F31}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FE52A431-57AD-45FA-AA59-C63CB6EA3F31}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FE52A431-57AD-45FA-AA59-C63CB6EA3F31}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0351689C-EAB7-42D0-966F-4021B89EF553}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0351689C-EAB7-42D0-966F-4021B89EF553}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0351689C-EAB7-42D0-966F-4021B89EF553}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -293,10 +302,22 @@ Global
 		{86614CB9-0768-40BF-8C27-699E3990B733}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{86614CB9-0768-40BF-8C27-699E3990B733}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{86614CB9-0768-40BF-8C27-699E3990B733}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED8A220C-45FE-45C6-9B8F-BB009ACE972E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED8A220C-45FE-45C6-9B8F-BB009ACE972E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED8A220C-45FE-45C6-9B8F-BB009ACE972E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED8A220C-45FE-45C6-9B8F-BB009ACE972E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D50C810D-7B5E-4332-A0FF-765101B09B23}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D50C810D-7B5E-4332-A0FF-765101B09B23}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D50C810D-7B5E-4332-A0FF-765101B09B23}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D50C810D-7B5E-4332-A0FF-765101B09B23}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C2E82CE-F6EC-41A8-AA22-3466505F95D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C2E82CE-F6EC-41A8-AA22-3466505F95D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C2E82CE-F6EC-41A8-AA22-3466505F95D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C2E82CE-F6EC-41A8-AA22-3466505F95D8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{842A4AA5-A82B-468E-9C25-BCD63C9C8E48}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{842A4AA5-A82B-468E-9C25-BCD63C9C8E48}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{842A4AA5-A82B-468E-9C25-BCD63C9C8E48}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{842A4AA5-A82B-468E-9C25-BCD63C9C8E48}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -304,7 +325,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{9DFEE19E-C170-4F20-93F3-EC952B1532F2} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 		{68631868-902A-46FB-9A44-BACF1812FBDE} = {BAC7067D-88FE-4385-8AC9-1A325FFBDE69}
-		{FE52A431-57AD-45FA-AA59-C63CB6EA3F31} = {CA7BFFF8-0DC9-4621-8DFE-D3E6A116C509}
 		{0351689C-EAB7-42D0-966F-4021B89EF553} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 		{38E5DB77-7F35-4E3C-9719-8A25CE4130CA} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 		{F79E8D15-F296-424C-A50E-AE39EB2C609F} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
@@ -348,9 +368,12 @@ Global
 		{9AC900E8-6D03-412B-8D9B-302FD0FBD059} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 		{C66A6EDB-D29A-49EE-841E-75F239DE5A04} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 		{86614CB9-0768-40BF-8C27-699E3990B733} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
+		{ED8A220C-45FE-45C6-9B8F-BB009ACE972E} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 		{D50C810D-7B5E-4332-A0FF-765101B09B23} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
+		{7C2E82CE-F6EC-41A8-AA22-3466505F95D8} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
+		{842A4AA5-A82B-468E-9C25-BCD63C9C8E48} = {D7CEAA0A-50F4-4BE9-90B8-EED43F4CB39B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {4EEB2055-805B-4516-84C5-0EBD618EDBE4}
+		SolutionGuid = {C7B54DE2-6407-4802-AD9C-CE54BF414C8C}
 	EndGlobalSection
 EndGlobal

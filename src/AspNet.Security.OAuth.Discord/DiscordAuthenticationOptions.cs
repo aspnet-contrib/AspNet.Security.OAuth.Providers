@@ -4,7 +4,9 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using Microsoft.AspNetCore.Builder;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
 
 namespace AspNet.Security.OAuth.Discord
@@ -16,8 +18,6 @@ namespace AspNet.Security.OAuth.Discord
     {
         public DiscordAuthenticationOptions()
         {
-            AuthenticationScheme = DiscordAuthenticationDefaults.AuthenticationScheme;
-            DisplayName = DiscordAuthenticationDefaults.DisplayName;
             ClaimsIssuer = DiscordAuthenticationDefaults.Issuer;
 
             CallbackPath = new PathString(DiscordAuthenticationDefaults.CallbackPath);
@@ -25,6 +25,12 @@ namespace AspNet.Security.OAuth.Discord
             AuthorizationEndpoint = DiscordAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = DiscordAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = DiscordAuthenticationDefaults.UserInformationEndpoint;
+
+            ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
+            ClaimActions.MapJsonKey(ClaimTypes.Name, "username");
+            ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
+
+            Scope.Add("identify");
         }
     }
 }

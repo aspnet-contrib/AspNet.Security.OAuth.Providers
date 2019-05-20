@@ -3,18 +3,14 @@
   <Import Project="..\..\build\packages.props" />
 
   <PropertyGroup>
-    <TargetFrameworks>net451;netstandard1.3</TargetFrameworks>
+    <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
   <PropertyGroup>
     <Description>ASP.NET Core security middleware enabling Onshape authentication.</Description>
-    <Authors>Tathagata Chakraborty</Authors>
+    <Authors>Tathagata Chakraborty;Chino Chang</Authors>
     <PackageTags>aspnetcore;authentication;oauth;onshape;security</PackageTags>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Include="..\..\shared\AspNet.Security.OAuth.Extensions\*.cs" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="JetBrains.Annotations" Version="$(JetBrainsVersion)" PrivateAssets="All" />

@@ -7,9 +7,9 @@
 using System;
 using AspNet.Security.OAuth.ArcGIS;
 using JetBrains.Annotations;
-using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Authentication;
 
-namespace Microsoft.AspNetCore.Builder
+namespace Microsoft.Extensions.DependencyInjection
 {
     /// <summary>
     /// Extension methods to add ArcGIS authentication capabilities to an HTTP application pipeline.
@@ -17,54 +17,60 @@ namespace Microsoft.AspNetCore.Builder
     public static class ArcGISAuthenticationExtensions
     {
         /// <summary>
-        /// Adds the <see cref="ArcGISAuthenticationMiddleware"/> middleware to the specified
-        /// <see cref="IApplicationBuilder"/>, which enables ArcGIS authentication capabilities.
+        /// Adds <see cref="ArcGISAuthenticationHandler"/> to the specified
+        /// <see cref="AuthenticationBuilder"/>, which enables ArcGIS authentication capabilities.
         /// </summary>
-        /// <param name="app">The <see cref="IApplicationBuilder"/> to add the middleware to.</param>
-        /// <param name="options">A <see cref="ArcGISAuthenticationOptions"/> that specifies options for the middleware.</param>
+        /// <param name="builder">The authentication builder.</param>
         /// <returns>A reference to this instance after the operation has completed.</returns>
-        public static IApplicationBuilder UseArcGISAuthentication(
-            [NotNull] this IApplicationBuilder app,
-            [NotNull] ArcGISAuthenticationOptions options)
+        public static AuthenticationBuilder AddArcGIS([NotNull] this AuthenticationBuilder builder)
         {
-            if (app == null)
-            {
-                throw new ArgumentNullException(nameof(app));
-            }
-
-            if (options == null)
-            {
-                throw new ArgumentNullException(nameof(options));
-            }
-
-            return app.UseMiddleware<ArcGISAuthenticationMiddleware>(Options.Create(options));
+            return builder.AddArcGIS(ArcGISAuthenticationDefaults.AuthenticationScheme, options => { });
         }
 
         /// <summary>
-        /// Adds the <see cref="ArcGISAuthenticationMiddleware"/> middleware to the specified
-        /// <see cref="IApplicationBuilder"/>, which enables ArcGIS authentication capabilities.
+        /// Adds <see cref="ArcGISAuthenticationHandler"/> to the specified
+        /// <see cref="AuthenticationBuilder"/>, which enables ArcGIS authentication capabilities.
         /// </summary>
-        /// <param name="app">The <see cref="IApplicationBuilder"/> to add the middleware to.</param>
-        /// <param name="configuration">An action delegate to configure the provided <see cref="ArcGISAuthenticationOptions"/>.</param>
+        /// <param name="builder">The authentication builder.</param>
+        /// <param name="configuration">The delegate used to configure the OpenID 2.0 options.</param>
         /// <returns>A reference to this instance after the operation has completed.</returns>
-        public static IApplicationBuilder UseArcGISAuthentication(
-            [NotNull] this IApplicationBuilder app,
+        public static AuthenticationBuilder AddArcGIS(
+            [NotNull] this AuthenticationBuilder builder,
             [NotNull] Action<ArcGISAuthenticationOptions> configuration)
         {
-            if (app == null)
-            {
-                throw new ArgumentNullException(nameof(app));
-            }
+            return builder.AddArcGIS(ArcGISAuthenticationDefaults.AuthenticationScheme, configuration);
+        }
 
-            if (configuration == null)
-            {
-                throw new ArgumentNullException(nameof(configuration));
-            }
+        /// <summary>
+        /// Adds <see cref="ArcGISAuthenticationHandler"/> to the specified
+        /// <see cref="AuthenticationBuilder"/>, which enables ArcGIS authentication capabilities.
+        /// </summary>
+        /// <param name="builder">The authentication builder.</param>
+        /// <param name="scheme">The authentication scheme associated with this instance.</param>
+        /// <param name="configuration">The delegate used to configure the ArcGIS options.</param>
+        /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
+        public static AuthenticationBuilder AddArcGIS(
+            [NotNull] this AuthenticationBuilder builder, [NotNull] string scheme,
+            [NotNull] Action<ArcGISAuthenticationOptions> configuration)
+        {
+            return builder.AddArcGIS(scheme, ArcGISAuthenticationDefaults.DisplayName, configuration);
+        }
 
-            var options = new ArcGISAuthenticationOptions();
-            configuration(options);
-
-            return app.UseMiddleware<ArcGISAuthenticationMiddleware>(Options.Create(options));
+        /// <summary>
+        /// Adds <see cref="ArcGISAuthenticationHandler"/> to the specified
+        /// <see cref="AuthenticationBuilder"/>, which enables ArcGIS authentication capabilities.
+        /// </summary>
+        /// <param name="builder">The authentication builder.</param>
+        /// <param name="scheme">The authentication scheme associated with this instance.</param>
+        /// <param name="caption">The optional display name associated with this instance.</param>
+        /// <param name="configuration">The delegate used to configure the ArcGIS options.</param>
+        /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
+        public static AuthenticationBuilder AddArcGIS(
+            [NotNull] this AuthenticationBuilder builder,
+            [NotNull] string scheme, [CanBeNull] string caption,
+            [NotNull] Action<ArcGISAuthenticationOptions> configuration)
+        {
+            return builder.AddOAuth<ArcGISAuthenticationOptions, ArcGISAuthenticationHandler>(scheme, caption, configuration);
         }
     }
 }

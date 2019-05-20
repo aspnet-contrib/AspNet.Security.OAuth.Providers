@@ -7,9 +7,9 @@
 using System;
 using AspNet.Security.OAuth.Asana;
 using JetBrains.Annotations;
-using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Authentication;
 
-namespace Microsoft.AspNetCore.Builder
+namespace Microsoft.Extensions.DependencyInjection
 {
     /// <summary>
     /// Extension methods to add Asana authentication capabilities to an HTTP application pipeline.
@@ -17,54 +17,60 @@ namespace Microsoft.AspNetCore.Builder
     public static class AsanaAuthenticationExtensions
     {
         /// <summary>
-        /// Adds the <see cref="AsanaAuthenticationMiddleware"/> middleware to the specified
-        /// <see cref="IApplicationBuilder"/>, which enables Asana authentication capabilities.
+        /// Adds <see cref="AsanaAuthenticationHandler"/> to the specified
+        /// <see cref="AuthenticationBuilder"/>, which enables Asana authentication capabilities.
         /// </summary>
-        /// <param name="app">The <see cref="IApplicationBuilder"/> to add the middleware to.</param>
-        /// <param name="options">A <see cref="AsanaAuthenticationOptions"/> that specifies options for the middleware.</param>
+        /// <param name="builder">The authentication builder.</param>
         /// <returns>A reference to this instance after the operation has completed.</returns>
-        public static IApplicationBuilder UseAsanaAuthentication(
-            [NotNull] this IApplicationBuilder app,
-            [NotNull] AsanaAuthenticationOptions options)
+        public static AuthenticationBuilder AddAsana([NotNull] this AuthenticationBuilder builder)
         {
-            if (app == null)
-            {
-                throw new ArgumentNullException(nameof(app));
-            }
-
-            if (options == null)
-            {
-                throw new ArgumentNullException(nameof(options));
-            }
-
-            return app.UseMiddleware<AsanaAuthenticationMiddleware>(Options.Create(options));
+            return builder.AddAsana(AsanaAuthenticationDefaults.AuthenticationScheme, options => { });
         }
 
         /// <summary>
-        /// Adds the <see cref="AsanaAuthenticationMiddleware"/> middleware to the specified
-        /// <see cref="IApplicationBuilder"/>, which enables Asana authentication capabilities.
+        /// Adds <see cref="AsanaAuthenticationHandler"/> to the specified
+        /// <see cref="AuthenticationBuilder"/>, which enables Asana authentication capabilities.
         /// </summary>
-        /// <param name="app">The <see cref="IApplicationBuilder"/> to add the middleware to.</param>
-        /// <param name="configuration">An action delegate to configure the provided <see cref="AsanaAuthenticationOptions"/>.</param>
+        /// <param name="builder">The authentication builder.</param>
+        /// <param name="configuration">The delegate used to configure the OpenID 2.0 options.</param>
         /// <returns>A reference to this instance after the operation has completed.</returns>
-        public static IApplicationBuilder UseAsanaAuthentication(
-            [NotNull] this IApplicationBuilder app,
+        public static AuthenticationBuilder AddAsana(
+            [NotNull] this AuthenticationBuilder builder,
             [NotNull] Action<AsanaAuthenticationOptions> configuration)
         {
-            if (app == null)
-            {
-                throw new ArgumentNullException(nameof(app));
-            }
+            return builder.AddAsana(AsanaAuthenticationDefaults.AuthenticationScheme, configuration);
+        }
 
-            if (configuration == null)
-            {
-                throw new ArgumentNullException(nameof(configuration));
-            }
+        /// <summary>
+        /// Adds <see cref="AsanaAuthenticationHandler"/> to the specified
+        /// <see cref="AuthenticationBuilder"/>, which enables Asana authentication capabilities.
+        /// </summary>
+        /// <param name="builder">The authentication builder.</param>
+        /// <param name="scheme">The authentication scheme associated with this instance.</param>
+        /// <param name="configuration">The delegate used to configure the Asana options.</param>
+        /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
+        public static AuthenticationBuilder AddAsana(
+            [NotNull] this AuthenticationBuilder builder, [NotNull] string scheme,
+            [NotNull] Action<AsanaAuthenticationOptions> configuration)
+        {
+            return builder.AddAsana(scheme, AsanaAuthenticationDefaults.DisplayName, configuration);
+        }
 
-            var options = new AsanaAuthenticationOptions();
-            configuration(options);
-
-            return app.UseMiddleware<AsanaAuthenticationMiddleware>(Options.Create(options));
+        /// <summary>
+        /// Adds <see cref="AsanaAuthenticationHandler"/> to the specified
+        /// <see cref="AuthenticationBuilder"/>, which enables Asana authentication capabilities.
+        /// </summary>
+        /// <param name="builder">The authentication builder.</param>
+        /// <param name="scheme">The authentication scheme associated with this instance.</param>
+        /// <param name="caption">The optional display name associated with this instance.</param>
+        /// <param name="configuration">The delegate used to configure the Asana options.</param>
+        /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
+        public static AuthenticationBuilder AddAsana(
+            [NotNull] this AuthenticationBuilder builder,
+            [NotNull] string scheme, [CanBeNull] string caption,
+            [NotNull] Action<AsanaAuthenticationOptions> configuration)
+        {
+            return builder.AddOAuth<AsanaAuthenticationOptions, AsanaAuthenticationHandler>(scheme, caption, configuration);
         }
     }
 }

@@ -1,0 +1,29 @@
+{
+  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
+  "items": [
+    {
+      "uri": "https://oauth.yandex.ru/token",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "secret-access-token",
+        "token_type": "access",
+        "refresh_token": "secret-refresh-token",
+        "expires_in": "300"
+      }
+    },
+    {
+      "uri": "https://login.yandex.ru/info",
+      "contentFormat": "json",
+      "contentJson": {
+        "id": "my-id",
+        "login": "John Smith",
+        "first_name": "John",
+        "last_name": "Smith",
+        "emails": [
+          "john@john-smith.local"
+        ]
+      }
+    }
+  ]
+}

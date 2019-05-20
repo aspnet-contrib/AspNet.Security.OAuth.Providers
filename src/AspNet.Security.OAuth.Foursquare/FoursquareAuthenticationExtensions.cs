@@ -7,9 +7,9 @@
 using System;
 using AspNet.Security.OAuth.Foursquare;
 using JetBrains.Annotations;
-using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Authentication;
 
-namespace Microsoft.AspNetCore.Builder
+namespace Microsoft.Extensions.DependencyInjection
 {
     /// <summary>
     /// Extension methods to add Foursquare authentication capabilities to an HTTP application pipeline.
@@ -17,55 +17,60 @@ namespace Microsoft.AspNetCore.Builder
     public static class FoursquareAuthenticationExtensions
     {
         /// <summary>
-        /// Adds the <see cref="FoursquareAuthenticationMiddleware"/> middleware to the specified
-        /// <see cref="IApplicationBuilder"/>, which enables Foursquare authentication capabilities.
+        /// Adds <see cref="FoursquareAuthenticationHandler"/> to the specified
+        /// <see cref="AuthenticationBuilder"/>, which enables Foursquare authentication capabilities.
         /// </summary>
-        /// <param name="app">The <see cref="IApplicationBuilder"/> to add the middleware to.</param>
-        /// <param name="options">A <see cref="FoursquareAuthenticationOptions"/> that specifies options for the middleware.</param>
-        /// <returns>A reference to this instance after the operation has completed.</returns>
-        public static IApplicationBuilder UseFoursquareAuthentication(
-            [NotNull] this IApplicationBuilder app,
-            [NotNull] FoursquareAuthenticationOptions options)
+        /// <param name="builder">The authentication builder.</param>
+        /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
+        public static AuthenticationBuilder AddFoursquare([NotNull] this AuthenticationBuilder builder)
         {
-            if (app == null)
-            {
-                throw new ArgumentNullException(nameof(app));
-            }
-
-            if (options == null)
-            {
-                throw new ArgumentNullException(nameof(options));
-            }
-
-            return app.UseMiddleware<FoursquareAuthenticationMiddleware>(Options.Create(options));
+            return builder.AddFoursquare(FoursquareAuthenticationDefaults.AuthenticationScheme, options => { });
         }
 
         /// <summary>
-        /// Adds the <see cref="FoursquareAuthenticationMiddleware"/> middleware to the specified
-        /// <see cref="IApplicationBuilder"/>, which enables Foursquare authentication capabilities.
+        /// Adds <see cref="FoursquareAuthenticationHandler"/> to the specified
+        /// <see cref="AuthenticationBuilder"/>, which enables Foursquare authentication capabilities.
         /// </summary>
-        /// <param name="app">The <see cref="IApplicationBuilder"/> to add the middleware to.</param>
-        /// <param name="configuration">An action delegate to configure the provided <see cref="FoursquareAuthenticationOptions"/>.</param>
-        /// <returns>A reference to this instance after the operation has completed.</returns>
-        public static IApplicationBuilder UseFoursquareAuthentication(
-            [NotNull] this IApplicationBuilder app,
+        /// <param name="builder">The authentication builder.</param>
+        /// <param name="configuration">The delegate used to configure the OpenID 2.0 options.</param>
+        /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
+        public static AuthenticationBuilder AddFoursquare(
+            [NotNull] this AuthenticationBuilder builder,
             [NotNull] Action<FoursquareAuthenticationOptions> configuration)
         {
-            if (app == null)
-            {
-                throw new ArgumentNullException(nameof(app));
-            }
+            return builder.AddFoursquare(FoursquareAuthenticationDefaults.AuthenticationScheme, configuration);
+        }
 
-            if (configuration == null)
-            {
-                throw new ArgumentNullException(nameof(configuration));
-            }
+        /// <summary>
+        /// Adds <see cref="FoursquareAuthenticationHandler"/> to the specified
+        /// <see cref="AuthenticationBuilder"/>, which enables Foursquare authentication capabilities.
+        /// </summary>
+        /// <param name="builder">The authentication builder.</param>
+        /// <param name="scheme">The authentication scheme associated with this instance.</param>
+        /// <param name="configuration">The delegate used to configure the Foursquare options.</param>
+        /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
+        public static AuthenticationBuilder AddFoursquare(
+            [NotNull] this AuthenticationBuilder builder, [NotNull] string scheme,
+            [NotNull] Action<FoursquareAuthenticationOptions> configuration)
+        {
+            return builder.AddFoursquare(scheme, FoursquareAuthenticationDefaults.DisplayName, configuration);
+        }
 
-            var options = new FoursquareAuthenticationOptions();
-            configuration(options);
-
-            return app.UseMiddleware<FoursquareAuthenticationMiddleware>(Options.Create(options));
+        /// <summary>
+        /// Adds <see cref="FoursquareAuthenticationHandler"/> to the specified
+        /// <see cref="AuthenticationBuilder"/>, which enables Foursquare authentication capabilities.
+        /// </summary>
+        /// <param name="builder">The authentication builder.</param>
+        /// <param name="scheme">The authentication scheme associated with this instance.</param>
+        /// <param name="caption">The optional display name associated with this instance.</param>
+        /// <param name="configuration">The delegate used to configure the Foursquare options.</param>
+        /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
+        public static AuthenticationBuilder AddFoursquare(
+            [NotNull] this AuthenticationBuilder builder,
+            [NotNull] string scheme, [CanBeNull] string caption,
+            [NotNull] Action<FoursquareAuthenticationOptions> configuration)
+        {
+            return builder.AddOAuth<FoursquareAuthenticationOptions, FoursquareAuthenticationHandler>(scheme, caption, configuration);
         }
     }
-
 }

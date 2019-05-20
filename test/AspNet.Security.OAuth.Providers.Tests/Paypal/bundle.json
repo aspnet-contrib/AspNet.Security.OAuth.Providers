@@ -1,0 +1,46 @@
+{
+  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
+  "items": [
+    {
+      "uri": "https://api.paypal.com/v1/identity/openidconnect/tokenservice",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "secret-access-token",
+        "token_type": "access",
+        "refresh_token": "secret-refresh-token",
+        "expires_in": "300"
+      }
+    },
+    {
+      "comment": "https://developer.paypal.com/docs/api/identity/v1/#userinfo",
+      "uri": "https://api.paypal.com/v1/identity/oauth2/userinfo",
+      "contentFormat": "json",
+      "contentJson": {
+        "user_id": "https://www.paypal.com/webapps/auth/identity/user/mWq6_1sU85v5EG9yHdPxJRrhGHrnMJ-1PQKtX6pcsmA",
+        "name": "identity test",
+        "given_name": "identity",
+        "family_name": "test",
+        "payer_id": "WDJJHEBZ4X2LY",
+        "address": {
+          "street_address": "1 Main St",
+          "locality": "San Jose",
+          "region": "CA",
+          "postal_code": "95131",
+          "country": "US"
+        },
+        "verified_account": "true",
+        "emails": [
+          {
+            "value": "user1@example.com",
+            "primary": true
+          },
+          {
+            "value": "user2@example.com",
+            "primary": false
+          }
+        ]
+      }
+    }
+  ]
+}

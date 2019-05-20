@@ -7,9 +7,9 @@
 using System;
 using AspNet.Security.OAuth.BattleNet;
 using JetBrains.Annotations;
-using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Authentication;
 
-namespace Microsoft.AspNetCore.Builder
+namespace Microsoft.Extensions.DependencyInjection
 {
     /// <summary>
     /// Extension methods to add Battle.net authentication capabilities to an HTTP application pipeline.
@@ -17,54 +17,60 @@ namespace Microsoft.AspNetCore.Builder
     public static class BattleNetAuthenticationExtensions
     {
         /// <summary>
-        /// Adds the <see cref="BattleNetAuthenticationMiddleware"/> middleware to the specified
-        /// <see cref="IApplicationBuilder"/>, which enables Battle.net authentication capabilities.
+        /// Adds <see cref="BattleNetAuthenticationHandler"/> to the specified
+        /// <see cref="AuthenticationBuilder"/>, which enables Battle.net authentication capabilities.
         /// </summary>
-        /// <param name="app">The <see cref="IApplicationBuilder"/> to add the middleware to.</param>
-        /// <param name="options">A <see cref="BattleNetAuthenticationOptions"/> that specifies options for the middleware.</param>
+        /// <param name="builder">The authentication builder.</param>
         /// <returns>A reference to this instance after the operation has completed.</returns>
-        public static IApplicationBuilder UseBattleNetAuthentication(
-            [NotNull] this IApplicationBuilder app,
-            [NotNull] BattleNetAuthenticationOptions options)
+        public static AuthenticationBuilder AddBattleNet([NotNull] this AuthenticationBuilder builder)
         {
-            if (app == null)
-            {
-                throw new ArgumentNullException(nameof(app));
-            }
-
-            if (options == null)
-            {
-                throw new ArgumentNullException(nameof(options));
-            }
-
-            return app.UseMiddleware<BattleNetAuthenticationMiddleware>(Options.Create(options));
+            return builder.AddBattleNet(BattleNetAuthenticationDefaults.AuthenticationScheme, options => { });
         }
 
         /// <summary>
-        /// Adds the <see cref="BattleNetAuthenticationMiddleware"/> middleware to the specified
-        /// <see cref="IApplicationBuilder"/>, which enables Battle.net authentication capabilities.
+        /// Adds <see cref="BattleNetAuthenticationHandler"/> to the specified
+        /// <see cref="AuthenticationBuilder"/>, which enables Battle.net authentication capabilities.
         /// </summary>
-        /// <param name="app">The <see cref="IApplicationBuilder"/> to add the middleware to.</param>
-        /// <param name="configuration">An action delegate to configure the provided <see cref="BattleNetAuthenticationOptions"/>.</param>
+        /// <param name="builder">The authentication builder.</param>
+        /// <param name="configuration">The delegate used to configure the Battle.net options.</param>
         /// <returns>A reference to this instance after the operation has completed.</returns>
-        public static IApplicationBuilder UseBattleNetAuthentication(
-            [NotNull] this IApplicationBuilder app,
+        public static AuthenticationBuilder AddBattleNet(
+            [NotNull] this AuthenticationBuilder builder,
             [NotNull] Action<BattleNetAuthenticationOptions> configuration)
         {
-            if (app == null)
-            {
-                throw new ArgumentNullException(nameof(app));
-            }
+            return builder.AddBattleNet(BattleNetAuthenticationDefaults.AuthenticationScheme, configuration);
+        }
 
-            if (configuration == null)
-            {
-                throw new ArgumentNullException(nameof(configuration));
-            }
+        /// <summary>
+        /// Adds <see cref="BattleNetAuthenticationHandler"/> to the specified
+        /// <see cref="AuthenticationBuilder"/>, which enables Battle.net authentication capabilities.
+        /// </summary>
+        /// <param name="builder">The authentication builder.</param>
+        /// <param name="scheme">The authentication scheme associated with this instance.</param>
+        /// <param name="configuration">The delegate used to configure the Battle.net options.</param>
+        /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
+        public static AuthenticationBuilder AddBattleNet(
+            [NotNull] this AuthenticationBuilder builder, [NotNull] string scheme,
+            [NotNull] Action<BattleNetAuthenticationOptions> configuration)
+        {
+            return builder.AddBattleNet(scheme, BattleNetAuthenticationDefaults.DisplayName, configuration);
+        }
 
-            var options = new BattleNetAuthenticationOptions();
-            configuration(options);
-
-            return app.UseMiddleware<BattleNetAuthenticationMiddleware>(Options.Create(options));
+        /// <summary>
+        /// Adds <see cref="BattleNetAuthenticationHandler"/> to the specified
+        /// <see cref="AuthenticationBuilder"/>, which enables Battle.net authentication capabilities.
+        /// </summary>
+        /// <param name="builder">The authentication builder.</param>
+        /// <param name="scheme">The authentication scheme associated with this instance.</param>
+        /// <param name="caption">The optional display name associated with this instance.</param>
+        /// <param name="configuration">The delegate used to configure the Battle.net options.</param>
+        /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
+        public static AuthenticationBuilder AddBattleNet(
+            [NotNull] this AuthenticationBuilder builder,
+            [NotNull] string scheme, [CanBeNull] string caption,
+            [NotNull] Action<BattleNetAuthenticationOptions> configuration)
+        {
+            return builder.AddOAuth<BattleNetAuthenticationOptions, BattleNetAuthenticationHandler>(scheme, caption, configuration);
         }
     }
 }

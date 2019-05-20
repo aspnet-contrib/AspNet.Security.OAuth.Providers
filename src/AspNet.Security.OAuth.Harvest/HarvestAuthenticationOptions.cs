@@ -4,8 +4,12 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json.Linq;
+using System.Security.Claims;
 
 namespace AspNet.Security.OAuth.Harvest
 {
@@ -16,8 +20,6 @@ namespace AspNet.Security.OAuth.Harvest
     {
         public HarvestAuthenticationOptions()
         {
-            AuthenticationScheme = HarvestAuthenticationDefaults.AuthenticationScheme;
-            DisplayName = HarvestAuthenticationDefaults.DisplayName;
             ClaimsIssuer = HarvestAuthenticationDefaults.Issuer;
 
             CallbackPath = new PathString(HarvestAuthenticationDefaults.CallbackPath);
@@ -25,6 +27,17 @@ namespace AspNet.Security.OAuth.Harvest
             AuthorizationEndpoint = HarvestAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = HarvestAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = HarvestAuthenticationDefaults.UserInformationEndpoint;
+
+
+            ClaimActions.MapJsonSubKey(ClaimTypes.NameIdentifier, "user", "id");
+            ClaimActions.MapCustomJson(ClaimTypes.Name, payload =>
+            {
+                var user = payload.Value<JObject>("user");
+                return $"{user.Value<string>("first_name")} {user.Value<string>("last_name")}";
+            });
+            ClaimActions.MapJsonSubKey(ClaimTypes.GivenName, "user", "first_name");
+            ClaimActions.MapJsonSubKey(ClaimTypes.Surname, "user", "last_name");
+            ClaimActions.MapJsonSubKey(ClaimTypes.Email, "user", "email");
         }
     }
 }

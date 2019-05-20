@@ -1,0 +1,46 @@
+{
+  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
+  "items": [
+    {
+      "comment": "https://developer.github.com/apps/building-oauth-apps/authorizing-oauth-apps/#2-users-are-redirected-back-to-your-site-by-github",
+      "uri": "https://bitbucket.org/site/oauth2/access_token",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "secret-access-token",
+        "token_type": "bearer",
+        "scope": "repo,gist"
+      }
+    },
+    {
+      "comment": "https://developer.atlassian.com/bitbucket/api/2/reference/resource/user",
+      "uri": "https://api.bitbucket.org/2.0/user",
+      "contentFormat": "json",
+      "contentJson": {
+        "username": "johnsmith",
+        "nickname": "John",
+        "account_status": "Active",
+        "display_name": "John Smith",
+        "website": "https://bitbucket.org",
+        "created_on": "2019-03-17T10:57:00+00:00",
+        "uuid": "e0a0e4ca-7f38-4e54-9c45-e68904b663da",
+        "has_2fa_enabled": true,
+        "is_staff": false,
+        "account_id": "my-id"
+      }
+    },
+    {
+      "comment": "https://developer.atlassian.com/bitbucket/api/2/reference/resource/user/emails",
+      "uri": "https://api.bitbucket.org/2.0/user/emails",
+      "contentFormat": "json",
+      "contentJson": {
+        "values": [
+          {
+            "email": "john@john-smith.local",
+            "is_primary": true
+          }
+        ]
+      }
+    }
+  ]
+}

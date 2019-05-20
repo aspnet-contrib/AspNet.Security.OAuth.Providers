@@ -1,7 +1,7 @@
 AspNet.Security.OAuth.Providers
 ==================================
 
-**AspNet.Security.OAuth.Providers** is a **collection of security middleware** that you can use in your **ASP.NET Core 1.0** application to support social authentication providers like **[GitHub](https://github.com/)**, **[Foursquare](https://foursquare.com/)** or **[Dropbox](https://www.dropbox.com/)**. It is directly inspired by **[Jerrie Pelser](https://github.com/jerriep)**'s initiative, **[Owin.Security.Providers](https://github.com/RockstarLabs/OwinOAuthProviders)**.
+**AspNet.Security.OAuth.Providers** is a **collection of security middleware** that you can use in your **ASP.NET Core** application to support social authentication providers like **[GitHub](https://github.com/)**, **[Foursquare](https://foursquare.com/)** or **[Dropbox](https://www.dropbox.com/)**. It is directly inspired by **[Jerrie Pelser](https://github.com/jerriep)**'s initiative, **[Owin.Security.Providers](https://github.com/RockstarLabs/OwinOAuthProviders)**.
 
 **The latest official release can be found on [NuGet](https://www.nuget.org/profiles/aspnet-contrib) and the nightly builds on [MyGet](https://www.myget.org/gallery/aspnet-contrib)**.
 
@@ -60,6 +60,7 @@ We would love it if you could help contributing to this repository.
 * [Tathagata Chakraborty](https://github.com/tatx)
 * [Tommy Parnell](https://github.com/tparnell8)
 * [Yannic Smeets](https://github.com/yannicsmeets)
+* [zAfLu](https://github.com/zAfLu)
 * [zhengchun](https://github.com/zhengchun)
 
 ## Support
