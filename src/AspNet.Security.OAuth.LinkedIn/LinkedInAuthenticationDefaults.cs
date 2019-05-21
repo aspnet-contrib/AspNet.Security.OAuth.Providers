@@ -46,9 +46,13 @@ namespace AspNet.Security.OAuth.LinkedIn
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
-        /// Note: the endpoint must follow the LinkedIn convention and contain a '~' to append fields to, if they are specified.
-        /// See https://developer.linkedin.com/docs/signin-with-linkedin for more information.
         /// </summary>
-        public const string UserInformationEndpoint = "https://api.linkedin.com/v1/people/~";
+        public const string UserInformationEndpoint = "https://api.linkedin.com/v2/me";
+
+        /// <summary>
+        /// Specific endpoint to retrieve the LinkedIn member's email address.
+        /// See https://docs.microsoft.com/en-us/linkedin/consumer/integrations/self-serve/sign-in-with-linkedin for more information.
+        /// </summary>
+        public const string EmailAddressEndpoint = "https://api.linkedin.com/v2/emailAddress?q=members&projection=(elements*(handle~))";
     }
 }
