@@ -12,19 +12,47 @@
       }
     },
     {
-      "comment": "https://developer.linkedin.com/docs/signin-with-linkedin",
-      "uri": "https://api.linkedin.com/v1/people/~:(id,first-name,last-name,formatted-name,email-address)",
+      "comment": "https://docs.microsoft.com/en-us/linkedin/consumer/integrations/self-serve/sign-in-with-linkedin",
+      "uri": "https://api.linkedin.com/v2/me?projection=(id,firstName,lastName)",
       "contentFormat": "json",
       "contentJson": {
-        "firstName": "Frodo",
-        "headline": "Jewelery Repossession in Middle Earth",
         "id": "1R2RtA",
-        "lastName": "Baggins",
-        "formattedName": "Frodo Baggins",
-        "emailAddress": "frodo@shire.middleearth",
-        "siteStandardProfileRequest": {
-          "url": "https://www.linkedin.com/profile/view?id=frodo-baggins"
+        "firstName": {
+          "localized": {
+            "en_US": "Frodo"
+          },
+          "preferredLocale": {
+            "country": "US",
+            "language": "en"
+          }
+        },
+        "lastName": {
+          "localized": {
+            "en_US": "Baggins"
+          },
+          "preferredLocale": {
+            "country": "US",
+            "language": "en"
+          }
+        },
+        "profilePicture": {
+          "displayImage": "urn:li:digitalmediaAsset:B54328XZFfe2134zTyq"
         }
+      }
+    },
+    {
+      "comment": "https://docs.microsoft.com/en-us/linkedin/consumer/integrations/self-serve/sign-in-with-linkedin",
+      "uri": "https://api.linkedin.com/v2/emailAddress?q=members&projection=(elements*(handle~))",
+      "contentFormat": "json",
+      "contentJson": {
+        "elements": [
+          {
+            "handle": "urn:li:emailAddress:3775708763",
+            "handle~": {
+              "emailAddress": "frodo@shire.middleearth"
+            }
+          }
+        ]
       }
     }
   ]

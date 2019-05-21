@@ -33,7 +33,6 @@ namespace AspNet.Security.OAuth.LinkedIn
         [InlineData(ClaimTypes.Email, "frodo@shire.middleearth")]
         [InlineData(ClaimTypes.GivenName, "Frodo")]
         [InlineData(ClaimTypes.Surname, "Baggins")]
-        [InlineData("urn:linkedin:headline", "Jewelery Repossession in Middle Earth")]
         public async Task Can_Sign_In_Using_LinkedIn(string claimType, string claimValue)
         {
             // Arrange
