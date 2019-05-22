@@ -36,15 +36,13 @@ namespace AspNet.Security.OAuth.LinkedIn
             Scope.Add("r_liteprofile");
             Scope.Add("r_emailaddress");
 
-            ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
-            ClaimActions.MapJsonKey(ClaimTypes.Email, "emailAddress");
-            ClaimActions.MapCustomJson(ClaimTypes.Name, user => $"{GetMultiLocaleString(user, "firstName")} {GetMultiLocaleString(user, "lastName")}");
-            ClaimActions.MapCustomJson(ClaimTypes.GivenName, user => GetMultiLocaleString(user, "firstName"));
-            ClaimActions.MapCustomJson(ClaimTypes.Surname, user => GetMultiLocaleString(user, "lastName"));
-            ClaimActions.MapCustomJson(Claims.PictureUrl, user
-                => user.SelectTokens("$.profilePicture..elements[*].identifiers[0].identifier").Select(u => u.Value<string>()).LastOrDefault());
-            ClaimActions.MapCustomJson(Claims.PictureUrls, user
-                => string.Join(",", user.SelectTokens("$.profilePicture..elements[*].identifiers[0].identifier").Select(u => u.Value<string>())));
+            ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, ProfileFields.Id);
+            ClaimActions.MapJsonKey(ClaimTypes.Email, LinkedInAuthenticationConstants.EmailAddressField);
+            ClaimActions.MapCustomJson(ClaimTypes.Name, user => GetFullName(user));
+            ClaimActions.MapCustomJson(ClaimTypes.GivenName, user => GetMultiLocaleString(user, ProfileFields.FirstName));
+            ClaimActions.MapCustomJson(ClaimTypes.Surname, user => GetMultiLocaleString(user, ProfileFields.LastName));
+            ClaimActions.MapCustomJson(Claims.PictureUrl, user => GetPictureUrls(user)?.LastOrDefault());
+            ClaimActions.MapCustomJson(Claims.PictureUrls, user => string.Join(",", GetPictureUrls(user)));
         }
 
         /// <summary>
@@ -54,9 +52,9 @@ namespace AspNet.Security.OAuth.LinkedIn
 
         /// <summary>
         /// Gets the list of fields to retrieve from the user information endpoint.
-        /// See https://docs.microsoft.com/en-us/linkedin/consumer/integrations/self-serve/sign-in-with-linkedin for more information.
+        /// See <a>https://docs.microsoft.com/en-us/linkedin/consumer/integrations/self-serve/sign-in-with-linkedin</a> for more information.
         /// </summary>
-        public ISet<string> Fields { get; } = new HashSet<string>
+        public ISet<string> Fields { get; } = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
         {
             ProfileFields.Id,
             ProfileFields.FirstName,
@@ -65,16 +63,16 @@ namespace AspNet.Security.OAuth.LinkedIn
         };
 
         /// <summary>
-        /// Gets the MultiLocaleString value.
+        /// Gets the <c>MultiLocaleString</c> value.
         /// First checks if a preferredLocale is returned from the payload, then try to return the value from it.
         /// Then checks if a value is available for the current UI culture.
         /// Finally, returns the first localized value.
-        /// See https://docs.microsoft.com/en-us/linkedin/shared/references/v2/object-types#multilocalestring
+        /// See <a>https://docs.microsoft.com/en-us/linkedin/shared/references/v2/object-types#multilocalestring</a>
         /// </summary>
         /// <param name="user">The payload returned by the user info endpoint.</param>
-        /// <param name="propertyName">The name of the MultiLocaleString property.</param>
+        /// <param name="propertyName">The name of the <c>MultiLocaleString</c> property.</param>
         /// <returns>The property value.</returns>
-        private string GetMultiLocaleString(JObject user, string propertyName)
+        private static string GetMultiLocaleString(JObject user, string propertyName)
         {
             if (user[propertyName] == null)
             {
@@ -102,6 +100,33 @@ namespace AspNet.Security.OAuth.LinkedIn
             }
 
             return user[propertyName][localizedKey].First.Value<string>();
+        }
+
+        private static string GetFullName(JObject user)
+        {
+            var nameParts = new string[]
+            {
+                GetMultiLocaleString(user, ProfileFields.FirstName),
+                GetMultiLocaleString(user, ProfileFields.LastName)
+            };
+
+            return string.Join(" ", nameParts.Where(s => !string.IsNullOrWhiteSpace(s)));
+        }
+
+        private static IEnumerable<string> GetPictureUrls(JObject user)
+        {
+            var profilePictureElements = user.Value<JObject>("profilePicture")
+                ?.Value<JObject>("displayImage~")
+                ?.Value<JArray>("elements");
+
+            if (profilePictureElements == null)
+            {
+                return null;
+            }
+
+            return (from address in profilePictureElements
+                    where address.Value<string>("authorizationMethod") == "PUBLIC"
+                    select address.Value<JArray>("identifiers")?.First()?.Value<string>("identifier"));
         }
     }
 }

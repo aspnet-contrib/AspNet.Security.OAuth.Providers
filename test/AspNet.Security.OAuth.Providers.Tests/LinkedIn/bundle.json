@@ -13,7 +13,7 @@
     },
     {
       "comment": "https://docs.microsoft.com/en-us/linkedin/consumer/integrations/self-serve/sign-in-with-linkedin",
-      "uri": "https://api.linkedin.com/v2/me?projection=(id,firstName,lastName)",
+      "uri": "https://api.linkedin.com/v2/me?projection=(id,firstName,lastName,profilePicture(displayImage~%3AplayableStreams))",
       "contentFormat": "json",
       "contentJson": {
         "id": "1R2RtA",
@@ -36,7 +36,59 @@
           }
         },
         "profilePicture": {
-          "displayImage": "urn:li:digitalmediaAsset:B54328XZFfe2134zTyq"
+          "displayImage": "urn:li:digitalmediaAsset:C4D03AQGsitRwG8U8ZQ",
+          "displayImage~": {
+            "elements": [
+              {
+                "artifact": "urn:li:digitalmediaMediaArtifact:(urn:li:digitalmediaAsset:C4D03AQGsitRwG8U8ZQ,urn:li:digitalmediaMediaArtifactClass:profile-displayphoto-shrink_100_100)",
+                "authorizationMethod": "PUBLIC",
+                "data": {
+                  "com.linkedin.digitalmedia.mediaartifact.StillImage": {
+                    "storageSize": {
+                      "width": 100,
+                      "height": 100
+                    },
+                    "storageAspectRatio": {
+                      "widthAspect": 1,
+                      "heightAspect": 1,
+                      "formatted": "1.00:1.00"
+                    },
+                    "mediaType": "image/jpeg",
+                    "rawCodecSpec": {
+                      "name": "jpeg",
+                      "type": "image"
+                    },
+                    "displaySize": {
+                      "uom": "PX",
+                      "width": 100,
+                      "height": 100
+                    },
+                    "displayAspectRatio": {
+                      "widthAspect": 1,
+                      "heightAspect": 1,
+                      "formatted": "1.00:1.00"
+                    }
+                  }
+                },
+                "identifiers": [
+                  {
+                    "identifier": "https://upload.wikimedia.org/wikipedia/en/4/4e/Elijah_Wood_as_Frodo_Baggins.png",
+                    "file": "urn:li:digitalmediaFile:(urn:li:digitalmediaAsset:C4D03AQGsitRwG8U8ZQ,urn:li:digitalmediaMediaArtifactClass:profile-displayphoto-shrink_100_100,0)",
+                    "index": 0,
+                    "mediaType": "image/jpeg",
+                    "identifierExpiresInSeconds": 1526940000
+                  }
+                ]
+              }
+            ],
+            "paging": {
+              "count": 10,
+              "start": 0,
+              "links": [
+
+              ]
+            }
+          }
         }
       }
     },

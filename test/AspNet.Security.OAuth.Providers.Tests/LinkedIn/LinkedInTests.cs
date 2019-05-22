@@ -24,7 +24,11 @@ namespace AspNet.Security.OAuth.LinkedIn
 
         protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
         {
-            builder.AddLinkedIn(options => ConfigureDefaults(builder, options));
+            builder.AddLinkedIn(options =>
+            {
+                ConfigureDefaults(builder, options);
+                options.Fields.Add(LinkedInAuthenticationConstants.ProfileFields.PictureUrl);
+            });
         }
 
         [Theory]
@@ -33,6 +37,7 @@ namespace AspNet.Security.OAuth.LinkedIn
         [InlineData(ClaimTypes.Email, "frodo@shire.middleearth")]
         [InlineData(ClaimTypes.GivenName, "Frodo")]
         [InlineData(ClaimTypes.Surname, "Baggins")]
+        [InlineData(LinkedInAuthenticationConstants.Claims.PictureUrl, "https://upload.wikimedia.org/wikipedia/en/4/4e/Elijah_Wood_as_Frodo_Baggins.png")]
         public async Task Can_Sign_In_Using_LinkedIn(string claimType, string claimValue)
         {
             // Arrange

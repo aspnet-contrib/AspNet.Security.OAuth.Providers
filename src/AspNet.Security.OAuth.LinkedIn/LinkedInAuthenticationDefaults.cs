@@ -51,7 +51,7 @@ namespace AspNet.Security.OAuth.LinkedIn
 
         /// <summary>
         /// Specific endpoint to retrieve the LinkedIn member's email address.
-        /// See https://docs.microsoft.com/en-us/linkedin/consumer/integrations/self-serve/sign-in-with-linkedin for more information.
+        /// See <a>https://docs.microsoft.com/en-us/linkedin/consumer/integrations/self-serve/sign-in-with-linkedin</a> for more information.
         /// </summary>
         public const string EmailAddressEndpoint = "https://api.linkedin.com/v2/emailAddress?q=members&projection=(elements*(handle~))";
     }
