@@ -87,8 +87,13 @@ namespace AspNet.Security.OAuth.LinkedIn
         private string GetMultiLocaleString(JObject user, string propertyName)
         {
             var property = user[propertyName];
+            if (property == null)
+            {
+                return null;
+            }
+
             var propertyLocalized = property["localized"];
-            if (property == null || propertyLocalized == null)
+            if (propertyLocalized == null)
             {
                 return null;
             }
