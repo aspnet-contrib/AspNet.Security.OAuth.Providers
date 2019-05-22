@@ -24,7 +24,7 @@ namespace AspNet.Security.OAuth.ArcGIS
             AuthorizationEndpoint = ArcGISAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = ArcGISAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = ArcGISAuthenticationDefaults.UserInformationEndpoint;
-            
+
             ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "username");
             ClaimActions.MapJsonKey(ClaimTypes.Name, "fullName");
             ClaimActions.MapJsonKey(ClaimTypes.Email, "email");

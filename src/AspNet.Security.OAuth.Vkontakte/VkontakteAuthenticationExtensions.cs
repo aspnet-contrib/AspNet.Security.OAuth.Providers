@@ -50,7 +50,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="configuration">The delegate used to configure the Vkontakte options.</param>
         /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
         public static AuthenticationBuilder AddVkontakte(
-            [NotNull] this AuthenticationBuilder builder, [NotNull] string scheme, 
+            [NotNull] this AuthenticationBuilder builder, [NotNull] string scheme,
             [NotNull] Action<VkontakteAuthenticationOptions> configuration)
         {
             return builder.AddVkontakte(scheme, VkontakteAuthenticationDefaults.DisplayName, configuration);

@@ -24,7 +24,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns>A reference to this instance after the operation has completed.</returns>
         public static AuthenticationBuilder AddLinkedIn([NotNull] this AuthenticationBuilder builder)
         {
-            return builder.AddLinkedIn(LinkedInAuthenticationDefaults.AuthenticationScheme, options => {});
+            return builder.AddLinkedIn(LinkedInAuthenticationDefaults.AuthenticationScheme, options => { });
         }
 
         /// <summary>

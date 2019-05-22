@@ -98,7 +98,7 @@ namespace AspNet.Security.OAuth.Infrastructure
 
                         context.Response.StatusCode = 200;
                         context.Response.ContentType = "text/xml";
-                               
+
                         await context.Response.Body.WriteAsync(buffer, 0, buffer.Length);
                     }
                     else
