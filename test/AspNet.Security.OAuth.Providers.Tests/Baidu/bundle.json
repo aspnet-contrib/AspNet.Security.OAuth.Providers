@@ -1,0 +1,25 @@
+{
+  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
+  "items": [
+    {
+      "uri": "https://openapi.baidu.com/oauth/2.0/token",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "secret-access-token",
+        "token_type": "access",
+        "refresh_token": "secret-refresh-token",
+        "expires_in": "300"
+      }
+    },
+    {
+      "uri": "https://openapi.baidu.com/rest/2.0/passport/users/getLoggedInUser?access_token=secret-access-token",
+      "contentFormat": "json",
+      "contentJson": {
+        "uid": "my-id",
+        "uname": "my-name",
+        "portrait": "my-portrait"
+      }
+    }
+  ]
+}
