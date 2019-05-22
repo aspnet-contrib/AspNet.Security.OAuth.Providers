@@ -96,6 +96,26 @@
     },
     {
       "comment": "https://docs.microsoft.com/en-us/linkedin/consumer/integrations/self-serve/sign-in-with-linkedin",
+      "uri": "https://api.linkedin.com/v2/me?projection=(id,firstName,lastName)",
+      "contentFormat": "json",
+      "contentJson": {
+        "id": "1R2RtA",
+        "firstName": {
+          "localized": {
+            "en_US": "Frodo",
+            "fr_FR": "Frodon"
+          }
+        },
+        "lastName": {
+          "localized": {
+            "en_US": "Baggins",
+            "fr_FR": "Sacquet"
+          }
+        }
+      }
+    },
+    {
+      "comment": "https://docs.microsoft.com/en-us/linkedin/consumer/integrations/self-serve/sign-in-with-linkedin",
       "uri": "https://api.linkedin.com/v2/emailAddress?q=members&projection=(elements*(handle~))",
       "contentFormat": "json",
       "contentJson": {

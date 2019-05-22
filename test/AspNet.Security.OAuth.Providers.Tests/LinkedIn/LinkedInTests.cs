@@ -9,6 +9,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 using Xunit.Abstractions;
@@ -31,8 +32,15 @@ namespace AspNet.Security.OAuth.LinkedIn
             builder.AddLinkedIn(options =>
             {
                 ConfigureDefaults(builder, options);
-                options.Fields.Add(LinkedInAuthenticationConstants.ProfileFields.PictureUrl);
                 additionalConfiguration?.Invoke(options);
+            });
+        }
+       
+        protected internal override void ConfigureApplication(IApplicationBuilder app)
+        {
+            app.UseRequestLocalization(new RequestLocalizationOptions
+            {
+                DefaultRequestCulture = new Microsoft.AspNetCore.Localization.RequestCulture("fr-FR"),
             });
         }
 
@@ -46,6 +54,7 @@ namespace AspNet.Security.OAuth.LinkedIn
         public async Task Can_Sign_In_Using_LinkedIn(string claimType, string claimValue)
         {
             // Arrange
+            additionalConfiguration = options => options.Fields.Add(LinkedInAuthenticationConstants.ProfileFields.PictureUrl);
             using (var server = CreateTestServer())
             {
                 // Act
@@ -64,11 +73,29 @@ namespace AspNet.Security.OAuth.LinkedIn
         public async Task Can_Sign_In_Using_LinkedIn_Localized(string claimType, string claimValue)
         {
             // Arrange
+            using (var server = CreateTestServer())
+            {
+                // Act
+                var claims = await AuthenticateUserAsync(server);
+
+                // Assert
+                AssertClaim(claims, claimType, claimValue);
+            }
+        }
+
+        [Theory]
+        [InlineData(ClaimTypes.NameIdentifier, "1R2RtA")]
+        [InlineData(ClaimTypes.Name, "Frodon Sacquet")]
+        [InlineData(ClaimTypes.GivenName, "Frodon")]
+        [InlineData(ClaimTypes.Surname, "Sacquet")]
+        public async Task Can_Sign_In_Using_LinkedIn_Localized_With_Custom_Resolver(string claimType, string claimValue)
+        {
+            // Arrange
             additionalConfiguration = options => options.MultiLocaleStringResolver = (values, preferredLocale) =>
             {
-                if (values.ContainsKey("fr_FR"))
+                if (values.TryGetValue("fr_FR", out string value))
                 {
-                    return values["fr_FR"];
+                    return value;
                 }
 
                 return values.Values.FirstOrDefault();

@@ -18,6 +18,7 @@ using JustEat.HttpClientInterception;
 using MartinCostello.Logging.XUnit;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
@@ -64,6 +65,14 @@ namespace AspNet.Security.OAuth
         /// </summary>
         /// <param name="builder">The authentication builder to register authentication with.</param>
         protected internal abstract void RegisterAuthentication(AuthenticationBuilder builder);
+
+        /// <summary>
+        /// Configures the test server application.
+        /// Useful to add a middleware like a <see cref="Microsoft.AspNetCore.Localization.RequestLocalizationMiddleware"/> to test
+        /// localization scenario.
+        /// </summary>
+        /// <param name="app">The application.</param>
+        protected internal virtual void ConfigureApplication(IApplicationBuilder app) { }
 
         /// <summary>
         /// Configures the default authentication options.

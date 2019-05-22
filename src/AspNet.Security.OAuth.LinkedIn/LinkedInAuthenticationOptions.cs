@@ -42,7 +42,11 @@ namespace AspNet.Security.OAuth.LinkedIn
             ClaimActions.MapCustomJson(ClaimTypes.GivenName, user => GetMultiLocaleString(user, ProfileFields.FirstName));
             ClaimActions.MapCustomJson(ClaimTypes.Surname, user => GetMultiLocaleString(user, ProfileFields.LastName));
             ClaimActions.MapCustomJson(Claims.PictureUrl, user => GetPictureUrls(user)?.LastOrDefault());
-            ClaimActions.MapCustomJson(Claims.PictureUrls, user => string.Join(",", GetPictureUrls(user)));
+            ClaimActions.MapCustomJson(Claims.PictureUrls, user =>
+            {
+                var urls = GetPictureUrls(user);
+                return urls == null ? null : string.Join(",", urls);
+            });
         }
 
         /// <summary>
@@ -82,22 +86,25 @@ namespace AspNet.Security.OAuth.LinkedIn
         /// <returns>The property value.</returns>
         private string GetMultiLocaleString(JObject user, string propertyName)
         {
-            const string localizedKey = "localized";
-            if (user[propertyName] == null || user[propertyName][localizedKey] == null)
+            var property = user[propertyName];
+            var propertyLocalized = property["localized"];
+            if (property == null || propertyLocalized == null)
             {
                 return null;
             }
 
-            var preferredLocale = user[propertyName]["preferredLocale"];
-            var preferredLocaleKey = preferredLocale == null ? null : $"{preferredLocale["language"]}_{preferredLocale["country"]}";
-            var values = user[propertyName][localizedKey].ToObject<Dictionary<string, string>>();
+            var preferredLocale = property["preferredLocale"];
+            string preferredLocaleKey = preferredLocale == null ? null : $"{preferredLocale.Value<string>("language")}_{preferredLocale.Value<string>("country")}";
+            var values = propertyLocalized
+                .Children<JProperty>()
+                .ToDictionary(p => p.Name, p => p.Value.Value<string>());
 
             return MultiLocaleStringResolver(values, preferredLocaleKey);
         }
 
         private string GetFullName(JObject user)
         {
-            var nameParts = new string[]
+            string[] nameParts = new string[]
             {
                 GetMultiLocaleString(user, ProfileFields.FirstName),
                 GetMultiLocaleString(user, ProfileFields.LastName)
@@ -134,15 +141,16 @@ namespace AspNet.Security.OAuth.LinkedIn
         /// <returns>The localized value.</returns>
         private static string DefaultMultiLocaleStringResolver(IReadOnlyDictionary<string, string> localizedValues, string preferredLocale)
         {
-            if (!string.IsNullOrEmpty(preferredLocale) && localizedValues.ContainsKey(preferredLocale))
+            if (!string.IsNullOrEmpty(preferredLocale)
+                && localizedValues.TryGetValue(preferredLocale, out string preferredLocaleValue))
             {
-                return localizedValues[preferredLocale];
+                return preferredLocaleValue;
             }
 
-            var currentUiKey = Thread.CurrentThread.CurrentUICulture.ToString().Replace('-', '_');
-            if (localizedValues.ContainsKey(currentUiKey))
+            string currentUIKey = Thread.CurrentThread.CurrentUICulture.ToString().Replace('-', '_');
+            if (localizedValues.TryGetValue(currentUIKey, out string currentUIValue))
             {
-                return localizedValues[currentUiKey];
+                return currentUIValue;
             }
 
             return localizedValues.Values.FirstOrDefault();

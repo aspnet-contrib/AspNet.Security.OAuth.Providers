@@ -36,7 +36,7 @@ namespace AspNet.Security.OAuth.LinkedIn
         protected override async Task<AuthenticationTicket> CreateTicketAsync([NotNull] ClaimsIdentity identity,
             [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens)
         {
-            var address = Options.UserInformationEndpoint;
+            string address = Options.UserInformationEndpoint;
             var fields = Options.Fields
                 .Where(f => !string.Equals(f, LinkedInAuthenticationConstants.EmailAddressField, StringComparison.OrdinalIgnoreCase))
                 .ToList();
