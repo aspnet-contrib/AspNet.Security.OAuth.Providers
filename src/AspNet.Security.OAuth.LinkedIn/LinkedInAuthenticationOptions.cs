@@ -63,46 +63,39 @@ namespace AspNet.Security.OAuth.LinkedIn
         };
 
         /// <summary>
-        /// Gets the <c>MultiLocaleString</c> value.
-        /// First checks if a preferredLocale is returned from the payload, then try to return the value from it.
-        /// Then checks if a value is available for the current UI culture.
-        /// Finally, returns the first localized value.
+        /// Gets or sets a <c>MultiLocaleString</c> resolver, a function which takes all localized values 
+        /// and an eventual preferred locale from the member and returns the selected localized value.
+        /// The default implementation resolve it in this order:
+        /// 1. Returns the <c>preferredLocale</c> value if it is set and has a value.
+        /// 2. Returns the value corresponding to the <see cref="Thread.CurrentUICulture"/> if it exists.
+        /// 3. Returns the first value.
+        /// </summary>
+        /// <see cref="DefaultMultiLocaleStringResolver(IReadOnlyDictionary{string, string}, string)"/>
+        public Func<IReadOnlyDictionary<string, string>, string, string> MultiLocaleStringResolver { get; set; } = DefaultMultiLocaleStringResolver;
+
+        /// <summary>
+        /// Gets the <c>MultiLocaleString</c> value using the configured resolver.
         /// See <a>https://docs.microsoft.com/en-us/linkedin/shared/references/v2/object-types#multilocalestring</a>
         /// </summary>
         /// <param name="user">The payload returned by the user info endpoint.</param>
         /// <param name="propertyName">The name of the <c>MultiLocaleString</c> property.</param>
         /// <returns>The property value.</returns>
-        private static string GetMultiLocaleString(JObject user, string propertyName)
+        private string GetMultiLocaleString(JObject user, string propertyName)
         {
-            if (user[propertyName] == null)
+            const string localizedKey = "localized";
+            if (user[propertyName] == null || user[propertyName][localizedKey] == null)
             {
                 return null;
             }
 
             var preferredLocale = user[propertyName]["preferredLocale"];
-            const string localizedKey = "localized";
+            var preferredLocaleKey = preferredLocale == null ? null : $"{preferredLocale["language"]}_{preferredLocale["country"]}";
+            var values = user[propertyName][localizedKey].ToObject<Dictionary<string, string>>();
 
-            if (preferredLocale != null)
-            {
-                var preferredKey = $"{preferredLocale["language"]}_{preferredLocale["country"]}";
-                var preferredLocalizedValue = user[propertyName][localizedKey][preferredKey];
-                if (preferredLocalizedValue != null)
-                {
-                    return preferredLocalizedValue.Value<string>();
-                }
-            }
-
-            var currentUiKey = Thread.CurrentThread.CurrentUICulture.ToString().Replace('-', '_');
-            var currentUiLocalizedValue = user[propertyName][localizedKey][currentUiKey];
-            if (currentUiLocalizedValue != null)
-            {
-                return currentUiLocalizedValue.Value<string>();
-            }
-
-            return user[propertyName][localizedKey].First.Value<string>();
+            return MultiLocaleStringResolver(values, preferredLocaleKey);
         }
 
-        private static string GetFullName(JObject user)
+        private string GetFullName(JObject user)
         {
             var nameParts = new string[]
             {
@@ -127,6 +120,32 @@ namespace AspNet.Security.OAuth.LinkedIn
             return (from address in profilePictureElements
                     where address.Value<string>("authorizationMethod") == "PUBLIC"
                     select address.Value<JArray>("identifiers")?.First()?.Value<string>("identifier"));
+        }
+
+        /// <summary>
+        /// The default <c>MultiLocaleString</c> resolver.
+        /// Resolve it in this order:
+        /// 1. Returns the <c>preferredLocale</c> value if it is set and has a value.
+        /// 2. Returns the value corresponding to the <see cref="Thread.CurrentUICulture"/> if it exists.
+        /// 3. Returns the first value.
+        /// </summary>
+        /// <param name="localizedValues">The localized values with culture keys.</param>
+        /// <param name="preferredLocale">The preferred locale, if provided by LinkedIn.</param>
+        /// <returns>The localized value.</returns>
+        private static string DefaultMultiLocaleStringResolver(IReadOnlyDictionary<string, string> localizedValues, string preferredLocale)
+        {
+            if (!string.IsNullOrEmpty(preferredLocale) && localizedValues.ContainsKey(preferredLocale))
+            {
+                return localizedValues[preferredLocale];
+            }
+
+            var currentUiKey = Thread.CurrentThread.CurrentUICulture.ToString().Replace('-', '_');
+            if (localizedValues.ContainsKey(currentUiKey))
+            {
+                return localizedValues[currentUiKey];
+            }
+
+            return localizedValues.Values.FirstOrDefault();
         }
     }
 }

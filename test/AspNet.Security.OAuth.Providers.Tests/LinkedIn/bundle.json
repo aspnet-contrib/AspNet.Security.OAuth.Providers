@@ -19,7 +19,8 @@
         "id": "1R2RtA",
         "firstName": {
           "localized": {
-            "en_US": "Frodo"
+            "en_US": "Frodo",
+            "fr_FR": "Frodon"
           },
           "preferredLocale": {
             "country": "US",
@@ -28,7 +29,8 @@
         },
         "lastName": {
           "localized": {
-            "en_US": "Baggins"
+            "en_US": "Baggins",
+            "fr_FR": "Sacquet"
           },
           "preferredLocale": {
             "country": "US",

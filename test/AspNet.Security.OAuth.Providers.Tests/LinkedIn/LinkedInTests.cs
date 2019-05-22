@@ -4,6 +4,8 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using System;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
@@ -15,6 +17,8 @@ namespace AspNet.Security.OAuth.LinkedIn
 {
     public class LinkedInTests : OAuthTests<LinkedInAuthenticationOptions>
     {
+        private Action<LinkedInAuthenticationOptions> additionnalConfiguration = null;
+
         public LinkedInTests(ITestOutputHelper outputHelper)
         {
             OutputHelper = outputHelper;
@@ -28,6 +32,7 @@ namespace AspNet.Security.OAuth.LinkedIn
             {
                 ConfigureDefaults(builder, options);
                 options.Fields.Add(LinkedInAuthenticationConstants.ProfileFields.PictureUrl);
+                additionnalConfiguration?.Invoke(options);
             });
         }
 
@@ -41,6 +46,34 @@ namespace AspNet.Security.OAuth.LinkedIn
         public async Task Can_Sign_In_Using_LinkedIn(string claimType, string claimValue)
         {
             // Arrange
+            using (var server = CreateTestServer())
+            {
+                // Act
+                var claims = await AuthenticateUserAsync(server);
+
+                // Assert
+                AssertClaim(claims, claimType, claimValue);
+            }
+        }
+
+        [Theory]
+        [InlineData(ClaimTypes.NameIdentifier, "1R2RtA")]
+        [InlineData(ClaimTypes.Name, "Frodon Sacquet")]
+        [InlineData(ClaimTypes.GivenName, "Frodon")]
+        [InlineData(ClaimTypes.Surname, "Sacquet")]
+        public async Task Can_Sign_In_Using_LinkedIn_Localized(string claimType, string claimValue)
+        {
+            // Arrange
+            additionnalConfiguration = options => options.MultiLocaleStringResolver = (values, preferredLocale) =>
+            {
+                if (values.ContainsKey("fr_FR"))
+                {
+                    return values["fr_FR"];
+                }
+
+                return values.Values.FirstOrDefault();
+            };
+
             using (var server = CreateTestServer())
             {
                 // Act
