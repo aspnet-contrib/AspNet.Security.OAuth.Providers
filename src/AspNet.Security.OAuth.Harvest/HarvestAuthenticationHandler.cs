@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Licensed under the Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0)
  * See https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers
  * for more information concerning the license and the contributors participating to this project.
@@ -16,19 +16,16 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
 
-namespace AspNet.Security.OAuth.Strava
+namespace AspNet.Security.OAuth.Harvest
 {
-    public class StravaAuthenticationHandler : OAuthHandler<StravaAuthenticationOptions>
+    public class HarvestAuthenticationHandler : OAuthHandler<HarvestAuthenticationOptions>
     {
-        /// <summary>
-        /// Authentication handler for Strava authentication
-        /// </summary>
-        public StravaAuthenticationHandler(
-            [NotNull] IOptionsMonitor<StravaAuthenticationOptions> options,
-            [NotNull] ILoggerFactory factory,
+        public HarvestAuthenticationHandler(
+            [NotNull] IOptionsMonitor<HarvestAuthenticationOptions> options,
+            [NotNull] ILoggerFactory logger,
             [NotNull] UrlEncoder encoder,
             [NotNull] ISystemClock clock)
-            : base(options, factory, encoder, clock)
+            : base(options, logger, encoder, clock)
         {
         }
 
@@ -60,7 +57,5 @@ namespace AspNet.Security.OAuth.Strava
             await Options.Events.CreatingTicket(context);
             return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
         }
-
-        protected override string FormatScope() => string.Join(",", Options.Scope);
     }
 }
