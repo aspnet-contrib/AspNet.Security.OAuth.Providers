@@ -17,7 +17,7 @@ namespace AspNet.Security.OAuth.LinkedIn
 {
     public class LinkedInTests : OAuthTests<LinkedInAuthenticationOptions>
     {
-        private Action<LinkedInAuthenticationOptions> additionnalConfiguration = null;
+        private Action<LinkedInAuthenticationOptions> additionalConfiguration = null;
 
         public LinkedInTests(ITestOutputHelper outputHelper)
         {
@@ -32,7 +32,7 @@ namespace AspNet.Security.OAuth.LinkedIn
             {
                 ConfigureDefaults(builder, options);
                 options.Fields.Add(LinkedInAuthenticationConstants.ProfileFields.PictureUrl);
-                additionnalConfiguration?.Invoke(options);
+                additionalConfiguration?.Invoke(options);
             });
         }
 
@@ -64,7 +64,7 @@ namespace AspNet.Security.OAuth.LinkedIn
         public async Task Can_Sign_In_Using_LinkedIn_Localized(string claimType, string claimValue)
         {
             // Arrange
-            additionnalConfiguration = options => options.MultiLocaleStringResolver = (values, preferredLocale) =>
+            additionalConfiguration = options => options.MultiLocaleStringResolver = (values, preferredLocale) =>
             {
                 if (values.ContainsKey("fr_FR"))
                 {
