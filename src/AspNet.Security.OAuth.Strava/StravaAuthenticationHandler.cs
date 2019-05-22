@@ -27,7 +27,7 @@ namespace AspNet.Security.OAuth.Strava
             [NotNull] IOptionsMonitor<StravaAuthenticationOptions> options,
             [NotNull] ILoggerFactory factory,
             [NotNull] UrlEncoder encoder,
-            [NotNull] ISystemClock clock) 
+            [NotNull] ISystemClock clock)
             : base(options, factory, encoder, clock)
         {
         }

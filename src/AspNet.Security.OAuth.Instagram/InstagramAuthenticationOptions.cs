@@ -27,7 +27,7 @@ namespace AspNet.Security.OAuth.Instagram
             UserInformationEndpoint = InstagramAuthenticationDefaults.UserInformationEndpoint;
 
             Scope.Add("basic");
-            
+
             ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
             ClaimActions.MapJsonKey(ClaimTypes.Name, "full_name");
         }

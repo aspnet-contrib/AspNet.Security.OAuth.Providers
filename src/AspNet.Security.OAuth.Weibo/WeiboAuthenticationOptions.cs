@@ -23,7 +23,7 @@ namespace AspNet.Security.OAuth.Weibo
             CallbackPath = new PathString(WeiboAuthenticationDefaults.CallbackPath);
 
             AuthorizationEndpoint = WeiboAuthenticationDefaults.AuthorizationEndpoint;
-            TokenEndpoint = WeiboAuthenticationDefaults.TokenEndpoint;           
+            TokenEndpoint = WeiboAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = WeiboAuthenticationDefaults.UserInformationEndpoint;
 
             ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");

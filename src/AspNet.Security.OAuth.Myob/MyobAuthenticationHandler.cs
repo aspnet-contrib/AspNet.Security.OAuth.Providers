@@ -32,7 +32,7 @@ namespace AspNet.Security.OAuth.Myob
         {
             // Note: MYOB doesn't provide a user information endpoint,
             // so we rely on the details sent back in the token request.
-            var user = (JObject) tokens.Response.SelectToken("user");
+            var user = (JObject)tokens.Response.SelectToken("user");
 
             var principal = new ClaimsPrincipal(identity);
             var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, user);
