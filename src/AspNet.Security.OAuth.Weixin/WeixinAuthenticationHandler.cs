@@ -6,6 +6,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
@@ -13,6 +14,7 @@ using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -31,6 +33,25 @@ namespace AspNet.Security.OAuth.Weixin
         {
         }
 
+        private const string OauthState = "_oauthstate";
+        private const string State = "state";
+
+        protected override async Task<HandleRequestResult> HandleRemoteAuthenticateAsync()
+        {
+            if (!IsWeixinAuthorizationEndpointInUse())
+            {
+                if (Request.Query.TryGetValue(OauthState, out var stateValue))
+                {
+                    var query = Request.Query.ToDictionary(c => c.Key, c => c.Value, StringComparer.OrdinalIgnoreCase);
+                    if (query.TryGetValue(State, out var _))
+                    {
+                        query[State] = stateValue;
+                        Request.QueryString = QueryString.Create(query);
+                    }
+                }
+            }
+            return await base.HandleRemoteAuthenticateAsync();
+        }
         protected override async Task<AuthenticationTicket> CreateTicketAsync([NotNull] ClaimsIdentity identity, [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens)
         {
             var address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, new Dictionary<string, string>
@@ -109,16 +130,37 @@ namespace AspNet.Security.OAuth.Weixin
 
         protected override string BuildChallengeUrl(AuthenticationProperties properties, string redirectUri)
         {
-            return QueryHelpers.AddQueryString(Options.AuthorizationEndpoint, new Dictionary<string, string>
+            var stateValue = Options.StateDataFormat.Protect(properties);
+            var addRedirectHash = false;
+            if (!IsWeixinAuthorizationEndpointInUse())
+            {
+                //Store state in redirectUri when authorizing Wechat Web pages to prevent "too long state parameters" error
+                redirectUri = QueryHelpers.AddQueryString(redirectUri, OauthState, stateValue);
+                addRedirectHash = true;
+            }
+
+            redirectUri = QueryHelpers.AddQueryString(Options.AuthorizationEndpoint, new Dictionary<string, string>
             {
                 ["appid"] = Options.ClientId,
                 ["scope"] = FormatScope(),
                 ["response_type"] = "code",
                 ["redirect_uri"] = redirectUri,
-                ["state"] = Options.StateDataFormat.Protect(properties)
+                [State] = addRedirectHash ? OauthState : stateValue
             });
+
+            if (addRedirectHash)
+            {
+                // The parameters necessary for Web Authorization of Wechat
+                redirectUri += "#wechat_redirect";
+            }
+            return redirectUri;
         }
 
         protected override string FormatScope() => string.Join(",", Options.Scope);
+
+        private bool IsWeixinAuthorizationEndpointInUse()
+        {
+            return string.Equals(Options.AuthorizationEndpoint, WeixinAuthenticationDefaults.AuthorizationEndpoint, StringComparison.OrdinalIgnoreCase);
+        }
     }
 }

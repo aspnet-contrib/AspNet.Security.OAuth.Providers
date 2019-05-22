@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Licensed under the Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0)
  * See https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers
  * for more information concerning the license and the contributors participating to this project.
@@ -34,15 +34,25 @@ namespace AspNet.Security.OAuth.Infrastructure
                 string location = queryString["redirect_uri"] ?? RedirectUri;
                 string state = queryString["state"];
 
+                var builder = new UriBuilder(location);
+
+                // Retain the _oauthstate parameter in redirect_uri for WeChat (see #262)
+                const string OAuthStateKey = "_oauthstate";
+                var redirectQuery = HttpUtility.ParseQueryString(builder.Query);                
+                string oauthState = redirectQuery[OAuthStateKey];
+
+                // Remove any query string parameters we do not explictly need to retain
                 queryString.Clear();
 
                 queryString.Add("code", "a6ed8e7f-471f-44f1-903b-65946475f351");
                 queryString.Add("state", state);
 
-                var builder = new UriBuilder(location)
+                if (!string.IsNullOrEmpty(oauthState))
                 {
-                    Query = queryString.ToString(),
-                };
+                    queryString.Add(OAuthStateKey, oauthState);
+                }
+
+                builder.Query = queryString.ToString();
 
                 var redirectRequest = new HttpRequestMessage(request.Method, builder.Uri);
 
