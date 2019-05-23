@@ -62,7 +62,7 @@ namespace AspNet.Security.OAuth.Infrastructure
             });
 
             // Configure the test application
-            builder.Configure(ConfigureApplication)
+            builder.Configure(app => ConfigureApplication(app, tests))
                    .ConfigureServices(services =>
                     {
                         // Allow HTTP requests to external services to be intercepted
@@ -82,10 +82,12 @@ namespace AspNet.Security.OAuth.Infrastructure
                     });
         }
 
-        private static void ConfigureApplication(IApplicationBuilder app)
+        private static void ConfigureApplication<TOptions>(IApplicationBuilder app, OAuthTests<TOptions> tests)
+            where TOptions : OAuthOptions
         {
             // Configure a single HTTP resource that challenges the client if unauthenticated
             // or returns the logged in user's claims as XML if the request is authenticated.
+            tests.ConfigureApplication(app);
             app.UseAuthentication();
 
             app.Map("/me", childApp => childApp.Run(
@@ -93,8 +95,8 @@ namespace AspNet.Security.OAuth.Infrastructure
                 {
                     if (context.User.Identity.IsAuthenticated)
                     {
-                        var xml = IdentityToXmlString(context.User);
-                        var buffer = Encoding.UTF8.GetBytes(xml.ToString());
+                        string xml = IdentityToXmlString(context.User);
+                        byte[] buffer = Encoding.UTF8.GetBytes(xml.ToString());
 
                         context.Response.StatusCode = 200;
                         context.Response.ContentType = "text/xml";
