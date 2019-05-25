@@ -30,7 +30,7 @@ public void Configure(IApplicationBuilder app)
 }
 ```
 
-See [https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers/tree/dev/samples/Mvc.Client](https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers/tree/dev/samples/Mvc.Client) for a complete sample **using ASP.NET Core MVC and supporting multiple social providers**.
+See the [/samples](https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers/tree/dev/samples) directory for a complete sample **using ASP.NET Core MVC and supporting multiple social providers**.
 
 ## Contributing
 
