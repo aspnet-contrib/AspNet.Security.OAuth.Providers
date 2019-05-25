@@ -116,7 +116,42 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{D7CEAA0A-5
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.Providers.Tests", "test\AspNet.Security.OAuth.Providers.Tests\AspNet.Security.OAuth.Providers.Tests.csproj", "{842A4AA5-A82B-468E-9C25-BCD63C9C8E48}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.Baidu", "src\AspNet.Security.OAuth.Baidu\AspNet.Security.OAuth.Baidu.csproj", "{D7E61F39-7503-4ECA-9A86-43F04D4DBE7D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.Baidu", "src\AspNet.Security.OAuth.Baidu\AspNet.Security.OAuth.Baidu.csproj", "{D7E61F39-7503-4ECA-9A86-43F04D4DBE7D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E9DAB098-A902-4EF5-9AEE-CF735DF31E35}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+		.travis.yml = .travis.yml
+		build.cmd = build.cmd
+		build.ps1 = build.ps1
+		build.sh = build.sh
+		CODE_OF_CONDUCT.md = CODE_OF_CONDUCT.md
+		global.json = global.json
+		korebuild-lock.txt = korebuild-lock.txt
+		korebuild.json = korebuild.json
+		LICENSE = LICENSE
+		NuGet.config = NuGet.config
+		README.md = README.md
+		run.cmd = run.cmd
+		run.ps1 = run.ps1
+		run.sh = run.sh
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{3FA3F7B5-5373-4E43-8F45-8EC18249E526}"
+	ProjectSection(SolutionItems) = preProject
+		.github\CODEOWNERS = .github\CODEOWNERS
+		.github\CONTRIBUTING.md = .github\CONTRIBUTING.md
+		.github\ISSUE_TEMPLATE.md = .github\ISSUE_TEMPLATE.md
+		.github\PULL_REQUEST_TEMPLATE.md = .github\PULL_REQUEST_TEMPLATE.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ISSUE_TEMPLATE", "ISSUE_TEMPLATE", "{E256B219-13E7-468D-8D33-5E93263BC36D}"
+	ProjectSection(SolutionItems) = preProject
+		.github\ISSUE_TEMPLATE\bug_report.md = .github\ISSUE_TEMPLATE\bug_report.md
+		.github\ISSUE_TEMPLATE\feature_request.md = .github\ISSUE_TEMPLATE\feature_request.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -379,6 +414,8 @@ Global
 		{7C2E82CE-F6EC-41A8-AA22-3466505F95D8} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 		{842A4AA5-A82B-468E-9C25-BCD63C9C8E48} = {D7CEAA0A-50F4-4BE9-90B8-EED43F4CB39B}
 		{D7E61F39-7503-4ECA-9A86-43F04D4DBE7D} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
+		{3FA3F7B5-5373-4E43-8F45-8EC18249E526} = {E9DAB098-A902-4EF5-9AEE-CF735DF31E35}
+		{E256B219-13E7-468D-8D33-5E93263BC36D} = {3FA3F7B5-5373-4E43-8F45-8EC18249E526}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C7B54DE2-6407-4802-AD9C-CE54BF414C8C}
