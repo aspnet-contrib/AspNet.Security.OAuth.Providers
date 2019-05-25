@@ -4,8 +4,10 @@
 
 **The latest official release can be found on [NuGet](https://www.nuget.org/profiles/aspnet-contrib) and the nightly builds on [MyGet](https://www.myget.org/gallery/aspnet-contrib)**.
 
-[![Build status](https://ci.appveyor.com/api/projects/status/3lh3pq6e57c8pnr4/branch/dev?svg=true)](https://ci.appveyor.com/project/aspnet-contrib/aspnet-security-oauth-providers/branch/dev)
-[![Build status](https://travis-ci.org/aspnet-contrib/AspNet.Security.OAuth.Providers.svg?branch=dev)](https://travis-ci.org/aspnet-contrib/AspNet.Security.OAuth.Providers)
+| | Linux/macOS | Windows |
+|:-:|:-:|:-:|
+| **Build Status** | [![Build status](https://img.shields.io/travis/aspnet-contrib/AspNet.Security.OAuth.Providers/dev.svg)](https://travis-ci.org/aspnet-contrib/AspNet.Security.OAuth.Providers) | [![Build status](https://img.shields.io/appveyor/ci/aspnet-contrib/aspnet-security-oauth-providers/dev.svg)](https://ci.appveyor.com/project/aspnet-contrib/aspnet-security-oauth-providers) |
+| **Build History** | [![Build history](https://buildstats.info/travisci/chart/aspnet-contrib/AspNet.Security.OAuth.Providers?branch=dev&includeBuildsFromPullRequest=false)](https://travis-ci.org/aspnet-contrib/AspNet.Security.OAuth.Providers) |  [![Build history](https://buildstats.info/appveyor/chart/aspnet-contrib/aspnet-security-oauth-providers?branch=dev&includeBuildsFromPullRequest=false)](https://ci.appveyor.com/project/aspnet-contrib/aspnet-security-oauth-providers) |
 
 ## Getting started
 
