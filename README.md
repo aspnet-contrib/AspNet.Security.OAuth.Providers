@@ -51,10 +51,13 @@ We would love it if you could help contributing to this repository.
 * [Anders Blankholm](https://github.com/ablankholm)
 * [Andrew Lock](https://github.com/andrewlock)
 * [Andrew Mattie](https://github.com/amattie)
+* [Andrii Chebukin](https://github.com/xperiandri)
+* [Chino Chang](https://github.com/kinosang)
 * [Dave Timmins](https://github.com/davetimmins)
 * [Dmitry Popov](https://github.com/justdmitry)
 * [Eric Green](https://github.com/ericgreenmix)
 * [Ethan Celletti](https://github.com/Gekctek)
+* [Galo](https://github.com/asiffermann)
 * [Igor Simovic](https://github.com/igorsimovic)
 * [James Holcomb](https://github.com/jamesholcomb)
 * [Jason Loeffler](https://github.com/jmloeffler)
@@ -67,7 +70,9 @@ We would love it if you could help contributing to this repository.
 * [Martin Costello](https://github.com/martincostello)
 * [Maxime Roussin-Bélanger](https://github.com/Lorac)
 * [Michael Knowles](https://github.com/mjknowles)
+* [Patrick Westerhoff](https://github.com/poke)
 * [Robert Shade](https://github.com/robert-shade)
+* [saber-wang](https://github.com/saber-wang)
 * [Sinan](https://github.com/SH2015)
 * [Stefan](https://github.com/Schlurcher)
 * [Steffen Wenz](https://github.com/swenz)
@@ -76,6 +81,7 @@ We would love it if you could help contributing to this repository.
 * [Yannic Smeets](https://github.com/yannicsmeets)
 * [zAfLu](https://github.com/zAfLu)
 * [zhengchun](https://github.com/zhengchun)
+* [Volodymyr Baydalka](https://github.com/zVolodymyr)
 
 ## Support
 
