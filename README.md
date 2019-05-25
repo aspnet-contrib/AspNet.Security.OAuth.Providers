@@ -14,11 +14,20 @@
 **Adding social authentication to your application is a breeze** and just requires a few lines in your `Startup` class:
 
 ```csharp
-app.UseGitHubAuthentication(options =>
+public void ConfigureServices(IServiceCollection services)
 {
-    options.ClientId = "49e302895d8b09ea5656";
-    options.ClientSecret = "98f1bf028608901e9df91d64ee61536fe562064b";
-});
+    services.AddAuthentication(options => { /* Authentication options */ })
+            .AddGitHub(options =>
+            {
+                options.ClientId = "49e302895d8b09ea5656";
+                options.ClientSecret = "98f1bf028608901e9df91d64ee61536fe562064b";
+            });
+}
+
+public void Configure(IApplicationBuilder app)
+{
+    app.UseAuthentication();
+}
 ```
 
 See [https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers/tree/dev/samples/Mvc.Client](https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers/tree/dev/samples/Mvc.Client) for a complete sample **using ASP.NET Core MVC and supporting multiple social providers**.
