@@ -41,13 +41,13 @@ namespace Microsoft.Extensions.DependencyInjection
 
         /// <summary>
         /// Adds <see cref="ZaloAuthenticationHandler"/> to the specified
-        /// <see cref="AuthenticationBuilder"/>, which enables Amazon authentication capabilities.
+        /// <see cref="AuthenticationBuilder"/>, which enables Zalo authentication capabilities.
         /// </summary>
         /// <param name="builder">The authentication builder.</param>
         /// <param name="scheme">The authentication scheme associated with this instance.</param>
         /// <param name="configuration">The delegate used to configure the Zalo options.</param>
         /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
-        public static AuthenticationBuilder AddAmazon(
+        public static AuthenticationBuilder AddZalo(
             [NotNull] this AuthenticationBuilder builder,
             [NotNull] string scheme,
             [NotNull] Action<ZaloAuthenticationOptions> configuration)
