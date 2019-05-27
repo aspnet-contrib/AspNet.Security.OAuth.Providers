@@ -153,6 +153,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ISSUE_TEMPLATE", "ISSUE_TEM
 		.github\ISSUE_TEMPLATE\feature_request.md = .github\ISSUE_TEMPLATE\feature_request.md
 	EndProjectSection
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.Zalo", "src\AspNet.Security.OAuth.Zalo\AspNet.Security.OAuth.Zalo.csproj", "{20A668AB-CFBB-44B0-B76B-42705625E06D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -359,6 +361,10 @@ Global
 		{D7E61F39-7503-4ECA-9A86-43F04D4DBE7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D7E61F39-7503-4ECA-9A86-43F04D4DBE7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D7E61F39-7503-4ECA-9A86-43F04D4DBE7D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{20A668AB-CFBB-44B0-B76B-42705625E06D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{20A668AB-CFBB-44B0-B76B-42705625E06D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{20A668AB-CFBB-44B0-B76B-42705625E06D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{20A668AB-CFBB-44B0-B76B-42705625E06D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -416,6 +422,7 @@ Global
 		{D7E61F39-7503-4ECA-9A86-43F04D4DBE7D} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 		{3FA3F7B5-5373-4E43-8F45-8EC18249E526} = {E9DAB098-A902-4EF5-9AEE-CF735DF31E35}
 		{E256B219-13E7-468D-8D33-5E93263BC36D} = {3FA3F7B5-5373-4E43-8F45-8EC18249E526}
+		{20A668AB-CFBB-44B0-B76B-42705625E06D} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C7B54DE2-6407-4802-AD9C-CE54BF414C8C}

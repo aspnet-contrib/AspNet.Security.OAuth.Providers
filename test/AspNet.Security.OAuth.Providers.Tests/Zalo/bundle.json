@@ -1,0 +1,25 @@
+{
+  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
+  "items": [
+    {
+      "uri": "https://oauth.zaloapp.com/v3/access_token?app_id=my-client-id&app_secret=my-client-secret&code=a6ed8e7f-471f-44f1-903b-65946475f351&redirect_uri=http%3A%2F%2Flocalhost%2Fsignin-zalo",
+      "method": "GET",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "secret-access-token",
+        "expires_in": "3600"
+      }
+    },
+    {
+      "uri": "https://graph.zalo.me/v2.0/me?access_token=secret-access-token&fields=id,name,birthday,gender",
+      "method": "GET",
+      "contentFormat": "json",
+      "contentJson": {
+        "id": "my-id",
+        "name": "HoangITK",
+        "gender": "male",
+        "birthday":  "01/02/1987"
+      }
+    }
+  ]
+}
