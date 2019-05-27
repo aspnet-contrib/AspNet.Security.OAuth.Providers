@@ -1,4 +1,10 @@
-﻿using System;
+﻿/*
+ * Licensed under the Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0)
+ * See https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers
+ * for more information concerning the license and the contributors participating to this project.
+ */
+
+using System;
 using System.Globalization;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
@@ -24,7 +30,7 @@ namespace AspNet.Security.OAuth.Zalo
             ClaimActions.MapCustomJson(ClaimTypes.DateOfBirth, user =>
             {
                 return DateTime.TryParseExact(user.Value<string>("birthday"), "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out var dateOfBirth)
-                    ? dateOfBirth.ToString("yyyy/MM/dd")
+                    ? dateOfBirth.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)
                     : string.Empty;
             });
         }

@@ -16,7 +16,9 @@
       "contentFormat": "json",
       "contentJson": {
         "id": "my-id",
-        "name": "HoangITK"
+        "name": "HoangITK",
+        "gender": "male",
+        "birthday":  "01/02/1987"
       }
     }
   ]
