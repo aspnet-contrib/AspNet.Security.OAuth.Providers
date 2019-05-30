@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Authentication.OAuth;
 namespace AspNet.Security.OAuth.MailRu
 {
     /// <summary>
-    /// Default values used by the GitHub authentication middleware.
+    /// Default values used by the MailRu authentication middleware.
     /// </summary>
     public static class MailRuAuthenticationDefaults
     {
