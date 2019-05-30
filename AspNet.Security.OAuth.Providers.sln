@@ -155,6 +155,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ISSUE_TEMPLATE", "ISSUE_TEM
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.Zalo", "src\AspNet.Security.OAuth.Zalo\AspNet.Security.OAuth.Zalo.csproj", "{20A668AB-CFBB-44B0-B76B-42705625E06D}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.MailRu", "src\AspNet.Security.OAuth.MailRu\AspNet.Security.OAuth.MailRu.csproj", "{CC1E9908-075D-4138-852A-6EA3B5F32E88}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -365,6 +367,10 @@ Global
 		{20A668AB-CFBB-44B0-B76B-42705625E06D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{20A668AB-CFBB-44B0-B76B-42705625E06D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{20A668AB-CFBB-44B0-B76B-42705625E06D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC1E9908-075D-4138-852A-6EA3B5F32E88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC1E9908-075D-4138-852A-6EA3B5F32E88}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC1E9908-075D-4138-852A-6EA3B5F32E88}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC1E9908-075D-4138-852A-6EA3B5F32E88}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -423,6 +429,7 @@ Global
 		{3FA3F7B5-5373-4E43-8F45-8EC18249E526} = {E9DAB098-A902-4EF5-9AEE-CF735DF31E35}
 		{E256B219-13E7-468D-8D33-5E93263BC36D} = {3FA3F7B5-5373-4E43-8F45-8EC18249E526}
 		{20A668AB-CFBB-44B0-B76B-42705625E06D} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
+		{CC1E9908-075D-4138-852A-6EA3B5F32E88} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C7B54DE2-6407-4802-AD9C-CE54BF414C8C}

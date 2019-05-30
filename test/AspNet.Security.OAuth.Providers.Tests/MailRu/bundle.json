@@ -1,0 +1,32 @@
+{
+  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
+  "items": [
+    {
+      "comment": "https://o2.mail.ru/docs#web",
+      "uri": "https://oauth.mail.ru/token",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "secret-access-token",
+        "token_type": "bearer",
+        "scope": "repo,gist"
+      }
+    },
+    {
+      "uri": "https://oauth.mail.ru/userinfo?access_token=secret-access-token",
+      "contentFormat": "json",
+      "contentJson": {
+        "nickname": "Vasya",
+        "client_id": "123abc",
+        "image": "https://filin.mail.ru/pic?d=idofpic&width=180&height=180",
+        "first_name": "Vasiliy",
+        "email": "vasya@mail.ru",
+        "locale": "ru_RU",
+        "name": "Vasiliy Ivanov",
+        "last_name": "Ivanov",
+        "birthday": "08.07.1998",
+        "gender": "m"
+      }
+    }
+  ]
+}
