@@ -5,7 +5,6 @@
  */
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -33,22 +32,20 @@ namespace AspNet.Security.OAuth.LinkedIn
         {
         }
 
-        protected override async Task<AuthenticationTicket> CreateTicketAsync([NotNull] ClaimsIdentity identity,
-            [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens)
+        protected override async Task<AuthenticationTicket> CreateTicketAsync(
+            [NotNull] ClaimsIdentity identity,
+            [NotNull] AuthenticationProperties properties,
+            [NotNull] OAuthTokenResponse tokens)
         {
             string address = Options.UserInformationEndpoint;
             var fields = Options.Fields
                 .Where(f => !string.Equals(f, LinkedInAuthenticationConstants.EmailAddressField, StringComparison.OrdinalIgnoreCase))
                 .ToList();
 
-            // If at least one field is specified,
-            // append the fields to the endpoint URL.
-            if (fields.Count != 0)
+            // If at least one field is specified, append the fields to the endpoint URL.
+            if (fields.Count > 0)
             {
-                address = QueryHelpers.AddQueryString(address, new Dictionary<string, string>
-                {
-                    ["projection"] = $"({string.Join(",", fields)})",
-                });
+                address = QueryHelpers.AddQueryString(address, "projection", $"({string.Join(",", fields)})");
             }
 
             var request = new HttpRequestMessage(HttpMethod.Get, address);
