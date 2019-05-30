@@ -27,8 +27,6 @@ namespace AspNet.Security.OAuth.MailRu
             TokenEndpoint = MailRuAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = MailRuAuthenticationDefaults.UserInformationEndpoint;
 
-            //Scope.Add("userinfo");
-
             ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "client_id");
             ClaimActions.MapJsonKey(ClaimTypes.Name, "nickname");
             ClaimActions.MapJsonKey(ClaimTypes.Gender, "gender");
