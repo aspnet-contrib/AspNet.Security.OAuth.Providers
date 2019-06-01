@@ -1,0 +1,44 @@
+{
+  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
+  "items": [
+    {
+      "comment": "https://apiok.ru/ext/oauth/server",
+      "uri": "https://api.ok.ru/oauth/token.do",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "secret-access-token",
+        "token_type": "bearer",
+        "scope": "repo,gist"
+      }
+    },
+    {
+      "comment": "See https://apiok.ru/en/dev/methods/rest/users/users.getCurrentUser For email please see https://apiok.ru/ext/oauth/permissions",
+      "uri": "https://api.ok.ru/fb.do?application_key=publicsecret&format=json&method=users.getCurrentUser&sig=3cf98d2df29c82be6964f3dfe56c188b&access_token=secret-access-token",
+      "contentFormat": "json",
+      "contentJson": {
+        "uid": "123456",
+        "birthday": "1998-12-08",
+        "birthdaySet": true,
+        "age": 25,
+        "first_name": "Vasya",
+        "last_name": "Ivanov",
+        "name": "Vasya Ivanov",
+        "email": "some@email.ru",
+        "locale": "ru",
+        "gender": "male",
+        "has_email": true,
+        "location": {
+          "city": "Moscow",
+          "country": "RUSSIAN_FEDERATION",
+          "countryCode": "RU",
+          "countryName": "Russia"
+        },
+        "online": "web",
+        "pic_1": "https://i.mycdn.me/res/stub_50x50.gif",
+        "pic_2": "https://i.mycdn.me/res/stub_128x96.gif",
+        "pic_3": "https://i.mycdn.me/res/stub_128x96.gif"
+      }
+    }
+  ]
+}

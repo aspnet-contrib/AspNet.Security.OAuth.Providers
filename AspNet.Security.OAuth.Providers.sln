@@ -157,6 +157,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.Zalo"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.MailRu", "src\AspNet.Security.OAuth.MailRu\AspNet.Security.OAuth.MailRu.csproj", "{CC1E9908-075D-4138-852A-6EA3B5F32E88}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.Odnoklassniki", "src\AspNet.Security.OAuth.Odnoklassniki\AspNet.Security.OAuth.Odnoklassniki.csproj", "{27DB335F-5012-4276-98C5-EAEA335C8C7B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -371,6 +373,10 @@ Global
 		{CC1E9908-075D-4138-852A-6EA3B5F32E88}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CC1E9908-075D-4138-852A-6EA3B5F32E88}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CC1E9908-075D-4138-852A-6EA3B5F32E88}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27DB335F-5012-4276-98C5-EAEA335C8C7B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27DB335F-5012-4276-98C5-EAEA335C8C7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27DB335F-5012-4276-98C5-EAEA335C8C7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27DB335F-5012-4276-98C5-EAEA335C8C7B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -430,6 +436,7 @@ Global
 		{E256B219-13E7-468D-8D33-5E93263BC36D} = {3FA3F7B5-5373-4E43-8F45-8EC18249E526}
 		{20A668AB-CFBB-44B0-B76B-42705625E06D} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 		{CC1E9908-075D-4138-852A-6EA3B5F32E88} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
+		{27DB335F-5012-4276-98C5-EAEA335C8C7B} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C7B54DE2-6407-4802-AD9C-CE54BF414C8C}
