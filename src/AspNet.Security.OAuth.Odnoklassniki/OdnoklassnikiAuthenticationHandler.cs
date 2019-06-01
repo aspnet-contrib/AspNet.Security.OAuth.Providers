@@ -40,8 +40,8 @@ namespace AspNet.Security.OAuth.Odnoklassniki
             string sign;
             using (var algorithm = MD5.Create())
             {
-                var accessSecret = GetMd5Hash(algorithm, tokens.AccessToken + Options.ClientSecret);
-                sign = GetMd5Hash(algorithm, $"application_key={Options.PublicSecret}format=jsonmethod=users.getCurrentUser{accessSecret}");
+                var accessSecret = GetHash(algorithm, tokens.AccessToken + Options.ClientSecret);
+                sign = GetHash(algorithm, $"application_key={Options.PublicSecret}format=jsonmethod=users.getCurrentUser{accessSecret}");
             }
 
             var address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, new Dictionary<string, string>
@@ -78,12 +78,14 @@ namespace AspNet.Security.OAuth.Odnoklassniki
             return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
         }
 
-        private static string GetMd5Hash(HashAlgorithm hashAlgorithm, string input)
+        private static string GetHash(HashAlgorithm algorithm, string input)
         {
-            var sBuilder = new StringBuilder();
-            foreach (var t in hashAlgorithm.ComputeHash(Encoding.UTF8.GetBytes(input)))
-                sBuilder.Append(t.ToString("x2", CultureInfo.InvariantCulture));
-            return sBuilder.ToString();
+            var builder = new StringBuilder();
+            foreach (var b in algorithm.ComputeHash(Encoding.UTF8.GetBytes(input)))
+            {
+                builder.Append(b.ToString("x2", CultureInfo.InvariantCulture));
+            }
+            return builder.ToString();
         }
     }
 }
