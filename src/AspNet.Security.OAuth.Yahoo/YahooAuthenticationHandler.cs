@@ -63,11 +63,9 @@ namespace AspNet.Security.OAuth.Yahoo
 
         protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] string code, [NotNull] string redirectUri)
         {
-            var credentials = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{Options.ClientId}:{Options.ClientSecret}"));
-
             var request = new HttpRequestMessage(HttpMethod.Post, Options.TokenEndpoint);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            request.Headers.Authorization = new AuthenticationHeaderValue("Basic", credentials);
+            request.Headers.Authorization = CreateAuthorizationHeader();
 
             request.Content = new FormUrlEncodedContent(new Dictionary<string, string>
             {
@@ -91,6 +89,26 @@ namespace AspNet.Security.OAuth.Yahoo
             var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
 
             return OAuthTokenResponse.Success(payload);
+        }
+
+        private AuthenticationHeaderValue CreateAuthorizationHeader()
+        {
+            string EscapeDataString(string value)
+            {
+                if (string.IsNullOrEmpty(value))
+                {
+                    return null;
+                }
+
+                return Uri.EscapeDataString(value).Replace("%20", "+");
+            }
+
+            string credentials = Convert.ToBase64String(Encoding.ASCII.GetBytes(
+                string.Concat(
+                    EscapeDataString(Options.ClientId), ":",
+                    EscapeDataString(Options.ClientSecret))));
+
+            return new AuthenticationHeaderValue("Basic", credentials);
         }
     }
 }
