@@ -94,7 +94,7 @@ namespace AspNet.Security.OAuth.Instagram
                 var hash = algorithm.ComputeHash(bytes);
 
                 // Convert the hash to its lowercased hexadecimal representation.
-                return BitConverter.ToString(hash).Replace("-", "").ToLower();
+                return BitConverter.ToString(hash).Replace("-", string.Empty).ToLowerInvariant();
             }
         }
     }
