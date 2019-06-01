@@ -7,24 +7,26 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
 
-    <title>Mvc.Client (OSOS sample)</title>
+    <title>Mvc.Client (OAuth 2.0 sample)</title>
 
-    <link href="~/stylesheets/bootstrap.min.css" rel="stylesheet" />
-    <link href="~/stylesheets/jumbotron-narrow.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.slim.min.js" integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.15.0/umd/popper.min.js" integrity="sha256-fTuUgtT7O2rqoImwjrhDgbXTKUwyxxujIMRIK7TbuNU=" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 
 <body>
-    <div class="container">
+    <main class="container">
         <div class="header">
             <h3 class="text-muted">Your application (Mvc.Client)</h3>
         </div>
 
         @RenderBody()
         
-        <div class="footer">
-            <p>&copy; Your company 2014</p>
-        </div>
+        <footer>
+            <p>&copy; Your company @DateTime.UtcNow.Year</p>
+        </footer>
 
-    </div>
+    </main>
 </body>
 </html>
