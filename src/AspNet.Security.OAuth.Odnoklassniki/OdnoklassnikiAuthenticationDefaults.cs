@@ -48,6 +48,5 @@ namespace AspNet.Security.OAuth.Odnoklassniki
         /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
         /// </summary>
         public const string UserInformationEndpoint = "https://api.ok.ru/fb.do";
-
     }
 }

@@ -7,23 +7,26 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.AspNetCore.Http;
 using static AspNet.Security.OAuth.Odnoklassniki.OdnoklassnikiAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.Odnoklassniki
 {
     /// <summary>
     /// Defines a set of options used by <see cref="OdnoklassnikiAuthenticationHandler"/>.
+    /// App registration could be performed by using next instruction: https://apiok.ru/dev/app/create.
+    /// After registration you will receive email with 3 parameters:
+    /// 1. Application ID - mapped to ClientId
+    /// 2. Public App key - mapped to PublicSecret
+    /// 3. Secret App key - mapped to ClientSecret
+    /// Email retrieval requires request to provider on api-support@ok.ru for GET_EMAIL permission (https://apiok.ru/ext/oauth/permissions).
     /// </summary>
     public class OdnoklassnikiAuthenticationOptions : OAuthOptions
     {
-        public string PublicSecret { get; set; }
-
         public OdnoklassnikiAuthenticationOptions()
         {
             ClaimsIssuer = OdnoklassnikiAuthenticationDefaults.Issuer;
 
-            CallbackPath = new PathString(OdnoklassnikiAuthenticationDefaults.CallbackPath);
+            CallbackPath = OdnoklassnikiAuthenticationDefaults.CallbackPath;
 
             AuthorizationEndpoint = OdnoklassnikiAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = OdnoklassnikiAuthenticationDefaults.TokenEndpoint;
@@ -40,5 +43,9 @@ namespace AspNet.Security.OAuth.Odnoklassniki
             ClaimActions.MapJsonKey(Claims.ImageUrl, "pic_2");
         }
 
+        /// <summary>
+        /// Public App Key from application registration email.
+        /// </summary>
+        public string PublicSecret { get; set; }
     }
 }
