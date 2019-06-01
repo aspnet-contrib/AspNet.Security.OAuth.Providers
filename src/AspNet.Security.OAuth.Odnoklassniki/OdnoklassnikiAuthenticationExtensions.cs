@@ -32,7 +32,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <see cref="AuthenticationBuilder"/>, which enables Odnoklassniki authentication capabilities.
         /// </summary>
         /// <param name="builder">The authentication builder.</param>
-        /// <param name="configuration">The delegate used to configure the OpenID 2.0 options.</param>
+        /// <param name="configuration">The delegate used to configure the OAuth 2.0 options.</param>
         /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
         public static AuthenticationBuilder AddOdnoklassniki(
             [NotNull] this AuthenticationBuilder builder,

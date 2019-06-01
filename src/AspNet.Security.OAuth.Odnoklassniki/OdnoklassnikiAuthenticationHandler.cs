@@ -5,7 +5,7 @@
  */
 
 using System.Collections.Generic;
-using System.Linq;
+using System.Globalization;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
@@ -38,10 +38,10 @@ namespace AspNet.Security.OAuth.Odnoklassniki
             [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens)
         {
             string sign;
-            using (var md5Hash = MD5.Create())
+            using (var algorithm = MD5.Create())
             {
-                var accessSecret = GetMd5Hash(md5Hash, tokens.AccessToken + Options.ClientSecret);
-                sign = GetMd5Hash(md5Hash,$"application_key={Options.PublicSecret}format=jsonmethod=users.getCurrentUser{accessSecret}");
+                var accessSecret = GetMd5Hash(algorithm, tokens.AccessToken + Options.ClientSecret);
+                sign = GetMd5Hash(algorithm, $"application_key={Options.PublicSecret}format=jsonmethod=users.getCurrentUser{accessSecret}");
             }
 
             var address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, new Dictionary<string, string>
@@ -82,7 +82,7 @@ namespace AspNet.Security.OAuth.Odnoklassniki
         {
             var sBuilder = new StringBuilder();
             foreach (var t in hashAlgorithm.ComputeHash(Encoding.UTF8.GetBytes(input)))
-                sBuilder.Append(t.ToString("x2"));
+                sBuilder.Append(t.ToString("x2", CultureInfo.InvariantCulture));
             return sBuilder.ToString();
         }
     }
