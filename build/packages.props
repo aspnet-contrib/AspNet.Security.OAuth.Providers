@@ -7,6 +7,8 @@
     <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)key.snk</AssemblyOriginatorKeyFile>
     <SignAssembly>true</SignAssembly>
     <PublicSign Condition=" '$(OS)' != 'Windows_NT' ">true</PublicSign>
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <IncludeSource>true</IncludeSource>
     <IncludeSymbols>true</IncludeSymbols>
   </PropertyGroup>
@@ -16,6 +18,7 @@
     <PackageIconUrl>https://avatars3.githubusercontent.com/u/7998081?s=64</PackageIconUrl>
     <PackageProjectUrl>https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers</PackageProjectUrl>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>git://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers</RepositoryUrl>
   </PropertyGroup>
