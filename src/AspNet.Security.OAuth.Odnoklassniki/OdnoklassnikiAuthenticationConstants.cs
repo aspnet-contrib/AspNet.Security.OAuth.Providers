@@ -13,7 +13,9 @@ namespace AspNet.Security.OAuth.Odnoklassniki
     {
         public static class Claims
         {
-            public const string ImageUrl = "urn:ok:profileimage";
+            public const string Pic1 = "urn:ok:pic1";
+            public const string Pic2 = "urn:ok:pic2";
+            public const string Pic3 = "urn:ok:pic3";
         }
     }
 }
