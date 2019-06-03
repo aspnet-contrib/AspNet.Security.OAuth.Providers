@@ -42,9 +42,9 @@ namespace AspNet.Security.OAuth.Odnoklassniki
             ClaimActions.MapJsonKey(ClaimTypes.GivenName, "first_name");
             ClaimActions.MapJsonKey(ClaimTypes.DateOfBirth, "birthday");
             ClaimActions.MapJsonKey(ClaimTypes.Locality, "locale");
-            ClaimActions.MapJsonKey(Claims.Pic1, "pic_1");
-            ClaimActions.MapJsonKey(Claims.Pic2, "pic_2");
-            ClaimActions.MapJsonKey(Claims.Pic3, "pic_3");
+            ClaimActions.MapJsonKey(Claims.Image1, "pic_1");
+            ClaimActions.MapJsonKey(Claims.Image2, "pic_2");
+            ClaimActions.MapJsonKey(Claims.Image3, "pic_3");
         }
 
         /// <summary>

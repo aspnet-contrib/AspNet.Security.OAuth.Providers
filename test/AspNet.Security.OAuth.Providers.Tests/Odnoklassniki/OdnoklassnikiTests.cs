@@ -40,9 +40,9 @@ namespace AspNet.Security.OAuth.Odnoklassniki
         [InlineData(ClaimTypes.GivenName, "Vasya")]
         [InlineData(ClaimTypes.DateOfBirth, "1998-12-08")]
         [InlineData(ClaimTypes.Locality, "ru")]
-        [InlineData("urn:ok:pic1", "https://i.mycdn.me/res/stub_50x50.gif")]
-        [InlineData("urn:ok:pic2", "https://i.mycdn.me/res/stub_128x96.gif")]
-        [InlineData("urn:ok:pic3", "https://i.mycdn.me/res/stub_128x96.gif")]
+        [InlineData("urn:ok:image1", "https://i.mycdn.me/res/stub_50x50.gif")]
+        [InlineData("urn:ok:image2", "https://i.mycdn.me/res/stub_128x96.gif")]
+        [InlineData("urn:ok:image3", "https://i.mycdn.me/res/stub_128x96.gif")]
         public async Task Can_Sign_In_Using_Odnoklassniki(string claimType, string claimValue)
         {
             // Arrange
