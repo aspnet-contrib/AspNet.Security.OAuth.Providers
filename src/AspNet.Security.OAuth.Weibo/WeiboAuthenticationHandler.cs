@@ -91,7 +91,6 @@ namespace AspNet.Security.OAuth.Weibo
             var request = new HttpRequestMessage(HttpMethod.Get, address);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-            // Failed requests shouldn't cause an error: in this case, return null to indicate that the email address cannot be retrieved.
             var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
             if (!response.IsSuccessStatusCode)
             {
@@ -101,7 +100,7 @@ namespace AspNet.Security.OAuth.Weibo
                                   /* Headers: */ response.Headers.ToString(),
                                   /* Body: */ await response.Content.ReadAsStringAsync());
 
-                return null;
+                throw new HttpRequestException("An error occurred while retrieving the email address associated to the user profile.");
             }
 
             var payload = JArray.Parse(await response.Content.ReadAsStringAsync());
