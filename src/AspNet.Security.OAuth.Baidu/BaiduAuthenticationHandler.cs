@@ -47,9 +47,9 @@ namespace AspNet.Security.OAuth.Baidu
             {
                 Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
                                 "returned a {Status} response with the following payload: {Headers} {Body}.",
-                    /* Status: */ response.StatusCode,
-                    /* Headers: */ response.Headers.ToString(),
-                    /* Body: */ await response.Content.ReadAsStringAsync());
+                                /* Status: */ response.StatusCode,
+                                /* Headers: */ response.Headers.ToString(),
+                                /* Body: */ await response.Content.ReadAsStringAsync());
 
                 throw new HttpRequestException("An error occurred while retrieving the user profile.");
             }
