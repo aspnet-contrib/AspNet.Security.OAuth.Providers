@@ -1,0 +1,18 @@
+{
+  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
+  "items": [
+    {
+      "comment": "https://developer.apple.com/documentation/signinwithapplerestapi/generate_and_validate_tokens",
+      "uri": "https://appleid.apple.com/auth/token",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "secret-access-token",
+        "expires_in": "300",
+        "id_token": "ewogICAgImFsZyI6ICJFUzI1NiIsCiAgICAia2lkIjogIkFCQzEyM0RFRkciCn0KewogICAgImlzcyI6ICJERUYxMjNHSElKIiwKICAgICJpYXQiOiAxNDM3MTc5MDM2LAogICAgImV4cCI6IDE0OTMyOTgxMDAsCiAgICAiYXVkIjogImh0dHBzOi8vYXBwbGVpZC5hcHBsZS5jb20iLAogICAgInN1YiI6ICJjb20ubXl0ZXN0LmFwcCIKfQ==",
+        "refresh_token": "secret-refresh-token",
+        "token_type": "bearer"
+      }
+    }
+  ]
+}
