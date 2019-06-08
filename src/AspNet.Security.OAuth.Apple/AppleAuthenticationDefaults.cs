@@ -48,10 +48,5 @@ namespace AspNet.Security.OAuth.Apple
         /// Default value for <see cref="OAuthOptions.TokenEndpoint"/>.
         /// </summary>
         public const string TokenEndpoint = "https://appleid.apple.com/auth/token";
-
-        /// <summary>
-        /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
-        /// </summary>
-        public const string UserInformationEndpoint = "https://appleid.apple.com/todo-user-info-endpoint";
     }
 }
