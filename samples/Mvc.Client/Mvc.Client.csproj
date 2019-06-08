@@ -19,6 +19,7 @@
 
   <Target Name="AddGeneratedContentItems" BeforeTargets="AssignTargetPaths">
     <ItemGroup>
+      <Content Include="*.p8" CopyToPublishDirectory="PreserveNewest" Exclude="$(DefaultItemExcludes)" />
       <Content Include="wwwroot/**" CopyToPublishDirectory="PreserveNewest" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder);@(Content)" />
       <Content Include="wwwroot/.well-known/**" CopyToPublishDirectory="PreserveNewest" Exclude="$(DefaultItemExcludes)" />
     </ItemGroup>
