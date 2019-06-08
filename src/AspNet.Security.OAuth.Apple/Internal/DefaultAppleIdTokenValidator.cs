@@ -47,11 +47,6 @@ namespace AspNet.Security.OAuth.Apple.Internal
                 ValidAudience = context.Options.ClientId,
                 ValidIssuer = context.Options.TokenAudience,
                 IssuerSigningKeys = keySet.Keys,
-#if DEBUG
-                // TODO Always enable
-                RequireExpirationTime = false,
-                ValidateLifetime = false,
-#endif
             };
 
             try
