@@ -5,9 +5,12 @@
  */
 
 using System;
+using System.IdentityModel.Tokens.Jwt;
 using AspNet.Security.OAuth.Apple;
+using AspNet.Security.OAuth.Apple.Internal;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -50,7 +53,8 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="configuration">The delegate used to configure the Apple options.</param>
         /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
         public static AuthenticationBuilder AddApple(
-            [NotNull] this AuthenticationBuilder builder, [NotNull] string scheme,
+            [NotNull] this AuthenticationBuilder builder,
+            [NotNull] string scheme,
             [NotNull] Action<AppleAuthenticationOptions> configuration)
         {
             return builder.AddApple(scheme, AppleAuthenticationDefaults.DisplayName, configuration);
@@ -67,9 +71,15 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
         public static AuthenticationBuilder AddApple(
             [NotNull] this AuthenticationBuilder builder,
-            [NotNull] string scheme, [CanBeNull] string caption,
+            [NotNull] string scheme,
+            [CanBeNull] string caption,
             [NotNull] Action<AppleAuthenticationOptions> configuration)
         {
+            builder.Services.TryAddSingleton<AppleClientSecretGenerator, DefaultAppleClientSecretGenerator>();
+            builder.Services.TryAddSingleton<AppleIdTokenValidator, DefaultAppleIdTokenValidator>();
+            builder.Services.TryAddSingleton<AppleKeyStore, DefaultAppleKeyStore>();
+            builder.Services.TryAddSingleton<JwtSecurityTokenHandler>();
+
             return builder.AddOAuth<AppleAuthenticationOptions, AppleAuthenticationHandler>(scheme, caption, configuration);
         }
     }
