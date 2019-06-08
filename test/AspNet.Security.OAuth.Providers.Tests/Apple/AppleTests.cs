@@ -5,11 +5,13 @@
  */
 
 using System;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -51,13 +53,21 @@ namespace AspNet.Security.OAuth.Apple
         public async Task Can_Sign_In_Using_Apple(string claimType, string claimValue)
         {
             // Arrange
-            using (var server = CreateTestServer())
+            using (var server = CreateTestServer((services) => services.AddSingleton<JwtSecurityTokenHandler, FrozenJwtSecurityTokenHandler>()))
             {
                 // Act
                 var claims = await AuthenticateUserAsync(server);
 
                 // Assert
                 AssertClaim(claims, claimType, claimValue);
+            }
+        }
+
+        private sealed class FrozenJwtSecurityTokenHandler : JwtSecurityTokenHandler
+        {
+            protected override void ValidateLifetime(DateTime? notBefore, DateTime? expires, JwtSecurityToken jwtToken, TokenValidationParameters validationParameters)
+            {
+                // Do not validate the lifetime as the token is old
             }
         }
     }
