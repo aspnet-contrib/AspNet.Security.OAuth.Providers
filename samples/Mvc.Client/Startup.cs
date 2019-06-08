@@ -4,15 +4,31 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using System;
+using System.IO;
+using System.Linq;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Logging;
 
 namespace Mvc.Client
 {
     public class Startup
     {
+        public Startup(IConfiguration configuration, IHostingEnvironment hostingEnvironment)
+        {
+            Configuration = configuration;
+            HostingEnvironment = hostingEnvironment;
+        }
+
+        private IConfiguration Configuration { get; }
+
+        private IHostingEnvironment HostingEnvironment { get; }
+
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddAuthentication(options =>
@@ -24,6 +40,34 @@ namespace Mvc.Client
             {
                 options.LoginPath = "/signin";
                 options.LogoutPath = "/signout";
+            })
+
+            .AddApple(options =>
+            {
+                options.GenerateClientSecret = true;
+                options.ClientId = Configuration["AppleClientId"];
+                options.KeyId = Configuration["AppleKeyId"];
+                options.TeamId = Configuration["AppleTeamId"];
+
+                options.PrivateKeyBytes = async (keyId) =>
+                {
+                    var privateKeyFile = HostingEnvironment.ContentRootFileProvider.GetFileInfo($"AuthKey_{keyId}.p8");
+                    string privateKey;
+
+                    using (var stream = privateKeyFile.CreateReadStream())
+                    using (var reader = new StreamReader(stream))
+                    {
+                        privateKey = await reader.ReadToEndAsync();
+                    }
+
+                    if (privateKey.StartsWith("-----BEGIN PRIVATE KEY-----", StringComparison.Ordinal))
+                    {
+                        string[] keyLines = privateKey.Split('\n');
+                        privateKey = string.Join(string.Empty, keyLines.Skip(1).Take(keyLines.Length - 2));
+                    }
+                    
+                    return Convert.FromBase64String(privateKey);
+                };
             })
 
             .AddGoogle(options =>
@@ -56,7 +100,18 @@ namespace Mvc.Client
 
         public void Configure(IApplicationBuilder app)
         {
-            app.UseStaticFiles();
+            if (HostingEnvironment.IsDevelopment())
+            {
+                IdentityModelEventSource.ShowPII = true;
+            }
+
+            // Required to serve files with no extension in the .well-known folder
+            var options = new StaticFileOptions()
+            {
+                ServeUnknownFileTypes = true,
+            };
+
+            app.UseStaticFiles(options);
 
             app.UseAuthentication();
 
