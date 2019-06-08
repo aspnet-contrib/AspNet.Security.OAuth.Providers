@@ -17,4 +17,11 @@
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Twitter" Version="$(TwitterProviderVersion)" />
   </ItemGroup>
 
+  <Target Name="AddGeneratedContentItems" BeforeTargets="AssignTargetPaths">
+    <ItemGroup>
+      <Content Include="wwwroot/**" CopyToPublishDirectory="PreserveNewest" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder);@(Content)" />
+      <Content Include="wwwroot/.well-known/**" CopyToPublishDirectory="PreserveNewest" Exclude="$(DefaultItemExcludes)" />
+    </ItemGroup>
+  </Target>
+
 </Project>
