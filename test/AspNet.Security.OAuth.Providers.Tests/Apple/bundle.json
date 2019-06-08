@@ -2,6 +2,24 @@
   "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
   "items": [
     {
+      "comment": "https://developer.apple.com/documentation/signinwithapplerestapi/fetch_apple_s_public_key_for_verifying_token_signature",
+      "uri": "https://appleid.apple.com/auth/keys",
+      "method": "GET",
+      "contentFormat": "json",
+      "contentJson": {
+        "keys": [
+          {
+            "kty": "RSA",
+            "kid": "AIDOPK1",
+            "use": "sig",
+            "alg": "RS256",
+            "n": "lxrwmuYSAsTfn-lUu4goZSXBD9ackM9OJuwUVQHmbZo6GW4Fu_auUdN5zI7Y1dEDfgt7m7QXWbHuMD01HLnD4eRtY-RNwCWdjNfEaY_esUPY3OVMrNDI15Ns13xspWS3q-13kdGv9jHI28P87RvMpjz_JCpQ5IM44oSyRnYtVJO-320SB8E2Bw92pmrenbp67KRUzTEVfGU4-obP5RZ09OxvCr1io4KJvEOjDJuuoClF66AT72WymtoMdwzUmhINjR0XSqK6H0MdWsjw7ysyd_JhmqX5CAaT9Pgi0J8lU_pcl215oANqjy7Ob-VMhug9eGyxAWVfu_1u6QJKePlE-w",
+            "e": "AQAB"
+          }
+        ]
+      }
+    },
+    {
       "comment": "https://developer.apple.com/documentation/signinwithapplerestapi/generate_and_validate_tokens",
       "uri": "https://appleid.apple.com/auth/token",
       "method": "POST",
@@ -9,7 +27,7 @@
       "contentJson": {
         "access_token": "secret-access-token",
         "expires_in": "300",
-        "id_token": "ewogICAgImFsZyI6ICJFUzI1NiIsCiAgICAia2lkIjogIkFCQzEyM0RFRkciCn0KewogICAgImlzcyI6ICJERUYxMjNHSElKIiwKICAgICJpYXQiOiAxNDM3MTc5MDM2LAogICAgImV4cCI6IDE0OTMyOTgxMDAsCiAgICAiYXVkIjogImh0dHBzOi8vYXBwbGVpZC5hcHBsZS5jb20iLAogICAgInN1YiI6ICJjb20ubXl0ZXN0LmFwcCIKfQ==",
+        "id_token": "eyJraWQiOiJBSURPUEsxIiwiYWxnIjoiUlMyNTYifQ.eyJpc3MiOiJodHRwczovL2FwcGxlaWQuYXBwbGUuY29tIiwiYXVkIjoiY29tLm1hcnRpbmNvc3RlbGxvLnNpZ25pbndpdGhhcHBsZS50ZXN0LmNsaWVudCIsImV4cCI6MTU2MDAwODkxMCwiaWF0IjoxNTYwMDA4MzEwLCJzdWIiOiIwMDE4ODMuZmNjNzdiYTk3NTAwNDAyMzg5ZGY5NjgyMWFkOWM3OTAuMTUxNyIsImF0X2hhc2giOiJjN0xnNk9mSk1WQVUyUHRJVGRaeW93In0.hwLfuE0dB3mNYnDFWCd08MyJThsiRbGQmF-KX6VpGQttXRzChNgy9QWTT3vfd4bftMvlWCUlUEwCG0Os7hQUbWPknKYYIdxZGAejtCSCWYQ4PMhS_eQ5goICdLdi3ITzOG2JUmU-Vry4bPn3dJiyZ8ODGpj7MIBsVaRlfL4AlAgOKi9rp5UjVqj05M4qm512G-u-tVX7nasx3Eg-pFvS-w0CQJtVp3xIR2Ez3DRRt2roL0S6f0jNA-zb-zhOt_sFwmeqElGnQAidakUvrPTN0tORMUk_rKuohtkcY1_6uaVIsQ8NnOMl5Xszg9NzkQh5Je2Gi-qRzMxskJ0fJDCAfA",
         "refresh_token": "secret-refresh-token",
         "token_type": "bearer"
       }

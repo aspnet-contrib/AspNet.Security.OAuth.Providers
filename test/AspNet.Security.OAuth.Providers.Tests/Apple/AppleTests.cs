@@ -4,10 +4,12 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Logging;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -24,15 +26,29 @@ namespace AspNet.Security.OAuth.Apple
 
         protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
         {
+            IdentityModelEventSource.ShowPII = true;
+
             builder.AddApple(options =>
             {
                 ConfigureDefaults(builder, options);
+                options.ClientId = "com.martincostello.signinwithapple.test.client";
+                options.ClientSecret = string.Empty;
+                options.GenerateClientSecret = true;
+                options.KeyId = "my-key-id";
+                options.TeamId = "my-team-id";
+                options.ValidateTokens = true;
+                options.PrivateKeyBytes = (keyId) =>
+                {
+                    Assert.Equal("my-key-id", keyId);
+                    string privateKey = "MIGTAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBHkwdwIBAQQgU208KCg/doqiSzsVF5sknVtYSgt8/3oiYGbvryIRrzSgCgYIKoZIzj0DAQehRANCAAQfrvDWizEnWAzB2Hx2r/NyvIBO6KGBDL7wkZoKnz4Sm4+1P1dhD9fVEhbsdoq9RKEf8dvzTOZMaC/iLqZFKSN6";
+                    return Task.FromResult(Convert.FromBase64String(privateKey));
+                };
             });
         }
 
         [Theory]
-        [InlineData(ClaimTypes.NameIdentifier, "com.mytest.app")]
-        public async Task Can_Sign_In_Using_Amazon(string claimType, string claimValue)
+        [InlineData(ClaimTypes.NameIdentifier, "001883.fcc77ba97500402389df96821ad9c790.1517")]
+        public async Task Can_Sign_In_Using_Apple(string claimType, string claimValue)
         {
             // Arrange
             using (var server = CreateTestServer())
