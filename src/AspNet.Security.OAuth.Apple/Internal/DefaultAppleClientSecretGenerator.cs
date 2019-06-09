@@ -86,7 +86,7 @@ namespace AspNet.Security.OAuth.Apple.Internal
 
                 var key = new ECDsaSecurityKey(algorithm)
                 {
-                    KeyId = context.Options.KeyId ?? string.Empty,
+                    KeyId = context.Options.KeyId,
                 };
 
                 tokenDescriptor.SigningCredentials = new SigningCredentials(key, SecurityAlgorithms.EcdsaSha256Signature);
