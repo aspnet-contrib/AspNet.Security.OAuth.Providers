@@ -78,10 +78,11 @@ namespace AspNet.Security.OAuth.Apple
                     options.KeyId = "my-key-id";
                     options.TeamId = "my-team-id";
                     options.ValidateTokens = true;
-                    options.PrivateKeyBytes = (keyId) =>
+                    options.PrivateKeyPassword = TestKeys.GetPrivateKeyPassword();
+                    options.PrivateKeyBytes = async (keyId) =>
                     {
                         Assert.Equal("my-key-id", keyId);
-                        return Task.FromResult(AppleClientSecretGeneratorTests.TestPrivateKey);
+                        return await TestKeys.GetPrivateKeyBytesAsync();
                     };
                 });
             }

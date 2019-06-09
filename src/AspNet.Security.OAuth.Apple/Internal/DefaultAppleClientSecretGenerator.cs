@@ -81,7 +81,7 @@ namespace AspNet.Security.OAuth.Apple.Internal
             byte[] keyBlob = await _keyStore.LoadPrivateKeyAsync(context);
             string clientSecret;
 
-            using (var algorithm = CreateAlgorithm(keyBlob))
+            using (var algorithm = CreateAlgorithm(keyBlob, context.Options.PrivateKeyPassword))
             {
                 tokenDescriptor.SigningCredentials = CreateSigningCredentials(context.Options.KeyId, algorithm);
 
@@ -93,18 +93,19 @@ namespace AspNet.Security.OAuth.Apple.Internal
             return (clientSecret, expiresAt);
         }
 
-        private ECDsa CreateAlgorithm(byte[] keyBlob)
+        private ECDsa CreateAlgorithm(byte[] keyBlob, string password)
         {
             // This becomes xplat in .NET Core 3.0: https://github.com/dotnet/corefx/pull/30271
             return RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ?
                 CreateAlgorithmWindows(keyBlob) :
-                CreateAlgorithmLinuxOrMac(keyBlob);
+                CreateAlgorithmLinuxOrMac(keyBlob, password);
         }
 
-        private ECDsa CreateAlgorithmLinuxOrMac(byte[] keyBlob)
+        private ECDsa CreateAlgorithmLinuxOrMac(byte[] keyBlob, string password)
         {
             // Does not support .p8 files in .NET Core 2.x as-per https://github.com/dotnet/corefx/issues/18733#issuecomment-296723615
-            using (var cert = new X509Certificate2(keyBlob, string.Empty))
+            // Unlike Linux, macOS does not support empty passwords for .pfx files.
+            using (var cert = new X509Certificate2(keyBlob, password))
             {
                 return cert.GetECDsaPrivateKey();
             }
