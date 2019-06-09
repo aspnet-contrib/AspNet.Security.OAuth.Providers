@@ -77,6 +77,7 @@ namespace AspNet.Security.OAuth.Apple
             var options = new AppleAuthenticationOptions()
             {
                 ClientId = "my-client-id",
+                ClientSecretExpiresAfter = TimeSpan.FromSeconds(1),
                 KeyId = "my-key-id",
                 TeamId = "my-team-id",
                 PrivateKeyBytes = (keyId) => Task.FromResult(TestPrivateKey),
