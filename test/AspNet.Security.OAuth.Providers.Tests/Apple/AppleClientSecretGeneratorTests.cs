@@ -76,7 +76,7 @@ namespace AspNet.Security.OAuth.Apple
             var options = new AppleAuthenticationOptions()
             {
                 ClientId = "my-client-id",
-                ClientSecretExpiresAfter = TimeSpan.FromSeconds(1),
+                ClientSecretExpiresAfter = TimeSpan.FromSeconds(2),
                 KeyId = "my-key-id",
                 TeamId = "my-team-id",
                 PrivateKeyBytes = (keyId) => TestKeys.GetPrivateKeyBytesAsync(),
@@ -93,7 +93,7 @@ namespace AspNet.Security.OAuth.Apple
                 token2.ShouldBe(token1);
 
                 // Act
-                await Task.Delay(TimeSpan.FromSeconds(3));
+                await Task.Delay(options.ClientSecretExpiresAfter.Add(options.ClientSecretExpiresAfter));
                 string token3 = await generator.GenerateAsync(context);
 
                 // Assert
