@@ -33,6 +33,15 @@ namespace AspNet.Security.OAuth.Apple
         }
 
         /// <summary>
+        /// Gets or sets the period of time after which generated client secrets expire
+        /// if <see cref="GenerateClientSecret"/> is set to <see langword="true"/>.
+        /// </summary>
+        /// <remarks>
+        /// The default client secret lifetime is six months.
+        /// </remarks>
+        public TimeSpan ClientSecretExpiresAfter { get; set; } = TimeSpan.FromSeconds(15777000); // 6 months in seconds
+
+        /// <summary>
         /// Gets or sets the <see cref="AppleAuthenticationEvents"/> used to handle authentication events.
         /// </summary>
         public new AppleAuthenticationEvents Events

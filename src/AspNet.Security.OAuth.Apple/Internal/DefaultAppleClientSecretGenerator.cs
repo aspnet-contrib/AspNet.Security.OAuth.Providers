@@ -60,7 +60,7 @@ namespace AspNet.Security.OAuth.Apple.Internal
         private async Task<(string clientSecret, DateTimeOffset expiresAt)> GenerateNewSecretAsync(
             [NotNull] AppleGenerateClientSecretContext context)
         {
-            var expiresAt = _clock.UtcNow.Add(ExpiresAfter).UtcDateTime;
+            var expiresAt = _clock.UtcNow.Add(context.Options.ClientSecretExpiresAfter).UtcDateTime;
             var subject = new Claim("sub", context.Options.ClientId);
 
             _logger.LogDebug(
