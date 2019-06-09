@@ -70,6 +70,10 @@ namespace AspNet.Security.OAuth.Apple
         /// Gets or sets an optional delegate to get the raw bytes of the client's private key
         /// which is passed the value of the <see cref="KeyId"/> property.
         /// </summary>
+        /// <remarks>
+        /// On Windows, the private key should be in PKCS #8 (<c>.p8</c>) format.
+        /// On Linux and macOS, the private key should be PKCS #12 (<c>.pfx</c>) format.
+        /// </remarks>
         public Func<string, Task<byte[]>> PrivateKeyBytes { get; set; }
 
         /// <summary>

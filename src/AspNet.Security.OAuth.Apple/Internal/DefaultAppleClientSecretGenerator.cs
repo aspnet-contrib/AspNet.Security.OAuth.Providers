@@ -6,8 +6,10 @@
 
 using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Runtime.InteropServices;
 using System.Security.Claims;
 using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication;
@@ -79,17 +81,9 @@ namespace AspNet.Security.OAuth.Apple.Internal
             byte[] keyBlob = await _keyStore.LoadPrivateKeyAsync(context);
             string clientSecret;
 
-            using (var privateKey = CngKey.Import(keyBlob, CngKeyBlobFormat.Pkcs8PrivateBlob))
-            using (var algorithm = new ECDsaCng(privateKey))
+            using (var algorithm = CreateAlgorithm(keyBlob))
             {
-                algorithm.HashAlgorithm = CngAlgorithm.Sha256;
-
-                var key = new ECDsaSecurityKey(algorithm)
-                {
-                    KeyId = context.Options.KeyId,
-                };
-
-                tokenDescriptor.SigningCredentials = new SigningCredentials(key, SecurityAlgorithms.EcdsaSha256Signature);
+                tokenDescriptor.SigningCredentials = CreateSigningCredentials(context.Options.KeyId, algorithm);
 
                 clientSecret = _tokenHandler.CreateEncodedJwt(tokenDescriptor);
             }
@@ -97,6 +91,38 @@ namespace AspNet.Security.OAuth.Apple.Internal
             _logger.LogTrace("Generated new client secret with value {ClientSecret}.", clientSecret);
 
             return (clientSecret, expiresAt);
+        }
+
+        private ECDsa CreateAlgorithm(byte[] keyBlob)
+        {
+            // This becomes xplat in .NET Core 3.0: https://github.com/dotnet/corefx/pull/30271
+            return RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ?
+                CreateAlgorithmWindows(keyBlob) :
+                CreateAlgorithmLinuxOrMac(keyBlob);
+        }
+
+        private ECDsa CreateAlgorithmLinuxOrMac(byte[] keyBlob)
+        {
+            // Does not support .p8 files in .NET Core 2.x as-per https://github.com/dotnet/corefx/issues/18733#issuecomment-296723615
+            using (var cert = new X509Certificate2(keyBlob, string.Empty))
+            {
+                return cert.GetECDsaPrivateKey();
+            }
+        }
+
+        private ECDsa CreateAlgorithmWindows(byte[] keyBlob)
+        {
+            // Only Windows supports .p8 files in .NET Core 2.0 as-per https://github.com/dotnet/corefx/issues/18733
+            using (var privateKey = CngKey.Import(keyBlob, CngKeyBlobFormat.Pkcs8PrivateBlob))
+            {
+                return new ECDsaCng(privateKey) { HashAlgorithm = CngAlgorithm.Sha256 };
+            }
+        }
+
+        private SigningCredentials CreateSigningCredentials(string keyId, ECDsa algorithm)
+        {
+            var key = new ECDsaSecurityKey(algorithm) { KeyId = keyId };
+            return new SigningCredentials(key, SecurityAlgorithms.EcdsaSha256Signature);
         }
     }
 }
