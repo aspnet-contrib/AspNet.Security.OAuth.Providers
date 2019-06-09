@@ -4,9 +4,6 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using System;
-using System.IO;
-using System.Linq;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
@@ -44,30 +41,11 @@ namespace Mvc.Client
 
             .AddApple(options =>
             {
-                options.GenerateClientSecret = true;
                 options.ClientId = Configuration["AppleClientId"];
                 options.KeyId = Configuration["AppleKeyId"];
                 options.TeamId = Configuration["AppleTeamId"];
-
-                options.PrivateKeyBytes = async (keyId) =>
-                {
-                    var privateKeyFile = HostingEnvironment.ContentRootFileProvider.GetFileInfo($"AuthKey_{keyId}.p8");
-                    string privateKey;
-
-                    using (var stream = privateKeyFile.CreateReadStream())
-                    using (var reader = new StreamReader(stream))
-                    {
-                        privateKey = await reader.ReadToEndAsync();
-                    }
-
-                    if (privateKey.StartsWith("-----BEGIN PRIVATE KEY-----", StringComparison.Ordinal))
-                    {
-                        string[] keyLines = privateKey.Split('\n');
-                        privateKey = string.Join(string.Empty, keyLines.Skip(1).Take(keyLines.Length - 2));
-                    }
-                    
-                    return Convert.FromBase64String(privateKey);
-                };
+                options.UsePrivateKey(
+                    (keyId) => HostingEnvironment.ContentRootFileProvider.GetFileInfo($"AuthKey_{keyId}.p8"));
             })
 
             .AddGoogle(options =>
