@@ -77,6 +77,11 @@ namespace AspNet.Security.OAuth.Apple
         public Func<string, Task<byte[]>> PrivateKeyBytes { get; set; }
 
         /// <summary>
+        /// Gets or sets the password/passphrase associated with the private key, if any.
+        /// </summary>
+        public string PrivateKeyPassword { get; set; } = string.Empty;
+
+        /// <summary>
         /// Gets or sets the Team ID for your Apple Developer account.
         /// </summary>
         public string TeamId { get; set; }

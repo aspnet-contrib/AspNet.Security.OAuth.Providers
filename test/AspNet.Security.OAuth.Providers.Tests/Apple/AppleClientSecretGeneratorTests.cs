@@ -7,7 +7,6 @@
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
@@ -21,11 +20,6 @@ namespace AspNet.Security.OAuth.Apple
 {
     public static class AppleClientSecretGeneratorTests
     {
-        internal static readonly byte[] TestPrivateKey =
-            RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ?
-            Convert.FromBase64String("MIGTAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBHkwdwIBAQQgU208KCg/doqiSzsVF5sknVtYSgt8/3oiYGbvryIRrzSgCgYIKoZIzj0DAQehRANCAAQfrvDWizEnWAzB2Hx2r/NyvIBO6KGBDL7wkZoKnz4Sm4+1P1dhD9fVEhbsdoq9RKEf8dvzTOZMaC/iLqZFKSN6") :
-            Convert.FromBase64String("MIIEagIBAzCCBDAGCSqGSIb3DQEHAaCCBCEEggQdMIIEGTCCAw8GCSqGSIb3DQEHBqCCAwAwggL8AgEAMIIC9QYJKoZIhvcNAQcBMBwGCiqGSIb3DQEMAQYwDgQIim9BBUiXkDgCAggAgIICyGrISvsUV1o7fVvskmnfWPQqScCIDx/P93fqnes0EwtQTMIaCFIR1i9TH/6NlrusAD9qHXE7W3i/3gNsiuMGC4cYim4ym8GBhyPxWJqcubSpOVv5adja5gmz7G1v6iB6H9mg2TNLR2RQx4dddjA4Q4vSXYp2DOrvGIB8Fw9Cjx5BrQYEL78IMzB3DmNtLoFs/ny7a0WjoxnyCeT8272rzOgiuPN4Fhtj+pJYorIeoEcyJ3DAvZur6CotHANYVhSETI8tUejX5oqpg2LuY5yzxRrgy81PbabWA92TvvNMy/3/WuFSO3RyhAj4+87+ru8q6cgNT3IcZ16YXMG+XQX9eyp1EwxeDe5he3/4FEfbQH0tMD7E3MAQUjUXI/wzhCCI5HvpLXtf0N4tc8b178ykc+1oZ3zpYs4mOEHjv/xcM27C6L5YeZD36MX0LHjUQGe7ezNSYewqMR8LRwqzZ6QpLY5Dv+izx297hcKuh2bvA7MatJuI+VlK0g7gTrKYp6OHaQH6Us8F7BlO+jI8AzippV8wsJKo1VwgMVPMku4ufKAdxTuSoJP55azbze5nEebzhOidazVMgttyPrKB8QzCa19iHEzqqjWEEvDerZt5K5Em7CVxnnNVwaS/Cm70/oe4W2hpS7D4Rrj7Q4pOK6paJhxa/RZGUWtaddCSVyvI8Er4aGI0xJy1rOXBEs2yBl9z30PxsPl2ddvCV2ax0E5semTDKkFhS35OHsiFAjLUyDc0tE/Erh2+u16rzk0ceKRpmK0kanCQtqS5Amd6zaPk/D+fOIZY5tHUATHX5OGfCpT4vfTFSnJX66IAeLBOKO67sveiXrFfZanxnHAEWc6a5xHCBPZvSKlGdCsm86rZR/tXESGLWEbO3T7X7L694Rtq37yg2HjW8SQ6Y5hzYWjjLjU2F5kBJj5q9UVGIuBRUucnT+8YPJ95/00wggECBgkqhkiG9w0BBwGggfQEgfEwge4wgesGCyqGSIb3DQEMCgECoIG0MIGxMBwGCiqGSIb3DQEMAQMwDgQICc6+CvVyhsMCAggABIGQWzkumOp4ivI9Y8uECZwnmhXGn2YoZyfBjH6LC1lBtjQC6qs5PcoeqmL0Ig/6ZyPGKZ56kZXLJfWv7hnLAGcBAgHhMrLl73XNxtiIdA/FVWZvNGrzETM9U5JpfhFOZvWgoAZDeGnOirrHjBOtihaCMBscel5ZmULjJXiIr5kiVfByYX+RBrSIjaAwWRQWfK6hMSUwIwYJKoZIhvcNAQkVMRYEFF7DK7P8nOIRMzRro6ajG9hRWl04MDEwITAJBgUrDgMCGgUABBTqJGte1FPTsA+57DXU5WGnb+NfiQQIZ5eHWqzCYQwCAggA");
-
         [Fact]
         public static async Task GenerateAsync_Generates_Valid_Signed_Jwt()
         {
@@ -36,7 +30,8 @@ namespace AspNet.Security.OAuth.Apple
                 ClientSecretExpiresAfter = TimeSpan.FromMinutes(1),
                 KeyId = "my-key-id",
                 TeamId = "my-team-id",
-                PrivateKeyBytes = (keyId) => Task.FromResult(TestPrivateKey),
+                PrivateKeyBytes = (keyId) => TestKeys.GetPrivateKeyBytesAsync(),
+                PrivateKeyPassword = TestKeys.GetPrivateKeyPassword(),
             };
 
             await GenerateTokenAsync(options, async (generator, context) =>
@@ -84,7 +79,8 @@ namespace AspNet.Security.OAuth.Apple
                 ClientSecretExpiresAfter = TimeSpan.FromSeconds(1),
                 KeyId = "my-key-id",
                 TeamId = "my-team-id",
-                PrivateKeyBytes = (keyId) => Task.FromResult(TestPrivateKey),
+                PrivateKeyBytes = (keyId) => TestKeys.GetPrivateKeyBytesAsync(),
+                PrivateKeyPassword = TestKeys.GetPrivateKeyPassword(),
             };
 
             await GenerateTokenAsync(options, async (generator, context) =>
