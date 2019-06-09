@@ -31,6 +31,67 @@
         "refresh_token": "secret-refresh-token",
         "token_type": "bearer"
       }
+    },
+    {
+      "uri": "https://appleid.apple.local/auth/keys/none",
+      "method": "GET",
+      "contentFormat": "json",
+      "contentJson": {
+        "keys": []
+      }
+    },
+    {
+      "uri": "https://appleid.apple.local/auth/keys/invalid",
+      "method": "GET",
+      "contentFormat": "json",
+      "contentJson": {
+        "keys": [
+          {
+            "kty": "RSA",
+            "kid": "AIDOPK1",
+            "use": "sig",
+            "alg": "RS256",
+            "n": "lxrwmuYSAsTfn-lUu4goZSXBD9ackM9OJmwUVQHmbZo6GW4Fu_auUdN5zI7Y1dEDfgt7m7QXWbHuMD01HLnD4eRtY-RNwCWdjNfEaZ_esUPY3OVMrNDI15Ns13xspWS3q-13kdGv9jHI28P87RvMpjz_JCpQ5IM44oSyRnYtVJO-320SB8E2Bw92pmrenbp67KRUzTEVfGU4-obP5RZ09OxvCr1io4KJvEOjDJuuoClF66AT72WymtoMdwzUmhINjR0XSqK6H0MdWsjw7ysyd_JhmqX5CAaT9Pgi0J8lU_pcl215oANqjy7Ob-VMhug9eGyxAWVfu_1u6QJKePlE-w",
+            "e": "AQAB"
+          }
+        ]
+      }
+    },
+    {
+      "uri": "https://appleid.apple.local/auth/token/null",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "secret-access-token",
+        "expires_in": "0",
+        "id_token": null,
+        "refresh_token": "secret-refresh-token",
+        "token_type": "bearer"
+      }
+    },
+    {
+      "uri": "https://appleid.apple.local/auth/token/none",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "secret-access-token",
+        "expires_in": "0",
+        "id_token": "",
+        "refresh_token": "secret-refresh-token",
+        "token_type": "bearer"
+      }
+    },
+    {
+      "uri": "https://appleid.apple.local/auth/token/malformed",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "secret-access-token",
+        "expires_in": "0",
+        "id_token": "1",
+        "refresh_token": "secret-refresh-token",
+        "token_type": "bearer"
+      }
     }
   ]
 }
