@@ -73,6 +73,11 @@ namespace AspNet.Security.OAuth.Apple
             Logger.LogTrace("Response: {TokenResponse}", tokens.Response);
             Logger.LogTrace("ID Token: {IdToken}", idToken);
 
+            if (string.IsNullOrWhiteSpace(idToken))
+            {
+                throw new InvalidOperationException("No Apple ID token was returned in the OAuth token response.");
+            }
+
             if (Options.ValidateTokens)
             {
                 var validateIdContext = new AppleValidateIdTokenContext(Context, Scheme, Options, idToken);

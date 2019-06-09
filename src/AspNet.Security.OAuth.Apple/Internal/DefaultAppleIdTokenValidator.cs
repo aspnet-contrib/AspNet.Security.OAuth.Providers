@@ -53,7 +53,7 @@ namespace AspNet.Security.OAuth.Apple.Internal
             {
                 _tokenHandler.ValidateToken(context.IdToken, parameters, out var _);
             }
-            catch (SecurityTokenException ex)
+            catch (Exception ex)
             {
                 _logger.LogError(
                     ex,
