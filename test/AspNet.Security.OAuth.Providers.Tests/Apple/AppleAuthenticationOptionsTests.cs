@@ -71,6 +71,21 @@ namespace AspNet.Security.OAuth.Apple
         }
 
         [Fact]
+        public static void Validate_Throws_If_KeyId_Is_Null_With_Secret_Generation()
+        {
+            // Arrange
+            var options = new AppleAuthenticationOptions()
+            {
+                ClientId = "my-client-id",
+                GenerateClientSecret = true,
+                KeyId = null,
+            };
+
+            // Act and Assert
+            Assert.Throws<ArgumentException>("KeyId", () => options.Validate());
+        }
+
+        [Fact]
         public static void Validate_Throws_If_TeamId_Is_Null_With_Secret_Generation()
         {
             // Arrange
@@ -78,6 +93,7 @@ namespace AspNet.Security.OAuth.Apple
             {
                 ClientId = "my-client-id",
                 GenerateClientSecret = true,
+                KeyId = "my-key-id",
                 TeamId = null,
             };
 
@@ -93,6 +109,7 @@ namespace AspNet.Security.OAuth.Apple
             {
                 ClientId = "my-client-id",
                 GenerateClientSecret = true,
+                KeyId = "my-key-id",
                 TeamId = "my-team-id",
                 TokenAudience = null,
             };
@@ -109,6 +126,7 @@ namespace AspNet.Security.OAuth.Apple
             {
                 ClientId = "my-client-id",
                 GenerateClientSecret = true,
+                KeyId = "my-key-id",
                 TeamId = "my-team-id",
                 ClientSecretExpiresAfter = TimeSpan.Zero,
             };

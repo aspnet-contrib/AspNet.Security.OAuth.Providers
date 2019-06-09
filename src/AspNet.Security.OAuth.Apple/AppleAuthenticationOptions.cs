@@ -124,6 +124,11 @@ namespace AspNet.Security.OAuth.Apple
 
             if (GenerateClientSecret)
             {
+                if (string.IsNullOrEmpty(KeyId))
+                {
+                    throw new ArgumentException($"The '{nameof(KeyId)}' option must be provided if the '{nameof(GenerateClientSecret)}' option is set to true.", nameof(KeyId));
+                }
+
                 if (string.IsNullOrEmpty(TeamId))
                 {
                     throw new ArgumentException($"The '{nameof(TeamId)}' option must be provided if the '{nameof(GenerateClientSecret)}' option is set to true.", nameof(TeamId));
