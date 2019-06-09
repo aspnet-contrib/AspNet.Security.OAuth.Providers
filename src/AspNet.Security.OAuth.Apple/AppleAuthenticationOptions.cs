@@ -133,6 +133,11 @@ namespace AspNet.Security.OAuth.Apple
                 {
                     throw new ArgumentException($"The '{nameof(TokenAudience)}' option must be provided if the '{nameof(GenerateClientSecret)}' option is set to true.", nameof(TokenAudience));
                 }
+
+                if (ClientSecretExpiresAfter <= TimeSpan.Zero)
+                {
+                    throw new ArgumentException($"The '{nameof(ClientSecretExpiresAfter)}' option must be a positive value if the '{nameof(GenerateClientSecret)}' option is set to true.", nameof(ClientSecretExpiresAfter));
+                }
             }
 
             if (ValidateTokens)
