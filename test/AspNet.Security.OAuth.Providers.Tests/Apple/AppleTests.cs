@@ -81,8 +81,7 @@ namespace AspNet.Security.OAuth.Apple
                     options.PrivateKeyBytes = (keyId) =>
                     {
                         Assert.Equal("my-key-id", keyId);
-                        string privateKey = "MIGTAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBHkwdwIBAQQgU208KCg/doqiSzsVF5sknVtYSgt8/3oiYGbvryIRrzSgCgYIKoZIzj0DAQehRANCAAQfrvDWizEnWAzB2Hx2r/NyvIBO6KGBDL7wkZoKnz4Sm4+1P1dhD9fVEhbsdoq9RKEf8dvzTOZMaC/iLqZFKSN6";
-                        return Task.FromResult(Convert.FromBase64String(privateKey));
+                        return Task.FromResult(AppleClientSecretGeneratorTests.TestPrivateKey);
                     };
                 });
             }
