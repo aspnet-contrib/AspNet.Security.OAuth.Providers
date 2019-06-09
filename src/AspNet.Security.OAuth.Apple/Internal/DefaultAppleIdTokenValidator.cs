@@ -30,7 +30,7 @@ namespace AspNet.Security.OAuth.Apple.Internal
             _logger = logger;
         }
 
-        public override async Task ValidateAsync(AppleValidateIdTokenContext context)
+        public override async Task ValidateAsync([NotNull] AppleValidateIdTokenContext context)
         {
             if (!_tokenHandler.CanValidateToken)
             {

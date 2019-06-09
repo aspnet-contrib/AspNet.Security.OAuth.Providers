@@ -12,7 +12,7 @@ using Microsoft.Extensions.Logging;
 
 namespace AspNet.Security.OAuth.Apple.Internal
 {
-    internal class DefaultAppleKeyStore : AppleKeyStore
+    internal sealed class DefaultAppleKeyStore : AppleKeyStore
     {
         private readonly ILogger _logger;
 
@@ -25,7 +25,7 @@ namespace AspNet.Security.OAuth.Apple.Internal
         }
 
         /// <inheritdoc />
-        public override async Task<byte[]> LoadPrivateKeyAsync(AppleGenerateClientSecretContext context)
+        public override async Task<byte[]> LoadPrivateKeyAsync([NotNull] AppleGenerateClientSecretContext context)
         {
             if (context.Options.PrivateKeyBytes == null)
             {
@@ -38,7 +38,7 @@ namespace AspNet.Security.OAuth.Apple.Internal
         }
 
         /// <inheritdoc />
-        public override async Task<byte[]> LoadPublicKeysAsync(AppleValidateIdTokenContext context)
+        public override async Task<byte[]> LoadPublicKeysAsync([NotNull] AppleValidateIdTokenContext context)
         {
             if (_publicKey == null)
             {
@@ -48,7 +48,7 @@ namespace AspNet.Security.OAuth.Apple.Internal
             return _publicKey;
         }
 
-        private async Task<byte[]> LoadApplePublicKeysAsync(AppleValidateIdTokenContext context)
+        private async Task<byte[]> LoadApplePublicKeysAsync([NotNull] AppleValidateIdTokenContext context)
         {
             _logger.LogInformation("Loading Apple public keys from {PublicKeyEndpoint}.", context.Options.PublicKeyEndpoint);
 
@@ -56,7 +56,7 @@ namespace AspNet.Security.OAuth.Apple.Internal
 
             if (!response.IsSuccessStatusCode)
             {
-                _logger.LogError("An error occurred while retrieving the public keys: the remote server " +
+                _logger.LogError("An error occurred while retrieving the public keys from Apple: the remote server " +
                                  "returned a {Status} response with the following payload: {Headers} {Body}.",
                                  /* Status: */ response.StatusCode,
                                  /* Headers: */ response.Headers.ToString(),
