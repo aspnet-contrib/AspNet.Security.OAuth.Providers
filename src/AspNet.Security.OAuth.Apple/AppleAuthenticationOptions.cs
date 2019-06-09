@@ -122,7 +122,7 @@ namespace AspNet.Security.OAuth.Apple
                 throw new ArgumentException($"The '{nameof(CallbackPath)}' option must be provided.", nameof(CallbackPath));
             }
 
-            if (GenerateClientSecret && string.IsNullOrEmpty(TeamId))
+            if (GenerateClientSecret)
             {
                 if (string.IsNullOrEmpty(TeamId))
                 {
@@ -136,7 +136,10 @@ namespace AspNet.Security.OAuth.Apple
 
                 if (ClientSecretExpiresAfter <= TimeSpan.Zero)
                 {
-                    throw new ArgumentException($"The '{nameof(ClientSecretExpiresAfter)}' option must be a positive value if the '{nameof(GenerateClientSecret)}' option is set to true.", nameof(ClientSecretExpiresAfter));
+                    throw new ArgumentOutOfRangeException(
+                        nameof(ClientSecretExpiresAfter),
+                        ClientSecretExpiresAfter,
+                        $"The '{nameof(ClientSecretExpiresAfter)}' option must be a positive value if the '{nameof(GenerateClientSecret)}' option is set to true.");
                 }
             }
 
