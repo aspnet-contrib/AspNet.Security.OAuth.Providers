@@ -13,8 +13,8 @@ namespace AspNet.Security.OAuth.Trakt
     {
         public static class Claims
         {
-            public const string VIP = "urn:trakt:vip";
-            public const string VIP_EP = "urn:trakt:vip_ep";
+            public const string Vip = "urn:trakt:vip";
+            public const string VipEp = "urn:trakt:vip_ep";
             public const string Private = "urn:trakt:private";
         }
     }

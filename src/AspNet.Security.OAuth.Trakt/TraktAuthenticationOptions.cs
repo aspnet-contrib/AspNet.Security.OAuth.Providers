@@ -21,7 +21,7 @@ namespace AspNet.Security.OAuth.Trakt
         {
             ClaimsIssuer = TraktAuthenticationDefaults.Issuer;
 
-            CallbackPath = new PathString(TraktAuthenticationDefaults.CallbackPath);
+            CallbackPath = TraktAuthenticationDefaults.CallbackPath;
 
             AuthorizationEndpoint = TraktAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = TraktAuthenticationDefaults.TokenEndpoint;
@@ -30,9 +30,15 @@ namespace AspNet.Security.OAuth.Trakt
             ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "username");
             ClaimActions.MapJsonKey(ClaimTypes.Name, "username");
             ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
-            ClaimActions.MapJsonKey(Claims.VIP, "vip");
-            ClaimActions.MapJsonKey(Claims.VIP_EP, "vip_ep");
+            ClaimActions.MapJsonKey(Claims.Vip, "vip");
+            ClaimActions.MapJsonKey(Claims.VipEp, "vip_ep");
             ClaimActions.MapJsonKey(Claims.Private, "private");
         }
+
+        /// <summary>
+        /// Gets or sets the API version used when communicating with Foursquare.
+        /// See https://developer.foursquare.com/overview/versioning for more information.
+        /// </summary>
+        public string ApiVersion { get; set; } = TraktAuthenticationDefaults.ApiVersion;
     }
 }

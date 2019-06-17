@@ -36,7 +36,7 @@ namespace AspNet.Security.OAuth.Trakt
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", tokens.AccessToken);
             request.Headers.Add("trakt-api-key", Options.ClientId);
-            request.Headers.Add("trakt-api-version", "2");
+            request.Headers.Add("trakt-api-version", Options.ApiVersion);
 
             var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
             if (!response.IsSuccessStatusCode)
