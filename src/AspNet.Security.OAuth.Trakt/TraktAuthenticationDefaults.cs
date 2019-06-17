@@ -46,7 +46,7 @@ namespace AspNet.Security.OAuth.Trakt
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
-        /// For more information about this endpoint, see <see cref="https://trakt.docs.apiary.io/#reference/users/profile/get-user-profile"/>.
+        /// For more information about this endpoint, see <c>https://trakt.docs.apiary.io/#reference/users/profile/get-user-profile</c>.
         /// </summary>
         public const string UserInformationEndpoint = "https://api.trakt.tv/users/me?extended=full";
 
