@@ -1,0 +1,44 @@
+{
+  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
+  "items": [
+    {
+      "comment": "https://trakt.docs.apiary.io/#reference/authentication-oauth/get-token/retrieve-settings?console=1",
+      "uri": "https://api.trakt.tv/oauth/token",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "secret-access-token",
+        "token_type": "bearer",
+        "expires_in": 7200,
+        "refresh_token": "secret-refresh-token",
+        "scope": "public",
+        "created_at": 1487889741
+      }
+    },
+    {
+      "comment": "See https://trakt.docs.apiary.io/#reference/users/profile/get-user-profile?console=1",
+      "uri": "https://api.trakt.tv/users/me?extended=full",
+      "contentFormat": "json",
+      "contentJson": {
+        "username": "sean",
+        "private": false,
+        "name": "Sean Rudford",
+        "vip": true,
+        "vip_ep": true,
+        "ids": {
+          "slug": "sean"
+        },
+        "joined_at": "2011-11-01T00:31:51.000Z",
+        "location": "",
+        "about": "",
+        "gender": "",
+        "age": null,
+        "images": {
+          "avatar": {
+            "full": "https://secure.gravatar.com/avatar/5asdasdasdasdf5e6asdasd1?d=https%3A%2F%2Fwalter.trakt.tv%2Fhotlink-ok%2Fplaceholders%2Fmedium%2Fzoidberg.png&r=pg&s=256"
+          }
+        }
+      }
+    }
+  ]
+}
