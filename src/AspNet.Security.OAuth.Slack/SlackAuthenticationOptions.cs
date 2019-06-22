@@ -28,7 +28,7 @@ namespace AspNet.Security.OAuth.Slack
             UserInformationEndpoint = SlackAuthenticationDefaults.UserInformationEndpoint;
 
             ClaimActions.MapCustomJson(ClaimTypes.NameIdentifier, user =>
-                string.Concat(user["team"]["id"], "|", user["user"]["id"]));
+                string.Concat(user.GetProperty("team").GetString("id"), "|", user.GetProperty("user").GetString("id")));
             ClaimActions.MapJsonSubKey(ClaimTypes.Name, "user", "name");
             ClaimActions.MapJsonSubKey(ClaimTypes.Email, "user", "email");
             ClaimActions.MapJsonSubKey(Claims.UserId, "user", "id");

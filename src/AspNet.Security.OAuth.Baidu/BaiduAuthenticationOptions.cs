@@ -20,21 +20,21 @@ namespace AspNet.Security.OAuth.Baidu
         public BaiduAuthenticationOptions()
         {
             ClaimsIssuer = BaiduAuthenticationDefaults.Issuer;
-            CallbackPath = new PathString(BaiduAuthenticationDefaults.CallbackPath);
+            CallbackPath = BaiduAuthenticationDefaults.CallbackPath;
 
             AuthorizationEndpoint = BaiduAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = BaiduAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = BaiduAuthenticationDefaults.UserInformationEndpoint;
-            
+
             ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "uid");
             ClaimActions.MapJsonKey(ClaimTypes.Name, "uname");
             ClaimActions.MapCustomJson(BaiduAuthenticationConstants.Claims.Portrait,
                 user =>
                 {
-                    var portrait = user.Value<string>("portrait");
-                    return string.IsNullOrWhiteSpace(portrait)
-                        ? null
-                        : $"https://tb.himg.baidu.com/sys/portrait/item/{WebUtility.UrlEncode(portrait)}";
+                    var portrait = user.GetString("portrait");
+                    return string.IsNullOrWhiteSpace(portrait) ?
+                        null :
+                        $"https://tb.himg.baidu.com/sys/portrait/item/{WebUtility.UrlEncode(portrait)}";
                 });
         }
     }

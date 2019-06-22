@@ -8,11 +8,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Text.Json;
 using System.Threading;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.AspNetCore.Http;
-using Newtonsoft.Json.Linq;
 using static AspNet.Security.OAuth.LinkedIn.LinkedInAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.LinkedIn
@@ -25,8 +24,7 @@ namespace AspNet.Security.OAuth.LinkedIn
         public LinkedInAuthenticationOptions()
         {
             ClaimsIssuer = LinkedInAuthenticationDefaults.Issuer;
-
-            CallbackPath = new PathString(LinkedInAuthenticationDefaults.CallbackPath);
+            CallbackPath = LinkedInAuthenticationDefaults.CallbackPath;
 
             AuthorizationEndpoint = LinkedInAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = LinkedInAuthenticationDefaults.TokenEndpoint;
@@ -37,7 +35,6 @@ namespace AspNet.Security.OAuth.LinkedIn
             Scope.Add("r_emailaddress");
 
             ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, ProfileFields.Id);
-            ClaimActions.MapJsonKey(ClaimTypes.Email, LinkedInAuthenticationConstants.EmailAddressField);
             ClaimActions.MapCustomJson(ClaimTypes.Name, user => GetFullName(user));
             ClaimActions.MapCustomJson(ClaimTypes.GivenName, user => GetMultiLocaleString(user, ProfileFields.FirstName));
             ClaimActions.MapCustomJson(ClaimTypes.Surname, user => GetMultiLocaleString(user, ProfileFields.LastName));
@@ -63,11 +60,11 @@ namespace AspNet.Security.OAuth.LinkedIn
             ProfileFields.Id,
             ProfileFields.FirstName,
             ProfileFields.LastName,
-            LinkedInAuthenticationConstants.EmailAddressField
+            EmailAddressField
         };
 
         /// <summary>
-        /// Gets or sets a <c>MultiLocaleString</c> resolver, a function which takes all localized values 
+        /// Gets or sets a <c>MultiLocaleString</c> resolver, a function which takes all localized values
         /// and an eventual preferred locale from the member and returns the selected localized value.
         /// The default implementation resolve it in this order:
         /// 1. Returns the <c>preferredLocale</c> value if it is set and has a value.
@@ -84,54 +81,77 @@ namespace AspNet.Security.OAuth.LinkedIn
         /// <param name="user">The payload returned by the user info endpoint.</param>
         /// <param name="propertyName">The name of the <c>MultiLocaleString</c> property.</param>
         /// <returns>The property value.</returns>
-        private string GetMultiLocaleString(JObject user, string propertyName)
+        private string GetMultiLocaleString(JsonElement user, string propertyName)
         {
-            var property = user[propertyName];
-            if (property == null)
+            if (!user.TryGetProperty(propertyName, out var property))
             {
                 return null;
             }
 
-            var propertyLocalized = property["localized"];
-            if (propertyLocalized == null)
+            if (!property.TryGetProperty("localized", out var propertyLocalized))
             {
                 return null;
             }
 
-            var preferredLocale = property["preferredLocale"];
-            string preferredLocaleKey = preferredLocale == null ? null : $"{preferredLocale.Value<string>("language")}_{preferredLocale.Value<string>("country")}";
-            var values = propertyLocalized
-                .Children<JProperty>()
-                .ToDictionary(p => p.Name, p => p.Value.Value<string>());
+            string preferredLocaleKey = null;
 
-            return MultiLocaleStringResolver(values, preferredLocaleKey);
+            if (property.TryGetProperty("preferredLocale", out var preferredLocale))
+            {
+                preferredLocaleKey = $"{preferredLocale.GetString("language")}_{preferredLocale.GetString("country")}";
+            }
+
+            var preferredLocales = new Dictionary<string, string>();
+
+            foreach (var element in propertyLocalized.EnumerateObject())
+            {
+                preferredLocales[element.Name] = element.Value.GetString();
+            }
+
+            return MultiLocaleStringResolver(preferredLocales, preferredLocaleKey);
         }
 
-        private string GetFullName(JObject user)
+        private string GetFullName(JsonElement user)
         {
             string[] nameParts = new string[]
             {
                 GetMultiLocaleString(user, ProfileFields.FirstName),
-                GetMultiLocaleString(user, ProfileFields.LastName)
+                GetMultiLocaleString(user, ProfileFields.LastName),
             };
 
             return string.Join(" ", nameParts.Where(s => !string.IsNullOrWhiteSpace(s)));
         }
 
-        private static IEnumerable<string> GetPictureUrls(JObject user)
+        private static IEnumerable<string> GetPictureUrls(JsonElement user)
         {
-            var profilePictureElements = user.Value<JObject>("profilePicture")
-                ?.Value<JObject>("displayImage~")
-                ?.Value<JArray>("elements");
-
-            if (profilePictureElements == null)
+            if (!user.TryGetProperty("profilePicture", out var profilePicture) ||
+                !profilePicture.TryGetProperty("displayImage~", out var displayImage) ||
+                !displayImage.TryGetProperty("elements", out var displayImageElements))
             {
-                return null;
+                return Array.Empty<string>();
             }
 
-            return (from address in profilePictureElements
-                    where address.Value<string>("authorizationMethod") == "PUBLIC"
-                    select address.Value<JArray>("identifiers")?.First()?.Value<string>("identifier"));
+            var pictureUrls = new List<string>();
+
+            foreach (var element in displayImageElements.EnumerateArray())
+            {
+                if (!string.Equals(element.GetString("authorizationMethod"), "PUBLIC", StringComparison.Ordinal) ||
+                    !element.TryGetProperty("identifiers", out var imageIdentifier))
+                {
+                    continue;
+                }
+
+                string pictureUrl = imageIdentifier
+                    .EnumerateArray()
+                    .FirstOrDefault()
+                    .GetString("identifier");
+
+                if (!string.IsNullOrEmpty(pictureUrl))
+                {
+                    pictureUrls.Add(pictureUrl);
+                }
+            }
+
+            return pictureUrls;
         }
 
         /// <summary>
@@ -146,8 +166,8 @@ namespace AspNet.Security.OAuth.LinkedIn
         /// <returns>The localized value.</returns>
         private static string DefaultMultiLocaleStringResolver(IReadOnlyDictionary<string, string> localizedValues, string preferredLocale)
         {
-            if (!string.IsNullOrEmpty(preferredLocale)
-                && localizedValues.TryGetValue(preferredLocale, out string preferredLocaleValue))
+            if (!string.IsNullOrEmpty(preferredLocale) &&
+                localizedValues.TryGetValue(preferredLocale, out string preferredLocaleValue))
             {
                 return preferredLocaleValue;
             }

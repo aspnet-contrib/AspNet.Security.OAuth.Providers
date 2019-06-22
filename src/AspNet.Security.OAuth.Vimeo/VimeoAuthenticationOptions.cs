@@ -29,7 +29,7 @@ namespace AspNet.Security.OAuth.Vimeo
 
             ClaimActions.MapJsonKey(Claims.FullName, "name");
             ClaimActions.MapJsonKey(Claims.ProfileUrl, "link");
-            ClaimActions.MapCustomJson(ClaimTypes.NameIdentifier, user => user.Value<string>("uri")?.Split('/')?.LastOrDefault());
+            ClaimActions.MapCustomJson(ClaimTypes.NameIdentifier, user => user.GetString("uri")?.Split('/')?.LastOrDefault());
         }
     }
 }

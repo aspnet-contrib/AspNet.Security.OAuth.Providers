@@ -18,7 +18,7 @@ namespace AspNet.Security.OAuth.Zalo
         public ZaloAuthenticationOptions()
         {
             ClaimsIssuer = ZaloAuthenticationDefaults.Issuer;
-            CallbackPath = new PathString(ZaloAuthenticationDefaults.CallbackPath);
+            CallbackPath = ZaloAuthenticationDefaults.CallbackPath;
 
             AuthorizationEndpoint = ZaloAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = ZaloAuthenticationDefaults.TokenEndpoint;
@@ -29,7 +29,7 @@ namespace AspNet.Security.OAuth.Zalo
             ClaimActions.MapJsonKey(ClaimTypes.Gender, "gender");
             ClaimActions.MapCustomJson(ClaimTypes.DateOfBirth, user =>
             {
-                return DateTime.TryParseExact(user.Value<string>("birthday"), "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out var dateOfBirth)
+                return DateTime.TryParseExact(user.GetString("birthday"), "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out var dateOfBirth)
                     ? dateOfBirth.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)
                     : string.Empty;
             });

@@ -5,18 +5,19 @@
  */
 
 using System;
+using System.Buffers;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
+using System.Text.Json;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json.Linq;
 
 namespace AspNet.Security.OAuth.Yammer
 {
@@ -34,10 +35,10 @@ namespace AspNet.Security.OAuth.Yammer
         protected override async Task<AuthenticationTicket> CreateTicketAsync([NotNull] ClaimsIdentity identity,
             [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens)
         {
-            var request = new HttpRequestMessage(HttpMethod.Get, Options.UserInformationEndpoint);
+            using var request = new HttpRequestMessage(HttpMethod.Get, Options.UserInformationEndpoint);
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", tokens.AccessToken);
 
-            var response = await Backchannel.SendAsync(request, Context.RequestAborted);
+            using var response = await Backchannel.SendAsync(request, Context.RequestAborted);
             if (!response.IsSuccessStatusCode)
             {
                 Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
@@ -49,11 +50,11 @@ namespace AspNet.Security.OAuth.Yammer
                 throw new HttpRequestException("An error occurred while retrieving the user profile.");
             }
 
-            var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
+            using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
 
             var principal = new ClaimsPrincipal(identity);
-            var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload);
-            context.RunClaimActions(payload);
+            var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload.RootElement);
+            context.RunClaimActions();
 
             await Options.Events.CreatingTicket(context);
 
@@ -62,7 +63,7 @@ namespace AspNet.Security.OAuth.Yammer
 
         protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] string code, [NotNull] string redirectUri)
         {
-            var request = new HttpRequestMessage(HttpMethod.Post, Options.TokenEndpoint);
+            using var request = new HttpRequestMessage(HttpMethod.Post, Options.TokenEndpoint);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
             request.Content = new FormUrlEncodedContent(new Dictionary<string, string>
@@ -74,7 +75,7 @@ namespace AspNet.Security.OAuth.Yammer
                 ["grant_type"] = "authorization_code"
             });
 
-            var response = await Backchannel.SendAsync(request, Context.RequestAborted);
+            using var response = await Backchannel.SendAsync(request, Context.RequestAborted);
             if (!response.IsSuccessStatusCode)
             {
                 Logger.LogError("An error occurred while retrieving an access token: the remote server " +
@@ -89,13 +90,30 @@ namespace AspNet.Security.OAuth.Yammer
             // Note: Yammer doesn't return a standard OAuth2 response. To make this middleware compatible
             // with the OAuth2 generic middleware, a compliant JSON payload is generated manually.
             // See https://developer.yammer.com/docs/oauth-2 for more information about this process.
-            var payload = JObject.Parse(await response.Content.ReadAsStringAsync())["access_token"].Value<JObject>();
-            payload["access_token"] = payload["token"];
-            payload["token_type"] = string.Empty;
-            payload["refresh_token"] = string.Empty;
-            payload["expires_in"] = string.Empty;
+            using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
+            string accessToken = payload.RootElement.GetProperty("access_token").GetString("token");
 
-            return OAuthTokenResponse.Success(payload);
+            var token = await CreateAccessTokenAsync(accessToken);
+            return OAuthTokenResponse.Success(token);
+        }
+
+        private async Task<JsonDocument> CreateAccessTokenAsync(string accessToken)
+        {
+            var bufferWriter = new ArrayBufferWriter<byte>();
+
+            await using (var writer = new Utf8JsonWriter(bufferWriter))
+            {
+                writer.WriteStartObject();
+                writer.WriteString("access_token", accessToken);
+                writer.WriteString("token_type", string.Empty);
+                writer.WriteString("refresh_token", string.Empty);
+                writer.WriteString("expires_in", string.Empty);
+                writer.WriteEndObject();
+
+                await writer.FlushAsync();
+            }
+
+            return JsonDocument.Parse(bufferWriter.WrittenMemory);
         }
     }
 }
