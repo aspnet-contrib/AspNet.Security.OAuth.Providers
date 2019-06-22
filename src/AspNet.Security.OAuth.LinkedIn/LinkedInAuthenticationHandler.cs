@@ -10,6 +10,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
+using System.Text.Json;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication;
@@ -17,7 +18,6 @@ using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json.Linq;
 
 namespace AspNet.Security.OAuth.LinkedIn
 {
@@ -37,7 +37,7 @@ namespace AspNet.Security.OAuth.LinkedIn
             [NotNull] AuthenticationProperties properties,
             [NotNull] OAuthTokenResponse tokens)
         {
-            string address = Options.UserInformationEndpoint;
+            string requestUri = Options.UserInformationEndpoint;
             var fields = Options.Fields
                 .Where(f => !string.Equals(f, LinkedInAuthenticationConstants.EmailAddressField, StringComparison.OrdinalIgnoreCase))
                 .ToList();
@@ -45,14 +45,14 @@ namespace AspNet.Security.OAuth.LinkedIn
             // If at least one field is specified, append the fields to the endpoint URL.
             if (fields.Count > 0)
             {
-                address = QueryHelpers.AddQueryString(address, "projection", $"({string.Join(",", fields)})");
+                requestUri = QueryHelpers.AddQueryString(requestUri, "projection", $"({string.Join(",", fields)})");
             }
 
-            var request = new HttpRequestMessage(HttpMethod.Get, address);
+            using var request = new HttpRequestMessage(HttpMethod.Get, requestUri);
             request.Headers.Add("x-li-format", "json");
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", tokens.AccessToken);
 
-            var response = await Backchannel.SendAsync(request, Context.RequestAborted);
+            using var response = await Backchannel.SendAsync(request, Context.RequestAborted);
             if (!response.IsSuccessStatusCode)
             {
                 Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
@@ -64,16 +64,21 @@ namespace AspNet.Security.OAuth.LinkedIn
                 throw new HttpRequestException("An error occurred while retrieving the user profile.");
             }
 
-            var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
-
-            if (Options.Fields.Contains(LinkedInAuthenticationConstants.EmailAddressField))
-            {
-                payload.Last.AddAfterSelf(new JProperty("emailAddress", await GetEmailAsync(tokens)));
-            }
+            using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
 
             var principal = new ClaimsPrincipal(identity);
-            var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload);
-            context.RunClaimActions(payload);
+            var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload.RootElement);
+            context.RunClaimActions();
+
+            if (!string.IsNullOrEmpty(Options.EmailAddressEndpoint) &&
+                Options.Fields.Contains(LinkedInAuthenticationConstants.EmailAddressField))
+            {
+                string email = await GetEmailAsync(tokens);
+                if (!string.IsNullOrEmpty(email))
+                {
+                    identity.AddClaim(new Claim(ClaimTypes.Email, email, ClaimValueTypes.String, Options.ClaimsIssuer));
+                }
+            }
 
             await Options.Events.CreatingTicket(context);
             return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
@@ -81,11 +86,11 @@ namespace AspNet.Security.OAuth.LinkedIn
 
         protected virtual async Task<string> GetEmailAsync([NotNull] OAuthTokenResponse tokens)
         {
-            var request = new HttpRequestMessage(HttpMethod.Get, Options.EmailAddressEndpoint);
+            using var request = new HttpRequestMessage(HttpMethod.Get, Options.EmailAddressEndpoint);
             request.Headers.Add("x-li-format", "json");
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", tokens.AccessToken);
 
-            var response = await Backchannel.SendAsync(request, Context.RequestAborted);
+            using var response = await Backchannel.SendAsync(request, Context.RequestAborted);
             if (!response.IsSuccessStatusCode)
             {
                 Logger.LogError("An error occurred while retrieving the email address: the remote server " +
@@ -97,10 +102,18 @@ namespace AspNet.Security.OAuth.LinkedIn
                 throw new HttpRequestException("An error occurred while retrieving the email address.");
             }
 
-            var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
+            using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
 
-            return (from address in payload.Value<JArray>("elements")
-                    select address.Value<JObject>("handle~")?.Value<string>("emailAddress")).FirstOrDefault();
+            if (!payload.RootElement.TryGetProperty("elements", out var emails))
+            {
+                return null;
+            }
+
+            return emails
+                .EnumerateArray()
+                .Select((p) => p.GetProperty("handle~"))
+                .Select((p) => p.GetString("emailAddress"))
+                .FirstOrDefault();
         }
     }
 }

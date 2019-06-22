@@ -5,11 +5,14 @@
  */
 
 using System;
+using System.Buffers;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
+using System.Text.Json;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication;
@@ -17,7 +20,7 @@ using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json.Linq;
+using Microsoft.Extensions.Primitives;
 
 namespace AspNet.Security.OAuth.StackExchange
 {
@@ -53,10 +56,10 @@ namespace AspNet.Security.OAuth.StackExchange
 
             var address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, queryArguments);
 
-            var request = new HttpRequestMessage(HttpMethod.Get, address);
+            using var request = new HttpRequestMessage(HttpMethod.Get, address);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-            var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
+            using var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
             if (!response.IsSuccessStatusCode)
             {
                 Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
@@ -68,11 +71,11 @@ namespace AspNet.Security.OAuth.StackExchange
                 throw new HttpRequestException("An error occurred while retrieving the user profile.");
             }
 
-            var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
+            using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
 
             var principal = new ClaimsPrincipal(identity);
-            var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload);
-            context.RunClaimActions(payload.Value<JArray>("items")?[0] as JObject);
+            var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload.RootElement);
+            context.RunClaimActions(payload.RootElement.GetProperty("items").EnumerateArray().First());
 
             await Options.Events.CreatingTicket(context);
             return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
@@ -80,7 +83,7 @@ namespace AspNet.Security.OAuth.StackExchange
 
         protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] string code, [NotNull] string redirectUri)
         {
-            var request = new HttpRequestMessage(HttpMethod.Post, Options.TokenEndpoint)
+            using var request = new HttpRequestMessage(HttpMethod.Post, Options.TokenEndpoint)
             {
                 Content = new FormUrlEncodedContent(new Dictionary<string, string>
                 {
@@ -92,7 +95,7 @@ namespace AspNet.Security.OAuth.StackExchange
                 })
             };
 
-            var response = await Backchannel.SendAsync(request, Context.RequestAborted);
+            using var response = await Backchannel.SendAsync(request, Context.RequestAborted);
             if (!response.IsSuccessStatusCode)
             {
                 Logger.LogError("An error occurred while retrieving an access token: the remote server " +
@@ -108,13 +111,28 @@ namespace AspNet.Security.OAuth.StackExchange
             // Since OAuthTokenResponse expects a JSON payload, a response is manually created using the returned values.
             var content = QueryHelpers.ParseQuery(await response.Content.ReadAsStringAsync());
 
-            var payload = new JObject();
-            foreach (var item in content)
+            var copy = await CopyPayloadAsync(content);
+            return OAuthTokenResponse.Success(copy);
+        }
+
+        private async Task<JsonDocument> CopyPayloadAsync(Dictionary<string, StringValues> content)
+        {
+            var bufferWriter = new ArrayBufferWriter<byte>();
+
+            await using (var writer = new Utf8JsonWriter(bufferWriter))
             {
-                payload[item.Key] = (string)item.Value;
+                writer.WriteStartObject();
+
+                foreach (var item in content)
+                {
+                    writer.WriteString(item.Key, item.Value);
+                }
+
+                writer.WriteEndObject();
+                await writer.FlushAsync();
             }
 
-            return OAuthTokenResponse.Success(payload);
+            return JsonDocument.Parse(bufferWriter.WrittenMemory);
         }
     }
 }
