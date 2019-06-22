@@ -9,9 +9,15 @@
     <JustEatHttpClientInterceptionVersion>2.0.1</JustEatHttpClientInterceptionVersion>
     <MartinCostelloLoggingXUnitVersion>0.1.0</MartinCostelloLoggingXUnitVersion>
     <MicrosoftSourceLinkGitHubVersion>1.0.0-beta2-19270-01</MicrosoftSourceLinkGitHubVersion>
+    <ReportGeneratorVersion>4.2.2</ReportGeneratorVersion>
     <ShouldlyVersion>3.0.2</ShouldlyVersion>
     <TwitterProviderVersion>3.0.0-preview6.19307.2</TwitterProviderVersion>
     <XunitVersion>2.4.1</XunitVersion>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="coverlet.msbuild" Version="$(CoverletVersion)" PrivateAssets="All" />
+    <PackageReference Include="ReportGenerator" Version="$(ReportGeneratorVersion)" PrivateAssets="All" />
+  </ItemGroup>
 
 </Project>
