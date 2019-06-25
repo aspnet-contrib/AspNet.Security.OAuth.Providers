@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Licensed under the Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0)
  * See https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers
  * for more information concerning the license and the contributors participating to this project.
@@ -50,6 +50,17 @@ namespace Mvc.Client
                 options.ClientId = "jpk24g2uxfxe939";
                 options.ClientSecret = "qbxvkjk5la7mjp6";
             });
+
+            #region DisabledProvider
+            /*.AddNextcloud(options =>
+            {
+                options.ClientId = "YourClientID";
+                options.ClientSecret = "YourClientSecret";
+                options.AuthorizationEndpoint = "https://yourdomain.tld/apps/oauth2/authorize";
+                options.TokenEndpoint = "https://yourdomain.tld/apps/oauth2/api/v1/token";
+                options.UserInformationEndpoint = "https://yourdomain.tld/ocs/v1.php/cloud/users/";
+            })*/
+            #endregion
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
