@@ -1,4 +1,10 @@
-﻿using System.Linq;
+﻿/*
+ * Licensed under the Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0)
+ * See https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers
+ * for more information concerning the license and the contributors participating to this project.
+ */
+
+using System.Linq;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
@@ -13,7 +19,7 @@ namespace AspNet.Security.OAuth.Nextcloud
         public NextcloudAuthenticationOptions()
         {
             ClaimsIssuer = NextcloudAuthenticationDefaults.Issuer;
-            CallbackPath = new PathString(NextcloudAuthenticationDefaults.CallbackPath);
+            CallbackPath = NextcloudAuthenticationDefaults.CallbackPath;
 
             ClaimActions.MapCustomJson(ClaimTypes.NameIdentifier, user =>
             {
@@ -41,7 +47,7 @@ namespace AspNet.Security.OAuth.Nextcloud
                 return string.Join(",", groups.ToList());
             });
 
-            ClaimActions.MapCustomJson(Claims.Enabled, user =>
+            ClaimActions.MapCustomJson(Claims.IsEnabled, user =>
             {
                 return user["ocs"]?["data"]?.Value<string>("enabled");
             });

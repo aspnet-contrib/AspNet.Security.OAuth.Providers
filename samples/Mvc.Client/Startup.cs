@@ -51,17 +51,6 @@ namespace Mvc.Client
                 options.ClientSecret = "qbxvkjk5la7mjp6";
             });
 
-            #region DisabledProvider
-            /*.AddNextcloud(options =>
-            {
-                options.ClientId = "YourClientID";
-                options.ClientSecret = "YourClientSecret";
-                options.AuthorizationEndpoint = "https://yourdomain.tld/apps/oauth2/authorize";
-                options.TokenEndpoint = "https://yourdomain.tld/apps/oauth2/api/v1/token";
-                options.UserInformationEndpoint = "https://yourdomain.tld/ocs/v1.php/cloud/users/";
-            })*/
-            #endregion
-
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 

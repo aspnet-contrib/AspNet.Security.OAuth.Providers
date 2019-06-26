@@ -1,4 +1,10 @@
-﻿using System.Net.Http;
+﻿/*
+ * Licensed under the Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0)
+ * See https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers
+ * for more information concerning the license and the contributors participating to this project.
+ */
+
+using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
@@ -9,7 +15,6 @@ using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
-
 
 namespace AspNet.Security.OAuth.Nextcloud
 {
@@ -27,15 +32,14 @@ namespace AspNet.Security.OAuth.Nextcloud
         protected override async Task<AuthenticationTicket> CreateTicketAsync([NotNull] ClaimsIdentity identity,
             [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens)
         {
-            string usr = tokens.Response.SelectToken("user_id").ToString();
-            string usrentpoint = Options.UserInformationEndpoint.TrimEnd('/');
-            usrentpoint += $"/{usr}";
+            string userId = tokens.Response.Value<string>("user_id");
+            string userEndpoint = Options.UserInformationEndpoint.TrimEnd('/');
+            userEndpoint += $"/{userId}";
 
-            var request = new HttpRequestMessage(HttpMethod.Get, usrentpoint);
+            var request = new HttpRequestMessage(HttpMethod.Get, userEndpoint);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", tokens.AccessToken);
 
-            
             var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
             if (!response.IsSuccessStatusCode)
             {

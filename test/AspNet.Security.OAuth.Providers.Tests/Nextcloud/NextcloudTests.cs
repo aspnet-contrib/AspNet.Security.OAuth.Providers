@@ -23,8 +23,6 @@ namespace AspNet.Security.OAuth.Nextcloud
 
         public override string DefaultScheme => NextcloudAuthenticationDefaults.AuthenticationScheme;
 
-        protected override string RedirectUri => "http://localhost/signin-nextcloud";
-
         protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
         {
             builder.AddNextcloud(options => {
@@ -33,7 +31,6 @@ namespace AspNet.Security.OAuth.Nextcloud
                 options.UserInformationEndpoint = "https://nextcloud.local/ocs/v1.php/cloud/users";
                 ConfigureDefaults(builder, options);
             });
-
         }
 
         [Theory]
