@@ -14,6 +14,7 @@ namespace AspNet.Security.OAuth.Nextcloud
         public static class Claims
         {
             public const string Groups = "urn:nextcloud:groups";
+            public const string Username = "urn:nextcloud:username";
             public const string DisplayName = "urn:nextcloud:displayname";
             public const string IsEnabled = "urn:nextcloud:enabled";
             public const string Language = "urn:nextcloud:language";

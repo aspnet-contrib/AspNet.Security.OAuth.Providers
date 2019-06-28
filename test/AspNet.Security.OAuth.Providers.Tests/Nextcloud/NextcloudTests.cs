@@ -25,7 +25,8 @@ namespace AspNet.Security.OAuth.Nextcloud
 
         protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
         {
-            builder.AddNextcloud(options => {
+            builder.AddNextcloud(options =>
+            {
                 options.AuthorizationEndpoint = "https://nextcloud.local/apps/oauth2/authorize";
                 options.TokenEndpoint = "https://nextcloud.local/apps/oauth2/api/v1/token";
                 options.UserInformationEndpoint = "https://nextcloud.local/ocs/v1.php/cloud/users";
@@ -35,9 +36,9 @@ namespace AspNet.Security.OAuth.Nextcloud
 
         [Theory]
         [InlineData(ClaimTypes.NameIdentifier, "username")]
-        [InlineData(ClaimTypes.Name, "username")]
         [InlineData(ClaimTypes.Email, "username@domain.tld")]
         [InlineData("urn:nextcloud:groups", "Group 1,Group 2,Group 3")]
+        [InlineData("urn:nextcloud:username", "username")]
         [InlineData("urn:nextcloud:displayname", "Username")]
         [InlineData("urn:nextcloud:enabled", "True")]
         [InlineData("urn:nextcloud:language", "de")]

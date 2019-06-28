@@ -4,6 +4,7 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
@@ -34,7 +35,7 @@ namespace AspNet.Security.OAuth.Nextcloud
         {
             string userId = tokens.Response.Value<string>("user_id");
             string userEndpoint = Options.UserInformationEndpoint.TrimEnd('/');
-            userEndpoint += $"/{userId}";
+            userEndpoint += $"/{Uri.EscapeUriString(userId)}";
 
             var request = new HttpRequestMessage(HttpMethod.Get, userEndpoint);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));

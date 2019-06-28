@@ -26,7 +26,7 @@ namespace AspNet.Security.OAuth.Nextcloud
                 return user["ocs"]?["data"]?.Value<string>("id");
             });
 
-            ClaimActions.MapCustomJson(ClaimTypes.Name, user =>
+            ClaimActions.MapCustomJson(Claims.Username, user =>
             {
                 return user["ocs"]?["data"]?.Value<string>("id");
             });
