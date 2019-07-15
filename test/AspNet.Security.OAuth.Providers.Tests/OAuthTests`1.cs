@@ -114,7 +114,7 @@ namespace AspNet.Security.OAuth
         /// <summary>
         /// Run the ChannelAsync for authentication 
         /// </summary>
-        /// <param name="context">The web context</param>
+        /// <param name="context">The HTTP context</param>
         protected internal virtual Task ChallengeAsync(HttpContext context) => context.ChallengeAsync();
 
         /// <summary>
