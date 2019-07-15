@@ -35,20 +35,19 @@ namespace AspNet.Security.OAuth.Shopify
         public const string CallbackPath = "/signin-shopify";
 
         /// <summary>
-        /// Default value for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
+        /// Format value for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
         /// </summary>
-        public const string FormatAuthorizationEndpoint = "https://{0}.myshopify.com/admin/oauth/authorize";
+        public const string AuthorizationEndpointFormat = "https://{0}.myshopify.com/admin/oauth/authorize";
 
         /// <summary>
-        /// Default value for <see cref="OAuthOptions.TokenEndpoint"/>.
+        /// Format value for <see cref="OAuthOptions.TokenEndpoint"/>.
         /// </summary>
-        public const string FormatTokenEndpoint = "https://{0}.myshopify.com/admin/oauth/access_token";
+        public const string TokenEndpointFormat = "https://{0}.myshopify.com/admin/oauth/access_token";
 
         /// <summary>
-        /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
+        /// Format value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
         /// </summary>
-        public const string FormatUserInformationEndpoint = "https://{0}.myshopify.com/admin/shop";
-
+        public const string UserInformationEndpointFormat = "https://{0}.myshopify.com/admin/shop";
 
         /// <summary>
         /// Name of dictionary entry in <see cref="AuthenticationProperties.Items"/> that contains
@@ -71,7 +70,6 @@ namespace AspNet.Security.OAuth.Shopify
         /// Per user is the only acceptable grant option at this time.
         /// </summary>
         public const string PerUserAuthenticationPropertyValue = "per-user";
-
 
         /// <summary>
         /// The claim type which contains the permission scope returned by Shopify during authorization.

@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Authentication.OAuth;
 
 namespace AspNet.Security.OAuth.Shopify
 {
-    /// <inheritdoc />
     /// <summary>
     /// Substitue for <see cref="AuthenticationProperties"/> to enforce setting shop name
     /// before Challenge and provide an override for <see cref="OAuthOptions.Scope"/>. You
@@ -18,17 +17,28 @@ namespace AspNet.Security.OAuth.Shopify
     /// </summary>
     public class ShopifyAuthenticationProperties : AuthenticationProperties
     {
-
-        /// <inheritdoc />
         /// <summary>
+        /// Initializes a new instance of the <see cref="T:AspNet.Security.OAuth.Shopify.ShopifyAuthenticationProperties" /> class
         /// </summary>
         /// <param name="shopName">The name of the shop. Unlike most OAuth providers, the Shop name needs to be known in order
         /// to authorize. This must either be gotten from the user or sent from Shopify during App store
         /// installation.
         /// </param>
-        public ShopifyAuthenticationProperties(string shopName)
+        public ShopifyAuthenticationProperties(string shopName) : this(shopName, null)
         {
-            ShopName = shopName;
+        }
+
+        /// <summary>
+        ///  /// Initializes a new instance of the <see cref="T:AspNet.Security.OAuth.Shopify.ShopifyAuthenticationProperties" /> class
+        /// </summary>
+        /// <param name="shopName">The name of the shop. Unlike most OAuth providers, the Shop name needs to be known in order
+        /// to authorize. This must either be gotten from the user or sent from Shopify during App store
+        /// installation.
+        /// </param>
+        /// <param name="items">Set Items values.</param>
+        public ShopifyAuthenticationProperties(string shopName, IDictionary<string, string> items) : base(items)
+        {
+            SetShopName(shopName);
         }
 
         /// <summary>
@@ -47,8 +57,8 @@ namespace AspNet.Security.OAuth.Shopify
         {
             get
             {
-                var prop = GetProperty(ShopifyAuthenticationDefaults.GrantOptionsAuthenticationProperty);
-                return prop != null && prop.Equals(ShopifyAuthenticationDefaults.PerUserAuthenticationPropertyValue);
+                string prop = GetProperty(ShopifyAuthenticationDefaults.GrantOptionsAuthenticationProperty);
+                return string.Equals(prop, ShopifyAuthenticationDefaults.PerUserAuthenticationPropertyValue);
             }
 
             set => SetProperty(ShopifyAuthenticationDefaults.GrantOptionsAuthenticationProperty,
@@ -62,35 +72,18 @@ namespace AspNet.Security.OAuth.Shopify
         /// to authorize. This must either be gotten from the user or sent from Shopify during App store
         /// installation.
         /// </summary>
-        private string ShopName
-        {
-            set => SetProperty(ShopifyAuthenticationDefaults.ShopNameAuthenticationProperty, value);
-        }
+        private void SetShopName(string shopName)
+            => SetProperty(ShopifyAuthenticationDefaults.ShopNameAuthenticationProperty, shopName);
+        
 
         private void SetProperty(string propName, string value)
-        {
-            if (Items.ContainsKey(propName))
-                Items[propName] = value;
-            else
-                Items.Add(propName, value);
-        }
+            => Items[propName] = value;
 
         private string GetProperty(string propName)
         {
             return Items.TryGetValue(propName, out var val) ? val : null;
         }
 
-        /// <inheritdoc />
-        /// <summary>
-        /// </summary>
-        /// <param name="shopName">The name of the shop. Unlike most OAuth providers, the Shop name needs to be known in order
-        /// to authorize. This must either be gotten from the user or sent from Shopify during App store
-        /// installation.
-        /// </param>
-        /// <param name="items">Set Items values.</param>
-        public ShopifyAuthenticationProperties(string shopName, IDictionary<string, string> items) : base(items)
-        {
-            ShopName = shopName;
-        }
+      
     }
 }

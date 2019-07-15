@@ -19,6 +19,7 @@ using MartinCostello.Logging.XUnit;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
@@ -39,9 +40,7 @@ namespace AspNet.Security.OAuth
                 .ThrowsOnMissingRegistration()
                 .RegisterBundle(Path.Combine(GetType().Name.Replace("Tests", string.Empty), "bundle.json"));
 
-#pragma warning disable RECS0021 // Warns about calls to virtual member functions occuring in the constructor
             LoopbackRedirectHandler = new LoopbackRedirectHandler { RedirectUri = RedirectUri };
-#pragma warning restore RECS0021 // Warns about calls to virtual member functions occuring in the constructor
         }
 
         /// <summary>
@@ -111,6 +110,12 @@ namespace AspNet.Security.OAuth
             => builder.Services.BuildServiceProvider().GetRequiredService<IHttpClientFactory>().CreateClient();
 
         public DelegatingHandler LoopbackRedirectHandler { get; set; }
+
+        /// <summary>
+        /// Run the ChannelAsync for authentication 
+        /// </summary>
+        /// <param name="context">The web context</param>
+        protected internal virtual Task ChallengeAsync(HttpContext context) => context.ChallengeAsync();
 
         /// <summary>
         /// Asynchronously authenticates the user and returns the claims associated with the authenticated user.

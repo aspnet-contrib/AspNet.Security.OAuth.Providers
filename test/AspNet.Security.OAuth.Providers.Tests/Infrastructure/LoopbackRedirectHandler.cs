@@ -27,7 +27,7 @@ namespace AspNet.Security.OAuth.Infrastructure
             if (result.StatusCode == System.Net.HttpStatusCode.Found &&
                 !string.Equals(result.Headers.Location?.Host, "localhost", StringComparison.OrdinalIgnoreCase))
             {
-                var uri = BuildLoopBackUri(result);
+                var uri = BuildLoopbackUri(result);
 
                 var redirectRequest = new HttpRequestMessage(request.Method, uri);
 
@@ -46,7 +46,7 @@ namespace AspNet.Security.OAuth.Infrastructure
             return result;
         }
 
-        protected virtual Uri BuildLoopBackUri(HttpResponseMessage responseMessage)
+        protected virtual Uri BuildLoopbackUri(HttpResponseMessage responseMessage)
         {
             // Rewrite the URI to loop back to the redirected URL to simulate the user having
             // successfully authenticated with the external login page they were redirected to.

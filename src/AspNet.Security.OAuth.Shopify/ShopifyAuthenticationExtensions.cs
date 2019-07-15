@@ -74,6 +74,5 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             return builder.AddOAuth<ShopifyAuthenticationOptions, ShopifyAuthenticationHandler>(scheme, caption, configuration);
         }
-
     }
 }

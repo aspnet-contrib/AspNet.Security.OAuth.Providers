@@ -7,7 +7,7 @@ namespace AspNet.Security.OAuth.Shopify
 {
     internal class ShopifyLoopbackRedirectHandler : LoopbackRedirectHandler
     {
-        private const string FormatShopParameter = "{0}..myshopify.com";
+        private const string FormatShopParameter = "{0}.myshopify.com";
 
         public ShopifyLoopbackRedirectHandler()
         {
@@ -15,9 +15,8 @@ namespace AspNet.Security.OAuth.Shopify
 
         public string ShopName { get; set; }
 
-        protected override Uri BuildLoopBackUri(HttpResponseMessage responseMessage)
+        protected override Uri BuildLoopbackUri(HttpResponseMessage responseMessage)
         {
-
             // Rewrite the URI to loop back to the redirected URL to simulate the user having
             // successfully authenticated with the external login page they were redirected to.
             var queryString = HttpUtility.ParseQueryString(responseMessage.Headers.Location.Query);

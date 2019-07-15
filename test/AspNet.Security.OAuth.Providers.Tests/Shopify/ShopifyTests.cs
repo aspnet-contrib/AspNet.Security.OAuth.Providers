@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using AspNet.Security.OAuth.Infrastructure;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 using Xunit.Abstractions;
@@ -35,32 +36,7 @@ namespace AspNet.Security.OAuth.Shopify
 
         public override string DefaultScheme => ShopifyAuthenticationDefaults.AuthenticationScheme;
 
-
-        protected internal override void ConfigureApplication(IApplicationBuilder app)
-        {
-            base.ConfigureApplication(app);
-
-            app.UseAuthentication();
-
-            app.Map("/me", childApp => childApp.Run(
-                async context =>
-                {
-                    if (context.User.Identity.IsAuthenticated)
-                    {
-                        string xml = ApplicationFactory.IdentityToXmlString(context.User);
-                        byte[] buffer = Encoding.UTF8.GetBytes(xml.ToString());
-
-                        context.Response.StatusCode = 200;
-                        context.Response.ContentType = "text/xml";
-
-                        await context.Response.Body.WriteAsync(buffer, 0, buffer.Length);
-                    }
-                    else
-                    {
-                        await context.ChallengeAsync(new AuthenticationProperties(new Dictionary<string, string>()  { { ShopifyAuthenticationDefaults.ShopNameAuthenticationProperty, testShopName } }));
-                    }
-                }));
-        }
+        protected internal override Task ChallengeAsync(HttpContext context) => context.ChallengeAsync(new ShopifyAuthenticationProperties(testShopName));
 
         protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
         {
@@ -69,12 +45,11 @@ namespace AspNet.Security.OAuth.Shopify
 
         protected override void ConfigureDefaults(AuthenticationBuilder builder, ShopifyAuthenticationOptions options)
         {
-            
             base.ConfigureDefaults(builder, options);
 
-            options.AuthorizationEndpoint = string.Format(ShopifyAuthenticationDefaults.FormatAuthorizationEndpoint, testShopName);
-            options.TokenEndpoint = string.Format(ShopifyAuthenticationDefaults.FormatTokenEndpoint, testShopName);
-            options.UserInformationEndpoint = string.Format(ShopifyAuthenticationDefaults.FormatUserInformationEndpoint, testShopName);
+            options.AuthorizationEndpoint = string.Format(ShopifyAuthenticationDefaults.AuthorizationEndpointFormat, testShopName);
+            options.TokenEndpoint = string.Format(ShopifyAuthenticationDefaults.TokenEndpointFormat, testShopName);
+            options.UserInformationEndpoint = string.Format(ShopifyAuthenticationDefaults.UserInformationEndpointFormat, testShopName);
         }
 
         [Theory]

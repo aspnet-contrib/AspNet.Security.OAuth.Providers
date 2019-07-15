@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Primitives;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -28,10 +29,10 @@ namespace AspNet.Security.OAuth.Shopify
     {
         /// <inheritdoc />
         public ShopifyAuthenticationHandler(
-            [NotNull] IOptionsMonitor<ShopifyAuthenticationOptions> options, 
-            [NotNull] ILoggerFactory logger, 
-            [NotNull] UrlEncoder encoder, 
-            [NotNull] ISystemClock clock) 
+            [NotNull] IOptionsMonitor<ShopifyAuthenticationOptions> options,
+            [NotNull] ILoggerFactory logger,
+            [NotNull] UrlEncoder encoder,
+            [NotNull] ISystemClock clock)
             : base(options, logger, encoder, clock)
         {
         }
@@ -39,17 +40,16 @@ namespace AspNet.Security.OAuth.Shopify
         /// <inheritdoc />
         protected override async Task<AuthenticationTicket> CreateTicketAsync(
             [NotNull] ClaimsIdentity identity,
-            [NotNull] AuthenticationProperties properties, 
+            [NotNull] AuthenticationProperties properties,
             [NotNull] OAuthTokenResponse tokens)
         {
-            var uri = string.Format(ShopifyAuthenticationDefaults.FormatUserInformationEndpoint,
-                properties.Items[ShopifyAuthenticationDefaults.ShopNameAuthenticationProperty]);
+            string uri = string.Format(CultureInfo.InvariantCulture, ShopifyAuthenticationDefaults.UserInformationEndpointFormat, properties.Items[ShopifyAuthenticationDefaults.ShopNameAuthenticationProperty]);
 
-            var request = new HttpRequestMessage(HttpMethod.Get, uri);
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, uri);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             request.Headers.Add("X-Shopify-Access-Token", tokens.AccessToken);
 
-            var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
+            HttpResponseMessage response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
             if (!response.IsSuccessStatusCode)
             {
                 Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
@@ -57,43 +57,44 @@ namespace AspNet.Security.OAuth.Shopify
                                 /* Status: */ response.StatusCode,
                                 /* Headers: */ response.Headers.ToString(),
                                 /* Body: */ await response.Content.ReadAsStringAsync());
-            
+
                 throw new HttpRequestException("An error occurred while retrieving the shop profile.");
             }
 
-            var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
+            JObject payload = JObject.Parse(await response.Content.ReadAsStringAsync());
 
             // In Shopify, the customer can modify the scope given to the app. Apps should verify
             // that the customer is allowing the required scope.
-            var actualScope = tokens.Response["scope"].ToString();
-            var isPersistent = true;
+            string actualScope = tokens.Response["scope"].ToString();
+            bool isPersistent = true;
 
             // If the request was for a "per-user" (i.e. no offline access)
-            if (tokens.Response.TryGetValue("expires_in", out var expireInValue))
+            if (tokens.Response.TryGetValue("expires_in", out JToken expireInValue))
             {
                 isPersistent = false;
 
-                var expires = DateTimeOffset.UtcNow.AddSeconds(Convert.ToInt32(expireInValue.ToString()));
-                identity.AddClaim(new Claim(ClaimTypes.Expiration, expires.ToString("O", CultureInfo.InvariantCulture), ClaimValueTypes.DateTime));
+                if (Int32.TryParse(expireInValue.ToString(), out int expireIn))
+                {
+                    DateTimeOffset expires = Clock.UtcNow.AddSeconds(expireIn);
+                    identity.AddClaim(new Claim(ClaimTypes.Expiration, expires.ToString("O", CultureInfo.InvariantCulture), ClaimValueTypes.DateTime));
+                }
 
                 actualScope = tokens.Response["associated_user_scope"].ToString();
-                
-                var userData = tokens.Response["associated_user"].ToString();
+
+                string userData = tokens.Response["associated_user"].ToString();
                 identity.AddClaim(new Claim(ClaimTypes.UserData, userData));
             }
 
-            identity.AddClaim(new Claim(ClaimTypes.IsPersistent, isPersistent.ToString(), ClaimValueTypes.Boolean));
+            identity.AddClaim(new Claim(ClaimTypes.IsPersistent, isPersistent.ToString(CultureInfo.InvariantCulture), ClaimValueTypes.Boolean));
             identity.AddClaim(new Claim(ShopifyAuthenticationDefaults.ShopifyScopeClaimType, actualScope));
 
-            var principal = new ClaimsPrincipal(identity);
+            ClaimsPrincipal principal = new ClaimsPrincipal(identity);
 
-            var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload);
+            OAuthCreatingTicketContext context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload);
             context.RunClaimActions();
 
             await Options.Events.CreatingTicket(context);
-            var ticket = new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
-
-            return ticket;
+            return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
         }
 
         /// <inheritdoc />
@@ -107,22 +108,22 @@ namespace AspNet.Security.OAuth.Shopify
         {
             if (!properties.Items.TryGetValue(ShopifyAuthenticationDefaults.ShopNameAuthenticationProperty, out var shopName))
             {
-                var msg =
+                string message =
                     $"Shopify provider AuthenticationProperties must contain {ShopifyAuthenticationDefaults.ShopNameAuthenticationProperty}";
 
-                Logger.LogError(msg);
-                throw new Exception(msg);
+                Logger.LogError(message);
+                throw new InvalidOperationException(message);
             }
 
-            var uri = string.Format(Options.AuthorizationEndpoint, shopName);
+            string uri = string.Format(Options.AuthorizationEndpoint, shopName);
 
             // Get the permission scope, which can either be set in options or overridden in AuthenticationProperties.
-            if(!properties.Items.TryGetValue(ShopifyAuthenticationDefaults.ShopScopeAuthenticationProperty, out var scope))
+            if (!properties.Items.TryGetValue(ShopifyAuthenticationDefaults.ShopScopeAuthenticationProperty, out var scope))
             {
                 scope = FormatScope();
             }
 
-            var url = QueryHelpers.AddQueryString(uri, new Dictionary<string, string>
+            string url = QueryHelpers.AddQueryString(uri, new Dictionary<string, string>
             {
                 ["client_id"] = Options.ClientId,
                 ["scope"] = scope,
@@ -135,8 +136,7 @@ namespace AspNet.Security.OAuth.Shopify
             {
                 if (grantOptions == ShopifyAuthenticationDefaults.PerUserAuthenticationPropertyValue)
                 {
-                    url = QueryHelpers.AddQueryString(url, "grant_options[]",
-                        ShopifyAuthenticationDefaults.PerUserAuthenticationPropertyValue);
+                    url = QueryHelpers.AddQueryString(url, "grant_options[]", ShopifyAuthenticationDefaults.PerUserAuthenticationPropertyValue);
                 }
             }
 
@@ -144,7 +144,6 @@ namespace AspNet.Security.OAuth.Shopify
         }
 
         /// <inheritdoc />
-        /// <exception cref="T:System.Exception"></exception>
         protected override async Task<OAuthTokenResponse> ExchangeCodeAsync(
                     [NotNull] string code,
                     [NotNull] string redirectUri)
@@ -153,35 +152,39 @@ namespace AspNet.Security.OAuth.Shopify
 
             try
             {
-                var shop = Context.Request.Query["shop"];
-                var state = Context.Request.Query["state"];
+                StringValues shopValue = Context.Request.Query["shop"];
+                StringValues stateValue = Context.Request.Query["state"];
+
+                string shop = shopValue.ToString();
 
                 // Shop name must end with myshopify.com
-                if (!shop.ToString().EndsWith(".myshopify.com", StringComparison.InvariantCulture))
+                if (!shop.EndsWith(".myshopify.com", StringComparison.OrdinalIgnoreCase))
                 {
-                    throw new Exception("Unexpected query string.");
+                    throw new InvalidOperationException("shop parameter is malformed. It should end with .myshopify.com");
                 }
 
                 // Strip out the "myshopify.com" suffix
-                shopDns = shop.ToString().Split('.')[0];
+                shopDns = shop.Split('.')[0];
 
                 // Verify that the shop name encoded in "state" matches the shop name we used to
                 // request the token. This probably isn't necessary, but it's an easy extra verification.
-                var authenticationProperties = Options.StateDataFormat.Unprotect(state);
-                if (!authenticationProperties.Items[ShopifyAuthenticationDefaults.ShopNameAuthenticationProperty]
-                    .Equals(shopDns, StringComparison.InvariantCultureIgnoreCase))
+                AuthenticationProperties authenticationProperties = Options.StateDataFormat.Unprotect(stateValue);
+
+                string shopNamePropertyValue = authenticationProperties.Items[ShopifyAuthenticationDefaults.ShopNameAuthenticationProperty];
+
+                if (!shopNamePropertyValue.Equals(shopDns, StringComparison.OrdinalIgnoreCase))
                 {
-                    throw new Exception("Unexpected query string");
+                    throw new InvalidOperationException("shop parameter is not the same who requested the token");
                 }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                Logger.LogError("An error occurred while exchanging tokens: " + e.Message);
-                return OAuthTokenResponse.Failed(e);
+                Logger.LogError(ex, "An error occurred while exchanging tokens: {ErrorMessage}", ex.Message);
+                return OAuthTokenResponse.Failed(ex);
             }
 
-            var uri = string.Format(Options.TokenEndpoint, CultureInfo.InvariantCulture, shopDns);
-            var request = new HttpRequestMessage(HttpMethod.Post, uri);
+            string uri = string.Format(Options.TokenEndpoint, CultureInfo.InvariantCulture, shopDns);
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, uri);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/x-www-form-urlencoded"));
 
             request.Content = new FormUrlEncodedContent(new Dictionary<string, string>
@@ -191,20 +194,20 @@ namespace AspNet.Security.OAuth.Shopify
                 ["code"] = code
             });
 
-            var response = await Backchannel.SendAsync(request, Context.RequestAborted);
+            HttpResponseMessage response = await Backchannel.SendAsync(request, Context.RequestAborted);
 
             if (!response.IsSuccessStatusCode)
             {
-                Logger.LogError("An error occurred while retrieving an access token: the remote server " +
-                                "returned a {Status} response with the following payload: {Headers} {Body}.",
-                    /* Status: */ response.StatusCode,
-                    /* Headers: */ response.Headers.ToString(),
-                    /* Body: */ await response.Content.ReadAsStringAsync());
+                Logger.LogError("An error occurred while retrieving an access token: the remote server returned a {Status} response with the following payload: {Headers} {Body}.",
+                    response.StatusCode /* Status: */ ,
+                    response.Headers.ToString() /* Headers: */ ,
+                    await response.Content.ReadAsStringAsync() /* Body: */
+                    );
 
                 return OAuthTokenResponse.Failed(new Exception("An error occurred while retrieving an access token."));
             }
 
-            var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
+            JObject payload = JObject.Parse(await response.Content.ReadAsStringAsync());
             return OAuthTokenResponse.Success(payload);
         }
     }

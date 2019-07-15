@@ -88,6 +88,7 @@ namespace AspNet.Security.OAuth.Infrastructure
             // Configure a single HTTP resource that challenges the client if unauthenticated
             // or returns the logged in user's claims as XML if the request is authenticated.
             tests.ConfigureApplication(app);
+
             app.UseAuthentication();
 
             app.Map("/me", childApp => childApp.Run(
@@ -105,12 +106,13 @@ namespace AspNet.Security.OAuth.Infrastructure
                     }
                     else
                     {
-                        await context.ChallengeAsync();
+                        await tests.ChallengeAsync(context);
+
                     }
                 }));
         }
 
-        public static string IdentityToXmlString(ClaimsPrincipal user)
+        private static string IdentityToXmlString(ClaimsPrincipal user)
         {
             var element = new XElement("claims");
 

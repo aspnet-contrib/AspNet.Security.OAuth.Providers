@@ -14,17 +14,16 @@ namespace AspNet.Security.OAuth.Shopify
     /// <inheritdoc />
     public class ShopifyAuthenticationOptions : OAuthOptions
     {
-
         /// <summary>
         /// Constructor
         /// </summary>
         public ShopifyAuthenticationOptions()
         {
             ClaimsIssuer = ShopifyAuthenticationDefaults.Issuer;
-            CallbackPath = new PathString(ShopifyAuthenticationDefaults.CallbackPath);
-            AuthorizationEndpoint = ShopifyAuthenticationDefaults.FormatAuthorizationEndpoint;
-            TokenEndpoint = ShopifyAuthenticationDefaults.FormatTokenEndpoint;
-            UserInformationEndpoint = ShopifyAuthenticationDefaults.FormatUserInformationEndpoint;
+            CallbackPath = ShopifyAuthenticationDefaults.CallbackPath;
+            AuthorizationEndpoint = ShopifyAuthenticationDefaults.AuthorizationEndpointFormat;
+            TokenEndpoint = ShopifyAuthenticationDefaults.TokenEndpointFormat;
+            UserInformationEndpoint = ShopifyAuthenticationDefaults.UserInformationEndpointFormat;
             
             ClaimActions.MapJsonSubKey(ClaimTypes.NameIdentifier, "shop", "myshopify_domain");
             ClaimActions.MapJsonSubKey(ClaimTypes.Name, "shop", "name");
