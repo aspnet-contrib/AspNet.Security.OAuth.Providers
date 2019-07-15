@@ -18,7 +18,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{BAC7
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.GitHub", "src\AspNet.Security.OAuth.GitHub\AspNet.Security.OAuth.GitHub.csproj", "{9DFEE19E-C170-4F20-93F3-EC952B1532F2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mvc.Client", "samples\Mvc.Client\Mvc.Client.csproj", "{68631868-902A-46FB-9A44-BACF1812FBDE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mvc.Client", "samples\Mvc.Client\Mvc.Client.csproj", "{68631868-902A-46FB-9A44-BACF1812FBDE}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.LinkedIn", "src\AspNet.Security.OAuth.LinkedIn\AspNet.Security.OAuth.LinkedIn.csproj", "{0351689C-EAB7-42D0-966F-4021B89EF553}"
 EndProject
