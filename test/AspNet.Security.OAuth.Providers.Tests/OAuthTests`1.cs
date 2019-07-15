@@ -38,6 +38,10 @@ namespace AspNet.Security.OAuth
             Interceptor = new HttpClientInterceptorOptions()
                 .ThrowsOnMissingRegistration()
                 .RegisterBundle(Path.Combine(GetType().Name.Replace("Tests", string.Empty), "bundle.json"));
+
+#pragma warning disable RECS0021 // Warns about calls to virtual member functions occuring in the constructor
+            LoopbackRedirectHandler = new LoopbackRedirectHandler { RedirectUri = RedirectUri };
+#pragma warning restore RECS0021 // Warns about calls to virtual member functions occuring in the constructor
         }
 
         /// <summary>
@@ -106,6 +110,8 @@ namespace AspNet.Security.OAuth
         protected HttpClient CreateBackchannel(AuthenticationBuilder builder)
             => builder.Services.BuildServiceProvider().GetRequiredService<IHttpClientFactory>().CreateClient();
 
+        public DelegatingHandler LoopbackRedirectHandler { get; set; }
+
         /// <summary>
         /// Asynchronously authenticates the user and returns the claims associated with the authenticated user.
         /// </summary>
@@ -119,7 +125,7 @@ namespace AspNet.Security.OAuth
 
             // Arrange - Force a request chain that challenges the request to the authentication
             // handler and returns an authentication cookie to log the user in to the application.
-            using (var client = server.CreateDefaultClient(new LoopbackRedirectHandler() { RedirectUri = RedirectUri }))
+            using (var client = server.CreateDefaultClient(LoopbackRedirectHandler))
             {
                 // Act
                 using (var result = await client.GetAsync("/me"))

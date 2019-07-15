@@ -110,7 +110,7 @@ namespace AspNet.Security.OAuth.Infrastructure
                 }));
         }
 
-        private static string IdentityToXmlString(ClaimsPrincipal user)
+        public static string IdentityToXmlString(ClaimsPrincipal user)
         {
             var element = new XElement("claims");
 
