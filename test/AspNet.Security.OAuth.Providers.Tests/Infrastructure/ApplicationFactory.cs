@@ -107,7 +107,6 @@ namespace AspNet.Security.OAuth.Infrastructure
                     else
                     {
                         await tests.ChallengeAsync(context);
-
                     }
                 }));
         }

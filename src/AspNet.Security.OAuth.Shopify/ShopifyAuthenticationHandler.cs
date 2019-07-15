@@ -73,7 +73,7 @@ namespace AspNet.Security.OAuth.Shopify
             {
                 isPersistent = false;
 
-                if (Int32.TryParse(expireInValue.ToString(), out int expireIn))
+                if (int.TryParse(expireInValue.ToString(), NumberStyles.Integer, CultureInfo.InvariantCulture, out int expireIn))
                 {
                     DateTimeOffset expires = Clock.UtcNow.AddSeconds(expireIn);
                     identity.AddClaim(new Claim(ClaimTypes.Expiration, expires.ToString("O", CultureInfo.InvariantCulture), ClaimValueTypes.DateTime));
@@ -172,9 +172,9 @@ namespace AspNet.Security.OAuth.Shopify
 
                 string shopNamePropertyValue = authenticationProperties.Items[ShopifyAuthenticationDefaults.ShopNameAuthenticationProperty];
 
-                if (!shopNamePropertyValue.Equals(shopDns, StringComparison.OrdinalIgnoreCase))
+                if (!string.Equals(shopNamePropertyValue, shopDns, StringComparison.OrdinalIgnoreCase))
                 {
-                    throw new InvalidOperationException("shop parameter is not the same who requested the token");
+                    throw new InvalidOperationException("Received shop name does not match the shop name specified in the authentication request.");
                 }
             }
             catch (Exception ex)
