@@ -43,7 +43,7 @@ namespace AspNet.Security.OAuth.Shopify
         }
 
         /// <summary>
-        /// Override <see cref="OAuthOptions.Scope"/>. Must be fully formatted.
+        /// The scope requested. Must be fully formatted. <see cref="OAuthOptions.Scope"/>
         /// </summary>
         public string Scope
         {
