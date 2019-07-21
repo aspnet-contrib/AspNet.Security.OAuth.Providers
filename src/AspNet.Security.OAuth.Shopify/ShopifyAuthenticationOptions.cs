@@ -11,11 +11,13 @@ using Microsoft.AspNetCore.Http;
 
 namespace AspNet.Security.OAuth.Shopify
 {
-    /// <inheritdoc />
+    /// <summary>
+    /// Defines a set of options used by <see cref="ShopifyAuthenticationHandler"/>.
+    /// </summary>
     public class ShopifyAuthenticationOptions : OAuthOptions
     {
         /// <summary>
-        /// Constructor
+        /// Initializes a new instance of the <see cref="ShopifyAuthenticationOptions"/> class.
         /// </summary>
         public ShopifyAuthenticationOptions()
         {
