@@ -19,6 +19,7 @@ using MartinCostello.Logging.XUnit;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
@@ -38,6 +39,8 @@ namespace AspNet.Security.OAuth
             Interceptor = new HttpClientInterceptorOptions()
                 .ThrowsOnMissingRegistration()
                 .RegisterBundle(Path.Combine(GetType().Name.Replace("Tests", string.Empty), "bundle.json"));
+
+            LoopbackRedirectHandler = new LoopbackRedirectHandler { RedirectUri = RedirectUri };
         }
 
         /// <summary>
@@ -106,6 +109,14 @@ namespace AspNet.Security.OAuth
         protected HttpClient CreateBackchannel(AuthenticationBuilder builder)
             => builder.Services.BuildServiceProvider().GetRequiredService<IHttpClientFactory>().CreateClient();
 
+        public DelegatingHandler LoopbackRedirectHandler { get; set; }
+
+        /// <summary>
+        /// Run the ChannelAsync for authentication 
+        /// </summary>
+        /// <param name="context">The HTTP context</param>
+        protected internal virtual Task ChallengeAsync(HttpContext context) => context.ChallengeAsync();
+
         /// <summary>
         /// Asynchronously authenticates the user and returns the claims associated with the authenticated user.
         /// </summary>
@@ -119,16 +130,15 @@ namespace AspNet.Security.OAuth
 
             // Arrange - Force a request chain that challenges the request to the authentication
             // handler and returns an authentication cookie to log the user in to the application.
-            using (var client = server.CreateDefaultClient(new LoopbackRedirectHandler() { RedirectUri = RedirectUri }))
+            using (var client = server.CreateDefaultClient(LoopbackRedirectHandler))
             {
                 // Act
-                using (var result = await client.GetAsync("/me"))
-                {
-                    // Assert
-                    result.StatusCode.ShouldBe(HttpStatusCode.Found);
+                using var result = await client.GetAsync("/me");
 
-                    cookies = result.Headers.GetValues("Set-Cookie");
-                }
+                // Assert
+                result.StatusCode.ShouldBe(HttpStatusCode.Found);
+
+                cookies = result.Headers.GetValues("Set-Cookie");
             }
 
             XElement element;
@@ -139,16 +149,15 @@ namespace AspNet.Security.OAuth
                 client.DefaultRequestHeaders.Add("Cookie", cookies);
 
                 // Act
-                using (var result = await client.GetAsync("/me"))
-                {
-                    // Assert
-                    result.StatusCode.ShouldBe(HttpStatusCode.OK);
-                    result.Content.Headers.ContentType.MediaType.ShouldBe("text/xml");
+                using var result = await client.GetAsync("/me");
 
-                    string xml = await result.Content.ReadAsStringAsync();
+                // Assert
+                result.StatusCode.ShouldBe(HttpStatusCode.OK);
+                result.Content.Headers.ContentType.MediaType.ShouldBe("text/xml");
 
-                    element = XElement.Parse(xml);
-                }
+                string xml = await result.Content.ReadAsStringAsync();
+
+                element = XElement.Parse(xml);
             }
 
             element.Name.ShouldBe("claims");

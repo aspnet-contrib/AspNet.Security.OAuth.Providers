@@ -8,7 +8,6 @@ using System;
 using System.Security.Claims;
 using System.Text;
 using System.Xml.Linq;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -100,8 +99,8 @@ namespace AspNet.Security.OAuth.Infrastructure
                        {
                            if (context.User.Identity.IsAuthenticated)
                            {
-                               var xml = IdentityToXmlString(context.User);
-                               var buffer = Encoding.UTF8.GetBytes(xml.ToString());
+                               string xml = IdentityToXmlString(context.User);
+                               byte[] buffer = Encoding.UTF8.GetBytes(xml.ToString());
 
                                context.Response.StatusCode = 200;
                                context.Response.ContentType = "text/xml";
@@ -110,7 +109,7 @@ namespace AspNet.Security.OAuth.Infrastructure
                            }
                            else
                            {
-                               await context.ChallengeAsync();
+                               await tests.ChallengeAsync(context);
                            }
                        });
                });
