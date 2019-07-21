@@ -17,7 +17,6 @@ namespace AspNet.Security.OAuth.Shopify
 
         protected override Uri BuildLoopbackUri(HttpResponseMessage responseMessage)
         {
-
             Uri uri = base.BuildLoopbackUri(responseMessage);
 
             var builder = new UriBuilder(uri);
