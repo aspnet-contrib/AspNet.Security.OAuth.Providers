@@ -145,8 +145,8 @@ namespace AspNet.Security.OAuth.Shopify
 
         /// <inheritdoc />
         protected override async Task<OAuthTokenResponse> ExchangeCodeAsync(
-                    [NotNull] string code,
-                    [NotNull] string redirectUri)
+            [NotNull] string code,
+            [NotNull] string redirectUri)
         {
             string shopDns;
 
