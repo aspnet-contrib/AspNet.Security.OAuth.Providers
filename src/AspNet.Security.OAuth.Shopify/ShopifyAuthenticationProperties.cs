@@ -30,7 +30,7 @@ namespace AspNet.Security.OAuth.Shopify
         }
 
         /// <summary>
-        ///  /// Initializes a new instance of the <see cref="T:AspNet.Security.OAuth.Shopify.ShopifyAuthenticationProperties" /> class
+        /// Initializes a new instance of the <see cref="T:AspNet.Security.OAuth.Shopify.ShopifyAuthenticationProperties" /> class
         /// </summary>
         /// <param name="shopName">The name of the shop. Unlike most OAuth providers, the Shop name needs to be known in order
         /// to authorize. This must either be gotten from the user or sent from Shopify during App store
@@ -75,8 +75,7 @@ namespace AspNet.Security.OAuth.Shopify
         /// </summary>
         private void SetShopName(string shopName)
             => SetProperty(ShopifyAuthenticationDefaults.ShopNameAuthenticationProperty, shopName);
-        
-
+    
         private void SetProperty(string propName, string value)
             => Items[propName] = value;
 
@@ -84,7 +83,5 @@ namespace AspNet.Security.OAuth.Shopify
         {
             return Items.TryGetValue(propName, out var val) ? val : null;
         }
-
-      
     }
 }

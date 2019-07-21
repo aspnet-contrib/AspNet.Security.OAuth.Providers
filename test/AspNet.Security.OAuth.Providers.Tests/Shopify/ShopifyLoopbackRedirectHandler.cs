@@ -17,31 +17,14 @@ namespace AspNet.Security.OAuth.Shopify
 
         protected override Uri BuildLoopbackUri(HttpResponseMessage responseMessage)
         {
-            // Rewrite the URI to loop back to the redirected URL to simulate the user having
-            // successfully authenticated with the external login page they were redirected to.
-            var queryString = HttpUtility.ParseQueryString(responseMessage.Headers.Location.Query);
 
-            string location = queryString["redirect_uri"] ?? RedirectUri;
-            string state = queryString["state"];
+            Uri uri = base.BuildLoopbackUri(responseMessage);
 
-            var builder = new UriBuilder(location);
+            var builder = new UriBuilder(uri);
 
-            // Retain the _oauthstate parameter in redirect_uri for WeChat (see #262)
-            const string OAuthStateKey = "_oauthstate";
-            var redirectQuery = HttpUtility.ParseQueryString(builder.Query);
-            string oauthState = redirectQuery[OAuthStateKey];
+            var queryString = HttpUtility.ParseQueryString(builder.Query);
 
-            // Remove any query string parameters we do not explictly need to retain
-            queryString.Clear();
-
-            queryString.Add("code", "a6ed8e7f-471f-44f1-903b-65946475f351");
-            queryString.Add("state", state);
-            queryString.Add("shop", String.Format(FormatShopParameter, ShopName));
-
-            if (!string.IsNullOrEmpty(oauthState))
-            {
-                queryString.Add(OAuthStateKey, oauthState);
-            }
+            queryString.Add("shop", string.Format(FormatShopParameter, ShopName));
 
             builder.Query = queryString.ToString();
 
