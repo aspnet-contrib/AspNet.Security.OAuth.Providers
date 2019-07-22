@@ -23,7 +23,7 @@ namespace AspNet.Security.OAuth.GitLab
         /// </summary>
         public GitLabAuthenticationOptions()
         {
-            CallbackPath = new PathString("/signin-gitlab");
+            CallbackPath = new PathString(GitLabAuthenticationDefaults.CallbackPath);
             AuthorizationEndpoint = GitLabAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = GitLabAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = GitLabAuthenticationDefaults.UserInformationEndpoint;

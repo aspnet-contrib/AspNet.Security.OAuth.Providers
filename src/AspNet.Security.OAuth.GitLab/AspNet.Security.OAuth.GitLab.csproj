@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Description>ASP.NET Core security middleware enabling GitHub authentication.</Description>
+    <Description>ASP.NET Core security middleware enabling GitLab authentication.</Description>
     <Authors>Kévin Chalet;Jerrie Pelser</Authors>
     <PackageTags>aspnetcore;authentication;github;oauth;security</PackageTags>
   </PropertyGroup>
