@@ -159,7 +159,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.MailR
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.Odnoklassniki", "src\AspNet.Security.OAuth.Odnoklassniki\AspNet.Security.OAuth.Odnoklassniki.csproj", "{27DB335F-5012-4276-98C5-EAEA335C8C7B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.Trakt", "src\AspNet.Security.OAuth.Trakt\AspNet.Security.OAuth.Trakt.csproj", "{5325536E-8E3A-4611-AB92-B03369493354}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.Trakt", "src\AspNet.Security.OAuth.Trakt\AspNet.Security.OAuth.Trakt.csproj", "{5325536E-8E3A-4611-AB92-B03369493354}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.GitLab", "src\AspNet.Security.OAuth.GitLab\AspNet.Security.OAuth.GitLab.csproj", "{6EB06C57-A426-48CD-A8BA-7DD3D77DD3E7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -383,6 +385,10 @@ Global
 		{5325536E-8E3A-4611-AB92-B03369493354}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5325536E-8E3A-4611-AB92-B03369493354}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5325536E-8E3A-4611-AB92-B03369493354}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6EB06C57-A426-48CD-A8BA-7DD3D77DD3E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6EB06C57-A426-48CD-A8BA-7DD3D77DD3E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6EB06C57-A426-48CD-A8BA-7DD3D77DD3E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6EB06C57-A426-48CD-A8BA-7DD3D77DD3E7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -444,6 +450,7 @@ Global
 		{CC1E9908-075D-4138-852A-6EA3B5F32E88} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 		{27DB335F-5012-4276-98C5-EAEA335C8C7B} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 		{5325536E-8E3A-4611-AB92-B03369493354} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
+		{6EB06C57-A426-48CD-A8BA-7DD3D77DD3E7} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C7B54DE2-6407-4802-AD9C-CE54BF414C8C}

@@ -11,10 +11,65 @@
     <Content Include="xunit.runner.json;**\bundle.json" Exclude="bin\**\bundle.json" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\AspNet.Security.OAuth.*\*.csproj" />
+    <None Remove="GitLab\bundle.json" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.App" Version="$(AspNetCoreVersion)" />
+    <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Amazon\AspNet.Security.OAuth.Amazon.csproj" />
+    <ProjectReference Include="..\..\src\AspNet.Security.OAuth.ArcGIS\AspNet.Security.OAuth.ArcGIS.csproj" />
+    <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Asana\AspNet.Security.OAuth.Asana.csproj" />
+    <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Autodesk\AspNet.Security.OAuth.Autodesk.csproj" />
+    <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Automatic\AspNet.Security.OAuth.Automatic.csproj" />
+    <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Baidu\AspNet.Security.OAuth.Baidu.csproj" />
+    <ProjectReference Include="..\..\src\AspNet.Security.OAuth.BattleNet\AspNet.Security.OAuth.BattleNet.csproj" />
+    <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Beam\AspNet.Security.OAuth.Beam.csproj" />
+    <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Bitbucket\AspNet.Security.OAuth.Bitbucket.csproj" />
+    <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Buffer\AspNet.Security.OAuth.Buffer.csproj" />
+    <ProjectReference Include="..\..\src\AspNet.Security.OAuth.CiscoSpark\AspNet.Security.OAuth.CiscoSpark.csproj" />
+    <ProjectReference Include="..\..\src\AspNet.Security.OAuth.DeviantArt\AspNet.Security.OAuth.DeviantArt.csproj" />
+    <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Discord\AspNet.Security.OAuth.Discord.csproj" />
+    <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Dropbox\AspNet.Security.OAuth.Dropbox.csproj" />
+    <ProjectReference Include="..\..\src\AspNet.Security.OAuth.EVEOnline\AspNet.Security.OAuth.EVEOnline.csproj" />
+    <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Fitbit\AspNet.Security.OAuth.Fitbit.csproj" />
+    <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Foursquare\AspNet.Security.OAuth.Foursquare.csproj" />
+    <ProjectReference Include="..\..\src\AspNet.Security.OAuth.GitHub\AspNet.Security.OAuth.GitHub.csproj" />
+    <ProjectReference Include="..\..\src\AspNet.Security.OAuth.GitLab\AspNet.Security.OAuth.GitLab.csproj" />
+    <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Gitter\AspNet.Security.OAuth.Gitter.csproj" />
+    <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Harvest\AspNet.Security.OAuth.Harvest.csproj" />
+    <ProjectReference Include="..\..\src\AspNet.Security.OAuth.HealthGraph\AspNet.Security.OAuth.HealthGraph.csproj" />
+    <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Imgur\AspNet.Security.OAuth.Imgur.csproj" />
+    <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Instagram\AspNet.Security.OAuth.Instagram.csproj" />
+    <ProjectReference Include="..\..\src\AspNet.Security.OAuth.LinkedIn\AspNet.Security.OAuth.LinkedIn.csproj" />
+    <ProjectReference Include="..\..\src\AspNet.Security.OAuth.MailChimp\AspNet.Security.OAuth.MailChimp.csproj" />
+    <ProjectReference Include="..\..\src\AspNet.Security.OAuth.MailRu\AspNet.Security.OAuth.MailRu.csproj" />
+    <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Myob\AspNet.Security.OAuth.Myob.csproj" />
+    <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Odnoklassniki\AspNet.Security.OAuth.Odnoklassniki.csproj" />
+    <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Onshape\AspNet.Security.OAuth.Onshape.csproj" />
+    <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Patreon\AspNet.Security.OAuth.Patreon.csproj" />
+    <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Paypal\AspNet.Security.OAuth.Paypal.csproj" />
+    <ProjectReference Include="..\..\src\AspNet.Security.OAuth.QQ\AspNet.Security.OAuth.QQ.csproj" />
+    <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Reddit\AspNet.Security.OAuth.Reddit.csproj" />
+    <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Salesforce\AspNet.Security.OAuth.Salesforce.csproj" />
+    <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Slack\AspNet.Security.OAuth.Slack.csproj" />
+    <ProjectReference Include="..\..\src\AspNet.Security.OAuth.SoundCloud\AspNet.Security.OAuth.SoundCloud.csproj" />
+    <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Spotify\AspNet.Security.OAuth.Spotify.csproj" />
+    <ProjectReference Include="..\..\src\AspNet.Security.OAuth.StackExchange\AspNet.Security.OAuth.StackExchange.csproj" />
+    <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Strava\AspNet.Security.OAuth.Strava.csproj" />
+    <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Trakt\AspNet.Security.OAuth.Trakt.csproj" />
+    <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Twitch\AspNet.Security.OAuth.Twitch.csproj" />
+    <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Untappd\AspNet.Security.OAuth.Untappd.csproj" />
+    <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Vimeo\AspNet.Security.OAuth.Vimeo.csproj" />
+    <ProjectReference Include="..\..\src\AspNet.Security.OAuth.VisualStudio\AspNet.Security.OAuth.VisualStudio.csproj" />
+    <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Vkontakte\AspNet.Security.OAuth.Vkontakte.csproj" />
+    <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Weibo\AspNet.Security.OAuth.Weibo.csproj" />
+    <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Weixin\AspNet.Security.OAuth.Weixin.csproj" />
+    <ProjectReference Include="..\..\src\AspNet.Security.OAuth.WordPress\AspNet.Security.OAuth.WordPress.csproj" />
+    <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Yahoo\AspNet.Security.OAuth.Yahoo.csproj" />
+    <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Yammer\AspNet.Security.OAuth.Yammer.csproj" />
+    <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Yandex\AspNet.Security.OAuth.Yandex.csproj" />
+    <ProjectReference Include="..\..\src\AspNet.Security.OAuth.Zalo\AspNet.Security.OAuth.Zalo.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="JustEat.HttpClientInterception" Version="$(JustEatHttpClientInterceptionVersion)" />
     <PackageReference Include="MartinCostello.Logging.XUnit" Version="$(MartinCostelloLoggingXUnitVersion)" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="$(DotNetTestSdkVersion)" />

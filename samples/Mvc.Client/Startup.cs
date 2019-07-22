@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Licensed under the Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0)
  * See https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers
  * for more information concerning the license and the contributors participating to this project.
@@ -43,6 +43,12 @@ namespace Mvc.Client
                 options.ClientId = "49e302895d8b09ea5656";
                 options.ClientSecret = "98f1bf028608901e9df91d64ee61536fe562064b";
                 options.Scope.Add("user:email");
+            })
+
+            .AddGitLab(options =>
+            {
+                options.ClientId = "f4466c1688ecffbbcd9805cc0f0228c71da06d8d0554411259dfec3789711b59";
+                options.ClientSecret = "f540caad65deeac7dc43f9bc7343f834888d3ce8817a2ac211c2da0133d512ba";
             })
 
             .AddDropbox(options =>
