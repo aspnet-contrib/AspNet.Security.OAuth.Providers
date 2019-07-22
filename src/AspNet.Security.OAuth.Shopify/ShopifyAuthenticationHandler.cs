@@ -177,7 +177,7 @@ namespace AspNet.Security.OAuth.Shopify
                 return OAuthTokenResponse.Failed(ex);
             }
 
-            string uri = string.Format(Options.TokenEndpoint, CultureInfo.InvariantCulture, shopDns);
+            string uri = string.Format(CultureInfo.InvariantCulture, Options.TokenEndpoint, shopDns);
 
             using var request = new HttpRequestMessage(HttpMethod.Post, uri);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/x-www-form-urlencoded"));
