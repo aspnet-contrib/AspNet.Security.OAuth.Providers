@@ -4,14 +4,9 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
- using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.AspNetCore.Http;
 using static AspNet.Security.OAuth.GitLab.GitLabAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.GitLab
@@ -23,10 +18,11 @@ namespace AspNet.Security.OAuth.GitLab
         /// </summary>
         public GitLabAuthenticationOptions()
         {
-            CallbackPath = new PathString(GitLabAuthenticationDefaults.CallbackPath);
+            CallbackPath = GitLabAuthenticationDefaults.CallbackPath;
             AuthorizationEndpoint = GitLabAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = GitLabAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = GitLabAuthenticationDefaults.UserInformationEndpoint;
+
             Scope.Add("openid");
             Scope.Add("profile");
             Scope.Add("email");
@@ -39,10 +35,5 @@ namespace AspNet.Security.OAuth.GitLab
             ClaimActions.MapJsonKey(Claims.Avatar, "avatar_url");
             ClaimActions.MapJsonKey(Claims.Url, "web_url");
         }
-
-        /// <summary>
-        /// access_type. Set to 'offline' to request a refresh token.
-        /// </summary>
-        public string AccessType { get; set; }
     }
 }

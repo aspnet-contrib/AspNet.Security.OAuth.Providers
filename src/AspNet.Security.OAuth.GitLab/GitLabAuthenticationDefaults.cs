@@ -4,17 +4,13 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 
 namespace AspNet.Security.OAuth.GitLab
 {
     /// <summary>
-    /// Default values for GitLab authentication
+    /// Default values used by the GitLab authentication middleware.
     /// </summary>
     public class GitLabAuthenticationDefaults
     {

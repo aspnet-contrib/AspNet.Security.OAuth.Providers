@@ -5,12 +5,9 @@
  */
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
 using AspNet.Security.OAuth.GitLab;
 using JetBrains.Annotations;
+using Microsoft.AspNetCore.Authentication;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -21,48 +18,59 @@ namespace Microsoft.Extensions.DependencyInjection
     {
         /// <summary>
         /// Adds <see cref="GitLabAuthenticationHandler"/> to the specified
-        /// <see cref="AuthenticationBuilder"/>, which enables Discord authentication capabilities.
+        /// <see cref="AuthenticationBuilder"/>, which enables GitLab authentication capabilities.
         /// </summary>
         /// <param name="builder">The authentication builder.</param>
         /// <returns>A reference to this instance after the operation has completed.</returns>
         public static AuthenticationBuilder AddGitLab([NotNull] this AuthenticationBuilder builder)
-            => builder.AddGitLab(GitLabAuthenticationDefaults.AuthenticationScheme, _ => { });
-
+        {
+            return builder.AddGitLab(GitLabAuthenticationDefaults.AuthenticationScheme, _ => { });
+        }
 
         /// <summary>
         /// Adds <see cref="GitLabAuthenticationHandler"/> to the specified
-        /// <see cref="AuthenticationBuilder"/>, which enables Discord authentication capabilities.
+        /// <see cref="AuthenticationBuilder"/>, which enables GitLab authentication capabilities.
         /// </summary>
         /// <param name="builder">The authentication builder.</param>
         /// <param name="configuration">The delegate used to configure the OpenID 2.0 options.</param>
         /// <returns>A reference to this instance after the operation has completed.</returns>
-        public static AuthenticationBuilder AddGitLab([NotNull] this AuthenticationBuilder builder, Action<GitLabAuthenticationOptions> configuration)
-            => builder.AddGitLab(GitLabAuthenticationDefaults.AuthenticationScheme, configuration);
-
+        public static AuthenticationBuilder AddGitLab(
+            [NotNull] this AuthenticationBuilder builder,
+            [NotNull] Action<GitLabAuthenticationOptions> configuration)
+        {
+            return builder.AddGitLab(GitLabAuthenticationDefaults.AuthenticationScheme, configuration);
+        }
 
         /// <summary>
         /// Adds <see cref="GitLabAuthenticationHandler"/> to the specified
-        /// <see cref="AuthenticationBuilder"/>, which enables Discord authentication capabilities.
+        /// <see cref="AuthenticationBuilder"/>, which enables GitLab authentication capabilities.
         /// </summary>
         /// <param name="builder">The authentication builder.</param>
         /// <param name="scheme">The authentication scheme associated with this instance.</param>
-        /// <param name="configuration">The delegate used to configure the Discord options.</param>
+        /// <param name="configuration">The delegate used to configure the GitLab options.</param>
         /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
-        public static AuthenticationBuilder AddGitLab([NotNull] this AuthenticationBuilder builder, string scheme, Action<GitLabAuthenticationOptions> configuration)
-            => builder.AddGitLab(scheme, GitLabAuthenticationDefaults.DisplayName, configuration);
-
-
+        public static AuthenticationBuilder AddGitLab(
+            [NotNull] this AuthenticationBuilder builder, [NotNull] string scheme,
+            [NotNull] Action<GitLabAuthenticationOptions> configuration)
+        {
+            return builder.AddGitLab(scheme, GitLabAuthenticationDefaults.DisplayName, configuration);
+        }
 
         /// <summary>
         /// Adds <see cref="GitLabAuthenticationHandler"/> to the specified
-        /// <see cref="AuthenticationBuilder"/>, which enables Discord authentication capabilities.
+        /// <see cref="AuthenticationBuilder"/>, which enables GitLab authentication capabilities.
         /// </summary>
         /// <param name="builder">The authentication builder.</param>
         /// <param name="scheme">The authentication scheme associated with this instance.</param>
         /// <param name="caption">The optional display name associated with this instance.</param>
-        /// <param name="configuration">The delegate used to configure the Discord options.</param>
+        /// <param name="configuration">The delegate used to configure the GitLab options.</param>
         /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
-        public static AuthenticationBuilder AddGitLab([NotNull] this AuthenticationBuilder builder, string scheme, string caption, Action<GitLabAuthenticationOptions> configuration)
-            => builder.AddOAuth<GitLabAuthenticationOptions, GitLabAuthenticationHandler>(scheme, caption, configuration);
+        public static AuthenticationBuilder AddGitLab(
+            [NotNull] this AuthenticationBuilder builder,
+            [NotNull] string scheme, [NotNull] string caption,
+            [NotNull] Action<GitLabAuthenticationOptions> configuration)
+        {
+            return builder.AddOAuth<GitLabAuthenticationOptions, GitLabAuthenticationHandler>(scheme, caption, configuration);
+        }
     }
 }

@@ -3,14 +3,13 @@
   <Import Project="..\..\build\packages.props" />
 
   <PropertyGroup>
-    <AspNetCoreVersion>2.2.0</AspNetCoreVersion>
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
   <PropertyGroup>
     <Description>ASP.NET Core security middleware enabling GitLab authentication.</Description>
-    <Authors>Kévin Chalet;Jerrie Pelser</Authors>
-    <PackageTags>aspnetcore;authentication;github;oauth;security</PackageTags>
+    <Authors>twsl</Authors>
+    <PackageTags>aspnetcore;authentication;gitlab;oauth;security</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>

@@ -45,12 +45,6 @@ namespace Mvc.Client
                 options.Scope.Add("user:email");
             })
 
-            .AddGitLab(options =>
-            {
-                options.ClientId = "f4466c1688ecffbbcd9805cc0f0228c71da06d8d0554411259dfec3789711b59";
-                options.ClientSecret = "f540caad65deeac7dc43f9bc7343f834888d3ce8817a2ac211c2da0133d512ba";
-            })
-
             .AddDropbox(options =>
             {
                 options.ClientId = "jpk24g2uxfxe939";
