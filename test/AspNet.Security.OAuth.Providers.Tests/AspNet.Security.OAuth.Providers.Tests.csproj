@@ -11,9 +11,6 @@
     <Content Include="xunit.runner.json;**\bundle.json" Exclude="bin\**\bundle.json" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
   <ItemGroup>
-    <None Remove="GitLab\bundle.json" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.*\*.csproj" />
   </ItemGroup>
   <ItemGroup>
