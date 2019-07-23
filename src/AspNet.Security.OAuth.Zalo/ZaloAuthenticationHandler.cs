@@ -36,7 +36,7 @@ namespace AspNet.Security.OAuth.Zalo
             [NotNull] OAuthTokenResponse tokens)
         {
             // See https://developers.zalo.me/docs/api/social-api/tai-lieu/thong-tin-nguoi-dung-post-28
-            var address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, new Dictionary<string, string>
+            string address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, new Dictionary<string, string>
             {
                 ["access_token"] = tokens.AccessToken,
                 ["fields"] = "id,name,birthday,gender"
@@ -68,18 +68,18 @@ namespace AspNet.Security.OAuth.Zalo
 
         protected override string BuildChallengeUrl(AuthenticationProperties properties, string redirectUri)
         {
-            var address = base.BuildChallengeUrl(properties, redirectUri);
+            string address = base.BuildChallengeUrl(properties, redirectUri);
             return QueryHelpers.AddQueryString(address, "app_id", Options.ClientId);
         }
 
-        protected override async Task<OAuthTokenResponse> ExchangeCodeAsync(string code, string redirectUri)
+        protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] OAuthCodeExchangeContext context)
         {
-            var address = QueryHelpers.AddQueryString(Options.TokenEndpoint, new Dictionary<string, string>
+            string address = QueryHelpers.AddQueryString(Options.TokenEndpoint, new Dictionary<string, string>
             {
                 ["app_id"] = Options.ClientId,
                 ["app_secret"] = Options.ClientSecret,
-                ["code"] = code,
-                ["redirect_uri"] = redirectUri
+                ["code"] = context.Code,
+                ["redirect_uri"] = context.RedirectUri
             });
 
             using var request = new HttpRequestMessage(HttpMethod.Get, address);
@@ -95,7 +95,7 @@ namespace AspNet.Security.OAuth.Zalo
                 throw new HttpRequestException("An error occurred while retrieving the user profile.");
             }
 
-            using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
+            var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
 
             return OAuthTokenResponse.Success(payload);
         }

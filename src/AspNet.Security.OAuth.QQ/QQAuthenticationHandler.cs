@@ -38,7 +38,7 @@ namespace AspNet.Security.OAuth.QQ
             [NotNull] AuthenticationProperties properties,
             [NotNull] OAuthTokenResponse tokens)
         {
-            var identifier = await GetUserIdentifierAsync(tokens);
+            string identifier = await GetUserIdentifierAsync(tokens);
             if (string.IsNullOrEmpty(identifier))
             {
                 throw new HttpRequestException("An error occurred while retrieving the user identifier.");
@@ -46,7 +46,7 @@ namespace AspNet.Security.OAuth.QQ
 
             identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, identifier, ClaimValueTypes.String, Options.ClaimsIssuer));
 
-            var address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, new Dictionary<string, string>
+            string address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, new Dictionary<string, string>
             {
                 ["oauth_consumer_key"] = Options.ClientId,
                 ["access_token"] = tokens.AccessToken,
@@ -67,7 +67,7 @@ namespace AspNet.Security.OAuth.QQ
 
             using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
 
-            var status = payload.RootElement.GetProperty("ret").GetInt32();
+            int status = payload.RootElement.GetProperty("ret").GetInt32();
             if (status != 0)
             {
                 Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
@@ -86,14 +86,14 @@ namespace AspNet.Security.OAuth.QQ
             return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
         }
 
-        protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] string code, [NotNull] string redirectUri)
+        protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] OAuthCodeExchangeContext context)
         {
-            var address = QueryHelpers.AddQueryString(Options.TokenEndpoint, new Dictionary<string, string>()
+            string address = QueryHelpers.AddQueryString(Options.TokenEndpoint, new Dictionary<string, string>()
             {
                 ["client_id"] = Options.ClientId,
                 ["client_secret"] = Options.ClientSecret,
-                ["redirect_uri"] = redirectUri,
-                ["code"] = code,
+                ["redirect_uri"] = context.RedirectUri,
+                ["code"] = context.Code,
                 ["grant_type"] = "authorization_code",
             });
 
@@ -119,7 +119,7 @@ namespace AspNet.Security.OAuth.QQ
 
         private async Task<string> GetUserIdentifierAsync(OAuthTokenResponse tokens)
         {
-            var address = QueryHelpers.AddQueryString(Options.UserIdentificationEndpoint, "access_token", tokens.AccessToken);
+            string address = QueryHelpers.AddQueryString(Options.UserIdentificationEndpoint, "access_token", tokens.AccessToken);
             using var request = new HttpRequestMessage(HttpMethod.Get, address);
 
             using var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
@@ -134,9 +134,9 @@ namespace AspNet.Security.OAuth.QQ
                 throw new HttpRequestException("An error occurred while retrieving the user identifier.");
             }
 
-            var body = await response.Content.ReadAsStringAsync();
+            string body = await response.Content.ReadAsStringAsync();
 
-            var index = body.IndexOf("{");
+            int index = body.IndexOf("{");
             if (index > 0)
             {
                 body = body.Substring(index, body.LastIndexOf("}") - index + 1);

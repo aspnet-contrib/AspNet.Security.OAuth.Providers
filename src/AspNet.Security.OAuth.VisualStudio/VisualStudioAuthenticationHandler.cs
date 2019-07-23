@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Licensed under the Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0)
  * See https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers
  * for more information concerning the license and the contributors participating to this project.
@@ -32,8 +32,10 @@ namespace AspNet.Security.OAuth.VisualStudio
         {
         }
 
-        protected override async Task<AuthenticationTicket> CreateTicketAsync([NotNull] ClaimsIdentity identity,
-            [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens)
+        protected override async Task<AuthenticationTicket> CreateTicketAsync(
+            [NotNull] ClaimsIdentity identity,
+            [NotNull] AuthenticationProperties properties,
+            [NotNull] OAuthTokenResponse tokens)
         {
             using var request = new HttpRequestMessage(HttpMethod.Get, Options.UserInformationEndpoint);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -61,16 +63,16 @@ namespace AspNet.Security.OAuth.VisualStudio
             return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
         }
 
-        protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] string code, [NotNull] string redirectUri)
+        protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] OAuthCodeExchangeContext context)
         {
             using var request = new HttpRequestMessage(HttpMethod.Post, Options.TokenEndpoint);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/x-www-form-urlencoded"));
 
             request.Content = new FormUrlEncodedContent(new Dictionary<string, string>
             {
-                ["redirect_uri"] = redirectUri,
+                ["redirect_uri"] = context.RedirectUri,
                 ["client_assertion"] = Options.ClientSecret,
-                ["assertion"] = code,
+                ["assertion"] = context.Code,
                 ["grant_type"] = "urn:ietf:params:oauth:grant-type:jwt-bearer",
                 ["client_assertion_type"] = "urn:ietf:params:oauth:client-assertion-type:jwt-bearer"
             });
