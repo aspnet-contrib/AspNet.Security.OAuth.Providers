@@ -16,7 +16,10 @@ project.lock.json
 
 # Build results
 
+.dotnetcli/
 artifacts/
+coverage/
+coverage.*
 [Dd]ebug/
 [Rr]elease/
 x64/
