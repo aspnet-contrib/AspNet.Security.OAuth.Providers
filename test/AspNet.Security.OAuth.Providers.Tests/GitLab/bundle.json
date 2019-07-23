@@ -1,0 +1,56 @@
+{
+  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
+  "items": [
+    {
+      "comment": "See https://docs.gitlab.com/ee/api/oauth2.html",
+      "uri": "https://gitlab.com/oauth/token",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "secret-access-token",
+        "created_at": 1557704714,
+        "refresh_token": "secret-access-token",
+        "token_type": "bearer",
+        "scope": "openid profile email read_user"
+      }
+    },
+    {
+      "comment": "See https://docs.gitlab.com/ee/api/oauth2.html",
+      "uri": "https://gitlab.com/api/v4/user",
+      "contentFormat": "json",
+      "contentJson": {
+        "id": 1,
+        "name": "test user",
+        "username": "testuser",
+        "state": "active",
+        "avatar_url": "https://assets.gitlab-static.net/uploads/-/system/user/avatar/1234567/avatar.png",
+        "web_url": "https://gitlab.com/testuser",
+        "created_at": "2019-07-01T13:00:00.000Z",
+        "bio": "",
+        "location": "",
+        "public_email": "",
+        "skype": "",
+        "linkedin": "",
+        "twitter": "",
+        "website_url": "",
+        "organization": "",
+        "last_sign_in_at": "2019-07-05T13:00:00.000Z",
+        "confirmed_at": "2019-07-01T15:00:00.000Z",
+        "last_activity_on": "2019-07-22",
+        "email": "testuser@gitlab.com",
+        "theme_id": null,
+        "color_scheme_id": 1,
+        "projects_limit": 100000,
+        "current_sign_in_at": "2019-07-15T13:00:00.000Z",
+        "identities": [],
+        "can_create_group": true,
+        "can_create_project": true,
+        "two_factor_enabled": false,
+        "external": false,
+        "private_profile": true,
+        "shared_runners_minutes_limit": 2000,
+        "extra_shared_runners_minutes_limit": null
+      }
+    }
+  ]
+}
