@@ -11,15 +11,18 @@ using static AspNet.Security.OAuth.GitLab.GitLabAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.GitLab
 {
+    /// <summary>
+    /// Defines a set of options used by <see cref="GitLabAuthenticationHandler"/>.
+    /// </summary>
     public class GitLabAuthenticationOptions : OAuthOptions
     {
         /// <summary>
-        /// Initializes a new <see cref="GitLabAuthenticationOptions"/>.
+        /// Initializes a new instance of the <see cref="GitLabAuthenticationOptions"/> class.
         /// </summary>
         public GitLabAuthenticationOptions()
         {
-            CallbackPath = GitLabAuthenticationDefaults.CallbackPath;
             AuthorizationEndpoint = GitLabAuthenticationDefaults.AuthorizationEndpoint;
+            CallbackPath = GitLabAuthenticationDefaults.CallbackPath;
             TokenEndpoint = GitLabAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = GitLabAuthenticationDefaults.UserInformationEndpoint;
 

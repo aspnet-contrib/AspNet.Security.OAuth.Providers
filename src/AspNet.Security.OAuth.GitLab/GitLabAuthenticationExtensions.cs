@@ -50,7 +50,8 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="configuration">The delegate used to configure the GitLab options.</param>
         /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
         public static AuthenticationBuilder AddGitLab(
-            [NotNull] this AuthenticationBuilder builder, [NotNull] string scheme,
+            [NotNull] this AuthenticationBuilder builder,
+            [NotNull] string scheme,
             [NotNull] Action<GitLabAuthenticationOptions> configuration)
         {
             return builder.AddGitLab(scheme, GitLabAuthenticationDefaults.DisplayName, configuration);
@@ -67,7 +68,8 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
         public static AuthenticationBuilder AddGitLab(
             [NotNull] this AuthenticationBuilder builder,
-            [NotNull] string scheme, [NotNull] string caption,
+            [NotNull] string scheme,
+            [NotNull] string caption,
             [NotNull] Action<GitLabAuthenticationOptions> configuration)
         {
             return builder.AddOAuth<GitLabAuthenticationOptions, GitLabAuthenticationHandler>(scheme, caption, configuration);
