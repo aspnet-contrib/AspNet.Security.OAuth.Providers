@@ -50,7 +50,7 @@ namespace AspNet.Security.OAuth.Twitch
 
         private static string GetData(JsonElement user, string key)
         {
-            if (!user.TryGetProperty("data", out var data) || data.Type != JsonValueType.Array)
+            if (!user.TryGetProperty("data", out var data) || data.ValueKind != JsonValueKind.Array)
             {
                 return null;
             }

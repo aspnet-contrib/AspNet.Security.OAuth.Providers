@@ -138,9 +138,7 @@ namespace AspNet.Security.OAuth.Shopify
         }
 
         /// <inheritdoc />
-        protected override async Task<OAuthTokenResponse> ExchangeCodeAsync(
-            [NotNull] string code,
-            [NotNull] string redirectUri)
+        protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] OAuthCodeExchangeContext context)
         {
             string shopDns;
 
@@ -186,7 +184,7 @@ namespace AspNet.Security.OAuth.Shopify
             {
                 ["client_id"] = Options.ClientId,
                 ["client_secret"] = Options.ClientSecret,
-                ["code"] = code
+                ["code"] = context.Code
             });
 
             using var response = await Backchannel.SendAsync(request, Context.RequestAborted);

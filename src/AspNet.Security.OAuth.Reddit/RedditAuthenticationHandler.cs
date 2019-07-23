@@ -33,8 +33,10 @@ namespace AspNet.Security.OAuth.Reddit
         {
         }
 
-        protected override async Task<AuthenticationTicket> CreateTicketAsync([NotNull] ClaimsIdentity identity,
-            [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens)
+        protected override async Task<AuthenticationTicket> CreateTicketAsync(
+            [NotNull] ClaimsIdentity identity,
+            [NotNull] AuthenticationProperties properties,
+            [NotNull] OAuthTokenResponse tokens)
         {
             using var request = new HttpRequestMessage(HttpMethod.Get, Options.UserInformationEndpoint);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -71,7 +73,7 @@ namespace AspNet.Security.OAuth.Reddit
 
         protected override string BuildChallengeUrl(AuthenticationProperties properties, string redirectUri)
         {
-            var address = base.BuildChallengeUrl(properties, redirectUri);
+            string address = base.BuildChallengeUrl(properties, redirectUri);
 
             // Add duration=permanent to the authorization request to get an access token that doesn't expire after 1 hour.
             // See https://github.com/reddit/reddit/wiki/OAuth2#authorization for more information.
@@ -86,7 +88,7 @@ namespace AspNet.Security.OAuth.Reddit
             return string.Join(",", Options.Scope);
         }
 
-        protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] string code, [NotNull] string redirectUri)
+        protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] OAuthCodeExchangeContext context)
         {
             using var request = new HttpRequestMessage(HttpMethod.Post, Options.TokenEndpoint);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -102,8 +104,8 @@ namespace AspNet.Security.OAuth.Reddit
             request.Content = new FormUrlEncodedContent(new Dictionary<string, string>
             {
                 ["grant_type"] = "authorization_code",
-                ["redirect_uri"] = redirectUri,
-                ["code"] = code
+                ["redirect_uri"] = context.RedirectUri,
+                ["code"] = context.Code
             });
 
             using var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);

@@ -52,9 +52,12 @@ namespace AspNet.Security.OAuth.Weixin
             }
             return await base.HandleRemoteAuthenticateAsync();
         }
-        protected override async Task<AuthenticationTicket> CreateTicketAsync([NotNull] ClaimsIdentity identity, [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens)
+        protected override async Task<AuthenticationTicket> CreateTicketAsync(
+            [NotNull] ClaimsIdentity identity,
+            [NotNull] AuthenticationProperties properties,
+            [NotNull] OAuthTokenResponse tokens)
         {
-            var address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, new Dictionary<string, string>
+            string address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, new Dictionary<string, string>
             {
                 ["access_token"] = tokens.AccessToken,
                 ["openid"] = tokens.Response.RootElement.GetString("openid")
@@ -92,13 +95,13 @@ namespace AspNet.Security.OAuth.Weixin
             return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
         }
 
-        protected override async Task<OAuthTokenResponse> ExchangeCodeAsync(string code, string redirectUri)
+        protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] OAuthCodeExchangeContext context)
         {
-            var address = QueryHelpers.AddQueryString(Options.TokenEndpoint, new Dictionary<string, string>()
+            string address = QueryHelpers.AddQueryString(Options.TokenEndpoint, new Dictionary<string, string>()
             {
                 ["appid"] = Options.ClientId,
                 ["secret"] = Options.ClientSecret,
-                ["code"] = code,
+                ["code"] = context.Code,
                 ["grant_type"] = "authorization_code"
             });
 
@@ -130,8 +133,9 @@ namespace AspNet.Security.OAuth.Weixin
 
         protected override string BuildChallengeUrl(AuthenticationProperties properties, string redirectUri)
         {
-            var stateValue = Options.StateDataFormat.Protect(properties);
-            var addRedirectHash = false;
+            string stateValue = Options.StateDataFormat.Protect(properties);
+            bool addRedirectHash = false;
+
             if (!IsWeixinAuthorizationEndpointInUse())
             {
                 //Store state in redirectUri when authorizing Wechat Web pages to prevent "too long state parameters" error

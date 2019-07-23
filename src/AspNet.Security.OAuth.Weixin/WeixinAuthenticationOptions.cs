@@ -40,7 +40,7 @@ namespace AspNet.Security.OAuth.Weixin
             ClaimActions.MapJsonKey(Claims.HeadImgUrl, "headimgurl");
             ClaimActions.MapCustomJson(Claims.Privilege, user =>
             {
-                if (!user.TryGetProperty("privilege", out var value) || value.Type != System.Text.Json.JsonValueType.Array)
+                if (!user.TryGetProperty("privilege", out var value) || value.ValueKind != System.Text.Json.JsonValueKind.Array)
                 {
                     return null;
                 }
