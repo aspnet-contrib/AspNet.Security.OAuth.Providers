@@ -163,6 +163,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.Shopi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mvc.Client", "samples\Mvc.Client\Mvc.Client.csproj", "{140A6CAD-FC84-4A09-A939-8A5692DF0C7C}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.GitLab", "src\AspNet.Security.OAuth.GitLab\AspNet.Security.OAuth.GitLab.csproj", "{FACB1C2F-3BF7-4DD3-958B-E471E69E214A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -389,6 +391,10 @@ Global
 		{140A6CAD-FC84-4A09-A939-8A5692DF0C7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{140A6CAD-FC84-4A09-A939-8A5692DF0C7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{140A6CAD-FC84-4A09-A939-8A5692DF0C7C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FACB1C2F-3BF7-4DD3-958B-E471E69E214A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FACB1C2F-3BF7-4DD3-958B-E471E69E214A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FACB1C2F-3BF7-4DD3-958B-E471E69E214A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FACB1C2F-3BF7-4DD3-958B-E471E69E214A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -451,6 +457,7 @@ Global
 		{5325536E-8E3A-4611-AB92-B03369493354} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 		{112F6B50-0FD3-45AA-992E-72D7B873BF00} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 		{140A6CAD-FC84-4A09-A939-8A5692DF0C7C} = {BAC7067D-88FE-4385-8AC9-1A325FFBDE69}
+		{FACB1C2F-3BF7-4DD3-958B-E471E69E214A} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C7B54DE2-6407-4802-AD9C-CE54BF414C8C}
