@@ -1,17 +1,17 @@
 <Project>
 
   <PropertyGroup Label="Package Versions">
-    <AspNetCoreVersion>3.0.0-preview7.19365.7</AspNetCoreVersion>
+    <AspNetCoreVersion>3.0.0-preview8.19405.7</AspNetCoreVersion>
     <CoverletVersion>2.6.3</CoverletVersion>
     <DotNetTestSdkVersion>16.2.0</DotNetTestSdkVersion>
-    <GoogleProviderVersion>3.0.0-preview7.19365.7</GoogleProviderVersion>
+    <GoogleProviderVersion>3.0.0-preview8.19405.7</GoogleProviderVersion>
     <JetBrainsVersion>2019.1.3</JetBrainsVersion>
     <JustEatHttpClientInterceptionVersion>2.0.1</JustEatHttpClientInterceptionVersion>
     <MartinCostelloLoggingXUnitVersion>0.1.0</MartinCostelloLoggingXUnitVersion>
     <MicrosoftSourceLinkGitHubVersion>1.0.0-beta2-19367-01</MicrosoftSourceLinkGitHubVersion>
     <ReportGeneratorVersion>4.2.10</ReportGeneratorVersion>
     <ShouldlyVersion>3.0.2</ShouldlyVersion>
-    <TwitterProviderVersion>3.0.0-preview7.19365.7</TwitterProviderVersion>
+    <TwitterProviderVersion>3.0.0-preview8.19405.7</TwitterProviderVersion>
     <XunitVersion>2.4.1</XunitVersion>
   </PropertyGroup>
 
