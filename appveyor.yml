@@ -1,0 +1,2 @@
+build_script:
+  - eng\common\CIBuild.cmd -configuration Release -prepareMachine

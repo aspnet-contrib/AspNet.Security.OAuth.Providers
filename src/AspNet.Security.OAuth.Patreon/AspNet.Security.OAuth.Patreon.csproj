@@ -1,11 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="..\..\build\packages.props" />
-
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
   </PropertyGroup>
-  
+
   <PropertyGroup>
     <Description>ASP.NET Core security middleware enabling Patreon authentication.</Description>
     <Authors>Antoine Bichon;Chino Chang</Authors>
