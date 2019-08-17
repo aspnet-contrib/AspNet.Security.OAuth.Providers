@@ -1,2 +1,13 @@
+version: 3.0.0.{build}
+
 build_script:
   - eng\common\CIBuild.cmd -configuration Release -prepareMachine
+
+artifacts:
+  - path: artifacts\packages\Release\Shipping\*.nupkg
+
+nuget:
+  disable_publish_on_pr: true
+
+skip_tags: false
+test: off
