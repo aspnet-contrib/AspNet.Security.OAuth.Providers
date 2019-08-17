@@ -161,6 +161,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "eng", "eng", "{5D188043-25D
 		eng\Versions.props = eng\Versions.props
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".vscode", ".vscode", "{ED9006DA-AF38-4629-97F2-DE54395A8A9C}"
+	ProjectSection(SolutionItems) = preProject
+		.vscode\launch.json = .vscode\launch.json
+		.vscode\tasks.json = .vscode\tasks.json
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -455,6 +461,7 @@ Global
 		{140A6CAD-FC84-4A09-A939-8A5692DF0C7C} = {BAC7067D-88FE-4385-8AC9-1A325FFBDE69}
 		{FACB1C2F-3BF7-4DD3-958B-E471E69E214A} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 		{5D188043-25D9-4110-BAFA-7C47E6E0DDB6} = {E9DAB098-A902-4EF5-9AEE-CF735DF31E35}
+		{ED9006DA-AF38-4629-97F2-DE54395A8A9C} = {E9DAB098-A902-4EF5-9AEE-CF735DF31E35}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C7B54DE2-6407-4802-AD9C-CE54BF414C8C}
