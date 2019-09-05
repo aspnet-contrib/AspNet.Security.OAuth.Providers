@@ -1,0 +1,18 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Run tests",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "dotnet",
+      "args": [
+        "test"
+      ],
+      "cwd": "${workspaceFolder}/test/AspNet.Security.OAuth.Providers.Tests",
+      "console": "internalConsole",
+      "stopAtEntry": false
+    }
+  ]
+}

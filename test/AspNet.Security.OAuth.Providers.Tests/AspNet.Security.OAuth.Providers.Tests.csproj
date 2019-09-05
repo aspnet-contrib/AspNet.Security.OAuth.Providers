@@ -1,5 +1,4 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="..\..\build\packages.props" />
   <PropertyGroup>
     <RootNamespace>AspNet.Security.OAuth</RootNamespace>
     <TargetFramework>netcoreapp3.0</TargetFramework>
@@ -16,11 +15,8 @@
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="JustEat.HttpClientInterception" Version="$(JustEatHttpClientInterceptionVersion)" />
     <PackageReference Include="MartinCostello.Logging.XUnit" Version="$(MartinCostelloLoggingXUnitVersion)" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="$(DotNetTestSdkVersion)" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="$(AspNetCoreVersion)" />
     <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="$(AspNetCoreVersion)" />
     <PackageReference Include="Shouldly" Version="$(ShouldlyVersion)" />
-    <PackageReference Include="xunit" Version="$(XunitVersion)" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="$(XunitVersion)" />
   </ItemGroup>
 </Project>
