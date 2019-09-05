@@ -24,7 +24,7 @@ namespace Mvc.Client
 
             .AddCookie(options =>
             {
-                options.LoginPath = "/login";
+                options.LoginPath = "/signin";
                 options.LogoutPath = "/signout";
             })
 
