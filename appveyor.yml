@@ -18,3 +18,11 @@ test: off
 after_build:
   - ps: $wc = New-Object 'System.Net.WebClient'
   - ps: $wc.UploadFile("https://ci.appveyor.com/api/testresults/xunit/$($env:APPVEYOR_JOB_ID)", (Resolve-Path .\artifacts\TestResults\Release\AspNet.Security.OAuth.Providers.Tests_netcoreapp3.0_x64.xml))
+
+deploy:
+- provider: NuGet
+  server: https://www.myget.org/F/aspnet-contrib/
+  api_key:
+    secure: 0D9BDh7mkEuJ7sQTkI+L7KhntokQjMRw7UjucOl67mWKIeg2m249Vvc1bbyqDDrj
+  skip_symbols: false
+  symbol_server: https://www.myget.org/F/aspnet-contrib/
