@@ -5,15 +5,21 @@
  */
 
 using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net.Http;
 using System.Security.Claims;
+using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Primitives;
 
 namespace AspNet.Security.OAuth.Apple
 {
@@ -51,6 +57,17 @@ namespace AspNet.Security.OAuth.Apple
         {
             get { return (AppleAuthenticationEvents)base.Events; }
             set { base.Events = value; }
+        }
+
+        /// <inheritdoc />
+        protected override string BuildChallengeUrl(
+            [NotNull] AuthenticationProperties properties,
+            [NotNull] string redirectUri)
+        {
+            string challengeUrl = base.BuildChallengeUrl(properties, redirectUri);
+
+            // Apple requires the response mode to be form_post when the email or name scopes are requested
+            return QueryHelpers.AddQueryString(challengeUrl, "response_mode", "form_post");
         }
 
         /// <inheritdoc />
@@ -107,6 +124,31 @@ namespace AspNet.Security.OAuth.Apple
             return await base.ExchangeCodeAsync(code, redirectUri);
         }
 
+        /// <inheritdoc />
+        protected override async Task<HandleRequestResult> HandleRemoteAuthenticateAsync()
+        {
+            IEnumerable<KeyValuePair<string, StringValues>> source;
+
+            // If form_post was used, then read the parameters from the form rather than the query string
+            if (string.Equals(Request.Method, HttpMethod.Post.Method, StringComparison.OrdinalIgnoreCase))
+            {
+                source = Request.Form;
+            }
+            else
+            {
+                source = Request.Query;
+            }
+
+            var parameters = new Dictionary<string, StringValues>();
+
+            foreach (var param in source)
+            {
+                parameters.Add(param.Key, param.Value);
+            }
+
+            return await HandleRemoteAuthenticateAsync(parameters);
+        }
+
         private string GetNameIdentifier(string token)
         {
             try
@@ -117,6 +159,132 @@ namespace AspNet.Security.OAuth.Apple
             catch (Exception ex)
             {
                 throw new InvalidOperationException("Failed to parse JWT from Apple ID token.", ex);
+            }
+        }
+
+        private async Task<HandleRequestResult> HandleRemoteAuthenticateAsync(
+            [NotNull] Dictionary<string, StringValues> parameters)
+        {
+            // Adapted from https://github.com/aspnet/AspNetCore/blob/e7f262e33108e92fc8805b925cc04b07d254118b/src/Security/Authentication/OAuth/src/OAuthHandler.cs#L45-L146
+            if (!parameters.TryGetValue("state", out var state))
+            {
+                state = default;
+            }
+
+            var properties = Options.StateDataFormat.Unprotect(state);
+
+            if (properties == null)
+            {
+                return HandleRequestResult.Fail("The oauth state was missing or invalid.");
+            }
+
+            // OAuth2 10.12 CSRF
+            if (!ValidateCorrelationId(properties))
+            {
+                return HandleRequestResult.Fail("Correlation failed.");
+            }
+
+            if (!parameters.TryGetValue("error", out var error))
+            {
+                error = default;
+            }
+
+            if (!StringValues.IsNullOrEmpty(error))
+            {
+                var failureMessage = new StringBuilder().Append(error);
+
+                if (!parameters.TryGetValue("error_description", out var errorDescription))
+                {
+                    errorDescription = default;
+                }
+
+                if (!StringValues.IsNullOrEmpty(errorDescription))
+                {
+                    failureMessage.Append(";Description=").Append(errorDescription);
+                }
+
+                if (!parameters.TryGetValue("error_uri", out var errorUri))
+                {
+                    errorUri = default;
+                }
+
+                if (!StringValues.IsNullOrEmpty(errorUri))
+                {
+                    failureMessage.Append(";Uri=").Append(errorUri);
+                }
+
+                return HandleRequestResult.Fail(failureMessage.ToString());
+            }
+
+            if (!parameters.TryGetValue("code", out var code))
+            {
+                code = default;
+            }
+
+            if (StringValues.IsNullOrEmpty(code))
+            {
+                return HandleRequestResult.Fail("Code was not found.");
+            }
+
+            var tokens = await ExchangeCodeAsync(code, BuildRedirectUri(Options.CallbackPath));
+
+            if (tokens.Error != null)
+            {
+                return HandleRequestResult.Fail(tokens.Error);
+            }
+
+            if (string.IsNullOrEmpty(tokens.AccessToken))
+            {
+                return HandleRequestResult.Fail("Failed to retrieve access token.");
+            }
+
+            var identity = new ClaimsIdentity(ClaimsIssuer);
+
+            if (Options.SaveTokens)
+            {
+                var authTokens = new List<AuthenticationToken>()
+                {
+                    new AuthenticationToken() { Name = "access_token", Value = tokens.AccessToken },
+                };
+
+                if (!string.IsNullOrEmpty(tokens.RefreshToken))
+                {
+                    authTokens.Add(new AuthenticationToken() { Name = "refresh_token", Value = tokens.RefreshToken });
+                }
+
+                if (!string.IsNullOrEmpty(tokens.TokenType))
+                {
+                    authTokens.Add(new AuthenticationToken() { Name = "token_type", Value = tokens.TokenType });
+                }
+
+                if (!string.IsNullOrEmpty(tokens.ExpiresIn))
+                {
+                    if (int.TryParse(tokens.ExpiresIn, NumberStyles.Integer, CultureInfo.InvariantCulture, out int value))
+                    {
+                        // https://www.w3.org/TR/xmlschema-2/#dateTime
+                        // https://msdn.microsoft.com/en-us/library/az4se3k1(v=vs.110).aspx
+                        var expiresAt = Clock.UtcNow + TimeSpan.FromSeconds(value);
+
+                        authTokens.Add(new AuthenticationToken()
+                        {
+                            Name = "expires_at",
+                            Value = expiresAt.ToString("o", CultureInfo.InvariantCulture),
+                        });
+                    }
+                }
+
+                properties.StoreTokens(authTokens);
+            }
+
+            var ticket = await CreateTicketAsync(identity, properties, tokens);
+
+            if (ticket != null)
+            {
+                return HandleRequestResult.Success(ticket);
+            }
+            else
+            {
+                return HandleRequestResult.Fail("Failed to retrieve user information from remote server.");
             }
         }
     }
