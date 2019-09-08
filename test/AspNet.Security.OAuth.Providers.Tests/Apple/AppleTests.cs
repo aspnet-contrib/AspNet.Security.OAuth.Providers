@@ -5,7 +5,9 @@
  */
 
 using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
@@ -27,6 +29,13 @@ namespace AspNet.Security.OAuth.Apple
 
         public override string DefaultScheme => AppleAuthenticationDefaults.AuthenticationScheme;
 
+        protected override HttpMethod RedirectMethod => HttpMethod.Post;
+
+        protected override IDictionary<string, string> RedirectParameters => new Dictionary<string, string>()
+        {
+            ["user"] = @"{""name"":{""firstName"":""Johnny"",""lastName"":""Appleseed""},""email"":""johnny.appleseed@apple.local""}",
+        };
+
         protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
         {
             IdentityModelEventSource.ShowPII = true;
@@ -39,7 +48,10 @@ namespace AspNet.Security.OAuth.Apple
         }
 
         [Theory]
+        [InlineData(ClaimTypes.Email, "johnny.appleseed@apple.local")]
+        [InlineData(ClaimTypes.GivenName, "Johnny")]
         [InlineData(ClaimTypes.NameIdentifier, "001883.fcc77ba97500402389df96821ad9c790.1517")]
+        [InlineData(ClaimTypes.Surname, "Appleseed")]
         public async Task Can_Sign_In_Using_Apple_With_Client_Secret(string claimType, string claimValue)
         {
             // Arrange
@@ -64,7 +76,10 @@ namespace AspNet.Security.OAuth.Apple
         }
 
         [Theory]
+        [InlineData(ClaimTypes.Email, "johnny.appleseed@apple.local")]
+        [InlineData(ClaimTypes.GivenName, "Johnny")]
         [InlineData(ClaimTypes.NameIdentifier, "001883.fcc77ba97500402389df96821ad9c790.1517")]
+        [InlineData(ClaimTypes.Surname, "Appleseed")]
         public async Task Can_Sign_In_Using_Apple_With_Private_Key(string claimType, string claimValue)
         {
             // Arrange
@@ -98,7 +113,10 @@ namespace AspNet.Security.OAuth.Apple
         }
 
         [Theory]
+        [InlineData(ClaimTypes.Email, "johnny.appleseed@apple.local")]
+        [InlineData(ClaimTypes.GivenName, "Johnny")]
         [InlineData(ClaimTypes.NameIdentifier, "001883.fcc77ba97500402389df96821ad9c790.1517")]
+        [InlineData(ClaimTypes.Surname, "Appleseed")]
         public async Task Can_Sign_In_Using_Apple_With_No_Token_Validation(string claimType, string claimValue)
         {
             // Arrange

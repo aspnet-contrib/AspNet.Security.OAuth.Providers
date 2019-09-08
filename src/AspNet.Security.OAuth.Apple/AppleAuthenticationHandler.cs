@@ -20,6 +20,7 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
+using Newtonsoft.Json.Linq;
 
 namespace AspNet.Security.OAuth.Apple
 {
@@ -101,7 +102,12 @@ namespace AspNet.Security.OAuth.Apple
                 await Events.ValidateIdToken(validateIdContext);
             }
 
-            identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, GetNameIdentifier(idToken)));
+            var tokenClaims = ExtractClaimsFromToken(idToken);
+
+            foreach (var claim in tokenClaims)
+            {
+                identity.AddClaim(claim);
+            }
 
             var principal = new ClaimsPrincipal(identity);
 
@@ -122,6 +128,55 @@ namespace AspNet.Security.OAuth.Apple
             }
 
             return await base.ExchangeCodeAsync(code, redirectUri);
+        }
+
+        /// <summary>
+        /// Extracts the claims from the token received from the token endpoint.
+        /// </summary>
+        /// <param name="token">The token to extract the claims from.</param>
+        /// <returns>
+        /// An <see cref="IEnumerable{Claim}"/> containing the claims extracted from the token.
+        /// </returns>
+        protected virtual IEnumerable<Claim> ExtractClaimsFromToken([NotNull] string token)
+        {
+            try
+            {
+                var securityToken = _tokenHandler.ReadJwtToken(token);
+
+                return new List<Claim>(securityToken.Claims)
+                {
+                    new Claim(ClaimTypes.NameIdentifier, securityToken.Subject, ClaimValueTypes.String, ClaimsIssuer),
+                };
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException("Failed to parse JWT for claims from Apple ID token.", ex);
+            }
+        }
+
+        /// <summary>
+        /// Extracts the claims from the user received from the authorization endpoint.
+        /// </summary>
+        /// <param name="user">The user object to extract the claims from.</param>
+        /// <returns>
+        /// An <see cref="IEnumerable{Claim}"/> containing the claims extracted from the user information.
+        /// </returns>
+        protected virtual IEnumerable<Claim> ExtractClaimsFromUser([NotNull] JObject user)
+        {
+            var claims = new List<Claim>();
+
+            if (user.TryGetValue("name", out var name))
+            {
+                claims.Add(new Claim(ClaimTypes.GivenName, name.Value<string>("firstName"), ClaimValueTypes.String, ClaimsIssuer));
+                claims.Add(new Claim(ClaimTypes.Surname, name.Value<string>("lastName"), ClaimValueTypes.String, ClaimsIssuer));
+            }
+
+            if (user.TryGetValue("email", out var email))
+            {
+                claims.Add(new Claim(ClaimTypes.Email, email.Value<string>(), ClaimValueTypes.String, ClaimsIssuer));
+            }
+
+            return claims;
         }
 
         /// <inheritdoc />
@@ -147,19 +202,6 @@ namespace AspNet.Security.OAuth.Apple
             }
 
             return await HandleRemoteAuthenticateAsync(parameters);
-        }
-
-        private string GetNameIdentifier(string token)
-        {
-            try
-            {
-                var userToken = _tokenHandler.ReadJwtToken(token);
-                return userToken.Subject;
-            }
-            catch (Exception ex)
-            {
-                throw new InvalidOperationException("Failed to parse JWT from Apple ID token.", ex);
-            }
         }
 
         private async Task<HandleRequestResult> HandleRemoteAuthenticateAsync(
@@ -274,6 +316,17 @@ namespace AspNet.Security.OAuth.Apple
                 }
 
                 properties.StoreTokens(authTokens);
+            }
+
+            if (parameters.TryGetValue("user", out var userJson))
+            {
+                var user = JObject.Parse(userJson);
+                var userClaims = ExtractClaimsFromUser(user);
+
+                foreach (var claim in userClaims)
+                {
+                    identity.AddClaim(claim);
+                }
             }
 
             var ticket = await CreateTicketAsync(identity, properties, tokens);
