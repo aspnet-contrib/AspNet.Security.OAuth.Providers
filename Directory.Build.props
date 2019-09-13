@@ -28,7 +28,8 @@
   </PropertyGroup>
   <PropertyGroup>
     <Product>aspnet-contrib</Product>
-    <Copyright>© AspNet.Security.OAuth.Providers contributors. All rights reserved.</Copyright>
+    <Company>$(Authors)</Company>
+    <_ProjectCopyright>© AspNet.Security.OAuth.Providers contributors. All rights reserved.</_ProjectCopyright>
     <PackageIcon>package-icon.png</PackageIcon>
     <PackageProjectUrl>https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers</PackageProjectUrl>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>

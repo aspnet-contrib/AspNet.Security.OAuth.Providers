@@ -1,3 +1,14 @@
 <Project>
   <Import Project="Sdk.targets" Sdk="Microsoft.DotNet.Arcade.Sdk" />
+
+  <!--
+    Note: Arcade automatically replaces copyrights defined in .props or .csproj files
+    with the default Microsoft copyright. To ensure this doesn't happen, the replaced
+    copyright is restored in this .targets file using the private variable set in .props.
+  -->
+
+  <PropertyGroup>
+    <Copyright>$(_ProjectCopyright)</Copyright>
+  </PropertyGroup>
+
 </Project>
