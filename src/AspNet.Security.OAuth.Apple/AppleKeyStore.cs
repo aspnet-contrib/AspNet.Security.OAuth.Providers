@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace AspNet.Security.OAuth.Apple
 {
     /// <summary>
-    /// Represents the base class for a store containing the keys for use with Sign In with Apple.
+    /// Represents the base class for a store containing the keys for use with Sign in with Apple.
     /// </summary>
     public abstract class AppleKeyStore
     {
@@ -19,7 +19,7 @@ namespace AspNet.Security.OAuth.Apple
         /// <param name="context">The context.</param>
         /// <returns>
         /// A <see cref="Task{TResult}"/> representing the asynchronous operation
-        /// to get the raw bytes of the private key to use for Sign In with Apple.
+        /// to get the raw bytes of the private key to use for Sign in with Apple.
         /// </returns>
         public abstract Task<byte[]> LoadPrivateKeyAsync(AppleGenerateClientSecretContext context);
 
@@ -29,7 +29,7 @@ namespace AspNet.Security.OAuth.Apple
         /// <param name="context">The context.</param>
         /// <returns>
         /// A <see cref="Task{TResult}"/> representing the asynchronous operation
-        /// to get the raw bytes of the public key to use for Sign In with Apple.
+        /// to get the raw bytes of the public key to use for Sign in with Apple.
         /// </returns>
         public abstract Task<byte[]> LoadPublicKeysAsync(AppleValidateIdTokenContext context);
     }

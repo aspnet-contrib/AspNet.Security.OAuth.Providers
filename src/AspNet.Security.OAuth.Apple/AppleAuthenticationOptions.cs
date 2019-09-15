@@ -56,7 +56,7 @@ namespace AspNet.Security.OAuth.Apple
         public bool GenerateClientSecret { get; set; }
 
         /// <summary>
-        /// Gets or sets the optional ID for your Sign In with Apple private key.
+        /// Gets or sets the optional ID for your Sign in with Apple private key.
         /// </summary>
         public string KeyId { get; set; }
 
