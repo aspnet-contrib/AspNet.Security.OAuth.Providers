@@ -82,14 +82,17 @@ namespace AspNet.Security.OAuth.Apple
         {
             string idToken = tokens.Response.Value<string>("id_token");
 
-            // TODO These can probably be removed once Sign In with Apple is finalized
-            Logger.LogInformation("Creating ticket for Sign In with Apple.");
-            Logger.LogTrace("Access Token: {AccessToken}", tokens.AccessToken);
-            Logger.LogTrace("Refresh Token: {RefreshToken}", tokens.RefreshToken);
-            Logger.LogTrace("Token Type: {TokenType}", tokens.TokenType);
-            Logger.LogTrace("Expires In: {ExpiresIn}", tokens.ExpiresIn);
-            Logger.LogTrace("Response: {TokenResponse}", tokens.Response);
-            Logger.LogTrace("ID Token: {IdToken}", idToken);
+            Logger.LogInformation("Creating ticket for Sign in with Apple.");
+
+            if (Logger.IsEnabled(LogLevel.Trace))
+            {
+                Logger.LogTrace("Access Token: {AccessToken}", tokens.AccessToken);
+                Logger.LogTrace("Refresh Token: {RefreshToken}", tokens.RefreshToken);
+                Logger.LogTrace("Token Type: {TokenType}", tokens.TokenType);
+                Logger.LogTrace("Expires In: {ExpiresIn}", tokens.ExpiresIn);
+                Logger.LogTrace("Response: {TokenResponse}", tokens.Response);
+                Logger.LogTrace("ID Token: {IdToken}", idToken);
+            }
 
             if (string.IsNullOrWhiteSpace(idToken))
             {
