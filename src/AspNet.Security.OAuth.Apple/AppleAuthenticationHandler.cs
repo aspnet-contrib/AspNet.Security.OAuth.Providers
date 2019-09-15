@@ -99,7 +99,7 @@ namespace AspNet.Security.OAuth.Apple
             if (Options.ValidateTokens)
             {
                 var validateIdContext = new AppleValidateIdTokenContext(Context, Scheme, Options, idToken);
-                await Events.ValidateIdToken(validateIdContext);
+                await Options.Events.ValidateIdToken(validateIdContext);
             }
 
             var tokenClaims = ExtractClaimsFromToken(idToken);
@@ -124,7 +124,7 @@ namespace AspNet.Security.OAuth.Apple
             if (Options.GenerateClientSecret)
             {
                 var context = new AppleGenerateClientSecretContext(Context, Scheme, Options);
-                await Events.GenerateClientSecret(context);
+                await Options.Events.GenerateClientSecret(context);
             }
 
             return await base.ExchangeCodeAsync(code, redirectUri);
