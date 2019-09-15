@@ -14,7 +14,7 @@ using Microsoft.Extensions.FileProviders;
 namespace Microsoft.Extensions.DependencyInjection
 {
     /// <summary>
-    /// Extension methods to configure Sign In with Apple authentication capabilities for an HTTP application pipeline.
+    /// Extension methods to configure Sign in with Apple authentication capabilities for an HTTP application pipeline.
     /// </summary>
     public static class AppleAuthenticationOptionsExtensions
     {

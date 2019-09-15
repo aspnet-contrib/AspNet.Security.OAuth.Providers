@@ -30,7 +30,7 @@ namespace AspNet.Security.OAuth.Apple.Internal
             if (context.Options.PrivateKeyBytes == null)
             {
                 throw new ArgumentException(
-                    $"The {nameof(AppleAuthenticationOptions.PrivateKeyBytes)} option must be set to be able to load the Sign In with Apple private key.",
+                    $"The {nameof(AppleAuthenticationOptions.PrivateKeyBytes)} option must be set to be able to load the Sign in with Apple private key.",
                     nameof(AppleAuthenticationOptions.PrivateKeyBytes));
             }
 

@@ -9,17 +9,17 @@ using System.Threading.Tasks;
 namespace AspNet.Security.OAuth.Apple
 {
     /// <summary>
-    /// Represents the base class for a client secret generator for Sign In with Apple.
+    /// Represents the base class for a client secret generator for Sign in with Apple.
     /// </summary>
     public abstract class AppleClientSecretGenerator
     {
         /// <summary>
-        /// Generates a client secret for Sign In with Apple as an asynchronous operation.
+        /// Generates a client secret for Sign in with Apple as an asynchronous operation.
         /// </summary>
         /// <param name="context">The context.</param>
         /// <returns>
         /// A <see cref="Task{TResult}"/> representing the asynchronous operation
-        /// to generate a client secret for Sign In with Apple.
+        /// to generate a client secret for Sign in with Apple.
         /// </returns>
         public abstract Task<string> GenerateAsync(AppleGenerateClientSecretContext context);
     }

@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Authentication.OAuth;
 namespace AspNet.Security.OAuth.Apple
 {
     /// <summary>
-    /// Default values used by the Apple (Sign In with Apple) authentication provider.
+    /// Default values used by the Apple (Sign in with Apple) authentication provider.
     /// </summary>
     public static class AppleAuthenticationDefaults
     {
