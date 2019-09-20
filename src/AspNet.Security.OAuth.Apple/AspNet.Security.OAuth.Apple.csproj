@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\build\packages.props" />
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Description>ASP.NET Core security provider enabling Apple authentication.</Description>
+    <Authors>Martin Costello</Authors>
+    <PackageTags>apple;aspnetcore;authentication;oauth;security</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="JetBrains.Annotations" Version="$(JetBrainsVersion)" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.OAuth" Version="$(AspNetCoreVersion)" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="$(SystemIdentityModelTokensJwtVersion)" />
+    <PackageReference Include="System.Security.Cryptography.Cng" Version="$(SystemSecurityCryptographyCng)" />
+  </ItemGroup>
+
+</Project>

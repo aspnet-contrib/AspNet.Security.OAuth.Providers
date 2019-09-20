@@ -5,6 +5,7 @@
  */
 
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -17,6 +18,10 @@ namespace AspNet.Security.OAuth.Infrastructure
     /// </summary>
     internal class LoopbackRedirectHandler : DelegatingHandler
     {
+        public HttpMethod RedirectMethod { get; set; } = HttpMethod.Get;
+
+        public IDictionary<string, string> RedirectParameters { get; set; } = new Dictionary<string, string>();
+
         public string RedirectUri { get; set; }
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
@@ -28,8 +33,40 @@ namespace AspNet.Security.OAuth.Infrastructure
                 !string.Equals(result.Headers.Location?.Host, "localhost", StringComparison.OrdinalIgnoreCase))
             {
                 var uri = BuildLoopbackUri(result);
+                HttpContent content = null;
 
-                var redirectRequest = new HttpRequestMessage(request.Method, uri);
+                if (RedirectMethod == HttpMethod.Post)
+                {
+                    var queryString = HttpUtility.ParseQueryString(result.Headers.Location.Query);
+                    string state = queryString["state"];
+
+                    var parameters = new Dictionary<string, string>()
+                    {
+                        ["code"] = "a6ed8e7f-471f-44f1-903b-65946475f351",
+                        ["state"] = state,
+                    };
+
+                    if (RedirectParameters?.Count > 0)
+                    {
+                        foreach (var parameter in RedirectParameters)
+                        {
+                            parameters[parameter.Key] = parameter.Value;
+                        }
+                    }
+
+                    content = new FormUrlEncodedContent(parameters);
+                }
+                else
+                {
+                    uri = BuildLoopbackUri(result);
+                }
+
+                var redirectRequest = new HttpRequestMessage(RedirectMethod, uri);
+
+                if (content != null)
+                {
+                    redirectRequest.Content = content;
+                }
 
                 // Forward on the headers and cookies
                 foreach (var header in result.Headers)

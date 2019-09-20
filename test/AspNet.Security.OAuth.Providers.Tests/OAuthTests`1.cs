@@ -40,7 +40,12 @@ namespace AspNet.Security.OAuth
                 .ThrowsOnMissingRegistration()
                 .RegisterBundle(Path.Combine(GetType().Name.Replace("Tests", string.Empty), "bundle.json"));
 
-            LoopbackRedirectHandler = new LoopbackRedirectHandler { RedirectUri = RedirectUri };
+            LoopbackRedirectHandler = new LoopbackRedirectHandler
+            {
+                RedirectMethod = RedirectMethod,
+                RedirectParameters = RedirectParameters,
+                RedirectUri = RedirectUri,
+            };
         }
 
         /// <summary>
@@ -57,6 +62,16 @@ namespace AspNet.Security.OAuth
         /// Gets the name of the authentication scheme being tested.
         /// </summary>
         public abstract string DefaultScheme { get; }
+
+        /// <summary>
+        /// Gets the optional redirect HTTP method to use for OAuth flows.
+        /// </summary>
+        protected virtual HttpMethod RedirectMethod => HttpMethod.Get;
+
+        /// <summary>
+        /// Gets the optional additional parameters for the redirect request with OAuth flows.
+        /// </summary>
+        protected virtual IDictionary<string, string> RedirectParameters => new Dictionary<string, string>();
 
         /// <summary>
         /// Gets the optional redirect URI to use for OAuth flows.
@@ -112,7 +127,7 @@ namespace AspNet.Security.OAuth
         public DelegatingHandler LoopbackRedirectHandler { get; set; }
 
         /// <summary>
-        /// Run the ChannelAsync for authentication 
+        /// Run the ChannelAsync for authentication
         /// </summary>
         /// <param name="context">The HTTP context</param>
         protected internal virtual Task ChallengeAsync(HttpContext context) => context.ChallengeAsync();
