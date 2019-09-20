@@ -6,10 +6,8 @@
 
 using System;
 using System.IdentityModel.Tokens.Jwt;
-using System.Runtime.InteropServices;
 using System.Security.Claims;
 using System.Security.Cryptography;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication;
@@ -81,7 +79,7 @@ namespace AspNet.Security.OAuth.Apple.Internal
             byte[] keyBlob = await _keyStore.LoadPrivateKeyAsync(context);
             string clientSecret;
 
-            using (var algorithm = CreateAlgorithm(keyBlob, context.Options.PrivateKeyPassword))
+            using (var algorithm = CreateAlgorithm(keyBlob))
             {
                 tokenDescriptor.SigningCredentials = CreateSigningCredentials(context.Options.KeyId, algorithm);
 
@@ -93,30 +91,19 @@ namespace AspNet.Security.OAuth.Apple.Internal
             return (clientSecret, expiresAt);
         }
 
-        private ECDsa CreateAlgorithm(byte[] keyBlob, string password)
+        private ECDsa CreateAlgorithm(byte[] keyBlob)
         {
-            // This becomes xplat in .NET Core 3.0: https://github.com/dotnet/corefx/pull/30271
-            return RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ?
-                CreateAlgorithmWindows(keyBlob) :
-                CreateAlgorithmLinuxOrMac(keyBlob, password);
-        }
+            var algorithm = ECDsa.Create();
 
-        private ECDsa CreateAlgorithmLinuxOrMac(byte[] keyBlob, string password)
-        {
-            // Does not support .p8 files in .NET Core 2.x as-per https://github.com/dotnet/corefx/issues/18733#issuecomment-296723615
-            // Unlike Linux, macOS does not support empty passwords for .pfx files.
-            using (var cert = new X509Certificate2(keyBlob, password))
+            try
             {
-                return cert.GetECDsaPrivateKey();
+                algorithm.ImportPkcs8PrivateKey(keyBlob, out int _);
+                return algorithm;
             }
-        }
-
-        private ECDsa CreateAlgorithmWindows(byte[] keyBlob)
-        {
-            // Only Windows supports .p8 files in .NET Core 2.0 as-per https://github.com/dotnet/corefx/issues/18733
-            using (var privateKey = CngKey.Import(keyBlob, CngKeyBlobFormat.Pkcs8PrivateBlob))
+            catch (Exception)
             {
-                return new ECDsaCng(privateKey) { HashAlgorithm = CngAlgorithm.Sha256 };
+                algorithm?.Dispose();
+                throw;
             }
         }
 

@@ -16,15 +16,15 @@ namespace Mvc.Client
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration, IHostingEnvironment hostingEnvironment)
+        public Startup(IConfiguration configuration, IHostEnvironment hostingEnvironment)
         {
             Configuration = configuration;
             HostingEnvironment = hostingEnvironment;
         }
 
-        private IConfiguration Configuration { get; }
+        public IConfiguration Configuration { get; }
 
-        private IHostingEnvironment HostingEnvironment { get; }
+        private IHostEnvironment HostingEnvironment { get; }
 
         public void ConfigureServices(IServiceCollection services)
         {

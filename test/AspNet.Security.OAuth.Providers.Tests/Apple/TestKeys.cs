@@ -7,39 +7,23 @@
 using System;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
 namespace AspNet.Security.OAuth.Apple
 {
     internal static class TestKeys
     {
-        private static readonly bool IsWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
-
         internal static async Task<byte[]> GetPrivateKeyBytesAsync()
         {
-            byte[] privateKey;
+            string content = await File.ReadAllTextAsync(Path.Combine("Apple", "test.p8"));
 
-            if (IsWindows)
+            if (content.StartsWith("-----BEGIN PRIVATE KEY-----", StringComparison.Ordinal))
             {
-                string content = await File.ReadAllTextAsync(Path.Combine("Apple", "test.p8"));
-
-                if (content.StartsWith("-----BEGIN PRIVATE KEY-----", StringComparison.Ordinal))
-                {
-                    string[] keyLines = content.Split('\n');
-                    content = string.Join(string.Empty, keyLines.Skip(1).Take(keyLines.Length - 2));
-                }
-
-                privateKey = Convert.FromBase64String(content);
-            }
-            else
-            {
-                privateKey = await File.ReadAllBytesAsync(Path.Combine("Apple", "test.pfx"));
+                string[] keyLines = content.Split('\n');
+                content = string.Join(string.Empty, keyLines.Skip(1).Take(keyLines.Length - 2));
             }
 
-            return privateKey;
+            return Convert.FromBase64String(content);
         }
-
-        internal static string GetPrivateKeyPassword() => IsWindows ? string.Empty : "passw0rd";
     }
 }
