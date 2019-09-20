@@ -39,15 +39,6 @@ namespace Mvc.Client
                 options.LogoutPath = "/signout";
             })
 
-            .AddApple(options =>
-            {
-                options.ClientId = Configuration["AppleClientId"];
-                options.KeyId = Configuration["AppleKeyId"];
-                options.TeamId = Configuration["AppleTeamId"];
-                options.UsePrivateKey(
-                    (keyId) => HostingEnvironment.ContentRootFileProvider.GetFileInfo($"AuthKey_{keyId}.p8"));
-            })
-
             .AddGoogle(options =>
             {
                 options.ClientId = "560027070069-37ldt4kfuohhu3m495hk2j4pjp92d382.apps.googleusercontent.com";
@@ -66,6 +57,17 @@ namespace Mvc.Client
                 options.ClientSecret = "98f1bf028608901e9df91d64ee61536fe562064b";
                 options.Scope.Add("user:email");
             })
+
+            /*
+            .AddApple(options =>
+            {
+                options.ClientId = Configuration["AppleClientId"];
+                options.KeyId = Configuration["AppleKeyId"];
+                options.TeamId = Configuration["AppleTeamId"];
+                options.UsePrivateKey(
+                    (keyId) => HostingEnvironment.ContentRootFileProvider.GetFileInfo($"AuthKey_{keyId}.p8"));
+            })
+            */
 
             .AddDropbox(options =>
             {
