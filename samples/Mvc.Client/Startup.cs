@@ -7,12 +7,25 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Logging;
 
 namespace Mvc.Client
 {
     public class Startup
     {
+        public Startup(IConfiguration configuration, IHostingEnvironment hostingEnvironment)
+        {
+            Configuration = configuration;
+            HostingEnvironment = hostingEnvironment;
+        }
+
+        private IConfiguration Configuration { get; }
+
+        private IHostingEnvironment HostingEnvironment { get; }
+
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddAuthentication(options =>
@@ -22,7 +35,7 @@ namespace Mvc.Client
 
             .AddCookie(options =>
             {
-                options.LoginPath = "/login";
+                options.LoginPath = "/signin";
                 options.LogoutPath = "/signout";
             })
 
@@ -45,6 +58,17 @@ namespace Mvc.Client
                 options.Scope.Add("user:email");
             })
 
+            /*
+            .AddApple(options =>
+            {
+                options.ClientId = Configuration["AppleClientId"];
+                options.KeyId = Configuration["AppleKeyId"];
+                options.TeamId = Configuration["AppleTeamId"];
+                options.UsePrivateKey(
+                    (keyId) => HostingEnvironment.ContentRootFileProvider.GetFileInfo($"AuthKey_{keyId}.p8"));
+            })
+            */
+
             .AddDropbox(options =>
             {
                 options.ClientId = "jpk24g2uxfxe939";
@@ -56,7 +80,18 @@ namespace Mvc.Client
 
         public void Configure(IApplicationBuilder app)
         {
-            app.UseStaticFiles();
+            if (HostingEnvironment.IsDevelopment())
+            {
+                IdentityModelEventSource.ShowPII = true;
+            }
+
+            // Required to serve files with no extension in the .well-known folder
+            var options = new StaticFileOptions()
+            {
+                ServeUnknownFileTypes = true,
+            };
+
+            app.UseStaticFiles(options);
 
             app.UseAuthentication();
 

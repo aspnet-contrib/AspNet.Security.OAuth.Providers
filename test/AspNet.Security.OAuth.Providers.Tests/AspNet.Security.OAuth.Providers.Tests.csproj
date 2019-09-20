@@ -9,6 +9,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="xunit.runner.json;**\bundle.json" Exclude="bin\**\bundle.json" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="Apple\test.p8;Apple\test.pfx" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.*\*.csproj" />

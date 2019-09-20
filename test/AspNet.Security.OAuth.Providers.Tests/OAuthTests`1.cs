@@ -19,6 +19,7 @@ using MartinCostello.Logging.XUnit;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
@@ -38,6 +39,13 @@ namespace AspNet.Security.OAuth
             Interceptor = new HttpClientInterceptorOptions()
                 .ThrowsOnMissingRegistration()
                 .RegisterBundle(Path.Combine(GetType().Name.Replace("Tests", string.Empty), "bundle.json"));
+
+            LoopbackRedirectHandler = new LoopbackRedirectHandler
+            {
+                RedirectMethod = RedirectMethod,
+                RedirectParameters = RedirectParameters,
+                RedirectUri = RedirectUri,
+            };
         }
 
         /// <summary>
@@ -54,6 +62,16 @@ namespace AspNet.Security.OAuth
         /// Gets the name of the authentication scheme being tested.
         /// </summary>
         public abstract string DefaultScheme { get; }
+
+        /// <summary>
+        /// Gets the optional redirect HTTP method to use for OAuth flows.
+        /// </summary>
+        protected virtual HttpMethod RedirectMethod => HttpMethod.Get;
+
+        /// <summary>
+        /// Gets the optional additional parameters for the redirect request with OAuth flows.
+        /// </summary>
+        protected virtual IDictionary<string, string> RedirectParameters => new Dictionary<string, string>();
 
         /// <summary>
         /// Gets the optional redirect URI to use for OAuth flows.
@@ -106,6 +124,14 @@ namespace AspNet.Security.OAuth
         protected HttpClient CreateBackchannel(AuthenticationBuilder builder)
             => builder.Services.BuildServiceProvider().GetRequiredService<IHttpClientFactory>().CreateClient();
 
+        public DelegatingHandler LoopbackRedirectHandler { get; set; }
+
+        /// <summary>
+        /// Run the ChannelAsync for authentication
+        /// </summary>
+        /// <param name="context">The HTTP context</param>
+        protected internal virtual Task ChallengeAsync(HttpContext context) => context.ChallengeAsync();
+
         /// <summary>
         /// Asynchronously authenticates the user and returns the claims associated with the authenticated user.
         /// </summary>
@@ -119,7 +145,7 @@ namespace AspNet.Security.OAuth
 
             // Arrange - Force a request chain that challenges the request to the authentication
             // handler and returns an authentication cookie to log the user in to the application.
-            using (var client = server.CreateDefaultClient(new LoopbackRedirectHandler() { RedirectUri = RedirectUri }))
+            using (var client = server.CreateDefaultClient(LoopbackRedirectHandler))
             {
                 // Act
                 using (var result = await client.GetAsync("/me"))
