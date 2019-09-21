@@ -1,0 +1,65 @@
+{
+  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
+  "items": [
+    {
+      "uri": "https://nextcloud.local/apps/oauth2/api/v1/token",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "secret-access-token",
+        "token_type": "access",
+        "refresh_token": "secret-refresh-token",
+        "expires_in": "300",
+        "user_id": "username"
+      }
+    },
+    {
+      "comment": "https://docs.nextcloud.com/server/15/developer_manual/client_apis/OCS/index.html#user-metadata",
+      "uri": "https://nextcloud.local/ocs/v1.php/cloud/users/username",
+      "contentFormat": "json",
+      "contentJson": {
+          "ocs": {
+            "meta": {
+              "status": "ok",
+              "statuscode": 100,
+              "message": "OK",
+              "totalitems": "",
+              "itemsperpage": ""
+            },
+            "data": {
+              "enabled": true,
+              "storageLocation": "/home/web/public/nextcloud_data/username",
+              "id": "username",
+              "lastLogin": 1560345912000,
+              "backend": "Database",
+              "subadmin": [],
+              "quota": {
+                "free": 3605729038336,
+                "used": 12895842,
+                "total": 3605741934178,
+                "relative": 0,
+                "quota": -3
+              },
+              "email": "username@domain.tld",
+              "displayname": "Username",
+              "phone": "",
+              "address": "",
+              "website": "",
+              "twitter": "",
+              "groups": [
+                "Group 1",
+                "Group 2",
+                "Group 3"
+              ],
+              "language": "de",
+              "locale": "de_DE",
+              "backendCapabilities": {
+                "setDisplayName": true,
+                "setPassword": true
+              }
+            }
+          }
+      }
+    }
+  ]
+}
