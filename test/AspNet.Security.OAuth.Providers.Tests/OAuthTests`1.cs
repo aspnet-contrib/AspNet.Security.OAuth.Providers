@@ -148,13 +148,12 @@ namespace AspNet.Security.OAuth
             using (var client = server.CreateDefaultClient(LoopbackRedirectHandler))
             {
                 // Act
-                using (var result = await client.GetAsync("/me"))
-                {
-                    // Assert
-                    result.StatusCode.ShouldBe(HttpStatusCode.Found);
+                using var result = await client.GetAsync("/me");
 
-                    cookies = result.Headers.GetValues("Set-Cookie");
-                }
+                // Assert
+                result.StatusCode.ShouldBe(HttpStatusCode.Found);
+
+                cookies = result.Headers.GetValues("Set-Cookie");
             }
 
             XElement element;
@@ -165,16 +164,15 @@ namespace AspNet.Security.OAuth
                 client.DefaultRequestHeaders.Add("Cookie", cookies);
 
                 // Act
-                using (var result = await client.GetAsync("/me"))
-                {
-                    // Assert
-                    result.StatusCode.ShouldBe(HttpStatusCode.OK);
-                    result.Content.Headers.ContentType.MediaType.ShouldBe("text/xml");
+                using var result = await client.GetAsync("/me");
 
-                    string xml = await result.Content.ReadAsStringAsync();
+                // Assert
+                result.StatusCode.ShouldBe(HttpStatusCode.OK);
+                result.Content.Headers.ContentType.MediaType.ShouldBe("text/xml");
 
-                    element = XElement.Parse(xml);
-                }
+                string xml = await result.Content.ReadAsStringAsync();
+
+                element = XElement.Parse(xml);
             }
 
             element.Name.ShouldBe("claims");

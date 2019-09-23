@@ -11,13 +11,13 @@ using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Encodings.Web;
+using System.Text.Json;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json.Linq;
 
 namespace AspNet.Security.OAuth.Fitbit
 {
@@ -32,14 +32,16 @@ namespace AspNet.Security.OAuth.Fitbit
         {
         }
 
-        protected override async Task<AuthenticationTicket> CreateTicketAsync([NotNull] ClaimsIdentity identity,
-            [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens)
+        protected override async Task<AuthenticationTicket> CreateTicketAsync(
+            [NotNull] ClaimsIdentity identity,
+            [NotNull] AuthenticationProperties properties,
+            [NotNull] OAuthTokenResponse tokens)
         {
-            var request = new HttpRequestMessage(HttpMethod.Get, Options.UserInformationEndpoint);
+            using var request = new HttpRequestMessage(HttpMethod.Get, Options.UserInformationEndpoint);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", tokens.AccessToken);
 
-            var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
+            using var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
             if (!response.IsSuccessStatusCode)
             {
                 Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
@@ -51,30 +53,30 @@ namespace AspNet.Security.OAuth.Fitbit
                 throw new HttpRequestException("An error occurred while retrieving the user profile.");
             }
 
-            var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
+            using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
 
             var principal = new ClaimsPrincipal(identity);
-            var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload);
-            context.RunClaimActions(payload.Value<JObject>("user"));
+            var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload.RootElement);
+            context.RunClaimActions(payload.RootElement.GetProperty("user"));
 
             await Options.Events.CreatingTicket(context);
             return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
         }
 
-        protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] string code, [NotNull] string redirectUri)
+        protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] OAuthCodeExchangeContext context)
         {
-            var request = new HttpRequestMessage(HttpMethod.Post, Options.TokenEndpoint);
+            using var request = new HttpRequestMessage(HttpMethod.Post, Options.TokenEndpoint);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             request.Headers.Authorization = CreateAuthorizationHeader();
 
             request.Content = new FormUrlEncodedContent(new Dictionary<string, string>
             {
                 ["grant_type"] = "authorization_code",
-                ["redirect_uri"] = redirectUri,
-                ["code"] = code
+                ["redirect_uri"] = context.RedirectUri,
+                ["code"] = context.Code
             });
 
-            var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
+            using var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
             if (!response.IsSuccessStatusCode)
             {
                 Logger.LogError("An error occurred while retrieving an access token: the remote server " +
@@ -86,14 +88,14 @@ namespace AspNet.Security.OAuth.Fitbit
                 return OAuthTokenResponse.Failed(new Exception("An error occurred while retrieving an access token."));
             }
 
-            var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
+            var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
 
             return OAuthTokenResponse.Success(payload);
         }
 
         private AuthenticationHeaderValue CreateAuthorizationHeader()
         {
-            string EscapeDataString(string value)
+            static string EscapeDataString(string value)
             {
                 if (string.IsNullOrEmpty(value))
                 {

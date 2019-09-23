@@ -55,6 +55,7 @@ namespace AspNet.Security.OAuth.LinkedIn
         {
             // Arrange
             additionalConfiguration = options => options.Fields.Add(LinkedInAuthenticationConstants.ProfileFields.PictureUrl);
+
             using (var server = CreateTestServer())
             {
                 // Act

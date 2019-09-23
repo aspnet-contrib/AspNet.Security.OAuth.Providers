@@ -10,6 +10,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
+using System.Text.Json;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication;
@@ -18,7 +19,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json.Linq;
 
 namespace AspNet.Security.OAuth.Weixin
 {
@@ -52,15 +52,18 @@ namespace AspNet.Security.OAuth.Weixin
             }
             return await base.HandleRemoteAuthenticateAsync();
         }
-        protected override async Task<AuthenticationTicket> CreateTicketAsync([NotNull] ClaimsIdentity identity, [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens)
+        protected override async Task<AuthenticationTicket> CreateTicketAsync(
+            [NotNull] ClaimsIdentity identity,
+            [NotNull] AuthenticationProperties properties,
+            [NotNull] OAuthTokenResponse tokens)
         {
-            var address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, new Dictionary<string, string>
+            string address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, new Dictionary<string, string>
             {
                 ["access_token"] = tokens.AccessToken,
-                ["openid"] = tokens.Response.Value<string>("openid")
+                ["openid"] = tokens.Response.RootElement.GetString("openid")
             });
 
-            var response = await Backchannel.GetAsync(address);
+            using var response = await Backchannel.GetAsync(address);
             if (!response.IsSuccessStatusCode)
             {
                 Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
@@ -72,8 +75,8 @@ namespace AspNet.Security.OAuth.Weixin
                 throw new HttpRequestException("An error occurred while retrieving user information.");
             }
 
-            var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
-            if (!string.IsNullOrEmpty(payload.Value<string>("errcode")))
+            using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
+            if (!string.IsNullOrEmpty(payload.RootElement.GetString("errcode")))
             {
                 Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
                                 "returned a {Status} response with the following payload: {Headers} {Body}.",
@@ -85,24 +88,24 @@ namespace AspNet.Security.OAuth.Weixin
             }
 
             var principal = new ClaimsPrincipal(identity);
-            var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload);
-            context.RunClaimActions(payload);
+            var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload.RootElement);
+            context.RunClaimActions();
 
             await Options.Events.CreatingTicket(context);
             return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
         }
 
-        protected override async Task<OAuthTokenResponse> ExchangeCodeAsync(string code, string redirectUri)
+        protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] OAuthCodeExchangeContext context)
         {
-            var address = QueryHelpers.AddQueryString(Options.TokenEndpoint, new Dictionary<string, string>()
+            string address = QueryHelpers.AddQueryString(Options.TokenEndpoint, new Dictionary<string, string>()
             {
                 ["appid"] = Options.ClientId,
                 ["secret"] = Options.ClientSecret,
-                ["code"] = code,
+                ["code"] = context.Code,
                 ["grant_type"] = "authorization_code"
             });
 
-            var response = await Backchannel.GetAsync(address);
+            using var response = await Backchannel.GetAsync(address);
             if (!response.IsSuccessStatusCode)
             {
                 Logger.LogError("An error occurred while retrieving an access token: the remote server " +
@@ -114,8 +117,8 @@ namespace AspNet.Security.OAuth.Weixin
                 return OAuthTokenResponse.Failed(new Exception("An error occurred while retrieving an access token."));
             }
 
-            var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
-            if (!string.IsNullOrEmpty(payload.Value<string>("errcode")))
+            var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
+            if (!string.IsNullOrEmpty(payload.RootElement.GetString("errcode")))
             {
                 Logger.LogError("An error occurred while retrieving an access token: the remote server " +
                                 "returned a {Status} response with the following payload: {Headers} {Body}.",
@@ -130,8 +133,9 @@ namespace AspNet.Security.OAuth.Weixin
 
         protected override string BuildChallengeUrl(AuthenticationProperties properties, string redirectUri)
         {
-            var stateValue = Options.StateDataFormat.Protect(properties);
-            var addRedirectHash = false;
+            string stateValue = Options.StateDataFormat.Protect(properties);
+            bool addRedirectHash = false;
+
             if (!IsWeixinAuthorizationEndpointInUse())
             {
                 //Store state in redirectUri when authorizing Wechat Web pages to prevent "too long state parameters" error

@@ -31,7 +31,6 @@ namespace AspNet.Security.OAuth.Apple
                 KeyId = "my-key-id",
                 TeamId = "my-team-id",
                 PrivateKeyBytes = (keyId) => TestKeys.GetPrivateKeyBytesAsync(),
-                PrivateKeyPassword = TestKeys.GetPrivateKeyPassword(),
             };
 
             await GenerateTokenAsync(options, async (generator, context) =>
@@ -80,7 +79,6 @@ namespace AspNet.Security.OAuth.Apple
                 KeyId = "my-key-id",
                 TeamId = "my-team-id",
                 PrivateKeyBytes = (keyId) => TestKeys.GetPrivateKeyBytesAsync(),
-                PrivateKeyPassword = TestKeys.GetPrivateKeyPassword(),
             };
 
             await GenerateTokenAsync(options, async (generator, context) =>
@@ -114,16 +112,15 @@ namespace AspNet.Security.OAuth.Apple
                             .AddApple();
                 });
 
-            using (var host = builder.Build())
-            {
-                var httpContext = new DefaultHttpContext();
-                var scheme = new AuthenticationScheme("Apple", "Apple", typeof(AppleAuthenticationHandler));
+            using var host = builder.Build();
 
-                var context = new AppleGenerateClientSecretContext(httpContext, scheme, options);
-                var generator = host.Services.GetRequiredService<AppleClientSecretGenerator>();
+            var httpContext = new DefaultHttpContext();
+            var scheme = new AuthenticationScheme("Apple", "Apple", typeof(AppleAuthenticationHandler));
 
-                await actAndAssert(generator, context);
-            }
+            var context = new AppleGenerateClientSecretContext(httpContext, scheme, options);
+            var generator = host.Services.GetRequiredService<AppleClientSecretGenerator>();
+
+            await actAndAssert(generator, context);
         }
     }
 }
