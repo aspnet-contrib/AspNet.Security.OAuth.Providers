@@ -79,7 +79,7 @@ namespace AspNet.Security.OAuth.Infrastructure
 
                         tests.RegisterAuthentication(authentication);
 
-                        app.AddAuthorization();
+                        services.AddAuthorization();
                     });
         }
 
