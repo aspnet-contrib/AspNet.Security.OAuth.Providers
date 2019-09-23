@@ -7,7 +7,6 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.AspNetCore.Http;
 using static AspNet.Security.OAuth.MailRu.MailRuAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.MailRu
@@ -20,8 +19,7 @@ namespace AspNet.Security.OAuth.MailRu
         public MailRuAuthenticationOptions()
         {
             ClaimsIssuer = MailRuAuthenticationDefaults.Issuer;
-
-            CallbackPath = new PathString(MailRuAuthenticationDefaults.CallbackPath);
+            CallbackPath = MailRuAuthenticationDefaults.CallbackPath;
 
             AuthorizationEndpoint = MailRuAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = MailRuAuthenticationDefaults.TokenEndpoint;
@@ -35,6 +33,5 @@ namespace AspNet.Security.OAuth.MailRu
             ClaimActions.MapJsonKey(ClaimTypes.GivenName, "first_name");
             ClaimActions.MapJsonKey(Claims.ImageUrl, "image");
         }
-
     }
 }

@@ -4,11 +4,11 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using System.Linq;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
-using Newtonsoft.Json.Linq;
 
 namespace AspNet.Security.OAuth.CiscoSpark
 {
@@ -28,7 +28,18 @@ namespace AspNet.Security.OAuth.CiscoSpark
 
             ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
             ClaimActions.MapJsonKey(ClaimTypes.Name, "displayName");
-            ClaimActions.MapCustomJson(ClaimTypes.Email, user => user.Value<JArray>("emails")?.First?.Value<string>());
+
+            ClaimActions.MapCustomJson(
+                ClaimTypes.Email,
+                user =>
+                {
+                    if (user.TryGetProperty("emails", out var emails))
+                    {
+                        return emails.EnumerateArray().Select((p) => p.GetString()).FirstOrDefault();
+                    }
+
+                    return null;
+                });
         }
     }
 }

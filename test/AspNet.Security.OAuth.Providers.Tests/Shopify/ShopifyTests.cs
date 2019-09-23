@@ -4,14 +4,9 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using System.Collections.Generic;
-using System.Net.Http;
 using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
-using AspNet.Security.OAuth.Infrastructure;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
@@ -21,7 +16,7 @@ namespace AspNet.Security.OAuth.Shopify
 {
     public class ShopifyTests : OAuthTests<ShopifyAuthenticationOptions>
     {
-        private const string testShopName = "apple";
+        private const string TestShopName = "apple";
 
         public ShopifyTests(ITestOutputHelper outputHelper)
         {
@@ -30,13 +25,13 @@ namespace AspNet.Security.OAuth.Shopify
             LoopbackRedirectHandler = new ShopifyLoopbackRedirectHandler()
             {
                 RedirectUri = RedirectUri,
-                ShopName = testShopName
+                ShopName = TestShopName
             };
         }
 
         public override string DefaultScheme => ShopifyAuthenticationDefaults.AuthenticationScheme;
 
-        protected internal override Task ChallengeAsync(HttpContext context) => context.ChallengeAsync(new ShopifyAuthenticationProperties(testShopName));
+        protected internal override Task ChallengeAsync(HttpContext context) => context.ChallengeAsync(new ShopifyAuthenticationProperties(TestShopName));
 
         protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
         {
@@ -47,28 +42,27 @@ namespace AspNet.Security.OAuth.Shopify
         {
             base.ConfigureDefaults(builder, options);
 
-            options.AuthorizationEndpoint = string.Format(ShopifyAuthenticationDefaults.AuthorizationEndpointFormat, testShopName);
-            options.TokenEndpoint = string.Format(ShopifyAuthenticationDefaults.TokenEndpointFormat, testShopName);
-            options.UserInformationEndpoint = string.Format(ShopifyAuthenticationDefaults.UserInformationEndpointFormat, testShopName);
+            options.AuthorizationEndpoint = string.Format(ShopifyAuthenticationDefaults.AuthorizationEndpointFormat, TestShopName);
+            options.TokenEndpoint = string.Format(ShopifyAuthenticationDefaults.TokenEndpointFormat, TestShopName);
+            options.UserInformationEndpoint = string.Format(ShopifyAuthenticationDefaults.UserInformationEndpointFormat, TestShopName);
         }
 
         [Theory]
-        [InlineData(ClaimTypes.NameIdentifier, "apple.myshopify.com")]
-        [InlineData(ClaimTypes.Name, "Apple Computers")]
-        [InlineData(ClaimTypes.Email, "steve@apple.com")]
         [InlineData(ClaimTypes.Country, "US")]
+        [InlineData(ClaimTypes.Email, "steve@apple.com")]
+        [InlineData(ClaimTypes.Name, "Apple Computers")]
+        [InlineData(ClaimTypes.NameIdentifier, "apple.myshopify.com")]
         [InlineData(ShopifyAuthenticationDefaults.ShopifyPlanNameClaimType, "enterprise")]
-        public async Task Can_Sign_In_Using_Spotify(string claimType, string claimValue)
+        public async Task Can_Sign_In_Using_Shopify(string claimType, string claimValue)
         {
             // Arrange
-            using (var server = CreateTestServer())
-            {
-                // Act
-                var claims = await AuthenticateUserAsync(server);
+            using var server = CreateTestServer();
 
-                // Assert
-                AssertClaim(claims, claimType, claimValue);
-            }
+            // Act
+            var claims = await AuthenticateUserAsync(server);
+
+            // Assert
+            AssertClaim(claims, claimType, claimValue);
         }
     }
 }

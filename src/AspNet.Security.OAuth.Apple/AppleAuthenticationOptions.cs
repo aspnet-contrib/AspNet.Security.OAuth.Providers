@@ -71,15 +71,9 @@ namespace AspNet.Security.OAuth.Apple
         /// which is passed the value of the <see cref="KeyId"/> property.
         /// </summary>
         /// <remarks>
-        /// On Windows, the private key should be in PKCS #8 (<c>.p8</c>) format.
-        /// On Linux and macOS, the private key should be PKCS #12 (<c>.pfx</c>) format.
+        /// The private key should be in PKCS #8 (<c>.p8</c>) format.
         /// </remarks>
         public Func<string, Task<byte[]>> PrivateKeyBytes { get; set; }
-
-        /// <summary>
-        /// Gets or sets the password/passphrase associated with the private key, if any.
-        /// </summary>
-        public string PrivateKeyPassword { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets or sets the Team ID for your Apple Developer account.

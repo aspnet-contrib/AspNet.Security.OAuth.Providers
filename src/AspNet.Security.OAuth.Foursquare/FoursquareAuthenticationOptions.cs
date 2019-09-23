@@ -8,7 +8,6 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
-using Newtonsoft.Json.Linq;
 
 namespace AspNet.Security.OAuth.Foursquare
 {
@@ -31,8 +30,8 @@ namespace AspNet.Security.OAuth.Foursquare
             ClaimActions.MapJsonKey(ClaimTypes.GivenName, "firstName");
             ClaimActions.MapJsonKey(ClaimTypes.Gender, "gender");
             ClaimActions.MapJsonKey(ClaimTypes.Uri, "canonicalUrl");
-            ClaimActions.MapCustomJson(ClaimTypes.Name, user => $"{user.Value<string>("firstName")} {user.Value<string>("lastName")}");
-            ClaimActions.MapCustomJson(ClaimTypes.Email, user => user.Value<JObject>("contact")?.Value<string>("email"));
+            ClaimActions.MapJsonSubKey(ClaimTypes.Email, "contact", "email");
+            ClaimActions.MapCustomJson(ClaimTypes.Name, user => $"{user.GetString("firstName")} {user.GetString("lastName")}".Trim());
         }
 
         /// <summary>
