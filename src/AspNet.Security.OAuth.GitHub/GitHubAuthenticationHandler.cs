@@ -9,13 +9,13 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
+using System.Text.Json;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json.Linq;
 
 namespace AspNet.Security.OAuth.GitHub
 {
@@ -33,11 +33,11 @@ namespace AspNet.Security.OAuth.GitHub
         protected override async Task<AuthenticationTicket> CreateTicketAsync([NotNull] ClaimsIdentity identity,
             [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens)
         {
-            var request = new HttpRequestMessage(HttpMethod.Get, Options.UserInformationEndpoint);
+            using var request = new HttpRequestMessage(HttpMethod.Get, Options.UserInformationEndpoint);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", tokens.AccessToken);
 
-            var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
+            using var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
             if (!response.IsSuccessStatusCode)
             {
                 Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
@@ -49,11 +49,11 @@ namespace AspNet.Security.OAuth.GitHub
                 throw new HttpRequestException("An error occurred while retrieving the user profile.");
             }
 
-            var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
+            using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
 
             var principal = new ClaimsPrincipal(identity);
-            var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload);
-            context.RunClaimActions(payload);
+            var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload.RootElement);
+            context.RunClaimActions();
 
             // When the email address is not public, retrieve it from
             // the emails endpoint if the user:email scope is specified.
@@ -74,11 +74,11 @@ namespace AspNet.Security.OAuth.GitHub
         protected virtual async Task<string> GetEmailAsync([NotNull] OAuthTokenResponse tokens)
         {
             // See https://developer.github.com/v3/users/emails/ for more information about the /user/emails endpoint.
-            var request = new HttpRequestMessage(HttpMethod.Get, Options.UserEmailsEndpoint);
+            using var request = new HttpRequestMessage(HttpMethod.Get, Options.UserEmailsEndpoint);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", tokens.AccessToken);
 
-            var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
+            using var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
             if (!response.IsSuccessStatusCode)
             {
                 Logger.LogWarning("An error occurred while retrieving the email address associated with the logged in user: " +
@@ -90,11 +90,11 @@ namespace AspNet.Security.OAuth.GitHub
                 throw new HttpRequestException("An error occurred while retrieving the email address associated to the user profile.");
             }
 
-            var payload = JArray.Parse(await response.Content.ReadAsStringAsync());
+            using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
 
-            return (from address in payload.AsJEnumerable()
-                    where address.Value<bool>("primary")
-                    select address.Value<string>("email")).FirstOrDefault();
+            return (from address in payload.RootElement.EnumerateArray()
+                    where address.GetProperty("primary").GetBoolean()
+                    select address.GetString("email")).FirstOrDefault();
         }
     }
 }

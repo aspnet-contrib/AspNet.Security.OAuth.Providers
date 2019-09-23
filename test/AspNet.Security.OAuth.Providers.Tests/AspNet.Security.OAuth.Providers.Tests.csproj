@@ -1,9 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="..\..\build\packages.props" />
   <PropertyGroup>
-    <AspNetCoreVersion>2.2.0</AspNetCoreVersion>
     <RootNamespace>AspNet.Security.OAuth</RootNamespace>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
   </PropertyGroup>
@@ -15,14 +13,11 @@
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.*\*.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.App" Version="$(AspNetCoreVersion)" />
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="JustEat.HttpClientInterception" Version="$(JustEatHttpClientInterceptionVersion)" />
     <PackageReference Include="MartinCostello.Logging.XUnit" Version="$(MartinCostelloLoggingXUnitVersion)" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="$(DotNetTestSdkVersion)" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="$(AspNetCoreVersion)" />
     <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="$(AspNetCoreVersion)" />
     <PackageReference Include="Shouldly" Version="$(ShouldlyVersion)" />
-    <PackageReference Include="xunit" Version="$(XunitVersion)" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="$(XunitVersion)" />
   </ItemGroup>
 </Project>

@@ -8,7 +8,6 @@ using System.Linq;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
-using Newtonsoft.Json.Linq;
 
 namespace AspNet.Security.OAuth.Paypal
 {
@@ -33,8 +32,22 @@ namespace AspNet.Security.OAuth.Paypal
             ClaimActions.MapJsonKey(ClaimTypes.Name, "name");
             ClaimActions.MapJsonKey(ClaimTypes.GivenName, "given_name");
             ClaimActions.MapJsonKey(ClaimTypes.Surname, "family_name");
-            ClaimActions.MapCustomJson(ClaimTypes.NameIdentifier, user => user.Value<string>("user_id")?.Split('/')?.LastOrDefault());
-            ClaimActions.MapCustomJson(ClaimTypes.Email, user => user.Value<JArray>("emails")?.FirstOrDefault(email => email.Value<bool>("primary"))?.Value<string>("value"));
+            ClaimActions.MapCustomJson(ClaimTypes.NameIdentifier, user => user.GetString("user_id")?.Split('/')?.LastOrDefault());
+
+            ClaimActions.MapCustomJson(
+                ClaimTypes.Email,
+                user =>
+                {
+                    if (user.TryGetProperty("emails", out var emails))
+                    {
+                        return emails.EnumerateArray()
+                                     .Where((p) => p.GetProperty("primary").GetBoolean())
+                                     .Select((p) => p.GetString("value"))
+                                     .FirstOrDefault();
+                    }
+
+                    return null;
+                });
         }
     }
 }

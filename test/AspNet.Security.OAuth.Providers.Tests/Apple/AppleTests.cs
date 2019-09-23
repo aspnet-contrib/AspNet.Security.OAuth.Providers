@@ -55,7 +55,7 @@ namespace AspNet.Security.OAuth.Apple
         public async Task Can_Sign_In_Using_Apple_With_Client_Secret(string claimType, string claimValue)
         {
             // Arrange
-            void ConfigureServices(IServiceCollection services)
+            static void ConfigureServices(IServiceCollection services)
             {
                 services.AddSingleton<JwtSecurityTokenHandler, FrozenJwtSecurityTokenHandler>();
                 services.PostConfigureAll<AppleAuthenticationOptions>((options) =>
@@ -65,14 +65,13 @@ namespace AspNet.Security.OAuth.Apple
                 });
             }
 
-            using (var server = CreateTestServer(ConfigureServices))
-            {
-                // Act
-                var claims = await AuthenticateUserAsync(server);
+            using var server = CreateTestServer(ConfigureServices);
 
-                // Assert
-                AssertClaim(claims, claimType, claimValue);
-            }
+            // Act
+            var claims = await AuthenticateUserAsync(server);
+
+            // Assert
+            AssertClaim(claims, claimType, claimValue);
         }
 
         [Theory]
@@ -83,7 +82,7 @@ namespace AspNet.Security.OAuth.Apple
         public async Task Can_Sign_In_Using_Apple_With_Private_Key(string claimType, string claimValue)
         {
             // Arrange
-            void ConfigureServices(IServiceCollection services)
+            static void ConfigureServices(IServiceCollection services)
             {
                 services.AddSingleton<JwtSecurityTokenHandler, FrozenJwtSecurityTokenHandler>();
                 services.PostConfigureAll<AppleAuthenticationOptions>((options) =>
@@ -93,7 +92,6 @@ namespace AspNet.Security.OAuth.Apple
                     options.KeyId = "my-key-id";
                     options.TeamId = "my-team-id";
                     options.ValidateTokens = true;
-                    options.PrivateKeyPassword = TestKeys.GetPrivateKeyPassword();
                     options.PrivateKeyBytes = async (keyId) =>
                     {
                         Assert.Equal("my-key-id", keyId);
@@ -102,14 +100,13 @@ namespace AspNet.Security.OAuth.Apple
                 });
             }
 
-            using (var server = CreateTestServer(ConfigureServices))
-            {
-                // Act
-                var claims = await AuthenticateUserAsync(server);
+            using var server = CreateTestServer(ConfigureServices);
 
-                // Assert
-                AssertClaim(claims, claimType, claimValue);
-            }
+            // Act
+            var claims = await AuthenticateUserAsync(server);
+
+            // Assert
+            AssertClaim(claims, claimType, claimValue);
         }
 
         [Theory]
@@ -120,7 +117,7 @@ namespace AspNet.Security.OAuth.Apple
         public async Task Can_Sign_In_Using_Apple_With_No_Token_Validation(string claimType, string claimValue)
         {
             // Arrange
-            void ConfigureServices(IServiceCollection services)
+            static void ConfigureServices(IServiceCollection services)
             {
                 services.PostConfigureAll<AppleAuthenticationOptions>((options) =>
                 {
@@ -128,21 +125,20 @@ namespace AspNet.Security.OAuth.Apple
                 });
             }
 
-            using (var server = CreateTestServer(ConfigureServices))
-            {
-                // Act
-                var claims = await AuthenticateUserAsync(server);
+            using var server = CreateTestServer(ConfigureServices);
 
-                // Assert
-                AssertClaim(claims, claimType, claimValue);
-            }
+            // Act
+            var claims = await AuthenticateUserAsync(server);
+
+            // Assert
+            AssertClaim(claims, claimType, claimValue);
         }
 
         [Fact]
         public async Task Cannot_Sign_In_Using_Apple_With_Expired_Token()
         {
             // Arrange
-            void ConfigureServices(IServiceCollection services)
+            static void ConfigureServices(IServiceCollection services)
             {
                 services.PostConfigureAll<AppleAuthenticationOptions>((options) =>
                 {
@@ -150,21 +146,20 @@ namespace AspNet.Security.OAuth.Apple
                 });
             }
 
-            using (var server = CreateTestServer(ConfigureServices))
-            {
-                // Act
-                var exception = await Assert.ThrowsAsync<Exception>(() => AuthenticateUserAsync(server));
+            using var server = CreateTestServer(ConfigureServices);
 
-                // Assert
-                exception.InnerException.ShouldBeOfType<SecurityTokenExpiredException>();
-            }
+            // Act
+            var exception = await Assert.ThrowsAsync<Exception>(() => AuthenticateUserAsync(server));
+
+            // Assert
+            exception.InnerException.ShouldBeOfType<SecurityTokenExpiredException>();
         }
 
         [Fact]
         public async Task Cannot_Sign_In_Using_Apple_With_Invalid_Token_Audience()
         {
             // Arrange
-            void ConfigureServices(IServiceCollection services)
+            static void ConfigureServices(IServiceCollection services)
             {
                 services.AddSingleton<JwtSecurityTokenHandler, FrozenJwtSecurityTokenHandler>();
                 services.PostConfigureAll<AppleAuthenticationOptions>((options) =>
@@ -174,21 +169,20 @@ namespace AspNet.Security.OAuth.Apple
                 });
             }
 
-            using (var server = CreateTestServer(ConfigureServices))
-            {
-                // Act
-                var exception = await Assert.ThrowsAsync<Exception>(() => AuthenticateUserAsync(server));
+            using var server = CreateTestServer(ConfigureServices);
 
-                // Assert
-                exception.InnerException.ShouldBeOfType<SecurityTokenInvalidAudienceException>();
-            }
+            // Act
+            var exception = await Assert.ThrowsAsync<Exception>(() => AuthenticateUserAsync(server));
+
+            // Assert
+            exception.InnerException.ShouldBeOfType<SecurityTokenInvalidAudienceException>();
         }
 
         [Fact]
         public async Task Cannot_Sign_In_Using_Apple_With_Invalid_Token_Issuer()
         {
             // Arrange
-            void ConfigureServices(IServiceCollection services)
+            static void ConfigureServices(IServiceCollection services)
             {
                 services.AddSingleton<JwtSecurityTokenHandler, FrozenJwtSecurityTokenHandler>();
                 services.PostConfigureAll<AppleAuthenticationOptions>((options) =>
@@ -198,21 +192,20 @@ namespace AspNet.Security.OAuth.Apple
                 });
             }
 
-            using (var server = CreateTestServer(ConfigureServices))
-            {
-                // Act
-                var exception = await Assert.ThrowsAsync<Exception>(() => AuthenticateUserAsync(server));
+            using var server = CreateTestServer(ConfigureServices);
 
-                // Assert
-                exception.InnerException.ShouldBeOfType<SecurityTokenInvalidIssuerException>();
-            }
+            // Act
+            var exception = await Assert.ThrowsAsync<Exception>(() => AuthenticateUserAsync(server));
+
+            // Assert
+            exception.InnerException.ShouldBeOfType<SecurityTokenInvalidIssuerException>();
         }
 
         [Fact]
         public async Task Cannot_Sign_In_Using_Apple_With_Invalid_Signing_Key()
         {
             // Arrange
-            void ConfigureServices(IServiceCollection services)
+            static void ConfigureServices(IServiceCollection services)
             {
                 services.AddSingleton<JwtSecurityTokenHandler, FrozenJwtSecurityTokenHandler>();
                 services.PostConfigureAll<AppleAuthenticationOptions>((options) =>
@@ -222,21 +215,20 @@ namespace AspNet.Security.OAuth.Apple
                 });
             }
 
-            using (var server = CreateTestServer(ConfigureServices))
-            {
-                // Act
-                var exception = await Assert.ThrowsAsync<Exception>(() => AuthenticateUserAsync(server));
+            using var server = CreateTestServer(ConfigureServices);
 
-                // Assert
-                exception.InnerException.ShouldBeOfType<SecurityTokenInvalidSignatureException>();
-            }
+            // Act
+            var exception = await Assert.ThrowsAsync<Exception>(() => AuthenticateUserAsync(server));
+
+            // Assert
+            exception.InnerException.ShouldBeOfType<SecurityTokenInvalidSignatureException>();
         }
 
         [Fact]
         public async Task Cannot_Sign_In_Using_Apple_With_Unknown_Signing_Key()
         {
             // Arrange
-            void ConfigureServices(IServiceCollection services)
+            static void ConfigureServices(IServiceCollection services)
             {
                 services.AddSingleton<JwtSecurityTokenHandler, FrozenJwtSecurityTokenHandler>();
                 services.PostConfigureAll<AppleAuthenticationOptions>((options) =>
@@ -246,21 +238,20 @@ namespace AspNet.Security.OAuth.Apple
                 });
             }
 
-            using (var server = CreateTestServer(ConfigureServices))
-            {
-                // Act
-                var exception = await Assert.ThrowsAsync<Exception>(() => AuthenticateUserAsync(server));
+            using var server = CreateTestServer(ConfigureServices);
 
-                // Assert
-                exception.InnerException.ShouldBeOfType<SecurityTokenSignatureKeyNotFoundException>();
-            }
+            // Act
+            var exception = await Assert.ThrowsAsync<Exception>(() => AuthenticateUserAsync(server));
+
+            // Assert
+            exception.InnerException.ShouldBeOfType<SecurityTokenSignatureKeyNotFoundException>();
         }
 
         [Fact]
         public async Task Cannot_Sign_In_Using_Apple_With_Null_Token()
         {
             // Arrange
-            void ConfigureServices(IServiceCollection services)
+            static void ConfigureServices(IServiceCollection services)
             {
                 services.PostConfigureAll<AppleAuthenticationOptions>((options) =>
                 {
@@ -269,22 +260,21 @@ namespace AspNet.Security.OAuth.Apple
                 });
             }
 
-            using (var server = CreateTestServer(ConfigureServices))
-            {
-                // Act
-                var exception = await Assert.ThrowsAsync<Exception>(() => AuthenticateUserAsync(server));
+            using var server = CreateTestServer(ConfigureServices);
 
-                // Assert
-                exception.InnerException.ShouldBeOfType<InvalidOperationException>();
-                exception.InnerException.Message.ShouldBe("No Apple ID token was returned in the OAuth token response.");
-            }
+            // Act
+            var exception = await Assert.ThrowsAsync<Exception>(() => AuthenticateUserAsync(server));
+
+            // Assert
+            exception.InnerException.ShouldBeOfType<InvalidOperationException>();
+            exception.InnerException.Message.ShouldBe("No Apple ID token was returned in the OAuth token response.");
         }
 
         [Fact]
         public async Task Cannot_Sign_In_Using_Apple_With_Malformed_Token()
         {
             // Arrange
-            void ConfigureServices(IServiceCollection services)
+            static void ConfigureServices(IServiceCollection services)
             {
                 services.PostConfigureAll<AppleAuthenticationOptions>((options) =>
                 {
@@ -293,22 +283,21 @@ namespace AspNet.Security.OAuth.Apple
                 });
             }
 
-            using (var server = CreateTestServer(ConfigureServices))
-            {
-                // Act
-                var exception = await Assert.ThrowsAsync<Exception>(() => AuthenticateUserAsync(server));
+            using var server = CreateTestServer(ConfigureServices);
 
-                // Assert
-                exception.InnerException.ShouldBeOfType<ArgumentException>();
-                exception.InnerException.Message.ShouldStartWith("IDX");
-            }
+            // Act
+            var exception = await Assert.ThrowsAsync<Exception>(() => AuthenticateUserAsync(server));
+
+            // Assert
+            exception.InnerException.ShouldBeOfType<ArgumentException>();
+            exception.InnerException.Message.ShouldStartWith("IDX");
         }
 
         [Fact]
         public async Task Cannot_Sign_In_Using_Apple_With_No_Token()
         {
             // Arrange
-            void ConfigureServices(IServiceCollection services)
+            static void ConfigureServices(IServiceCollection services)
             {
                 services.PostConfigureAll<AppleAuthenticationOptions>((options) =>
                 {
@@ -317,15 +306,14 @@ namespace AspNet.Security.OAuth.Apple
                 });
             }
 
-            using (var server = CreateTestServer(ConfigureServices))
-            {
-                // Act
-                var exception = await Assert.ThrowsAsync<Exception>(() => AuthenticateUserAsync(server));
+            using var server = CreateTestServer(ConfigureServices);
 
-                // Assert
-                exception.InnerException.ShouldBeOfType<InvalidOperationException>();
-                exception.InnerException.Message.ShouldBe("No Apple ID token was returned in the OAuth token response.");
-            }
+            // Act
+            var exception = await Assert.ThrowsAsync<Exception>(() => AuthenticateUserAsync(server));
+
+            // Assert
+            exception.InnerException.ShouldBeOfType<InvalidOperationException>();
+            exception.InnerException.Message.ShouldBe("No Apple ID token was returned in the OAuth token response.");
         }
 
         private sealed class FrozenJwtSecurityTokenHandler : JwtSecurityTokenHandler

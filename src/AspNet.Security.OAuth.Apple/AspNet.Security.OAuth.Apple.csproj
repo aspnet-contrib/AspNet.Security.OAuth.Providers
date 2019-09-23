@@ -1,9 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="..\..\build\packages.props" />
-
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -13,10 +11,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="JetBrains.Annotations" Version="$(JetBrainsVersion)" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.OAuth" Version="$(AspNetCoreVersion)" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="$(SystemIdentityModelTokensJwtVersion)" />
-    <PackageReference Include="System.Security.Cryptography.Cng" Version="$(SystemSecurityCryptographyCng)" />
   </ItemGroup>
 
 </Project>

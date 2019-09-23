@@ -12,6 +12,7 @@ using System.Net.Http;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Encodings.Web;
+using System.Text.Json;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication;
@@ -20,7 +21,6 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
-using Newtonsoft.Json.Linq;
 
 namespace AspNet.Security.OAuth.Apple
 {
@@ -80,7 +80,7 @@ namespace AspNet.Security.OAuth.Apple
             [NotNull] AuthenticationProperties properties,
             [NotNull] OAuthTokenResponse tokens)
         {
-            string idToken = tokens.Response.Value<string>("id_token");
+            string idToken = tokens.Response.RootElement.GetString("id_token");
 
             Logger.LogInformation("Creating ticket for Sign in with Apple.");
 
@@ -114,23 +114,23 @@ namespace AspNet.Security.OAuth.Apple
 
             var principal = new ClaimsPrincipal(identity);
 
-            var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens);
-            context.RunClaimActions(tokens.Response);
+            var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, tokens.Response.RootElement);
+            context.RunClaimActions();
 
             await Options.Events.CreatingTicket(context);
             return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
         }
 
         /// <inheritdoc />
-        protected override async Task<OAuthTokenResponse> ExchangeCodeAsync(string code, string redirectUri)
+        protected override async Task<OAuthTokenResponse> ExchangeCodeAsync(OAuthCodeExchangeContext context)
         {
             if (Options.GenerateClientSecret)
             {
-                var context = new AppleGenerateClientSecretContext(Context, Scheme, Options);
-                await Options.Events.GenerateClientSecret(context);
+                var secretGenerationContext = new AppleGenerateClientSecretContext(Context, Scheme, Options);
+                await Events.GenerateClientSecret(secretGenerationContext);
             }
 
-            return await base.ExchangeCodeAsync(code, redirectUri);
+            return await base.ExchangeCodeAsync(context);
         }
 
         /// <summary>
@@ -164,19 +164,19 @@ namespace AspNet.Security.OAuth.Apple
         /// <returns>
         /// An <see cref="IEnumerable{Claim}"/> containing the claims extracted from the user information.
         /// </returns>
-        protected virtual IEnumerable<Claim> ExtractClaimsFromUser([NotNull] JObject user)
+        protected virtual IEnumerable<Claim> ExtractClaimsFromUser([NotNull] JsonElement user)
         {
             var claims = new List<Claim>();
 
-            if (user.TryGetValue("name", out var name))
+            if (user.TryGetProperty("name", out var name))
             {
-                claims.Add(new Claim(ClaimTypes.GivenName, name.Value<string>("firstName"), ClaimValueTypes.String, ClaimsIssuer));
-                claims.Add(new Claim(ClaimTypes.Surname, name.Value<string>("lastName"), ClaimValueTypes.String, ClaimsIssuer));
+                claims.Add(new Claim(ClaimTypes.GivenName, name.GetString("firstName"), ClaimValueTypes.String, ClaimsIssuer));
+                claims.Add(new Claim(ClaimTypes.Surname, name.GetString("lastName"), ClaimValueTypes.String, ClaimsIssuer));
             }
 
-            if (user.TryGetValue("email", out var email))
+            if (user.TryGetProperty("email", out var email))
             {
-                claims.Add(new Claim(ClaimTypes.Email, email.Value<string>(), ClaimValueTypes.String, ClaimsIssuer));
+                claims.Add(new Claim(ClaimTypes.Email, email.GetString(), ClaimValueTypes.String, ClaimsIssuer));
             }
 
             return claims;
@@ -197,12 +197,7 @@ namespace AspNet.Security.OAuth.Apple
                 source = Request.Query;
             }
 
-            var parameters = new Dictionary<string, StringValues>();
-
-            foreach (var param in source)
-            {
-                parameters.Add(param.Key, param.Value);
-            }
+            var parameters = new Dictionary<string, StringValues>(source);
 
             return await HandleRemoteAuthenticateAsync(parameters);
         }
@@ -210,7 +205,7 @@ namespace AspNet.Security.OAuth.Apple
         private async Task<HandleRequestResult> HandleRemoteAuthenticateAsync(
             [NotNull] Dictionary<string, StringValues> parameters)
         {
-            // Adapted from https://github.com/aspnet/AspNetCore/blob/e7f262e33108e92fc8805b925cc04b07d254118b/src/Security/Authentication/OAuth/src/OAuthHandler.cs#L45-L146
+            // Adapted from https://github.com/aspnet/AspNetCore/blob/66de493473521e173fa15ca557f5f97601cedb23/src/Security/Authentication/OAuth/src/OAuthHandler.cs#L48-L175
             if (!parameters.TryGetValue("state", out var state))
             {
                 state = default;
@@ -226,7 +221,7 @@ namespace AspNet.Security.OAuth.Apple
             // OAuth2 10.12 CSRF
             if (!ValidateCorrelationId(properties))
             {
-                return HandleRequestResult.Fail("Correlation failed.");
+                return HandleRequestResult.Fail("Correlation failed.", properties);
             }
 
             if (!parameters.TryGetValue("error", out var error))
@@ -236,16 +231,14 @@ namespace AspNet.Security.OAuth.Apple
 
             if (!StringValues.IsNullOrEmpty(error))
             {
-                var failureMessage = new StringBuilder().Append(error);
-
+                // Note: access_denied errors are special protocol errors indicating the user didn't
+                // approve the authorization demand requested by the remote authorization server.
+                // Since it's a frequent scenario (that is not caused by incorrect configuration),
+                // denied errors are handled differently using HandleAccessDeniedErrorAsync().
+                // Visit https://tools.ietf.org/html/rfc6749#section-4.1.2.1 for more information.
                 if (!parameters.TryGetValue("error_description", out var errorDescription))
                 {
                     errorDescription = default;
-                }
-
-                if (!StringValues.IsNullOrEmpty(errorDescription))
-                {
-                    failureMessage.Append(";Description=").Append(errorDescription);
                 }
 
                 if (!parameters.TryGetValue("error_uri", out var errorUri))
@@ -253,12 +246,43 @@ namespace AspNet.Security.OAuth.Apple
                     errorUri = default;
                 }
 
+                if (StringValues.Equals(error, "access_denied"))
+                {
+                    var result = await HandleAccessDeniedErrorAsync(properties);
+
+                    if (!result.None)
+                    {
+                        return result;
+                    }
+
+                    var deniedEx = new Exception("Access was denied by the resource owner or by the remote server.");
+
+                    deniedEx.Data["error"] = error.ToString();
+                    deniedEx.Data["error_description"] = errorDescription.ToString();
+                    deniedEx.Data["error_uri"] = errorUri.ToString();
+
+                    return HandleRequestResult.Fail(deniedEx, properties);
+                }
+
+                var failureMessage = new StringBuilder().Append(error);
+
+                if (!StringValues.IsNullOrEmpty(errorDescription))
+                {
+                    failureMessage.Append(";Description=").Append(errorDescription);
+                }
+
                 if (!StringValues.IsNullOrEmpty(errorUri))
                 {
                     failureMessage.Append(";Uri=").Append(errorUri);
                 }
 
-                return HandleRequestResult.Fail(failureMessage.ToString());
+                var ex = new Exception(failureMessage.ToString());
+
+                ex.Data["error"] = error.ToString();
+                ex.Data["error_description"] = errorDescription.ToString();
+                ex.Data["error_uri"] = errorUri.ToString();
+
+                return HandleRequestResult.Fail(ex, properties);
             }
 
             if (!parameters.TryGetValue("code", out var code))
@@ -268,19 +292,21 @@ namespace AspNet.Security.OAuth.Apple
 
             if (StringValues.IsNullOrEmpty(code))
             {
-                return HandleRequestResult.Fail("Code was not found.");
+                return HandleRequestResult.Fail("Code was not found.", properties);
             }
 
-            var tokens = await ExchangeCodeAsync(code, BuildRedirectUri(Options.CallbackPath));
+            var codeExchangeContext = new OAuthCodeExchangeContext(properties, code, BuildRedirectUri(Options.CallbackPath));
+
+            using var tokens = await ExchangeCodeAsync(codeExchangeContext);
 
             if (tokens.Error != null)
             {
-                return HandleRequestResult.Fail(tokens.Error);
+                return HandleRequestResult.Fail(tokens.Error, properties);
             }
 
             if (string.IsNullOrEmpty(tokens.AccessToken))
             {
-                return HandleRequestResult.Fail("Failed to retrieve access token.");
+                return HandleRequestResult.Fail("Failed to retrieve access token.", properties);
             }
 
             var identity = new ClaimsIdentity(ClaimsIssuer);
@@ -323,8 +349,8 @@ namespace AspNet.Security.OAuth.Apple
 
             if (parameters.TryGetValue("user", out var userJson))
             {
-                var user = JObject.Parse(userJson);
-                var userClaims = ExtractClaimsFromUser(user);
+                using var user = JsonDocument.Parse(userJson);
+                var userClaims = ExtractClaimsFromUser(user.RootElement);
 
                 foreach (var claim in userClaims)
                 {
@@ -340,7 +366,7 @@ namespace AspNet.Security.OAuth.Apple
             }
             else
             {
-                return HandleRequestResult.Fail("Failed to retrieve user information from remote server.");
+                return HandleRequestResult.Fail("Failed to retrieve user information from remote server.", properties);
             }
         }
     }

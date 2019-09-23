@@ -16,18 +16,20 @@ namespace Mvc.Client
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration, IHostingEnvironment hostingEnvironment)
+        public Startup(IConfiguration configuration, IHostEnvironment hostingEnvironment)
         {
             Configuration = configuration;
             HostingEnvironment = hostingEnvironment;
         }
 
-        private IConfiguration Configuration { get; }
+        public IConfiguration Configuration { get; }
 
-        private IHostingEnvironment HostingEnvironment { get; }
+        private IHostEnvironment HostingEnvironment { get; }
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddRouting();
+
             services.AddAuthentication(options =>
             {
                 options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -75,7 +77,7 @@ namespace Mvc.Client
                 options.ClientSecret = "qbxvkjk5la7mjp6";
             });
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
         }
 
         public void Configure(IApplicationBuilder app)
@@ -93,9 +95,15 @@ namespace Mvc.Client
 
             app.UseStaticFiles(options);
 
-            app.UseAuthentication();
+            app.UseRouting();
 
-            app.UseMvc();
+            app.UseAuthentication();
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapDefaultControllerRoute();
+            });
         }
     }
 }
