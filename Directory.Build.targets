@@ -8,6 +8,7 @@
   -->
 
   <PropertyGroup>
+    <Company>$(Authors)</Company>
     <Copyright>$(_ProjectCopyright)</Copyright>
   </PropertyGroup>
 
