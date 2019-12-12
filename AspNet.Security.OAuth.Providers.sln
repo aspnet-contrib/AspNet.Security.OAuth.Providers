@@ -171,6 +171,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".vscode", ".vscode", "{ED90
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.Apple", "src\AspNet.Security.OAuth.Apple\AspNet.Security.OAuth.Apple.csproj", "{DC80AFEC-EFB4-4B21-BF79-44DEA6E1FE26}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.Alipay", "src\AspNet.Security.OAuth.Alipay\AspNet.Security.OAuth.Alipay.csproj", "{8E1BB072-238B-4DA2-98D1-FF41698FBAAD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -409,6 +411,10 @@ Global
 		{DC80AFEC-EFB4-4B21-BF79-44DEA6E1FE26}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DC80AFEC-EFB4-4B21-BF79-44DEA6E1FE26}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DC80AFEC-EFB4-4B21-BF79-44DEA6E1FE26}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E1BB072-238B-4DA2-98D1-FF41698FBAAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E1BB072-238B-4DA2-98D1-FF41698FBAAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E1BB072-238B-4DA2-98D1-FF41698FBAAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E1BB072-238B-4DA2-98D1-FF41698FBAAD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -476,6 +482,7 @@ Global
 		{5D188043-25D9-4110-BAFA-7C47E6E0DDB6} = {E9DAB098-A902-4EF5-9AEE-CF735DF31E35}
 		{ED9006DA-AF38-4629-97F2-DE54395A8A9C} = {E9DAB098-A902-4EF5-9AEE-CF735DF31E35}
 		{DC80AFEC-EFB4-4B21-BF79-44DEA6E1FE26} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
+		{8E1BB072-238B-4DA2-98D1-FF41698FBAAD} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C7B54DE2-6407-4802-AD9C-CE54BF414C8C}

@@ -1,0 +1,40 @@
+{
+  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
+  "items": [
+    {
+      "uri": "https://openapi.alipay.com/gateway.do?app_id=my-client-id&charset=UTF-8&code=a6ed8e7f-471f-44f1-903b-65946475f351&format=JSON&grant_type=authorization_code&method=alipay.system.oauth.token&sign_type=RSA2&version=1.0",
+      "contentFormat": "json",
+      "contentJson": {
+        "alipay_system_oauth_token_response": {
+          "user_id": "my-id",
+          "access_token": "secret-access-token",
+          "expires_in": "300",
+          "refresh_token": "secret-refresh-token",
+          "re_expires_in": "300"
+        },
+        "sign": "sign"
+      }
+    },
+    {
+      "uri": "https://openapi.alipay.com/gateway.do?app_id=my-client-id&auth_token=secret-access-token&charset=UTF-8&format=JSON&method=alipay.user.info.share&sign_type=RSA2&version=1.0",
+      "contentFormat": "json",
+      "contentJson": {
+        "alipay_user_info_share_response": {
+          "code": "10000",
+          "msg": "Success",
+          "user_id": "my-id",
+          "avatar": "http://tfsimg.alipay.com/images/partner/T1uIxXXbpXXXXXXXX",
+          "province": "my-province",
+          "city": "my-city",
+          "nick_name": "my-nickname",
+          "is_student_certified": "T",
+          "user_type": "1",
+          "user_status": "T",
+          "is_certified": "T",
+          "gender": "F"
+        },
+        "sign": "sign"
+      }
+    }
+  ]
+}
