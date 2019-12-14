@@ -42,7 +42,7 @@
     <Product>aspnet-contrib</Product>
     <Company>$(Authors)</Company>
     <_ProjectCopyright>© AspNet.Security.OAuth.Providers contributors. All rights reserved.</_ProjectCopyright>
-    <PackageIcon>package-icon.png</PackageIcon>
+    <PackageIconFullPath>$(MSBuildThisFileDirectory)package-icon.png</PackageIconFullPath>
     <PackageProjectUrl>https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers</PackageProjectUrl>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <RepositoryType>git</RepositoryType>
