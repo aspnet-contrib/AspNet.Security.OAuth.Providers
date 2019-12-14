@@ -1,14 +1,24 @@
 <Project>
+
   <Import Project="Sdk.props" Sdk="Microsoft.DotNet.Arcade.Sdk" />
+
   <PropertyGroup>
     <LangVersion>latest</LangVersion>
     <NoWarn>$(NoWarn);CS1591</NoWarn>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <StrongNameKeyId>aspnet-contrib</StrongNameKeyId>
     <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)\eng\key.snk</AssemblyOriginatorKeyFile>
     <SignAssembly>true</SignAssembly>
-    <PublicSign Condition=" '$(OS)' != 'Windows_NT' ">true</PublicSign>
+    <DelaySign>false</DelaySign>
+    <PublicSign>false</PublicSign>
+    <PublicKey>00240000048000001402000006020000002400005253413100100000010001003509225ad4352617a51a898866d28f3164f3a89953b492dd8b582c76a6fa8679429392db97c54d73cd0a1ddff3f5d91aeb2e861405060d2ac56240cbac91bbe3dfe529db7f32c2c4526b70339f842802fd454d99e1197e201be8c1cda0e2d94359d2a08fed162330f13ef437f0f73a4c5109bfff23db52a936fbdb1b680de3ff6a20d75bd40f326afd7c2b2f20400063b58ed59cf6f105397ee6889fd87bdf33519c30407cd5ee79bdfb93573941e165205282e2c65cae25e564fd431c872f470a24049be5ea617912d7c0b3a2296479d57976e8cc45516009218b183c48f66912fd682d7160f5c2a3a867259243fc2d42a63607ecabcc05a5239851090cee5f8b213da8a3c02ad87f4ceffe2d0793df8420492c7d6919eb2c7fc1657dc966d474d0423cc4b78707832e5c8957bdcb5a0350b10be17f15e95e58b66694c18c5b7a18e7728ed5d27c6993490f280bbbf5e6a93da32ad93fc5bffdadb19a10ac2fe8a41034ff26d2302d9df2b2785907bb65cc86fb0d52ec9876ca0101d15be19937ef7ecf8b5c68d9f0ebafb865effefc3029d89bc5205f537051615e3a0a26ac103c383429c8a718486c82b907b72430ee96b55a6d9dcbb293a65db643a441513d95f6382439a2aedbe86285398e47f83271b93b9bfc00c8ed5be88a710ccd078ea53ca917d96f859ef8e4792e8b6cf0c45db27520fbb5a3cfa4c621e4f983da</PublicKey>
+    <PublicKeyToken>fa9e7b608b196fab</PublicKeyToken>
   </PropertyGroup>
+
   <!--
     Arcade only allows the revision to contain up to two characters, and AppVeyor does not roll-over
     build numbers every day like Azure DevOps does. To balance these two requirements, set the official
@@ -17,6 +27,7 @@
     So a build between 00:00 and 00:14 would have a revision of 1, and a build between 23:45 and 23:59:59
     would have a revision of 97.
   -->
+
   <PropertyGroup Condition=" '$(APPVEYOR)' == 'True' AND '$(APPVEYOR_PULL_REQUEST_NUMBER)' == '' ">
     <_Hours>$([MSBuild]::Multiply($([System.DateTime]::Now.ToString(HH)), 4))</_Hours>
     <_QuarterHours>$([MSBuild]::Divide($([System.DateTime]::Now.ToString(mm)), 15))</_QuarterHours>
@@ -26,6 +37,7 @@
     <OfficialBuild>true</OfficialBuild>
     <OfficialBuildId Condition=" '$(OfficialBuild)' == 'true' ">$([System.DateTime]::Now.ToString(yyyyMMdd)).$(_AppVeyorBuildRevision)</OfficialBuildId>
   </PropertyGroup>
+
   <PropertyGroup>
     <Product>aspnet-contrib</Product>
     <Company>$(Authors)</Company>
@@ -36,10 +48,12 @@
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>git://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers</RepositoryUrl>
   </PropertyGroup>
+
   <PropertyGroup>
     <RepoRelativeProjectDir>$([MSBuild]::MakeRelative($(RepoRoot), $(MSBuildProjectDirectory)))</RepoRelativeProjectDir>
     <WarnOnPackingNonPackableProject>false</WarnOnPackingNonPackableProject>
   </PropertyGroup>
+
   <PropertyGroup Condition=" $(RepoRelativeProjectDir.Contains('src')) ">
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <IncludeSource>true</IncludeSource>
@@ -48,14 +62,18 @@
     <IsShipping>true</IsShipping>
     <Serviceable>false</Serviceable>
   </PropertyGroup>
+
   <ItemGroup Condition=" '$(IsPackable)' == 'true' ">
     <None Include="$(MSBuildThisFileDirectory)package-icon.png" Pack="True" PackagePath="" />
   </ItemGroup>
+
   <ItemGroup Condition=" '$(OS)' != 'Windows_NT' ">
     <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" PrivateAssets="All" Version="1.0.0-preview.2" />
   </ItemGroup>
+
   <ItemGroup>
     <ProjectCapability Include="DynamicDependentFile" />
     <ProjectCapability Include="DynamicFileNesting" />
   </ItemGroup>
+
 </Project>
