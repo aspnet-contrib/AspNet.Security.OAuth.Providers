@@ -174,7 +174,7 @@ namespace AspNet.Security.OAuth.Alipay
             var messageStream = await message.Content.ReadAsStreamAsync();
 
             var document = await JsonSerializer.DeserializeAsync<JsonElement>(messageStream);
-            var elementContent = document.GetProperty(elementName).GetRawText();
+            var elementContent = document.GetString(elementName);
 
             return JsonDocument.Parse(elementContent);
         }
