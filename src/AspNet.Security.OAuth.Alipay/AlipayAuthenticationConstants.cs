@@ -56,7 +56,7 @@ namespace AspNet.Security.OAuth.Alipay
             public const string IsCertified = "urn:alipay:is_certified";
 
             /// <summary>
-            /// The user's gender. F: Femal; M: Male;
+            /// The user's gender. F: Female; M: Male;
             /// </summary>
             public const string Gender = "urn:alipay:gender";
         }

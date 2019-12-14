@@ -186,15 +186,27 @@ namespace AspNet.Security.OAuth.Alipay
         /// <returns>System.String.</returns>
         private string GetRSA2Signature(SortedDictionary<string, string> source)
         {
-            var textParams = source
-                .Where(p => !string.Equals(p.Key, "sign", StringComparison.OrdinalIgnoreCase)
-                    && !string.IsNullOrEmpty(p.Value))
-                .Select(p => p.Key + "=" + p.Value);
+            var builder = new StringBuilder();
+
+            foreach (var pair in source)
+            {
+                if (string.IsNullOrEmpty(pair.Value))
+                {
+                    continue;
+                }
+
+                builder.Append(pair.Key)
+                       .Append('=')
+                       .Append(pair.Value)
+                       .Append('&');
+            }
+
+            builder.Remove(builder.Length - 1, 1);
+
+            byte[] dataBytes = Encoding.UTF8.GetBytes(builder.ToString());
 
             using var privateKeyRsaProvider = CreateAlgorithm();
-
-            var dataBytes = Encoding.UTF8.GetBytes(string.Join("&", textParams));
-            var signatureBytes = privateKeyRsaProvider.SignData(dataBytes, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
+            byte[] signatureBytes = privateKeyRsaProvider.SignData(dataBytes, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
 
             return Convert.ToBase64String(signatureBytes);
         }
