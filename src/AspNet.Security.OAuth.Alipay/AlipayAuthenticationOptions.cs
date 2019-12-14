@@ -1,4 +1,9 @@
-﻿using System.Security.Claims;
+﻿/* 
+ * Licensed under the Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0) 
+ * See https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers 
+ * for more information concerning the license and the contributors participating to this project. 
+ */
+
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
@@ -11,12 +16,12 @@ namespace AspNet.Security.OAuth.Alipay
     /// </summary>
     public class AlipayAuthenticationOptions : OAuthOptions
     {
-        public string AlipayPublicKey { get; set; }
         /// <summary>
-        /// Gets or sets a value indicating whether [not validate sign].
+        /// Gets or sets a value indicating whether [validate signature].
         /// </summary>
-        /// <value><c>true</c> if [not validate sign]; otherwise, <c>false</c>.</value>
-        public bool NotValidateSign { get; set; } = false;
+        /// <value><c>true</c> if [validate signature]; otherwise, <c>false</c>.</value>
+        public bool ValidateSignature { get; set; } = true;
+
         public AlipayAuthenticationOptions()
         {
             ClaimsIssuer = AlipayAuthenticationDefaults.Issuer;
@@ -28,16 +33,16 @@ namespace AspNet.Security.OAuth.Alipay
 
             Scope.Add("auth_user");
 
-            ClaimActions.MapJsonKey(Claims.UserId, "user_id");
             ClaimActions.MapJsonKey(Claims.Avatar, "avatar");
-            ClaimActions.MapJsonKey(Claims.Province, "province");
             ClaimActions.MapJsonKey(Claims.City, "city");
-            ClaimActions.MapJsonKey(Claims.NickName, "nick_name");
+            ClaimActions.MapJsonKey(Claims.Gender, "gender");
+            ClaimActions.MapJsonKey(Claims.IsCertified, "is_certified");
             ClaimActions.MapJsonKey(Claims.IsStudentCertified, "is_student_certified");
+            ClaimActions.MapJsonKey(Claims.Nickname, "nick_name");
+            ClaimActions.MapJsonKey(Claims.Province, "province");
+            ClaimActions.MapJsonKey(Claims.UserId, "user_id");
             ClaimActions.MapJsonKey(Claims.UserType, "user_type");
             ClaimActions.MapJsonKey(Claims.UserStatus, "user_status");
-            ClaimActions.MapJsonKey(Claims.IsCertified, "is_certified");
-            ClaimActions.MapJsonKey(Claims.Gender, "gender");
         }
     }
 }
