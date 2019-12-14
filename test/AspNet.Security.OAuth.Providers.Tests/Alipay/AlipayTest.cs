@@ -57,7 +57,7 @@ namespace AspNet.Security.OAuth.Alipay
 
         private sealed class FixedClock : ISystemClock
         {
-            public DateTimeOffset UtcNow => new DateTime(2019, 12, 14, 22, 22, 22, DateTimeKind.Local);
+            public DateTimeOffset UtcNow => new DateTime(2019, 12, 14, 22, 22, 22, DateTimeKind.Utc);
         }
     }
 }

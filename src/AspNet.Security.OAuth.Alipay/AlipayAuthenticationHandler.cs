@@ -81,7 +81,7 @@ namespace AspNet.Security.OAuth.Alipay
                 ["version"] = "1.0",
                 ["code"] = context.Code,
                 ["grant_type"] = "authorization_code",
-                ["timestamp"] = Clock.UtcNow.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss"),
+                ["timestamp"] = Clock.UtcNow.ToString("yyyy-MM-dd HH:mm:ss"),
             };
             sortedParams.Add("sign", GetRSA2Signature(sortedParams));
 
@@ -120,7 +120,7 @@ namespace AspNet.Security.OAuth.Alipay
                 ["sign_type"] = "RSA2",
                 ["version"] = "1.0",
                 ["auth_token"] = tokens.AccessToken,
-                ["timestamp"] = Clock.UtcNow.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss"),
+                ["timestamp"] = Clock.UtcNow.ToString("yyyy-MM-dd HH:mm:ss"),
             };
             sortedParams.Add("sign", GetRSA2Signature(sortedParams));
 
