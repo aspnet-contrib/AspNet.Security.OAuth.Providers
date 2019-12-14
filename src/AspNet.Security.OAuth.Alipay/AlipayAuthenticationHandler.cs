@@ -171,12 +171,12 @@ namespace AspNet.Security.OAuth.Alipay
         /// <returns>Task&lt;JsonDocument&gt;.</returns>
         private async Task<JsonDocument> ParseJsonAsync(HttpResponseMessage message, string elementName)
         {
-            var messageContent = await message.Content.ReadAsStringAsync();
+            var messageStream = await message.Content.ReadAsStreamAsync();
 
-            var document = JsonDocument.Parse(messageContent);
-            var payload = JsonDocument.Parse(document.RootElement.GetString(elementName));
+            var document = await JsonSerializer.DeserializeAsync<JsonElement>(messageStream);
+            var elementContent = document.GetProperty(elementName).GetRawText();
 
-            return payload;
+            return JsonDocument.Parse(elementContent);
         }
 
         /// <summary>
@@ -223,7 +223,7 @@ namespace AspNet.Security.OAuth.Alipay
             }
             catch (Exception)
             {
-                algorithm?.Dispose();
+                algorithm.Dispose();
                 throw;
             }
         }

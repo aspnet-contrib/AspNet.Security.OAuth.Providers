@@ -81,10 +81,11 @@ We would love it if you could help contributing to this repository.
 * [TheUltimateC0der](https://github.com/TheUltimateC0der)
 * [Tommy Parnell](https://github.com/tparnell8)
 * [twsl](https://github.com/twsI)
+* [Vicente Yu](https://github.com/vicenteyu)
+* [Volodymyr Baydalka](https://github.com/zVolodymyr)
 * [Yannic Smeets](https://github.com/yannicsmeets)
 * [zAfLu](https://github.com/zAfLu)
 * [zhengchun](https://github.com/zhengchun)
-* [Volodymyr Baydalka](https://github.com/zVolodymyr)
 
 ## Support
 
