@@ -17,8 +17,6 @@ namespace AspNet.Security.OAuth.Alipay
     /// </summary>
     public class AlipayAuthenticationOptions : OAuthOptions
     {
-        public DateTime? Timestamp { get; set; }
-
         public AlipayAuthenticationOptions()
         {
             ClaimsIssuer = AlipayAuthenticationDefaults.Issuer;
