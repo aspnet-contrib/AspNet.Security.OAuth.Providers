@@ -36,7 +36,7 @@ namespace AspNet.Security.OAuth.Alipay
             public const string Nickname = "urn:alipay:nick_name";
 
             /// <summary>
-            /// The is student certified. T: True; F: False;
+            /// Whether the student is certified. T: True; F: False;
             /// </summary>
             public const string IsStudentCertified = "urn:alipay:is_student_certified";
 
@@ -51,12 +51,12 @@ namespace AspNet.Security.OAuth.Alipay
             public const string UserStatus = "urn:alipay:user_status";
 
             /// <summary>
-            /// The is certified. T: True; F: False;
+            /// Whether the user is certified. T: True; F: False;
             /// </summary>
             public const string IsCertified = "urn:alipay:is_certified";
 
             /// <summary>
-            /// The gender. F: Femal; M: Male;
+            /// The user's gender. F: Femal; M: Male;
             /// </summary>
             public const string Gender = "urn:alipay:gender";
         }

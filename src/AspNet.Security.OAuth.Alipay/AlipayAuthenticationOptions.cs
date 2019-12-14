@@ -4,6 +4,7 @@
  * for more information concerning the license and the contributors participating to this project. 
  */
 
+using System;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
@@ -16,11 +17,7 @@ namespace AspNet.Security.OAuth.Alipay
     /// </summary>
     public class AlipayAuthenticationOptions : OAuthOptions
     {
-        /// <summary>
-        /// Gets or sets a value indicating whether [validate signature].
-        /// </summary>
-        /// <value><c>true</c> if [validate signature]; otherwise, <c>false</c>.</value>
-        public bool ValidateSignature { get; set; } = true;
+        public DateTime? Timestamp { get; set; }
 
         public AlipayAuthenticationOptions()
         {

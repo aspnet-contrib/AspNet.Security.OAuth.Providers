@@ -39,14 +39,16 @@ namespace AspNet.Security.OAuth.Alipay
         {
         }
 
-        protected override string BuildChallengeUrl(AuthenticationProperties properties, string redirectUri)
+        protected override string FormatScope() => string.Join(",", Options.Scope);
+
+        protected override string BuildChallengeUrl(AuthenticationProperties properties, [NotNull]string redirectUri)
         {
             string stateValue = Options.StateDataFormat.Protect(properties);
 
             var address = QueryHelpers.AddQueryString(Options.AuthorizationEndpoint, new Dictionary<string, string>
             {
                 ["app_id"] = Options.ClientId,
-                ["scope"] = string.Join(",", Options.Scope),
+                ["scope"] = FormatScope(),
                 ["redirect_uri"] = redirectUri,
                 ["state"] = stateValue
             });
@@ -79,13 +81,9 @@ namespace AspNet.Security.OAuth.Alipay
                 ["version"] = "1.0",
                 ["code"] = context.Code,
                 ["grant_type"] = "authorization_code",
+                ["timestamp"] = (Options.Timestamp ?? Clock.UtcNow.ToLocalTime()).ToString("yyyy-MM-dd HH:mm:ss"),
             };
-
-            if (Options.ValidateSignature)
-            {
-                sortedParams.Add("timestamp", Clock.UtcNow.ToString("yyyy-MM-dd HH:mm:ss"));
-                sortedParams.Add("sign", getRSA2Signature(sortedParams, Options.ClientSecret));
-            }
+            sortedParams.Add("sign", GetRSA2Signature(sortedParams));
 
             string address = QueryHelpers.AddQueryString(Options.TokenEndpoint, sortedParams);
 
@@ -103,7 +101,7 @@ namespace AspNet.Security.OAuth.Alipay
                 return OAuthTokenResponse.Failed(new Exception("An error occurred while retrieving an access token."));
             }
 
-            using var payload = await getPayloadAsync(response, "alipay_system_oauth_token_response");
+            using var payload = await ParseJsonAsync(response, "alipay_system_oauth_token_response");
 
             return OAuthTokenResponse.Success(payload);
         }
@@ -122,13 +120,9 @@ namespace AspNet.Security.OAuth.Alipay
                 ["sign_type"] = "RSA2",
                 ["version"] = "1.0",
                 ["auth_token"] = tokens.AccessToken,
+                ["timestamp"] = (Options.Timestamp ?? Clock.UtcNow.ToLocalTime()).ToString("yyyy-MM-dd HH:mm:ss"),
             };
-
-            if (Options.ValidateSignature)
-            {
-                sortedParams.Add("timestamp", Clock.UtcNow.ToString("yyyy-MM-dd HH:mm:ss"));
-                sortedParams.Add("sign", getRSA2Signature(sortedParams, Options.ClientSecret));
-            }
+            sortedParams.Add("sign", GetRSA2Signature(sortedParams));
 
             string address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, sortedParams);
 
@@ -145,10 +139,10 @@ namespace AspNet.Security.OAuth.Alipay
                 throw new HttpRequestException("An error occurred while retrieving user information.");
             }
 
-            using var payload = await getPayloadAsync(response, "alipay_user_info_share_response");
+            using var payload = await ParseJsonAsync(response, "alipay_user_info_share_response");
             string statusCode = payload.RootElement.GetString("code");
 
-            if (statusCode != "10000")/*  */
+            if (statusCode != "10000")/* if code==10000 then success else failed. See: https://docs.open.alipay.com/common/105806 */
             {
                 Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
                             "returned a {Status} response with the following message: {Message}.",
@@ -170,19 +164,17 @@ namespace AspNet.Security.OAuth.Alipay
         }
 
         /// <summary>
-        /// get payload as an asynchronous operation.
+        /// Gets an HTTP payload as as an asynchronous operation.
         /// </summary>
         /// <param name="message">The message.</param>
-        /// <param name="nodeName">Name of the node.</param>
+        /// <param name="elementName">Name of the element.</param>
         /// <returns>Task&lt;JsonDocument&gt;.</returns>
-        private async Task<JsonDocument> getPayloadAsync(HttpResponseMessage message, string nodeName)
+        private async Task<JsonDocument> ParseJsonAsync(HttpResponseMessage message, string elementName)
         {
             var messageContent = await message.Content.ReadAsStringAsync();
 
-            //Logger.LogInformation(messageContent);
-
-            var rootJson = JsonDocument.Parse(messageContent);
-            var payload = JsonDocument.Parse(rootJson.RootElement.GetString(nodeName));
+            var document = JsonDocument.Parse(messageContent);
+            var payload = JsonDocument.Parse(document.RootElement.GetString(elementName));
 
             return payload;
         }
@@ -191,16 +183,15 @@ namespace AspNet.Security.OAuth.Alipay
         /// Gets the RSA2 signature.
         /// </summary>
         /// <param name="source">The source.</param>
-        /// <param name="privateKey">The private key.</param>
         /// <returns>System.String.</returns>
-        private string getRSA2Signature(SortedDictionary<string, string> source, [NotNull] string privateKey)
+        private string GetRSA2Signature(SortedDictionary<string, string> source)
         {
             var textParams = source
                 .Where(p => !string.Equals(p.Key, "sign", StringComparison.OrdinalIgnoreCase)
                     && !string.IsNullOrEmpty(p.Value))
                 .Select(p => p.Key + "=" + p.Value);
 
-            var privateKeyRsaProvider = CreateRsaProviderFromPrivateKey(privateKey);
+            using var privateKeyRsaProvider = CreateAlgorithm();
 
             var dataBytes = Encoding.UTF8.GetBytes(string.Join("&", textParams));
             var signatureBytes = privateKeyRsaProvider.SignData(dataBytes, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
@@ -208,94 +199,21 @@ namespace AspNet.Security.OAuth.Alipay
             return Convert.ToBase64String(signatureBytes);
         }
 
-        /// <summary>
-        /// Creates the RSA provider from private key.
-        /// </summary>
-        /// <param name="privateKey">The private key.</param>
-        /// <returns>RSA.</returns>
-        /// <exception cref="Exception">
-        /// Unexpected value read binr.ReadUInt16()
-        /// or
-        /// Unexpected version
-        /// or
-        /// Unexpected value read binr.ReadByte()
-        /// </exception>
-        private RSA CreateRsaProviderFromPrivateKey(string privateKey)
+        private RSA CreateAlgorithm()
         {
-            var privateKeyBits = Convert.FromBase64String(privateKey);
+            byte[] privateKeyBytes = Convert.FromBase64String(Options.ClientSecret);
+            var algorithm = RSA.Create();
 
-            var rsa = RSA.Create();
-            var rsaParameters = new RSAParameters();
-
-            using (var binr = new BinaryReader(new MemoryStream(privateKeyBits)))
+            try
             {
-                byte bt = 0;
-                ushort twobytes = 0;
-                twobytes = binr.ReadUInt16();
-                if (twobytes == 0x8130)
-                    binr.ReadByte();
-                else if (twobytes == 0x8230)
-                    binr.ReadInt16();
-                else
-                    throw new Exception("Unexpected value read binr.ReadUInt16()");
-
-                twobytes = binr.ReadUInt16();
-                if (twobytes != 0x0102)
-                    throw new Exception("Unexpected version");
-
-                bt = binr.ReadByte();
-                if (bt != 0x00)
-                    throw new Exception("Unexpected value read binr.ReadByte()");
-
-                rsaParameters.Modulus = binr.ReadBytes(GetIntegerSize(binr));
-                rsaParameters.Exponent = binr.ReadBytes(GetIntegerSize(binr));
-                rsaParameters.D = binr.ReadBytes(GetIntegerSize(binr));
-                rsaParameters.P = binr.ReadBytes(GetIntegerSize(binr));
-                rsaParameters.Q = binr.ReadBytes(GetIntegerSize(binr));
-                rsaParameters.DP = binr.ReadBytes(GetIntegerSize(binr));
-                rsaParameters.DQ = binr.ReadBytes(GetIntegerSize(binr));
-                rsaParameters.InverseQ = binr.ReadBytes(GetIntegerSize(binr));
+                algorithm.ImportRSAPrivateKey(privateKeyBytes, out int _);
+                return algorithm;
             }
-
-            rsa.ImportParameters(rsaParameters);
-            return rsa;
-        }
-
-        /// <summary>
-        /// Gets the size of the integer.
-        /// </summary>
-        /// <param name="binr">The binr.</param>
-        /// <returns>System.Int32.</returns>
-        private int GetIntegerSize(BinaryReader binr)
-        {
-            byte bt = binr.ReadByte();
-            if (bt != 0x02)
-                return 0;
-            bt = binr.ReadByte();
-
-            int count;
-            if (bt == 0x81)
-                count = binr.ReadByte();
-            else
-            if (bt == 0x82)
+            catch (Exception)
             {
-                var highbyte = binr.ReadByte();
-                var lowbyte = binr.ReadByte();
-                byte[] modint = { lowbyte, highbyte, 0x00, 0x00 };
-                count = BitConverter.ToInt32(modint, 0);
+                algorithm?.Dispose();
+                throw;
             }
-            else
-            {
-                count = bt;
-            }
-
-            while (binr.ReadByte() == 0x00)
-            {
-                count -= 1;
-            }
-
-            binr.BaseStream.Seek(-1, SeekOrigin.Current);
-            return count;
         }
     }
 }
