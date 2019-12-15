@@ -101,7 +101,7 @@ namespace AspNet.Security.OAuth.Alipay
                 return OAuthTokenResponse.Failed(new Exception("An error occurred while retrieving an access token."));
             }
 
-            using var payload = await ParseJsonAsync(response, "alipay_system_oauth_token_response");
+            using var payload = JsonDocument.Parse(await GetRawStringAsync(response, "alipay_system_oauth_token_response"));
 
             return OAuthTokenResponse.Success(payload);
         }
@@ -139,7 +139,7 @@ namespace AspNet.Security.OAuth.Alipay
                 throw new HttpRequestException("An error occurred while retrieving user information.");
             }
 
-            using var payload = await ParseJsonAsync(response, "alipay_user_info_share_response");
+            using var payload = JsonDocument.Parse(await GetRawStringAsync(response, "alipay_user_info_share_response"));
             string statusCode = payload.RootElement.GetString("code");
 
             if (statusCode != "10000")/* if code==10000 then success else failed. See: https://docs.open.alipay.com/common/105806 */
@@ -168,15 +168,15 @@ namespace AspNet.Security.OAuth.Alipay
         /// </summary>
         /// <param name="message">The message.</param>
         /// <param name="elementName">Name of the element.</param>
-        /// <returns>Task&lt;JsonDocument&gt;.</returns>
-        private async Task<JsonDocument> ParseJsonAsync(HttpResponseMessage message, string elementName)
+        /// <returns>Task&lt;System.String&gt;.</returns>
+        private async Task<string> GetRawStringAsync(HttpResponseMessage message, string elementName)
         {
             var messageStream = await message.Content.ReadAsStreamAsync();
 
             var document = await JsonSerializer.DeserializeAsync<JsonElement>(messageStream);
             var elementContent = document.GetString(elementName);
 
-            return JsonDocument.Parse(elementContent);
+            return elementContent;
         }
 
         /// <summary>
