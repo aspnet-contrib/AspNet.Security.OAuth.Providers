@@ -168,7 +168,6 @@ namespace AspNet.Security.OAuth.Alipay
         /// </summary>
         /// <param name="message">The message.</param>
         /// <param name="elementName">Name of the element.</param>
-        /// <returns>Task&lt;System.String&gt;.</returns>
         private async Task<string> GetRawStringAsync(HttpResponseMessage message, string elementName)
         {
             var messageStream = await message.Content.ReadAsStreamAsync();
@@ -183,7 +182,6 @@ namespace AspNet.Security.OAuth.Alipay
         /// Gets the RSA2 signature.
         /// </summary>
         /// <param name="source">The source.</param>
-        /// <returns>System.String.</returns>
         private string GetRSA2Signature(SortedDictionary<string, string> source)
         {
             var builder = new StringBuilder();
