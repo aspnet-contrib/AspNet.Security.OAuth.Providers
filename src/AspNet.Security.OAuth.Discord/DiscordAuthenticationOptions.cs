@@ -20,9 +20,10 @@ namespace AspNet.Security.OAuth.Discord
         /// <summary>
         /// Root Discord CDN URL path
         /// </summary>
-        public string DiscordCDN { get; set; } = Urls.DiscordCDN;
+        public string DiscordCdn { get; set; } = Urls.DiscordCdn;
+
         /// <summary>
-        /// URL format of the user avatar, using string.format. Substitute {0} for DiscordCDN, {1} for User ID and {2} for Avatar hash. Default of "{0}/avatars/{1}/{2}.png"
+        /// URL format of the user avatar, using string.format. Substitute {0} for DiscordCdn, {1} for User ID and {2} for Avatar hash. Default of "{0}/avatars/{1}/{2}.png"
         /// </summary>
         public string DiscordAvatarFormat { get; set; } = Urls.AvatarUrlFormat;
 
@@ -39,7 +40,7 @@ namespace AspNet.Security.OAuth.Discord
             ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
             ClaimActions.MapJsonKey(Claims.AvatarHash, "avatar");
             ClaimActions.MapCustomJson(Claims.AvatarUrl, user => {
-                return string.Format(DiscordAvatarFormat, DiscordCDN.TrimEnd('/'), user.GetString("id"), user.GetString("avatar"));
+                return string.Format(DiscordAvatarFormat, DiscordCdn.TrimEnd('/'), user.GetString("id"), user.GetString("avatar"));
             });
             ClaimActions.MapJsonKey(Claims.Discriminator, "discriminator");
 
