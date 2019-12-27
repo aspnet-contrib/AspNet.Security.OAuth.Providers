@@ -8,6 +8,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
+using static AspNet.Security.OAuth.Discord.DiscordAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.Discord
 {
@@ -26,9 +27,12 @@ namespace AspNet.Security.OAuth.Discord
             TokenEndpoint = DiscordAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = DiscordAuthenticationDefaults.UserInformationEndpoint;
 
-            ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
-            ClaimActions.MapJsonKey(ClaimTypes.Name, "username");
-            ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
+			ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
+			ClaimActions.MapJsonKey(ClaimTypes.Name, "username");
+			ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
+			ClaimActions.MapJsonKey(Claims.AvatarHash, "avatar");
+			ClaimActions.MapCustomJson(Claims.AvatarUrl, user => $"{Urls.DiscordCDN}/avatars/{user.GetString("id")}/{user.GetString("avatar")}.png");
+			ClaimActions.MapJsonKey(Claims.Discriminator, "discriminator");
 
             Scope.Add("identify");
         }
