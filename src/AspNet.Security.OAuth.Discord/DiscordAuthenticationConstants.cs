@@ -14,6 +14,7 @@ namespace AspNet.Security.OAuth.Discord
         public static class Urls
         {
             public const string DiscordCDN = "https://cdn.discordapp.com";
+            public const string AvatarUrlFormat = "{0}/avatars/{1}/{2}.png";
         }
 
         public static class Claims
