@@ -12,6 +12,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Text.Json;
@@ -54,13 +55,19 @@ namespace AspNet.Security.OAuth.DingTalk
             [NotNull] OAuthTokenResponse tokens)
         {
             var timestamp = GetTimeStamp();
+
             var address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, new Dictionary<string, string>
             {
                 ["accessKey"] = Options.ClientId,
                 ["timestamp"] = timestamp,
                 ["signature"] = Signature(timestamp, Options.ClientSecret),
             });
-            using var response = await Backchannel.PostAsJsonAsync(address, new { tmp_auth_code = tokens.AccessToken });
+
+            using var request = new HttpRequestMessage(HttpMethod.Post, address);
+            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            request.Content = new StringContent("{\"tmp_auth_code\":\"" + tokens.AccessToken + "\"}", System.Text.Encoding.UTF8, "application/json");
+            using var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
+            //using var response = await Backchannel.PostAsJsonAsync(address,new { tmp_auth_code = tokens .AccessToken});
             if (!response.IsSuccessStatusCode)
             {
                 Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
@@ -144,4 +151,3 @@ namespace AspNet.Security.OAuth.DingTalk
         //}
     }
 }
-
