@@ -1,0 +1,22 @@
+{
+  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
+  "items": [
+    {
+      "uri": "https://oapi.dingtalk.com/sns/getuserinfo_bycode",
+      "method": "POST",
+      "IgnoreQuery": true,
+      "contentFormat": "json",
+      "contentJson": {
+        "errcode": 0,
+        "errmsg": "ok",
+        "user_info": {
+          "nick": "John Smith",
+          "unionid": "PcgbiiujjR7gGjgggKDjPSwiEiE",
+          "dingId": "$:LWCP_v1:$***********",
+          "openid": "n6GjFgKT3FADNeJoUux3FwiEiE",
+          "main_org_auth_high_level": true
+        }
+      }
+    }
+  ]
+}
