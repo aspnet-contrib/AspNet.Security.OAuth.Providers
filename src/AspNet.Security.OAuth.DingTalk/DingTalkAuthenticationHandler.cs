@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -127,10 +128,6 @@ namespace AspNet.Security.OAuth.DingTalk
             return JsonDocument.Parse(bufferWriter.WrittenMemory);
         }
 
-        /// <summary>
-        /// 获取时间戳
-        /// </summary>
-        /// <returns></returns>
         private string GetTimeStamp()
         {
             var ts = Clock.UtcNow - System.DateTimeOffset.UnixEpoch;
@@ -139,38 +136,16 @@ namespace AspNet.Security.OAuth.DingTalk
 
         private string Signature(string timestamp, string secret)
         {
-            secret = secret ?? "";
-            var encoding = new System.Text.UTF8Encoding();
+            secret = secret ?? string.Empty;
+            var encoding = System.Text.Encoding.UTF8;
             byte[] keyByte = encoding.GetBytes(secret);
             byte[] messageBytes = encoding.GetBytes(timestamp);
-            using (var hmacsha256 = new System.Security.Cryptography.HMACSHA256(keyByte))
+            using (var hmacsha256 = HMAC.Create("HMACSHA256"))
             {
-                byte[] hashmessage = hmacsha256.ComputeHash(messageBytes);
-                return System.Convert.ToBase64String(hashmessage);
+                hmacsha256.Key = keyByte;
+                byte[] hashMessage = hmacsha256.ComputeHash(messageBytes);
+                return System.Convert.ToBase64String(hashMessage);
             }
         }
-        //private async Task<string> GetUserTokenAsync(OAuthTokenResponse tokens)
-        //{
-        //    var address = QueryHelpers.AddQueryString(Options.TokenEndpoint, new Dictionary<string, string>()
-        //    {
-        //        ["appid"] = Options.ClientId,
-        //        ["appsecret"] = Options.ClientSecret
-        //    });
-
-        //    using var request = new HttpRequestMessage(HttpMethod.Get, address);
-
-        //    using var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
-        //    if (!response.IsSuccessStatusCode)
-        //    {
-        //        Logger.LogError("An error occurred while retrieving an access token: the remote server " +
-        //                        "returned a {Status} response with the following payload: {Headers} {Body}.",
-        //                        /* Status: */ response.StatusCode,
-        //                        /* Headers: */ response.Headers.ToString(),
-        //                        /* Body: */ await response.Content.ReadAsStringAsync());
-
-        //        return OAuthTokenResponse.Failed(new Exception("An error occurred while retrieving an access token."));
-        //    }
-
-        //}
     }
 }
