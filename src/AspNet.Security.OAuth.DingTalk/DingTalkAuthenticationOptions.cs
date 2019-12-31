@@ -35,7 +35,11 @@ namespace AspNet.Security.OAuth.DingTalk
             ClaimActions.MapJsonKey(Claims.DingId, "dingId");
             ClaimActions.MapJsonKey(Claims.MainOrgAuthHighLevel, "main_org_auth_high_level");
         }
-
+        public bool IsUseUserPasswordLogin
+        {
+            get { return AuthorizationEndpoint == DingTalkAuthenticationDefaults.AuthorizationUserPassEndpoint; }
+            set { AuthorizationEndpoint = value ? DingTalkAuthenticationDefaults.AuthorizationUserPassEndpoint : DingTalkAuthenticationDefaults.AuthorizationEndpoint; }
+        }
         public string AppId
         {
             get { return ClientId; }

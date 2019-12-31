@@ -3,6 +3,7 @@
  * See https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers
  * for more information concerning the license and the contributors participating to this project.
  */
+
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 
@@ -37,7 +38,7 @@ namespace AspNet.Security.OAuth.DingTalk
         /// Default value for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
         /// </summary>
         public const string AuthorizationEndpoint = "https://oapi.dingtalk.com/connect/qrconnect";
-        //public const string AuthorizationEndpointUserPass = "https://oapi.dingtalk.com/connect/oauth2/sns_authorize";
+        public const string AuthorizationUserPassEndpoint = "https://oapi.dingtalk.com/connect/oauth2/sns_authorize";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.TokenEndpoint"/>.
@@ -50,4 +51,3 @@ namespace AspNet.Security.OAuth.DingTalk
         public const string UserInformationEndpoint = "https://oapi.dingtalk.com/sns/getuserinfo_bycode";
     }
 }
-

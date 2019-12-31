@@ -4,12 +4,7 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using JetBrains.Annotations;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
+using System.Buffers;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -17,6 +12,13 @@ using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OAuth;
+using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Primitives;
 
 namespace AspNet.Security.OAuth.DingTalk
 {
@@ -30,6 +32,7 @@ namespace AspNet.Security.OAuth.DingTalk
             : base(options, logger, encoder, clock)
         {
         }
+
         protected override string BuildChallengeUrl(AuthenticationProperties properties, string redirectUri)
         {
             string stateValue = Options.StateDataFormat.Protect(properties);
@@ -43,9 +46,10 @@ namespace AspNet.Security.OAuth.DingTalk
             });
             return address;
         }
+
         protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] OAuthCodeExchangeContext context)
         {
-            using var payload = JsonDocument.Parse("{\"access_token\":\"" + context.Code + "\"}");
+            using var payload = await CopyPayloadAsync(new Dictionary<string, StringValues> { { "access_token", context.Code } });
             return await Task.FromResult(OAuthTokenResponse.Success(payload));
         }
 
@@ -65,9 +69,9 @@ namespace AspNet.Security.OAuth.DingTalk
 
             using var request = new HttpRequestMessage(HttpMethod.Post, address);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            request.Content = new StringContent("{\"tmp_auth_code\":\"" + tokens.AccessToken + "\"}", System.Text.Encoding.UTF8, "application/json");
+            using var requestContent = await CopyPayloadAsync(new Dictionary<string, StringValues> { { "tmp_auth_code", tokens.AccessToken } });
+            request.Content = new StringContent(requestContent.RootElement.ToString(), System.Text.Encoding.UTF8, "application/json");
             using var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
-            //using var response = await Backchannel.PostAsJsonAsync(address,new { tmp_auth_code = tokens .AccessToken});
             if (!response.IsSuccessStatusCode)
             {
                 Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
@@ -93,7 +97,6 @@ namespace AspNet.Security.OAuth.DingTalk
             }
 
             var userInfo = payload.RootElement.GetProperty("user_info");
-            //identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, "1141CA123A8EF446A2C71DEC1BA9E2C1", ClaimValueTypes.String, Options.ClaimsIssuer));
             var principal = new ClaimsPrincipal(identity);
             var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, userInfo);
             context.RunClaimActions();
@@ -104,6 +107,25 @@ namespace AspNet.Security.OAuth.DingTalk
 
         protected override string FormatScope() => string.Join(",", Options.Scope);
 
+        private async Task<JsonDocument> CopyPayloadAsync(Dictionary<string, StringValues> content)
+        {
+            var bufferWriter = new ArrayBufferWriter<byte>();
+
+            await using (var writer = new Utf8JsonWriter(bufferWriter))
+            {
+                writer.WriteStartObject();
+
+                foreach (var item in content)
+                {
+                    writer.WriteString(item.Key, item.Value);
+                }
+
+                writer.WriteEndObject();
+                await writer.FlushAsync();
+            }
+
+            return JsonDocument.Parse(bufferWriter.WrittenMemory);
+        }
 
         /// <summary>
         /// 获取时间戳
@@ -111,9 +133,10 @@ namespace AspNet.Security.OAuth.DingTalk
         /// <returns></returns>
         private string GetTimeStamp()
         {
-            var ts = System.DateTime.UtcNow - new System.DateTime(1970, 1, 1, 0, 0, 0, 0);
+            var ts = Clock.UtcNow - System.DateTimeOffset.UnixEpoch;
             return System.Convert.ToInt64(ts.TotalMilliseconds).ToString();
         }
+
         private string Signature(string timestamp, string secret)
         {
             secret = secret ?? "";
