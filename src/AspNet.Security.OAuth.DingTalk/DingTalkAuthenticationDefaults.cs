@@ -38,6 +38,10 @@ namespace AspNet.Security.OAuth.DingTalk
         /// Default value for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
         /// </summary>
         public const string AuthorizationEndpoint = "https://oapi.dingtalk.com/connect/qrconnect";
+
+        /// <summary>
+        /// UserPass Authorize for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
+        /// </summary>
         public const string AuthorizationUserPassEndpoint = "https://oapi.dingtalk.com/connect/oauth2/sns_authorize";
 
         /// <summary>

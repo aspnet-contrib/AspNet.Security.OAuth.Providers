@@ -50,7 +50,7 @@ namespace AspNet.Security.OAuth.DingTalk
 
         protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] OAuthCodeExchangeContext context)
         {
-            using var payload = await CopyPayloadAsync(new Dictionary<string, StringValues> { { "access_token", context.Code } });
+            using var payload = await CopyPayloadAsync("access_token", context.Code);
             return await Task.FromResult(OAuthTokenResponse.Success(payload));
         }
 
@@ -69,9 +69,9 @@ namespace AspNet.Security.OAuth.DingTalk
             });
 
             using var request = new HttpRequestMessage(HttpMethod.Post, address);
-            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            using var requestContent = await CopyPayloadAsync(new Dictionary<string, StringValues> { { "tmp_auth_code", tokens.AccessToken } });
-            request.Content = new StringContent(requestContent.RootElement.ToString(), System.Text.Encoding.UTF8, "application/json");
+            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(System.Net.Mime.MediaTypeNames.Application.Json));
+            using var requestContent = await CopyPayloadAsync("tmp_auth_code", tokens.AccessToken);
+            request.Content = new StringContent(requestContent.RootElement.ToString(), System.Text.Encoding.UTF8, System.Net.Mime.MediaTypeNames.Application.Json);
             using var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
             if (!response.IsSuccessStatusCode)
             {
@@ -108,7 +108,7 @@ namespace AspNet.Security.OAuth.DingTalk
 
         protected override string FormatScope() => string.Join(",", Options.Scope);
 
-        private async Task<JsonDocument> CopyPayloadAsync(Dictionary<string, StringValues> content)
+        private async Task<JsonDocument> CopyPayloadAsync(string propertyName, string value)
         {
             var bufferWriter = new ArrayBufferWriter<byte>();
 
@@ -116,10 +116,7 @@ namespace AspNet.Security.OAuth.DingTalk
             {
                 writer.WriteStartObject();
 
-                foreach (var item in content)
-                {
-                    writer.WriteString(item.Key, item.Value);
-                }
+                writer.WriteString(propertyName, value);
 
                 writer.WriteEndObject();
                 await writer.FlushAsync();
@@ -131,19 +128,19 @@ namespace AspNet.Security.OAuth.DingTalk
         private string GetTimeStamp()
         {
             var ts = Clock.UtcNow - System.DateTimeOffset.UnixEpoch;
-            return System.Convert.ToInt64(ts.TotalMilliseconds).ToString();
+            return ts.TotalMilliseconds.ToString("F0", System.Globalization.CultureInfo.InvariantCulture);
         }
 
         private string Signature(string timestamp, string secret)
         {
             secret = secret ?? string.Empty;
             var encoding = System.Text.Encoding.UTF8;
-            byte[] keyByte = encoding.GetBytes(secret);
+            byte[] keyBytes = encoding.GetBytes(secret);
             byte[] messageBytes = encoding.GetBytes(timestamp);
-            using (var hmacsha256 = HMAC.Create("HMACSHA256"))
+            using (var hmac = HMAC.Create("HMACSHA256"))
             {
-                hmacsha256.Key = keyByte;
-                byte[] hashMessage = hmacsha256.ComputeHash(messageBytes);
+                hmac.Key = keyBytes;
+                byte[] hashMessage = hmac.ComputeHash(messageBytes);
                 return System.Convert.ToBase64String(hashMessage);
             }
         }
