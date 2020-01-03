@@ -102,11 +102,14 @@ namespace AspNet.Security.OAuth.Deezer
 
         protected override string BuildChallengeUrl(AuthenticationProperties properties, string redirectUri)
         {
+            var scopeParameter = properties.GetParameter<ICollection<string>>(OAuthChallengeProperties.ScopeKey);
+            string scopes = scopeParameter != null ? FormatScope(scopeParameter) : FormatScope();
+
             var parameters = new Dictionary<string, string>
             {
                 { "app_id", Options.App_Id },
                 { "redirect_uri", redirectUri },
-                { "perms", string.Join(",", Options.Permissions)}
+                { "perms", scopes }
             };
 
             if (Options.UsePkce)
@@ -130,6 +133,14 @@ namespace AspNet.Security.OAuth.Deezer
 
             return QueryHelpers.AddQueryString(Options.AuthorizationEndpoint, parameters);
         }
+
+        /// <summary>
+        /// Format a list of OAuth scopes.
+        /// </summary>
+        /// <param name="scopes">List of scopes.</param>
+        /// <returns>Formatted scopes.</returns>
+        protected override string FormatScope(IEnumerable<string> scopes)
+            => string.Join(",", scopes); // Deezer API Permissions comma separated
 
         private static async Task<string> Display(HttpResponseMessage response)
         {

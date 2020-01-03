@@ -4,7 +4,6 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using System.Collections.Generic;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
@@ -22,7 +21,6 @@ namespace AspNet.Security.OAuth.Deezer
         /// Deezer API Permissions
         /// <para>https://developers.deezer.com/api/permissions</para>
         /// </summary>
-        public List<string> Permissions { get; set; } = new List<string> { DeezerAuthenticationConstants.Permissions.Basic_Access };
 
         public DeezerAuthenticationOptions()
         {
@@ -57,6 +55,8 @@ namespace AspNet.Security.OAuth.Deezer
             ClaimActions.MapJsonKey(Claims.Tracklist, "tracklist");
             ClaimActions.MapJsonKey(Claims.Type, "type");
             ClaimActions.MapJsonKey(Claims.Explicit_Content_Level, "explicit_content_level");
+
+            Scope.Add(Scopes.Identity);
         }
 
         //

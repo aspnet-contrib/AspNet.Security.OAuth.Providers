@@ -35,14 +35,47 @@ namespace AspNet.Security.OAuth.Deezer
         /// Deezer API Permissions
         /// <para>https://developers.deezer.com/api/permissions</para>
         /// </summary>
-        public static class Permissions
+        public static class Scopes
         {
-            public const string Basic_Access = "basic_access";
+            /// <summary>
+            /// Access users basic information
+            /// <para>Incl. name, firstname, profile picture only.</para>
+            /// <para>Dafault permission</para>
+            /// </summary>
+            public const string Identity = "basic_access";
+
+            /// <summary>
+            /// Get the user's email
+            /// </summary>
             public const string Email = "email";
+
+            /// <summary>
+            /// Access user data any time
+            /// <para>Application may access user data at any time.</para>
+            /// </summary>
             public const string Offline_Access = "offline_access";
+
+            /// <summary>
+            /// Manage users' library
+            /// <para>Add/rename a playlist. Add/order songs in the playlist.</para>
+            /// </summary>
             public const string Manage_Library = "manage_library";
+
+            /// <summary>
+            /// Manage users' friends
+            /// <para>Add/remove a following/follower.</para>
+            /// </summary>
             public const string Manage_Community = "manage_community";
+
+            /// <summary>
+            /// Delete library itemse
+            /// <para>Allow the application to delete items in the user's library.</para>
+            /// </summary>
             public const string Delete_Library = "delete_library";
+
+            /// <summary>
+            /// Allow the application to access the user's listening history
+            /// </summary>
             public const string Listening_History = "listening_history";
         }
 
