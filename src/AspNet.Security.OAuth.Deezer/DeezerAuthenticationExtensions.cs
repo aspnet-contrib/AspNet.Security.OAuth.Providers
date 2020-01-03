@@ -24,7 +24,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns>A reference to this instance after the operation has completed.</returns>
         public static AuthenticationBuilder AddDeezer([NotNull] this AuthenticationBuilder builder)
         {
-            return builder.AddDeezer(DeezerAuthenticationDefaults.AuthenticationScheme, options => { });
+            return builder.AddDeezer(DeezerAuthenticationDefaults.AuthenticationScheme, _ => { });
         }
 
         /// <summary>
@@ -32,7 +32,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <see cref="AuthenticationBuilder"/>, which enables Deezer authentication capabilities.
         /// </summary>
         /// <param name="builder">The authentication builder.</param>
-        /// <param name="configuration">The delegate used to configure the OpenID 2.0 options.</param>
+        /// <param name="configuration">The delegate used to configure the Deezer options.</param>
         /// <returns>A reference to this instance after the operation has completed.</returns>
         public static AuthenticationBuilder AddDeezer(
             [NotNull] this AuthenticationBuilder builder,
@@ -71,7 +71,6 @@ namespace Microsoft.Extensions.DependencyInjection
             [NotNull] Action<DeezerAuthenticationOptions> configuration)
         {
             return builder.AddOAuth<DeezerAuthenticationOptions, DeezerAuthenticationHandler>(scheme, caption, configuration);
-            //return builder.AddRemoteScheme<DeezerAuthenticationOptions, DeezerAuthenticationHandler>(scheme, caption, configuration);
         }
     }
 }

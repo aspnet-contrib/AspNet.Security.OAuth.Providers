@@ -18,7 +18,25 @@
       "contentJson": {
         "id": "my-id",
         "name": "John Smith",
-        "email": "john@john-smith.local"
+        "email": "john@john-smith.local",
+        "firstname": "John",
+        "lastname": "Smith",
+        "birthday": "2020-01-01",
+        "gender": "male",
+        "country": "some country",
+        "picture": "Avatar",
+        "picture_xl": "AvatarXL",
+        "picture_big": "AvatarBig",
+        "picture_medium": "AvatarMedium",
+        "picture_small": "AvatarSmall",
+        "link": "Url",
+        "status": "Status",
+        "inscription_date": "InscriptionDate",
+        "lang": "Language",
+        "is_kid": "false",
+        "tracklist": "Tracklist",
+        "type": "Type",
+        "explicit_content_level": "ExplicitContentLevel"
       }
     }
   ]

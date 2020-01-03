@@ -17,18 +17,18 @@ namespace AspNet.Security.OAuth.Deezer
         {
             public const string Username = "urn:deezer:username";
             public const string Avatar = "urn:deezer:picture";
-            public const string Avatar_XL = "urn:deezer:picture_xl";
-            public const string Avatar_Big = "urn:deezer:picture_big";
-            public const string Avatar_Medium = "urn:deezer:picture_medium";
-            public const string Avatar_Small = "urn:deezer:picture_small";
+            public const string AvatarXL = "urn:deezer:picture_xl";
+            public const string AvatarBig = "urn:deezer:picture_big";
+            public const string AvatarMedium = "urn:deezer:picture_medium";
+            public const string AvatarSmall = "urn:deezer:picture_small";
             public const string Url = "urn:deezer:link";
             public const string Status = "urn:deezer:status";
-            public const string Inscription_Date = "urn:deezer:inscription_date";
+            public const string InscriptionDate = "urn:deezer:inscription_date";
             public const string Language = "urn:deezer:lang";
             public const string IsKid = "urn:deezer:is_kid";
             public const string Tracklist = "urn:deezer:tracklist";
             public const string Type = "urn:deezer:type";
-            public const string Explicit_Content_Level = "urn:deezer:explicit_content_level";
+            public const string ExplicitContentLevel = "urn:deezer:explicit_content_level";
         }
 
         /// <summary>
@@ -39,8 +39,8 @@ namespace AspNet.Security.OAuth.Deezer
         {
             /// <summary>
             /// Access users basic information
-            /// <para>Incl. name, firstname, profile picture only.</para>
-            /// <para>Dafault permission</para>
+            /// <para>Includes name, firstname, profile picture only.</para>
+            /// <para>Default permission</para>
             /// </summary>
             public const string Identity = "basic_access";
 
@@ -68,7 +68,7 @@ namespace AspNet.Security.OAuth.Deezer
             public const string Manage_Community = "manage_community";
 
             /// <summary>
-            /// Delete library itemse
+            /// Delete library items
             /// <para>Allow the application to delete items in the user's library.</para>
             /// </summary>
             public const string Delete_Library = "delete_library";

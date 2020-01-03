@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Net.Mime;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
@@ -34,14 +35,12 @@ namespace AspNet.Security.OAuth.Deezer
         {
         }
 
-        private static readonly RandomNumberGenerator CryptoRandom = RandomNumberGenerator.Create();
-
         protected override async Task<OAuthTokenResponse> ExchangeCodeAsync(OAuthCodeExchangeContext context)
         {
             var tokenRequestParameters = new Dictionary<string, string>()
             {
-                { "app_id", Options.App_Id },
-                { "secret", Options.Secret },
+                { "app_id", Options.ClientId },
+                { "secret", Options.ClientSecret },
                 { "code", context.Code },
                 { "output", "json" }
             };
@@ -55,19 +54,25 @@ namespace AspNet.Security.OAuth.Deezer
 
             string endpoint = QueryHelpers.AddQueryString(Options.TokenEndpoint, tokenRequestParameters);
 
-            var requestMessage = new HttpRequestMessage(HttpMethod.Get, endpoint);
-            requestMessage.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            var response = await Backchannel.SendAsync(requestMessage, Context.RequestAborted);
-            if (response.IsSuccessStatusCode)
+            using var requestMessage = new HttpRequestMessage(HttpMethod.Get, endpoint);
+            requestMessage.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json));
+            using var response = await Backchannel.SendAsync(requestMessage, Context.RequestAborted);
+            if (!response.IsSuccessStatusCode)
             {
-                var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
-                return OAuthTokenResponse.Success(payload);
-            }
-            else
-            {
-                string error = "OAuth token endpoint failure: " + await Display(response);
+                const string error = "An error occurred while retrieving an OAuth token";
+
+                Logger.LogError("{Error}: the remote server " +
+                                "returned a {Status} response with the following payload: {Headers} {Body}.",
+                                /* Error: */  error,
+                                /* Status: */ response.StatusCode,
+                                /* Headers: */ response.Headers.ToString(),
+                                /* Body: */ await response.Content.ReadAsStringAsync());
+
                 return OAuthTokenResponse.Failed(new Exception(error));
             }
+
+            var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
+            return OAuthTokenResponse.Success(payload);
         }
 
         protected override async Task<AuthenticationTicket> CreateTicketAsync([NotNull] ClaimsIdentity identity,
@@ -76,7 +81,7 @@ namespace AspNet.Security.OAuth.Deezer
             string address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, "access_token", tokens.AccessToken);
 
             using var request = new HttpRequestMessage(HttpMethod.Get, address);
-            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json));
 
             using var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
             if (!response.IsSuccessStatusCode)
@@ -107,7 +112,7 @@ namespace AspNet.Security.OAuth.Deezer
 
             var parameters = new Dictionary<string, string>
             {
-                { "app_id", Options.App_Id },
+                { "app_id", Options.ClientId },
                 { "redirect_uri", redirectUri },
                 { "perms", scopes }
             };
@@ -115,17 +120,15 @@ namespace AspNet.Security.OAuth.Deezer
             if (Options.UsePkce)
             {
                 byte[] bytes = new byte[32];
-                CryptoRandom.GetBytes(bytes);
+                RandomNumberGenerator.Fill(bytes);
                 string codeVerifier = Microsoft.AspNetCore.WebUtilities.Base64UrlTextEncoder.Encode(bytes);
 
                 // Store this for use during the code redemption.
                 properties.Items.Add(OAuthConstants.CodeVerifierKey, codeVerifier);
 
-                using var sha256 = SHA256.Create();
+                using var sha256 = HashAlgorithm.Create("SHA256");
                 byte[] challengeBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(codeVerifier));
-                string codeChallenge = WebEncoders.Base64UrlEncode(challengeBytes);
-
-                parameters[OAuthConstants.CodeChallengeKey] = codeChallenge;
+                parameters[OAuthConstants.CodeChallengeKey] = WebEncoders.Base64UrlEncode(challengeBytes);
                 parameters[OAuthConstants.CodeChallengeMethodKey] = OAuthConstants.CodeChallengeMethodS256;
             }
 
@@ -134,21 +137,8 @@ namespace AspNet.Security.OAuth.Deezer
             return QueryHelpers.AddQueryString(Options.AuthorizationEndpoint, parameters);
         }
 
-        /// <summary>
-        /// Format a list of OAuth scopes.
-        /// </summary>
-        /// <param name="scopes">List of scopes.</param>
-        /// <returns>Formatted scopes.</returns>
+        /// <inheritdoc/>
         protected override string FormatScope(IEnumerable<string> scopes)
-            => string.Join(",", scopes); // Deezer API Permissions comma separated
-
-        private static async Task<string> Display(HttpResponseMessage response)
-        {
-            var output = new StringBuilder();
-            output.Append("Status: " + response.StatusCode + ";");
-            output.Append("Headers: " + response.Headers.ToString() + ";");
-            output.Append("Body: " + await response.Content.ReadAsStringAsync() + ";");
-            return output.ToString();
-        }
+            => string.Join(",", scopes);
     }
 }
