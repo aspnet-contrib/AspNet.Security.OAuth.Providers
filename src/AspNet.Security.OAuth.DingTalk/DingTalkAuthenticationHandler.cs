@@ -8,6 +8,7 @@ using System.Buffers;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Net.Mime;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text.Encodings.Web;
@@ -19,7 +20,6 @@ using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Microsoft.Extensions.Primitives;
 
 namespace AspNet.Security.OAuth.DingTalk
 {
@@ -50,7 +50,7 @@ namespace AspNet.Security.OAuth.DingTalk
 
         protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] OAuthCodeExchangeContext context)
         {
-            using var payload = await CopyPayloadAsync("access_token", context.Code);
+            using var payload = JsonDocument.Parse(await CopyPayloadAsync("access_token", context.Code));
             return await Task.FromResult(OAuthTokenResponse.Success(payload));
         }
 
@@ -69,9 +69,9 @@ namespace AspNet.Security.OAuth.DingTalk
             });
 
             using var request = new HttpRequestMessage(HttpMethod.Post, address);
-            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(System.Net.Mime.MediaTypeNames.Application.Json));
-            using var requestContent = await CopyPayloadAsync("tmp_auth_code", tokens.AccessToken);
-            request.Content = new StringContent(requestContent.RootElement.ToString(), System.Text.Encoding.UTF8, System.Net.Mime.MediaTypeNames.Application.Json);
+            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json));
+            using var requestContent = new ReadOnlyMemoryContent(await CopyPayloadAsync("tmp_auth_code", "Test"));
+            requestContent.Headers.ContentType = new MediaTypeHeaderValue(MediaTypeNames.Application.Json);
             using var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
             if (!response.IsSuccessStatusCode)
             {
@@ -108,7 +108,7 @@ namespace AspNet.Security.OAuth.DingTalk
 
         protected override string FormatScope() => string.Join(",", Options.Scope);
 
-        private async Task<JsonDocument> CopyPayloadAsync(string propertyName, string value)
+        private async Task<System.ReadOnlyMemory<byte>> CopyPayloadAsync(string propertyName, string value)
         {
             var bufferWriter = new ArrayBufferWriter<byte>();
 
@@ -122,7 +122,7 @@ namespace AspNet.Security.OAuth.DingTalk
                 await writer.FlushAsync();
             }
 
-            return JsonDocument.Parse(bufferWriter.WrittenMemory);
+            return bufferWriter.WrittenMemory;
         }
 
         private string GetTimeStamp()

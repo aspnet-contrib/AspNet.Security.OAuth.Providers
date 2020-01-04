@@ -28,10 +28,10 @@ namespace AspNet.Security.OAuth.DingTalk
 
             Scope.Add("snsapi_login");
 
-            ClaimActions.MapJsonKey(ClaimTypes.Name, "nick");//用户在钉钉上面的昵称
+            ClaimActions.MapJsonKey(ClaimTypes.Name, "nick");
             ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "openid");
-            ClaimActions.MapJsonKey(Claims.UnionId, "unionid");//用户在当前开放应用所属企业内的唯一标识
-            ClaimActions.MapJsonKey(Claims.OpenId, "openid");//用户在当前开放应用内的唯一标识
+            ClaimActions.MapJsonKey(Claims.UnionId, "unionid");
+            ClaimActions.MapJsonKey(Claims.OpenId, "openid");
             ClaimActions.MapJsonKey(Claims.DingId, "dingId");
             ClaimActions.MapJsonKey(Claims.MainOrgAuthHighLevel, "main_org_auth_high_level");
         }
@@ -44,14 +44,14 @@ namespace AspNet.Security.OAuth.DingTalk
 
         public string AppId
         {
-            get { return ClientId; }
-            set { ClientId = value; }
+            get => ClientId;
+            set => ClientId = value;
         }
 
         public string AppSecret
         {
-            get { return ClientSecret; }
-            set { ClientSecret = value; }
+            get => ClientSecret;
+            set => ClientSecret = value;
         }
     }
 }
