@@ -59,16 +59,16 @@ namespace AspNet.Security.OAuth.Deezer
             using var response = await Backchannel.SendAsync(requestMessage, Context.RequestAborted);
             if (!response.IsSuccessStatusCode)
             {
-                const string error = "An error occurred while retrieving an OAuth token";
+                const string Error = "An error occurred while retrieving an OAuth token";
 
                 Logger.LogError("{Error}: the remote server " +
                                 "returned a {Status} response with the following payload: {Headers} {Body}.",
-                                /* Error: */  error,
+                                /* Error: */  Error,
                                 /* Status: */ response.StatusCode,
                                 /* Headers: */ response.Headers.ToString(),
                                 /* Body: */ await response.Content.ReadAsStringAsync());
 
-                return OAuthTokenResponse.Failed(new Exception(error));
+                return OAuthTokenResponse.Failed(new Exception(Error));
             }
 
             var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync());

@@ -79,6 +79,7 @@ We would love it if you could help contributing to this repository.
 * [Steffen Wenz](https://github.com/swenz)
 * [Tathagata Chakraborty](https://github.com/tatx)
 * [TheUltimateC0der](https://github.com/TheUltimateC0der)
+* [Tolbxela](https://github.com/tolbxela)
 * [Tommy Parnell](https://github.com/tparnell8)
 * [twsl](https://github.com/twsI)
 * [Yannic Smeets](https://github.com/yannicsmeets)
