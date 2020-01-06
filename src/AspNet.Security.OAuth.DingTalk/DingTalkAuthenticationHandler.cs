@@ -70,7 +70,7 @@ namespace AspNet.Security.OAuth.DingTalk
 
             using var request = new HttpRequestMessage(HttpMethod.Post, address);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json));
-            using var requestContent = new ReadOnlyMemoryContent(await CopyPayloadAsync("tmp_auth_code", "Test"));
+            using var requestContent = new ReadOnlyMemoryContent(await CopyPayloadAsync("tmp_auth_code", tokens.AccessToken));
             requestContent.Headers.ContentType = new MediaTypeHeaderValue(MediaTypeNames.Application.Json);
             using var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
             if (!response.IsSuccessStatusCode)
