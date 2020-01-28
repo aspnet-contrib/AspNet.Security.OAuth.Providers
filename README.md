@@ -37,7 +37,7 @@ See the [/samples](https://github.com/aspnet-contrib/AspNet.Security.OAuth.Provi
 
 **AspNet.Security.OAuth.Providers** is actively maintained by:
 
-  * **[Kévin Chalet](https://github.com/PinpointTownes)** ([@PinpointTownes](https://twitter.com/PinpointTownes)).
+  * **[Kévin Chalet](https://github.com/kevinchalet)** ([@PinpointTownes](https://twitter.com/PinpointTownes)).
   * **[Martin Costello](https://github.com/martincostello)** ([@martin_costello](https://twitter.com/martin_costello)).
   * **[Patrick Westerhoff](https://github.com/poke)** ([@poke](https://twitter.com/poke)).
 
@@ -65,7 +65,7 @@ We would love it if you could help contributing to this repository.
 * [Jerrie Pelser](https://github.com/jerriep)
 * [Jesse Mandel](https://github.com/supergibbs)
 * [Jordan Knight](https://github.com/jakkaj)
-* [Kévin Chalet](https://github.com/PinpointTownes)
+* [Kévin Chalet](https://github.com/kevinchalet)
 * [Konstantin Mamaev](https://github.com/MrMeison)
 * [Mariusz Zieliński](https://github.com/mariozski)
 * [Martin Costello](https://github.com/martincostello)
