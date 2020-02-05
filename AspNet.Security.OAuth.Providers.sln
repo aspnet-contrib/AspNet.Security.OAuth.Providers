@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.28803.156
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.779
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{8DCAEA78-86AE-4183-93C0-41C7F8850AAA}"
 	ProjectSection(SolutionItems) = preProject
@@ -168,6 +168,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.GitLab", "src\AspNet.Security.OAuth.GitLab\AspNet.Security.OAuth.GitLab.csproj", "{FACB1C2F-3BF7-4DD3-958B-E471E69E214A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.Apple", "src\AspNet.Security.OAuth.Apple\AspNet.Security.OAuth.Apple.csproj", "{DC80AFEC-EFB4-4B21-BF79-44DEA6E1FE26}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.Gitee", "src\AspNet.Security.OAuth.Gitee\AspNet.Security.OAuth.Gitee.csproj", "{D407AC0B-0772-4B82-BC93-21F8B9987C94}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -407,6 +409,10 @@ Global
 		{DC80AFEC-EFB4-4B21-BF79-44DEA6E1FE26}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DC80AFEC-EFB4-4B21-BF79-44DEA6E1FE26}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DC80AFEC-EFB4-4B21-BF79-44DEA6E1FE26}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D407AC0B-0772-4B82-BC93-21F8B9987C94}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D407AC0B-0772-4B82-BC93-21F8B9987C94}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D407AC0B-0772-4B82-BC93-21F8B9987C94}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D407AC0B-0772-4B82-BC93-21F8B9987C94}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -472,6 +478,7 @@ Global
 		{140A6CAD-FC84-4A09-A939-8A5692DF0C7C} = {BAC7067D-88FE-4385-8AC9-1A325FFBDE69}
 		{FACB1C2F-3BF7-4DD3-958B-E471E69E214A} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 		{DC80AFEC-EFB4-4B21-BF79-44DEA6E1FE26} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
+		{D407AC0B-0772-4B82-BC93-21F8B9987C94} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C7B54DE2-6407-4802-AD9C-CE54BF414C8C}
