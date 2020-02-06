@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Description>ASP.NET Core security middleware enabling Gitee authentication.</Description>
+    <Authors>HahaMango</Authors>
+    <PackageTags>aspnetcore;authentication;gitee;oauth;security</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="JetBrains.Annotations" Version="$(JetBrainsVersion)" PrivateAssets="All" />
+  </ItemGroup>
+
+</Project>
