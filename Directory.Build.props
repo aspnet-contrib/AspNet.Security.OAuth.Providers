@@ -63,10 +63,6 @@
     <Serviceable>false</Serviceable>
   </PropertyGroup>
 
-  <ItemGroup Condition=" '$(IsPackable)' == 'true' ">
-    <None Include="$(MSBuildThisFileDirectory)package-icon.png" Pack="True" PackagePath="" />
-  </ItemGroup>
-
   <ItemGroup Condition=" '$(OS)' != 'Windows_NT' ">
     <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" PrivateAssets="All" Version="1.0.0-preview.2" />
   </ItemGroup>
