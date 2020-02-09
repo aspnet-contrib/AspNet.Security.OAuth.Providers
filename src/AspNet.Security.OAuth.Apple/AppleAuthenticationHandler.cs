@@ -122,7 +122,7 @@ namespace AspNet.Security.OAuth.Apple
         }
 
         /// <inheritdoc />
-        protected override async Task<OAuthTokenResponse> ExchangeCodeAsync(OAuthCodeExchangeContext context)
+        protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] OAuthCodeExchangeContext context)
         {
             if (Options.GenerateClientSecret)
             {

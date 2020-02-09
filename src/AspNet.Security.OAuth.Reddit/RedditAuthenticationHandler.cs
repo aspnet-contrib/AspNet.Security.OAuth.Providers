@@ -71,7 +71,7 @@ namespace AspNet.Security.OAuth.Reddit
             return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
         }
 
-        protected override string BuildChallengeUrl(AuthenticationProperties properties, string redirectUri)
+        protected override string BuildChallengeUrl([NotNull] AuthenticationProperties properties, [NotNull] string redirectUri)
         {
             string address = base.BuildChallengeUrl(properties, redirectUri);
 
