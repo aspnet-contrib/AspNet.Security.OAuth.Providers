@@ -81,7 +81,7 @@ namespace AspNet.Security.OAuth.Odnoklassniki
         {
             var builder = new StringBuilder();
 
-            foreach (var b in algorithm.ComputeHash(Encoding.UTF8.GetBytes(input)))
+            foreach (byte b in algorithm.ComputeHash(Encoding.UTF8.GetBytes(input)))
             {
                 builder.Append(b.ToString("x2", CultureInfo.InvariantCulture));
             }

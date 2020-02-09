@@ -31,7 +31,7 @@ namespace AspNet.Security.OAuth.Baidu
             ClaimActions.MapCustomJson(BaiduAuthenticationConstants.Claims.Portrait,
                 user =>
                 {
-                    var portrait = user.GetString("portrait");
+                    string portrait = user.GetString("portrait");
                     return string.IsNullOrWhiteSpace(portrait) ?
                         null :
                         $"https://tb.himg.baidu.com/sys/portrait/item/{WebUtility.UrlEncode(portrait)}";

@@ -81,7 +81,7 @@ namespace AspNet.Security.OAuth.Shopify
 
         private string GetProperty(string propName)
         {
-            return Items.TryGetValue(propName, out var val) ? val : null;
+            return Items.TryGetValue(propName, out string val) ? val : null;
         }
     }
 }
