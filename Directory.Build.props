@@ -63,6 +63,15 @@
     <Serviceable>false</Serviceable>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)AspNet.Security.OAuth.Providers.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="$(RoslynAnalyzersVersion)" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.NetCore.Analyzers" Version="$(RoslynAnalyzersVersion)" PrivateAssets="All" />
+  </ItemGroup>
+
   <ItemGroup Condition=" '$(OS)' != 'Windows_NT' ">
     <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" PrivateAssets="All" Version="1.0.0-preview.2" />
   </ItemGroup>

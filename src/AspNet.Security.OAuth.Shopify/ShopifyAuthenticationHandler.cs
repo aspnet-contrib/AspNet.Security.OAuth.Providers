@@ -62,7 +62,7 @@ namespace AspNet.Security.OAuth.Shopify
 
             // In Shopify, the customer can modify the scope given to the app. Apps should verify
             // that the customer is allowing the required scope.
-            string actualScope = tokens.Response.RootElement.GetString("scope").ToString();
+            string actualScope = tokens.Response.RootElement.GetString("scope");
             bool isPersistent = true;
 
             // If the request was for a "per-user" (i.e. no offline access)
@@ -111,7 +111,7 @@ namespace AspNet.Security.OAuth.Shopify
                 throw new InvalidOperationException(message);
             }
 
-            string uri = string.Format(Options.AuthorizationEndpoint, shopName);
+            string uri = string.Format(CultureInfo.InvariantCulture, Options.AuthorizationEndpoint, shopName);
 
             // Get the permission scope, which can either be set in options or overridden in AuthenticationProperties.
             if (!properties.Items.TryGetValue(ShopifyAuthenticationDefaults.ShopScopeAuthenticationProperty, out string scope))

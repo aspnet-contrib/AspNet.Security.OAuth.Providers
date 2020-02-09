@@ -91,7 +91,7 @@ namespace AspNet.Security.OAuth.Apple.Internal
             return (clientSecret, expiresAt);
         }
 
-        private ECDsa CreateAlgorithm(byte[] keyBlob)
+        private static ECDsa CreateAlgorithm(byte[] keyBlob)
         {
             var algorithm = ECDsa.Create();
 
@@ -107,7 +107,7 @@ namespace AspNet.Security.OAuth.Apple.Internal
             }
         }
 
-        private SigningCredentials CreateSigningCredentials(string keyId, ECDsa algorithm)
+        private static SigningCredentials CreateSigningCredentials(string keyId, ECDsa algorithm)
         {
             var key = new ECDsaSecurityKey(algorithm) { KeyId = keyId };
             return new SigningCredentials(key, SecurityAlgorithms.EcdsaSha256Signature);

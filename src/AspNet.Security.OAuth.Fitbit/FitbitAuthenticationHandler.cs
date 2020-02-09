@@ -102,7 +102,7 @@ namespace AspNet.Security.OAuth.Fitbit
                     return null;
                 }
 
-                return Uri.EscapeDataString(value).Replace("%20", "+");
+                return Uri.EscapeDataString(value).Replace("%20", "+", StringComparison.Ordinal);
             }
 
             string credentials = Convert.ToBase64String(Encoding.ASCII.GetBytes(

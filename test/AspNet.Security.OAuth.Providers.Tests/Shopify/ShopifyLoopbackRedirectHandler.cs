@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Net.Http;
 using System.Web;
 using AspNet.Security.OAuth.Infrastructure;
@@ -23,7 +24,7 @@ namespace AspNet.Security.OAuth.Shopify
 
             var queryString = HttpUtility.ParseQueryString(builder.Query);
 
-            queryString.Add("shop", string.Format(FormatShopParameter, ShopName));
+            queryString.Add("shop", string.Format(CultureInfo.InvariantCulture, FormatShopParameter, ShopName));
 
             builder.Query = queryString.ToString();
 

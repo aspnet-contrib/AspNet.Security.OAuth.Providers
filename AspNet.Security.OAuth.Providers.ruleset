@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RuleSet Name="AspNet.Security.OAuth.Providers Rules" Description="This rule set contains rules for the AspNet.Security.OAuth.Providers solution." ToolsVersion="16.0">
+  <IncludeAll Action="Warning" />
+  <Rules AnalyzerId="Microsoft.Analyzers.ManagedCodeAnalysis" RuleNamespace="Microsoft.Rules.Managed">
+    <Rule Id="CA1031" Action="None" />
+    <Rule Id="CA1034" Action="None" />
+    <Rule Id="CA1044" Action="None" />
+    <Rule Id="CA1052" Action="None" />
+    <Rule Id="CA1056" Action="None" />
+    <Rule Id="CA1062" Action="None" />
+    <Rule Id="CA1303" Action="None" />
+    <Rule Id="CA1308" Action="None" />
+    <Rule Id="CA1724" Action="None" />
+    <Rule Id="CA1812" Action="None" />
+    <Rule Id="CA2007" Action="None" />
+    <Rule Id="CA2208" Action="None" />
+    <Rule Id="CA2234" Action="None" />
+  </Rules>
+</RuleSet>
