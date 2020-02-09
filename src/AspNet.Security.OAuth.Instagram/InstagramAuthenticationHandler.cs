@@ -76,7 +76,7 @@ namespace AspNet.Security.OAuth.Instagram
             return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
         }
 
-        protected virtual string ComputeSignature(string address)
+        protected virtual string ComputeSignature([NotNull] string address)
         {
             string query = new UriBuilder(address).Query;
 
