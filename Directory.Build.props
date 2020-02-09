@@ -72,8 +72,6 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="$(RoslynAnalyzersVersion)" PrivateAssets="All" />
     <PackageReference Include="Microsoft.NetCore.Analyzers" Version="$(RoslynAnalyzersVersion)" PrivateAssets="All" />
-    <AdditionalFiles Include="$(MSBuildThisFileDirectory)stylecop.json" Link="stylecop.json" />
-    <PackageReference Include="StyleCop.Analyzers" Version="$(StyleCopAnalyzersVersion)" PrivateAssets="All" />
   </ItemGroup>
 
   <ItemGroup>
