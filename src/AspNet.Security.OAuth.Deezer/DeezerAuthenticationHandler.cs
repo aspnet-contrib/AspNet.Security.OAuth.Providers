@@ -39,10 +39,10 @@ namespace AspNet.Security.OAuth.Deezer
         {
             var tokenRequestParameters = new Dictionary<string, string>()
             {
-                { "app_id", Options.ClientId },
-                { "secret", Options.ClientSecret },
-                { "code", context.Code },
-                { "output", "json" }
+                ["app_id"] = Options.ClientId,
+                ["secret"] = Options.ClientSecret,
+                ["code"] = context.Code,
+                ["output"] = "json",
             };
 
             // PKCE https://tools.ietf.org/html/rfc7636#section-4.5, see BuildChallengeUrl
@@ -114,9 +114,9 @@ namespace AspNet.Security.OAuth.Deezer
 
             var parameters = new Dictionary<string, string>
             {
-                { "app_id", Options.ClientId },
-                { "redirect_uri", redirectUri },
-                { "perms", scopes }
+                ["app_id"] = Options.ClientId,
+                ["redirect_uri"] = redirectUri,
+                ["perms"] = scopes,
             };
 
             if (Options.UsePkce)
