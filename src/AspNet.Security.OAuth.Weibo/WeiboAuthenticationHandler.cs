@@ -37,7 +37,7 @@ namespace AspNet.Security.OAuth.Weibo
             [NotNull] AuthenticationProperties properties,
             [NotNull] OAuthTokenResponse tokens)
         {
-            var address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, new Dictionary<string, string>
+            string address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, new Dictionary<string, string>
             {
                 ["access_token"] = tokens.AccessToken,
                 ["uid"] = tokens.Response.RootElement.GetString("uid")
@@ -63,9 +63,11 @@ namespace AspNet.Security.OAuth.Weibo
             // When the email address is not public, retrieve it from
             // the emails endpoint if the user:email scope is specified.
             if (!string.IsNullOrEmpty(Options.UserEmailsEndpoint) &&
-                !identity.HasClaim(claim => claim.Type == ClaimTypes.Email) && Options.Scope.Contains("email"))
+                !identity.HasClaim(claim => claim.Type == ClaimTypes.Email) &&
+                Options.Scope.Contains("email"))
             {
-                var email = await GetEmailAsync(tokens);
+                string email = await GetEmailAsync(tokens);
+
                 if (!string.IsNullOrEmpty(address))
                 {
                     identity.AddClaim(new Claim(ClaimTypes.Email, email, ClaimValueTypes.String, Options.ClaimsIssuer));

@@ -46,7 +46,7 @@ namespace AspNet.Security.OAuth.Amazon
             [NotNull] AuthenticationProperties properties,
             [NotNull] OAuthTokenResponse tokens)
         {
-            var endpoint = Options.UserInformationEndpoint;
+            string endpoint = Options.UserInformationEndpoint;
 
             if (Options.Fields.Count > 0)
             {

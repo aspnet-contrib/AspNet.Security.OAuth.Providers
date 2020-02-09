@@ -40,12 +40,12 @@ namespace AspNet.Security.OAuth.Instagram
             [NotNull] AuthenticationProperties properties,
             [NotNull] OAuthTokenResponse tokens)
         {
-            var address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, "access_token", tokens.AccessToken);
+            string address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, "access_token", tokens.AccessToken);
 
             if (Options.UseSignedRequests)
             {
                 // Compute the HMAC256 signature.
-                var signature = ComputeSignature(address);
+                string signature = ComputeSignature(address);
 
                 // Add the signature to the query string.
                 address = QueryHelpers.AddQueryString(address, "sig", signature);
