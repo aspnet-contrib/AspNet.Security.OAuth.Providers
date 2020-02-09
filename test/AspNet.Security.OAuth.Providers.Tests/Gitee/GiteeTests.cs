@@ -24,7 +24,7 @@ namespace AspNet.Security.OAuth.Gitee
 
         protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
         {
-            builder.AddGitee(options => ConfigureDefaults(builder,options));
+            builder.AddGitee(options => ConfigureDefaults(builder, options));
         }
 
         [Theory]

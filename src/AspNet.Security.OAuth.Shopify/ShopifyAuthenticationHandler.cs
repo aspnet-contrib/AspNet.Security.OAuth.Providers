@@ -24,7 +24,6 @@ namespace AspNet.Security.OAuth.Shopify
 {
     public class ShopifyAuthenticationHandler : OAuthHandler<ShopifyAuthenticationOptions>
     {
-        /// <inheritdoc />
         public ShopifyAuthenticationHandler(
             [NotNull] IOptionsMonitor<ShopifyAuthenticationOptions> options,
             [NotNull] ILoggerFactory logger,

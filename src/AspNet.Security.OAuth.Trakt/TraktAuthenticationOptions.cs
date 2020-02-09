@@ -36,7 +36,7 @@ namespace AspNet.Security.OAuth.Trakt
 
         /// <summary>
         /// Gets or sets the API version used when communicating with Trakt.
-        /// See <c>https://trakt.docs.apiary.io/#introduction/required-headers</c> for more information. 
+        /// See <c>https://trakt.docs.apiary.io/#introduction/required-headers</c> for more information.
         /// </summary>
         public string ApiVersion { get; set; } = TraktAuthenticationDefaults.ApiVersion;
     }

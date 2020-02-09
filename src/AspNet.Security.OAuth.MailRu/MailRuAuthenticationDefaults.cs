@@ -48,6 +48,5 @@ namespace AspNet.Security.OAuth.MailRu
         /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
         /// </summary>
         public const string UserInformationEndpoint = "https://oauth.mail.ru/userinfo";
-
     }
 }

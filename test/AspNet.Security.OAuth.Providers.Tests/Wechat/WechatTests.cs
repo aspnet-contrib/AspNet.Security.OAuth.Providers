@@ -20,7 +20,7 @@ namespace AspNet.Security.OAuth.Weixin
             OutputHelper = outputHelper;
         }
 
-        public override string DefaultScheme =>  WeixinAuthenticationDefaults.AuthenticationScheme;
+        public override string DefaultScheme => WeixinAuthenticationDefaults.AuthenticationScheme;
 
         protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
         {

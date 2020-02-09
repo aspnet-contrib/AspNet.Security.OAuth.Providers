@@ -18,6 +18,7 @@
     <MicrosoftNETTestSdkVersion>16.5.0</MicrosoftNETTestSdkVersion>
     <RoslynAnalyzersVersion>2.9.8</RoslynAnalyzersVersion>
     <ShouldlyVersion>3.0.2</ShouldlyVersion>
+    <StyleCopAnalyzersVersion>1.1.118</StyleCopAnalyzersVersion>
     <!--
       Cannot use later versions (5.5.0+) due to https://github.com/AzureAD/azure-activedirectory-identitymodel-extensions-for-dotnet/issues/1302.
     -->
