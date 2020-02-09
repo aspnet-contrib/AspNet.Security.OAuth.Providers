@@ -38,7 +38,7 @@ namespace AspNet.Security.OAuth
         {
             Interceptor = new HttpClientInterceptorOptions()
                 .ThrowsOnMissingRegistration()
-                .RegisterBundle(Path.Combine(GetType().Name.Replace("Tests", string.Empty), "bundle.json"));
+                .RegisterBundle(Path.Combine(GetType().Name.Replace("Tests", string.Empty, StringComparison.OrdinalIgnoreCase), "bundle.json"));
 
             LoopbackRedirectHandler = new LoopbackRedirectHandler
             {

@@ -39,7 +39,7 @@ namespace AspNet.Security.OAuth.Odnoklassniki
             [NotNull] AuthenticationProperties properties,
             [NotNull] OAuthTokenResponse tokens)
         {
-            using var algorithm = MD5.Create();
+            using var algorithm = HashAlgorithm.Create("MD5");
             string accessSecret = GetHash(algorithm, tokens.AccessToken + Options.ClientSecret);
             string sign = GetHash(algorithm, $"application_key={Options.PublicSecret}format=jsonmethod=users.getCurrentUser{accessSecret}");
 

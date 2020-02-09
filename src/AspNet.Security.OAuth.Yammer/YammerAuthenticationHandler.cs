@@ -103,17 +103,16 @@ namespace AspNet.Security.OAuth.Yammer
         {
             var bufferWriter = new ArrayBufferWriter<byte>();
 
-            await using (var writer = new Utf8JsonWriter(bufferWriter))
-            {
-                writer.WriteStartObject();
-                writer.WriteString("access_token", accessToken);
-                writer.WriteString("token_type", string.Empty);
-                writer.WriteString("refresh_token", string.Empty);
-                writer.WriteString("expires_in", string.Empty);
-                writer.WriteEndObject();
+            using var writer = new Utf8JsonWriter(bufferWriter);
 
-                await writer.FlushAsync();
-            }
+            writer.WriteStartObject();
+            writer.WriteString("access_token", accessToken);
+            writer.WriteString("token_type", string.Empty);
+            writer.WriteString("refresh_token", string.Empty);
+            writer.WriteString("expires_in", string.Empty);
+            writer.WriteEndObject();
+
+            await writer.FlushAsync();
 
             return JsonDocument.Parse(bufferWriter.WrittenMemory);
         }

@@ -4,6 +4,7 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using System.Globalization;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
@@ -42,9 +43,9 @@ namespace AspNet.Security.OAuth.Shopify
         {
             base.ConfigureDefaults(builder, options);
 
-            options.AuthorizationEndpoint = string.Format(ShopifyAuthenticationDefaults.AuthorizationEndpointFormat, TestShopName);
-            options.TokenEndpoint = string.Format(ShopifyAuthenticationDefaults.TokenEndpointFormat, TestShopName);
-            options.UserInformationEndpoint = string.Format(ShopifyAuthenticationDefaults.UserInformationEndpointFormat, TestShopName);
+            options.AuthorizationEndpoint = string.Format(CultureInfo.InvariantCulture, ShopifyAuthenticationDefaults.AuthorizationEndpointFormat, TestShopName);
+            options.TokenEndpoint = string.Format(CultureInfo.InvariantCulture, ShopifyAuthenticationDefaults.TokenEndpointFormat, TestShopName);
+            options.UserInformationEndpoint = string.Format(CultureInfo.InvariantCulture, ShopifyAuthenticationDefaults.UserInformationEndpointFormat, TestShopName);
         }
 
         [Theory]

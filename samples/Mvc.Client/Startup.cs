@@ -43,29 +43,29 @@ namespace Mvc.Client
 
             .AddGoogle(options =>
             {
-                options.ClientId = "560027070069-37ldt4kfuohhu3m495hk2j4pjp92d382.apps.googleusercontent.com";
-                options.ClientSecret = "n2Q-GEw9RQjzcRbU3qhfTj8f";
+                options.ClientId = Configuration["Google:ClientId"];
+                options.ClientSecret = Configuration["Google:ClientSecret"];
             })
 
             .AddTwitter(options =>
             {
-                options.ConsumerKey = "6XaCTaLbMqfj6ww3zvZ5g";
-                options.ConsumerSecret = "Il2eFzGIrYhz6BWjYhVXBPQSfZuS4xoHpSSyD9PI";
+                options.ConsumerKey = Configuration["Twitter:ConsumerKey"];
+                options.ConsumerSecret = Configuration["Twitter:ConsumerSecret"];
             })
 
             .AddGitHub(options =>
             {
-                options.ClientId = "49e302895d8b09ea5656";
-                options.ClientSecret = "98f1bf028608901e9df91d64ee61536fe562064b";
+                options.ClientId = Configuration["GitHub:ClientId"];
+                options.ClientSecret = Configuration["GitHub:ClientSecret"];
                 options.Scope.Add("user:email");
             })
 
             /*
             .AddApple(options =>
             {
-                options.ClientId = Configuration["AppleClientId"];
-                options.KeyId = Configuration["AppleKeyId"];
-                options.TeamId = Configuration["AppleTeamId"];
+                options.ClientId = Configuration["Apple:ClientId"];
+                options.KeyId = Configuration["Apple:KeyId"];
+                options.TeamId = Configuration["Apple:TeamId"];
                 options.UsePrivateKey(
                     (keyId) => HostingEnvironment.ContentRootFileProvider.GetFileInfo($"AuthKey_{keyId}.p8"));
             })
@@ -73,8 +73,8 @@ namespace Mvc.Client
 
             .AddDropbox(options =>
             {
-                options.ClientId = "jpk24g2uxfxe939";
-                options.ClientSecret = "qbxvkjk5la7mjp6";
+                options.ClientId = Configuration["Dropbox:ClientId"];
+                options.ClientSecret = Configuration["Dropbox:ClientSecret"];
             });
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);

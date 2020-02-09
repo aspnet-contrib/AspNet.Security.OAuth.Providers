@@ -76,26 +76,29 @@ namespace AspNet.Security.OAuth.Instagram
 
         protected virtual string ComputeSignature(string address)
         {
-            using (var algorithm = new HMACSHA256(Encoding.UTF8.GetBytes(Options.ClientSecret)))
-            {
-                var query = new UriBuilder(address).Query;
+            string query = new UriBuilder(address).Query;
 
-                // Extract the parameters from the query string.
-                var parameters = (from parameter in QueryHelpers.ParseQuery(query)
-                                  orderby parameter.Key
-                                  select $"{parameter.Key}={parameter.Value}").ToArray();
-                Debug.Assert(parameters.Length != 0);
+            // Extract the parameters from the query string.
+            string[] parameters =
+                (from parameter in QueryHelpers.ParseQuery(query)
+                 orderby parameter.Key
+                 select $"{parameter.Key}={parameter.Value}").ToArray();
 
-                // See https://www.instagram.com/developer/secure-api-requests/
-                // for more information about the signature format.
-                var bytes = Encoding.UTF8.GetBytes($"/users/self|{string.Join("|", parameters)}");
+            Debug.Assert(parameters.Length < 1, "No parameters found in query string.");
 
-                // Compute the HMAC256 signature.
-                var hash = algorithm.ComputeHash(bytes);
+            // See https://www.instagram.com/developer/secure-api-requests/
+            // for more information about the signature format.
+            byte[] bytes = Encoding.UTF8.GetBytes($"/users/self|{string.Join("|", parameters)}");
 
-                // Convert the hash to its lowercased hexadecimal representation.
-                return BitConverter.ToString(hash).Replace("-", string.Empty).ToLowerInvariant();
-            }
+            // Compute the HMAC256 signature.
+            byte[] key = Encoding.UTF8.GetBytes(Options.ClientSecret);
+
+            using var algorithm = new HMACSHA256(key);
+
+            byte[] hash = algorithm.ComputeHash(bytes);
+
+            // Convert the hash to its lowercased hexadecimal representation.
+            return BitConverter.ToString(hash).Replace("-", string.Empty, StringComparison.Ordinal).ToLowerInvariant();
         }
     }
 }

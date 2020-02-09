@@ -61,7 +61,7 @@ namespace AspNet.Security.OAuth.Infrastructure
                     uri = BuildLoopbackUri(result);
                 }
 
-                var redirectRequest = new HttpRequestMessage(RedirectMethod, uri);
+                using var redirectRequest = new HttpRequestMessage(RedirectMethod, uri);
 
                 if (content != null)
                 {

@@ -4,6 +4,7 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using System.Globalization;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
@@ -39,10 +40,14 @@ namespace AspNet.Security.OAuth.Discord
             ClaimActions.MapJsonKey(ClaimTypes.Name, "username");
             ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
             ClaimActions.MapJsonKey(Claims.AvatarHash, "avatar");
-            ClaimActions.MapCustomJson(Claims.AvatarUrl, user => {
-                return string.Format(DiscordAvatarFormat, DiscordCdn.TrimEnd('/'), user.GetString("id"), user.GetString("avatar"));
-            });
             ClaimActions.MapJsonKey(Claims.Discriminator, "discriminator");
+            ClaimActions.MapCustomJson(Claims.AvatarUrl, user =>
+                string.Format(
+                    CultureInfo.InvariantCulture,
+                    DiscordAvatarFormat,
+                    DiscordCdn.TrimEnd('/'),
+                    user.GetString("id"),
+                    user.GetString("avatar")));
 
             Scope.Add("identify");
         }

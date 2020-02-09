@@ -11,8 +11,6 @@ namespace AspNet.Security.OAuth.Deezer
     /// </summary>
     public static class DeezerAuthenticationConstants
     {
-#pragma warning disable CA1034 // Nested types should not be visible
-
         public static class Claims
         {
             public const string Username = "urn:deezer:username";
@@ -53,32 +51,30 @@ namespace AspNet.Security.OAuth.Deezer
             /// Access user data any time
             /// <para>Application may access user data at any time.</para>
             /// </summary>
-            public const string Offline_Access = "offline_access";
+            public const string OfflineAccess = "offline_access";
 
             /// <summary>
             /// Manage users' library
             /// <para>Add/rename a playlist. Add/order songs in the playlist.</para>
             /// </summary>
-            public const string Manage_Library = "manage_library";
+            public const string ManageLibrary = "manage_library";
 
             /// <summary>
             /// Manage users' friends
             /// <para>Add/remove a following/follower.</para>
             /// </summary>
-            public const string Manage_Community = "manage_community";
+            public const string ManageCommunity = "manage_community";
 
             /// <summary>
             /// Delete library items
             /// <para>Allow the application to delete items in the user's library.</para>
             /// </summary>
-            public const string Delete_Library = "delete_library";
+            public const string DeleteLibrary = "delete_library";
 
             /// <summary>
             /// Allow the application to access the user's listening history
             /// </summary>
-            public const string Listening_History = "listening_history";
+            public const string ListeningHistory = "listening_history";
         }
-
-#pragma warning restore CA1034 // Nested types should not be visible
     }
 }

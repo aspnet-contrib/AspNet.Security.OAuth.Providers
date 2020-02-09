@@ -35,6 +35,7 @@ namespace AspNet.Security.OAuth.Infrastructure
         public static WebApplicationFactory<Program> CreateApplication<TOptions>(OAuthTests<TOptions> tests, Action<IServiceCollection> configureServices = null)
             where TOptions : OAuthOptions
         {
+#pragma warning disable CA2000
             return new TestApplicationFactory()
                 .WithWebHostBuilder(builder =>
                 {
@@ -45,6 +46,7 @@ namespace AspNet.Security.OAuth.Infrastructure
                         builder.ConfigureServices(configureServices);
                     }
                 });
+#pragma warning restore CA2000
         }
 
         private static void Configure<TOptions>(IWebHostBuilder builder, OAuthTests<TOptions> tests)
@@ -103,7 +105,7 @@ namespace AspNet.Security.OAuth.Infrastructure
                            if (context.User.Identity.IsAuthenticated)
                            {
                                string xml = IdentityToXmlString(context.User);
-                               byte[] buffer = Encoding.UTF8.GetBytes(xml.ToString());
+                               byte[] buffer = Encoding.UTF8.GetBytes(xml);
 
                                context.Response.StatusCode = 200;
                                context.Response.ContentType = "text/xml";
