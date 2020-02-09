@@ -21,7 +21,7 @@ namespace AspNet.Security.OAuth.Gitee
         {
             ClaimsIssuer = GiteeAuthenticationDefaults.Issuer;
 
-            CallbackPath = new PathString(GiteeAuthenticationDefaults.CallbackPath);
+            CallbackPath = GiteeAuthenticationDefaults.CallbackPath;
 
             AuthorizationEndpoint = GiteeAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = GiteeAuthenticationDefaults.TokenEndpoint;
