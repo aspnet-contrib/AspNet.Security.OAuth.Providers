@@ -30,8 +30,10 @@ namespace AspNet.Security.OAuth.SoundCloud
         {
         }
 
-        protected override async Task<AuthenticationTicket> CreateTicketAsync([NotNull] ClaimsIdentity identity,
-            [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens)
+        protected override async Task<AuthenticationTicket> CreateTicketAsync(
+            [NotNull] ClaimsIdentity identity,
+            [NotNull] AuthenticationProperties properties,
+            [NotNull] OAuthTokenResponse tokens)
         {
             var address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, "oauth_token", tokens.AccessToken);
 

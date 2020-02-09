@@ -29,8 +29,10 @@ namespace AspNet.Security.OAuth.Salesforce
         {
         }
 
-        protected override async Task<AuthenticationTicket> CreateTicketAsync([NotNull] ClaimsIdentity identity,
-            [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens)
+        protected override async Task<AuthenticationTicket> CreateTicketAsync(
+            [NotNull] ClaimsIdentity identity,
+            [NotNull] AuthenticationProperties properties,
+            [NotNull] OAuthTokenResponse tokens)
         {
             // Note: unlike the other social providers, the userinfo endpoint is user-specific and can't be set globally.
             // For more information, see https://developer.salesforce.com/page/Digging_Deeper_into_OAuth_2.0_on_Force.com

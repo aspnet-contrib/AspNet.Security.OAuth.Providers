@@ -66,7 +66,8 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
         public static AuthenticationBuilder AddZalo(
             [NotNull] this AuthenticationBuilder builder,
-            [NotNull] string scheme, [CanBeNull] string caption,
+            [NotNull] string scheme,
+            [CanBeNull] string caption,
             [NotNull] Action<ZaloAuthenticationOptions> configuration)
         {
             return builder.AddOAuth<ZaloAuthenticationOptions, ZaloAuthenticationHandler>(scheme, caption, configuration);
