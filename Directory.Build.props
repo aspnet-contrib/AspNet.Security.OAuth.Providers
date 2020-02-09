@@ -8,6 +8,7 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <DebugSymbols>true</DebugSymbols>
     <DefineConstants Condition=" '$(Configuration)' == 'Debug' ">$(DefineConstants);JETBRAINS_ANNOTATIONS</DefineConstants>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <PropertyGroup>

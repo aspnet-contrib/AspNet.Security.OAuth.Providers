@@ -20,7 +20,7 @@ namespace AspNet.Security.OAuth.Shopify
         {
         }
 
-        public string ShopName { get; set; }
+        public string ShopName { get; set; } = string.Empty;
 
         protected override Uri BuildLoopbackUri(HttpResponseMessage responseMessage)
         {

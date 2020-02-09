@@ -45,7 +45,7 @@ namespace AspNet.Security.OAuth.Odnoklassniki
 
             string address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, new Dictionary<string, string>
             {
-                ["application_key"] = Options.PublicSecret,
+                ["application_key"] = Options.PublicSecret ?? string.Empty,
                 ["format"] = "json",
                 ["method"] = "users.getCurrentUser",
                 ["sig"] = sign,

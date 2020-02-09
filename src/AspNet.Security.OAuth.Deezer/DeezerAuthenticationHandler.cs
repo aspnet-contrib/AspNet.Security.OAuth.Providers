@@ -46,7 +46,7 @@ namespace AspNet.Security.OAuth.Deezer
             };
 
             // PKCE https://tools.ietf.org/html/rfc7636#section-4.5, see BuildChallengeUrl
-            if (context.Properties.Items.TryGetValue(OAuthConstants.CodeVerifierKey, out string codeVerifier))
+            if (context.Properties.Items.TryGetValue(OAuthConstants.CodeVerifierKey, out string? codeVerifier))
             {
                 tokenRequestParameters.Add(OAuthConstants.CodeVerifierKey, codeVerifier);
                 context.Properties.Items.Remove(OAuthConstants.CodeVerifierKey);

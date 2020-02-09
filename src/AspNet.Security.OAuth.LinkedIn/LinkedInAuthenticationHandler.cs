@@ -73,7 +73,7 @@ namespace AspNet.Security.OAuth.LinkedIn
             if (!string.IsNullOrEmpty(Options.EmailAddressEndpoint) &&
                 Options.Fields.Contains(LinkedInAuthenticationConstants.EmailAddressField))
             {
-                string email = await GetEmailAsync(tokens);
+                string? email = await GetEmailAsync(tokens);
                 if (!string.IsNullOrEmpty(email))
                 {
                     identity.AddClaim(new Claim(ClaimTypes.Email, email, ClaimValueTypes.String, Options.ClaimsIssuer));
@@ -84,7 +84,7 @@ namespace AspNet.Security.OAuth.LinkedIn
             return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
         }
 
-        protected virtual async Task<string> GetEmailAsync([NotNull] OAuthTokenResponse tokens)
+        protected virtual async Task<string?> GetEmailAsync([NotNull] OAuthTokenResponse tokens)
         {
             using var request = new HttpRequestMessage(HttpMethod.Get, Options.EmailAddressEndpoint);
             request.Headers.Add("x-li-format", "json");

@@ -39,7 +39,7 @@ namespace AspNet.Security.OAuth.StackExchange
         /// Gets or sets the application request key, obtained
         /// when registering your application with StackApps.
         /// </summary>
-        public string RequestKey { get; set; }
+        public string RequestKey { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets or sets the site on which the user is registered.

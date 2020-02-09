@@ -54,7 +54,7 @@ namespace AspNet.Security.OAuth.Nextcloud
             return false;
         }
 
-        private static string GetDataString(JsonElement user, string key)
+        private static string? GetDataString(JsonElement user, string key)
         {
             if (TryGetData(user, out var data))
             {

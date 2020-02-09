@@ -268,7 +268,9 @@ namespace AspNet.Security.OAuth.Apple
             var exception = await Assert.ThrowsAsync<Exception>(() => AuthenticateUserAsync(server));
 
             // Assert
+            exception.InnerException.ShouldNotBeNull();
             exception.InnerException.ShouldBeOfType<InvalidOperationException>();
+            exception.InnerException!.Message.ShouldNotBeNull();
             exception.InnerException.Message.ShouldBe("No Apple ID token was returned in the OAuth token response.");
         }
 
@@ -291,7 +293,9 @@ namespace AspNet.Security.OAuth.Apple
             var exception = await Assert.ThrowsAsync<Exception>(() => AuthenticateUserAsync(server));
 
             // Assert
+            exception.InnerException.ShouldNotBeNull();
             exception.InnerException.ShouldBeOfType<ArgumentException>();
+            exception.InnerException!.Message.ShouldNotBeNull();
             exception.InnerException.Message.ShouldStartWith("IDX");
         }
 
@@ -314,7 +318,9 @@ namespace AspNet.Security.OAuth.Apple
             var exception = await Assert.ThrowsAsync<Exception>(() => AuthenticateUserAsync(server));
 
             // Assert
+            exception.InnerException.ShouldNotBeNull();
             exception.InnerException.ShouldBeOfType<InvalidOperationException>();
+            exception.InnerException!.Message.ShouldNotBeNull();
             exception.InnerException.Message.ShouldBe("No Apple ID token was returned in the OAuth token response.");
         }
 

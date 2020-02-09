@@ -58,7 +58,7 @@ namespace AspNet.Security.OAuth.Apple
         /// <summary>
         /// Gets or sets the optional ID for your Sign in with Apple private key.
         /// </summary>
-        public string KeyId { get; set; }
+        public string? KeyId { get; set; }
 
         /// <summary>
         /// Gets or sets the default period of time to cache the Apple public key(s)
@@ -82,12 +82,12 @@ namespace AspNet.Security.OAuth.Apple
         /// <remarks>
         /// The private key should be in PKCS #8 (<c>.p8</c>) format.
         /// </remarks>
-        public Func<string, Task<byte[]>> PrivateKeyBytes { get; set; }
+        public Func<string, Task<byte[]>>? PrivateKeyBytes { get; set; }
 
         /// <summary>
         /// Gets or sets the Team ID for your Apple Developer account.
         /// </summary>
-        public string TeamId { get; set; }
+        public string TeamId { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets or sets the audience used for tokens.

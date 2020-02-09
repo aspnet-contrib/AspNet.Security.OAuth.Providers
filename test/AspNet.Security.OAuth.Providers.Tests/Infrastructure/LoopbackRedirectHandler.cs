@@ -22,7 +22,7 @@ namespace AspNet.Security.OAuth.Infrastructure
 
         public IDictionary<string, string> RedirectParameters { get; set; } = new Dictionary<string, string>();
 
-        public string RedirectUri { get; set; }
+        public string? RedirectUri { get; set; }
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
@@ -33,11 +33,11 @@ namespace AspNet.Security.OAuth.Infrastructure
                 !string.Equals(result.Headers.Location?.Host, "localhost", StringComparison.OrdinalIgnoreCase))
             {
                 var uri = BuildLoopbackUri(result);
-                HttpContent content = null;
+                HttpContent? content = null;
 
                 if (RedirectMethod == HttpMethod.Post)
                 {
-                    var queryString = HttpUtility.ParseQueryString(result.Headers.Location.Query);
+                    var queryString = HttpUtility.ParseQueryString(result.Headers.Location!.Query);
                     string state = queryString["state"];
 
                     var parameters = new Dictionary<string, string>()
@@ -89,10 +89,10 @@ namespace AspNet.Security.OAuth.Infrastructure
             // successfully authenticated with the external login page they were redirected to.
             var queryString = HttpUtility.ParseQueryString(responseMessage.Headers.Location.Query);
 
-            string location = queryString["redirect_uri"] ?? RedirectUri;
+            string? location = queryString["redirect_uri"] ?? RedirectUri;
             string state = queryString["state"];
 
-            var builder = new UriBuilder(location);
+            var builder = new UriBuilder(location!);
 
             // Retain the _oauthstate parameter in redirect_uri for WeChat (see #262)
             const string OAuthStateKey = "_oauthstate";
