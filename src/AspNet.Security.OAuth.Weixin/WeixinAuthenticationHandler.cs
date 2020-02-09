@@ -134,7 +134,7 @@ namespace AspNet.Security.OAuth.Weixin
             return OAuthTokenResponse.Success(payload);
         }
 
-        protected override string BuildChallengeUrl(AuthenticationProperties properties, string redirectUri)
+        protected override string BuildChallengeUrl([NotNull] AuthenticationProperties properties, [NotNull] string redirectUri)
         {
             string stateValue = Options.StateDataFormat.Protect(properties);
             bool addRedirectHash = false;

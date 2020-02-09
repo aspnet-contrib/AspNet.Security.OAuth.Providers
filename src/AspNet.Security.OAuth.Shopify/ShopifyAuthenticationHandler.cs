@@ -99,7 +99,7 @@ namespace AspNet.Security.OAuth.Shopify
         }
 
         /// <inheritdoc />
-        protected override string BuildChallengeUrl(AuthenticationProperties properties, string redirectUri)
+        protected override string BuildChallengeUrl([NotNull] AuthenticationProperties properties, [NotNull] string redirectUri)
         {
             if (!properties.Items.TryGetValue(ShopifyAuthenticationDefaults.ShopNameAuthenticationProperty, out string shopName))
             {

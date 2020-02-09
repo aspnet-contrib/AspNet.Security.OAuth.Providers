@@ -35,7 +35,7 @@ namespace AspNet.Security.OAuth.Deezer
         {
         }
 
-        protected override async Task<OAuthTokenResponse> ExchangeCodeAsync(OAuthCodeExchangeContext context)
+        protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] OAuthCodeExchangeContext context)
         {
             var tokenRequestParameters = new Dictionary<string, string>()
             {
@@ -107,7 +107,7 @@ namespace AspNet.Security.OAuth.Deezer
             return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
         }
 
-        protected override string BuildChallengeUrl(AuthenticationProperties properties, string redirectUri)
+        protected override string BuildChallengeUrl([NotNull] AuthenticationProperties properties, [NotNull] string redirectUri)
         {
             var scopeParameter = properties.GetParameter<ICollection<string>>(OAuthChallengeProperties.ScopeKey);
             string scopes = scopeParameter != null ? FormatScope(scopeParameter) : FormatScope();
@@ -140,7 +140,7 @@ namespace AspNet.Security.OAuth.Deezer
         }
 
         /// <inheritdoc/>
-        protected override string FormatScope(IEnumerable<string> scopes)
+        protected override string FormatScope([NotNull] IEnumerable<string> scopes)
             => string.Join(",", scopes);
     }
 }
