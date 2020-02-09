@@ -7,7 +7,6 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.AspNetCore.Http;
 
 namespace AspNet.Security.OAuth.Onshape
 {
@@ -20,7 +19,7 @@ namespace AspNet.Security.OAuth.Onshape
         {
             ClaimsIssuer = OnshapeAuthenticationDefaults.Issuer;
 
-            CallbackPath = new PathString(OnshapeAuthenticationDefaults.CallbackPath);
+            CallbackPath = OnshapeAuthenticationDefaults.CallbackPath;
 
             AuthorizationEndpoint = OnshapeAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = OnshapeAuthenticationDefaults.TokenEndpoint;

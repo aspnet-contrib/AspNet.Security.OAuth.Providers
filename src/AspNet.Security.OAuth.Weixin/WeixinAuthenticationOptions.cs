@@ -8,7 +8,6 @@ using System.Linq;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.AspNetCore.Http;
 using static AspNet.Security.OAuth.Weixin.WeixinAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.Weixin
@@ -21,7 +20,7 @@ namespace AspNet.Security.OAuth.Weixin
         public WeixinAuthenticationOptions()
         {
             ClaimsIssuer = WeixinAuthenticationDefaults.Issuer;
-            CallbackPath = new PathString(WeixinAuthenticationDefaults.CallbackPath);
+            CallbackPath = WeixinAuthenticationDefaults.CallbackPath;
 
             AuthorizationEndpoint = WeixinAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = WeixinAuthenticationDefaults.TokenEndpoint;

@@ -7,7 +7,6 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.AspNetCore.Http;
 using static AspNet.Security.OAuth.Yahoo.YahooAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.Yahoo
@@ -20,7 +19,7 @@ namespace AspNet.Security.OAuth.Yahoo
         public YahooAuthenticationOptions()
         {
             ClaimsIssuer = YahooAuthenticationDefaults.Issuer;
-            CallbackPath = new PathString(YahooAuthenticationDefaults.CallbackPath);
+            CallbackPath = YahooAuthenticationDefaults.CallbackPath;
 
             AuthorizationEndpoint = YahooAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = YahooAuthenticationDefaults.TokenEndpoint;

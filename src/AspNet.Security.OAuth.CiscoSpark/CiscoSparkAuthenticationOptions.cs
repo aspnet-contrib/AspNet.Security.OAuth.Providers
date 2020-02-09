@@ -8,7 +8,6 @@ using System.Linq;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.AspNetCore.Http;
 
 namespace AspNet.Security.OAuth.CiscoSpark
 {
@@ -20,7 +19,7 @@ namespace AspNet.Security.OAuth.CiscoSpark
         public CiscoSparkAuthenticationOptions()
         {
             ClaimsIssuer = CiscoSparkAuthenticationDefaults.Issuer;
-            CallbackPath = new PathString(CiscoSparkAuthenticationDefaults.CallbackPath);
+            CallbackPath = CiscoSparkAuthenticationDefaults.CallbackPath;
 
             AuthorizationEndpoint = CiscoSparkAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = CiscoSparkAuthenticationDefaults.TokenEndpoint;

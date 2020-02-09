@@ -8,7 +8,6 @@ using System;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.AspNetCore.Http;
 using static AspNet.Security.OAuth.EVEOnline.EVEOnlineAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.EVEOnline
@@ -21,7 +20,7 @@ namespace AspNet.Security.OAuth.EVEOnline
         public EVEOnlineAuthenticationOptions()
         {
             ClaimsIssuer = EVEOnlineAuthenticationDefaults.Issuer;
-            CallbackPath = new PathString(EVEOnlineAuthenticationDefaults.CallbackPath);
+            CallbackPath = EVEOnlineAuthenticationDefaults.CallbackPath;
 
             Server = EVEOnlineAuthenticationServer.Tranquility;
 

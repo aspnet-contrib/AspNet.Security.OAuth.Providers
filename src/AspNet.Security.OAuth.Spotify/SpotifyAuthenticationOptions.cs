@@ -22,7 +22,7 @@ namespace AspNet.Security.OAuth.Spotify
         {
             ClaimsIssuer = SpotifyAuthenticationDefaults.Issuer;
 
-            CallbackPath = new PathString(SpotifyAuthenticationDefaults.CallbackPath);
+            CallbackPath = SpotifyAuthenticationDefaults.CallbackPath;
 
             AuthorizationEndpoint = SpotifyAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = SpotifyAuthenticationDefaults.TokenEndpoint;

@@ -7,7 +7,6 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.AspNetCore.Http;
 using static AspNet.Security.OAuth.Bitbucket.BitbucketAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.Bitbucket
@@ -20,7 +19,7 @@ namespace AspNet.Security.OAuth.Bitbucket
         public BitbucketAuthenticationOptions()
         {
             ClaimsIssuer = BitbucketAuthenticationDefaults.Issuer;
-            CallbackPath = new PathString(BitbucketAuthenticationDefaults.CallbackPath);
+            CallbackPath = BitbucketAuthenticationDefaults.CallbackPath;
 
             AuthorizationEndpoint = BitbucketAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = BitbucketAuthenticationDefaults.TokenEndpoint;

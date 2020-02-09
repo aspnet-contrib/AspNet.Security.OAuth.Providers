@@ -7,7 +7,6 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.AspNetCore.Http;
 
 namespace AspNet.Security.OAuth.Gitter
 {
@@ -17,7 +16,7 @@ namespace AspNet.Security.OAuth.Gitter
         {
             ClaimsIssuer = GitterAuthenticationDefaults.Issuer;
 
-            CallbackPath = new PathString(GitterAuthenticationDefaults.CallbackPath);
+            CallbackPath = GitterAuthenticationDefaults.CallbackPath;
 
             AuthorizationEndpoint = GitterAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = GitterAuthenticationDefaults.TokenEndpoint;

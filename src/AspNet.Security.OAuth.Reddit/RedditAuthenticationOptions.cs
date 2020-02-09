@@ -7,7 +7,6 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.AspNetCore.Http;
 using static AspNet.Security.OAuth.Reddit.RedditAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.Reddit
@@ -21,7 +20,7 @@ namespace AspNet.Security.OAuth.Reddit
         {
             ClaimsIssuer = RedditAuthenticationDefaults.Issuer;
 
-            CallbackPath = new PathString(RedditAuthenticationDefaults.CallbackPath);
+            CallbackPath = RedditAuthenticationDefaults.CallbackPath;
 
             AuthorizationEndpoint = RedditAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = RedditAuthenticationDefaults.TokenEndpoint;

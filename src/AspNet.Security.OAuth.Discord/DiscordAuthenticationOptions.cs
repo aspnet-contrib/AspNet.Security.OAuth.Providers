@@ -31,7 +31,7 @@ namespace AspNet.Security.OAuth.Discord
         public DiscordAuthenticationOptions()
         {
             ClaimsIssuer = DiscordAuthenticationDefaults.Issuer;
-            CallbackPath = new PathString(DiscordAuthenticationDefaults.CallbackPath);
+            CallbackPath = DiscordAuthenticationDefaults.CallbackPath;
             AuthorizationEndpoint = DiscordAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = DiscordAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = DiscordAuthenticationDefaults.UserInformationEndpoint;

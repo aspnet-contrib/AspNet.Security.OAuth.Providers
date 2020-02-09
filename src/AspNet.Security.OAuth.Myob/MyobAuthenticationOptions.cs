@@ -8,7 +8,6 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.AspNetCore.Http;
 
 namespace AspNet.Security.OAuth.Myob
 {
@@ -20,7 +19,7 @@ namespace AspNet.Security.OAuth.Myob
         public MyobAuthenticationOptions()
         {
             ClaimsIssuer = MyobAuthenticationDefaults.Issuer;
-            CallbackPath = new PathString(MyobAuthenticationDefaults.CallbackPath);
+            CallbackPath = MyobAuthenticationDefaults.CallbackPath;
 
             AuthorizationEndpoint = MyobAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = MyobAuthenticationDefaults.TokenEndpoint;

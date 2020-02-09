@@ -7,7 +7,6 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.AspNetCore.Http;
 using static AspNet.Security.OAuth.WordPress.WordPressAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.WordPress
@@ -20,7 +19,7 @@ namespace AspNet.Security.OAuth.WordPress
         public WordPressAuthenticationOptions()
         {
             ClaimsIssuer = WordPressAuthenticationDefaults.Issuer;
-            CallbackPath = new PathString(WordPressAuthenticationDefaults.CallbackPath);
+            CallbackPath = WordPressAuthenticationDefaults.CallbackPath;
 
             AuthorizationEndpoint = WordPressAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = WordPressAuthenticationDefaults.TokenEndpoint;
