@@ -38,7 +38,7 @@ namespace AspNet.Security.OAuth.Shopify
         /// installation.
         /// </param>
         /// <param name="items">Set Items values.</param>
-        public ShopifyAuthenticationProperties(string shopName, IDictionary<string, string> items)
+        public ShopifyAuthenticationProperties(string shopName, IDictionary<string, string>? items)
             : base(items)
         {
             SetShopName(shopName);
@@ -47,7 +47,7 @@ namespace AspNet.Security.OAuth.Shopify
         /// <summary>
         /// The scope requested. Must be fully formatted. <see cref="OAuthOptions.Scope"/>
         /// </summary>
-        public string Scope
+        public string? Scope
         {
             get => GetProperty(ShopifyAuthenticationDefaults.ShopScopeAuthenticationProperty);
             set => SetProperty(ShopifyAuthenticationDefaults.ShopScopeAuthenticationProperty, value);
@@ -60,7 +60,7 @@ namespace AspNet.Security.OAuth.Shopify
         {
             get
             {
-                string prop = GetProperty(ShopifyAuthenticationDefaults.GrantOptionsAuthenticationProperty);
+                string? prop = GetProperty(ShopifyAuthenticationDefaults.GrantOptionsAuthenticationProperty);
                 return string.Equals(prop, ShopifyAuthenticationDefaults.PerUserAuthenticationPropertyValue, StringComparison.OrdinalIgnoreCase);
             }
 
@@ -77,12 +77,12 @@ namespace AspNet.Security.OAuth.Shopify
         private void SetShopName(string shopName)
             => SetProperty(ShopifyAuthenticationDefaults.ShopNameAuthenticationProperty, shopName);
 
-        private void SetProperty(string propName, string value)
+        private void SetProperty(string propName, string? value)
             => Items[propName] = value;
 
-        private string GetProperty(string propName)
+        private string? GetProperty(string propName)
         {
-            return Items.TryGetValue(propName, out string val) ? val : null;
+            return Items.TryGetValue(propName, out string? val) ? val : null;
         }
     }
 }

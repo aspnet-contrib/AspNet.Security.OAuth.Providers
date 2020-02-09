@@ -18,7 +18,7 @@ namespace AspNet.Security.OAuth.LinkedIn
 {
     public class LinkedInTests : OAuthTests<LinkedInAuthenticationOptions>
     {
-        private Action<LinkedInAuthenticationOptions> additionalConfiguration = null;
+        private Action<LinkedInAuthenticationOptions>? additionalConfiguration = null;
 
         public LinkedInTests(ITestOutputHelper outputHelper)
         {
@@ -92,7 +92,7 @@ namespace AspNet.Security.OAuth.LinkedIn
             // Arrange
             additionalConfiguration = options => options.MultiLocaleStringResolver = (values, preferredLocale) =>
             {
-                if (values.TryGetValue("fr_FR", out string value))
+                if (values.TryGetValue("fr_FR", out string? value))
                 {
                     return value;
                 }

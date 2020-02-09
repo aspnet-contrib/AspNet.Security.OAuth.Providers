@@ -23,7 +23,7 @@ namespace AspNet.Security.OAuth.Apple.Internal
         private readonly AppleKeyStore _keyStore;
         private readonly JwtSecurityTokenHandler _tokenHandler;
 
-        private string _clientSecret;
+        private string? _clientSecret;
         private DateTimeOffset _expiresAt;
 
         public DefaultAppleClientSecretGenerator(
@@ -81,7 +81,7 @@ namespace AspNet.Security.OAuth.Apple.Internal
 
             using (var algorithm = CreateAlgorithm(keyBlob))
             {
-                tokenDescriptor.SigningCredentials = CreateSigningCredentials(context.Options.KeyId, algorithm);
+                tokenDescriptor.SigningCredentials = CreateSigningCredentials(context.Options.KeyId!, algorithm);
 
                 clientSecret = _tokenHandler.CreateEncodedJwt(tokenDescriptor);
             }

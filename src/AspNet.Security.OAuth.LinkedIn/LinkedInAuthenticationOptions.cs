@@ -71,8 +71,8 @@ namespace AspNet.Security.OAuth.LinkedIn
         /// 2. Returns the value corresponding to the <see cref="Thread.CurrentUICulture"/> if it exists.
         /// 3. Returns the first value.
         /// </summary>
-        /// <see cref="DefaultMultiLocaleStringResolver(IReadOnlyDictionary{string, string}, string)"/>
-        public Func<IReadOnlyDictionary<string, string>, string, string> MultiLocaleStringResolver { get; set; } = DefaultMultiLocaleStringResolver;
+        /// <see cref="DefaultMultiLocaleStringResolver(IReadOnlyDictionary{string, string}, string?)"/>
+        public Func<IReadOnlyDictionary<string, string>, string?, string> MultiLocaleStringResolver { get; set; } = DefaultMultiLocaleStringResolver;
 
         /// <summary>
         /// Gets the <c>MultiLocaleString</c> value using the configured resolver.
@@ -81,7 +81,7 @@ namespace AspNet.Security.OAuth.LinkedIn
         /// <param name="user">The payload returned by the user info endpoint.</param>
         /// <param name="propertyName">The name of the <c>MultiLocaleString</c> property.</param>
         /// <returns>The property value.</returns>
-        private string GetMultiLocaleString(JsonElement user, string propertyName)
+        private string? GetMultiLocaleString(JsonElement user, string propertyName)
         {
             if (!user.TryGetProperty(propertyName, out var property))
             {
@@ -93,7 +93,7 @@ namespace AspNet.Security.OAuth.LinkedIn
                 return null;
             }
 
-            string preferredLocaleKey = null;
+            string? preferredLocaleKey = null;
 
             if (property.TryGetProperty("preferredLocale", out var preferredLocale))
             {
@@ -112,7 +112,7 @@ namespace AspNet.Security.OAuth.LinkedIn
 
         private string GetFullName(JsonElement user)
         {
-            string[] nameParts = new string[]
+            string?[] nameParts = new string?[]
             {
                 GetMultiLocaleString(user, ProfileFields.FirstName),
                 GetMultiLocaleString(user, ProfileFields.LastName),
@@ -164,16 +164,16 @@ namespace AspNet.Security.OAuth.LinkedIn
         /// <param name="localizedValues">The localized values with culture keys.</param>
         /// <param name="preferredLocale">The preferred locale, if provided by LinkedIn.</param>
         /// <returns>The localized value.</returns>
-        private static string DefaultMultiLocaleStringResolver(IReadOnlyDictionary<string, string> localizedValues, string preferredLocale)
+        private static string DefaultMultiLocaleStringResolver(IReadOnlyDictionary<string, string> localizedValues, string? preferredLocale)
         {
             if (!string.IsNullOrEmpty(preferredLocale) &&
-                localizedValues.TryGetValue(preferredLocale, out string preferredLocaleValue))
+                localizedValues.TryGetValue(preferredLocale, out string? preferredLocaleValue))
             {
                 return preferredLocaleValue;
             }
 
             string currentUIKey = Thread.CurrentThread.CurrentUICulture.ToString().Replace('-', '_');
-            if (localizedValues.TryGetValue(currentUIKey, out string currentUIValue))
+            if (localizedValues.TryGetValue(currentUIKey, out string? currentUIValue))
             {
                 return currentUIValue;
             }

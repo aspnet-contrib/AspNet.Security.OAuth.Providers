@@ -51,7 +51,7 @@ namespace AspNet.Security.OAuth
         /// <summary>
         /// Gets or sets the xunit test output helper to route application logs to.
         /// </summary>
-        public ITestOutputHelper OutputHelper { get; set; }
+        public ITestOutputHelper? OutputHelper { get; set; }
 
         /// <summary>
         /// Gets the interceptor to use for configuring stubbed HTTP responses.
@@ -76,7 +76,7 @@ namespace AspNet.Security.OAuth
         /// <summary>
         /// Gets the optional redirect URI to use for OAuth flows.
         /// </summary>
-        protected virtual string RedirectUri { get; }
+        protected virtual string? RedirectUri { get; }
 
         /// <summary>
         /// Registers authentication for the test.
@@ -113,7 +113,7 @@ namespace AspNet.Security.OAuth
         /// <returns>
         /// The test application to use for authentication.
         /// </returns>
-        protected WebApplicationFactory<Program> CreateTestServer(Action<IServiceCollection> configureServices = null)
+        protected WebApplicationFactory<Program> CreateTestServer(Action<IServiceCollection>? configureServices = null)
             => ApplicationFactory.CreateApplication(this, configureServices);
 
         /// <summary>

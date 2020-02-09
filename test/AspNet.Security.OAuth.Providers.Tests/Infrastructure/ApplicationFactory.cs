@@ -32,7 +32,7 @@ namespace AspNet.Security.OAuth.Infrastructure
         /// <returns>
         /// The test application to use for the authentication provider.
         /// </returns>
-        public static WebApplicationFactory<Program> CreateApplication<TOptions>(OAuthTests<TOptions> tests, Action<IServiceCollection> configureServices = null)
+        public static WebApplicationFactory<Program> CreateApplication<TOptions>(OAuthTests<TOptions> tests, Action<IServiceCollection>? configureServices = null)
             where TOptions : OAuthOptions
         {
 #pragma warning disable CA2000

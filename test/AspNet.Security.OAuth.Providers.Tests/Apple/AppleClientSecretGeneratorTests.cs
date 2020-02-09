@@ -61,9 +61,11 @@ namespace AspNet.Security.OAuth.Apple
                 securityToken.Payload.ShouldContainKeyAndValue("aud", "https://appleid.apple.com");
                 securityToken.Payload.ShouldContainKeyAndValue("iss", "my-team-id");
                 securityToken.Payload.ShouldContainKeyAndValue("sub", "my-client-id");
+                securityToken.Payload.Iat.HasValue.ShouldBeTrue();
+                securityToken.Payload.Exp.HasValue.ShouldBeTrue();
 
-                ((long)securityToken.Payload.Iat.Value).ShouldBeGreaterThanOrEqualTo(utcNow.ToUnixTimeSeconds());
-                ((long)securityToken.Payload.Exp.Value).ShouldBeGreaterThanOrEqualTo(utcNow.AddSeconds(60).ToUnixTimeSeconds());
+                ((long)securityToken.Payload.Iat!.Value).ShouldBeGreaterThanOrEqualTo(utcNow.ToUnixTimeSeconds());
+                ((long)securityToken.Payload.Exp!.Value).ShouldBeGreaterThanOrEqualTo(utcNow.AddSeconds(60).ToUnixTimeSeconds());
                 ((long)securityToken.Payload.Exp.Value).ShouldBeLessThanOrEqualTo(utcNow.AddSeconds(70).ToUnixTimeSeconds());
             });
         }

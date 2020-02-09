@@ -38,6 +38,6 @@ namespace AspNet.Security.OAuth.Reddit
         /// Setting this option is strongly recommended to prevent request throttling.
         /// For more information, visit https://github.com/reddit/reddit/wiki/API.
         /// </summary>
-        public string UserAgent { get; set; }
+        public string? UserAgent { get; set; }
     }
 }

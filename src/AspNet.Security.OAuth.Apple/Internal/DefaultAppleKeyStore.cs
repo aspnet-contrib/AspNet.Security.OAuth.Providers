@@ -18,7 +18,7 @@ namespace AspNet.Security.OAuth.Apple.Internal
         private readonly ISystemClock _clock;
         private readonly ILogger _logger;
 
-        private byte[] _publicKey;
+        private byte[] _publicKey = null!;
         private DateTimeOffset _reloadKeysAfter;
 
         public DefaultAppleKeyStore(
@@ -39,7 +39,7 @@ namespace AspNet.Security.OAuth.Apple.Internal
                     nameof(AppleAuthenticationOptions.PrivateKeyBytes));
             }
 
-            return await context.Options.PrivateKeyBytes(context.Options.KeyId);
+            return await context.Options.PrivateKeyBytes(context.Options.KeyId!);
         }
 
         /// <inheritdoc />

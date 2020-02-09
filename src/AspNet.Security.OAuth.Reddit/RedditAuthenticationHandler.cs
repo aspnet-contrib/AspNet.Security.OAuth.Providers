@@ -127,7 +127,7 @@ namespace AspNet.Security.OAuth.Reddit
 
         private AuthenticationHeaderValue CreateAuthorizationHeader()
         {
-            static string EscapeDataString(string value)
+            static string? EscapeDataString(string value)
             {
                 if (string.IsNullOrEmpty(value))
                 {

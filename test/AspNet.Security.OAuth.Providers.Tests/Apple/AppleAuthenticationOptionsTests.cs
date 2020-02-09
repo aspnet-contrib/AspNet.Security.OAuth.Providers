@@ -94,7 +94,7 @@ namespace AspNet.Security.OAuth.Apple
                 ClientId = "my-client-id",
                 GenerateClientSecret = true,
                 KeyId = "my-key-id",
-                TeamId = null,
+                TeamId = null!,
             };
 
             // Act and Assert
@@ -111,7 +111,7 @@ namespace AspNet.Security.OAuth.Apple
                 GenerateClientSecret = true,
                 KeyId = "my-key-id",
                 TeamId = "my-team-id",
-                TokenAudience = null,
+                TokenAudience = null!,
             };
 
             // Act and Assert
@@ -143,7 +143,7 @@ namespace AspNet.Security.OAuth.Apple
             {
                 ClientId = "my-client-id",
                 ClientSecret = "my-client-secret",
-                PublicKeyEndpoint = null,
+                PublicKeyEndpoint = null!,
             };
 
             // Act and Assert
