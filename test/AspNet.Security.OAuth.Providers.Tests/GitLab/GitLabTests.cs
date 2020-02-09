@@ -6,7 +6,6 @@
 
 using System.Security.Claims;
 using System.Threading.Tasks;
-using AspNet.Security.OAuth.GitLab;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
@@ -41,14 +40,13 @@ namespace AspNet.Security.OAuth.GitLab
         public async Task Can_Sign_In_Using_GitHub(string claimType, string claimValue)
         {
             // Arrange
-            using (var server = CreateTestServer())
-            {
-                // Act
-                var claims = await AuthenticateUserAsync(server);
+            using var server = CreateTestServer();
 
-                // Assert
-                AssertClaim(claims, claimType, claimValue);
-            }
+            // Act
+            var claims = await AuthenticateUserAsync(server);
+
+            // Assert
+            AssertClaim(claims, claimType, claimValue);
         }
     }
 }
