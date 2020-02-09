@@ -7,7 +7,6 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.AspNetCore.Http;
 
 namespace AspNet.Security.OAuth.Automatic
 {
@@ -19,7 +18,7 @@ namespace AspNet.Security.OAuth.Automatic
         public AutomaticAuthenticationOptions()
         {
             ClaimsIssuer = AutomaticAuthenticationDefaults.Issuer;
-            CallbackPath = new PathString(AutomaticAuthenticationDefaults.CallbackPath);
+            CallbackPath = AutomaticAuthenticationDefaults.CallbackPath;
 
             AuthorizationEndpoint = AutomaticAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = AutomaticAuthenticationDefaults.TokenEndpoint;

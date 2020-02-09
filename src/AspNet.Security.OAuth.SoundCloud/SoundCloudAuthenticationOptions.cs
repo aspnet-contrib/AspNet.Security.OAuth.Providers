@@ -7,7 +7,6 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.AspNetCore.Http;
 using static AspNet.Security.OAuth.SoundCloud.SoundCloudAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.SoundCloud
@@ -21,7 +20,7 @@ namespace AspNet.Security.OAuth.SoundCloud
         {
             ClaimsIssuer = SoundCloudAuthenticationDefaults.Issuer;
 
-            CallbackPath = new PathString(SoundCloudAuthenticationDefaults.CallbackPath);
+            CallbackPath = SoundCloudAuthenticationDefaults.CallbackPath;
 
             AuthorizationEndpoint = SoundCloudAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = SoundCloudAuthenticationDefaults.TokenEndpoint;

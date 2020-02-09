@@ -7,7 +7,6 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.AspNetCore.Http;
 
 namespace AspNet.Security.OAuth.Dropbox
 {
@@ -20,7 +19,7 @@ namespace AspNet.Security.OAuth.Dropbox
         {
             ClaimsIssuer = DropboxAuthenticationDefaults.Issuer;
 
-            CallbackPath = new PathString(DropboxAuthenticationDefaults.CallbackPath);
+            CallbackPath = DropboxAuthenticationDefaults.CallbackPath;
 
             AuthorizationEndpoint = DropboxAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = DropboxAuthenticationDefaults.TokenEndpoint;

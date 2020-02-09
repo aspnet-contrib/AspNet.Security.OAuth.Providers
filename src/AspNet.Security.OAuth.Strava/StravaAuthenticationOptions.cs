@@ -6,7 +6,6 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.AspNetCore.Http;
 using static AspNet.Security.OAuth.Strava.StravaAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.Strava
@@ -20,7 +19,7 @@ namespace AspNet.Security.OAuth.Strava
         {
             ClaimsIssuer = StravaAuthenticationDefaults.Issuer;
 
-            CallbackPath = new PathString(StravaAuthenticationDefaults.CallbackPath);
+            CallbackPath = StravaAuthenticationDefaults.CallbackPath;
 
             AuthorizationEndpoint = StravaAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = StravaAuthenticationDefaults.TokenEndpoint;

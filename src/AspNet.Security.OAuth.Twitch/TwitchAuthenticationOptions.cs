@@ -22,7 +22,7 @@ namespace AspNet.Security.OAuth.Twitch
         public TwitchAuthenticationOptions()
         {
             ClaimsIssuer = TwitchAuthenticationDefaults.Issuer;
-            CallbackPath = new PathString(TwitchAuthenticationDefaults.CallbackPath);
+            CallbackPath = TwitchAuthenticationDefaults.CallbackPath;
 
             AuthorizationEndpoint = TwitchAuthenticationDefaults.AuthorizationEndPoint;
             TokenEndpoint = TwitchAuthenticationDefaults.TokenEndpoint;

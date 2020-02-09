@@ -7,7 +7,6 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.AspNetCore.Http;
 using static AspNet.Security.OAuth.Untappd.UntappdAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.Untappd
@@ -21,7 +20,7 @@ namespace AspNet.Security.OAuth.Untappd
         {
             ClaimsIssuer = UntappdAuthenticationDefaults.Issuer;
 
-            CallbackPath = new PathString(UntappdAuthenticationDefaults.CallbackPath);
+            CallbackPath = UntappdAuthenticationDefaults.CallbackPath;
 
             AuthorizationEndpoint = UntappdAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = UntappdAuthenticationDefaults.TokenEndpoint;

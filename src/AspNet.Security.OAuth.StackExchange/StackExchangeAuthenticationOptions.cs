@@ -9,7 +9,6 @@ using System.Net.Http;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.AspNetCore.Http;
 using static AspNet.Security.OAuth.StackExchange.StackExchangeAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.StackExchange
@@ -23,7 +22,7 @@ namespace AspNet.Security.OAuth.StackExchange
         {
             ClaimsIssuer = StackExchangeAuthenticationDefaults.Issuer;
 
-            CallbackPath = new PathString(StackExchangeAuthenticationDefaults.CallbackPath);
+            CallbackPath = StackExchangeAuthenticationDefaults.CallbackPath;
 
             AuthorizationEndpoint = StackExchangeAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = StackExchangeAuthenticationDefaults.TokenEndpoint;

@@ -8,7 +8,6 @@ using System.Linq;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.AspNetCore.Http;
 
 namespace AspNet.Security.OAuth.Yandex
 {
@@ -20,7 +19,7 @@ namespace AspNet.Security.OAuth.Yandex
         public YandexAuthenticationOptions()
         {
             ClaimsIssuer = YandexAuthenticationDefaults.Issuer;
-            CallbackPath = new PathString(YandexAuthenticationDefaults.CallbackPath);
+            CallbackPath = YandexAuthenticationDefaults.CallbackPath;
 
             AuthorizationEndpoint = YandexAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = YandexAuthenticationDefaults.TokenEndpoint;

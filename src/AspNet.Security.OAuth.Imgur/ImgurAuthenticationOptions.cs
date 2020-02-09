@@ -7,7 +7,6 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.AspNetCore.Http;
 using static AspNet.Security.OAuth.Imgur.ImgurAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.Imgur
@@ -20,7 +19,7 @@ namespace AspNet.Security.OAuth.Imgur
         public ImgurAuthenticationOptions()
         {
             ClaimsIssuer = ImgurAuthenticationDefaults.Issuer;
-            CallbackPath = new PathString(ImgurAuthenticationDefaults.CallbackPath);
+            CallbackPath = ImgurAuthenticationDefaults.CallbackPath;
 
             AuthorizationEndpoint = ImgurAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = ImgurAuthenticationDefaults.TokenEndpoint;

@@ -7,7 +7,6 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.AspNetCore.Http;
 
 namespace AspNet.Security.OAuth.Instagram
 {
@@ -20,7 +19,7 @@ namespace AspNet.Security.OAuth.Instagram
         {
             ClaimsIssuer = InstagramAuthenticationDefaults.Issuer;
 
-            CallbackPath = new PathString(InstagramAuthenticationDefaults.CallbackPath);
+            CallbackPath = InstagramAuthenticationDefaults.CallbackPath;
 
             AuthorizationEndpoint = InstagramAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = InstagramAuthenticationDefaults.TokenEndpoint;

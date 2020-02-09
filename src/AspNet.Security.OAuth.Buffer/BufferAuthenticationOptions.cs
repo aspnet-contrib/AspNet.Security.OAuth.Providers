@@ -7,7 +7,6 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.AspNetCore.Http;
 
 namespace AspNet.Security.OAuth.Buffer
 {
@@ -19,7 +18,7 @@ namespace AspNet.Security.OAuth.Buffer
         public BufferAuthenticationOptions()
         {
             ClaimsIssuer = BufferAuthenticationDefaults.Issuer;
-            CallbackPath = new PathString(BufferAuthenticationDefaults.CallbackPath);
+            CallbackPath = BufferAuthenticationDefaults.CallbackPath;
 
             AuthorizationEndpoint = BufferAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = BufferAuthenticationDefaults.TokenEndpoint;

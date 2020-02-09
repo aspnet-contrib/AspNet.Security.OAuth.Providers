@@ -7,7 +7,6 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.AspNetCore.Http;
 
 namespace AspNet.Security.OAuth.ArcGIS
 {
@@ -19,7 +18,7 @@ namespace AspNet.Security.OAuth.ArcGIS
         public ArcGISAuthenticationOptions()
         {
             ClaimsIssuer = ArcGISAuthenticationDefaults.Issuer;
-            CallbackPath = new PathString(ArcGISAuthenticationDefaults.CallbackPath);
+            CallbackPath = ArcGISAuthenticationDefaults.CallbackPath;
 
             AuthorizationEndpoint = ArcGISAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = ArcGISAuthenticationDefaults.TokenEndpoint;

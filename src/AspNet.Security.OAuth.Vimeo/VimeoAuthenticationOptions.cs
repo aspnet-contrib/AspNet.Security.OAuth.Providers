@@ -21,7 +21,7 @@ namespace AspNet.Security.OAuth.Vimeo
         public VimeoAuthenticationOptions()
         {
             ClaimsIssuer = VimeoAuthenticationDefaults.Issuer;
-            CallbackPath = new PathString(VimeoAuthenticationDefaults.CallbackPath);
+            CallbackPath = VimeoAuthenticationDefaults.CallbackPath;
 
             AuthorizationEndpoint = VimeoAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = VimeoAuthenticationDefaults.TokenEndpoint;

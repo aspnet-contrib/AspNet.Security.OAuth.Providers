@@ -7,7 +7,6 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.AspNetCore.Http;
 
 namespace AspNet.Security.OAuth.Beam
 {
@@ -19,7 +18,7 @@ namespace AspNet.Security.OAuth.Beam
         public BeamAuthenticationOptions()
         {
             ClaimsIssuer = BeamAuthenticationDefaults.Issuer;
-            CallbackPath = new PathString(BeamAuthenticationDefaults.CallbackPath);
+            CallbackPath = BeamAuthenticationDefaults.CallbackPath;
 
             AuthorizationEndpoint = BeamAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = BeamAuthenticationDefaults.TokenEndpoint;
