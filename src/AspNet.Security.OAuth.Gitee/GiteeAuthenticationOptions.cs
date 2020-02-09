@@ -7,14 +7,13 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.AspNetCore.Http;
 using static AspNet.Security.OAuth.Gitee.GiteeAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.Gitee
 {
     /// <summary>
-     /// Defines a set of options used by <see cref="GiteeAuthenticationHandler"/>.
-     /// </summary>
+    /// Defines a set of options used by <see cref="GiteeAuthenticationHandler"/>.
+    /// </summary>
     public class GiteeAuthenticationOptions : OAuthOptions
     {
         public GiteeAuthenticationOptions()
