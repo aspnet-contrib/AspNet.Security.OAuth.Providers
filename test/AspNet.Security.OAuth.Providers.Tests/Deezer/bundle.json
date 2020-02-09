@@ -1,0 +1,43 @@
+{
+  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
+  "items": [
+    {
+      "uri": "https://connect.deezer.com/oauth/access_token.php?app_id=my-client-id&secret=my-client-secret&code=a6ed8e7f-471f-44f1-903b-65946475f351&output=json",
+      "method": "GET",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "secret-access-token",
+        "token_type": "access",
+        "refresh_token": "secret-refresh-token",
+        "expires_in": "300"
+      }
+    },
+    {
+      "uri": "https://api.deezer.com/user/me?access_token=secret-access-token",
+      "contentFormat": "json",
+      "contentJson": {
+        "id": "my-id",
+        "name": "John Smith",
+        "email": "john@john-smith.local",
+        "firstname": "John",
+        "lastname": "Smith",
+        "birthday": "2020-01-01",
+        "gender": "male",
+        "country": "some country",
+        "picture": "Avatar",
+        "picture_xl": "AvatarXL",
+        "picture_big": "AvatarBig",
+        "picture_medium": "AvatarMedium",
+        "picture_small": "AvatarSmall",
+        "link": "Url",
+        "status": "Status",
+        "inscription_date": "InscriptionDate",
+        "lang": "Language",
+        "is_kid": "false",
+        "tracklist": "Tracklist",
+        "type": "Type",
+        "explicit_content_level": "ExplicitContentLevel"
+      }
+    }
+  ]
+}
