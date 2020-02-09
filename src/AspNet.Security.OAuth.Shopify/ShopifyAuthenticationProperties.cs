@@ -25,7 +25,8 @@ namespace AspNet.Security.OAuth.Shopify
         /// to authorize. This must either be gotten from the user or sent from Shopify during App store
         /// installation.
         /// </param>
-        public ShopifyAuthenticationProperties(string shopName) : this(shopName, null)
+        public ShopifyAuthenticationProperties(string shopName)
+            : this(shopName, null)
         {
         }
 
@@ -37,7 +38,8 @@ namespace AspNet.Security.OAuth.Shopify
         /// installation.
         /// </param>
         /// <param name="items">Set Items values.</param>
-        public ShopifyAuthenticationProperties(string shopName, IDictionary<string, string> items) : base(items)
+        public ShopifyAuthenticationProperties(string shopName, IDictionary<string, string> items)
+            : base(items)
         {
             SetShopName(shopName);
         }
@@ -62,10 +64,9 @@ namespace AspNet.Security.OAuth.Shopify
                 return string.Equals(prop, ShopifyAuthenticationDefaults.PerUserAuthenticationPropertyValue, StringComparison.OrdinalIgnoreCase);
             }
 
-            set => SetProperty(ShopifyAuthenticationDefaults.GrantOptionsAuthenticationProperty,
-                value ?
-                    ShopifyAuthenticationDefaults.PerUserAuthenticationPropertyValue :
-                    null);
+            set => SetProperty(
+                ShopifyAuthenticationDefaults.GrantOptionsAuthenticationProperty,
+                value ? ShopifyAuthenticationDefaults.PerUserAuthenticationPropertyValue : null);
         }
 
         /// <summary>
@@ -75,7 +76,7 @@ namespace AspNet.Security.OAuth.Shopify
         /// </summary>
         private void SetShopName(string shopName)
             => SetProperty(ShopifyAuthenticationDefaults.ShopNameAuthenticationProperty, shopName);
-    
+
         private void SetProperty(string propName, string value)
             => Items[propName] = value;
 

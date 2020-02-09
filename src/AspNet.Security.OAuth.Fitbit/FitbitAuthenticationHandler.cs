@@ -107,7 +107,8 @@ namespace AspNet.Security.OAuth.Fitbit
 
             string credentials = Convert.ToBase64String(Encoding.ASCII.GetBytes(
                 string.Concat(
-                    EscapeDataString(Options.ClientId), ":",
+                    EscapeDataString(Options.ClientId),
+                    ":",
                     EscapeDataString(Options.ClientSecret))));
 
             return new AuthenticationHeaderValue("Basic", credentials);

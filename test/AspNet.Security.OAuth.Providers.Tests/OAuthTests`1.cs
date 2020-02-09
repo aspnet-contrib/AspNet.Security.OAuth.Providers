@@ -90,7 +90,9 @@ namespace AspNet.Security.OAuth
         /// localization scenario.
         /// </summary>
         /// <param name="app">The application.</param>
-        protected internal virtual void ConfigureApplication(IApplicationBuilder app) { }
+        protected internal virtual void ConfigureApplication(IApplicationBuilder app)
+        {
+        }
 
         /// <summary>
         /// Configures the default authentication options.

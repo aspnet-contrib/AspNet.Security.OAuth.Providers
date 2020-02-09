@@ -50,7 +50,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="configuration">The delegate used to configure the Shopify options.</param>
         /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
         public static AuthenticationBuilder AddShopify(
-            [NotNull] this AuthenticationBuilder builder, 
+            [NotNull] this AuthenticationBuilder builder,
             [NotNull] string scheme,
             [NotNull] Action<ShopifyAuthenticationOptions> configuration)
         {
@@ -68,7 +68,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
         public static AuthenticationBuilder AddShopify(
             [NotNull] this AuthenticationBuilder builder,
-            [NotNull] string scheme, 
+            [NotNull] string scheme,
             [CanBeNull] string caption,
             [NotNull] Action<ShopifyAuthenticationOptions> configuration)
         {

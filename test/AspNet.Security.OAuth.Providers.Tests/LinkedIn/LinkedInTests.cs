@@ -35,7 +35,7 @@ namespace AspNet.Security.OAuth.LinkedIn
                 additionalConfiguration?.Invoke(options);
             });
         }
-       
+
         protected internal override void ConfigureApplication(IApplicationBuilder app)
         {
             app.UseRequestLocalization(new RequestLocalizationOptions
