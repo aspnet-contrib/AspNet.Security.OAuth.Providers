@@ -62,7 +62,7 @@ namespace AspNet.Security.OAuth.Apple
 
         /// <summary>
         /// Gets or sets the default period of time to cache the Apple public key(s)
-        /// retreived from the endpoint specified by <see cref="PublicKeyEndpoint"/> for.
+        /// retrieved from the endpoint specified by <see cref="PublicKeyEndpoint"/> for.
         /// </summary>
         public TimeSpan PublicKeyCacheLifetime { get; set; } = TimeSpan.FromMinutes(15);
 
