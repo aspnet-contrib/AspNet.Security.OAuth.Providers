@@ -37,7 +37,7 @@ namespace AspNet.Security.OAuth.Apple
         /// if <see cref="GenerateClientSecret"/> is set to <see langword="true"/>.
         /// </summary>
         /// <remarks>
-        /// The default client secret lifetime is six months.
+        /// The default client secret lifetime is 6 months.
         /// </remarks>
         public TimeSpan ClientSecretExpiresAfter { get; set; } = TimeSpan.FromSeconds(15777000); // 6 months in seconds
 
@@ -62,8 +62,11 @@ namespace AspNet.Security.OAuth.Apple
 
         /// <summary>
         /// Gets or sets the default period of time to cache the Apple public key(s)
-        /// retrieved from the endpoint specified by <see cref="PublicKeyEndpoint"/> for.
+        /// retrieved from the endpoint specified by <see cref="PublicKeyEndpoint"/>.
         /// </summary>
+        /// <remarks>
+        /// The default public key cache lifetime is 15 minutes.
+        /// </remarks>
         public TimeSpan PublicKeyCacheLifetime { get; set; } = TimeSpan.FromMinutes(15);
 
         /// <summary>
