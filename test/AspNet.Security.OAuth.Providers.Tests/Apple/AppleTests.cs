@@ -384,7 +384,7 @@ namespace AspNet.Security.OAuth.Apple
             actual1.ShouldBeSameAs(actual2);
 
             // Arrange
-            await Task.Delay(TimeSpan.FromSeconds(1));
+            await Task.Delay(TimeSpan.FromSeconds(1.5));
 
             // Act
             actual2 = await keyStore.LoadPublicKeysAsync(context);
