@@ -61,6 +61,12 @@ namespace AspNet.Security.OAuth.Apple
         public string KeyId { get; set; }
 
         /// <summary>
+        /// Gets or sets the default period of time to cache the Apple public key(s)
+        /// retreived from the endpoint specified by <see cref="PublicKeyEndpoint"/> for.
+        /// </summary>
+        public TimeSpan PublicKeyCacheLifetime { get; set; } = TimeSpan.FromMinutes(15);
+
+        /// <summary>
         /// Gets or sets the URI the middleware will access to obtain the public key for
         /// validating tokens if <see cref="ValidateTokens"/> is <see langword="true"/>.
         /// </summary>
