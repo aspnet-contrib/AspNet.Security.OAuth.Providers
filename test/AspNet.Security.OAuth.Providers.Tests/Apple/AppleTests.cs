@@ -375,26 +375,22 @@ namespace AspNet.Security.OAuth.Apple
                 "my-token");
 
             // Act
-            byte[] actual1 = await keyStore.LoadPublicKeysAsync(context);
-            byte[] actual2 = await keyStore.LoadPublicKeysAsync(context);
+            byte[] first = await keyStore.LoadPublicKeysAsync(context);
 
             // Assert
-            actual1.ShouldNotBeNull();
-            actual1.ShouldNotBeEmpty();
-            actual1.ShouldBeSameAs(actual2);
+            first.ShouldNotBeNull();
+            first.ShouldNotBeEmpty();
 
             // Arrange
-            await Task.Delay(TimeSpan.FromSeconds(1.5));
+            await Task.Delay(TimeSpan.FromSeconds(1));
 
             // Act
-            actual2 = await keyStore.LoadPublicKeysAsync(context);
+            byte[] second = await keyStore.LoadPublicKeysAsync(context);
 
             // Assert
-            actual1.ShouldNotBeNull();
-            actual1.ShouldNotBeEmpty();
-            actual2.ShouldNotBeNull();
-            actual2.ShouldNotBeEmpty();
-            actual1.ShouldNotBeSameAs(actual2);
+            second.ShouldNotBeNull();
+            second.ShouldNotBeEmpty();
+            first.ShouldNotBeSameAs(second);
         }
 
         private sealed class FrozenJwtSecurityTokenHandler : JwtSecurityTokenHandler
