@@ -1,6 +1,5 @@
 language: csharp
 mono: none
-sudo: false
 dist: xenial
 addons:
   apt:
