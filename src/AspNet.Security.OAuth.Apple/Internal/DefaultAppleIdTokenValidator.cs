@@ -57,9 +57,13 @@ namespace AspNet.Security.OAuth.Apple.Internal
             {
                 _logger.LogError(
                     ex,
-                    "Apple ID token validation failed for issuer {TokenIssuer} and audience {TokenAudience}. ID Token: {IdToken}",
-                    parameters.ValidAudience,
+                    "Apple ID token validation failed for issuer {TokenIssuer} and audience {TokenAudience}.",
                     parameters.ValidIssuer,
+                    parameters.ValidAudience);
+
+                _logger.LogTrace(
+                    ex,
+                    "Apple ID token {IdToken} could not be validated.",
                     context.IdToken);
 
                 throw;
