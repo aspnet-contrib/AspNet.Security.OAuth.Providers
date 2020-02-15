@@ -80,10 +80,10 @@ namespace AspNet.Security.OAuth.Alipay
                 ["grant_type"] = "authorization_code",
                 ["method"] = "alipay.system.oauth.token",
                 ["sign_type"] = "RSA2",
-                ["timestamp"] = Clock.UtcNow.ToString("yyyy-MM-dd HH:mm:ss", new CultureInfo("zh-CN")),
+                ["timestamp"] = Clock.UtcNow.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture),
                 ["version"] = "1.0",
             };
-            sortedParams.Add("sign", GetRSA2Signature(sortedParams, Options.ClientSecret));
+            sortedParams.Add("sign", GetRSA2Signature(sortedParams));
 
             string address = QueryHelpers.AddQueryString(Options.TokenEndpoint, sortedParams);
 
@@ -101,7 +101,7 @@ namespace AspNet.Security.OAuth.Alipay
                 return OAuthTokenResponse.Failed(new Exception("An error occurred while retrieving an access token."));
             }
 
-            using var payload = JsonDocument.Parse(await GetRawStringAsync(response, "alipay_system_oauth_token_response"));
+            var payload = await ReadJsonDocumentAsync(response, "alipay_system_oauth_token_response");
 
             return OAuthTokenResponse.Success(payload);
         }
@@ -119,10 +119,10 @@ namespace AspNet.Security.OAuth.Alipay
                 ["format"] = "JSON",
                 ["method"] = "alipay.user.info.share",
                 ["sign_type"] = "RSA2",
-                ["timestamp"] = Clock.UtcNow.ToString("yyyy-MM-dd HH:mm:ss", new CultureInfo("zh-CN")),
+                ["timestamp"] = Clock.UtcNow.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture),
                 ["version"] = "1.0",
             };
-            sortedParams.Add("sign", GetRSA2Signature(sortedParams, Options.ClientSecret));
+            sortedParams.Add("sign", GetRSA2Signature(sortedParams));
 
             string address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, sortedParams);
 
@@ -139,10 +139,11 @@ namespace AspNet.Security.OAuth.Alipay
                 throw new HttpRequestException("An error occurred while retrieving user information.");
             }
 
-            using var payload = JsonDocument.Parse(await GetRawStringAsync(response, "alipay_user_info_share_response"));
+            var payload = await ReadJsonDocumentAsync(response, "alipay_user_info_share_response");
+
             string statusCode = payload.RootElement.GetString("code");
 
-            /* if code==10000 then success else failed. See: https://docs.open.alipay.com/common/105806 */
+            // if code==10000 then success else failed. See: https://docs.open.alipay.com/common/105806
             if (statusCode != "10000")
             {
                 Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
@@ -167,31 +168,21 @@ namespace AspNet.Security.OAuth.Alipay
 
         protected override string FormatScope() => string.Join(",", Options.Scope);
 
-        /// <summary>
-        /// Gets an HTTP payload as an asynchronous operation.
-        /// </summary>
-        /// <param name="message">The message.</param>
-        /// <param name="elementName">Name of the element.</param>
-        private static async Task<string> GetRawStringAsync(
+        private static async Task<JsonDocument> ReadJsonDocumentAsync(
             [NotNull] HttpResponseMessage message,
-            [NotNull] string elementName)
+            [NotNull] string propertyName)
         {
-            var messageStream = await message.Content.ReadAsStreamAsync();
+            using var document = JsonDocument.Parse(await message.Content.ReadAsStringAsync());
+            string json = document.RootElement.GetProperty(propertyName).ToString();
 
-            var document = await JsonSerializer.DeserializeAsync<JsonElement>(messageStream);
-            string elementContent = document.GetString(elementName);
-
-            return elementContent;
+            return JsonDocument.Parse(json);
         }
 
         /// <summary>
         /// Gets the RSA2 signature.
         /// </summary>
         /// <param name="source">The source.</param>
-        /// <param name="clientSecret">The client secret.</param>
-        private static string GetRSA2Signature(
-            [NotNull] SortedDictionary<string, string> source,
-            [NotNull] string clientSecret)
+        private string GetRSA2Signature([NotNull] SortedDictionary<string, string> source)
         {
             var builder = new StringBuilder();
 
@@ -212,7 +203,7 @@ namespace AspNet.Security.OAuth.Alipay
 
             byte[] dataBytes = Encoding.UTF8.GetBytes(builder.ToString());
 
-            using var privateKeyRsaProvider = CreateAlgorithm(clientSecret);
+            using var privateKeyRsaProvider = CreateAlgorithm();
             byte[] signatureBytes = privateKeyRsaProvider.SignData(dataBytes, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
 
             return Convert.ToBase64String(signatureBytes);
@@ -221,10 +212,9 @@ namespace AspNet.Security.OAuth.Alipay
         /// <summary>
         /// Creates the algorithm.
         /// </summary>
-        /// <param name="clientSecret">The client secret.</param>
-        private static RSA CreateAlgorithm([NotNull] string clientSecret)
+        private RSA CreateAlgorithm()
         {
-            byte[] privateKeyBytes = Convert.FromBase64String(clientSecret);
+            byte[] privateKeyBytes = Convert.FromBase64String(Options.ClientSecret);
             var algorithm = RSA.Create();
 
             try
