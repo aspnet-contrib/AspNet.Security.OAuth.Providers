@@ -39,8 +39,6 @@ namespace AspNet.Security.OAuth.Alipay
         {
         }
 
-        protected override string FormatScope() => string.Join(",", Options.Scope);
-
         protected override string BuildChallengeUrl(AuthenticationProperties properties, [NotNull]string redirectUri)
         {
             string stateValue = Options.StateDataFormat.Protect(properties);
@@ -162,6 +160,8 @@ namespace AspNet.Security.OAuth.Alipay
             await Options.Events.CreatingTicket(context);
             return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
         }
+
+        protected override string FormatScope() => string.Join(",", Options.Scope);
 
         /// <summary>
         /// Gets an HTTP payload as an asynchronous operation.
