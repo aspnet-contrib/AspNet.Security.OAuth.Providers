@@ -139,7 +139,7 @@ namespace AspNet.Security.OAuth.Alipay
                 throw new HttpRequestException("An error occurred while retrieving user information.");
             }
 
-            var payload = await ReadJsonDocumentAsync(response, "alipay_user_info_share_response");
+            using var payload = await ReadJsonDocumentAsync(response, "alipay_user_info_share_response");
 
             string statusCode = payload.RootElement.GetString("code");
 
