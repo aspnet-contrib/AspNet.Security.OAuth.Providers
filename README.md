@@ -82,6 +82,7 @@ We would love it if you could help contributing to this repository.
 * [Tolbxela](https://github.com/tolbxela)
 * [Tommy Parnell](https://github.com/tparnell8)
 * [twsl](https://github.com/twsI)
+* [Vicente Yu](https://github.com/vicenteyu)
 * [Yannic Smeets](https://github.com/yannicsmeets)
 * [zAfLu](https://github.com/zAfLu)
 * [zhengchun](https://github.com/zhengchun)
@@ -106,6 +107,7 @@ If a provider you're looking for does not exist, consider making a PR to add one
 
 | Provider | Stable | Nightly | Documentation |
 |:-:|:-:|:-:|:-:|
+| Alipay | [![NuGet](https://buildstats.info/nuget/AspNet.Security.OAuth.Alipay?includePreReleases=false)](https://www.nuget.org/packages/AspNet.Security.OAuth.Alipay/ "Download AspNet.Security.OAuth.Alipay from NuGet.org") | [![MyGet](https://buildstats.info/myget/aspnet-contrib/AspNet.Security.OAuth.Alipay?includePreReleases=false)](https://www.myget.org/feed/aspnet-contrib/package/nuget/AspNet.Security.OAuth.Alipay "Download AspNet.Security.OAuth.Alipay from MyGet.org") | [Documentation](https://docs.open.alipay.com/263/105809/ "Alipay developer documentation") |
 | Amazon | [![NuGet](https://buildstats.info/nuget/AspNet.Security.OAuth.Amazon?includePreReleases=false)](https://www.nuget.org/packages/AspNet.Security.OAuth.Amazon/ "Download AspNet.Security.OAuth.Amazon from NuGet.org") | [![MyGet](https://buildstats.info/myget/aspnet-contrib/AspNet.Security.OAuth.Amazon?includePreReleases=false)](https://www.myget.org/feed/aspnet-contrib/package/nuget/AspNet.Security.OAuth.Amazon "Download AspNet.Security.OAuth.Amazon from MyGet.org") | [Documentation](https://developer.amazon.com/docs/login-with-amazon/documentation-overview.html "Amazon developer documentation") |
 | Apple | [![NuGet](https://buildstats.info/nuget/AspNet.Security.OAuth.Apple?includePreReleases=false)](https://www.nuget.org/packages/AspNet.Security.OAuth.Apple/ "Download AspNet.Security.OAuth.Apple from NuGet.org") | [![MyGet](https://buildstats.info/myget/aspnet-contrib/AspNet.Security.OAuth.Apple?includePreReleases=false)](https://www.myget.org/feed/aspnet-contrib/package/nuget/AspNet.Security.OAuth.Apple "Download AspNet.Security.OAuth.Apple from MyGet.org") | [Documentation](https://developer.apple.com/documentation/signinwithapplerestapi "Apple developer documentation") |
 | ArcGIS | [![NuGet](https://buildstats.info/nuget/AspNet.Security.OAuth.ArcGIS?includePreReleases=false)](https://www.nuget.org/packages/AspNet.Security.OAuth.ArcGIS/ "Download AspNet.Security.OAuth.ArcGIS from NuGet.org") | [![MyGet](https://buildstats.info/myget/aspnet-contrib/AspNet.Security.OAuth.ArcGIS?includePreReleases=false)](https://www.myget.org/feed/aspnet-contrib/package/nuget/AspNet.Security.OAuth.ArcGIS "Download AspNet.Security.OAuth.ArcGIS from MyGet.org") | [Documentation](https://developers.arcgis.com/documentation/core-concepts/security-and-authentication/what-is-oauth-2/ "ArcGIS developer documentation") |
