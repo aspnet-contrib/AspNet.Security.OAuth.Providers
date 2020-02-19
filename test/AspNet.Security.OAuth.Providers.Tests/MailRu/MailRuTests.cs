@@ -31,7 +31,7 @@ namespace AspNet.Security.OAuth.MailRu
         }
 
         [Theory]
-        [InlineData(ClaimTypes.NameIdentifier, "123abc")]
+        [InlineData(ClaimTypes.NameIdentifier, "vasya@mail.ru")]
         [InlineData(ClaimTypes.Name, "Vasya")]
         [InlineData(ClaimTypes.Email, "vasya@mail.ru")]
         [InlineData(ClaimTypes.GivenName, "Vasiliy")]
