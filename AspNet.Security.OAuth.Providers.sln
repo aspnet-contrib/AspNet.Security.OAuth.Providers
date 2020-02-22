@@ -178,6 +178,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.Gitee
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.Deezer", "src\AspNet.Security.OAuth.Deezer\AspNet.Security.OAuth.Deezer.csproj", "{0D9EB03D-99AF-4A80-B7CE-2302A8D3747B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.NetEase", "src\AspNet.Security.OAuth.NetEase\AspNet.Security.OAuth.NetEase.csproj", "{E82424B3-0E73-4954-B6A6-BFF1029A08DE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -424,6 +426,10 @@ Global
 		{0D9EB03D-99AF-4A80-B7CE-2302A8D3747B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0D9EB03D-99AF-4A80-B7CE-2302A8D3747B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0D9EB03D-99AF-4A80-B7CE-2302A8D3747B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E82424B3-0E73-4954-B6A6-BFF1029A08DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E82424B3-0E73-4954-B6A6-BFF1029A08DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E82424B3-0E73-4954-B6A6-BFF1029A08DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E82424B3-0E73-4954-B6A6-BFF1029A08DE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -493,6 +499,7 @@ Global
 		{DC80AFEC-EFB4-4B21-BF79-44DEA6E1FE26} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 		{82AA3C52-9B98-4203-9D26-1FA6E5BAEEBD} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 		{0D9EB03D-99AF-4A80-B7CE-2302A8D3747B} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
+		{E82424B3-0E73-4954-B6A6-BFF1029A08DE} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C7B54DE2-6407-4802-AD9C-CE54BF414C8C}
