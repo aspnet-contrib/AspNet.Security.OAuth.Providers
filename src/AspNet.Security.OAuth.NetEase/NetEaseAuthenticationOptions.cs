@@ -25,7 +25,7 @@ namespace AspNet.Security.OAuth.NetEase
             TokenEndpoint = NetEaseAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = NetEaseAuthenticationDefaults.UserInformationEndpoint;
 
-            ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "userid");
+            ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "userId");
             ClaimActions.MapJsonKey(ClaimTypes.Name, "username");
             ClaimActions.MapJsonKey(ClaimTypes.Email, "username");
         }
