@@ -27,7 +27,6 @@ namespace AspNet.Security.OAuth.NetEase
 
             ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "userId");
             ClaimActions.MapJsonKey(ClaimTypes.Name, "username");
-            ClaimActions.MapJsonKey(ClaimTypes.Email, "username");
         }
     }
 }

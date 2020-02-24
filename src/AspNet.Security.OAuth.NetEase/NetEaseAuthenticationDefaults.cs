@@ -37,12 +37,12 @@ namespace AspNet.Security.OAuth.NetEase
         /// <summary>
         /// Default value for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
         /// </summary>
-        public const string AuthorizationEndpoint = "http://reg.163.com/open/oauth2/authorize.do";
+        public const string AuthorizationEndpoint = "https://reg.163.com/open/oauth2/authorize.do";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.TokenEndpoint"/>.
         /// </summary>
-        public const string TokenEndpoint = "http://reg.163.com/open/oauth2/token.do";
+        public const string TokenEndpoint = "https://reg.163.com/open/oauth2/token.do";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.

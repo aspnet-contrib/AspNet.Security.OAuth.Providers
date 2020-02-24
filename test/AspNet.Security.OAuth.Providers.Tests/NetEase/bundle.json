@@ -2,8 +2,8 @@
   "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
   "items": [
     {
-      "comment": "http://reg.163.com/help/help_oauth2.html",
-      "uri": "http://reg.163.com/open/oauth2/token.do",
+      "comment": "https://reg.163.com/help/help_oauth2.html",
+      "uri": "https://reg.163.com/open/oauth2/token.do",
       "method": "POST",
       "contentFormat": "json",
       "contentJson": {
@@ -12,7 +12,7 @@
       }
     },
     {
-      "comment": "See http://reg.163.com/help/help_oauth2.html",
+      "comment": "See https://reg.163.com/help/help_oauth2.html",
       "uri": "https://reg.163.com/open/oauth2/getUserInfo.do",
       "contentFormat": "json",
       "contentJson": {

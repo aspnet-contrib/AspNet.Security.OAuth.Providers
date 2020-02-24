@@ -30,7 +30,6 @@ namespace AspNet.Security.OAuth.NetEase
         [Theory]
         [InlineData(ClaimTypes.NameIdentifier, "820014421")]
         [InlineData(ClaimTypes.Name, "urstest_mreg")]
-        [InlineData(ClaimTypes.Email, "urstest_mreg")]
         public async Task Can_Sign_In_Using_NetEase(string claimType, string claimValue)
         {
             // Arrange
