@@ -71,7 +71,7 @@ namespace AspNet.Security.OAuth.Reddit
             return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
         }
 
-        protected override string BuildChallengeUrl(AuthenticationProperties properties, string redirectUri)
+        protected override string BuildChallengeUrl([NotNull] AuthenticationProperties properties, [NotNull] string redirectUri)
         {
             string address = base.BuildChallengeUrl(properties, redirectUri);
 
@@ -127,19 +127,20 @@ namespace AspNet.Security.OAuth.Reddit
 
         private AuthenticationHeaderValue CreateAuthorizationHeader()
         {
-            static string EscapeDataString(string value)
+            static string? EscapeDataString(string value)
             {
                 if (string.IsNullOrEmpty(value))
                 {
                     return null;
                 }
 
-                return Uri.EscapeDataString(value).Replace("%20", "+");
+                return Uri.EscapeDataString(value).Replace("%20", "+", StringComparison.Ordinal);
             }
 
             string credentials = Convert.ToBase64String(Encoding.ASCII.GetBytes(
                 string.Concat(
-                    EscapeDataString(Options.ClientId), ":",
+                    EscapeDataString(Options.ClientId),
+                    ":",
                     EscapeDataString(Options.ClientSecret))));
 
             return new AuthenticationHeaderValue("Basic", credentials);

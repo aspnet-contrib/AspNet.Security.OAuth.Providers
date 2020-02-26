@@ -7,7 +7,6 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.AspNetCore.Http;
 using static AspNet.Security.OAuth.Fitbit.FitbitAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.Fitbit
@@ -20,7 +19,7 @@ namespace AspNet.Security.OAuth.Fitbit
         public FitbitAuthenticationOptions()
         {
             ClaimsIssuer = FitbitAuthenticationDefaults.Issuer;
-            CallbackPath = new PathString(FitbitAuthenticationDefaults.CallbackPath);
+            CallbackPath = FitbitAuthenticationDefaults.CallbackPath;
 
             AuthorizationEndpoint = FitbitAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = FitbitAuthenticationDefaults.TokenEndpoint;

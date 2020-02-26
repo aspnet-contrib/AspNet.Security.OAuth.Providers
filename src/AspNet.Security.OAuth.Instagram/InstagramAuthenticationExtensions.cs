@@ -50,7 +50,8 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="configuration">The delegate used to configure the Instagram options.</param>
         /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
         public static AuthenticationBuilder AddInstagram(
-            [NotNull] this AuthenticationBuilder builder, [NotNull] string scheme,
+            [NotNull] this AuthenticationBuilder builder,
+            [NotNull] string scheme,
             [NotNull] Action<InstagramAuthenticationOptions> configuration)
         {
             return builder.AddInstagram(scheme, InstagramAuthenticationDefaults.DisplayName, configuration);
@@ -67,7 +68,8 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
         public static AuthenticationBuilder AddInstagram(
             [NotNull] this AuthenticationBuilder builder,
-            [NotNull] string scheme, [CanBeNull] string caption,
+            [NotNull] string scheme,
+            [CanBeNull] string caption,
             [NotNull] Action<InstagramAuthenticationOptions> configuration)
         {
             return builder.AddOAuth<InstagramAuthenticationOptions, InstagramAuthenticationHandler>(scheme, caption, configuration);

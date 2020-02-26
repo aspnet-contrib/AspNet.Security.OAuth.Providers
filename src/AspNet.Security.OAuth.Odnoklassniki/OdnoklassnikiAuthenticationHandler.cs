@@ -39,13 +39,13 @@ namespace AspNet.Security.OAuth.Odnoklassniki
             [NotNull] AuthenticationProperties properties,
             [NotNull] OAuthTokenResponse tokens)
         {
-            using var algorithm = MD5.Create();
+            using var algorithm = HashAlgorithm.Create("MD5");
             string accessSecret = GetHash(algorithm, tokens.AccessToken + Options.ClientSecret);
             string sign = GetHash(algorithm, $"application_key={Options.PublicSecret}format=jsonmethod=users.getCurrentUser{accessSecret}");
 
             string address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, new Dictionary<string, string>
             {
-                ["application_key"] = Options.PublicSecret,
+                ["application_key"] = Options.PublicSecret ?? string.Empty,
                 ["format"] = "json",
                 ["method"] = "users.getCurrentUser",
                 ["sig"] = sign,
@@ -81,7 +81,7 @@ namespace AspNet.Security.OAuth.Odnoklassniki
         {
             var builder = new StringBuilder();
 
-            foreach (var b in algorithm.ComputeHash(Encoding.UTF8.GetBytes(input)))
+            foreach (byte b in algorithm.ComputeHash(Encoding.UTF8.GetBytes(input)))
             {
                 builder.Append(b.ToString("x2", CultureInfo.InvariantCulture));
             }

@@ -50,7 +50,8 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="configuration">The delegate used to configure the Fitbit options.</param>
         /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
         public static AuthenticationBuilder AddFitbit(
-            [NotNull] this AuthenticationBuilder builder, [NotNull] string scheme,
+            [NotNull] this AuthenticationBuilder builder,
+            [NotNull] string scheme,
             [NotNull] Action<FitbitAuthenticationOptions> configuration)
         {
             return builder.AddFitbit(scheme, FitbitAuthenticationDefaults.DisplayName, configuration);
@@ -67,7 +68,8 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
         public static AuthenticationBuilder AddFitbit(
             [NotNull] this AuthenticationBuilder builder,
-            [NotNull] string scheme, [CanBeNull] string caption,
+            [NotNull] string scheme,
+            [CanBeNull] string caption,
             [NotNull] Action<FitbitAuthenticationOptions> configuration)
         {
             return builder.AddOAuth<FitbitAuthenticationOptions, FitbitAuthenticationHandler>(scheme, caption, configuration);

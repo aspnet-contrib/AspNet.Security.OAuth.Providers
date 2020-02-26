@@ -121,18 +121,17 @@ namespace AspNet.Security.OAuth.StackExchange
         {
             var bufferWriter = new ArrayBufferWriter<byte>();
 
-            await using (var writer = new Utf8JsonWriter(bufferWriter))
+            using var writer = new Utf8JsonWriter(bufferWriter);
+
+            writer.WriteStartObject();
+
+            foreach (var item in content)
             {
-                writer.WriteStartObject();
-
-                foreach (var item in content)
-                {
-                    writer.WriteString(item.Key, item.Value);
-                }
-
-                writer.WriteEndObject();
-                await writer.FlushAsync();
+                writer.WriteString(item.Key, item.Value);
             }
+
+            writer.WriteEndObject();
+            await writer.FlushAsync();
 
             return JsonDocument.Parse(bufferWriter.WrittenMemory);
         }

@@ -35,14 +35,13 @@ namespace AspNet.Security.OAuth.VisualStudio
         public async Task Can_Sign_In_Using_Visual_Studio(string claimType, string claimValue)
         {
             // Arrange
-            using (var server = CreateTestServer())
-            {
-                // Act
-                var claims = await AuthenticateUserAsync(server);
+            using var server = CreateTestServer();
 
-                // Assert
-                AssertClaim(claims, claimType, claimValue);
-            }
+            // Act
+            var claims = await AuthenticateUserAsync(server);
+
+            // Assert
+            AssertClaim(claims, claimType, claimValue);
         }
     }
 }

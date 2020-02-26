@@ -31,7 +31,7 @@ namespace AspNet.Security.OAuth.MailRu
         }
 
         [Theory]
-        [InlineData(ClaimTypes.NameIdentifier, "123abc")]
+        [InlineData(ClaimTypes.NameIdentifier, "vasya@mail.ru")]
         [InlineData(ClaimTypes.Name, "Vasya")]
         [InlineData(ClaimTypes.Email, "vasya@mail.ru")]
         [InlineData(ClaimTypes.GivenName, "Vasiliy")]
@@ -41,14 +41,13 @@ namespace AspNet.Security.OAuth.MailRu
         public async Task Can_Sign_In_Using_MailRu(string claimType, string claimValue)
         {
             // Arrange
-            using (var server = CreateTestServer())
-            {
-                // Act
-                var claims = await AuthenticateUserAsync(server);
+            using var server = CreateTestServer();
 
-                // Assert
-                AssertClaim(claims, claimType, claimValue);
-            }
+            // Act
+            var claims = await AuthenticateUserAsync(server);
+
+            // Assert
+            AssertClaim(claims, claimType, claimValue);
         }
     }
 }

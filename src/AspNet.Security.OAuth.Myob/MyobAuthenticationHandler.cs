@@ -26,8 +26,10 @@ namespace AspNet.Security.OAuth.Myob
         {
         }
 
-        protected override async Task<AuthenticationTicket> CreateTicketAsync([NotNull] ClaimsIdentity identity,
-            [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens)
+        protected override async Task<AuthenticationTicket> CreateTicketAsync(
+            [NotNull] ClaimsIdentity identity,
+            [NotNull] AuthenticationProperties properties,
+            [NotNull] OAuthTokenResponse tokens)
         {
             // Note: MYOB doesn't provide a user information endpoint,
             // so we rely on the details sent back in the token request.

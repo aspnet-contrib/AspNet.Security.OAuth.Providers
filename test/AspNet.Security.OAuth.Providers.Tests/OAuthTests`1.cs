@@ -38,7 +38,7 @@ namespace AspNet.Security.OAuth
         {
             Interceptor = new HttpClientInterceptorOptions()
                 .ThrowsOnMissingRegistration()
-                .RegisterBundle(Path.Combine(GetType().Name.Replace("Tests", string.Empty), "bundle.json"));
+                .RegisterBundle(Path.Combine(GetType().Name.Replace("Tests", string.Empty, StringComparison.OrdinalIgnoreCase), "bundle.json"));
 
             LoopbackRedirectHandler = new LoopbackRedirectHandler
             {
@@ -51,7 +51,7 @@ namespace AspNet.Security.OAuth
         /// <summary>
         /// Gets or sets the xunit test output helper to route application logs to.
         /// </summary>
-        public ITestOutputHelper OutputHelper { get; set; }
+        public ITestOutputHelper? OutputHelper { get; set; }
 
         /// <summary>
         /// Gets the interceptor to use for configuring stubbed HTTP responses.
@@ -76,7 +76,7 @@ namespace AspNet.Security.OAuth
         /// <summary>
         /// Gets the optional redirect URI to use for OAuth flows.
         /// </summary>
-        protected virtual string RedirectUri { get; }
+        protected virtual string? RedirectUri { get; }
 
         /// <summary>
         /// Registers authentication for the test.
@@ -90,7 +90,9 @@ namespace AspNet.Security.OAuth
         /// localization scenario.
         /// </summary>
         /// <param name="app">The application.</param>
-        protected internal virtual void ConfigureApplication(IApplicationBuilder app) { }
+        protected internal virtual void ConfigureApplication(IApplicationBuilder app)
+        {
+        }
 
         /// <summary>
         /// Configures the default authentication options.
@@ -111,7 +113,7 @@ namespace AspNet.Security.OAuth
         /// <returns>
         /// The test application to use for authentication.
         /// </returns>
-        protected WebApplicationFactory<Program> CreateTestServer(Action<IServiceCollection> configureServices = null)
+        protected WebApplicationFactory<Program> CreateTestServer(Action<IServiceCollection>? configureServices = null)
             => ApplicationFactory.CreateApplication(this, configureServices);
 
         /// <summary>

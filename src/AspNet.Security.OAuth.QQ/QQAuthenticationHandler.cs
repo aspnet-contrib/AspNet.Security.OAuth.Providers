@@ -136,10 +136,10 @@ namespace AspNet.Security.OAuth.QQ
 
             string body = await response.Content.ReadAsStringAsync();
 
-            int index = body.IndexOf("{");
+            int index = body.IndexOf("{", StringComparison.Ordinal);
             if (index > 0)
             {
-                body = body.Substring(index, body.LastIndexOf("}") - index + 1);
+                body = body.Substring(index, body.LastIndexOf("}", StringComparison.Ordinal) - index + 1);
             }
 
             using var payload = JsonDocument.Parse(body);
@@ -153,18 +153,17 @@ namespace AspNet.Security.OAuth.QQ
         {
             var bufferWriter = new ArrayBufferWriter<byte>();
 
-            await using (var writer = new Utf8JsonWriter(bufferWriter))
+            using var writer = new Utf8JsonWriter(bufferWriter);
+
+            writer.WriteStartObject();
+
+            foreach (var item in content)
             {
-                writer.WriteStartObject();
-
-                foreach (var item in content)
-                {
-                    writer.WriteString(item.Key, item.Value);
-                }
-
-                writer.WriteEndObject();
-                await writer.FlushAsync();
+                writer.WriteString(item.Key, item.Value);
             }
+
+            writer.WriteEndObject();
+            await writer.FlushAsync();
 
             return JsonDocument.Parse(bufferWriter.WrittenMemory);
         }

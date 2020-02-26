@@ -18,7 +18,7 @@ namespace AspNet.Security.OAuth.LinkedIn
 {
     public class LinkedInTests : OAuthTests<LinkedInAuthenticationOptions>
     {
-        private Action<LinkedInAuthenticationOptions> additionalConfiguration = null;
+        private Action<LinkedInAuthenticationOptions>? additionalConfiguration = null;
 
         public LinkedInTests(ITestOutputHelper outputHelper)
         {
@@ -35,7 +35,7 @@ namespace AspNet.Security.OAuth.LinkedIn
                 additionalConfiguration?.Invoke(options);
             });
         }
-       
+
         protected internal override void ConfigureApplication(IApplicationBuilder app)
         {
             app.UseRequestLocalization(new RequestLocalizationOptions
@@ -56,14 +56,13 @@ namespace AspNet.Security.OAuth.LinkedIn
             // Arrange
             additionalConfiguration = options => options.Fields.Add(LinkedInAuthenticationConstants.ProfileFields.PictureUrl);
 
-            using (var server = CreateTestServer())
-            {
-                // Act
-                var claims = await AuthenticateUserAsync(server);
+            using var server = CreateTestServer();
 
-                // Assert
-                AssertClaim(claims, claimType, claimValue);
-            }
+            // Act
+            var claims = await AuthenticateUserAsync(server);
+
+            // Assert
+            AssertClaim(claims, claimType, claimValue);
         }
 
         [Theory]
@@ -74,14 +73,13 @@ namespace AspNet.Security.OAuth.LinkedIn
         public async Task Can_Sign_In_Using_LinkedIn_Localized(string claimType, string claimValue)
         {
             // Arrange
-            using (var server = CreateTestServer())
-            {
-                // Act
-                var claims = await AuthenticateUserAsync(server);
+            using var server = CreateTestServer();
 
-                // Assert
-                AssertClaim(claims, claimType, claimValue);
-            }
+            // Act
+            var claims = await AuthenticateUserAsync(server);
+
+            // Assert
+            AssertClaim(claims, claimType, claimValue);
         }
 
         [Theory]
@@ -94,7 +92,7 @@ namespace AspNet.Security.OAuth.LinkedIn
             // Arrange
             additionalConfiguration = options => options.MultiLocaleStringResolver = (values, preferredLocale) =>
             {
-                if (values.TryGetValue("fr_FR", out string value))
+                if (values.TryGetValue("fr_FR", out string? value))
                 {
                     return value;
                 }
@@ -102,14 +100,13 @@ namespace AspNet.Security.OAuth.LinkedIn
                 return values.Values.FirstOrDefault();
             };
 
-            using (var server = CreateTestServer())
-            {
-                // Act
-                var claims = await AuthenticateUserAsync(server);
+            using var server = CreateTestServer();
 
-                // Assert
-                AssertClaim(claims, claimType, claimValue);
-            }
+            // Act
+            var claims = await AuthenticateUserAsync(server);
+
+            // Assert
+            AssertClaim(claims, claimType, claimValue);
         }
     }
 }

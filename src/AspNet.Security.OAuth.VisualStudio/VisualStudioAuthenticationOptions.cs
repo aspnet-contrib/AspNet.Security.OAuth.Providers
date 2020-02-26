@@ -7,7 +7,6 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.AspNetCore.Http;
 
 namespace AspNet.Security.OAuth.VisualStudio
 {
@@ -20,7 +19,7 @@ namespace AspNet.Security.OAuth.VisualStudio
         {
             ClaimsIssuer = VisualStudioAuthenticationDefaults.Issuer;
 
-            CallbackPath = new PathString(VisualStudioAuthenticationDefaults.CallbackPath);
+            CallbackPath = VisualStudioAuthenticationDefaults.CallbackPath;
 
             AuthorizationEndpoint = VisualStudioAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = VisualStudioAuthenticationDefaults.TokenEndpoint;

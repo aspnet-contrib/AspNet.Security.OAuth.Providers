@@ -11,7 +11,9 @@ using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Shouldly;
@@ -266,7 +268,9 @@ namespace AspNet.Security.OAuth.Apple
             var exception = await Assert.ThrowsAsync<Exception>(() => AuthenticateUserAsync(server));
 
             // Assert
+            exception.InnerException.ShouldNotBeNull();
             exception.InnerException.ShouldBeOfType<InvalidOperationException>();
+            exception.InnerException!.Message.ShouldNotBeNull();
             exception.InnerException.Message.ShouldBe("No Apple ID token was returned in the OAuth token response.");
         }
 
@@ -289,7 +293,9 @@ namespace AspNet.Security.OAuth.Apple
             var exception = await Assert.ThrowsAsync<Exception>(() => AuthenticateUserAsync(server));
 
             // Assert
+            exception.InnerException.ShouldNotBeNull();
             exception.InnerException.ShouldBeOfType<ArgumentException>();
+            exception.InnerException!.Message.ShouldNotBeNull();
             exception.InnerException.Message.ShouldStartWith("IDX");
         }
 
@@ -312,8 +318,85 @@ namespace AspNet.Security.OAuth.Apple
             var exception = await Assert.ThrowsAsync<Exception>(() => AuthenticateUserAsync(server));
 
             // Assert
+            exception.InnerException.ShouldNotBeNull();
             exception.InnerException.ShouldBeOfType<InvalidOperationException>();
+            exception.InnerException!.Message.ShouldNotBeNull();
             exception.InnerException.Message.ShouldBe("No Apple ID token was returned in the OAuth token response.");
+        }
+
+        [Fact]
+        public async Task Apple_Public_Keys_Are_Cached()
+        {
+            // Arrange
+            static void ConfigureServices(IServiceCollection services)
+            {
+                services.PostConfigureAll<AppleAuthenticationOptions>((options) =>
+                {
+                    options.PublicKeyCacheLifetime = TimeSpan.FromMinutes(1);
+                });
+            }
+
+            using var server = CreateTestServer(ConfigureServices);
+
+            var keyStore = server.Services.GetRequiredService<AppleKeyStore>();
+            var options = server.Services.GetRequiredService<IOptions<AppleAuthenticationOptions>>().Value;
+
+            var context = new AppleValidateIdTokenContext(
+                new DefaultHttpContext(),
+                new AuthenticationScheme("apple", "Apple", typeof(AppleAuthenticationHandler)),
+                options,
+                "my-token");
+
+            // Act
+            byte[] actual1 = await keyStore.LoadPublicKeysAsync(context);
+            byte[] actual2 = await keyStore.LoadPublicKeysAsync(context);
+
+            // Assert
+            actual1.ShouldNotBeNull();
+            actual1.ShouldNotBeEmpty();
+            actual1.ShouldBeSameAs(actual2);
+        }
+
+        [Fact]
+        public async Task Apple_Public_Keys_Are_Reloaded_Once_Cache_Lieftime_Expires()
+        {
+            // Arrange
+            static void ConfigureServices(IServiceCollection services)
+            {
+                services.PostConfigureAll<AppleAuthenticationOptions>((options) =>
+                {
+                    options.PublicKeyCacheLifetime = TimeSpan.FromSeconds(0.25);
+                });
+            }
+
+            using var server = CreateTestServer(ConfigureServices);
+
+            var keyStore = server.Services.GetRequiredService<AppleKeyStore>();
+            var options = server.Services.GetRequiredService<IOptions<AppleAuthenticationOptions>>().Value;
+
+            var context = new AppleValidateIdTokenContext(
+                new DefaultHttpContext(),
+                new AuthenticationScheme("apple", "Apple", typeof(AppleAuthenticationHandler)),
+                options,
+                "my-token");
+
+            // Act
+            byte[] first = await keyStore.LoadPublicKeysAsync(context);
+
+            // Assert
+            first.ShouldNotBeNull();
+            first.ShouldNotBeEmpty();
+
+            // Arrange
+            await Task.Delay(TimeSpan.FromSeconds(1));
+
+            // Act
+            byte[] second = await keyStore.LoadPublicKeysAsync(context);
+
+            // Assert
+            second.ShouldNotBeNull();
+            second.ShouldNotBeEmpty();
+            first.ShouldNotBeSameAs(second);
         }
 
         private sealed class FrozenJwtSecurityTokenHandler : JwtSecurityTokenHandler

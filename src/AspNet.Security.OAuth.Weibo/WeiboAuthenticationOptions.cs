@@ -7,7 +7,6 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.AspNetCore.Http;
 using static AspNet.Security.OAuth.Weibo.WeiboAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.Weibo
@@ -20,7 +19,7 @@ namespace AspNet.Security.OAuth.Weibo
         public WeiboAuthenticationOptions()
         {
             ClaimsIssuer = WeiboAuthenticationDefaults.Issuer;
-            CallbackPath = new PathString(WeiboAuthenticationDefaults.CallbackPath);
+            CallbackPath = WeiboAuthenticationDefaults.CallbackPath;
 
             AuthorizationEndpoint = WeiboAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = WeiboAuthenticationDefaults.TokenEndpoint;

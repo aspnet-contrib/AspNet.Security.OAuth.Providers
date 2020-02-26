@@ -15,9 +15,9 @@ nuget:
 skip_tags: false
 test: off
 
-after_build:
+on_finish:
   - ps: $wc = New-Object 'System.Net.WebClient'
-  - ps: $wc.UploadFile("https://ci.appveyor.com/api/testresults/xunit/$($env:APPVEYOR_JOB_ID)", (Resolve-Path .\artifacts\TestResults\Release\AspNet.Security.OAuth.Providers.Tests_netcoreapp3.0_x64.xml))
+  - ps: $wc.UploadFile("https://ci.appveyor.com/api/testresults/xunit/$($env:APPVEYOR_JOB_ID)", (Resolve-Path .\artifacts\TestResults\Release\AspNet.Security.OAuth.Providers.Tests_netcoreapp3.1_x64.xml))
 
 deploy:
 - provider: NuGet

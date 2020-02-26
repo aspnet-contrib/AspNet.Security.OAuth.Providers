@@ -19,7 +19,7 @@ namespace AspNet.Security.OAuth.Foursquare
         public FoursquareAuthenticationOptions()
         {
             ClaimsIssuer = FoursquareAuthenticationDefaults.Issuer;
-            CallbackPath = new PathString(FoursquareAuthenticationDefaults.CallbackPath);
+            CallbackPath = FoursquareAuthenticationDefaults.CallbackPath;
 
             AuthorizationEndpoint = FoursquareAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = FoursquareAuthenticationDefaults.TokenEndpoint;

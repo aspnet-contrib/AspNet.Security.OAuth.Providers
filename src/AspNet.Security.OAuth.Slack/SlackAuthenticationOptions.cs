@@ -21,7 +21,7 @@ namespace AspNet.Security.OAuth.Slack
         {
             ClaimsIssuer = SlackAuthenticationDefaults.Issuer;
 
-            CallbackPath = new PathString(SlackAuthenticationDefaults.CallbackPath);
+            CallbackPath = SlackAuthenticationDefaults.CallbackPath;
 
             AuthorizationEndpoint = SlackAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = SlackAuthenticationDefaults.TokenEndpoint;

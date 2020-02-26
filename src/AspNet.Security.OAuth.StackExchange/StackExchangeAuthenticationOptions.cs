@@ -9,7 +9,6 @@ using System.Net.Http;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.AspNetCore.Http;
 using static AspNet.Security.OAuth.StackExchange.StackExchangeAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.StackExchange
@@ -23,7 +22,7 @@ namespace AspNet.Security.OAuth.StackExchange
         {
             ClaimsIssuer = StackExchangeAuthenticationDefaults.Issuer;
 
-            CallbackPath = new PathString(StackExchangeAuthenticationDefaults.CallbackPath);
+            CallbackPath = StackExchangeAuthenticationDefaults.CallbackPath;
 
             AuthorizationEndpoint = StackExchangeAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = StackExchangeAuthenticationDefaults.TokenEndpoint;
@@ -40,7 +39,7 @@ namespace AspNet.Security.OAuth.StackExchange
         /// Gets or sets the application request key, obtained
         /// when registering your application with StackApps.
         /// </summary>
-        public string RequestKey { get; set; }
+        public string RequestKey { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets or sets the site on which the user is registered.

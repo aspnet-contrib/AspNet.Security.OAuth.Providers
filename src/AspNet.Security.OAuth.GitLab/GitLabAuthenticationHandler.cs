@@ -30,9 +30,9 @@ namespace AspNet.Security.OAuth.GitLab
         }
 
         protected override async Task<AuthenticationTicket> CreateTicketAsync(
-            ClaimsIdentity identity,
-            AuthenticationProperties properties,
-            OAuthTokenResponse tokens)
+            [NotNull] ClaimsIdentity identity,
+            [NotNull] AuthenticationProperties properties,
+            [NotNull] OAuthTokenResponse tokens)
         {
             // Get the GitLab user
             using var request = new HttpRequestMessage(HttpMethod.Get, Options.UserInformationEndpoint);

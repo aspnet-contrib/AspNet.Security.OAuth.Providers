@@ -7,7 +7,6 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.AspNetCore.Http;
 using static AspNet.Security.OAuth.GitHub.GitHubAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.GitHub
@@ -21,7 +20,7 @@ namespace AspNet.Security.OAuth.GitHub
         {
             ClaimsIssuer = GitHubAuthenticationDefaults.Issuer;
 
-            CallbackPath = new PathString(GitHubAuthenticationDefaults.CallbackPath);
+            CallbackPath = GitHubAuthenticationDefaults.CallbackPath;
 
             AuthorizationEndpoint = GitHubAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = GitHubAuthenticationDefaults.TokenEndpoint;

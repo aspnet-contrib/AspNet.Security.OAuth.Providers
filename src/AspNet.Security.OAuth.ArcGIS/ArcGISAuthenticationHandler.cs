@@ -32,11 +32,13 @@ namespace AspNet.Security.OAuth.ArcGIS
         {
         }
 
-        protected override async Task<AuthenticationTicket> CreateTicketAsync([NotNull] ClaimsIdentity identity,
-            [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens)
+        protected override async Task<AuthenticationTicket> CreateTicketAsync(
+            [NotNull] ClaimsIdentity identity,
+            [NotNull] AuthenticationProperties properties,
+            [NotNull] OAuthTokenResponse tokens)
         {
             // Note: the ArcGIS API doesn't support content negotiation via headers.
-            var address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, new Dictionary<string, string>
+            string address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, new Dictionary<string, string>
             {
                 ["f"] = "json",
                 ["token"] = tokens.AccessToken

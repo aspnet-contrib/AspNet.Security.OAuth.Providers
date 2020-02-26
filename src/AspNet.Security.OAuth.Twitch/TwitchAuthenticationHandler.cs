@@ -31,7 +31,7 @@ namespace AspNet.Security.OAuth.Twitch
         {
         }
 
-        protected override string BuildChallengeUrl(AuthenticationProperties properties, string redirectUri)
+        protected override string BuildChallengeUrl([NotNull] AuthenticationProperties properties, [NotNull] string redirectUri)
             => QueryHelpers.AddQueryString(Options.AuthorizationEndpoint, new Dictionary<string, string>
             {
                 ["client_id"] = Options.ClientId,
@@ -42,8 +42,10 @@ namespace AspNet.Security.OAuth.Twitch
                 ["force_verify"] = Options.ForceVerify ? "true" : "false"
             });
 
-        protected override async Task<AuthenticationTicket> CreateTicketAsync([NotNull] ClaimsIdentity identity,
-            [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens)
+        protected override async Task<AuthenticationTicket> CreateTicketAsync(
+            [NotNull] ClaimsIdentity identity,
+            [NotNull] AuthenticationProperties properties,
+            [NotNull] OAuthTokenResponse tokens)
         {
             using var request = new HttpRequestMessage(HttpMethod.Get, Options.UserInformationEndpoint);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));

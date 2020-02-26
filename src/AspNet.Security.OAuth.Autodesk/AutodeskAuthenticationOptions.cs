@@ -7,7 +7,6 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.AspNetCore.Http;
 using static AspNet.Security.OAuth.Autodesk.AutodeskAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.Autodesk
@@ -20,7 +19,7 @@ namespace AspNet.Security.OAuth.Autodesk
         public AutodeskAuthenticationOptions()
         {
             ClaimsIssuer = AutodeskAuthenticationDefaults.Issuer;
-            CallbackPath = new PathString(AutodeskAuthenticationDefaults.CallbackPath);
+            CallbackPath = AutodeskAuthenticationDefaults.CallbackPath;
 
             AuthorizationEndpoint = AutodeskAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = AutodeskAuthenticationDefaults.TokenEndpoint;

@@ -20,7 +20,7 @@ namespace AspNet.Security.OAuth.Weixin
             OutputHelper = outputHelper;
         }
 
-        public override string DefaultScheme =>  WeixinAuthenticationDefaults.AuthenticationScheme;
+        public override string DefaultScheme => WeixinAuthenticationDefaults.AuthenticationScheme;
 
         protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
         {
@@ -44,14 +44,13 @@ namespace AspNet.Security.OAuth.Weixin
         public async Task Can_Sign_In_Using_Wechat(string claimType, string claimValue)
         {
             // Arrange
-            using (var server = CreateTestServer())
-            {
-                // Act
-                var claims = await AuthenticateUserAsync(server);
+            using var server = CreateTestServer();
 
-                // Assert
-                AssertClaim(claims, claimType, claimValue);
-            }
+            // Act
+            var claims = await AuthenticateUserAsync(server);
+
+            // Assert
+            AssertClaim(claims, claimType, claimValue);
         }
     }
 }

@@ -50,8 +50,10 @@ namespace AspNet.Security.OAuth.Weixin
                     }
                 }
             }
+
             return await base.HandleRemoteAuthenticateAsync();
         }
+
         protected override async Task<AuthenticationTicket> CreateTicketAsync(
             [NotNull] ClaimsIdentity identity,
             [NotNull] AuthenticationProperties properties,
@@ -128,17 +130,18 @@ namespace AspNet.Security.OAuth.Weixin
 
                 return OAuthTokenResponse.Failed(new Exception("An error occurred while retrieving an access token."));
             }
+
             return OAuthTokenResponse.Success(payload);
         }
 
-        protected override string BuildChallengeUrl(AuthenticationProperties properties, string redirectUri)
+        protected override string BuildChallengeUrl([NotNull] AuthenticationProperties properties, [NotNull] string redirectUri)
         {
             string stateValue = Options.StateDataFormat.Protect(properties);
             bool addRedirectHash = false;
 
             if (!IsWeixinAuthorizationEndpointInUse())
             {
-                //Store state in redirectUri when authorizing Wechat Web pages to prevent "too long state parameters" error
+                // Store state in redirectUri when authorizing Wechat Web pages to prevent "too long state parameters" error
                 redirectUri = QueryHelpers.AddQueryString(redirectUri, OauthState, stateValue);
                 addRedirectHash = true;
             }
@@ -157,6 +160,7 @@ namespace AspNet.Security.OAuth.Weixin
                 // The parameters necessary for Web Authorization of Wechat
                 redirectUri += "#wechat_redirect";
             }
+
             return redirectUri;
         }
 

@@ -50,7 +50,8 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="configuration">The delegate used to configure the Yammer options.</param>
         /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
         public static AuthenticationBuilder AddYammer(
-            [NotNull] this AuthenticationBuilder builder, [NotNull] string scheme,
+            [NotNull] this AuthenticationBuilder builder,
+            [NotNull] string scheme,
             [NotNull] Action<YammerAuthenticationOptions> configuration)
         {
             return builder.AddYammer(scheme, YammerAuthenticationDefaults.DisplayName, configuration);
@@ -67,7 +68,8 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
         public static AuthenticationBuilder AddYammer(
             [NotNull] this AuthenticationBuilder builder,
-            [NotNull] string scheme, [CanBeNull] string caption,
+            [NotNull] string scheme,
+            [CanBeNull] string caption,
             [NotNull] Action<YammerAuthenticationOptions> configuration)
         {
             return builder.AddOAuth<YammerAuthenticationOptions, YammerAuthenticationHandler>(scheme, caption, configuration);

@@ -4,11 +4,9 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.AspNetCore.Http;
 
 namespace AspNet.Security.OAuth.Myob
 {
@@ -20,7 +18,7 @@ namespace AspNet.Security.OAuth.Myob
         public MyobAuthenticationOptions()
         {
             ClaimsIssuer = MyobAuthenticationDefaults.Issuer;
-            CallbackPath = new PathString(MyobAuthenticationDefaults.CallbackPath);
+            CallbackPath = MyobAuthenticationDefaults.CallbackPath;
 
             AuthorizationEndpoint = MyobAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = MyobAuthenticationDefaults.TokenEndpoint;

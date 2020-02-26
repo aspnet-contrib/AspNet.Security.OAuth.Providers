@@ -24,7 +24,6 @@ namespace AspNet.Security.OAuth.Shopify
 {
     public class ShopifyAuthenticationHandler : OAuthHandler<ShopifyAuthenticationOptions>
     {
-        /// <inheritdoc />
         public ShopifyAuthenticationHandler(
             [NotNull] IOptionsMonitor<ShopifyAuthenticationOptions> options,
             [NotNull] ILoggerFactory logger,
@@ -62,7 +61,7 @@ namespace AspNet.Security.OAuth.Shopify
 
             // In Shopify, the customer can modify the scope given to the app. Apps should verify
             // that the customer is allowing the required scope.
-            string actualScope = tokens.Response.RootElement.GetString("scope").ToString();
+            string actualScope = tokens.Response.RootElement.GetString("scope");
             bool isPersistent = true;
 
             // If the request was for a "per-user" (i.e. no offline access)
@@ -100,9 +99,9 @@ namespace AspNet.Security.OAuth.Shopify
         }
 
         /// <inheritdoc />
-        protected override string BuildChallengeUrl(AuthenticationProperties properties, string redirectUri)
+        protected override string BuildChallengeUrl([NotNull] AuthenticationProperties properties, [NotNull] string redirectUri)
         {
-            if (!properties.Items.TryGetValue(ShopifyAuthenticationDefaults.ShopNameAuthenticationProperty, out string shopName))
+            if (!properties.Items.TryGetValue(ShopifyAuthenticationDefaults.ShopNameAuthenticationProperty, out string? shopName))
             {
                 string message =
                     $"Shopify provider AuthenticationProperties must contain {ShopifyAuthenticationDefaults.ShopNameAuthenticationProperty}.";
@@ -111,10 +110,10 @@ namespace AspNet.Security.OAuth.Shopify
                 throw new InvalidOperationException(message);
             }
 
-            string uri = string.Format(Options.AuthorizationEndpoint, shopName);
+            string uri = string.Format(CultureInfo.InvariantCulture, Options.AuthorizationEndpoint, shopName);
 
             // Get the permission scope, which can either be set in options or overridden in AuthenticationProperties.
-            if (!properties.Items.TryGetValue(ShopifyAuthenticationDefaults.ShopScopeAuthenticationProperty, out string scope))
+            if (!properties.Items.TryGetValue(ShopifyAuthenticationDefaults.ShopScopeAuthenticationProperty, out string? scope))
             {
                 scope = FormatScope();
             }
@@ -128,7 +127,7 @@ namespace AspNet.Security.OAuth.Shopify
             });
 
             // If we're requesting a per-user, online only, token, add the grant_options query param.
-            if (properties.Items.TryGetValue(ShopifyAuthenticationDefaults.GrantOptionsAuthenticationProperty, out string grantOptions) &&
+            if (properties.Items.TryGetValue(ShopifyAuthenticationDefaults.GrantOptionsAuthenticationProperty, out string? grantOptions) &&
                 grantOptions == ShopifyAuthenticationDefaults.PerUserAuthenticationPropertyValue)
             {
                 url = QueryHelpers.AddQueryString(url, "grant_options[]", ShopifyAuthenticationDefaults.PerUserAuthenticationPropertyValue);

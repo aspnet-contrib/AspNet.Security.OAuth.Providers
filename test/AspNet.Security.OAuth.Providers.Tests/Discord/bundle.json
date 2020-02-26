@@ -18,7 +18,9 @@
       "contentJson": {
         "id": "my-id",
         "username": "John Smith",
-        "email": "john@john-smith.local"
+        "email": "john@john-smith.local",
+        "discriminator": "1234",
+        "avatar": "dummy-avatar-hash"
       }
     }
   ]

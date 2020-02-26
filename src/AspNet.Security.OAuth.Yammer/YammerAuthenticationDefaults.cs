@@ -30,6 +30,11 @@ namespace AspNet.Security.OAuth.Yammer
         public const string Issuer = "Yammer";
 
         /// <summary>
+        /// Default value for <see cref="RemoteAuthenticationOptions.CallbackPath"/>.
+        /// </summary>
+        public const string CallbackPath = "/signin-yammer";
+
+        /// <summary>
         /// Default value for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
         /// </summary>
         public const string AuthorizationEndpoint = "https://www.yammer.com/oauth2/authorize";

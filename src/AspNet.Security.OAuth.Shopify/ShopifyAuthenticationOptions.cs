@@ -7,7 +7,6 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.AspNetCore.Http;
 
 namespace AspNet.Security.OAuth.Shopify
 {
@@ -26,7 +25,7 @@ namespace AspNet.Security.OAuth.Shopify
             AuthorizationEndpoint = ShopifyAuthenticationDefaults.AuthorizationEndpointFormat;
             TokenEndpoint = ShopifyAuthenticationDefaults.TokenEndpointFormat;
             UserInformationEndpoint = ShopifyAuthenticationDefaults.UserInformationEndpointFormat;
-            
+
             ClaimActions.MapJsonSubKey(ClaimTypes.NameIdentifier, "shop", "myshopify_domain");
             ClaimActions.MapJsonSubKey(ClaimTypes.Name, "shop", "name");
             ClaimActions.MapJsonSubKey(ClaimTypes.Webpage, "shop", "domain");

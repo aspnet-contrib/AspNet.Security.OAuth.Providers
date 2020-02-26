@@ -22,7 +22,7 @@ namespace AspNet.Security.OAuth.Twitch
         public TwitchAuthenticationOptions()
         {
             ClaimsIssuer = TwitchAuthenticationDefaults.Issuer;
-            CallbackPath = new PathString(TwitchAuthenticationDefaults.CallbackPath);
+            CallbackPath = TwitchAuthenticationDefaults.CallbackPath;
 
             AuthorizationEndpoint = TwitchAuthenticationDefaults.AuthorizationEndPoint;
             TokenEndpoint = TwitchAuthenticationDefaults.TokenEndpoint;
@@ -48,7 +48,7 @@ namespace AspNet.Security.OAuth.Twitch
         /// </summary>
         public bool ForceVerify { get; set; }
 
-        private static string GetData(JsonElement user, string key)
+        private static string? GetData(JsonElement user, string key)
         {
             if (!user.TryGetProperty("data", out var data) || data.ValueKind != JsonValueKind.Array)
             {

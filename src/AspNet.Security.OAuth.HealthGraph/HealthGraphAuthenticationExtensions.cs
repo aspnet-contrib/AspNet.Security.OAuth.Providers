@@ -50,7 +50,8 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="configuration">The delegate used to configure the HealthGraph options.</param>
         /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
         public static AuthenticationBuilder AddHealthGraph(
-            [NotNull] this AuthenticationBuilder builder, [NotNull] string scheme,
+            [NotNull] this AuthenticationBuilder builder,
+            [NotNull] string scheme,
             [NotNull] Action<HealthGraphAuthenticationOptions> configuration)
         {
             return builder.AddHealthGraph(scheme, HealthGraphAuthenticationDefaults.DisplayName, configuration);
@@ -67,7 +68,8 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
         public static AuthenticationBuilder AddHealthGraph(
             [NotNull] this AuthenticationBuilder builder,
-            [NotNull] string scheme, [CanBeNull] string caption,
+            [NotNull] string scheme,
+            [CanBeNull] string caption,
             [NotNull] Action<HealthGraphAuthenticationOptions> configuration)
         {
             return builder.AddOAuth<HealthGraphAuthenticationOptions, HealthGraphAuthenticationHandler>(scheme, caption, configuration);

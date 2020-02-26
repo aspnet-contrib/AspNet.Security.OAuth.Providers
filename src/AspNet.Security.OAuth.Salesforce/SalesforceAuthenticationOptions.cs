@@ -8,7 +8,6 @@ using System;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.AspNetCore.Http;
 using static AspNet.Security.OAuth.Salesforce.SalesforceAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.Salesforce
@@ -22,7 +21,7 @@ namespace AspNet.Security.OAuth.Salesforce
         {
             ClaimsIssuer = SalesforceAuthenticationDefaults.Issuer;
 
-            CallbackPath = new PathString(SalesforceAuthenticationDefaults.CallbackPath);
+            CallbackPath = SalesforceAuthenticationDefaults.CallbackPath;
 
             Environment = SalesforceAuthenticationDefaults.Environment;
 

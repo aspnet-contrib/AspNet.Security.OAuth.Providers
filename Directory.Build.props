@@ -7,6 +7,8 @@
     <NoWarn>$(NoWarn);CS1591</NoWarn>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <DebugSymbols>true</DebugSymbols>
+    <DefineConstants Condition=" '$(Configuration)' == 'Debug' ">$(DefineConstants);JETBRAINS_ANNOTATIONS</DefineConstants>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -42,7 +44,7 @@
     <Product>aspnet-contrib</Product>
     <Company>$(Authors)</Company>
     <_ProjectCopyright>© AspNet.Security.OAuth.Providers contributors. All rights reserved.</_ProjectCopyright>
-    <PackageIcon>package-icon.png</PackageIcon>
+    <PackageIconFullPath>$(MSBuildThisFileDirectory)package-icon.png</PackageIconFullPath>
     <PackageProjectUrl>https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers</PackageProjectUrl>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <RepositoryType>git</RepositoryType>
@@ -63,12 +65,22 @@
     <Serviceable>false</Serviceable>
   </PropertyGroup>
 
-  <ItemGroup Condition=" '$(IsPackable)' == 'true' ">
-    <None Include="$(MSBuildThisFileDirectory)package-icon.png" Pack="True" PackagePath="" />
+  <PropertyGroup>
+    <CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)AspNet.Security.OAuth.Providers.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="$(RoslynAnalyzersVersion)" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.NetCore.Analyzers" Version="$(RoslynAnalyzersVersion)" PrivateAssets="All" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Include="$(MSBuildThisFileDirectory)stylecop.json" Link="stylecop.json" />
+    <PackageReference Include="StyleCop.Analyzers" Version="$(StyleCopAnalyzersVersion)" PrivateAssets="All" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(OS)' != 'Windows_NT' ">
-    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" PrivateAssets="All" Version="1.0.0-preview.2" />
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" PrivateAssets="All" Version="1.0.0" />
   </ItemGroup>
 
   <ItemGroup>

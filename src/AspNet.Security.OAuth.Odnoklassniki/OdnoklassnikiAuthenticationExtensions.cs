@@ -50,7 +50,8 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="configuration">The delegate used to configure the Odnoklassniki options.</param>
         /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
         public static AuthenticationBuilder AddOdnoklassniki(
-            [NotNull] this AuthenticationBuilder builder, [NotNull] string scheme,
+            [NotNull] this AuthenticationBuilder builder,
+            [NotNull] string scheme,
             [NotNull] Action<OdnoklassnikiAuthenticationOptions> configuration)
         {
             return builder.AddOdnoklassniki(scheme, OdnoklassnikiAuthenticationDefaults.DisplayName, configuration);
@@ -67,7 +68,8 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
         public static AuthenticationBuilder AddOdnoklassniki(
             [NotNull] this AuthenticationBuilder builder,
-            [NotNull] string scheme, [CanBeNull] string caption,
+            [NotNull] string scheme,
+            [CanBeNull] string caption,
             [NotNull] Action<OdnoklassnikiAuthenticationOptions> configuration)
         {
             return builder.AddOAuth<OdnoklassnikiAuthenticationOptions, OdnoklassnikiAuthenticationHandler>(scheme, caption, configuration);

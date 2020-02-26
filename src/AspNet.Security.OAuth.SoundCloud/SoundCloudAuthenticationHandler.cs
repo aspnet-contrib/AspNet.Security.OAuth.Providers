@@ -30,10 +30,12 @@ namespace AspNet.Security.OAuth.SoundCloud
         {
         }
 
-        protected override async Task<AuthenticationTicket> CreateTicketAsync([NotNull] ClaimsIdentity identity,
-            [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens)
+        protected override async Task<AuthenticationTicket> CreateTicketAsync(
+            [NotNull] ClaimsIdentity identity,
+            [NotNull] AuthenticationProperties properties,
+            [NotNull] OAuthTokenResponse tokens)
         {
-            var address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, "oauth_token", tokens.AccessToken);
+            string address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, "oauth_token", tokens.AccessToken);
 
             using var request = new HttpRequestMessage(HttpMethod.Get, address);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));

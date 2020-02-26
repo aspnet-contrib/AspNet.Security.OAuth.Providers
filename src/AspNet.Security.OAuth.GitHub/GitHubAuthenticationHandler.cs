@@ -30,8 +30,10 @@ namespace AspNet.Security.OAuth.GitHub
         {
         }
 
-        protected override async Task<AuthenticationTicket> CreateTicketAsync([NotNull] ClaimsIdentity identity,
-            [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens)
+        protected override async Task<AuthenticationTicket> CreateTicketAsync(
+            [NotNull] ClaimsIdentity identity,
+            [NotNull] AuthenticationProperties properties,
+            [NotNull] OAuthTokenResponse tokens)
         {
             using var request = new HttpRequestMessage(HttpMethod.Get, Options.UserInformationEndpoint);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -58,9 +60,11 @@ namespace AspNet.Security.OAuth.GitHub
             // When the email address is not public, retrieve it from
             // the emails endpoint if the user:email scope is specified.
             if (!string.IsNullOrEmpty(Options.UserEmailsEndpoint) &&
-                !identity.HasClaim(claim => claim.Type == ClaimTypes.Email) && Options.Scope.Contains("user:email"))
+                !identity.HasClaim(claim => claim.Type == ClaimTypes.Email) &&
+                Options.Scope.Contains("user:email"))
             {
-                var address = await GetEmailAsync(tokens);
+                string address = await GetEmailAsync(tokens);
+
                 if (!string.IsNullOrEmpty(address))
                 {
                     identity.AddClaim(new Claim(ClaimTypes.Email, address, ClaimValueTypes.String, Options.ClaimsIssuer));

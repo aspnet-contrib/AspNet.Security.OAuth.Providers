@@ -31,8 +31,10 @@ namespace AspNet.Security.OAuth.Automatic
         {
         }
 
-        protected override async Task<AuthenticationTicket> CreateTicketAsync([NotNull] ClaimsIdentity identity,
-            [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens)
+        protected override async Task<AuthenticationTicket> CreateTicketAsync(
+            [NotNull] ClaimsIdentity identity,
+            [NotNull] AuthenticationProperties properties,
+            [NotNull] OAuthTokenResponse tokens)
         {
             using var request = new HttpRequestMessage(HttpMethod.Get, Options.UserInformationEndpoint);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -60,7 +62,7 @@ namespace AspNet.Security.OAuth.Automatic
             return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
         }
 
-        protected override string BuildChallengeUrl(AuthenticationProperties properties, string redirectUri)
+        protected override string BuildChallengeUrl([NotNull] AuthenticationProperties properties, [NotNull] string redirectUri)
         {
             // Note: the redirect_uri parameter is not allowed by Automatic and MUST NOT be sent.
             return QueryHelpers.AddQueryString(Options.AuthorizationEndpoint, new Dictionary<string, string>

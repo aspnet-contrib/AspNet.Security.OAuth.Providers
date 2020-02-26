@@ -7,7 +7,6 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.AspNetCore.Http;
 using static AspNet.Security.OAuth.Patreon.PatreonAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.Patreon
@@ -21,7 +20,7 @@ namespace AspNet.Security.OAuth.Patreon
         {
             ClaimsIssuer = PatreonAuthenticationDefaults.Issuer;
 
-            CallbackPath = new PathString(PatreonAuthenticationDefaults.CallbackPath);
+            CallbackPath = PatreonAuthenticationDefaults.CallbackPath;
 
             AuthorizationEndpoint = PatreonAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = PatreonAuthenticationDefaults.TokenEndpoint;

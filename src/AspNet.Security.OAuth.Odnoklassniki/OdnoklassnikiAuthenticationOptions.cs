@@ -50,6 +50,6 @@ namespace AspNet.Security.OAuth.Odnoklassniki
         /// <summary>
         /// Public App Key from application registration email.
         /// </summary>
-        public string PublicSecret { get; set; }
+        public string? PublicSecret { get; set; }
     }
 }

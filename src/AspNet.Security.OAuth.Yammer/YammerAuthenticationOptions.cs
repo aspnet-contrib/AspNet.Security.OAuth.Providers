@@ -7,7 +7,6 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.AspNetCore.Http;
 using static AspNet.Security.OAuth.Yammer.YammerAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.Yammer
@@ -21,7 +20,7 @@ namespace AspNet.Security.OAuth.Yammer
         {
             ClaimsIssuer = YammerAuthenticationDefaults.Issuer;
 
-            CallbackPath = new PathString("/signin-yammer");
+            CallbackPath = YammerAuthenticationDefaults.CallbackPath;
 
             AuthorizationEndpoint = YammerAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = YammerAuthenticationDefaults.TokenEndpoint;

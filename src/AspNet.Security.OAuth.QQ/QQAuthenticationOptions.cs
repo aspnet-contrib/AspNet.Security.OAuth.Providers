@@ -7,7 +7,6 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.AspNetCore.Http;
 using static AspNet.Security.OAuth.QQ.QQAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.QQ
@@ -20,7 +19,7 @@ namespace AspNet.Security.OAuth.QQ
         public QQAuthenticationOptions()
         {
             ClaimsIssuer = QQAuthenticationDefaults.Issuer;
-            CallbackPath = new PathString(QQAuthenticationDefaults.CallbackPath);
+            CallbackPath = QQAuthenticationDefaults.CallbackPath;
 
             AuthorizationEndpoint = QQAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = QQAuthenticationDefaults.TokenEndpoint;

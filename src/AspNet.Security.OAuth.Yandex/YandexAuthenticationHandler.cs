@@ -95,19 +95,20 @@ namespace AspNet.Security.OAuth.Yandex
 
         private AuthenticationHeaderValue CreateAuthorizationHeader()
         {
-            static string EscapeDataString(string value)
+            static string? EscapeDataString(string value)
             {
                 if (string.IsNullOrEmpty(value))
                 {
                     return null;
                 }
 
-                return Uri.EscapeDataString(value).Replace("%20", "+");
+                return Uri.EscapeDataString(value).Replace("%20", "+", StringComparison.Ordinal);
             }
 
             string credentials = Convert.ToBase64String(Encoding.ASCII.GetBytes(
                 string.Concat(
-                    EscapeDataString(Options.ClientId), ":",
+                    EscapeDataString(Options.ClientId),
+                    ":",
                     EscapeDataString(Options.ClientSecret))));
 
             return new AuthenticationHeaderValue("Basic", credentials);

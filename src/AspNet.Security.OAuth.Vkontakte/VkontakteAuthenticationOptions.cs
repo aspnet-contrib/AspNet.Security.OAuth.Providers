@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.AspNetCore.Http;
 using static AspNet.Security.OAuth.Vkontakte.VkontakteAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.Vkontakte
@@ -22,7 +21,7 @@ namespace AspNet.Security.OAuth.Vkontakte
         {
             ClaimsIssuer = VkontakteAuthenticationDefaults.Issuer;
 
-            CallbackPath = new PathString(VkontakteAuthenticationDefaults.CallbackPath);
+            CallbackPath = VkontakteAuthenticationDefaults.CallbackPath;
 
             AuthorizationEndpoint = VkontakteAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = VkontakteAuthenticationDefaults.TokenEndpoint;

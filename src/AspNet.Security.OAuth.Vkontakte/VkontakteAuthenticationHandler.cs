@@ -31,10 +31,12 @@ namespace AspNet.Security.OAuth.Vkontakte
         {
         }
 
-        protected override async Task<AuthenticationTicket> CreateTicketAsync([NotNull] ClaimsIdentity identity,
-            [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens)
+        protected override async Task<AuthenticationTicket> CreateTicketAsync(
+            [NotNull] ClaimsIdentity identity,
+            [NotNull] AuthenticationProperties properties,
+            [NotNull] OAuthTokenResponse tokens)
         {
-            var address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, new Dictionary<string, string>
+            string address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, new Dictionary<string, string>
             {
                 ["access_token"] = tokens.AccessToken,
                 ["v"] = !string.IsNullOrEmpty(Options.ApiVersion) ? Options.ApiVersion : VkontakteAuthenticationDefaults.ApiVersion

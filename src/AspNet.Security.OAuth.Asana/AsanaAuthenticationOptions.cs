@@ -7,7 +7,6 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.AspNetCore.Http;
 
 namespace AspNet.Security.OAuth.Asana
 {
@@ -19,7 +18,7 @@ namespace AspNet.Security.OAuth.Asana
         public AsanaAuthenticationOptions()
         {
             ClaimsIssuer = AsanaAuthenticationDefaults.Issuer;
-            CallbackPath = new PathString(AsanaAuthenticationDefaults.CallbackPath);
+            CallbackPath = AsanaAuthenticationDefaults.CallbackPath;
 
             AuthorizationEndpoint = AsanaAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = AsanaAuthenticationDefaults.TokenEndpoint;

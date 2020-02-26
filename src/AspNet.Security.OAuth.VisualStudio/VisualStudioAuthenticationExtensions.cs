@@ -1,6 +1,6 @@
 /*
  * Licensed under the Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0)
- * See https://VisualStudio.com/aspnet-contrib/AspNet.Security.OAuth.Providers
+ * See https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers
  * for more information concerning the license and the contributors participating to this project.
  */
 
@@ -50,7 +50,8 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="configuration">The delegate used to configure the VisualStudio options.</param>
         /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
         public static AuthenticationBuilder AddVisualStudio(
-            [NotNull] this AuthenticationBuilder builder, [NotNull] string scheme,
+            [NotNull] this AuthenticationBuilder builder,
+            [NotNull] string scheme,
             [NotNull] Action<VisualStudioAuthenticationOptions> configuration)
         {
             return builder.AddVisualStudio(scheme, VisualStudioAuthenticationDefaults.DisplayName, configuration);
@@ -67,7 +68,8 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
         public static AuthenticationBuilder AddVisualStudio(
             [NotNull] this AuthenticationBuilder builder,
-            [NotNull] string scheme, [CanBeNull] string caption,
+            [NotNull] string scheme,
+            [CanBeNull] string caption,
             [NotNull] Action<VisualStudioAuthenticationOptions> configuration)
         {
             return builder.AddOAuth<VisualStudioAuthenticationOptions, VisualStudioAuthenticationHandler>(scheme, caption, configuration);

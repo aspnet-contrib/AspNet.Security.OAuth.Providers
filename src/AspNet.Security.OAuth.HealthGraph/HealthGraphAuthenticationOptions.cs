@@ -4,11 +4,9 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.AspNetCore.Http;
 
 namespace AspNet.Security.OAuth.HealthGraph
 {
@@ -21,7 +19,7 @@ namespace AspNet.Security.OAuth.HealthGraph
         {
             ClaimsIssuer = HealthGraphAuthenticationDefaults.Issuer;
 
-            CallbackPath = new PathString(HealthGraphAuthenticationDefaults.CallbackPath);
+            CallbackPath = HealthGraphAuthenticationDefaults.CallbackPath;
 
             AuthorizationEndpoint = HealthGraphAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = HealthGraphAuthenticationDefaults.TokenEndpoint;

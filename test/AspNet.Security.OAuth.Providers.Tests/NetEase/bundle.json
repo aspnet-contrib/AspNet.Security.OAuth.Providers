@@ -1,0 +1,24 @@
+{
+  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
+  "items": [
+    {
+      "comment": "https://reg.163.com/help/help_oauth2.html",
+      "uri": "https://reg.163.com/open/oauth2/token.do",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "secret-access-token",
+        "expires_in": "5184000"
+      }
+    },
+    {
+      "comment": "See https://reg.163.com/help/help_oauth2.html",
+      "uri": "https://reg.163.com/open/oauth2/getUserInfo.do",
+      "contentFormat": "json",
+      "contentJson": {
+        "userId":"820014421",
+        "username":"urstest_mreg"
+      }
+    }
+  ]
+}
