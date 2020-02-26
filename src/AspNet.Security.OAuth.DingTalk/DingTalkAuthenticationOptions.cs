@@ -55,4 +55,3 @@ namespace AspNet.Security.OAuth.DingTalk
         }
     }
 }
-

@@ -83,6 +83,7 @@ namespace AspNet.Security.OAuth.DingTalk
 
                 throw new HttpRequestException("An error occurred while retrieving user information.");
             }
+
             var content = await response.Content.ReadAsStringAsync();
             using var payload = JsonDocument.Parse(content);
 
@@ -112,15 +113,14 @@ namespace AspNet.Security.OAuth.DingTalk
         {
             var bufferWriter = new ArrayBufferWriter<byte>();
 
-            await using (var writer = new Utf8JsonWriter(bufferWriter))
-            {
-                writer.WriteStartObject();
+            using var writer = new Utf8JsonWriter(bufferWriter);
 
-                writer.WriteString(propertyName, value);
+            writer.WriteStartObject();
 
-                writer.WriteEndObject();
-                await writer.FlushAsync();
-            }
+            writer.WriteString(propertyName, value);
+
+            writer.WriteEndObject();
+            await writer.FlushAsync();
 
             return bufferWriter.WrittenMemory;
         }

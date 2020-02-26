@@ -1,8 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFrameworks>netcoreapp3.1</TargetFrameworks>
   </PropertyGroup>
+
   <PropertyGroup>
     <Description>ASP.NET Core security middleware enabling DingTalk authentication.</Description>
     <Authors>mccj</Authors>
@@ -15,3 +16,4 @@
   </ItemGroup>
 
 </Project>
+
