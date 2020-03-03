@@ -175,11 +175,12 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.Apple", "src\AspNet.Security.OAuth.Apple\AspNet.Security.OAuth.Apple.csproj", "{DC80AFEC-EFB4-4B21-BF79-44DEA6E1FE26}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.DingTalk", "src\AspNet.Security.OAuth.DingTalk\AspNet.Security.OAuth.DingTalk.csproj", "{15039C5C-C4CA-4E62-AC99-CD6D85B4BAA3}"
+EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.Gitee", "src\AspNet.Security.OAuth.Gitee\AspNet.Security.OAuth.Gitee.csproj", "{82AA3C52-9B98-4203-9D26-1FA6E5BAEEBD}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.Deezer", "src\AspNet.Security.OAuth.Deezer\AspNet.Security.OAuth.Deezer.csproj", "{0D9EB03D-99AF-4A80-B7CE-2302A8D3747B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.NetEase", "src\AspNet.Security.OAuth.NetEase\AspNet.Security.OAuth.NetEase.csproj", "{E82424B3-0E73-4954-B6A6-BFF1029A08DE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.NetEase", "src\AspNet.Security.OAuth.NetEase\AspNet.Security.OAuth.NetEase.csproj", "{E82424B3-0E73-4954-B6A6-BFF1029A08DE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
