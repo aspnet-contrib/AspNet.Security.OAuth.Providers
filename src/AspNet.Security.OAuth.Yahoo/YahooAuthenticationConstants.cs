@@ -15,8 +15,7 @@ namespace AspNet.Security.OAuth.Yahoo
         {
             public const string FamilyName = "urn:yahoo:familyname";
             public const string GivenName = "urn:yahoo:givenname";
-            public const string ImageUrl = "urn:yahoo:profileimage";
-            public const string ProfileUrl = "urn:yahoo:profile";
+            public const string Picture = "urn:yahoo:picture";
         }
     }
 }

@@ -25,12 +25,11 @@ namespace AspNet.Security.OAuth.Yahoo
             TokenEndpoint = YahooAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = YahooAuthenticationDefaults.UserInformationEndpoint;
 
-            ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "guid");
-            ClaimActions.MapJsonKey(ClaimTypes.Name, "nickname");
-            ClaimActions.MapJsonKey(Claims.FamilyName, "familyName");
-            ClaimActions.MapJsonKey(Claims.GivenName, "givenName");
-            ClaimActions.MapJsonKey(Claims.ProfileUrl, "profileUrl");
-            ClaimActions.MapJsonKey(Claims.ImageUrl, "imageUrl");
+            ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "sub");
+            ClaimActions.MapJsonKey(ClaimTypes.Name, "name");
+            ClaimActions.MapJsonKey(Claims.FamilyName, "family_name");
+            ClaimActions.MapJsonKey(Claims.GivenName, "given_name");
+            ClaimActions.MapJsonKey(Claims.Picture, "picture");
         }
     }
 }
