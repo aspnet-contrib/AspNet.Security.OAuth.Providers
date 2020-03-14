@@ -4,6 +4,8 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using System;
+
 namespace AspNet.Security.OAuth.Yahoo
 {
     /// <summary>
@@ -15,6 +17,10 @@ namespace AspNet.Security.OAuth.Yahoo
         {
             public const string FamilyName = "urn:yahoo:familyname";
             public const string GivenName = "urn:yahoo:givenname";
+            [Obsolete("This has been deprecated. Please use Picture instead. See https://developer.yahoo.com/oauth/social-directory-eol/ for more information.")]
+            public const string ImageUrl = "urn:yahoo:profileimage";
+            [Obsolete("This has been deprecated. See https://developer.yahoo.com/oauth/social-directory-eol/ for more information.")]
+            public const string ProfileUrl = "urn:yahoo:profile";
             public const string Picture = "urn:yahoo:picture";
         }
     }
