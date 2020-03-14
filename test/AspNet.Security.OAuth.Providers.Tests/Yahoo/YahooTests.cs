@@ -32,8 +32,7 @@ namespace AspNet.Security.OAuth.Yahoo
         [InlineData(ClaimTypes.Name, "John Smith")]
         [InlineData("urn:yahoo:familyname", "Smith")]
         [InlineData("urn:yahoo:givenname", "John")]
-        [InlineData("urn:yahoo:profile", "https://www.yahoo.local/JohnSmith")]
-        [InlineData("urn:yahoo:profileimage", "https://www.yahoo.local/JohnSmith/image.png")]
+        [InlineData("urn:yahoo:picture", "https://www.yahoo.local/JohnSmith/image.png")]
         public async Task Can_Sign_In_Using_Yahoo(string claimType, string claimValue)
         {
             // Arrange
