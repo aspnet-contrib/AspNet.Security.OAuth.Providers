@@ -11,6 +11,7 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 
@@ -22,39 +23,56 @@ namespace AspNet.Security.OAuth.Apple.Internal
         private readonly ILogger _logger;
         private readonly AppleKeyStore _keyStore;
         private readonly JwtSecurityTokenHandler _tokenHandler;
-
-        private string? _clientSecret;
-        private DateTimeOffset _expiresAt;
+        private readonly IMemoryCache _cache;
 
         public DefaultAppleClientSecretGenerator(
             [NotNull] AppleKeyStore keyStore,
             [NotNull] ISystemClock clock,
             [NotNull] JwtSecurityTokenHandler tokenHandler,
+            [NotNull] IMemoryCache cache,
             [NotNull] ILogger<DefaultAppleClientSecretGenerator> logger)
         {
             _keyStore = keyStore;
             _clock = clock;
             _tokenHandler = tokenHandler;
             _logger = logger;
+            _cache = cache;
         }
 
         /// <inheritdoc />
         public override async Task<string> GenerateAsync([NotNull] AppleGenerateClientSecretContext context)
         {
-            if (_clientSecret == null || _clock.UtcNow >= _expiresAt)
+            var key = CreateCacheKey(context.Options);
+            var clientSecret = await _cache.GetOrCreateAsync(key, async entry =>
             {
                 try
                 {
-                    (_clientSecret, _expiresAt) = await GenerateNewSecretAsync(context);
+                    (string clientSecret, DateTimeOffset expiresAt) = await GenerateNewSecretAsync(context);
+                    entry.AbsoluteExpiration = expiresAt;
+                    return clientSecret;
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, $"Failed to generate new client secret for the {context.Scheme.Name} authentication scheme.");
+                    _logger.LogError(ex,
+                        $"Failed to generate new client secret for the {context.Scheme.Name} authentication scheme.");
                     throw;
                 }
-            }
+            });
 
-            return _clientSecret;
+            return clientSecret;
+        }
+
+        private string CreateCacheKey(AppleAuthenticationOptions options)
+        {
+            var segments = new[]
+            {
+                nameof(DefaultAppleClientSecretGenerator),
+                "ClientSecret",
+                options.TeamId,
+                options.ClientId,
+                options.KeyId
+            };
+            return string.Join("+", segments);
         }
 
         private async Task<(string clientSecret, DateTimeOffset expiresAt)> GenerateNewSecretAsync(
