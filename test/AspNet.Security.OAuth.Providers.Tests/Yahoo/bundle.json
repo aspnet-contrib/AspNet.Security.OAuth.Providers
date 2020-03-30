@@ -13,17 +13,14 @@
       }
     },
     {
-      "uri": "https://social.yahooapis.com/v1/user/me/profile",
+      "uri": "https://api.login.yahoo.com/openid/v1/userinfo",
       "contentFormat": "json",
       "contentJson": {
-        "profile": {
-          "guid": "my-id",
-          "nickname": "John Smith",
-          "familyName": "Smith",
-          "givenName": "John",
-          "profileUrl": "https://www.yahoo.local/JohnSmith",
-          "imageUrl": "https://www.yahoo.local/JohnSmith/image.png"
-        }
+        "sub": "my-id",
+        "name": "John Smith",
+        "family_name": "Smith",
+        "given_name": "John",
+        "picture": "https://www.yahoo.local/JohnSmith/image.png"
       }
     }
   ]
