@@ -1,0 +1,39 @@
+{
+  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
+  "items": [
+    {
+      "uri": "https://launchpad.37signals.com/authorization/token?type=web_server",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "secret-access-token",
+        "token_type": "access",
+        "refresh_token": "secret-refresh-token",
+        "expires_in": "300"
+      }
+    },
+    {
+      "uri": "https://launchpad.37signals.com/authorization.json",
+      "contentFormat": "json",
+      "contentJson": {
+        "expires_at": "2025-08-25T01:43:53.000Z",
+        "identity": {
+          "id": 12345678,
+          "email_address": "john@john-smith.local",
+          "first_name": "John",
+          "last_name": "Smith"
+        },
+        "accounts": [
+          {
+            "id": 7654321,
+            "name": "Hello World Company",
+            "product": "bc3",
+            "href": "https://3.basecampapi.com/7654321",
+            "app_href": "https://3.basecamp.com/7654321",
+            "hidden": false
+          }
+        ]
+      }
+    }
+  ]
+}
