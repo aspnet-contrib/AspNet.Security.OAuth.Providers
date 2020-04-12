@@ -23,10 +23,10 @@ namespace AspNet.Security.OAuth.Basecamp
             TokenEndpoint = BasecampAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = BasecampAuthenticationDefaults.UserInformationEndpoint;
 
-            ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
-            ClaimActions.MapJsonKey(ClaimTypes.GivenName, "first_name");
-            ClaimActions.MapJsonKey(ClaimTypes.Surname, "last_name");
-            ClaimActions.MapJsonKey(ClaimTypes.Email, "email_address");
+            ClaimActions.MapJsonSubKey(ClaimTypes.NameIdentifier, "identity", "id");
+            ClaimActions.MapJsonSubKey(ClaimTypes.GivenName, "identity", "first_name");
+            ClaimActions.MapJsonSubKey(ClaimTypes.Surname, "identity", "last_name");
+            ClaimActions.MapJsonSubKey(ClaimTypes.Email, "identity", "email_address");
         }
     }
 }

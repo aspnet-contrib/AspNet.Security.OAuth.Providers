@@ -54,15 +54,7 @@ namespace AspNet.Security.OAuth.Basecamp
 
             var principal = new ClaimsPrincipal(identity);
             var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload.RootElement);
-
-            if (payload.RootElement.TryGetProperty("identity", out var identityProperty))
-            {
-                context.RunClaimActions(identityProperty);
-            }
-            else
-            {
-                context.RunClaimActions();
-            }
+            context.RunClaimActions();
 
             await Options.Events.CreatingTicket(context);
             return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
