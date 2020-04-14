@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Text;
@@ -105,7 +106,7 @@ namespace AspNet.Security.OAuth.Apple
                 await Options.Events.ValidateIdToken(validateIdContext);
             }
 
-            var tokenClaims = ExtractClaimsFromToken(idToken);
+            var tokenClaims = ExtractClaimsFromToken(idToken, identity);
 
             foreach (var claim in tokenClaims)
             {
@@ -137,19 +138,28 @@ namespace AspNet.Security.OAuth.Apple
         /// Extracts the claims from the token received from the token endpoint.
         /// </summary>
         /// <param name="token">The token to extract the claims from.</param>
+        /// <param name="identity">Represents a claims-based identity</param>
         /// <returns>
         /// An <see cref="IEnumerable{Claim}"/> containing the claims extracted from the token.
         /// </returns>
-        protected virtual IEnumerable<Claim> ExtractClaimsFromToken([NotNull] string token)
+        protected virtual IEnumerable<Claim> ExtractClaimsFromToken([NotNull] string token, [NotNull] ClaimsIdentity identity)
         {
             try
             {
                 var securityToken = _tokenHandler.ReadJwtToken(token);
+                var emailClaim = securityToken.Claims.FirstOrDefault(claim => claim.Type == "email");
 
-                return new List<Claim>(securityToken.Claims)
+                var claims = new List<Claim>(securityToken.Claims)
                 {
                     new Claim(ClaimTypes.NameIdentifier, securityToken.Subject, ClaimValueTypes.String, ClaimsIssuer),
                 };
+
+                if (!string.IsNullOrEmpty(emailClaim?.Value) && !identity.HasClaim(claim => claim.Type == ClaimTypes.Email))
+                {
+                    claims.Add(new Claim(ClaimTypes.Email, emailClaim.Value, ClaimValueTypes.String, ClaimsIssuer));
+                }
+
+                return claims;
             }
             catch (Exception ex)
             {
