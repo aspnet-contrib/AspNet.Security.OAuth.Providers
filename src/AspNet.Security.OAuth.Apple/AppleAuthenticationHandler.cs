@@ -138,7 +138,31 @@ namespace AspNet.Security.OAuth.Apple
         /// Extracts the claims from the token received from the token endpoint.
         /// </summary>
         /// <param name="token">The token to extract the claims from.</param>
-        /// <param name="identity">Represents a claims-based identity</param>
+        /// <returns>
+        /// An <see cref="IEnumerable{Claim}"/> containing the claims extracted from the token.
+        /// </returns>
+        protected virtual IEnumerable<Claim> ExtractClaimsFromToken([NotNull] string token)
+        {
+            try
+            {
+                var securityToken = _tokenHandler.ReadJwtToken(token);
+
+                return new List<Claim>(securityToken.Claims)
+                {
+                    new Claim(ClaimTypes.NameIdentifier, securityToken.Subject, ClaimValueTypes.String, ClaimsIssuer),
+                };
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException("Failed to parse JWT for claims from Apple ID token.", ex);
+            }
+        }
+
+        /// <summary>
+        /// Extracts the claims from the token received from the token endpoint.
+        /// </summary>
+        /// <param name="token">The token to extract the claims from.</param>
+        /// <param name="identity">Represents a claims-based identity.</param>
         /// <returns>
         /// An <see cref="IEnumerable{Claim}"/> containing the claims extracted from the token.
         /// </returns>
