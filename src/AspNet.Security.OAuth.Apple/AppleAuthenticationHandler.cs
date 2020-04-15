@@ -106,12 +106,7 @@ namespace AspNet.Security.OAuth.Apple
                 await Options.Events.ValidateIdToken(validateIdContext);
             }
 
-            var tokenClaims = ExtractClaimsFromToken(idToken, identity);
-
-            foreach (var claim in tokenClaims)
-            {
-                identity.AddClaim(claim);
-            }
+            ExtractClaimsFromToken(idToken, identity);
 
             var principal = new ClaimsPrincipal(identity);
 
@@ -163,10 +158,24 @@ namespace AspNet.Security.OAuth.Apple
         /// </summary>
         /// <param name="token">The token to extract the claims from.</param>
         /// <param name="identity">Represents a claims-based identity.</param>
-        /// <returns>
-        /// An <see cref="IEnumerable{Claim}"/> containing the claims extracted from the token.
-        /// </returns>
-        protected virtual IEnumerable<Claim> ExtractClaimsFromToken([NotNull] string token, [NotNull] ClaimsIdentity identity)
+        protected virtual void ExtractClaimsFromToken([NotNull] string token, [NotNull] ClaimsIdentity identity)
+        {
+            ExtractEmailClaimFromToken(token, identity);
+
+            var tokenClaims = ExtractClaimsFromToken(token);
+
+            foreach (var claim in tokenClaims)
+            {
+                identity.AddClaim(claim);
+            }
+        }
+
+        /// <summary>
+        /// Extracts the email claim from the token received from the token endpoint.
+        /// </summary>
+        /// <param name="token">The token to extract the claims from.</param>
+        /// <param name="identity">Represents a claims-based identity.</param>
+        protected virtual void ExtractEmailClaimFromToken([NotNull] string token, [NotNull] ClaimsIdentity identity)
         {
             try
             {
@@ -177,8 +186,6 @@ namespace AspNet.Security.OAuth.Apple
                 {
                     identity.AddClaim(new Claim(ClaimTypes.Email, emailClaim.Value, ClaimValueTypes.String, ClaimsIssuer));
                 }
-
-                return ExtractClaimsFromToken(token);
             }
             catch (Exception ex)
             {
