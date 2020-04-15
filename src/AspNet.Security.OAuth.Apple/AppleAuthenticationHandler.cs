@@ -173,21 +173,16 @@ namespace AspNet.Security.OAuth.Apple
                 var securityToken = _tokenHandler.ReadJwtToken(token);
                 var emailClaim = securityToken.Claims.FirstOrDefault(claim => claim.Type == "email");
 
-                var claims = new List<Claim>(securityToken.Claims)
-                {
-                    new Claim(ClaimTypes.NameIdentifier, securityToken.Subject, ClaimValueTypes.String, ClaimsIssuer),
-                };
-
                 if (!string.IsNullOrEmpty(emailClaim?.Value) && !identity.HasClaim(claim => claim.Type == ClaimTypes.Email))
                 {
-                    claims.Add(new Claim(ClaimTypes.Email, emailClaim.Value, ClaimValueTypes.String, ClaimsIssuer));
+                    identity.AddClaim(new Claim(ClaimTypes.Email, emailClaim.Value, ClaimValueTypes.String, ClaimsIssuer));
                 }
 
-                return claims;
+                return ExtractClaimsFromToken(token);
             }
             catch (Exception ex)
             {
-                throw new InvalidOperationException("Failed to parse JWT for claims from Apple ID token.", ex);
+                throw new InvalidOperationException("Failed to parse JWT for email claim from Apple ID token.", ex);
             }
         }
 
