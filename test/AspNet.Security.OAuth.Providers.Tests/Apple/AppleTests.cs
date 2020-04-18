@@ -31,7 +31,7 @@ namespace AspNet.Security.OAuth.Apple
 
         protected override HttpMethod RedirectMethod => HttpMethod.Post;
 
-        protected override IDictionary<string, string> RedirectParameters => new Dictionary<string, string>()
+        protected override IDictionary<string, string> RedirectParameters { get; } = new Dictionary<string, string>()
         {
             ["user"] = @"{""name"":{""firstName"":""Johnny"",""lastName"":""Appleseed""},""email"":""johnny.appleseed@apple.local""}",
         };
@@ -101,6 +101,47 @@ namespace AspNet.Security.OAuth.Apple
                     };
                 });
             }
+
+            using (var server = CreateTestServer(ConfigureServices))
+            {
+                // Act
+                var claims = await AuthenticateUserAsync(server);
+
+                // Assert
+                AssertClaim(claims, claimType, claimValue);
+            }
+        }
+
+        [Theory]
+        [InlineData("at_hash", "eOy0y7XVexdkzc7uuDZiCQ")]
+        [InlineData("aud", "com.martincostello.signinwithapple.test.client")]
+        [InlineData("auth_time", "1587211556")]
+        [InlineData("email", "ussckefuz6@privaterelay.appleid.com")]
+        [InlineData("email_verified", "true")]
+        [InlineData("exp", "1587212159")]
+        [InlineData("iat", "1587211559")]
+        [InlineData("iss", "https://appleid.apple.com")]
+        [InlineData("is_private_email", "true")]
+        [InlineData("nonce_supported", "true")]
+        [InlineData("sub", "001883.fcc77ba97500402389df96821ad9c790.1517")]
+        [InlineData(ClaimTypes.Email, "ussckefuz6@privaterelay.appleid.com")]
+        [InlineData(ClaimTypes.NameIdentifier, "001883.fcc77ba97500402389df96821ad9c790.1517")]
+        public async Task Can_Sign_In_Using_Apple_And_Receive_Claims_From_Id_Token(string claimType, string claimValue)
+        {
+            // Arrange
+            void ConfigureServices(IServiceCollection services)
+            {
+                services.AddSingleton<JwtSecurityTokenHandler, FrozenJwtSecurityTokenHandler>();
+                services.PostConfigureAll<AppleAuthenticationOptions>((options) =>
+                {
+                    options.ClientSecret = "my-client-secret";
+                    options.GenerateClientSecret = false;
+                    options.TokenEndpoint = "https://appleid.apple.local/auth/token/email";
+                    options.ValidateTokens = false;
+                });
+            }
+
+            RedirectParameters.Clear(); // Simulate second sign in where user data is not returned
 
             using (var server = CreateTestServer(ConfigureServices))
             {
