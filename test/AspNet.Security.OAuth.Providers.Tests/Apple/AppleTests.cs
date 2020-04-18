@@ -129,7 +129,7 @@ namespace AspNet.Security.OAuth.Apple
         public async Task Can_Sign_In_Using_Apple_And_Receive_Claims_From_Id_Token(string claimType, string claimValue)
         {
             // Arrange
-            static void ConfigureServices(IServiceCollection services)
+            void ConfigureServices(IServiceCollection services)
             {
                 services.AddSingleton<JwtSecurityTokenHandler, FrozenJwtSecurityTokenHandler>();
                 services.PostConfigureAll<AppleAuthenticationOptions>((options) =>
@@ -143,13 +143,14 @@ namespace AspNet.Security.OAuth.Apple
 
             RedirectParameters.Clear(); // Simulate second sign in where user data is not returned
 
-            using var server = CreateTestServer(ConfigureServices);
+            using (var server = CreateTestServer(ConfigureServices))
+            {
+                // Act
+                var claims = await AuthenticateUserAsync(server);
 
-            // Act
-            var claims = await AuthenticateUserAsync(server);
-
-            // Assert
-            AssertClaim(claims, claimType, claimValue);
+                // Assert
+                AssertClaim(claims, claimType, claimValue);
+            }
         }
 
         [Theory]
