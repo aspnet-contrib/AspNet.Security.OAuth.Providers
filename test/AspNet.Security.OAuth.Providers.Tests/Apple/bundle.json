@@ -33,6 +33,19 @@
       }
     },
     {
+      "comment": "https://developer.apple.com/documentation/signinwithapplerestapi/generate_and_validate_tokens",
+      "uri": "https://appleid.apple.local/auth/token/email",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "secret-access-token",
+        "expires_in": "300",
+        "id_token": "eyJraWQiOiI4NkQ4OEtmIiwiYWxnIjoiUlMyNTYifQ.eyJpc3MiOiJodHRwczovL2FwcGxlaWQuYXBwbGUuY29tIiwiYXVkIjoiY29tLm1hcnRpbmNvc3RlbGxvLnNpZ25pbndpdGhhcHBsZS50ZXN0LmNsaWVudCIsImV4cCI6MTU4NzIxMjE1OSwiaWF0IjoxNTg3MjExNTU5LCJzdWIiOiIwMDE4ODMuZmNjNzdiYTk3NTAwNDAyMzg5ZGY5NjgyMWFkOWM3OTAuMTUxNyIsImF0X2hhc2giOiJlT3kweTdYVmV4ZGt6Yzd1dURaaUNRIiwiZW1haWwiOiJ1c3Nja2VmdXo2QHByaXZhdGVyZWxheS5hcHBsZWlkLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjoidHJ1ZSIsImlzX3ByaXZhdGVfZW1haWwiOiJ0cnVlIiwiYXV0aF90aW1lIjoxNTg3MjExNTU2LCJub25jZV9zdXBwb3J0ZWQiOnRydWV9.ZPUgcJlCneXLNZiFDraKpWVtFPSyoxkWgrMlTZ8tM3IBBXOmQFbb75OBQC-JbZHciry96y-sy33O_fF8gaudmInH1EorDIsfryafNd0POD-8pJWY9PiGrGx50c_1DLIIIsYEm0p-JEIfQpzJ-lIWpz9ujv4ChmZx-t3PzPzzZOVlC0q1pATqJaxhY_ntL_u98BZnfAKxzqEhb5q-1TmhtHFaEtAtsd2gGm6PTaM5N-2HXQ8Bh_BlJMH3u_KakFNJRhaezlVIlLtmgxM4VjrxUeIqba-fwBlfGXPonA_xZIHg71ZujJSlYJp3yWW3Kjsb4rUUUff7yEQF5A1LVnghwA",
+        "refresh_token": "secret-refresh-token",
+        "token_type": "bearer"
+      }
+    },
+    {
       "uri": "https://appleid.apple.local/auth/keys/none",
       "method": "GET",
       "contentFormat": "json",
