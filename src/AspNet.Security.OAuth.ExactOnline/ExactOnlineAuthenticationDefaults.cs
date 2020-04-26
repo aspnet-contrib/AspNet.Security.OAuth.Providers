@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Authentication.OAuth;
 namespace AspNet.Security.OAuth.ExactOnline
 {
     /// <summary>
-    /// Defaults used for exact online authentication provider.
+    /// Defaults used for Exact Online authentication provider.
     /// </summary>
     public static class ExactOnlineAuthenticationDefaults
     {
