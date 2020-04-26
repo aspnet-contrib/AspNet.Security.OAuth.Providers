@@ -4,6 +4,7 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
@@ -52,11 +53,15 @@ namespace AspNet.Security.OAuth.ExactOnline
             }
 
             using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
-            var root = payload.RootElement.GetProperty("d").GetProperty("results")[0];
+            var user = payload.RootElement
+                .GetProperty("d")
+                .GetProperty("results")
+                .EnumerateArray()
+                .First();
 
             var principal = new ClaimsPrincipal(identity);
-            var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, root);
-            context.RunClaimActions();
+            var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload.RootElement);
+            context.RunClaimActions(user);
 
             await Options.Events.CreatingTicket(context);
             return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
