@@ -1,0 +1,61 @@
+{
+  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
+  "items": [
+    {
+      "uri": "https://start.exactonline.nl/api/oauth2/token",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "secret-access-token",
+        "token_type": "Bearer",
+        "refresh_token": "secret-refresh-token",
+        "expires_in": "600"
+      }
+    },
+    {
+      "uri": "https://start.exactonline.nl/api/v1/current/Me",
+      "contentFormat": "json",
+      "contentJson": {
+        "d": {
+          "results": [
+            {
+              "__metadata": {
+                "uri": "https://start.exactonline.nl/api/v1/current/Me(guid'00000000-0000-0000-0000-000000000000')",
+                "type": "Exact.Web.Api.System.Me"
+              },
+              "CurrentDivision": 12345,
+              "DivisionCustomer": "00000000-0000-0000-0000-000000000001",
+              "DivisionCustomerCode": "          12345678",
+              "DivisionCustomerName": "Division Name",
+              "DivisionCustomerVatNumber": null,
+              "DivisionCustomerSiretNumber": null,
+              "FullName": "John Smith",
+              "PictureUrl": "https://start.exactonline.nl//docs/images/placeholder_contact_myeol.png",
+              "ThumbnailPicture": "/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAAQCAwMDAgQDAwMEBAQEBQkGBQUFBQsICAYJDQsNDQ0LDAwOEBQRDg8TDwwMEhgSExUWFxcXDhEZGxkWGhQWFxb/2wBDAQQEBAUFBQoGBgoWDwwPFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhb/wAARCAAyADIDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD7RuJWDKAsf+rTrGp/hHtTPOf+7H/36X/Ci6/1i/8AXNP/AEEVHQBJ5zn+GP8A79L/AIUec/8Adj/79L/hXmfxc8WSLejSNJu5I2t2zcyR/KQ46KGBzx37Vh6H4+8RafIvn3Iv4R96O4GTj2ccj9aAPaPOf+7H/wB+l/wo85/7sf8A36X/AArM8M6va65osWpWgZUkyGRvvIw6qav0Ab1rI32WPhPuD+Aen0optp/x6xf7g/lRQBj3X+sX/rmn/oIpi8MD70+6/wBYv/XNP/QRUeAeD0PWgD5911lfXL10YMrXUhDA5yN55zVWrWuWb6drV3YSEFredkJHfB4P5YqrQB618DWU+DZFDDct4+RnkZC4rsq4v4G2Rt/Cs14x/wCP24JUegQbf55rtKANy0/49Yv9wfyootP+PWL/AHB/KigDHuv9Yv8A1zT/ANBFR1Dr+p6dpirLqN7BbKY0x5j4J+UdB1P4VyOr/EvRLfcthb3N646HHlp+Z5/SgDmvjhZW1t4ohuYD+8vId8656MDtBx2yP5Vxn1/Gr3ibVJta1y41OeNI3nI+ROigAADJ68CqNAH0B4fsrXTtDtbKxObeKIbGzndnksT3JJJq5XlPgfx//Y2kw6XfWDTwQZEcsT4dQTnBB4OM+oruND8Z+HNUZY4dQWGVukVyPLJ+hPB/OgDurT/j1i/3B/KiizB+yRcfwD+VFAHhHxQVX8faiXUMVaMAkZwPLTisHyov+eaf98iiigA8qL/nmn/fIo8qL/nmn/fIoooAPKi/55p/3yKGhiK4MSf98iiigD6T8EknwZpBPJOnwZJ/65rRRRQB/9k=",
+              "ThumbnailPictureFormat": "jpeg",
+              "UserID": "00000000-0000-0000-0000-000000000000",
+              "UserName": "john@smith.org",
+              "LanguageCode": "en-US",
+              "Legislation": "1",
+              "Email": "john@smith.org",
+              "Title": "MR",
+              "Initials": null,
+              "FirstName": "John",
+              "MiddleName": null,
+              "LastName": "Smith",
+              "Gender": "O",
+              "Nationality": null,
+              "Language": "EN",
+              "Phone": "+1123456789",
+              "PhoneExtension": null,
+              "Mobile": null,
+              "ServerTime": "2020-01-01T01:01:01",
+              "ServerUtcOffset": 7200,
+              "EmployeeID": "00000000-0000-0000-0000-000000000002"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
