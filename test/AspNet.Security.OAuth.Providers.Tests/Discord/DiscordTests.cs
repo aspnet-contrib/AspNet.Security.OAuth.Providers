@@ -4,9 +4,11 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 using Xunit.Abstractions;
@@ -45,6 +47,77 @@ namespace AspNet.Security.OAuth.Discord
 
             // Assert
             AssertClaim(claims, claimType, claimValue);
+        }
+
+        [Fact]
+        public async Task Authorization_Endpoint_Uri_by_Default_Does_Not_Contain_Prompt()
+        {
+            static void ConfigureServices(IServiceCollection services)
+            {
+                services.PostConfigureAll<DiscordAuthenticationOptions>((options) =>
+                {
+                    options.Events = new OAuthEvents
+                    {
+                        OnRedirectToAuthorizationEndpoint = ctx =>
+                        {
+                            Assert.DoesNotContain("prompt=", ctx.RedirectUri, StringComparison.InvariantCulture);
+                            ctx.Response.Redirect(ctx.RedirectUri);
+                            return Task.CompletedTask;
+                        }
+                    };
+                });
+            }
+
+            using var server = CreateTestServer(ConfigureServices);
+            await AuthenticateUserAsync(server);
+        }
+
+        [Fact]
+        public async Task Authorization_Endpoint_Uri_Contains_Prompt_None()
+        {
+            static void ConfigureServices(IServiceCollection services)
+            {
+                services.PostConfigureAll<DiscordAuthenticationOptions>((options) =>
+                {
+                    options.DiscordAuthenticationPrompt = DiscordAuthenticationPrompt.None;
+                    options.Events = new OAuthEvents
+                    {
+                        OnRedirectToAuthorizationEndpoint = ctx =>
+                        {
+                            Assert.Contains("prompt=none", ctx.RedirectUri, StringComparison.InvariantCulture);
+                            ctx.Response.Redirect(ctx.RedirectUri);
+                            return Task.CompletedTask;
+                        }
+                    };
+                });
+            }
+
+            using var server = CreateTestServer(ConfigureServices);
+            await AuthenticateUserAsync(server);
+        }
+
+        [Fact]
+        public async Task Authorization_Endpoint_Uri_Contains_Prompt_Consent()
+        {
+            static void ConfigureServices(IServiceCollection services)
+            {
+                services.PostConfigureAll<DiscordAuthenticationOptions>((options) =>
+                {
+                    options.DiscordAuthenticationPrompt = DiscordAuthenticationPrompt.Consent;
+                    options.Events = new OAuthEvents
+                    {
+                        OnRedirectToAuthorizationEndpoint = ctx =>
+                        {
+                            Assert.Contains("prompt=consent", ctx.RedirectUri, StringComparison.InvariantCulture);
+                            ctx.Response.Redirect(ctx.RedirectUri);
+                            return Task.CompletedTask;
+                        }
+                    };
+                });
+            }
+
+            using var server = CreateTestServer(ConfigureServices);
+            await AuthenticateUserAsync(server);
         }
     }
 }
