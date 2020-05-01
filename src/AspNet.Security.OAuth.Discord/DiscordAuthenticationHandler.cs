@@ -38,11 +38,9 @@ namespace AspNet.Security.OAuth.Discord
         {
             string challengeUrl = base.BuildChallengeUrl(properties, redirectUri);
 
-            if (Options.DiscordAuthenticationPrompt != DiscordAuthenticationPrompt.Omit)
+            if (!string.IsNullOrWhiteSpace(Options.DiscordAuthenticationPrompt))
             {
-                var promptValue = Options.DiscordAuthenticationPrompt.ToString().ToLowerInvariant();
-
-                challengeUrl = QueryHelpers.AddQueryString(challengeUrl, DiscordAuthenticationConstants.Key.Prompt, promptValue);
+                challengeUrl = QueryHelpers.AddQueryString(challengeUrl, DiscordAuthenticationConstants.Key.Prompt, Options.DiscordAuthenticationPrompt);
             }
 
             return challengeUrl;

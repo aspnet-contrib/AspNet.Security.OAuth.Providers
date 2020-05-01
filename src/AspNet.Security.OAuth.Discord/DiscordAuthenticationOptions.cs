@@ -29,11 +29,11 @@ namespace AspNet.Security.OAuth.Discord
 
         /// <summary>
         /// Controls how the authorization flow handles existing authorizations.
-        /// The default value of this property is "Omit" and the "prompt" query string parameter will not be appended to the Authorization Endpoint URL.
-        /// Assigning this property any other value will automatically append the "prompt" query string parameter to the Authorization Endpoint URL,
+        /// The default value of this property is null and the "prompt" query string parameter will not be appended to the Authorization Endpoint URL.
+        /// Assigning this property any value other than null, empty, or whitespace will automatically append the "prompt" query string parameter to the Authorization Endpoint URL,
         /// with the corresponding value.
         /// </summary>
-        public DiscordAuthenticationPrompt DiscordAuthenticationPrompt { get; set; } = DiscordAuthenticationPrompt.Omit;
+        public string? DiscordAuthenticationPrompt { get; set; }
 
         public DiscordAuthenticationOptions()
         {
