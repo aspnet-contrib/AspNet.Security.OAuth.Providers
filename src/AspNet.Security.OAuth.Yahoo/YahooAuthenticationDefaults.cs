@@ -47,6 +47,6 @@ namespace AspNet.Security.OAuth.Yahoo
         /// <summary>
         /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
         /// </summary>
-        public const string UserInformationEndpoint = "https://social.yahooapis.com/v1/user/me/profile";
+        public const string UserInformationEndpoint = "https://api.login.yahoo.com/openid/v1/userinfo";
     }
 }

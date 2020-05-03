@@ -57,7 +57,7 @@ namespace AspNet.Security.OAuth.Yahoo
 
             var principal = new ClaimsPrincipal(identity);
             var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload.RootElement);
-            context.RunClaimActions(payload.RootElement.GetProperty("profile"));
+            context.RunClaimActions(payload.RootElement);
 
             await Options.Events.CreatingTicket(context);
             return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);

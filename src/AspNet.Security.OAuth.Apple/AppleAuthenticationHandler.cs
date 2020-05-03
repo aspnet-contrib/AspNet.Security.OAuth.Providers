@@ -90,7 +90,7 @@ namespace AspNet.Security.OAuth.Apple
                 Logger.LogTrace("Refresh Token: {RefreshToken}", tokens.RefreshToken);
                 Logger.LogTrace("Token Type: {TokenType}", tokens.TokenType);
                 Logger.LogTrace("Expires In: {ExpiresIn}", tokens.ExpiresIn);
-                Logger.LogTrace("Response: {TokenResponse}", tokens.Response);
+                Logger.LogTrace("Response: {TokenResponse}", tokens.Response.RootElement);
                 Logger.LogTrace("ID Token: {IdToken}", idToken);
             }
 
