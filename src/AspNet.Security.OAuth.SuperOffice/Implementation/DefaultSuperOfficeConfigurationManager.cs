@@ -94,8 +94,7 @@ namespace AspNet.Security.OAuth.SuperOffice.Implementation
 
         private static SuperOfficeAuthenticationConfiguration GetConfiguration(byte[] jsonAsBytes)
         {
-            var jsonSpan = new ReadOnlySpan<byte>(jsonAsBytes);
-            return JsonSerializer.Deserialize<SuperOfficeAuthenticationConfiguration>(jsonSpan);
+            return JsonSerializer.Deserialize<SuperOfficeAuthenticationConfiguration>(jsonAsBytes);
         }
     }
 }
