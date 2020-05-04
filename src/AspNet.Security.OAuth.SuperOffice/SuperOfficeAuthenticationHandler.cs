@@ -15,7 +15,6 @@ using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Threading.Tasks;
-using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.Extensions.Logging;
@@ -31,11 +30,11 @@ namespace AspNet.Security.OAuth.SuperOffice
         private readonly JwtSecurityTokenHandler _tokenHandler;
 
         public SuperOfficeAuthenticationHandler(
-            [NotNull] IOptionsMonitor<SuperOfficeAuthenticationOptions> options,
-            [NotNull] ILoggerFactory logger,
-            [NotNull] UrlEncoder encoder,
-            [NotNull] ISystemClock clock,
-            [NotNull] JwtSecurityTokenHandler tokenHandler)
+            IOptionsMonitor<SuperOfficeAuthenticationOptions> options,
+            ILoggerFactory logger,
+            UrlEncoder encoder,
+            ISystemClock clock,
+            JwtSecurityTokenHandler tokenHandler)
             : base(options, logger, encoder, clock)
         {
             _tokenHandler = tokenHandler;
@@ -55,10 +54,7 @@ namespace AspNet.Security.OAuth.SuperOffice
         protected override Task<object> CreateEventsAsync() => Task.FromResult<object>(new SuperOfficeAuthenticationEvents());
 
         /// <inheritdoc />
-        protected override async Task<AuthenticationTicket> CreateTicketAsync(
-            [NotNull] ClaimsIdentity identity,
-            [NotNull] AuthenticationProperties properties,
-            [NotNull] OAuthTokenResponse tokens)
+        protected override async Task<AuthenticationTicket> CreateTicketAsync(ClaimsIdentity identity, AuthenticationProperties properties, OAuthTokenResponse tokens)
         {
             // the access token is a reference token prefixed with the tenant context identifier
             var contextId = tokens.AccessToken[3..tokens.AccessToken.IndexOf('.', StringComparison.InvariantCultureIgnoreCase)];
@@ -131,7 +127,7 @@ namespace AspNet.Security.OAuth.SuperOffice
         /// <returns>
         /// An <see cref="IEnumerable{Claim}"/> containing the claims extracted from the token.
         /// </returns>
-        protected virtual IEnumerable<Claim> ExtractClaimsFromToken([NotNull] string token)
+        protected virtual IEnumerable<Claim> ExtractClaimsFromToken(string token)
         {
             try
             {
@@ -153,9 +149,7 @@ namespace AspNet.Security.OAuth.SuperOffice
         /// </summary>
         /// <param name="properties">Authentication properties.</param>
         /// <param name="idToken">The id_token JWT.</param>
-        private void SaveIdToken(
-            [NotNull] AuthenticationProperties properties,
-            [NotNull] string idToken)
+        private void SaveIdToken(AuthenticationProperties properties, string idToken)
         {
             if (!string.IsNullOrWhiteSpace(idToken))
             {
