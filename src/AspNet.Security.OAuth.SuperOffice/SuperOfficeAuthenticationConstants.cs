@@ -15,7 +15,7 @@ namespace AspNet.Security.OAuth.SuperOffice
         public static class ClaimNames
         {
             /// <summary>
-            /// Tenants user identity.
+            /// Tenant's user identity.
             /// </summary>
             public const string AssociateId = "http://schemes.superoffice.net/identity/associateid";
 
