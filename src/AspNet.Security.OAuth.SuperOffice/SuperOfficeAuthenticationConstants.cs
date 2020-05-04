@@ -138,7 +138,7 @@ namespace AspNet.Security.OAuth.SuperOffice
             public const string Associate = "Associate";
 
             /// <summary>
-            /// AssociateId for the user.
+            /// Associate ID for the user.
             /// </summary>
             public const string AssociateId = "AssociateId";
 
@@ -148,17 +148,17 @@ namespace AspNet.Security.OAuth.SuperOffice
             public const string IsPerson = "IsPerson";
 
             /// <summary>
-            /// Associate's person id
+            /// Associate's person ID
             /// </summary>
             public const string PersonId = "PersonId";
 
             /// <summary>
-            /// Country id for the user.
+            /// Country ID for the user.
             /// </summary>
             public const string CountryId = "CountryId";
 
             /// <summary>
-            /// Country id for the user's home country. This is the default country id when creating new items.
+            /// Country ID for the user's home country. This is the default country ID when creating new items.
             /// </summary>
             public const string HomeCountryId = "HomeCountryId";
 
@@ -188,17 +188,17 @@ namespace AspNet.Security.OAuth.SuperOffice
             public const string ContactOwner = "ContactOwner";
 
             /// <summary>
-            /// Id of the users role
+            /// Id of the user's role
             /// </summary>
             public const string RoleId = "RoleId";
 
             /// <summary>
-            /// Name of the users role
+            /// Name of the user's role
             /// </summary>
             public const string RoleName = "RoleName";
 
             /// <summary>
-            /// Descrtiption (e.g. tooltip) for the users role
+            /// Description (e.g. tooltip) for the user's role
             /// </summary>
             public const string RoleDescription = "RoleDescription";
 
