@@ -70,7 +70,7 @@ namespace AspNet.Security.OAuth.SuperOffice
             public const string Serial = "http://schemes.superoffice.net/identity/serial";
 
             /// <summary>
-            /// Current users tenant primary email address.
+            /// Current user's tenant primary email address.
             /// </summary>
             public const string PrimaryEmail = "http://schemes.superoffice.net/identity/so_primary_email_address";
 
