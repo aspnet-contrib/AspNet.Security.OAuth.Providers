@@ -14,9 +14,6 @@
     <ProjectReference Include="..\..\src\AspNet.Security.OAuth.*\*.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <None Remove="SuperOffice\bundle.json" />
-  </ItemGroup>
-  <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="JustEat.HttpClientInterception" Version="$(JustEatHttpClientInterceptionVersion)" />
     <PackageReference Include="MartinCostello.Logging.XUnit" Version="$(MartinCostelloLoggingXUnitVersion)" />
