@@ -98,7 +98,7 @@ namespace AspNet.Security.OAuth.SuperOffice
         public static class FormatStrings
         {
             /// <summary>
-            /// A string format used to poplate oauth authorize endpoint.
+            /// A string format used to populate OAuth authorize endpoint.
             /// </summary>
             public const string AuthorizeEndpoint = "https://{0}.superoffice.com/login/common/oauth/authorize";
 
