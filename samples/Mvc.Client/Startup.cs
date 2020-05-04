@@ -60,17 +60,6 @@ namespace Mvc.Client
                 options.Scope.Add("user:email");
             })
 
-             .AddSuperOffice(options =>
-             {
-                 options.Environment = AspNet.Security.OAuth.SuperOffice.SuperOfficeAuthenticationEnvironment.Development;
-                 options.ClientId = Configuration["SuperOffice:ClientId"];
-                 options.ClientSecret = Configuration["SuperOffice:ClientSecret"];
-                 options.CallbackPath = new Microsoft.AspNetCore.Http.PathString("/callback"); // default: "/signin-superoffice"
-                 options.ValidateTokens = true;
-
-                 options.UsePkce = true;
-             })
-
             /*
             .AddApple(options =>
             {

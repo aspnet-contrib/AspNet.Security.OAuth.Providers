@@ -6,7 +6,6 @@
 
 using System;
 using System.Threading.Tasks;
-using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -33,6 +32,6 @@ namespace AspNet.Security.OAuth.SuperOffice
         /// <returns>
         /// A <see cref="Task"/> representing the completed operation.
         /// </returns>
-        public virtual async Task ValidateIdToken([NotNull] SuperOfficeValidateIdTokenContext context) => await OnValidateIdToken(context);
+        public virtual async Task ValidateIdToken(SuperOfficeValidateIdTokenContext context) => await OnValidateIdToken(context);
     }
 }
