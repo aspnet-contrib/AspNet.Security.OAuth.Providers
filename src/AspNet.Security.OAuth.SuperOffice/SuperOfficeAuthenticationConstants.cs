@@ -103,16 +103,16 @@ namespace AspNet.Security.OAuth.SuperOffice
             public const string AuthorizeEndpoint = "https://{0}.superoffice.com/login/common/oauth/authorize";
 
             /// <summary>
-            /// A string format used to poplate oauth token endpoint.
+            /// A string format used to populate OAuth token endpoint.
             /// </summary>
             public const string TokenEndpoint = "https://{0}.superoffice.com/login/common/oauth/tokens";
 
             /// <summary>
-            /// A string format used to obtain user claims.
+            /// A format string used to obtain user claims.
             /// </summary>
-            /// <remarks>The final userinfo url contains protocol, host and tenant</remarks>
+            /// <remarks>The final userinfo URL contains the protocol, host and tenant.</remarks>
             /// <example>https://sod.superoffice.com/Cust12345/api/v1/user/currentPrincipal</example>
-            public const string UserInfoEndPoint = "/{0}/api/v1/user/currentPrincipal";
+            public const string UserInfoEndpoint = "/{0}/api/v1/user/currentPrincipal";
 
             /// <summary>
             /// Format value used to construct <see cref="AuthenticationSchemeOptions.ClaimsIssuer"/>.
