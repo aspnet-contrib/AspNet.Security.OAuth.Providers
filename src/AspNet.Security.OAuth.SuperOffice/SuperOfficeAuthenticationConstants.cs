@@ -85,7 +85,7 @@ namespace AspNet.Security.OAuth.SuperOffice
             public const string Ticket = "http://schemes.superoffice.net/identity/ticket";
 
             /// <summary>
-            /// Current users username.
+            /// Current user's username.
             /// </summary>
             public const string UserPrincipalName = "http://schemes.superoffice.net/identity/upn";
 
