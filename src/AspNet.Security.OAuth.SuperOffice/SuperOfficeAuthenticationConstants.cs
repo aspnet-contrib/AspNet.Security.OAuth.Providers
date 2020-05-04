@@ -20,7 +20,7 @@ namespace AspNet.Security.OAuth.SuperOffice
             public const string AssociateId = "http://schemes.superoffice.net/identity/associateid";
 
             /// <summary>
-            /// Current users company name.
+            /// Current user's company name.
             /// </summary>
             public const string CompanyName = "http://schemes.superoffice.net/identity/company_name";
 
