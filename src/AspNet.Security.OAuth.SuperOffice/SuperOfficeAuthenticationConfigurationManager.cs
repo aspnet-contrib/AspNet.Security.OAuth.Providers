@@ -6,6 +6,7 @@
 
 using System.Threading;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 using Microsoft.IdentityModel.Tokens;
 
 namespace AspNet.Security.OAuth.SuperOffice
@@ -33,12 +34,12 @@ namespace AspNet.Security.OAuth.SuperOffice
         /// A <see cref="Task{TResult}"/> representing the asynchronous operation
         /// to get the json string of the public key to use for Sign in with SuperOffice.
         /// </returns>
-        public abstract Task<JsonWebKeySet> GetPublicKeySetAsync(SuperOfficeValidateIdTokenContext context);
+        public abstract Task<JsonWebKeySet> GetPublicKeySetAsync([NotNull] SuperOfficeValidateIdTokenContext context);
 
         /// <summary>
         /// Loads the SuperOffice well-known configuration metadata as an asynchronous operation.
         /// </summary>
         /// <param name="context">The context.</param>
-        public abstract Task LoadConfigurationAsync(SuperOfficeValidateIdTokenContext context);
+        public abstract Task LoadConfigurationAsync([NotNull] SuperOfficeValidateIdTokenContext context);
     }
 }

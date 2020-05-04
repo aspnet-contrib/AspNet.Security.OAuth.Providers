@@ -7,6 +7,7 @@
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 
@@ -19,16 +20,16 @@ namespace AspNet.Security.OAuth.SuperOffice.Implementation
         private readonly JwtSecurityTokenHandler _tokenHandler;
 
         public DefaultSuperOfficeIdTokenValidator(
-            SuperOfficeAuthenticationConfigurationManager configManager,
-            JwtSecurityTokenHandler tokenHandler,
-            ILogger<DefaultSuperOfficeIdTokenValidator> logger)
+            [NotNull] SuperOfficeAuthenticationConfigurationManager configManager,
+            [NotNull] JwtSecurityTokenHandler tokenHandler,
+            [NotNull] ILogger<DefaultSuperOfficeIdTokenValidator> logger)
         {
             _configManager = configManager;
             _tokenHandler = tokenHandler;
             _logger = logger;
         }
 
-        public override async Task ValidateAsync(SuperOfficeValidateIdTokenContext context)
+        public override async Task ValidateAsync([NotNull] SuperOfficeValidateIdTokenContext context)
         {
             if (!_tokenHandler.CanValidateToken)
             {

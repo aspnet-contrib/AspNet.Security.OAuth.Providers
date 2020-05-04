@@ -8,6 +8,7 @@ using System;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
@@ -23,15 +24,15 @@ namespace AspNet.Security.OAuth.SuperOffice.Implementation
         private DateTimeOffset _reloadKeysAfter;
 
         public DefaultSuperOfficeConfigurationManager(
-            ISystemClock clock,
-            ILogger<DefaultSuperOfficeConfigurationManager> logger)
+            [NotNull] ISystemClock clock,
+            [NotNull] ILogger<DefaultSuperOfficeConfigurationManager> logger)
         {
             _clock = clock;
             _logger = logger;
         }
 
         /// <inheritdoc />
-        public override async Task<JsonWebKeySet> GetPublicKeySetAsync(SuperOfficeValidateIdTokenContext context)
+        public override async Task<JsonWebKeySet> GetPublicKeySetAsync([NotNull] SuperOfficeValidateIdTokenContext context)
         {
             if (string.IsNullOrEmpty(Configuration.JwksUri))
             {
@@ -55,7 +56,7 @@ namespace AspNet.Security.OAuth.SuperOffice.Implementation
         }
 
         /// <inheritdoc />
-        public override async Task LoadConfigurationAsync(SuperOfficeValidateIdTokenContext context)
+        public override async Task LoadConfigurationAsync([NotNull] SuperOfficeValidateIdTokenContext context)
         {
             using var response = await context.Options.Backchannel.GetAsync(context.Options.ConfigurationEndpoint, context.HttpContext.RequestAborted);
 
@@ -74,7 +75,9 @@ namespace AspNet.Security.OAuth.SuperOffice.Implementation
             Configuration = GetConfiguration(jsonBytes);
         }
 
-        private async Task<string> LoadJwksAsync(SuperOfficeValidateIdTokenContext context, string jwksUrl)
+        private async Task<string> LoadJwksAsync(
+            [NotNull] SuperOfficeValidateIdTokenContext context,
+            [NotNull] string jwksUrl)
         {
             using var response = await context.Options.Backchannel.GetAsync(jwksUrl, context.HttpContext.RequestAborted);
 
@@ -92,7 +95,7 @@ namespace AspNet.Security.OAuth.SuperOffice.Implementation
             return await response.Content.ReadAsStringAsync();
         }
 
-        private static SuperOfficeAuthenticationConfiguration GetConfiguration(byte[] jsonAsBytes)
+        private static SuperOfficeAuthenticationConfiguration GetConfiguration([NotNull] byte[] jsonAsBytes)
         {
             return JsonSerializer.Deserialize<SuperOfficeAuthenticationConfiguration>(jsonAsBytes);
         }

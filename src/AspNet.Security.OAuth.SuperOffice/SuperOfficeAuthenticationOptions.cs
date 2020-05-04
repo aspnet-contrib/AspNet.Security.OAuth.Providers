@@ -118,7 +118,7 @@ namespace AspNet.Security.OAuth.SuperOffice
             if (_environment == SuperOfficeAuthenticationEnvironment.Production
                 && !AuthorizationEndpoint.StartsWith("https://", System.StringComparison.InvariantCultureIgnoreCase))
             {
-                throw new SuperOfficeAuthenticationInvalidEnvironmentException("Production environment requires secure endpoints, i.e. begins with 'https://'.");
+                throw new NotSupportedException("Production environment requires secure endpoints, i.e. begins with 'https://'.");
             }
         }
 
@@ -146,7 +146,7 @@ namespace AspNet.Security.OAuth.SuperOffice
 
             UserInformationEndpoint = string.Concat(
                 string.Format(CultureInfo.InvariantCulture, SuperOfficeAuthenticationConstants.FormatStrings.ClaimsIssuer, env),
-                SuperOfficeAuthenticationConstants.FormatStrings.UserInfoEndPoint);
+                SuperOfficeAuthenticationConstants.FormatStrings.UserInfoEndpoint);
 
             ConfigurationEndpoint = string.Format(CultureInfo.InvariantCulture,
                 SuperOfficeAuthenticationConstants.FormatStrings.ConfigurationEndpoint,
@@ -164,7 +164,7 @@ namespace AspNet.Security.OAuth.SuperOffice
                 SuperOfficeAuthenticationEnvironment.Development => "sod",
                 SuperOfficeAuthenticationEnvironment.Stage => "stage",
                 SuperOfficeAuthenticationEnvironment.Production => "online",
-                _ => throw new NotImplementedException() // set in the ctor so never gets here...
+                _ => throw new NotSupportedException("Environment property must be set to either Development, Stage or Production.")
             };
         }
     }
