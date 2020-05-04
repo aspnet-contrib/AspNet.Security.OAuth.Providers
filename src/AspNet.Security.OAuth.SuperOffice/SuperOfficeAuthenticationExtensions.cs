@@ -8,6 +8,7 @@ using System;
 using System.IdentityModel.Tokens.Jwt;
 using AspNet.Security.OAuth.SuperOffice;
 using AspNet.Security.OAuth.SuperOffice.Implementation;
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
@@ -24,7 +25,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// </summary>
         /// <param name="builder">The <see cref="AuthenticationBuilder"/> to add the middleware to.</param>
         /// <returns>A reference to this instance after the operation has completed.</returns>
-        public static AuthenticationBuilder AddSuperOffice(this AuthenticationBuilder builder)
+        public static AuthenticationBuilder AddSuperOffice([NotNull] this AuthenticationBuilder builder)
             => builder.AddSuperOffice(SuperOfficeAuthenticationDefaults.AuthenticationScheme, _ => { });
 
         /// <summary>
@@ -34,7 +35,9 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="builder">The <see cref="AuthenticationBuilder"/> to add the middleware to.</param>
         /// <param name="configuration">The delegate used to configure the OAuth 2.0 options.</param>
         /// <returns>A reference to this instance after the operation has completed.</returns>
-        public static AuthenticationBuilder AddSuperOffice(this AuthenticationBuilder builder, Action<SuperOfficeAuthenticationOptions> configuration)
+        public static AuthenticationBuilder AddSuperOffice(
+            [NotNull] this AuthenticationBuilder builder,
+            [NotNull] Action<SuperOfficeAuthenticationOptions> configuration)
             => builder.AddSuperOffice(SuperOfficeAuthenticationDefaults.AuthenticationScheme, configuration);
 
         /// <summary>
@@ -45,7 +48,10 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="authenticationScheme">The authentication scheme associated with this instance.</param>
         /// <param name="configuration">The delegate used to configure the SuperOffice options.</param>
         /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
-        public static AuthenticationBuilder AddSuperOffice(this AuthenticationBuilder builder, string authenticationScheme, Action<SuperOfficeAuthenticationOptions> configuration)
+        public static AuthenticationBuilder AddSuperOffice(
+            [NotNull] this AuthenticationBuilder builder,
+            [NotNull] string authenticationScheme,
+            [NotNull] Action<SuperOfficeAuthenticationOptions> configuration)
             => builder.AddSuperOffice(authenticationScheme, SuperOfficeAuthenticationDefaults.DisplayName, configuration);
 
         /// <summary>
@@ -57,7 +63,11 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="displayName">The optional display name associated with this instance.</param>
         /// <param name="configuration">The delegate used to configure the SuperOffice options.</param>
         /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
-        public static AuthenticationBuilder AddSuperOffice(this AuthenticationBuilder builder, string authenticationScheme, string displayName, Action<SuperOfficeAuthenticationOptions> configuration)
+        public static AuthenticationBuilder AddSuperOffice(
+            [NotNull] this AuthenticationBuilder builder,
+            [NotNull] string authenticationScheme,
+            [NotNull] string displayName,
+            [NotNull] Action<SuperOfficeAuthenticationOptions> configuration)
         {
             builder.Services.TryAddSingleton<SuperOfficeIdTokenValidator, DefaultSuperOfficeIdTokenValidator>();
             builder.Services.TryAddSingleton<SuperOfficeAuthenticationConfigurationManager, DefaultSuperOfficeConfigurationManager>();
