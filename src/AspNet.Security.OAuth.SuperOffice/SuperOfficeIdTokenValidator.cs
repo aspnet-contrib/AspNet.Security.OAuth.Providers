@@ -5,6 +5,7 @@
  */
 
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 
 namespace AspNet.Security.OAuth.SuperOffice
 {
@@ -20,6 +21,6 @@ namespace AspNet.Security.OAuth.SuperOffice
         /// <returns>
         /// A <see cref="Task"/> representing the asynchronous operation to validate the ID token.
         /// </returns>
-        public abstract Task ValidateAsync(SuperOfficeValidateIdTokenContext context);
+        public abstract Task ValidateAsync([NotNull] SuperOfficeValidateIdTokenContext context);
     }
 }

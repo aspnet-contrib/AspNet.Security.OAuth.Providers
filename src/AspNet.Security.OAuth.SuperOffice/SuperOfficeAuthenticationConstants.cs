@@ -163,22 +163,22 @@ namespace AspNet.Security.OAuth.SuperOffice
             public const string HomeCountryId = "HomeCountryId";
 
             /// <summary>
-            /// Company of the associate's person
+            /// Company of the associate's person.
             /// </summary>
             public const string ContactId = "ContactId";
 
             /// <summary>
-            /// Associate's group_idx
+            /// Associate's group ID.
             /// </summary>
             public const string GroupId = "GroupId";
 
             /// <summary>
-            /// BusinessIdx for the company that the user belongs to.
+            /// Business ID for the company that the user belongs to.
             /// </summary>
             public const string BusinessId = "BusinessId";
 
             /// <summary>
-            /// CategoryIdx of the company that the user belongs to.
+            /// Category ID of the company that the user belongs to.
             /// </summary>
             public const string CategoryId = "CategoryId";
 
@@ -188,17 +188,17 @@ namespace AspNet.Security.OAuth.SuperOffice
             public const string ContactOwner = "ContactOwner";
 
             /// <summary>
-            /// Id of the user's role
+            /// ID of the user's role.
             /// </summary>
             public const string RoleId = "RoleId";
 
             /// <summary>
-            /// Name of the user's role
+            /// Name of the user's role.
             /// </summary>
             public const string RoleName = "RoleName";
 
             /// <summary>
-            /// Description (e.g. tooltip) for the user's role
+            /// Description (e.g. tooltip) for the user's role.
             /// </summary>
             public const string RoleDescription = "RoleDescription";
 
@@ -228,37 +228,37 @@ namespace AspNet.Security.OAuth.SuperOffice
             public const string FunctionRights = "FunctionRights";
 
             /// <summary>
-            /// Primary key in eJournal's old user table.
+            /// Primary key in Service user table.
             /// </summary>
             public const string EjUserId = "EjUserId";
 
             /// <summary>
-            /// eJournal user access level
+            /// Service user access level.
             /// </summary>
             public const string EjAccessLevel = "EjAccessLevel";
 
             /// <summary>
-            /// eJournal user status
+            /// Service user status.
             /// </summary>
             public const string EjUserStatus = "EjUserStatus";
 
             /// <summary>
-            /// The credentials used for authenticating this user
+            /// The credentials used for authenticating this user.
             /// </summary>
             public const string ProvidedCredentials = "ProvidedCredentials";
 
             /// <summary>
-            /// Secondary user groups
+            /// Secondary user groups.
             /// </summary>
             public const string SecondaryGroups = "SecondaryGroups";
 
             /// <summary>
-            /// Name of the tenant context identifier
+            /// Name of the tenant context identifier.
             /// </summary>
             public const string ContextIdentifier = "ContextIdentifier";
 
             /// <summary>
-            /// Name of the database context
+            /// Name of the database context.
             /// </summary>
             public const string DatabaseContextIdentifier = "DatabaseContextIdentifier";
         }

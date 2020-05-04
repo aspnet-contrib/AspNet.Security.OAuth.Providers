@@ -4,6 +4,7 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 
@@ -21,7 +22,11 @@ namespace AspNet.Security.OAuth.SuperOffice
         /// <param name="scheme">The authentication scheme.</param>
         /// <param name="options">The authentication options associated with the scheme.</param>
         /// <param name="idToken">The SuperOffice ID token for the user to validate.</param>
-        public SuperOfficeValidateIdTokenContext(HttpContext context, AuthenticationScheme scheme, SuperOfficeAuthenticationOptions options, string idToken)
+        public SuperOfficeValidateIdTokenContext(
+            [NotNull] HttpContext context,
+            [NotNull] AuthenticationScheme scheme,
+            [NotNull] SuperOfficeAuthenticationOptions options,
+            [NotNull] string idToken)
             : base(context, scheme, options)
         {
             IdToken = idToken;
