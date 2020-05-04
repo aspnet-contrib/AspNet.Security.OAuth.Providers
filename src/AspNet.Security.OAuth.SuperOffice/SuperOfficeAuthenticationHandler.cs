@@ -114,7 +114,8 @@ namespace AspNet.Security.OAuth.SuperOffice
             using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
             var context = new OAuthCreatingTicketContext(new ClaimsPrincipal(identity), properties, Context, Scheme, Options, Backchannel, tokens, payload.RootElement);
 
-            if (Options.IncludeFunctionalRightsAsClaims)
+            if (Options.IncludeFunctionalRightsAsClaims
+                && !Options.ClaimActions.Any(c => c.ClaimType == SuperOfficeAuthenticationConstants.PrincipalNames.FunctionRights))
             {
                 Options.ClaimActions.MapJsonKey(SuperOfficeAuthenticationConstants.PrincipalNames.FunctionRights, SuperOfficeAuthenticationConstants.PrincipalNames.FunctionRights);
             }
