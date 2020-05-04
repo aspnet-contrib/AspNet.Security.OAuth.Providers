@@ -11,7 +11,7 @@ using System.Text.Json.Serialization;
 namespace AspNet.Security.OAuth.SuperOffice
 {
     /// <summary>
-    /// Contains well-known configuration settings.
+    /// Contains well-known configuration settings for SuperOffice.
     /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "CA2227:Collection properties should be read only", Justification = "Required for serialization.")]
     public class SuperOfficeAuthenticationConfiguration

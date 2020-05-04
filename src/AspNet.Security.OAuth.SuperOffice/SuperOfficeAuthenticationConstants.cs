@@ -15,12 +15,12 @@ namespace AspNet.Security.OAuth.SuperOffice
         public static class ClaimNames
         {
             /// <summary>
-            /// Tenants user identity.
+            /// Tenant's user identity.
             /// </summary>
             public const string AssociateId = "http://schemes.superoffice.net/identity/associateid";
 
             /// <summary>
-            /// Current users company name.
+            /// Current user's company name.
             /// </summary>
             public const string CompanyName = "http://schemes.superoffice.net/identity/company_name";
 
@@ -70,7 +70,7 @@ namespace AspNet.Security.OAuth.SuperOffice
             public const string Serial = "http://schemes.superoffice.net/identity/serial";
 
             /// <summary>
-            /// Current users tenant primary email address.
+            /// Current user's tenant primary email address.
             /// </summary>
             public const string PrimaryEmail = "http://schemes.superoffice.net/identity/so_primary_email_address";
 
@@ -85,7 +85,7 @@ namespace AspNet.Security.OAuth.SuperOffice
             public const string Ticket = "http://schemes.superoffice.net/identity/ticket";
 
             /// <summary>
-            /// Current users username.
+            /// Current user's username.
             /// </summary>
             public const string UserPrincipalName = "http://schemes.superoffice.net/identity/upn";
 
@@ -98,21 +98,21 @@ namespace AspNet.Security.OAuth.SuperOffice
         public static class FormatStrings
         {
             /// <summary>
-            /// A string format used to poplate oauth authorize endpoint.
+            /// A string format used to populate OAuth authorize endpoint.
             /// </summary>
             public const string AuthorizeEndpoint = "https://{0}.superoffice.com/login/common/oauth/authorize";
 
             /// <summary>
-            /// A string format used to poplate oauth token endpoint.
+            /// A string format used to populate OAuth token endpoint.
             /// </summary>
             public const string TokenEndpoint = "https://{0}.superoffice.com/login/common/oauth/tokens";
 
             /// <summary>
-            /// A string format used to obtain user claims.
+            /// A format string used to obtain user claims.
             /// </summary>
-            /// <remarks>The final userinfo url contains protocol, host and tenant</remarks>
+            /// <remarks>The final userinfo URL contains the protocol, host and tenant.</remarks>
             /// <example>https://sod.superoffice.com/Cust12345/api/v1/user/currentPrincipal</example>
-            public const string UserInfoEndPoint = "/{0}/api/v1/user/currentPrincipal";
+            public const string UserInfoEndpoint = "/{0}/api/v1/user/currentPrincipal";
 
             /// <summary>
             /// Format value used to construct <see cref="AuthenticationSchemeOptions.ClaimsIssuer"/>.
@@ -138,7 +138,7 @@ namespace AspNet.Security.OAuth.SuperOffice
             public const string Associate = "Associate";
 
             /// <summary>
-            /// AssociateId for the user.
+            /// Associate ID for the user.
             /// </summary>
             public const string AssociateId = "AssociateId";
 
@@ -148,17 +148,17 @@ namespace AspNet.Security.OAuth.SuperOffice
             public const string IsPerson = "IsPerson";
 
             /// <summary>
-            /// Associate's person id
+            /// Associate's person ID
             /// </summary>
             public const string PersonId = "PersonId";
 
             /// <summary>
-            /// Country id for the user.
+            /// Country ID for the user.
             /// </summary>
             public const string CountryId = "CountryId";
 
             /// <summary>
-            /// Country id for the user's home country. This is the default country id when creating new items.
+            /// Country ID for the user's home country. This is the default country ID when creating new items.
             /// </summary>
             public const string HomeCountryId = "HomeCountryId";
 
@@ -188,17 +188,17 @@ namespace AspNet.Security.OAuth.SuperOffice
             public const string ContactOwner = "ContactOwner";
 
             /// <summary>
-            /// Id of the users role
+            /// Id of the user's role
             /// </summary>
             public const string RoleId = "RoleId";
 
             /// <summary>
-            /// Name of the users role
+            /// Name of the user's role
             /// </summary>
             public const string RoleName = "RoleName";
 
             /// <summary>
-            /// Descrtiption (e.g. tooltip) for the users role
+            /// Description (e.g. tooltip) for the user's role
             /// </summary>
             public const string RoleDescription = "RoleDescription";
 
