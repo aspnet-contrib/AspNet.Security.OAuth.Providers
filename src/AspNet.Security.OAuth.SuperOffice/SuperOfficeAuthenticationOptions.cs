@@ -141,9 +141,7 @@ namespace AspNet.Security.OAuth.SuperOffice
                 SuperOfficeAuthenticationConstants.FormatStrings.ClaimsIssuer,
                 env);
 
-            /* UserInformationEndpoint will include context identifier after authentication
-               in SuperOfficeAuthenticationHandler.CreateTicketAsync */
-
+            // UserInformationEndpoint will include context identifier after authentication in SuperOfficeAuthenticationHandler.CreateTicketAsync
             UserInformationEndpoint = string.Concat(
                 string.Format(CultureInfo.InvariantCulture, SuperOfficeAuthenticationConstants.FormatStrings.ClaimsIssuer, env),
                 SuperOfficeAuthenticationConstants.FormatStrings.UserInfoEndpoint);
