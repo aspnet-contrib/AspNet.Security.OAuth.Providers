@@ -20,5 +20,10 @@ namespace AspNet.Security.OAuth.Twitch
             public const string ProfileImageUrl = "urn:twitch:profileimageurl";
             public const string Type = "urn:twitch:type";
         }
+
+        public static class Headers
+        {
+            public const string ClientId = "Client-ID";
+        }
     }
 }
