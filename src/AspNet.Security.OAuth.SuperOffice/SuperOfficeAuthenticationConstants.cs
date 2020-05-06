@@ -122,7 +122,7 @@ namespace AspNet.Security.OAuth.SuperOffice
             /// <summary>
             /// Format value used to construct well-known configuration endpoint.
             /// </summary>
-            public const string ConfigurationEndpoint = "https://{0}.superoffice.com/login/.well-known/openid-configuration";
+            public const string JwksEndpoint = "https://{0}.superoffice.com/login/.well-known/jwks";
         }
 
         public static class PrincipalNames

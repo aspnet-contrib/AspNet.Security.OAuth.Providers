@@ -64,10 +64,10 @@ namespace AspNet.Security.OAuth.SuperOffice
         }
 
         /// <summary>
-        /// Gets or sets the URI the middleware will access to obtain the public key for
+        /// Gets the sets the URI the middleware uses to obtain the public key for
         /// validating tokens if <see cref="ValidateTokens"/> is <see langword="true"/>.
         /// </summary>
-        public string ConfigurationEndpoint { get; set; } = string.Empty;
+        public string JwksEndpoint { get; internal set; } = string.Empty;
 
         /// <summary>
         /// Sets the target online environment to either sod, stage or online
@@ -103,12 +103,12 @@ namespace AspNet.Security.OAuth.SuperOffice
 
         /// <summary>
         /// Gets or sets the default period of time to cache the SuperOffice public key(s)
-        /// retrieved from the endpoint specified by <see cref="ConfigurationEndpoint"/>.
+        /// retrieved from the endpoint specified by <see cref="JwksEndpoint"/>.
         /// </summary>
         /// <remarks>
         /// The default public key cache lifetime is 15 minutes.
         /// </remarks>
-        public TimeSpan PublicKeyCacheLifetime { get; set; } = TimeSpan.FromMinutes(15);
+        public TimeSpan JwksCacheLifetime { get; set; } = TimeSpan.FromMinutes(15);
 
         /// <inheritdoc />
         public override void Validate()
@@ -146,8 +146,8 @@ namespace AspNet.Security.OAuth.SuperOffice
                 string.Format(CultureInfo.InvariantCulture, SuperOfficeAuthenticationConstants.FormatStrings.ClaimsIssuer, env),
                 SuperOfficeAuthenticationConstants.FormatStrings.UserInfoEndpoint);
 
-            ConfigurationEndpoint = string.Format(CultureInfo.InvariantCulture,
-                SuperOfficeAuthenticationConstants.FormatStrings.ConfigurationEndpoint,
+            JwksEndpoint = string.Format(CultureInfo.InvariantCulture,
+                SuperOfficeAuthenticationConstants.FormatStrings.JwksEndpoint,
                 env);
         }
 

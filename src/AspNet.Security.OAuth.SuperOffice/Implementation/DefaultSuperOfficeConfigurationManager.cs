@@ -20,8 +20,8 @@ namespace AspNet.Security.OAuth.SuperOffice.Implementation
         private readonly ISystemClock _clock;
         private readonly ILogger _logger;
 
-        private string _publicKey = string.Empty;
-        private DateTimeOffset _reloadKeysAfter;
+        private string _jwks = string.Empty;
+        private DateTimeOffset _reloadJwksAfter;
 
         public DefaultSuperOfficeConfigurationManager(
             [NotNull] ISystemClock clock,
@@ -34,45 +34,20 @@ namespace AspNet.Security.OAuth.SuperOffice.Implementation
         /// <inheritdoc />
         public override async Task<JsonWebKeySet> GetPublicKeySetAsync([NotNull] SuperOfficeValidateIdTokenContext context)
         {
-            if (string.IsNullOrEmpty(Configuration.JwksUri))
-            {
-                await LoadConfigurationAsync(context);
-            }
-
             var utcNow = _clock.UtcNow;
 
-            if (string.IsNullOrWhiteSpace(_publicKey) || _reloadKeysAfter < utcNow)
+            if (string.IsNullOrWhiteSpace(_jwks) || _reloadJwksAfter < utcNow)
             {
-                _logger.LogInformation($"Loading SuperOffice JwksUri from {Configuration.JwksUri}.");
+                _logger.LogInformation($"Loading SuperOffice JwksUri from {context.Options.JwksEndpoint}.");
 
-                _publicKey = await LoadJwksAsync(context, Configuration.JwksUri);
-                _reloadKeysAfter = utcNow.Add(context.Options.PublicKeyCacheLifetime);
+                _jwks = await LoadJwksAsync(context, context.Options.JwksEndpoint);
+                _reloadJwksAfter = utcNow.Add(context.Options.JwksCacheLifetime);
 
                 _logger.LogInformation(
-                    $"Loaded SuperOffice JwksUrl from {Configuration.JwksUri} and obtained public keys. Keys will be reloaded at or after {_reloadKeysAfter}.");
+                    $"Loaded SuperOffice JwksUrl from {context.Options.JwksEndpoint} and obtained public keys. Keys will be reloaded at or after {_reloadJwksAfter}.");
             }
 
-            return JsonWebKeySet.Create(_publicKey);
-        }
-
-        /// <inheritdoc />
-        public override async Task LoadConfigurationAsync([NotNull] SuperOfficeValidateIdTokenContext context)
-        {
-            using var response = await context.Options.Backchannel.GetAsync(context.Options.ConfigurationEndpoint, context.HttpContext.RequestAborted);
-
-            if (!response.IsSuccessStatusCode)
-            {
-                _logger.LogError("An error occurred while retrieving the configuration from SuperOffice: the remote server " +
-                                 "returned a {Status} response with the following payload: {Headers} {Body}.",
-                                 /* Status: */ response.StatusCode,
-                                 /* Headers: */ response.Headers.ToString(),
-                                 /* Body: */ await response.Content.ReadAsStringAsync());
-
-                throw new HttpRequestException("An error occurred while retrieving the configuration from SuperOffice.");
-            }
-
-            byte[] jsonBytes = await response.Content.ReadAsByteArrayAsync();
-            Configuration = GetConfiguration(jsonBytes);
+            return JsonWebKeySet.Create(_jwks);
         }
 
         private async Task<string> LoadJwksAsync(
@@ -93,11 +68,6 @@ namespace AspNet.Security.OAuth.SuperOffice.Implementation
             }
 
             return await response.Content.ReadAsStringAsync();
-        }
-
-        private static SuperOfficeAuthenticationConfiguration GetConfiguration([NotNull] byte[] jsonAsBytes)
-        {
-            return JsonSerializer.Deserialize<SuperOfficeAuthenticationConfiguration>(jsonAsBytes);
         }
     }
 }
