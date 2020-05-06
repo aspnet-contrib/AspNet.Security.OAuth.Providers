@@ -18,13 +18,7 @@ namespace AspNet.Security.OAuth.SuperOffice
     {
         public SuperOfficeAuthenticationConfigurationManager()
         {
-            Configuration = new SuperOfficeAuthenticationConfiguration();
         }
-
-        /// <summary>
-        /// SuperOffice well-known configuration metadata.
-        /// </summary>
-        public SuperOfficeAuthenticationConfiguration Configuration { get; set; }
 
         /// <summary>
         /// Loads the SuperOffice public key as an asynchronous operation.
@@ -35,11 +29,5 @@ namespace AspNet.Security.OAuth.SuperOffice
         /// to get the json string of the public key to use for Sign in with SuperOffice.
         /// </returns>
         public abstract Task<JsonWebKeySet> GetPublicKeySetAsync([NotNull] SuperOfficeValidateIdTokenContext context);
-
-        /// <summary>
-        /// Loads the SuperOffice well-known configuration metadata as an asynchronous operation.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        public abstract Task LoadConfigurationAsync([NotNull] SuperOfficeValidateIdTokenContext context);
     }
 }
