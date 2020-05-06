@@ -61,7 +61,7 @@ namespace AspNet.Security.OAuth.SuperOffice
             [NotNull] OAuthTokenResponse tokens)
         {
             // the access token is a reference token prefixed with the tenant context identifier
-            var contextId = tokens.AccessToken[3..tokens.AccessToken.IndexOf('.', StringComparison.InvariantCultureIgnoreCase)];
+            var contextId = tokens.AccessToken[3..tokens.AccessToken.IndexOf('.', StringComparison.OrdinalIgnoreCase)];
 
             // add contextId to the Options.UserInformationEndpoint (https://sod.superoffice.com/{0}/api/v1/user/currentPrincipal)
             var userInfoEndpoint = string.Format(CultureInfo.InvariantCulture, Options.UserInformationEndpoint, contextId);
