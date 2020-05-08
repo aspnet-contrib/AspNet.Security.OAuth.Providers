@@ -99,7 +99,7 @@ namespace AspNet.Security.OAuth.Yammer
             return OAuthTokenResponse.Success(token);
         }
 
-        private async Task<JsonDocument> CreateAccessTokenAsync(string accessToken)
+        private static async Task<JsonDocument> CreateAccessTokenAsync(string accessToken)
         {
             var bufferWriter = new ArrayBufferWriter<byte>();
 
