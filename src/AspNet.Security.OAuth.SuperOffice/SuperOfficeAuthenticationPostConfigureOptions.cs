@@ -20,6 +20,7 @@ namespace AspNet.Security.OAuth.SuperOffice
     /// </summary>
     public class SuperOfficeAuthenticationPostConfigureOptions : IPostConfigureOptions<SuperOfficeAuthenticationOptions>
     {
+        /// <inheritdoc />
         public void PostConfigure(
             [NotNull] string name,
             [NotNull] SuperOfficeAuthenticationOptions options)
@@ -32,7 +33,6 @@ namespace AspNet.Security.OAuth.SuperOffice
 
             // As seen in:
             // github.com/dotnet/aspnetcore/blob/master/src/Security/Authentication/OpenIdConnect/src/OpenIdConnectPostConfigureOptions.cs#L71-L102
-
             // need this now to successfully instantiate ConfigurationManager below.
             if (options.Backchannel == null)
             {
