@@ -246,7 +246,8 @@ namespace AspNet.Security.OAuth.Apple
                     errorUri = default;
                 }
 
-                if (StringValues.Equals(error, "access_denied"))
+                // See https://developer.apple.com/documentation/sign_in_with_apple/sign_in_with_apple_js/incorporating_sign_in_with_apple_into_other_platforms.
+                if (StringValues.Equals(error, "access_denied") || StringValues.Equals(error, "user_cancelled_authorize"))
                 {
                     var result = await HandleAccessDeniedErrorAsync(properties);
 
