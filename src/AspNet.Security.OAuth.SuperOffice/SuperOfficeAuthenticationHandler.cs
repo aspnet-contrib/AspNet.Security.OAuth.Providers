@@ -52,10 +52,10 @@ namespace AspNet.Security.OAuth.SuperOffice
 
             if (string.IsNullOrEmpty(contextId))
             {
-                throw new InvalidOperationException("An error occured trying to obtain the context identifer from current users identity claims.");
+                throw new InvalidOperationException("An error occurred trying to obtain the context identifier from the current user's identity claims.");
             }
 
-            // add contextId to the Options.UserInformationEndpoint (https://sod.superoffice.com/{0}/api/v1/user/currentPrincipal)
+            // Add contextId to the Options.UserInformationEndpoint (https://sod.superoffice.com/{0}/api/v1/user/currentPrincipal)
             string userInfoEndpoint = string.Format(CultureInfo.InvariantCulture, Options.UserInformationEndpoint, contextId);
 
             // Get the SuperOffice user principal
