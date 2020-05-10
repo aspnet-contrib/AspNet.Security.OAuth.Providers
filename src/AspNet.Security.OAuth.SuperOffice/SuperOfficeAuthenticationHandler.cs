@@ -48,38 +48,15 @@ namespace AspNet.Security.OAuth.SuperOffice
             [NotNull] AuthenticationProperties properties,
             [NotNull] OAuthTokenResponse tokens)
         {
-            // the access token is a reference token prefixed with the tenant context identifier
-            string contextId = tokens.AccessToken[3..tokens.AccessToken.IndexOf('.', StringComparison.OrdinalIgnoreCase)];
+            string contextId = await ProcessIdTokenAndGetContactIdentifier(tokens, properties, identity);
+
+            if (string.IsNullOrEmpty(contextId))
+            {
+                throw new InvalidOperationException("An error occured trying to obtain the context identifer from current users identity claims.");
+            }
 
             // add contextId to the Options.UserInformationEndpoint (https://sod.superoffice.com/{0}/api/v1/user/currentPrincipal)
             string userInfoEndpoint = string.Format(CultureInfo.InvariantCulture, Options.UserInformationEndpoint, contextId);
-
-            string idToken = tokens.Response.RootElement.GetString("id_token");
-
-            ClaimsPrincipal? tempClaimsPrincipal = null;
-
-            if (Options.ValidateTokens)
-            {
-                tempClaimsPrincipal = await ValidateAsync(idToken);
-            }
-
-            if (Options.SaveTokens)
-            {
-                // Save id_token as well.
-                SaveIdToken(properties, idToken);
-            }
-
-            if (Options.IncludeIdTokenAsClaims && tempClaimsPrincipal != null)
-            {
-                foreach (var claim in tempClaimsPrincipal.Claims)
-                {
-                    // may be possible same claim names from UserInformationEndpoint and IdToken.
-                    if (!identity.HasClaim(c => c.Type == claim.Type))
-                    {
-                        identity.AddClaim(claim);
-                    }
-                }
-            }
 
             // Get the SuperOffice user principal
             using var request = new HttpRequestMessage(HttpMethod.Get, userInfoEndpoint);
@@ -110,6 +87,54 @@ namespace AspNet.Security.OAuth.SuperOffice
             context.RunClaimActions();
             await Events.CreatingTicket(context);
             return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
+        }
+
+        private async Task<string> ProcessIdTokenAndGetContactIdentifier(
+            [NotNull] OAuthTokenResponse tokens,
+            [NotNull] AuthenticationProperties properties,
+            [NotNull] ClaimsIdentity identity)
+        {
+            string contextIdentifier = string.Empty;
+
+            string idToken = tokens.Response.RootElement.GetString("id_token");
+
+            if (Options.SaveTokens)
+            {
+                // Save id_token as well.
+                SaveIdToken(properties, idToken);
+            }
+
+            IEnumerable<Claim>? claims = null;
+
+            if (Options.ValidateTokens)
+            {
+                var tempClaimsPrincipal = await ValidateAsync(idToken);
+                claims = tempClaimsPrincipal.Claims;
+            }
+            else
+            {
+                var jwtSecurityToken = _tokenHandler.ReadJwtToken(idToken);
+                claims = jwtSecurityToken.Claims;
+            }
+
+            foreach (var claim in claims)
+            {
+                if (claim.Type == SuperOfficeAuthenticationConstants.ClaimNames.ContextIdentifier)
+                {
+                    contextIdentifier = claim.Value;
+                }
+
+                if (Options.IncludeIdTokenAsClaims)
+                {
+                    // may be possible same claim names from UserInformationEndpoint and IdToken.
+                    if (!identity.HasClaim(c => c.Type == claim.Type))
+                    {
+                        identity.AddClaim(claim);
+                    }
+                }
+            }
+
+            return contextIdentifier;
         }
 
         private async Task<ClaimsPrincipal> ValidateAsync(string idToken)
