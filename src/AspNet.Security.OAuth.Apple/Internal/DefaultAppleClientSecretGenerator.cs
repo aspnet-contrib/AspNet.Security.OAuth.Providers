@@ -110,7 +110,10 @@ namespace AspNet.Security.OAuth.Apple.Internal
         private static SigningCredentials CreateSigningCredentials(string keyId, ECDsa algorithm)
         {
             var key = new ECDsaSecurityKey(algorithm) { KeyId = keyId };
-            return new SigningCredentials(key, SecurityAlgorithms.EcdsaSha256Signature);
+            return new SigningCredentials(key, SecurityAlgorithms.EcdsaSha256Signature)
+            {
+                CryptoProviderFactory = new CryptoProviderFactory { CacheSignatureProviders = false }
+            };
         }
     }
 }
