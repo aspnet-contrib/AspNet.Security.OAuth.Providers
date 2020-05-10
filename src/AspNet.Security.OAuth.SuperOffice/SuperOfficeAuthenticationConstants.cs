@@ -120,9 +120,9 @@ namespace AspNet.Security.OAuth.SuperOffice
             public const string ClaimsIssuer = "https://{0}.superoffice.com";
 
             /// <summary>
-            /// A format string used to construct <see cref="AuthenticationSchemeOptions.ClaimsIssuer"/>.
+            /// A format string used to construct <see cref="SuperOfficeAuthenticationOptions.Authority"/>.
             /// </summary>
-            public const string Authoriity = "https://{0}.superoffice.com/login";
+            public const string Authority = "https://{0}.superoffice.com/login";
 
             /// <summary>
             /// A format string used to construct well-known configuration endpoint.

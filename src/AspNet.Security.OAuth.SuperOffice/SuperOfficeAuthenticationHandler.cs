@@ -121,7 +121,7 @@ namespace AspNet.Security.OAuth.SuperOffice
 
             if (Options.ConfigurationManager == null)
             {
-                throw new InvalidOperationException($"The ConfigurationManager is null.");
+                throw new InvalidOperationException($"An OpenID Connect configuration manager has not been set on the {nameof(SuperOfficeAuthenticationOptions)} instance.");
             }
 
             var openIdConnectConfiguration = await Options.ConfigurationManager.GetConfigurationAsync(Context.RequestAborted);

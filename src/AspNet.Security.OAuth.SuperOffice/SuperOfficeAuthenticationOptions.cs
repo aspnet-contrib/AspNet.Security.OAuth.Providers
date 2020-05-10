@@ -154,7 +154,7 @@ namespace AspNet.Security.OAuth.SuperOffice
                 env);
 
             Authority = string.Format(CultureInfo.InvariantCulture,
-                SuperOfficeAuthenticationConstants.FormatStrings.Authoriity,
+                SuperOfficeAuthenticationConstants.FormatStrings.Authority,
                 env);
         }
 
