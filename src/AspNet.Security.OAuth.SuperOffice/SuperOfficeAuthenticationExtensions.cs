@@ -7,7 +7,6 @@
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using AspNet.Security.OAuth.SuperOffice;
-using AspNet.Security.OAuth.SuperOffice.Implementation;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -70,7 +69,6 @@ namespace Microsoft.Extensions.DependencyInjection
             [NotNull] string displayName,
             [NotNull] Action<SuperOfficeAuthenticationOptions> configuration)
         {
-            builder.Services.TryAddSingleton<SuperOfficeIdTokenValidator, DefaultSuperOfficeIdTokenValidator>();
             builder.Services.TryAddSingleton<IPostConfigureOptions<SuperOfficeAuthenticationOptions>, SuperOfficeAuthenticationPostConfigureOptions>();
             builder.Services.TryAddSingleton<JwtSecurityTokenHandler>();
 

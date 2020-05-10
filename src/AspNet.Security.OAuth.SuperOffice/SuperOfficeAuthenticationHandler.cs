@@ -20,6 +20,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 
 namespace AspNet.Security.OAuth.SuperOffice
 {
@@ -41,19 +42,6 @@ namespace AspNet.Security.OAuth.SuperOffice
             _tokenHandler = tokenHandler;
         }
 
-        /// <summary>
-        /// The handler calls methods on the events which give the application control at certain points where processing is occurring.
-        /// If it is not provided a default instance is supplied which does nothing when the methods are called.
-        /// </summary>
-        protected new SuperOfficeAuthenticationEvents Events
-        {
-            get { return (SuperOfficeAuthenticationEvents)base.Events; }
-            set { base.Events = value; }
-        }
-
-        /// <inheritdoc />
-        protected override Task<object> CreateEventsAsync() => Task.FromResult<object>(new SuperOfficeAuthenticationEvents());
-
         /// <inheritdoc />
         protected override async Task<AuthenticationTicket> CreateTicketAsync(
             [NotNull] ClaimsIdentity identity,
@@ -61,17 +49,18 @@ namespace AspNet.Security.OAuth.SuperOffice
             [NotNull] OAuthTokenResponse tokens)
         {
             // the access token is a reference token prefixed with the tenant context identifier
-            var contextId = tokens.AccessToken[3..tokens.AccessToken.IndexOf('.', StringComparison.OrdinalIgnoreCase)];
+            string contextId = tokens.AccessToken[3..tokens.AccessToken.IndexOf('.', StringComparison.OrdinalIgnoreCase)];
 
             // add contextId to the Options.UserInformationEndpoint (https://sod.superoffice.com/{0}/api/v1/user/currentPrincipal)
-            var userInfoEndpoint = string.Format(CultureInfo.InvariantCulture, Options.UserInformationEndpoint, contextId);
+            string userInfoEndpoint = string.Format(CultureInfo.InvariantCulture, Options.UserInformationEndpoint, contextId);
 
-            var idToken = tokens.Response.RootElement.GetString("id_token");
+            string idToken = tokens.Response.RootElement.GetString("id_token");
+
+            ClaimsPrincipal? tempClaimsPrincipal = null;
 
             if (Options.ValidateTokens)
             {
-                var validateIdContext = new SuperOfficeValidateIdTokenContext(Context, Scheme, Options, idToken);
-                await Options.Events.ValidateIdToken(validateIdContext);
+                tempClaimsPrincipal = await ValidateAsync(idToken);
             }
 
             if (Options.SaveTokens)
@@ -80,11 +69,9 @@ namespace AspNet.Security.OAuth.SuperOffice
                 SaveIdToken(properties, idToken);
             }
 
-            if (Options.IncludeIdTokenAsClaims)
+            if (Options.IncludeIdTokenAsClaims && tempClaimsPrincipal != null)
             {
-                var tokenClaims = ExtractClaimsFromToken(idToken);
-
-                foreach (var claim in tokenClaims)
+                foreach (var claim in tempClaimsPrincipal.Claims)
                 {
                     // may be possible same claim names from UserInformationEndpoint and IdToken.
                     if (!identity.HasClaim(c => c.Type == claim.Type))
@@ -125,27 +112,29 @@ namespace AspNet.Security.OAuth.SuperOffice
             return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
         }
 
-        /// <summary>
-        /// Extracts the identity claims from the token received from the token endpoint.
-        /// </summary>
-        /// <param name="token">The token to extract the claims from.</param>
-        /// <returns>
-        /// An <see cref="IEnumerable{Claim}"/> containing the claims extracted from the token.
-        /// </returns>
-        protected virtual IEnumerable<Claim> ExtractClaimsFromToken([NotNull] string token)
+        private async Task<ClaimsPrincipal> ValidateAsync(string idToken)
         {
+            if (!_tokenHandler.CanValidateToken)
+            {
+                throw new NotSupportedException($"The configured {nameof(JwtSecurityTokenHandler)} cannot validate tokens.");
+            }
+
+            if (Options.ConfigurationManager == null)
+            {
+                throw new InvalidOperationException($"The ConfigurationManager is null.");
+            }
+
+            var openIdConnectConfiguration = await Options.ConfigurationManager.GetConfigurationAsync(Context.RequestAborted);
+            Options.TokenValidationParameters.IssuerSigningKeys = openIdConnectConfiguration.JsonWebKeySet.Keys;
+
             try
             {
-                var securityToken = _tokenHandler.ReadJwtToken(token);
-
-                return new List<Claim>(securityToken.Claims)
-                {
-                    new Claim(ClaimTypes.NameIdentifier, securityToken.Subject, ClaimValueTypes.String, ClaimsIssuer),
-                };
+                return _tokenHandler.ValidateToken(idToken, Options.TokenValidationParameters, out var _);
             }
             catch (Exception ex)
             {
-                throw new InvalidOperationException("Failed to parse JWT for claims from SuperOffice ID token.", ex);
+                throw new SecurityTokenValidationException(
+                    "SuperOffice ID token validation failed for issuer {TokenIssuer} and audience {TokenAudience}.", ex);
             }
         }
 

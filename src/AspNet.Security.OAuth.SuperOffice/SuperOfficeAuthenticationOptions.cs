@@ -34,8 +34,6 @@ namespace AspNet.Security.OAuth.SuperOffice
 
             CallbackPath = SuperOfficeAuthenticationDefaults.CallbackPath;
 
-            Events = new SuperOfficeAuthenticationEvents();
-
             Scope.Add("openid");
 
             ClaimActions.MapJsonKey(SuperOfficeAuthenticationConstants.ClaimNames.AssociateId, SuperOfficeAuthenticationConstants.PrincipalNames.AssociateId);
@@ -56,21 +54,6 @@ namespace AspNet.Security.OAuth.SuperOffice
             ClaimActions.MapJsonKey(SuperOfficeAuthenticationConstants.PrincipalNames.SecondaryGroups, SuperOfficeAuthenticationConstants.PrincipalNames.SecondaryGroups);
             ClaimActions.MapJsonKey(SuperOfficeAuthenticationConstants.PrincipalNames.PersonId, SuperOfficeAuthenticationConstants.PrincipalNames.PersonId);
         }
-
-        /// <summary>
-        /// Gets or sets the <see cref="SuperOfficeAuthenticationEvents"/> used to handle authentication events.
-        /// </summary>
-        public new SuperOfficeAuthenticationEvents Events
-        {
-            get => (SuperOfficeAuthenticationEvents)base.Events;
-            set => base.Events = value;
-        }
-
-        /// <summary>
-        /// Gets the sets the URI the middleware uses to obtain the public key for
-        /// validating tokens if <see cref="ValidateTokens"/> is <see langword="true"/>.
-        /// </summary>
-        public string JwksEndpoint { get; internal set; } = string.Empty;
 
         /// <summary>
         /// Gets or sets the Authority to use when making OpenId Connect calls.
@@ -121,30 +104,6 @@ namespace AspNet.Security.OAuth.SuperOffice
         public bool ValidateTokens { get; set; } = true;
 
         /// <summary>
-        /// Gets or sets a value indicating whether HTTPS is required.
-        /// </summary>
-        public bool RequireHttpsMetadata { get; set; } = true;
-
-        /// <summary>
-        /// Gets or sets the default period of time to cache the SuperOffice public key(s)
-        /// retrieved from the endpoint specified by <see cref="JwksEndpoint"/>.
-        /// </summary>
-        /// <remarks>
-        /// The default public key cache lifetime is 15 minutes.
-        /// </remarks>
-        public TimeSpan JwksCacheLifetime { get; set; } = TimeSpan.FromMinutes(15);
-
-        /// <summary>
-        /// 1 day is the default time interval that afterwards, <see cref="ConfigurationManager" /> will obtain new configuration.
-        /// </summary>
-        public TimeSpan AutomaticRefreshInterval { get; set; } = TimeSpan.FromDays(1);
-
-        /// <summary>
-        /// The minimum time between <see cref="ConfigurationManager" /> retrievals, in the event that a retrieval failed, or that a refresh was explicitly requested. 30 seconds is the default.
-        /// </summary>
-        public TimeSpan RefreshInterval { get; set; } = TimeSpan.FromSeconds(30);
-
-        /// <summary>
         /// Gets or sets the parameters used to validate identity tokens.
         /// </summary>
         /// <remarks>Contains the types and definitions required for validating a token.</remarks>
@@ -173,7 +132,7 @@ namespace AspNet.Security.OAuth.SuperOffice
         /// </summary>
         private void UpdateEndpoints()
         {
-            var env = GetEnvironment();
+            string env = GetEnvironment();
 
             AuthorizationEndpoint = string.Format(CultureInfo.InvariantCulture,
                 SuperOfficeAuthenticationConstants.FormatStrings.AuthorizeEndpoint,
