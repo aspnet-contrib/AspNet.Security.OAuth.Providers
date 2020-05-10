@@ -7,7 +7,7 @@
 namespace AspNet.Security.OAuth.SuperOffice
 {
     /// <summary>
-    /// Used to map usage to specific online environment, i.e. development, stage or production
+    /// Used to map usage to specific online environment, i.e. development, stage or production.
     /// </summary>
     public enum SuperOfficeAuthenticationEnvironment
     {

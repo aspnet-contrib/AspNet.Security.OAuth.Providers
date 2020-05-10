@@ -12,6 +12,9 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Protocols;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+using Microsoft.IdentityModel.Tokens;
 
 namespace AspNet.Security.OAuth.SuperOffice
 {
@@ -29,7 +32,7 @@ namespace AspNet.Security.OAuth.SuperOffice
         {
             Environment = SuperOfficeAuthenticationEnvironment.Development;
 
-            CallbackPath = new PathString(SuperOfficeAuthenticationDefaults.CallbackPath);
+            CallbackPath = SuperOfficeAuthenticationDefaults.CallbackPath;
 
             Events = new SuperOfficeAuthenticationEvents();
 
@@ -70,13 +73,29 @@ namespace AspNet.Security.OAuth.SuperOffice
         public string JwksEndpoint { get; internal set; } = string.Empty;
 
         /// <summary>
-        /// Sets the target online environment to either sod, stage or online
+        /// Gets or sets the Authority to use when making OpenId Connect calls.
+        /// </summary>
+        public string Authority { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Gets the sets the URI the middleware uses to obtain the OpenId Connect configuration.
+        /// </summary>
+        public string MetadataAddress { get; internal set; } = string.Empty;
+
+        /// <summary>
+        /// Responsible for retrieving, caching, and refreshing the configuration from metadata.
+        /// If not provided, then one will be created using the MetadataAddress and Backchannel properties.
+        /// </summary>
+        public IConfigurationManager<OpenIdConnectConfiguration>? ConfigurationManager { get; set; }
+
+        /// <summary>
+        /// Sets the target online environment to either development, stage or production.
         /// </summary>
         public SuperOfficeAuthenticationEnvironment Environment
         {
             get
             {
-                return this._environment;
+                return _environment;
             }
 
             set
@@ -102,6 +121,11 @@ namespace AspNet.Security.OAuth.SuperOffice
         public bool ValidateTokens { get; set; } = true;
 
         /// <summary>
+        /// Gets or sets a value indicating whether HTTPS is required.
+        /// </summary>
+        public bool RequireHttpsMetadata { get; set; } = true;
+
+        /// <summary>
         /// Gets or sets the default period of time to cache the SuperOffice public key(s)
         /// retrieved from the endpoint specified by <see cref="JwksEndpoint"/>.
         /// </summary>
@@ -110,15 +134,37 @@ namespace AspNet.Security.OAuth.SuperOffice
         /// </remarks>
         public TimeSpan JwksCacheLifetime { get; set; } = TimeSpan.FromMinutes(15);
 
+        /// <summary>
+        /// 1 day is the default time interval that afterwards, <see cref="ConfigurationManager" /> will obtain new configuration.
+        /// </summary>
+        public TimeSpan AutomaticRefreshInterval { get; set; } = TimeSpan.FromDays(1);
+
+        /// <summary>
+        /// The minimum time between <see cref="ConfigurationManager" /> retrievals, in the event that a retrieval failed, or that a refresh was explicitly requested. 30 seconds is the default.
+        /// </summary>
+        public TimeSpan RefreshInterval { get; set; } = TimeSpan.FromSeconds(30);
+
+        /// <summary>
+        /// Gets or sets the parameters used to validate identity tokens.
+        /// </summary>
+        /// <remarks>Contains the types and definitions required for validating a token.</remarks>
+        public TokenValidationParameters TokenValidationParameters { get; set; } = new TokenValidationParameters();
+
         /// <inheritdoc />
         public override void Validate()
         {
             base.Validate();
 
             if (_environment == SuperOfficeAuthenticationEnvironment.Production
-                && !AuthorizationEndpoint.StartsWith("https://", System.StringComparison.InvariantCultureIgnoreCase))
+                && !AuthorizationEndpoint.StartsWith("https://", System.StringComparison.OrdinalIgnoreCase))
             {
                 throw new NotSupportedException("Production environment requires secure endpoints, i.e. begins with 'https://'.");
+            }
+
+            if (ConfigurationManager == null)
+            {
+                throw new InvalidOperationException($"Provide {nameof(Authority)}, {nameof(MetadataAddress)}, "
+                + $"or {nameof(ConfigurationManager)} to {nameof(SuperOfficeAuthenticationOptions)}");
             }
         }
 
@@ -142,12 +188,14 @@ namespace AspNet.Security.OAuth.SuperOffice
                 env);
 
             // UserInformationEndpoint will include context identifier after authentication in SuperOfficeAuthenticationHandler.CreateTicketAsync
-            UserInformationEndpoint = string.Concat(
-                string.Format(CultureInfo.InvariantCulture, SuperOfficeAuthenticationConstants.FormatStrings.ClaimsIssuer, env),
-                SuperOfficeAuthenticationConstants.FormatStrings.UserInfoEndpoint);
+            UserInformationEndpoint = string.Concat(ClaimsIssuer, SuperOfficeAuthenticationConstants.FormatStrings.UserInfoEndpoint);
 
-            JwksEndpoint = string.Format(CultureInfo.InvariantCulture,
-                SuperOfficeAuthenticationConstants.FormatStrings.JwksEndpoint,
+            MetadataAddress = string.Format(CultureInfo.InvariantCulture,
+                SuperOfficeAuthenticationConstants.FormatStrings.MetadataEndpoint,
+                env);
+
+            Authority = string.Format(CultureInfo.InvariantCulture,
+                SuperOfficeAuthenticationConstants.FormatStrings.Authoriity,
                 env);
         }
 
