@@ -20,7 +20,8 @@
     <RoslynAnalyzersVersion>3.0.0</RoslynAnalyzersVersion>
     <ShouldlyVersion>3.0.2</ShouldlyVersion>
     <StyleCopAnalyzersVersion>1.1.118</StyleCopAnalyzersVersion>
-    <SystemIdentityModelTokensJwtVersion>6.5.1</SystemIdentityModelTokensJwtVersion>
+    <SuperOfficeSystemIdentityModelTokensJwtVersion>6.5.1</SuperOfficeSystemIdentityModelTokensJwtVersion>
+    <SystemIdentityModelTokensJwtVersion>5.4.0</SystemIdentityModelTokensJwtVersion>
     <TwitterProviderVersion>3.1.3</TwitterProviderVersion>
   </PropertyGroup>
 </Project>
