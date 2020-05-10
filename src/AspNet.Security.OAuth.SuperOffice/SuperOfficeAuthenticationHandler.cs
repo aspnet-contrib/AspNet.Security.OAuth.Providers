@@ -48,7 +48,7 @@ namespace AspNet.Security.OAuth.SuperOffice
             [NotNull] AuthenticationProperties properties,
             [NotNull] OAuthTokenResponse tokens)
         {
-            string contextId = await ProcessIdTokenAndGetContactIdentifier(tokens, properties, identity);
+            string contextId = await ProcessIdTokenAndGetContactIdentifierAsync(tokens, properties, identity);
 
             if (string.IsNullOrEmpty(contextId))
             {
@@ -89,7 +89,7 @@ namespace AspNet.Security.OAuth.SuperOffice
             return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
         }
 
-        private async Task<string> ProcessIdTokenAndGetContactIdentifier(
+        private async Task<string> ProcessIdTokenAndGetContactIdentifierAsync(
             [NotNull] OAuthTokenResponse tokens,
             [NotNull] AuthenticationProperties properties,
             [NotNull] ClaimsIdentity identity)
