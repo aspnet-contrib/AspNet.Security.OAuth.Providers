@@ -95,45 +95,50 @@ namespace AspNet.Security.OAuth.SuperOffice
             public const string WebApiUrl = "http://schemes.superoffice.net/identity/webapi_url";
         }
 
-        public static class FormatStrings
+        internal static class FormatStrings
         {
             /// <summary>
-            /// A string format used to populate OAuth authorize endpoint.
+            /// A format string used to populate OAuth authorize endpoint.
             /// </summary>
             public const string AuthorizeEndpoint = "https://{0}.superoffice.com/login/common/oauth/authorize";
 
             /// <summary>
-            /// A string format used to populate OAuth token endpoint.
+            /// A format string used to populate OAuth token endpoint.
             /// </summary>
             public const string TokenEndpoint = "https://{0}.superoffice.com/login/common/oauth/tokens";
 
             /// <summary>
             /// A format string used to obtain user claims.
             /// </summary>
-            /// <remarks>The final userinfo URL contains the protocol, host and tenant.</remarks>
+            /// <remarks>The final user information URL contains the protocol, host and tenant.</remarks>
             /// <example>https://sod.superoffice.com/Cust12345/api/v1/user/currentPrincipal</example>
             public const string UserInfoEndpoint = "/{0}/api/v1/user/currentPrincipal";
 
             /// <summary>
-            /// Format value used to construct <see cref="AuthenticationSchemeOptions.ClaimsIssuer"/>.
+            /// A format string used to construct <see cref="AuthenticationSchemeOptions.ClaimsIssuer"/>.
             /// </summary>
             public const string ClaimsIssuer = "https://{0}.superoffice.com";
 
             /// <summary>
-            /// Format value used to construct well-known configuration endpoint.
+            /// A format string used to construct <see cref="AuthenticationSchemeOptions.ClaimsIssuer"/>.
             /// </summary>
-            public const string JwksEndpoint = "https://{0}.superoffice.com/login/.well-known/jwks";
+            public const string Authoriity = "https://{0}.superoffice.com/login";
+
+            /// <summary>
+            /// A format string used to construct well-known configuration endpoint.
+            /// </summary>
+            public const string MetadataEndpoint = "https://{0}.superoffice.com/login/.well-known/openid-configuration";
         }
 
         public static class PrincipalNames
         {
             /// <summary>
-            /// Type of user
+            /// Type of user.
             /// </summary>
             public const string UserType = "UserType";
 
             /// <summary>
-            /// Associate name (e.g. logon name) for the user
+            /// Associate name (e.g. logon name) for the current user.
             /// </summary>
             public const string Associate = "Associate";
 
@@ -208,7 +213,7 @@ namespace AspNet.Security.OAuth.SuperOffice
             public const string RoleType = "RoleType";
 
             /// <summary>
-            ///  License granted to the site and user.
+            ///  Licenses granted to the site and user.
             /// </summary>
             public const string Licenses = "Licenses";
 
