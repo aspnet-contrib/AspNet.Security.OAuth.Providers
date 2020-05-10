@@ -59,7 +59,7 @@ namespace AspNet.Security.OAuth.SuperOffice
                         options.MetadataAddress += ".well-known/openid-configuration";
                     }
 
-                    if (options.RequireHttpsMetadata && !options.MetadataAddress.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
+                    if (!options.MetadataAddress.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
                     {
                         throw new InvalidOperationException("The MetadataAddress or Authority must use HTTPS unless disabled for development by setting RequireHttpsMetadata=false.");
                     }
@@ -67,11 +67,11 @@ namespace AspNet.Security.OAuth.SuperOffice
                     options.ConfigurationManager = new ConfigurationManager<OpenIdConnectConfiguration>(
                         options.MetadataAddress,
                         new OpenIdConnectConfigurationRetriever(),
-                        new HttpDocumentRetriever(options.Backchannel) { RequireHttps = options.RequireHttpsMetadata })
-                    {
-                        RefreshInterval = options.RefreshInterval,
-                        AutomaticRefreshInterval = options.AutomaticRefreshInterval,
-                    };
+                        new HttpDocumentRetriever(options.Backchannel))
+                        {
+                            RefreshInterval = TimeSpan.FromSeconds(30),
+                            AutomaticRefreshInterval = TimeSpan.FromDays(1)
+                        };
                 }
             }
         }
