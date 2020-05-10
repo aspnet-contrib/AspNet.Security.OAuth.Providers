@@ -89,6 +89,7 @@ namespace AspNet.Security.OAuth.SuperOffice
                 services.PostConfigureAll<SuperOfficeAuthenticationOptions>((options) =>
                 {
                     options.ClientId = "gg454918d75b1b53101065c16ee51123";
+                    options.TokenValidationParameters.ValidAudience = options.ClientId;
                 });
             }
 
