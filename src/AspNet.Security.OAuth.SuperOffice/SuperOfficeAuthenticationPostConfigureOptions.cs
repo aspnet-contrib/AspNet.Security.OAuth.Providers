@@ -48,7 +48,7 @@ namespace AspNet.Security.OAuth.SuperOffice
             {
                 if (string.IsNullOrEmpty(options.MetadataAddress))
                 {
-                    throw new InvalidOperationException($"An MetadataAddress must be set on the {nameof(SuperOfficeAuthenticationOptions)} instance.");
+                    throw new InvalidOperationException($"The MetadataAddress must be set on the {nameof(SuperOfficeAuthenticationOptions)} instance.");
                 }
 
                 options.ConfigurationManager = new ConfigurationManager<OpenIdConnectConfiguration>(
