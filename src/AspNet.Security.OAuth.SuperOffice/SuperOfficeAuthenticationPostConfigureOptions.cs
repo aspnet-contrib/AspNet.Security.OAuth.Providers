@@ -69,8 +69,8 @@ namespace AspNet.Security.OAuth.SuperOffice
                         new OpenIdConnectConfigurationRetriever(),
                         new HttpDocumentRetriever(options.Backchannel))
                         {
-                            RefreshInterval = TimeSpan.FromSeconds(30),
-                            AutomaticRefreshInterval = TimeSpan.FromDays(1)
+                            AutomaticRefreshInterval = TimeSpan.FromDays(1),
+                            RefreshInterval = TimeSpan.FromSeconds(30)
                         };
                 }
             }
