@@ -168,7 +168,7 @@ namespace AspNet.Security.OAuth.SuperOffice
             catch (Exception ex)
             {
                 throw new SecurityTokenValidationException(
-                    $"SuperOffice ID token validation failed for issuer {TokenIssuer} and audience {TokenAudience}.", ex);
+                    $"SuperOffice ID token validation failed for issuer and/or audience.", ex);
             }
         }
 
