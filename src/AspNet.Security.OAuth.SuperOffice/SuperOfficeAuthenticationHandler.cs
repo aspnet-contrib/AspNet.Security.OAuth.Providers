@@ -108,7 +108,14 @@ namespace AspNet.Security.OAuth.SuperOffice
 
             if (Options.ValidateTokens)
             {
-                var tempClaimsPrincipal = await ValidateAsync(idToken);
+                var tempClaimsPrincipal = await ValidateAsync(
+                    idToken,
+                    new TokenValidationParameters()
+                    {
+                        ValidAudience = Options.ClientId,
+                        ValidIssuer = Options.ClaimsIssuer
+                    });
+
                 claims = tempClaimsPrincipal.Claims;
             }
             else
@@ -137,7 +144,9 @@ namespace AspNet.Security.OAuth.SuperOffice
             return contextIdentifier;
         }
 
-        private async Task<ClaimsPrincipal> ValidateAsync(string idToken)
+        private async Task<ClaimsPrincipal> ValidateAsync(
+            [NotNull] string idToken,
+            [NotNull] TokenValidationParameters validationParameters)
         {
             if (!_tokenHandler.CanValidateToken)
             {
@@ -150,11 +159,11 @@ namespace AspNet.Security.OAuth.SuperOffice
             }
 
             var openIdConnectConfiguration = await Options.ConfigurationManager.GetConfigurationAsync(Context.RequestAborted);
-            Options.TokenValidationParameters.IssuerSigningKeys = openIdConnectConfiguration.JsonWebKeySet.Keys;
+            validationParameters.IssuerSigningKeys = openIdConnectConfiguration.JsonWebKeySet.Keys;
 
             try
             {
-                return _tokenHandler.ValidateToken(idToken, Options.TokenValidationParameters, out var _);
+                return _tokenHandler.ValidateToken(idToken, validationParameters, out var _);
             }
             catch (Exception ex)
             {
