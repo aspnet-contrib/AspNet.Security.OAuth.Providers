@@ -143,7 +143,7 @@ namespace AspNet.Security.OAuth.SuperOffice
             public const string Associate = "Associate";
 
             /// <summary>
-            /// Associate ID for the user.
+            /// Associate ID for the current user.
             /// </summary>
             public const string AssociateId = "AssociateId";
 
@@ -153,7 +153,7 @@ namespace AspNet.Security.OAuth.SuperOffice
             public const string IsPerson = "IsPerson";
 
             /// <summary>
-            /// Associate's person ID
+            /// Associate's person ID.
             /// </summary>
             public const string PersonId = "PersonId";
 
@@ -218,12 +218,12 @@ namespace AspNet.Security.OAuth.SuperOffice
             public const string Licenses = "Licenses";
 
             /// <summary>
-            /// The Person full name if the associate is a person. Use IsPerson to check
+            /// The Person full name if the associate is a person. Use IsPerson to check.
             /// </summary>
             public const string FullName = "FullName";
 
             /// <summary>
-            /// The Person e-mail address if the associate is a person. Use IsPerson to check
+            /// The Person e-mail address if the associate is a person. Use IsPerson to check.
             /// </summary>
             public const string EMailAddress = "EMailAddress";
 

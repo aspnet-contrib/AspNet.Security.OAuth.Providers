@@ -154,7 +154,7 @@ namespace AspNet.Security.OAuth.SuperOffice
         /// </summary>
         /// <param name="properties">Authentication properties.</param>
         /// <param name="idToken">The id_token JWT.</param>
-        private void SaveIdToken(
+        private static void SaveIdToken(
             [NotNull] AuthenticationProperties properties,
             [NotNull] string idToken)
         {
