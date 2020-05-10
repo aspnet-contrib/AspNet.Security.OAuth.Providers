@@ -39,40 +39,26 @@ namespace AspNet.Security.OAuth.SuperOffice
 #pragma warning disable CA2000 // Dispose objects before losing scope
                 options.Backchannel = new HttpClient(options.BackchannelHttpHandler ?? new HttpClientHandler());
 #pragma warning restore CA2000 // Dispose objects before losing scope
-                options.Backchannel.DefaultRequestHeaders.UserAgent.ParseAdd("SuperOffice OpenIdConnect handler");
+                options.Backchannel.DefaultRequestHeaders.UserAgent.ParseAdd("SuperOffice OAuth handler");
                 options.Backchannel.Timeout = options.BackchannelTimeout;
                 options.Backchannel.MaxResponseContentBufferSize = 1024 * 1024 * 10; // 10 MB
             }
 
             if (options.ConfigurationManager == null)
             {
-                if (!(string.IsNullOrEmpty(options.MetadataAddress) && string.IsNullOrEmpty(options.Authority)))
+                if (string.IsNullOrEmpty(options.MetadataAddress))
                 {
-                    if (string.IsNullOrEmpty(options.MetadataAddress) && !string.IsNullOrEmpty(options.Authority))
-                    {
-                        options.MetadataAddress = options.Authority;
-                        if (!options.MetadataAddress.EndsWith("/", StringComparison.Ordinal))
-                        {
-                            options.MetadataAddress += "/";
-                        }
-
-                        options.MetadataAddress += ".well-known/openid-configuration";
-                    }
-
-                    if (!options.MetadataAddress.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
-                    {
-                        throw new InvalidOperationException("The MetadataAddress or Authority must use HTTPS unless disabled for development by setting RequireHttpsMetadata=false.");
-                    }
-
-                    options.ConfigurationManager = new ConfigurationManager<OpenIdConnectConfiguration>(
-                        options.MetadataAddress,
-                        new OpenIdConnectConfigurationRetriever(),
-                        new HttpDocumentRetriever(options.Backchannel))
-                        {
-                            AutomaticRefreshInterval = TimeSpan.FromDays(1),
-                            RefreshInterval = TimeSpan.FromSeconds(30)
-                        };
+                    throw new InvalidOperationException($"An MetadataAddress must be set on the {nameof(SuperOfficeAuthenticationOptions)} instance.");
                 }
+
+                options.ConfigurationManager = new ConfigurationManager<OpenIdConnectConfiguration>(
+                    options.MetadataAddress,
+                    new OpenIdConnectConfigurationRetriever(),
+                    new HttpDocumentRetriever(options.Backchannel))
+                {
+                    AutomaticRefreshInterval = TimeSpan.FromDays(1),
+                    RefreshInterval = TimeSpan.FromSeconds(30)
+                };
             }
         }
     }
