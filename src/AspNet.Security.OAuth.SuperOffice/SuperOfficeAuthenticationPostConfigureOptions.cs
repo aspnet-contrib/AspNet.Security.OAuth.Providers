@@ -5,9 +5,8 @@
  */
 
 using System;
-using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http;
-using System.Text;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Protocols;
@@ -59,6 +58,11 @@ namespace AspNet.Security.OAuth.SuperOffice
                     AutomaticRefreshInterval = TimeSpan.FromDays(1),
                     RefreshInterval = TimeSpan.FromSeconds(30)
                 };
+            }
+
+            if (options.SecurityTokenHandler == null)
+            {
+                options.SecurityTokenHandler = new JwtSecurityTokenHandler();
             }
         }
     }

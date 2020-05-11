@@ -29,17 +29,13 @@ namespace AspNet.Security.OAuth.SuperOffice
     /// </summary>
     public class SuperOfficeAuthenticationHandler : OAuthHandler<SuperOfficeAuthenticationOptions>
     {
-        private readonly JwtSecurityTokenHandler _tokenHandler;
-
         public SuperOfficeAuthenticationHandler(
             [NotNull] IOptionsMonitor<SuperOfficeAuthenticationOptions> options,
             [NotNull] ILoggerFactory logger,
             [NotNull] UrlEncoder encoder,
-            [NotNull] ISystemClock clock,
-            [NotNull] JwtSecurityTokenHandler tokenHandler)
+            [NotNull] ISystemClock clock)
             : base(options, logger, encoder, clock)
         {
-            _tokenHandler = tokenHandler;
         }
 
         /// <inheritdoc />
@@ -55,10 +51,10 @@ namespace AspNet.Security.OAuth.SuperOffice
                 throw new InvalidOperationException("An error occurred trying to obtain the context identifier from the current user's identity claims.");
             }
 
-            // Add contextId to the Options.UserInformationEndpoint (https://sod.superoffice.com/{0}/api/v1/user/currentPrincipal)
+            // Add contextId to the Options.UserInformationEndpoint (https://sod.superoffice.com/{0}/api/v1/user/currentPrincipal).
             string userInfoEndpoint = string.Format(CultureInfo.InvariantCulture, Options.UserInformationEndpoint, contextId);
 
-            // Get the SuperOffice user principal
+            // Get the SuperOffice user principal.
             using var request = new HttpRequestMessage(HttpMethod.Get, userInfoEndpoint);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", tokens.AccessToken);
@@ -120,7 +116,13 @@ namespace AspNet.Security.OAuth.SuperOffice
             }
             else
             {
-                var jwtSecurityToken = _tokenHandler.ReadJwtToken(idToken);
+                // This is to satisfy CS8602, the dereference of a null reference on Options.SecurityTokenHandler.
+                if (Options.SecurityTokenHandler == null)
+                {
+                    throw new NullReferenceException("The options SecurityTokenHandler is null.");
+                }
+
+                var jwtSecurityToken = Options.SecurityTokenHandler.ReadJwtToken(idToken);
                 claims = jwtSecurityToken.Claims;
             }
 
@@ -133,7 +135,7 @@ namespace AspNet.Security.OAuth.SuperOffice
 
                 if (Options.IncludeIdTokenAsClaims)
                 {
-                    // may be possible same claim names from UserInformationEndpoint and IdToken.
+                    // May be possible same claim names from UserInformationEndpoint and IdToken.
                     if (!identity.HasClaim(c => c.Type == claim.Type))
                     {
                         identity.AddClaim(claim);
@@ -148,7 +150,13 @@ namespace AspNet.Security.OAuth.SuperOffice
             [NotNull] string idToken,
             [NotNull] TokenValidationParameters validationParameters)
         {
-            if (!_tokenHandler.CanValidateToken)
+            // This is to satisfy CS8602, the dereference of a null reference on Options.SecurityTokenHandler.
+            if (Options.SecurityTokenHandler == null)
+            {
+                throw new NullReferenceException("The options SecurityTokenHandler is null.");
+            }
+
+            if (!Options.SecurityTokenHandler.CanValidateToken)
             {
                 throw new NotSupportedException($"The configured {nameof(JwtSecurityTokenHandler)} cannot validate tokens.");
             }
@@ -163,7 +171,7 @@ namespace AspNet.Security.OAuth.SuperOffice
 
             try
             {
-                return _tokenHandler.ValidateToken(idToken, validationParameters, out var _);
+                return Options.SecurityTokenHandler.ValidateToken(idToken, validationParameters, out var _);
             }
             catch (Exception ex)
             {

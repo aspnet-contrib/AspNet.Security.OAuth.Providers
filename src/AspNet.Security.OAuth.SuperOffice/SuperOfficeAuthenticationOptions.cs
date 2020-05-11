@@ -5,13 +5,11 @@
  */
 
 using System;
-using System.Collections.Generic;
 using System.Globalization;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Protocols;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
@@ -31,9 +29,7 @@ namespace AspNet.Security.OAuth.SuperOffice
         public SuperOfficeAuthenticationOptions()
         {
             Environment = SuperOfficeAuthenticationEnvironment.Development;
-
             CallbackPath = SuperOfficeAuthenticationDefaults.CallbackPath;
-
             Scope.Add("openid");
 
             ClaimActions.MapJsonKey(SuperOfficeAuthenticationConstants.ClaimNames.AssociateId, SuperOfficeAuthenticationConstants.PrincipalNames.AssociateId);
@@ -54,6 +50,11 @@ namespace AspNet.Security.OAuth.SuperOffice
             ClaimActions.MapJsonKey(SuperOfficeAuthenticationConstants.PrincipalNames.SecondaryGroups, SuperOfficeAuthenticationConstants.PrincipalNames.SecondaryGroups);
             ClaimActions.MapJsonKey(SuperOfficeAuthenticationConstants.PrincipalNames.PersonId, SuperOfficeAuthenticationConstants.PrincipalNames.PersonId);
         }
+
+        /// <summary>
+        /// Security token validator. Default is <see cref="System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler"/>.
+        /// </summary>
+        public JwtSecurityTokenHandler? SecurityTokenHandler { get; set; }
 
         /// <summary>
         /// Gets or sets the Authority to use when making OpenId Connect calls.
