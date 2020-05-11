@@ -52,19 +52,9 @@ namespace AspNet.Security.OAuth.SuperOffice
         }
 
         /// <summary>
-        /// Security token validator. Default is <see cref="System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler"/>.
-        /// </summary>
-        public JwtSecurityTokenHandler? SecurityTokenHandler { get; set; }
-
-        /// <summary>
         /// Gets or sets the Authority to use when making OpenId Connect calls.
         /// </summary>
         public string Authority { get; set; } = string.Empty;
-
-        /// <summary>
-        /// Gets the sets the URI the middleware uses to obtain the OpenId Connect configuration.
-        /// </summary>
-        public string MetadataAddress { get; internal set; } = string.Empty;
 
         /// <summary>
         /// Responsible for retrieving, caching, and refreshing the configuration from metadata.
@@ -100,15 +90,25 @@ namespace AspNet.Security.OAuth.SuperOffice
         public bool IncludeIdTokenAsClaims { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether to validate tokens using SuperOffice's public key.
+        /// Gets the sets the URI the middleware uses to obtain the OpenId Connect configuration.
         /// </summary>
-        public bool ValidateTokens { get; set; } = true;
+        public string MetadataAddress { get; internal set; } = string.Empty;
+
+        /// <summary>
+        /// Security token validator. Default is <see cref="System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler"/>.
+        /// </summary>
+        public JwtSecurityTokenHandler? SecurityTokenHandler { get; set; }
 
         /// <summary>
         /// Gets or sets the parameters used to validate identity tokens.
         /// </summary>
         /// <remarks>Contains the types and definitions required for validating a token.</remarks>
         public TokenValidationParameters TokenValidationParameters { get; set; } = new TokenValidationParameters();
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to validate tokens using SuperOffice's public key.
+        /// </summary>
+        public bool ValidateTokens { get; set; } = true;
 
         /// <inheritdoc />
         public override void Validate()
@@ -126,6 +126,21 @@ namespace AspNet.Security.OAuth.SuperOffice
                 throw new InvalidOperationException($"Provide {nameof(Authority)}, {nameof(MetadataAddress)}, "
                 + $"or {nameof(ConfigurationManager)} to {nameof(SuperOfficeAuthenticationOptions)}");
             }
+        }
+
+        /// <summary>
+        /// Used to determine current target environment.
+        /// </summary>
+        /// <returns>Returns the online environment, i.e. development, stage, production.</returns>
+        private string GetEnvironment()
+        {
+            return _environment switch
+            {
+                SuperOfficeAuthenticationEnvironment.Development => "sod",
+                SuperOfficeAuthenticationEnvironment.Stage => "stage",
+                SuperOfficeAuthenticationEnvironment.Production => "online",
+                _ => throw new NotSupportedException("Environment property must be set to either Development, Stage or Production.")
+            };
         }
 
         /// <summary>
@@ -157,21 +172,6 @@ namespace AspNet.Security.OAuth.SuperOffice
             Authority = string.Format(CultureInfo.InvariantCulture,
                 SuperOfficeAuthenticationConstants.FormatStrings.Authority,
                 env);
-        }
-
-        /// <summary>
-        /// Used to determine current target environment.
-        /// </summary>
-        /// <returns>Returns the online environment, i.e. development, stage, production.</returns>
-        private string GetEnvironment()
-        {
-            return _environment switch
-            {
-                SuperOfficeAuthenticationEnvironment.Development => "sod",
-                SuperOfficeAuthenticationEnvironment.Stage => "stage",
-                SuperOfficeAuthenticationEnvironment.Production => "online",
-                _ => throw new NotSupportedException("Environment property must be set to either Development, Stage or Production.")
-            };
         }
     }
 }

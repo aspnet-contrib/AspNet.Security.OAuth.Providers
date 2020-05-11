@@ -98,9 +98,24 @@ namespace AspNet.Security.OAuth.SuperOffice
         internal static class FormatStrings
         {
             /// <summary>
+            /// A format string used to construct <see cref="SuperOfficeAuthenticationOptions.Authority"/>.
+            /// </summary>
+            public const string Authority = "https://{0}.superoffice.com/login";
+
+            /// <summary>
             /// A format string used to populate OAuth authorize endpoint.
             /// </summary>
             public const string AuthorizeEndpoint = "https://{0}.superoffice.com/login/common/oauth/authorize";
+
+            /// <summary>
+            /// A format string used to construct <see cref="AuthenticationSchemeOptions.ClaimsIssuer"/>.
+            /// </summary>
+            public const string ClaimsIssuer = "https://{0}.superoffice.com";
+
+            /// <summary>
+            /// A format string used to construct well-known configuration endpoint.
+            /// </summary>
+            public const string MetadataEndpoint = "https://{0}.superoffice.com/login/.well-known/openid-configuration";
 
             /// <summary>
             /// A format string used to populate OAuth token endpoint.
@@ -113,30 +128,10 @@ namespace AspNet.Security.OAuth.SuperOffice
             /// <remarks>The final user information URL contains the protocol, host and tenant.</remarks>
             /// <example>https://sod.superoffice.com/Cust12345/api/v1/user/currentPrincipal</example>
             public const string UserInfoEndpoint = "/{0}/api/v1/user/currentPrincipal";
-
-            /// <summary>
-            /// A format string used to construct <see cref="AuthenticationSchemeOptions.ClaimsIssuer"/>.
-            /// </summary>
-            public const string ClaimsIssuer = "https://{0}.superoffice.com";
-
-            /// <summary>
-            /// A format string used to construct <see cref="SuperOfficeAuthenticationOptions.Authority"/>.
-            /// </summary>
-            public const string Authority = "https://{0}.superoffice.com/login";
-
-            /// <summary>
-            /// A format string used to construct well-known configuration endpoint.
-            /// </summary>
-            public const string MetadataEndpoint = "https://{0}.superoffice.com/login/.well-known/openid-configuration";
         }
 
         public static class PrincipalNames
         {
-            /// <summary>
-            /// Type of user.
-            /// </summary>
-            public const string UserType = "UserType";
-
             /// <summary>
             /// Associate name (e.g. logon name) for the current user.
             /// </summary>
@@ -146,36 +141,6 @@ namespace AspNet.Security.OAuth.SuperOffice
             /// Associate ID for the current user.
             /// </summary>
             public const string AssociateId = "AssociateId";
-
-            /// <summary>
-            /// Is this associate a person, and not a resource?
-            /// </summary>
-            public const string IsPerson = "IsPerson";
-
-            /// <summary>
-            /// Associate's person ID.
-            /// </summary>
-            public const string PersonId = "PersonId";
-
-            /// <summary>
-            /// Country ID for the user.
-            /// </summary>
-            public const string CountryId = "CountryId";
-
-            /// <summary>
-            /// Country ID for the user's home country. This is the default country ID when creating new items.
-            /// </summary>
-            public const string HomeCountryId = "HomeCountryId";
-
-            /// <summary>
-            /// Company of the associate's person.
-            /// </summary>
-            public const string ContactId = "ContactId";
-
-            /// <summary>
-            /// Associate's group ID.
-            /// </summary>
-            public const string GroupId = "GroupId";
 
             /// <summary>
             /// Business ID for the company that the user belongs to.
@@ -188,9 +153,94 @@ namespace AspNet.Security.OAuth.SuperOffice
             public const string CategoryId = "CategoryId";
 
             /// <summary>
+            /// Company of the associate's person.
+            /// </summary>
+            public const string ContactId = "ContactId";
+
+            /// <summary>
             /// Owner (AssociateId) of the company that the user belongs to.
             /// </summary>
             public const string ContactOwner = "ContactOwner";
+
+            /// <summary>
+            /// Name of the tenant context identifier.
+            /// </summary>
+            public const string ContextIdentifier = "ContextIdentifier";
+
+            /// <summary>
+            /// Country ID for the user.
+            /// </summary>
+            public const string CountryId = "CountryId";
+
+            /// <summary>
+            /// Name of the database context.
+            /// </summary>
+            public const string DatabaseContextIdentifier = "DatabaseContextIdentifier";
+
+            /// <summary>
+            /// Service user access level.
+            /// </summary>
+            public const string EjAccessLevel = "EjAccessLevel";
+
+            /// <summary>
+            /// Primary key in Service user table.
+            /// </summary>
+            public const string EjUserId = "EjUserId";
+
+            /// <summary>
+            /// Service user status.
+            /// </summary>
+            public const string EjUserStatus = "EjUserStatus";
+
+            /// <summary>
+            /// The Person e-mail address if the associate is a person. Use IsPerson to check.
+            /// </summary>
+            public const string EMailAddress = "EMailAddress";
+
+            /// <summary>
+            /// The Person full name if the associate is a person. Use IsPerson to check.
+            /// </summary>
+            public const string FullName = "FullName";
+
+            /// <summary>
+            /// Functional rights for the user. This array is sorted.
+            /// </summary>
+            public const string FunctionRights = "FunctionRights";
+
+            /// <summary>
+            /// Associate's group ID.
+            /// </summary>
+            public const string GroupId = "GroupId";
+
+            /// <summary>
+            /// Country ID for the user's home country. This is the default country ID when creating new items.
+            /// </summary>
+            public const string HomeCountryId = "HomeCountryId";
+
+            /// <summary>
+            /// Is this associate a person, and not a resource?
+            /// </summary>
+            public const string IsPerson = "IsPerson";
+
+            /// <summary>
+            ///  Licenses granted to the site and user.
+            /// </summary>
+            public const string Licenses = "Licenses";
+
+            /// <summary>
+            /// Associate's person ID.
+            /// </summary>
+            public const string PersonId = "PersonId";
+
+            /// <summary>
+            /// The credentials used for authenticating this user.
+            /// </summary>
+            public const string ProvidedCredentials = "ProvidedCredentials";
+
+            /// <summary>
+            /// Description (e.g. tooltip) for the user's role.
+            /// </summary>
+            public const string RoleDescription = "RoleDescription";
 
             /// <summary>
             /// ID of the user's role.
@@ -203,54 +253,9 @@ namespace AspNet.Security.OAuth.SuperOffice
             public const string RoleName = "RoleName";
 
             /// <summary>
-            /// Description (e.g. tooltip) for the user's role.
-            /// </summary>
-            public const string RoleDescription = "RoleDescription";
-
-            /// <summary>
             /// Type of user.
             /// </summary>
             public const string RoleType = "RoleType";
-
-            /// <summary>
-            ///  Licenses granted to the site and user.
-            /// </summary>
-            public const string Licenses = "Licenses";
-
-            /// <summary>
-            /// The Person full name if the associate is a person. Use IsPerson to check.
-            /// </summary>
-            public const string FullName = "FullName";
-
-            /// <summary>
-            /// The Person e-mail address if the associate is a person. Use IsPerson to check.
-            /// </summary>
-            public const string EMailAddress = "EMailAddress";
-
-            /// <summary>
-            /// Functional rights for the user. This array is sorted.
-            /// </summary>
-            public const string FunctionRights = "FunctionRights";
-
-            /// <summary>
-            /// Primary key in Service user table.
-            /// </summary>
-            public const string EjUserId = "EjUserId";
-
-            /// <summary>
-            /// Service user access level.
-            /// </summary>
-            public const string EjAccessLevel = "EjAccessLevel";
-
-            /// <summary>
-            /// Service user status.
-            /// </summary>
-            public const string EjUserStatus = "EjUserStatus";
-
-            /// <summary>
-            /// The credentials used for authenticating this user.
-            /// </summary>
-            public const string ProvidedCredentials = "ProvidedCredentials";
 
             /// <summary>
             /// Secondary user groups.
@@ -258,14 +263,9 @@ namespace AspNet.Security.OAuth.SuperOffice
             public const string SecondaryGroups = "SecondaryGroups";
 
             /// <summary>
-            /// Name of the tenant context identifier.
+            /// Type of user.
             /// </summary>
-            public const string ContextIdentifier = "ContextIdentifier";
-
-            /// <summary>
-            /// Name of the database context.
-            /// </summary>
-            public const string DatabaseContextIdentifier = "DatabaseContextIdentifier";
+            public const string UserType = "UserType";
         }
     }
 }
