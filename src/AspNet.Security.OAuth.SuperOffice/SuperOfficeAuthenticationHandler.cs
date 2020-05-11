@@ -146,6 +146,24 @@ namespace AspNet.Security.OAuth.SuperOffice
             return contextIdentifier;
         }
 
+        /// <summary>
+        /// Store id_token in <paramref name="properties"/> token collection.
+        /// </summary>
+        /// <param name="properties">Authentication properties.</param>
+        /// <param name="idToken">The id_token JWT.</param>
+        private static void SaveIdToken(
+            [NotNull] AuthenticationProperties properties,
+            [NotNull] string idToken)
+        {
+            if (!string.IsNullOrWhiteSpace(idToken))
+            {
+                // Save existing tokens, which are removed in StoreTokens method.
+                var tokens = properties.GetTokens().ToList();
+                tokens.Add(new AuthenticationToken() { Name = "id_token", Value = idToken });
+                properties.StoreTokens(tokens);
+            }
+        }
+
         private async Task<ClaimsPrincipal> ValidateAsync(
             [NotNull] string idToken,
             [NotNull] TokenValidationParameters validationParameters)
@@ -177,24 +195,6 @@ namespace AspNet.Security.OAuth.SuperOffice
             {
                 throw new SecurityTokenValidationException(
                     $"SuperOffice ID token validation failed for issuer and/or audience.", ex);
-            }
-        }
-
-        /// <summary>
-        /// Store id_token in <paramref name="properties"/> token collection.
-        /// </summary>
-        /// <param name="properties">Authentication properties.</param>
-        /// <param name="idToken">The id_token JWT.</param>
-        private static void SaveIdToken(
-            [NotNull] AuthenticationProperties properties,
-            [NotNull] string idToken)
-        {
-            if (!string.IsNullOrWhiteSpace(idToken))
-            {
-                // Save existing tokens, which are removed in StoreTokens method.
-                var tokens = properties.GetTokens().ToList();
-                tokens.Add(new AuthenticationToken() { Name = "id_token", Value = idToken });
-                properties.StoreTokens(tokens);
             }
         }
     }

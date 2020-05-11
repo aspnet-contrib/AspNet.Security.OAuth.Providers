@@ -19,13 +19,13 @@ namespace AspNet.Security.OAuth.SuperOffice
         public const string AuthenticationScheme = "SuperOffice";
 
         /// <summary>
-        /// Default value for <see cref="AuthenticationScheme.DisplayName"/>.
-        /// </summary>
-        public static readonly string DisplayName = "SuperOffice";
-
-        /// <summary>
         /// Default value for <see cref="RemoteAuthenticationOptions.CallbackPath"/>.
         /// </summary>
         public const string CallbackPath = "/signin-superoffice";
+
+        /// <summary>
+        /// Default value for <see cref="AuthenticationScheme.DisplayName"/>.
+        /// </summary>
+        public static readonly string DisplayName = "SuperOffice";
     }
 }
