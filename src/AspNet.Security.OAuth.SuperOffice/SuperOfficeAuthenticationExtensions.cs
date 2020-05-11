@@ -5,7 +5,6 @@
  */
 
 using System;
-using System.IdentityModel.Tokens.Jwt;
 using AspNet.Security.OAuth.SuperOffice;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication;
@@ -70,8 +69,6 @@ namespace Microsoft.Extensions.DependencyInjection
             [NotNull] Action<SuperOfficeAuthenticationOptions> configuration)
         {
             builder.Services.TryAddSingleton<IPostConfigureOptions<SuperOfficeAuthenticationOptions>, SuperOfficeAuthenticationPostConfigureOptions>();
-            builder.Services.TryAddSingleton<JwtSecurityTokenHandler>();
-
             return builder.AddOAuth<SuperOfficeAuthenticationOptions, SuperOfficeAuthenticationHandler>(authenticationScheme, displayName, configuration);
         }
     }
