@@ -32,23 +32,23 @@ namespace AspNet.Security.OAuth.SuperOffice
             CallbackPath = SuperOfficeAuthenticationDefaults.CallbackPath;
             Scope.Add("openid");
 
-            ClaimActions.MapJsonKey(SuperOfficeAuthenticationConstants.ClaimNames.AssociateId, SuperOfficeAuthenticationConstants.PrincipalNames.AssociateId);
-            ClaimActions.MapJsonKey(SuperOfficeAuthenticationConstants.ClaimNames.UserPrincipalName, SuperOfficeAuthenticationConstants.PrincipalNames.Associate);
-            ClaimActions.MapJsonKey(SuperOfficeAuthenticationConstants.ClaimNames.Email, SuperOfficeAuthenticationConstants.PrincipalNames.EMailAddress);
-
             ClaimActions.MapJsonKey(ClaimTypes.Name, SuperOfficeAuthenticationConstants.PrincipalNames.FullName);
+
+            ClaimActions.MapJsonKey(SuperOfficeAuthenticationConstants.ClaimNames.AssociateId, SuperOfficeAuthenticationConstants.PrincipalNames.AssociateId);
+            ClaimActions.MapJsonKey(SuperOfficeAuthenticationConstants.ClaimNames.Email, SuperOfficeAuthenticationConstants.PrincipalNames.EMailAddress);
+            ClaimActions.MapJsonKey(SuperOfficeAuthenticationConstants.ClaimNames.UserPrincipalName, SuperOfficeAuthenticationConstants.PrincipalNames.Associate);
+
             ClaimActions.MapJsonKey(SuperOfficeAuthenticationConstants.PrincipalNames.BusinessId, SuperOfficeAuthenticationConstants.PrincipalNames.BusinessId);
             ClaimActions.MapJsonKey(SuperOfficeAuthenticationConstants.PrincipalNames.CategoryId, SuperOfficeAuthenticationConstants.PrincipalNames.CategoryId);
             ClaimActions.MapJsonKey(SuperOfficeAuthenticationConstants.PrincipalNames.ContactId, SuperOfficeAuthenticationConstants.PrincipalNames.ContactId);
             ClaimActions.MapJsonKey(SuperOfficeAuthenticationConstants.PrincipalNames.ContextIdentifier, SuperOfficeAuthenticationConstants.PrincipalNames.DatabaseContextIdentifier);
-            ClaimActions.MapJsonKey(SuperOfficeAuthenticationConstants.PrincipalNames.HomeCountryId, SuperOfficeAuthenticationConstants.PrincipalNames.HomeCountryId);
-
-            ClaimActions.MapJsonKey(SuperOfficeAuthenticationConstants.PrincipalNames.RoleName, SuperOfficeAuthenticationConstants.PrincipalNames.RoleName);
-            ClaimActions.MapJsonKey(SuperOfficeAuthenticationConstants.PrincipalNames.RoleId, SuperOfficeAuthenticationConstants.PrincipalNames.RoleId);
             ClaimActions.MapJsonKey(SuperOfficeAuthenticationConstants.PrincipalNames.CountryId, SuperOfficeAuthenticationConstants.PrincipalNames.CountryId);
             ClaimActions.MapJsonKey(SuperOfficeAuthenticationConstants.PrincipalNames.GroupId, SuperOfficeAuthenticationConstants.PrincipalNames.GroupId);
-            ClaimActions.MapJsonKey(SuperOfficeAuthenticationConstants.PrincipalNames.SecondaryGroups, SuperOfficeAuthenticationConstants.PrincipalNames.SecondaryGroups);
+            ClaimActions.MapJsonKey(SuperOfficeAuthenticationConstants.PrincipalNames.HomeCountryId, SuperOfficeAuthenticationConstants.PrincipalNames.HomeCountryId);
             ClaimActions.MapJsonKey(SuperOfficeAuthenticationConstants.PrincipalNames.PersonId, SuperOfficeAuthenticationConstants.PrincipalNames.PersonId);
+            ClaimActions.MapJsonKey(SuperOfficeAuthenticationConstants.PrincipalNames.RoleName, SuperOfficeAuthenticationConstants.PrincipalNames.RoleName);
+            ClaimActions.MapJsonKey(SuperOfficeAuthenticationConstants.PrincipalNames.RoleId, SuperOfficeAuthenticationConstants.PrincipalNames.RoleId);
+            ClaimActions.MapJsonKey(SuperOfficeAuthenticationConstants.PrincipalNames.SecondaryGroups, SuperOfficeAuthenticationConstants.PrincipalNames.SecondaryGroups);
         }
 
         /// <summary>

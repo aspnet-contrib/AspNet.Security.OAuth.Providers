@@ -39,14 +39,14 @@ namespace AspNet.Security.OAuth.SuperOffice
         [InlineData(SuperOfficeAuthenticationConstants.PrincipalNames.BusinessId, "4")]
         [InlineData(SuperOfficeAuthenticationConstants.PrincipalNames.CategoryId, "4")]
         [InlineData(SuperOfficeAuthenticationConstants.PrincipalNames.ContactId, "2")]
-        [InlineData(SuperOfficeAuthenticationConstants.PrincipalNames.HomeCountryId, "826")]
-        [InlineData(SuperOfficeAuthenticationConstants.PrincipalNames.RoleName, "User level 0")]
-        [InlineData(SuperOfficeAuthenticationConstants.PrincipalNames.RoleId, "1")]
+        [InlineData(SuperOfficeAuthenticationConstants.PrincipalNames.ContextIdentifier, "Cust12345")]
         [InlineData(SuperOfficeAuthenticationConstants.PrincipalNames.CountryId, "826")]
         [InlineData(SuperOfficeAuthenticationConstants.PrincipalNames.GroupId, "2")]
-        [InlineData(SuperOfficeAuthenticationConstants.PrincipalNames.SecondaryGroups, "2")]
+        [InlineData(SuperOfficeAuthenticationConstants.PrincipalNames.HomeCountryId, "826")]
         [InlineData(SuperOfficeAuthenticationConstants.PrincipalNames.PersonId, "5")]
-        [InlineData(SuperOfficeAuthenticationConstants.PrincipalNames.ContextIdentifier, "Cust12345")]
+        [InlineData(SuperOfficeAuthenticationConstants.PrincipalNames.RoleName, "User level 0")]
+        [InlineData(SuperOfficeAuthenticationConstants.PrincipalNames.RoleId, "1")]
+        [InlineData(SuperOfficeAuthenticationConstants.PrincipalNames.SecondaryGroups, "2")]
         public async Task Can_Sign_In_Using_SuperOffice_With_No_Token_Validation(string claimType, string claimValue)
         {
             // Arrange
@@ -72,19 +72,20 @@ namespace AspNet.Security.OAuth.SuperOffice
         [InlineData(SuperOfficeAuthenticationConstants.PrincipalNames.BusinessId, "4")]
         [InlineData(SuperOfficeAuthenticationConstants.PrincipalNames.CategoryId, "4")]
         [InlineData(SuperOfficeAuthenticationConstants.PrincipalNames.ContactId, "2")]
-        [InlineData(SuperOfficeAuthenticationConstants.PrincipalNames.HomeCountryId, "826")]
-        [InlineData(SuperOfficeAuthenticationConstants.PrincipalNames.RoleName, "User level 0")]
-        [InlineData(SuperOfficeAuthenticationConstants.PrincipalNames.RoleId, "1")]
+        [InlineData(SuperOfficeAuthenticationConstants.PrincipalNames.ContextIdentifier, "Cust12345")]
         [InlineData(SuperOfficeAuthenticationConstants.PrincipalNames.CountryId, "826")]
         [InlineData(SuperOfficeAuthenticationConstants.PrincipalNames.GroupId, "2")]
-        [InlineData(SuperOfficeAuthenticationConstants.PrincipalNames.SecondaryGroups, "2")]
+        [InlineData(SuperOfficeAuthenticationConstants.PrincipalNames.HomeCountryId, "826")]
         [InlineData(SuperOfficeAuthenticationConstants.PrincipalNames.PersonId, "5")]
-        [InlineData(SuperOfficeAuthenticationConstants.PrincipalNames.ContextIdentifier, "Cust12345")]
+        [InlineData(SuperOfficeAuthenticationConstants.PrincipalNames.RoleName, "User level 0")]
+        [InlineData(SuperOfficeAuthenticationConstants.PrincipalNames.RoleId, "1")]
+        [InlineData(SuperOfficeAuthenticationConstants.PrincipalNames.SecondaryGroups, "2")]
         public async Task Can_Sign_In_Using_SuperOffice(string claimType, string claimValue)
         {
             // Arrange
             static void ConfigureServices(IServiceCollection services)
             {
+                Microsoft.IdentityModel.Logging.IdentityModelEventSource.ShowPII = true;
                 services.AddSingleton<JwtSecurityTokenHandler, MockJwtSecurityTokenHandler>();
                 services.PostConfigureAll<SuperOfficeAuthenticationOptions>((options) =>
                 {

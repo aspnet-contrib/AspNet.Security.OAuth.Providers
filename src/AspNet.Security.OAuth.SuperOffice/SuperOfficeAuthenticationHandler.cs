@@ -119,7 +119,7 @@ namespace AspNet.Security.OAuth.SuperOffice
                 // This is to satisfy CS8602, the dereference of a null reference on Options.SecurityTokenHandler.
                 if (Options.SecurityTokenHandler == null)
                 {
-                    throw new NullReferenceException("The options SecurityTokenHandler is null.");
+                    throw new InvalidOperationException("The options SecurityTokenHandler is null.");
                 }
 
                 var jwtSecurityToken = Options.SecurityTokenHandler.ReadJwtToken(idToken);
@@ -171,7 +171,7 @@ namespace AspNet.Security.OAuth.SuperOffice
             // This is to satisfy CS8602, the dereference of a null reference on Options.SecurityTokenHandler.
             if (Options.SecurityTokenHandler == null)
             {
-                throw new NullReferenceException("The options SecurityTokenHandler is null.");
+                throw new InvalidOperationException("The options SecurityTokenHandler is null.");
             }
 
             if (!Options.SecurityTokenHandler.CanValidateToken)
