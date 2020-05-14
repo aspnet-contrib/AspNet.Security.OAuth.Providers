@@ -126,8 +126,7 @@ namespace AspNet.Security.OAuth.SuperOffice
 
             if (ConfigurationManager == null)
             {
-                throw new InvalidOperationException($"Provide {nameof(Authority)}, {nameof(MetadataAddress)}, "
-                + $"or {nameof(ConfigurationManager)} to {nameof(SuperOfficeAuthenticationOptions)}");
+                throw new InvalidOperationException($"Provide {nameof(Authority)}, {nameof(MetadataAddress)}, or {nameof(ConfigurationManager)} to {nameof(SuperOfficeAuthenticationOptions)}.");
             }
         }
 
