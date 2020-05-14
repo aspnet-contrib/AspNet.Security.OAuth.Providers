@@ -23,20 +23,18 @@ namespace AspNet.Security.OAuth.SuperOffice
 
         public override void Run(JsonElement userData, ClaimsIdentity identity, string issuer)
         {
-            if (_options.IncludeFunctionalRightsAsClaims && userData.ValueKind == JsonValueKind.Object)
+            if (!_options.IncludeFunctionalRightsAsClaims ||
+                userData.ValueKind != JsonValueKind.Object)
             {
-                foreach (var item in userData.EnumerateObject())
+                return;
+            }
+
+            if (userData.TryGetProperty(SuperOfficeAuthenticationConstants.PrincipalNames.FunctionRights, out JsonElement functionRights) &&
+                functionRights.ValueKind == JsonValueKind.Array)
+            {
+                foreach (var functionRight in functionRights.EnumerateArray())
                 {
-                    if (item.Name.Equals(SuperOfficeAuthenticationConstants.PrincipalNames.FunctionRights, StringComparison.OrdinalIgnoreCase))
-                    {
-                        if (item.Value.ValueKind == JsonValueKind.Array)
-                        {
-                            foreach (var functionRight in item.Value.EnumerateArray())
-                            {
-                                identity.AddClaim(new Claim(SuperOfficeAuthenticationConstants.PrincipalNames.FunctionRights, functionRight.GetString()));
-                            }
-                        }
-                    }
+                    identity.AddClaim(new Claim(SuperOfficeAuthenticationConstants.PrincipalNames.FunctionRights, functionRight.GetString()));
                 }
             }
         }
