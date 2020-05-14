@@ -5,10 +5,10 @@
  */
 
 using System;
-using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Protocols;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 
@@ -62,7 +62,7 @@ namespace AspNet.Security.OAuth.SuperOffice
 
             if (options.SecurityTokenHandler == null)
             {
-                options.SecurityTokenHandler = new JwtSecurityTokenHandler();
+                options.SecurityTokenHandler = new JsonWebTokenHandler();
             }
         }
     }

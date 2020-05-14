@@ -7,7 +7,6 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -20,6 +19,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 
 namespace AspNet.Security.OAuth.SuperOffice
@@ -105,7 +105,7 @@ namespace AspNet.Security.OAuth.SuperOffice
                         ValidIssuer = Options.ClaimsIssuer
                     });
 
-                claims = tempClaimsPrincipal.Claims;
+                claims = tempClaimsPrincipal.ClaimsIdentity.Claims;
             }
             else
             {
@@ -114,7 +114,7 @@ namespace AspNet.Security.OAuth.SuperOffice
                     throw new InvalidOperationException("The options SecurityTokenHandler is null.");
                 }
 
-                var jwtSecurityToken = Options.SecurityTokenHandler.ReadJwtToken(idToken);
+                var jwtSecurityToken = Options.SecurityTokenHandler.ReadJsonWebToken(idToken);
                 claims = jwtSecurityToken.Claims;
             }
 
@@ -160,7 +160,7 @@ namespace AspNet.Security.OAuth.SuperOffice
             }
         }
 
-        private async Task<ClaimsPrincipal> ValidateAsync(
+        private async Task<TokenValidationResult> ValidateAsync(
             [NotNull] string idToken,
             [NotNull] TokenValidationParameters validationParameters)
         {
@@ -171,7 +171,7 @@ namespace AspNet.Security.OAuth.SuperOffice
 
             if (!Options.SecurityTokenHandler.CanValidateToken)
             {
-                throw new NotSupportedException($"The configured {nameof(JwtSecurityTokenHandler)} cannot validate tokens.");
+                throw new NotSupportedException($"The configured {nameof(JsonWebTokenHandler)} cannot validate tokens.");
             }
 
             if (Options.ConfigurationManager == null)
@@ -184,7 +184,7 @@ namespace AspNet.Security.OAuth.SuperOffice
 
             try
             {
-                return Options.SecurityTokenHandler.ValidateToken(idToken, validationParameters, out var _);
+                return Options.SecurityTokenHandler.ValidateToken(idToken, validationParameters);
             }
             catch (Exception ex)
             {
