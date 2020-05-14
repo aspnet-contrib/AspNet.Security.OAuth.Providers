@@ -44,8 +44,8 @@ namespace AspNet.Security.OAuth.SuperOffice
         [InlineData(SuperOfficeAuthenticationConstants.PrincipalNames.GroupId, "2")]
         [InlineData(SuperOfficeAuthenticationConstants.PrincipalNames.HomeCountryId, "826")]
         [InlineData(SuperOfficeAuthenticationConstants.PrincipalNames.PersonId, "5")]
-        [InlineData(SuperOfficeAuthenticationConstants.PrincipalNames.RoleName, "User level 0")]
         [InlineData(SuperOfficeAuthenticationConstants.PrincipalNames.RoleId, "1")]
+        [InlineData(SuperOfficeAuthenticationConstants.PrincipalNames.RoleName, "User level 0")]
         [InlineData(SuperOfficeAuthenticationConstants.PrincipalNames.SecondaryGroups, "2")]
         public async Task Can_Sign_In_Using_SuperOffice_With_No_Token_Validation(string claimType, string claimValue)
         {
@@ -77,8 +77,8 @@ namespace AspNet.Security.OAuth.SuperOffice
         [InlineData(SuperOfficeAuthenticationConstants.PrincipalNames.GroupId, "2")]
         [InlineData(SuperOfficeAuthenticationConstants.PrincipalNames.HomeCountryId, "826")]
         [InlineData(SuperOfficeAuthenticationConstants.PrincipalNames.PersonId, "5")]
-        [InlineData(SuperOfficeAuthenticationConstants.PrincipalNames.RoleName, "User level 0")]
         [InlineData(SuperOfficeAuthenticationConstants.PrincipalNames.RoleId, "1")]
+        [InlineData(SuperOfficeAuthenticationConstants.PrincipalNames.RoleName, "User level 0")]
         [InlineData(SuperOfficeAuthenticationConstants.PrincipalNames.SecondaryGroups, "2")]
         public async Task Can_Sign_In_Using_SuperOffice(string claimType, string claimValue)
         {
@@ -91,6 +91,34 @@ namespace AspNet.Security.OAuth.SuperOffice
                 {
                     options.ClientId = "gg454918d75b1b53101065c16ee51123";
                     options.TokenValidationParameters.ValidAudience = options.ClientId;
+                });
+            }
+
+            using var server = CreateTestServer(ConfigureServices);
+
+            // Act
+            var claims = await AuthenticateUserAsync(server);
+
+            // Assert
+            AssertClaim(claims, claimType, claimValue);
+        }
+
+        [Theory]
+        [InlineData(SuperOfficeAuthenticationConstants.PrincipalNames.ContextIdentifier, "Cust12345")]
+        [InlineData(SuperOfficeAuthenticationConstants.PrincipalNames.FunctionRights, "allow-bulk-export")]
+        [InlineData(SuperOfficeAuthenticationConstants.PrincipalNames.SecondaryGroups, "2")]
+        public async Task Can_Sign_In_Using_SuperOffice_With_FunctionRights(string claimType, string claimValue)
+        {
+            // Arrange
+            static void ConfigureServices(IServiceCollection services)
+            {
+                Microsoft.IdentityModel.Logging.IdentityModelEventSource.ShowPII = true;
+                services.AddSingleton<JwtSecurityTokenHandler, MockJwtSecurityTokenHandler>();
+                services.PostConfigureAll<SuperOfficeAuthenticationOptions>((options) =>
+                {
+                    options.ClientId = "gg454918d75b1b53101065c16ee51123";
+                    options.TokenValidationParameters.ValidAudience = options.ClientId;
+                    options.IncludeFunctionalRightsAsClaims = true;
                 });
             }
 
