@@ -49,6 +49,9 @@ namespace AspNet.Security.OAuth.SuperOffice
             ClaimActions.MapJsonKey(SuperOfficeAuthenticationConstants.PrincipalNames.RoleName, SuperOfficeAuthenticationConstants.PrincipalNames.RoleName);
             ClaimActions.MapJsonKey(SuperOfficeAuthenticationConstants.PrincipalNames.RoleId, SuperOfficeAuthenticationConstants.PrincipalNames.RoleId);
             ClaimActions.MapJsonKey(SuperOfficeAuthenticationConstants.PrincipalNames.SecondaryGroups, SuperOfficeAuthenticationConstants.PrincipalNames.SecondaryGroups);
+
+            // Add a custom claim action to map FunctionRights to claims
+            ClaimActions.Add(new SuperOfficeFunctionalRightsClaimAction(this));
         }
 
         /// <summary>

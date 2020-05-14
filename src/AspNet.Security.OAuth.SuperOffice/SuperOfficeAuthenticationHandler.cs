@@ -73,13 +73,6 @@ namespace AspNet.Security.OAuth.SuperOffice
 
             using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
             var context = new OAuthCreatingTicketContext(new ClaimsPrincipal(identity), properties, Context, Scheme, Options, Backchannel, tokens, payload.RootElement);
-
-            if (Options.IncludeFunctionalRightsAsClaims
-                && !Options.ClaimActions.Any(c => c.ClaimType == SuperOfficeAuthenticationConstants.PrincipalNames.FunctionRights))
-            {
-                Options.ClaimActions.MapJsonKey(SuperOfficeAuthenticationConstants.PrincipalNames.FunctionRights, SuperOfficeAuthenticationConstants.PrincipalNames.FunctionRights);
-            }
-
             context.RunClaimActions();
             await Events.CreatingTicket(context);
             return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
@@ -158,11 +151,11 @@ namespace AspNet.Security.OAuth.SuperOffice
             if (!string.IsNullOrWhiteSpace(idToken))
             {
                 // Get the currently available tokens
-                var  = properties.GetTokens().ToList();
-                
+                var tokens = properties.GetTokens().ToList();
+
                 // Add the extra token
                 tokens.Add(new AuthenticationToken() { Name = "id_token", Value = idToken });
-                
+
                 // Overwrite store with original tokens with the new additional token
                 properties.StoreTokens(tokens);
             }
