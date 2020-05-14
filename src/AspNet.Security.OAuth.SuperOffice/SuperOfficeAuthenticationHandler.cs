@@ -109,7 +109,6 @@ namespace AspNet.Security.OAuth.SuperOffice
             }
             else
             {
-                // This is to satisfy CS8602, the dereference of a null reference on Options.SecurityTokenHandler.
                 if (Options.SecurityTokenHandler == null)
                 {
                     throw new InvalidOperationException("The options SecurityTokenHandler is null.");
@@ -165,7 +164,6 @@ namespace AspNet.Security.OAuth.SuperOffice
             [NotNull] string idToken,
             [NotNull] TokenValidationParameters validationParameters)
         {
-            // This is to satisfy CS8602, the dereference of a null reference on Options.SecurityTokenHandler.
             if (Options.SecurityTokenHandler == null)
             {
                 throw new InvalidOperationException("The options SecurityTokenHandler is null.");
@@ -191,7 +189,7 @@ namespace AspNet.Security.OAuth.SuperOffice
             catch (Exception ex)
             {
                 throw new SecurityTokenValidationException(
-                    $"SuperOffice ID token validation failed for issuer and/or audience.", ex);
+                    "SuperOffice ID token validation failed for issuer and/or audience.", ex);
             }
         }
     }
