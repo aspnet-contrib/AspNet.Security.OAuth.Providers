@@ -6,10 +6,10 @@
 
 using System;
 using System.Globalization;
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
+using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Protocols;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
@@ -100,7 +100,7 @@ namespace AspNet.Security.OAuth.SuperOffice
         /// <summary>
         /// Security token validator. Default is <see cref="System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler"/>.
         /// </summary>
-        public JwtSecurityTokenHandler? SecurityTokenHandler { get; set; }
+        public JsonWebTokenHandler? SecurityTokenHandler { get; set; }
 
         /// <summary>
         /// Gets or sets the parameters used to validate identity tokens.
