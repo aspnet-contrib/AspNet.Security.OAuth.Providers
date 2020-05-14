@@ -157,9 +157,13 @@ namespace AspNet.Security.OAuth.SuperOffice
         {
             if (!string.IsNullOrWhiteSpace(idToken))
             {
-                // Save existing tokens, which are removed in StoreTokens method.
-                var tokens = properties.GetTokens().ToList();
+                // Get the currently available tokens
+                var  = properties.GetTokens().ToList();
+                
+                // Add the extra token
                 tokens.Add(new AuthenticationToken() { Name = "id_token", Value = idToken });
+                
+                // Overwrite store with original tokens with the new additional token
                 properties.StoreTokens(tokens);
             }
         }
