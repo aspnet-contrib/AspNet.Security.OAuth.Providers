@@ -98,7 +98,7 @@ namespace AspNet.Security.OAuth.SuperOffice
         public string MetadataAddress { get; internal set; } = string.Empty;
 
         /// <summary>
-        /// Security token validator. Default is <see cref="System.IdentityModel.Tokens.Jwt.JsonWebTokenHandler"/>.
+        /// Security token validator. Default is <see cref="Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler"/>.
         /// </summary>
         public JsonWebTokenHandler? SecurityTokenHandler { get; set; }
 
