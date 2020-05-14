@@ -35,7 +35,7 @@ namespace AspNet.Security.OAuth.SuperOffice
             ClaimActions.MapJsonKey(ClaimTypes.Name, SuperOfficeAuthenticationConstants.PrincipalNames.FullName);
 
             ClaimActions.MapJsonKey(SuperOfficeAuthenticationConstants.ClaimNames.AssociateId, SuperOfficeAuthenticationConstants.PrincipalNames.AssociateId);
-            ClaimActions.MapJsonKey(SuperOfficeAuthenticationConstants.ClaimNames.Email, SuperOfficeAuthenticationConstants.PrincipalNames.EMailAddress);
+            ClaimActions.MapJsonKey(SuperOfficeAuthenticationConstants.ClaimNames.Email, SuperOfficeAuthenticationConstants.PrincipalNames.EmailAddress);
             ClaimActions.MapJsonKey(SuperOfficeAuthenticationConstants.ClaimNames.UserPrincipalName, SuperOfficeAuthenticationConstants.PrincipalNames.Associate);
 
             ClaimActions.MapJsonKey(SuperOfficeAuthenticationConstants.PrincipalNames.BusinessId, SuperOfficeAuthenticationConstants.PrincipalNames.BusinessId);

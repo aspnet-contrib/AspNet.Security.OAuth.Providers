@@ -195,7 +195,7 @@ namespace AspNet.Security.OAuth.SuperOffice
             /// <summary>
             /// The Person e-mail address if the associate is a person. Use IsPerson to check.
             /// </summary>
-            public const string EMailAddress = "EMailAddress";
+            public const string EmailAddress = "EMailAddress";
 
             /// <summary>
             /// The Person full name if the associate is a person. Use IsPerson to check.
