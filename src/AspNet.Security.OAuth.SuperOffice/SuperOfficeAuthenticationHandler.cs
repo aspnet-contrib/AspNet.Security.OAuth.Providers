@@ -44,7 +44,7 @@ namespace AspNet.Security.OAuth.SuperOffice
             [NotNull] AuthenticationProperties properties,
             [NotNull] OAuthTokenResponse tokens)
         {
-            string contextId = await ProcessIdTokenAndGetContactIdentifierAsync(tokens, properties, identity);
+            var contextId = await ProcessIdTokenAndGetContactIdentifierAsync(tokens, properties, identity);
 
             if (string.IsNullOrEmpty(contextId))
             {
@@ -52,7 +52,7 @@ namespace AspNet.Security.OAuth.SuperOffice
             }
 
             // Add contextId to the Options.UserInformationEndpoint (https://sod.superoffice.com/{0}/api/v1/user/currentPrincipal).
-            string userInfoEndpoint = string.Format(CultureInfo.InvariantCulture, Options.UserInformationEndpoint, contextId);
+            var userInfoEndpoint = string.Format(CultureInfo.InvariantCulture, Options.UserInformationEndpoint, contextId);
 
             // Get the SuperOffice user principal.
             using var request = new HttpRequestMessage(HttpMethod.Get, userInfoEndpoint);
@@ -68,7 +68,7 @@ namespace AspNet.Security.OAuth.SuperOffice
                                 /* Headers: */ response.Headers.ToString(),
                                 /* Body: */ await response.Content.ReadAsStringAsync());
 
-                throw new HttpRequestException($"An error occurred when retrieving SuperOffice user information ({response.StatusCode}). Please check if the authentication information is correct and the corresponding SuperOffice API is enabled.");
+                throw new HttpRequestException($"An error occurred when retrieving SuperOffice user information ({response.StatusCode}).");
             }
 
             using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
@@ -83,9 +83,9 @@ namespace AspNet.Security.OAuth.SuperOffice
             [NotNull] AuthenticationProperties properties,
             [NotNull] ClaimsIdentity identity)
         {
-            string contextIdentifier = string.Empty;
+            var contextIdentifier = string.Empty;
 
-            string idToken = tokens.Response.RootElement.GetString("id_token");
+            var idToken = tokens.Response.RootElement.GetString("id_token");
 
             if (Options.SaveTokens)
             {
@@ -99,11 +99,7 @@ namespace AspNet.Security.OAuth.SuperOffice
             {
                 var tempClaimsPrincipal = await ValidateAsync(
                     idToken,
-                    new TokenValidationParameters()
-                    {
-                        ValidAudience = Options.ClientId,
-                        ValidIssuer = Options.ClaimsIssuer
-                    });
+                    Options.TokenValidationParameters.Clone());
 
                 claims = tempClaimsPrincipal.ClaimsIdentity.Claims;
             }
