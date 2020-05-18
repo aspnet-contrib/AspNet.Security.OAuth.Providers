@@ -93,28 +93,9 @@ namespace AspNet.Security.OAuth.SuperOffice
                 SaveIdToken(properties, idToken);
             }
 
-            IEnumerable<Claim>? claims = null;
+            var tokenValidationResult = await ValidateAsync(idToken, Options.TokenValidationParameters.Clone());
 
-            if (Options.ValidateTokens)
-            {
-                var tempClaimsPrincipal = await ValidateAsync(
-                    idToken,
-                    Options.TokenValidationParameters.Clone());
-
-                claims = tempClaimsPrincipal.ClaimsIdentity.Claims;
-            }
-            else
-            {
-                if (Options.SecurityTokenHandler == null)
-                {
-                    throw new InvalidOperationException("The options SecurityTokenHandler is null.");
-                }
-
-                var jwtSecurityToken = Options.SecurityTokenHandler.ReadJsonWebToken(idToken);
-                claims = jwtSecurityToken.Claims;
-            }
-
-            foreach (var claim in claims)
+            foreach (var claim in tokenValidationResult.ClaimsIdentity.Claims)
             {
                 if (claim.Type == SuperOfficeAuthenticationConstants.ClaimNames.ContextIdentifier)
                 {

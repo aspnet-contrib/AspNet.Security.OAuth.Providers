@@ -98,39 +98,6 @@ namespace AspNet.Security.OAuth.SuperOffice
             AssertClaim(claims, claimType, claimValue);
         }
 
-        [Theory]
-        [InlineData(SuperOfficeAuthenticationConstants.PrincipalNames.BusinessId, "4")]
-        [InlineData(SuperOfficeAuthenticationConstants.PrincipalNames.CategoryId, "4")]
-        [InlineData(SuperOfficeAuthenticationConstants.PrincipalNames.ContactId, "2")]
-        [InlineData(SuperOfficeAuthenticationConstants.PrincipalNames.ContextIdentifier, "Cust12345")]
-        [InlineData(SuperOfficeAuthenticationConstants.PrincipalNames.CountryId, "826")]
-        [InlineData(SuperOfficeAuthenticationConstants.PrincipalNames.GroupId, "2")]
-        [InlineData(SuperOfficeAuthenticationConstants.PrincipalNames.HomeCountryId, "826")]
-        [InlineData(SuperOfficeAuthenticationConstants.PrincipalNames.PersonId, "5")]
-        [InlineData(SuperOfficeAuthenticationConstants.PrincipalNames.RoleId, "1")]
-        [InlineData(SuperOfficeAuthenticationConstants.PrincipalNames.RoleName, "User level 0")]
-        [InlineData(SuperOfficeAuthenticationConstants.PrincipalNames.SecondaryGroups, "2")]
-        public async Task Can_Sign_In_Using_SuperOffice_With_No_Token_Validation(string claimType, string claimValue)
-        {
-            // Arrange
-            static void ConfigureServices(IServiceCollection services)
-            {
-                services.AddSingleton<JwtSecurityTokenHandler, MockJwtSecurityTokenHandler>();
-                services.PostConfigureAll<SuperOfficeAuthenticationOptions>((options) =>
-                {
-                    options.ValidateTokens = false;
-                });
-            }
-
-            using var server = CreateTestServer(ConfigureServices);
-
-            // Act
-            var claims = await AuthenticateUserAsync(server);
-
-            // Assert
-            AssertClaim(claims, claimType, claimValue);
-        }
-
         private sealed class MockJwtSecurityTokenHandler : JwtSecurityTokenHandler
         {
             protected override void ValidateLifetime(DateTime? notBefore, DateTime? expires, JwtSecurityToken jwtToken, TokenValidationParameters validationParameters)

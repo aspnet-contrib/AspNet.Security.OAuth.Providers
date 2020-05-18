@@ -108,11 +108,6 @@ namespace AspNet.Security.OAuth.SuperOffice
         /// <remarks>Contains the types and definitions required for validating a token.</remarks>
         public TokenValidationParameters TokenValidationParameters { get; set; } = new TokenValidationParameters();
 
-        /// <summary>
-        /// Gets or sets a value indicating whether to validate tokens using SuperOffice's public key.
-        /// </summary>
-        public bool ValidateTokens { get; set; } = true;
-
         /// <inheritdoc />
         public override void Validate()
         {
