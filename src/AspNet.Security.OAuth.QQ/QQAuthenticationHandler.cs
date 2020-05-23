@@ -149,7 +149,7 @@ namespace AspNet.Security.OAuth.QQ
 
         protected override string FormatScope() => string.Join(",", Options.Scope);
 
-        private async Task<JsonDocument> CopyPayloadAsync(Dictionary<string, StringValues> content)
+        private static async Task<JsonDocument> CopyPayloadAsync(Dictionary<string, StringValues> content)
         {
             var bufferWriter = new ArrayBufferWriter<byte>();
 
