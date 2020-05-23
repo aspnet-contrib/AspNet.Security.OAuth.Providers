@@ -117,7 +117,7 @@ namespace AspNet.Security.OAuth.StackExchange
             return OAuthTokenResponse.Success(copy);
         }
 
-        private async Task<JsonDocument> CopyPayloadAsync(Dictionary<string, StringValues> content)
+        private static async Task<JsonDocument> CopyPayloadAsync(Dictionary<string, StringValues> content)
         {
             var bufferWriter = new ArrayBufferWriter<byte>();
 

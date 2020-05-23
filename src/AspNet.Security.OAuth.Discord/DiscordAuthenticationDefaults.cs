@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Licensed under the Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0)
  * See https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers
  * for more information concerning the license and the contributors participating to this project.
@@ -37,16 +37,16 @@ namespace AspNet.Security.OAuth.Discord
         /// <summary>
         /// Default value for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
         /// </summary>
-        public const string AuthorizationEndpoint = "https://discordapp.com/api/oauth2/authorize";
+        public const string AuthorizationEndpoint = "https://discord.com/api/oauth2/authorize";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.TokenEndpoint"/>.
         /// </summary>
-        public const string TokenEndpoint = "https://discordapp.com/api/oauth2/token";
+        public const string TokenEndpoint = "https://discord.com/api/oauth2/token";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
         /// </summary>
-        public const string UserInformationEndpoint = "https://discordapp.com/api/users/@me";
+        public const string UserInformationEndpoint = "https://discord.com/api/users/@me";
     }
 }
