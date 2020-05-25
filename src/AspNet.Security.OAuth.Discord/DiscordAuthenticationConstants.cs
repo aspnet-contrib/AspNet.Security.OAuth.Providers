@@ -24,9 +24,10 @@ namespace AspNet.Security.OAuth.Discord
             public const string Discriminator = "urn:discord:user:discriminator";
         }
 
-        public static class Key
+        public static class UrlQueryParameterValues
         {
-            public const string Prompt = "prompt";
+            public const string Consent = "consent";
+            public const string None = "none";
         }
     }
 }

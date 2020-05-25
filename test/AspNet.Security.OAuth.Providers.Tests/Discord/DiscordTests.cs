@@ -78,7 +78,7 @@ namespace AspNet.Security.OAuth.Discord
             await AuthenticateUserAsync(server);
 
             // Assert
-            Assert.True(doesNotContainPrompt);
+            doesNotContainPrompt.ShouldBeTrue();
         }
 
         [Fact]
@@ -90,7 +90,7 @@ namespace AspNet.Security.OAuth.Discord
             {
                 services.PostConfigureAll<DiscordAuthenticationOptions>((options) =>
                 {
-                    options.DiscordAuthenticationPrompt = "none";
+                    options.Prompt = "none";
                     options.Events = new OAuthEvents
                     {
                         OnRedirectToAuthorizationEndpoint = ctx =>
@@ -110,7 +110,7 @@ namespace AspNet.Security.OAuth.Discord
             await AuthenticateUserAsync(server);
 
             // Assert
-            Assert.True(promptIsSetToNone);
+            promptIsSetToNone.ShouldBeTrue();
         }
 
         [Fact]
@@ -122,7 +122,7 @@ namespace AspNet.Security.OAuth.Discord
             {
                 services.PostConfigureAll<DiscordAuthenticationOptions>((options) =>
                 {
-                    options.DiscordAuthenticationPrompt = "consent";
+                    options.Prompt = "consent";
                     options.Events = new OAuthEvents
                     {
                         OnRedirectToAuthorizationEndpoint = ctx =>
@@ -142,7 +142,7 @@ namespace AspNet.Security.OAuth.Discord
             await AuthenticateUserAsync(server);
 
             // Assert
-            Assert.True(promptIsSetToConsent);
+            promptIsSetToConsent.ShouldBeTrue();
         }
     }
 }

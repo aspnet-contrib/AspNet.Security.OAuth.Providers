@@ -33,7 +33,7 @@ namespace AspNet.Security.OAuth.Discord
         /// Assigning this property any value other than null, empty, or whitespace will automatically append the "prompt" query string parameter to the Authorization Endpoint URL,
         /// with the corresponding value.
         /// </summary>
-        public string? DiscordAuthenticationPrompt { get; set; }
+        public string? Prompt { get; set; }
 
         public DiscordAuthenticationOptions()
         {
