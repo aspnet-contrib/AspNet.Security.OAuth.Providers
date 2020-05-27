@@ -8,7 +8,6 @@ using System.Globalization;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.AspNetCore.Http;
 using static AspNet.Security.OAuth.Discord.DiscordAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.Discord
@@ -27,6 +26,14 @@ namespace AspNet.Security.OAuth.Discord
         /// URL format of the user avatar, using string.format. Substitute {0} for DiscordCdn, {1} for User ID and {2} for Avatar hash. Default of "{0}/avatars/{1}/{2}.png"
         /// </summary>
         public string DiscordAvatarFormat { get; set; } = Urls.AvatarUrlFormat;
+
+        /// <summary>
+        /// Controls how the authorization flow handles existing authorizations.
+        /// The default value of this property is null and the "prompt" query string parameter will not be appended to the Authorization Endpoint URL.
+        /// Assigning this property any value other than null or an empty string will automatically append the "prompt" query string parameter to the Authorization Endpoint URL,
+        /// with the corresponding value.
+        /// </summary>
+        public string? Prompt { get; set; }
 
         public DiscordAuthenticationOptions()
         {
