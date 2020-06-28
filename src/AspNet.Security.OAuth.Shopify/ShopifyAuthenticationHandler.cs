@@ -179,12 +179,14 @@ namespace AspNet.Security.OAuth.Shopify
             using var request = new HttpRequestMessage(HttpMethod.Post, uri);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/x-www-form-urlencoded"));
 
-            request.Content = new FormUrlEncodedContent(new Dictionary<string, string>
+            var parameters = new Dictionary<string, string>
             {
                 ["client_id"] = Options.ClientId,
                 ["client_secret"] = Options.ClientSecret,
                 ["code"] = context.Code
-            });
+            };
+
+            request.Content = new FormUrlEncodedContent(parameters);
 
             using var response = await Backchannel.SendAsync(request, Context.RequestAborted);
 
