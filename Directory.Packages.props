@@ -12,10 +12,6 @@
     <PackageVersion Include="Microsoft.NetCore.Analyzers" Version="3.0.0" />
     <PackageVersion Include="Shouldly" Version="3.0.2" />
     <PackageVersion Include="StyleCop.Analyzers" Version="1.1.118" />
-
-    <!--
-      Cannot use later versions (5.5.0+) due to https://github.com/AzureAD/azure-activedirectory-identitymodel-extensions-for-dotnet/issues/1302.
-    -->
     <PackageVersion Include="System.IdentityModel.Tokens.Jwt" Version="5.4.0" />
   </ItemGroup>
 
