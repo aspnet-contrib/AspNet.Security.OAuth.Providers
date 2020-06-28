@@ -53,6 +53,7 @@ We would love it if you could help contributing to this repository.
 * [Andrew Lock](https://github.com/andrewlock)
 * [Andrew Mattie](https://github.com/amattie)
 * [Andrii Chebukin](https://github.com/xperiandri)
+* [Anthony Yates](https://github.com/AnthonyYates)
 * [Chino Chang](https://github.com/kinosang)
 * [Dave Timmins](https://github.com/davetimmins)
 * [Dmitry Popov](https://github.com/justdmitry)
