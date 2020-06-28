@@ -69,12 +69,14 @@ namespace AspNet.Security.OAuth.Fitbit
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             request.Headers.Authorization = CreateAuthorizationHeader();
 
-            request.Content = new FormUrlEncodedContent(new Dictionary<string, string>
+            var parameters = new Dictionary<string, string>
             {
                 ["grant_type"] = "authorization_code",
                 ["redirect_uri"] = context.RedirectUri,
                 ["code"] = context.Code
-            });
+            };
+
+            request.Content = new FormUrlEncodedContent(parameters);
 
             using var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
             if (!response.IsSuccessStatusCode)
