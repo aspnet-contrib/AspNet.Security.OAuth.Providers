@@ -4,6 +4,7 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
@@ -18,6 +19,11 @@ namespace AspNet.Security.OAuth.Strava
         public StravaTests(ITestOutputHelper outputHelper)
         {
             OutputHelper = outputHelper;
+
+            LoopbackRedirectHandler = new StravaLoopbackRedirectHandler()
+            {
+                RedirectUri = RedirectUri
+            };
         }
 
         public override string DefaultScheme => StravaAuthenticationDefaults.AuthenticationScheme;
