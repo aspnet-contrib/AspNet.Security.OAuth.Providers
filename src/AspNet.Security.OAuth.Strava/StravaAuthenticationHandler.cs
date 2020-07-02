@@ -4,6 +4,7 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
@@ -30,6 +31,19 @@ namespace AspNet.Security.OAuth.Strava
             [NotNull] ISystemClock clock)
             : base(options, factory, encoder, clock)
         {
+        }
+        
+        protected override async Task<HandleRequestResult> HandleRemoteAuthenticateAsync()
+        {
+            var scope = Request.Query[OAuthChallengeProperties.ScopeKey];
+
+            if (scope != FormatScope())
+            {
+                var scopeEx = new Exception("User did not grant access to requested scopes.");
+                return HandleRequestResult.Fail(scopeEx);
+            }
+
+            return await base.HandleRemoteAuthenticateAsync();
         }
 
         protected override async Task<AuthenticationTicket> CreateTicketAsync(
