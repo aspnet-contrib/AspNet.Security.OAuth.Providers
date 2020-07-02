@@ -68,14 +68,16 @@ namespace AspNet.Security.OAuth.VisualStudio
             using var request = new HttpRequestMessage(HttpMethod.Post, Options.TokenEndpoint);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/x-www-form-urlencoded"));
 
-            request.Content = new FormUrlEncodedContent(new Dictionary<string, string>
+            var parameters = new Dictionary<string, string>
             {
                 ["redirect_uri"] = context.RedirectUri,
                 ["client_assertion"] = Options.ClientSecret,
                 ["assertion"] = context.Code,
                 ["grant_type"] = "urn:ietf:params:oauth:grant-type:jwt-bearer",
                 ["client_assertion_type"] = "urn:ietf:params:oauth:client-assertion-type:jwt-bearer"
-            });
+            };
+
+            request.Content = new FormUrlEncodedContent(parameters);
 
             using var response = await Backchannel.SendAsync(request, Context.RequestAborted);
 

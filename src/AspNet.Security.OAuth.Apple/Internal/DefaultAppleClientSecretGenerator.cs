@@ -18,6 +18,11 @@ namespace AspNet.Security.OAuth.Apple.Internal
 {
     internal sealed class DefaultAppleClientSecretGenerator : AppleClientSecretGenerator
     {
+        private static readonly CryptoProviderFactory CryptoProviderFactory = new CryptoProviderFactory()
+        {
+            CacheSignatureProviders = false,
+        };
+
         private readonly ISystemClock _clock;
         private readonly ILogger _logger;
         private readonly AppleKeyStore _keyStore;
@@ -110,9 +115,12 @@ namespace AspNet.Security.OAuth.Apple.Internal
         private static SigningCredentials CreateSigningCredentials(string keyId, ECDsa algorithm)
         {
             var key = new ECDsaSecurityKey(algorithm) { KeyId = keyId };
+
+            // Use a custom CryptoProviderFactory so that keys are not cached and then disposed of, see below:
+            // https://github.com/AzureAD/azure-activedirectory-identitymodel-extensions-for-dotnet/issues/1302
             return new SigningCredentials(key, SecurityAlgorithms.EcdsaSha256Signature)
             {
-                CryptoProviderFactory = new CryptoProviderFactory { CacheSignatureProviders = false }
+                CryptoProviderFactory = CryptoProviderFactory,
             };
         }
     }

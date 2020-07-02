@@ -68,14 +68,16 @@ namespace AspNet.Security.OAuth.Yammer
             using var request = new HttpRequestMessage(HttpMethod.Post, Options.TokenEndpoint);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-            request.Content = new FormUrlEncodedContent(new Dictionary<string, string>
+            var parameters = new Dictionary<string, string>
             {
                 ["client_id"] = Options.ClientId,
                 ["redirect_uri"] = context.RedirectUri,
                 ["client_secret"] = Options.ClientSecret,
                 ["code"] = context.Code,
                 ["grant_type"] = "authorization_code"
-            });
+            };
+
+            request.Content = new FormUrlEncodedContent(parameters);
 
             using var response = await Backchannel.SendAsync(request, Context.RequestAborted);
             if (!response.IsSuccessStatusCode)
