@@ -1,10 +1,11 @@
-/*
+﻿/*
  * Licensed under the Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0)
  * See https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers
  * for more information concerning the license and the contributors participating to this project.
  */
 
 using System;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
@@ -32,12 +33,12 @@ namespace AspNet.Security.OAuth.Strava
             : base(options, factory, encoder, clock)
         {
         }
-        
+
         protected override async Task<HandleRequestResult> HandleRemoteAuthenticateAsync()
         {
-            var scope = Request.Query[OAuthChallengeProperties.ScopeKey];
+            var scopeValues = Request.Query[OAuthChallengeProperties.ScopeKey];
 
-            if (scope != FormatScope())
+            if (scopeValues.Count == 0 || scopeValues.First().Split(",").Length < Options.Scope.Count)
             {
                 var scopeEx = new Exception("User did not grant access to requested scopes.");
                 return HandleRequestResult.Fail(scopeEx);
