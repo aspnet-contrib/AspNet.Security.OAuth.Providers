@@ -13,7 +13,8 @@
     <PackageVersion Include="Microsoft.NetCore.Analyzers" Version="3.0.0" />
     <PackageVersion Include="Shouldly" Version="3.0.2" />
     <PackageVersion Include="StyleCop.Analyzers" Version="1.1.118" />
-    <PackageVersion Include="System.IdentityModel.Tokens.Jwt" Version="5.4.0" />
+    <PackageVersion Include="System.IdentityModel.Tokens.Jwt" Version="5.4.0" Condition="!$(MSBuildProjectName.Contains('SuperOffice'))"/>
+    <PackageVersion Include="System.IdentityModel.Tokens.Jwt" Version="6.5.1" Condition="$(MSBuildProjectName.Contains('SuperOffice'))" />
   </ItemGroup>
 
 </Project>
