@@ -5,41 +5,12 @@
  */
 
 using System;
-using Shouldly;
 using Xunit;
 
 namespace AspNet.Security.OAuth.Okta
 {
     public static class OktaAuthenticationOptionsTests
     {
-        [Fact]
-        public static void UseDomain_Sets_Valid_Endpoints()
-        {
-            // Arrange
-            var options = new OktaAuthenticationOptions();
-
-            // Act
-            options.UseDomain("okta.local");
-
-            // Assert
-            options.AuthorizationEndpoint.ShouldStartWith("https://okta.local/");
-            options.TokenEndpoint.ShouldStartWith("https://okta.local/");
-            options.UserInformationEndpoint.ShouldStartWith("https://okta.local/");
-        }
-
-        [Theory]
-        [InlineData(null)]
-        [InlineData("")]
-        [InlineData(" ")]
-        public static void UseDomain_Throws_If_Domain_Is_Invald(string value)
-        {
-            // Arrange
-            var options = new OktaAuthenticationOptions();
-
-            // Act and Assert
-            Assert.Throws<ArgumentException>("domain", () => options.UseDomain(value));
-        }
-
         [Fact]
         public static void Validate_Throws_If_AuthorizationEndpoint_Not_Set()
         {

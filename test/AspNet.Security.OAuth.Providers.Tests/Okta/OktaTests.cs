@@ -27,7 +27,7 @@ namespace AspNet.Security.OAuth.Okta
             builder.AddOkta(options =>
             {
                 ConfigureDefaults(builder, options);
-                options.UseDomain("okta.local");
+                options.Domain = "okta.local";
             });
         }
 

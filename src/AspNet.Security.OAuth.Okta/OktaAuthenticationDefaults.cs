@@ -35,18 +35,18 @@ namespace AspNet.Security.OAuth.Okta
         public const string CallbackPath = "/signin-okta";
 
         /// <summary>
-        /// Default format string to use for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
+        /// Default path to use for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
         /// </summary>
-        public const string AuthorizationEndpointFormat = "https://{0}/oauth2/default/v1/authorize";
+        public const string AuthorizationEndpointPath = "/oauth2/default/v1/authorize";
 
         /// <summary>
-        /// Default format string to use for <see cref="OAuthOptions.TokenEndpoint"/>.
+        /// Default path to use for <see cref="OAuthOptions.TokenEndpoint"/>.
         /// </summary>
-        public const string TokenEndpointFormat = "https://{0}/oauth2/default/v1/token";
+        public const string TokenEndpointPath = "/oauth2/default/v1/token";
 
         /// <summary>
-        /// Default format string to use for <see cref="OAuthOptions.UserInformationEndpoint"/>.
+        /// Default path to use for <see cref="OAuthOptions.UserInformationEndpoint"/>.
         /// </summary>
-        public const string UserInformationEndpointFormat = "https://{0}/oauth2/default/v1/userinfo";
+        public const string UserInformationEndpointPath = "/oauth2/default/v1/userinfo";
     }
 }
