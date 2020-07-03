@@ -2,7 +2,8 @@
   "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
   "items": [
     {
-      "uri": "https://api.patreon.com/oauth2/token",
+      "comment": "https://docs.patreon.com/#step-3-handling-oauth-redirect",
+      "uri": "https://www.patreon.com/api/oauth2/token",
       "method": "POST",
       "contentFormat": "json",
       "contentJson": {
@@ -13,16 +14,35 @@
       }
     },
     {
-      "uri": "https://api.patreon.com/oauth2/api/current_user",
+      "comment": "https://docs.patreon.com/#get-api-oauth2-v2-identity",
+      "uri": "https://www.patreon.com/api/oauth2/v2/identity?fields%5Buser%5D=first_name,full_name,last_name,thumb_url,url",
       "contentFormat": "json",
       "contentJson": {
         "data": {
-          "id": "my-id",
           "attributes": {
+            "about": "A Patreon Platform User",
+            "created": "2018-04-01T00:36:26+00:00",
+            "email": "john.smith@patreon.local",
+            "first_name": "John",
             "full_name": "John Smith",
+            "image_url": "https://url.example",
+            "last_name": "Smith",
+            "social_connections": {
+              "deviantart": null,
+              "discord": null,
+              "facebook": null,
+              "reddit": null,
+              "spotify": null,
+              "twitch": null,
+              "twitter": { "user_id": "12345" },
+              "youtube": null
+            },
+            "thumb_url": "https://patreon.local/JohnSmith/avatar.png",
             "url": "https://patreon.local/JohnSmith",
-            "thumb_url": "https://patreon.local/JohnSmith/avatar.png"
-          }
+            "vanity": "platform"
+          },
+          "id": "12345",
+          "type": "user"
         }
       }
     }
