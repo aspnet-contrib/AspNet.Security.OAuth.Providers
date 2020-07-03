@@ -126,7 +126,7 @@ namespace AspNet.Security.OAuth
         protected HttpClient CreateBackchannel(AuthenticationBuilder builder)
             => builder.Services.BuildServiceProvider().GetRequiredService<IHttpClientFactory>().CreateClient();
 
-        public DelegatingHandler LoopbackRedirectHandler { get; set; }
+        public LoopbackRedirectHandler LoopbackRedirectHandler { get; set; }
 
         /// <summary>
         /// Run the ChannelAsync for authentication
