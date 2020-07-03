@@ -24,10 +24,6 @@ namespace AspNet.Security.OAuth.Okta
             ClaimsIssuer = OktaAuthenticationDefaults.Issuer;
             CallbackPath = OktaAuthenticationDefaults.CallbackPath;
 
-            AuthorizationEndpoint = OktaAuthenticationDefaults.AuthorizationEndpointFormat;
-            TokenEndpoint = OktaAuthenticationDefaults.TokenEndpointFormat;
-            UserInformationEndpoint = OktaAuthenticationDefaults.UserInformationEndpointFormat;
-
             Scope.Add("openid");
             Scope.Add("profile");
             Scope.Add("email");
@@ -39,9 +35,16 @@ namespace AspNet.Security.OAuth.Okta
             ClaimActions.MapJsonKey(ClaimTypes.Surname, "family_name");
         }
 
+        /// <summary>
+        /// Gets or sets the Okta domain (Org URL) to use for authentication.
+        /// </summary>
+        public string? Domain { get; set; }
+
         /// <inheritdoc/>
         public override void Validate()
         {
+            base.Validate();
+
             if (!Uri.TryCreate(AuthorizationEndpoint, UriKind.Absolute, out var _))
             {
                 throw new ArgumentException(
@@ -62,8 +65,6 @@ namespace AspNet.Security.OAuth.Okta
                     $"The '{nameof(UserInformationEndpoint)}' option must be set to a valid URI.",
                     nameof(UserInformationEndpoint));
             }
-
-            base.Validate();
         }
     }
 }

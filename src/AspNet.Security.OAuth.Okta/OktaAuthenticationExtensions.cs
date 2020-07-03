@@ -8,6 +8,8 @@ using System;
 using AspNet.Security.OAuth.Okta;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Options;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -72,6 +74,7 @@ namespace Microsoft.Extensions.DependencyInjection
             [CanBeNull] string caption,
             [NotNull] Action<OktaAuthenticationOptions> configuration)
         {
+            builder.Services.TryAddSingleton<IPostConfigureOptions<OktaAuthenticationOptions>, OktaPostConfigureOptions>();
             return builder.AddOAuth<OktaAuthenticationOptions, OktaAuthenticationHandler>(scheme, caption, configuration);
         }
     }
