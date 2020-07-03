@@ -37,12 +37,12 @@ namespace AspNet.Security.OAuth.Patreon
         {
             string endpoint = Options.UserInformationEndpoint;
 
-            if (Options.Fields?.Count > 0)
+            if (Options.Fields.Count > 0)
             {
                 endpoint = QueryHelpers.AddQueryString(endpoint, "fields[user]", string.Join(",", Options.Fields));
             }
 
-            if (Options.Includes?.Count > 0)
+            if (Options.Includes.Count > 0)
             {
                 endpoint = QueryHelpers.AddQueryString(endpoint, "include", string.Join(",", Options.Includes));
             }
