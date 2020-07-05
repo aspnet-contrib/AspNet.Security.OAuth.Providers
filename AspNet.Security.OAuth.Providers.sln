@@ -189,6 +189,7 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.Basecamp", "src\AspNet.Security.OAuth.Basecamp\AspNet.Security.OAuth.Basecamp.csproj", "{42306484-B2BF-4B52-B950-E0CDFA58B02A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.SuperOffice", "src\AspNet.Security.OAuth.SuperOffice\AspNet.Security.OAuth.SuperOffice.csproj", "{286D1FB0-716C-47CB-A519-22E1D34DFDF7}"
+EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.Okta", "src\AspNet.Security.OAuth.Okta\AspNet.Security.OAuth.Okta.csproj", "{F8A4A5C4-86D9-4CF2-A2FC-3B46CCC51750}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{B1792D2A-6D6C-4484-968E-D68DF376BA40}"
