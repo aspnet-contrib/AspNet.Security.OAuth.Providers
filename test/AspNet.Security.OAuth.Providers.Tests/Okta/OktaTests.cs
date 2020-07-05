@@ -11,31 +11,33 @@ using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace AspNet.Security.OAuth.Patreon
+namespace AspNet.Security.OAuth.Okta
 {
-    public class PatreonTests : OAuthTests<PatreonAuthenticationOptions>
+    public class OktaTests : OAuthTests<OktaAuthenticationOptions>
     {
-        public PatreonTests(ITestOutputHelper outputHelper)
+        public OktaTests(ITestOutputHelper outputHelper)
         {
             OutputHelper = outputHelper;
         }
 
-        public override string DefaultScheme => PatreonAuthenticationDefaults.AuthenticationScheme;
+        public override string DefaultScheme => OktaAuthenticationDefaults.AuthenticationScheme;
 
         protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
         {
-            builder.AddPatreon(options => ConfigureDefaults(builder, options));
+            builder.AddOkta(options =>
+            {
+                ConfigureDefaults(builder, options);
+                options.Domain = "okta.local";
+            });
         }
 
         [Theory]
-        [InlineData(ClaimTypes.Email, "john.smith@patreon.local")]
-        [InlineData(ClaimTypes.NameIdentifier, "12345")]
+        [InlineData(ClaimTypes.Email, "john.doe@example.com")]
         [InlineData(ClaimTypes.GivenName, "John")]
-        [InlineData(ClaimTypes.Name, "John Smith")]
-        [InlineData(ClaimTypes.Surname, "Smith")]
-        [InlineData(ClaimTypes.Webpage, "https://patreon.local/JohnSmith")]
-        [InlineData("urn:patreon:avatar", "https://patreon.local/JohnSmith/avatar.png")]
-        public async Task Can_Sign_In_Using_Patreon(string claimType, string claimValue)
+        [InlineData(ClaimTypes.Name, "John Doe")]
+        [InlineData(ClaimTypes.NameIdentifier, "00uid4BxXw6I6TV4m0g3")]
+        [InlineData(ClaimTypes.Surname, "Doe")]
+        public async Task Can_Sign_In_Using_Okta(string claimType, string claimValue)
         {
             // Arrange
             using var server = CreateTestServer();

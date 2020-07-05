@@ -13,16 +13,25 @@ using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace AspNet.Security.OAuth.Patreon
+namespace AspNet.Security.OAuth.Okta
 {
-    public class PatreonAuthenticationHandler : OAuthHandler<PatreonAuthenticationOptions>
+    /// <summary>
+    /// Defines a handler for authentication using Okta.
+    /// </summary>
+    public class OktaAuthenticationHandler : OAuthHandler<OktaAuthenticationOptions>
     {
-        public PatreonAuthenticationHandler(
-            [NotNull] IOptionsMonitor<PatreonAuthenticationOptions> options,
+        /// <summary>
+        /// Initializes a new instance of the <see cref="OktaAuthenticationHandler"/> class.
+        /// </summary>
+        /// <param name="options">The authentication options.</param>
+        /// <param name="logger">The logger to use.</param>
+        /// <param name="encoder">The URL encoder to use.</param>
+        /// <param name="clock">The system clock to use.</param>
+        public OktaAuthenticationHandler(
+            [NotNull] IOptionsMonitor<OktaAuthenticationOptions> options,
             [NotNull] ILoggerFactory logger,
             [NotNull] UrlEncoder encoder,
             [NotNull] ISystemClock clock)
@@ -30,22 +39,13 @@ namespace AspNet.Security.OAuth.Patreon
         {
         }
 
+        /// <inheritdoc />
         protected override async Task<AuthenticationTicket> CreateTicketAsync(
             [NotNull] ClaimsIdentity identity,
             [NotNull] AuthenticationProperties properties,
             [NotNull] OAuthTokenResponse tokens)
         {
             string endpoint = Options.UserInformationEndpoint;
-
-            if (Options.Fields.Count > 0)
-            {
-                endpoint = QueryHelpers.AddQueryString(endpoint, "fields[user]", string.Join(",", Options.Fields));
-            }
-
-            if (Options.Includes.Count > 0)
-            {
-                endpoint = QueryHelpers.AddQueryString(endpoint, "include", string.Join(",", Options.Includes));
-            }
 
             using var request = new HttpRequestMessage(HttpMethod.Get, endpoint);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -60,14 +60,14 @@ namespace AspNet.Security.OAuth.Patreon
                                 /* Headers: */ response.Headers.ToString(),
                                 /* Body: */ await response.Content.ReadAsStringAsync());
 
-                throw new HttpRequestException("An error occurred while retrieving the user profile.");
+                throw new HttpRequestException("An error occurred while retrieving the user profile from Okta.");
             }
 
             using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
 
             var principal = new ClaimsPrincipal(identity);
             var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload.RootElement);
-            context.RunClaimActions(payload.RootElement.GetProperty("data"));
+            context.RunClaimActions();
 
             await Options.Events.CreatingTicket(context);
             return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);

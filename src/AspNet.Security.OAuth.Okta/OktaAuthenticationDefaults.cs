@@ -7,43 +7,46 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 
-namespace AspNet.Security.OAuth.Patreon
+namespace AspNet.Security.OAuth.Okta
 {
-    public class PatreonAuthenticationDefaults
+    /// <summary>
+    /// Default values used by the Okta authentication provider.
+    /// </summary>
+    public static class OktaAuthenticationDefaults
     {
         /// <summary>
         /// Default value for <see cref="AuthenticationScheme.Name"/>.
         /// </summary>
-        public const string AuthenticationScheme = "Patreon";
+        public const string AuthenticationScheme = "Okta";
 
         /// <summary>
         /// Default value for <see cref="AuthenticationScheme.DisplayName"/>.
         /// </summary>
-        public const string DisplayName = "Patreon";
+        public const string DisplayName = "Okta";
 
         /// <summary>
         /// Default value for <see cref="AuthenticationSchemeOptions.ClaimsIssuer"/>.
         /// </summary>
-        public const string Issuer = "Patreon";
+        public const string Issuer = "Okta";
 
         /// <summary>
         /// Default value for <see cref="RemoteAuthenticationOptions.CallbackPath"/>.
         /// </summary>
-        public const string CallbackPath = "/signin-patreon";
+        public const string CallbackPath = "/signin-okta";
 
         /// <summary>
-        /// Default value for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
+        /// Default path to use for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
         /// </summary>
-        public const string AuthorizationEndpoint = "https://www.patreon.com/oauth2/authorize";
+        public const string AuthorizationEndpointPath = "/oauth2/default/v1/authorize";
 
         /// <summary>
-        /// Default value for <see cref="OAuthOptions.TokenEndpoint"/>.
+        /// Default path to use for <see cref="OAuthOptions.TokenEndpoint"/>.
         /// </summary>
-        public const string TokenEndpoint = "https://www.patreon.com/api/oauth2/token";
+        public const string TokenEndpointPath = "/oauth2/default/v1/token";
 
         /// <summary>
-        /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
+        /// Default path to use for <see cref="OAuthOptions.UserInformationEndpoint"/>.
         /// </summary>
-        public const string UserInformationEndpoint = "https://www.patreon.com/api/oauth2/v2/identity";
+        public const string UserInformationEndpointPath = "/oauth2/default/v1/userinfo";
     }
 }
