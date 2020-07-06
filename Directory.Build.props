@@ -22,6 +22,15 @@
     <PublicKeyToken>fa9e7b608b196fab</PublicKeyToken>
   </PropertyGroup>
 
+  <!--
+    These are set per-project so versioning is applied correctly, but are not set globally otherwise
+    the Arcade SDK will attempt to publish artifacts such as symbols to Microsoft's servers.
+  -->
+  <PropertyGroup Condition=" '$(GITHUB_ACTIONS)' == 'true' AND '$(GITHUB_REF.StartsWith(`refs/pull/`))' == 'false' ">
+    <OfficialBuild>true</OfficialBuild>
+    <OfficialBuildId>$(_AspNetContribBuildNumber)</OfficialBuildId>
+  </PropertyGroup>
+
   <PropertyGroup>
     <Product>aspnet-contrib</Product>
     <Company>$(Authors)</Company>
