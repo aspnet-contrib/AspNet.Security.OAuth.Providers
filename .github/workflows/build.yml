@@ -47,20 +47,20 @@ jobs:
         $QuarterHours = [Math]::Floor($Now.Minute / 15.0)
         $Revision = $Hours + $QuarterHours + 1
         $BuildId = $Now.ToString("yyyyMMdd") + "." + $Revision
-        Write-Host "::set-env name=OfficialBuild::true"
-        Write-Host "::set-env name=OfficialBuildId::${BuildId}"
+        Write-Host "::set-env name=_AspNetContribBuildNumber::${BuildId}"
 
     - name: Build, Test and Package
-      run: eng\common\CIBuild.cmd -configuration Release -prepareMachine /p:DotNetPublishUsingPipelines=true
+      run: eng\common\CIBuild.cmd -configuration Release -prepareMachine
       if: ${{ runner.os == 'Windows' }}
 
     - name: Build, Test and Package
       shell: pwsh
-      run: ./eng/common/cibuild.sh -configuration Release -prepareMachine /p:DotNetPublishUsingPipelines=true
+      run: ./eng/common/cibuild.sh -configuration Release -prepareMachine
       if: ${{ runner.os != 'Windows' }}
 
     - name: Publish logs
       uses: actions/upload-artifact@v1
+      if: ${{ always() }}
       with:
         name: logs-${{ matrix.os_name }}
         path: ./artifacts/log/Release
@@ -73,6 +73,7 @@ jobs:
 
     - name: Publish test results
       uses: actions/upload-artifact@v1
+      if: ${{ always() }}
       with:
         name: testresults-${{ matrix.os_name }}
         path: ./artifacts/TestResults/Release

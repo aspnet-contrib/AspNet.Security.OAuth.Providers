@@ -5,6 +5,7 @@
  */
 
 using System;
+using JetBrains.Annotations;
 using Microsoft.Extensions.Options;
 
 namespace AspNet.Security.OAuth.Okta
@@ -15,7 +16,9 @@ namespace AspNet.Security.OAuth.Okta
     public class OktaPostConfigureOptions : IPostConfigureOptions<OktaAuthenticationOptions>
     {
         /// <inheritdoc/>
-        public void PostConfigure(string name, OktaAuthenticationOptions options)
+        public void PostConfigure(
+            [NotNull] string name,
+            [NotNull] OktaAuthenticationOptions options)
         {
             if (string.IsNullOrWhiteSpace(options.Domain))
             {
