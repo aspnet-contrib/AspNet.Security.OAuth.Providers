@@ -263,7 +263,7 @@ namespace AspNet.Security.OAuth.Apple
             var exception = await Assert.ThrowsAsync<Exception>(() => AuthenticateUserAsync(server));
 
             // Assert
-            exception.InnerException.ShouldBeOfType<SecurityTokenInvalidSignatureException>();
+            exception.InnerException.ShouldBeOfType<Microsoft.IdentityModel.Tokens.SecurityTokenInvalidSignatureException>();
         }
 
         [Fact]
