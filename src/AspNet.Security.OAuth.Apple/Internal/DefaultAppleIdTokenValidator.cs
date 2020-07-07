@@ -19,14 +19,17 @@ namespace AspNet.Security.OAuth.Apple.Internal
         private readonly ILogger _logger;
         private readonly AppleKeyStore _keyStore;
         private readonly JwtSecurityTokenHandler _tokenHandler;
+        private readonly CryptoProviderFactory _cryptoProviderFactory;
 
         public DefaultAppleIdTokenValidator(
             [NotNull] AppleKeyStore keyStore,
             [NotNull] JwtSecurityTokenHandler tokenHandler,
+            [NotNull] CryptoProviderFactory cryptoProviderFactory,
             [NotNull] ILogger<DefaultAppleIdTokenValidator> logger)
         {
             _keyStore = keyStore;
             _tokenHandler = tokenHandler;
+            _cryptoProviderFactory = cryptoProviderFactory;
             _logger = logger;
         }
 
@@ -44,9 +47,10 @@ namespace AspNet.Security.OAuth.Apple.Internal
 
             var parameters = new TokenValidationParameters()
             {
+                CryptoProviderFactory = _cryptoProviderFactory,
+                IssuerSigningKeys = keySet.Keys,
                 ValidAudience = context.Options.ClientId,
                 ValidIssuer = context.Options.TokenAudience,
-                IssuerSigningKeys = keySet.Keys,
             };
 
             try
