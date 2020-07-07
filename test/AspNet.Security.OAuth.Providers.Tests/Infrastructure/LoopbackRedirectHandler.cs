@@ -16,8 +16,10 @@ namespace AspNet.Security.OAuth.Infrastructure
     /// <summary>
     /// A delegating HTTP handler that loops back HTTP requests to external login providers to the local sign-in endpoint.
     /// </summary>
-    internal class LoopbackRedirectHandler : DelegatingHandler
+    public class LoopbackRedirectHandler : DelegatingHandler
     {
+        public IDictionary<string, string> LoopbackParameters { get; set; } = new Dictionary<string, string>();
+
         public HttpMethod RedirectMethod { get; set; } = HttpMethod.Get;
 
         public IDictionary<string, string> RedirectParameters { get; set; } = new Dictionary<string, string>();
@@ -104,6 +106,14 @@ namespace AspNet.Security.OAuth.Infrastructure
             if (!string.IsNullOrEmpty(oauthState))
             {
                 queryString.Add(OAuthStateKey, oauthState);
+            }
+
+            if (LoopbackParameters?.Count > 0)
+            {
+                foreach (var parameter in LoopbackParameters)
+                {
+                    queryString[parameter.Key] = parameter.Value;
+                }
             }
 
             builder.Query = queryString.ToString();

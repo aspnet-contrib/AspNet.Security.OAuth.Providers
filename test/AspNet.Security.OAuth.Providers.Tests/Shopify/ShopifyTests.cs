@@ -22,12 +22,7 @@ namespace AspNet.Security.OAuth.Shopify
         public ShopifyTests(ITestOutputHelper outputHelper)
         {
             OutputHelper = outputHelper;
-
-            LoopbackRedirectHandler = new ShopifyLoopbackRedirectHandler()
-            {
-                RedirectUri = RedirectUri,
-                ShopName = TestShopName
-            };
+            LoopbackRedirectHandler.LoopbackParameters.Add("shop", "apple.myshopify.com");
         }
 
         public override string DefaultScheme => ShopifyAuthenticationDefaults.AuthenticationScheme;
