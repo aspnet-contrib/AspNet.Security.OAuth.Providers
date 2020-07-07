@@ -5,7 +5,6 @@
  */
 
 using System;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
@@ -36,15 +35,18 @@ namespace AspNet.Security.OAuth.Strava
 
         protected override async Task<HandleRequestResult> HandleRemoteAuthenticateAsync()
         {
-            var scopeValues = Request.Query[OAuthChallengeProperties.ScopeKey];
+            HandleRequestResult result = await base.HandleRemoteAuthenticateAsync();
 
-            if (scopeValues.Count == 0 || scopeValues.First().Split(",").Length < Options.Scope.Count)
+            if (result.Succeeded)
             {
-                var scopeEx = new Exception("User did not grant access to requested scopes.");
-                return HandleRequestResult.Fail(scopeEx);
+                var scopeValues = Request.Query[OAuthChallengeProperties.ScopeKey];
+                if (scopeValues.Count == 0 || scopeValues[0].Split(",").Length < Options.Scope.Count)
+                {
+                    result = await HandleAccessDeniedErrorAsync(result.Properties);
+                }
             }
 
-            return await base.HandleRemoteAuthenticateAsync();
+            return result;
         }
 
         protected override async Task<AuthenticationTicket> CreateTicketAsync(

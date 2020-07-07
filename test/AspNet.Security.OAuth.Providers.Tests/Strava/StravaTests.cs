@@ -20,10 +20,7 @@ namespace AspNet.Security.OAuth.Strava
         {
             OutputHelper = outputHelper;
 
-            LoopbackRedirectHandler = new StravaLoopbackRedirectHandler()
-            {
-                RedirectUri = RedirectUri
-            };
+            LoopbackRedirectHandler.LoopbackParameters.Add("scope", "read");
         }
 
         public override string DefaultScheme => StravaAuthenticationDefaults.AuthenticationScheme;
