@@ -50,13 +50,21 @@ jobs:
         Write-Host "::set-env name=_AspNetContribBuildNumber::${BuildId}"
 
     - name: Build, Test and Package
-      run: eng\common\CIBuild.cmd -configuration Release -prepareMachine
       if: ${{ runner.os == 'Windows' }}
+      run: eng\common\CIBuild.cmd -configuration Release -prepareMachine
+      env:
+        DOTNET_MULTILEVEL_LOOKUP: 0
+        DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
+        NUGET_XMLDOC_MODE: skip
 
     - name: Build, Test and Package
       shell: pwsh
-      run: ./eng/common/cibuild.sh -configuration Release -prepareMachine
       if: ${{ runner.os != 'Windows' }}
+      run: ./eng/common/cibuild.sh -configuration Release -prepareMachine
+      env:
+        DOTNET_MULTILEVEL_LOOKUP: 0
+        DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
+        NUGET_XMLDOC_MODE: skip
 
     - name: Publish logs
       uses: actions/upload-artifact@v1
