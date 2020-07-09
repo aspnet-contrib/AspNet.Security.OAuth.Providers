@@ -75,7 +75,7 @@
       ]
     },
     {
-      "comment": "https://developer.github.com/apps/building-oauth-apps/authorizing-oauth-apps/#2-users-are-redirected-back-to-your-site-by-github",
+      "comment": "See https://developer.github.com/enterprise/apps/building-oauth-apps/authorizing-oauth-apps/#2-users-are-redirected-back-to-your-site-by-github",
       "uri": "https://github.enterprise.local/login/oauth/access_token",
       "method": "POST",
       "contentFormat": "json",
@@ -86,8 +86,8 @@
       }
     },
     {
-      "comment": "See https://developer.github.com/v3/users/#get-the-authenticated-user",
-      "uri": "https://api.github.enterprise.local/user",
+      "comment": "See https://developer.github.com/enterprise/v3/users/#get-a-user",
+      "uri": "https://github.enterprise.local/api/v3/user",
       "contentFormat": "json",
       "contentJson": {
         "login": "octocat-work",
@@ -135,8 +135,8 @@
       }
     },
     {
-      "comment": "See https://developer.github.com/v3/users/emails/#list-email-addresses-for-a-user",
-      "uri": "https://api.github.enterprise.local/user/emails",
+      "comment": "See https://developer.github.com/enterprise/v3/users/emails/#list-email-addresses-for-the-authenticated-user",
+      "uri": "https://github.enterprise.local/api/v3/user/emails",
       "contentFormat": "json",
       "contentJson": [
         {
