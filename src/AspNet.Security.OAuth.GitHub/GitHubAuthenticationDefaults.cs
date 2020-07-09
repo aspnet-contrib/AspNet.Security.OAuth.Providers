@@ -37,21 +37,41 @@ namespace AspNet.Security.OAuth.GitHub
         /// <summary>
         /// Default value for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
         /// </summary>
-        public const string AuthorizationEndpoint = "https://github.com/login/oauth/authorize";
+        public const string AuthorizationEndpoint = "https://github.com" + AuthorizationEndpointPath;
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.TokenEndpoint"/>.
         /// </summary>
-        public const string TokenEndpoint = "https://github.com/login/oauth/access_token";
+        public const string TokenEndpoint = "https://github.com" + TokenEndpointPath;
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
         /// </summary>
-        public const string UserInformationEndpoint = "https://api.github.com/user";
+        public const string UserInformationEndpoint = "https://api.github.com" + UserInformationEndpointPath;
 
         /// <summary>
         /// Default value for <see cref="GitHubAuthenticationOptions.UserEmailsEndpoint"/>.
         /// </summary>
-        public const string UserEmailsEndpoint = "https://api.github.com/user/emails";
+        public const string UserEmailsEndpoint = "https://api.github.com" + UserEmailsEndpointPath;
+
+        /// <summary>
+        /// Default path to use for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
+        /// </summary>
+        public const string AuthorizationEndpointPath = "/login/oauth/authorize";
+
+        /// <summary>
+        /// Default path to use for <see cref="OAuthOptions.TokenEndpoint"/>.
+        /// </summary>
+        public const string TokenEndpointPath = "/login/oauth/access_token";
+
+        /// <summary>
+        /// Default path to use for <see cref="OAuthOptions.UserInformationEndpoint"/>.
+        /// </summary>
+        public const string UserInformationEndpointPath = "/user";
+
+        /// <summary>
+        /// Default path to use for <see cref="GitHubAuthenticationOptions.UserEmailsEndpoint"/>.
+        /// </summary>
+        public const string UserEmailsEndpointPath = "/user/emails";
     }
 }

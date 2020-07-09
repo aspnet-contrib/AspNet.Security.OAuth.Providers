@@ -38,7 +38,7 @@ namespace AspNet.Security.OAuth
         {
             Interceptor = new HttpClientInterceptorOptions()
                 .ThrowsOnMissingRegistration()
-                .RegisterBundle(Path.Combine(GetType().Name.Replace("Tests", string.Empty, StringComparison.OrdinalIgnoreCase), "bundle.json"));
+                .RegisterBundle(Path.Combine(BundleName, "bundle.json"));
 
             LoopbackRedirectHandler = new LoopbackRedirectHandler
             {
@@ -62,6 +62,11 @@ namespace AspNet.Security.OAuth
         /// Gets the name of the authentication scheme being tested.
         /// </summary>
         public abstract string DefaultScheme { get; }
+
+        /// <summary>
+        /// Gets the HTTP bundle name to use for the test.
+        /// </summary>
+        protected virtual string BundleName => GetType().Name.Replace("Tests", string.Empty, StringComparison.OrdinalIgnoreCase);
 
         /// <summary>
         /// Gets the optional redirect HTTP method to use for OAuth flows.
