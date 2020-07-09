@@ -7,6 +7,7 @@
 using System;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Options;
+using static AspNet.Security.OAuth.GitHub.GitHubAuthenticationDefaults;
 
 namespace AspNet.Security.OAuth.GitHub
 {
@@ -22,14 +23,14 @@ namespace AspNet.Security.OAuth.GitHub
         {
             if (!string.IsNullOrWhiteSpace(options.EnterpriseDomain))
             {
-                options.AuthorizationEndpoint = CreateUrl(options.EnterpriseDomain, GitHubAuthenticationDefaults.AuthorizationEndpointPath);
-                options.TokenEndpoint = CreateUrl(options.EnterpriseDomain, GitHubAuthenticationDefaults.TokenEndpointPath);
-                options.UserEmailsEndpoint = CreateUrl(options.EnterpriseDomain, GitHubAuthenticationDefaults.UserEmailsEndpointPath, "api");
-                options.UserInformationEndpoint = CreateUrl(options.EnterpriseDomain, GitHubAuthenticationDefaults.UserInformationEndpointPath, "api");
+                options.AuthorizationEndpoint = CreateUrl(options.EnterpriseDomain, AuthorizationEndpointPath);
+                options.TokenEndpoint = CreateUrl(options.EnterpriseDomain, TokenEndpointPath);
+                options.UserEmailsEndpoint = CreateUrl(options.EnterpriseDomain, EnterpriseApiPath + UserEmailsEndpointPath);
+                options.UserInformationEndpoint = CreateUrl(options.EnterpriseDomain, EnterpriseApiPath + UserInformationEndpointPath);
             }
         }
 
-        private static string CreateUrl(string domain, string path, string? subdomain = null)
+        private static string CreateUrl(string domain, string path)
         {
             // Enforce use of HTTPS
             var builder = new UriBuilder(domain)
@@ -38,11 +39,6 @@ namespace AspNet.Security.OAuth.GitHub
                 Port = -1,
                 Scheme = "https",
             };
-
-            if (!string.IsNullOrEmpty(subdomain))
-            {
-                builder.Host = subdomain + "." + builder.Host;
-            }
 
             return builder.Uri.ToString();
         }

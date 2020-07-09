@@ -39,10 +39,10 @@ namespace AspNet.Security.OAuth.GitHub
             options.TokenEndpoint.ShouldStartWith("https://github.local/");
             Uri.TryCreate(options.TokenEndpoint, UriKind.Absolute, out var _).ShouldBeTrue();
 
-            options.UserEmailsEndpoint.ShouldStartWith("https://api.github.local/");
+            options.UserEmailsEndpoint.ShouldStartWith("https://github.local/api/v3/");
             Uri.TryCreate(options.UserEmailsEndpoint, UriKind.Absolute, out var _).ShouldBeTrue();
 
-            options.UserInformationEndpoint.ShouldStartWith("https://api.github.local/");
+            options.UserInformationEndpoint.ShouldStartWith("https://github.local/api/v3/");
             Uri.TryCreate(options.UserInformationEndpoint, UriKind.Absolute, out var _).ShouldBeTrue();
         }
 

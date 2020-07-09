@@ -55,6 +55,11 @@ namespace AspNet.Security.OAuth.GitHub
         public const string UserEmailsEndpoint = "https://api.github.com" + UserEmailsEndpointPath;
 
         /// <summary>
+        /// Default path to use for the GitHub Enterprise v3 REST API.
+        /// </summary>
+        public const string EnterpriseApiPath = "/api/v3";
+
+        /// <summary>
         /// Default path to use for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
         /// </summary>
         public const string AuthorizationEndpointPath = "/login/oauth/authorize";
