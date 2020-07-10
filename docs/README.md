@@ -11,7 +11,7 @@ in the services' own documentation, which are linked to in the main [README](htt
 ## Generic Documentation
 
 Most of the OAuth providers in this repository can be configured by just
-specifying two settings: `ClientId` and `ClientSecret`.
+specifying two settings: [`ClientId`](https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.authentication.oauth.oauthoptions.clientid "OAuthOptions.ClientId Property") and [`ClientSecret`](https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.authentication.oauth.oauthoptions.clientsecret "OAuthOptions.ClientSecret Property").
 
 Let's use the Slack provider as an example:
 
@@ -40,7 +40,7 @@ and a link to a provider-specific document for that provider. If the provider
 you are using is not listed, it does not have any specific documentation and is
 covered by the section above.
 
-| Provider | Required/Optional Settings | Documentation Link |
+| Provider | Required or optional Settings | Documentation Link |
 |:-:|:-:|:-:|
 | Amazon | _Optional_ | [Documentation](amazon.md "Amazon provider documentation") |
 | Apple | **Required** | [Documentation](sign-in-with-apple.md "Apple provider documentation") |
