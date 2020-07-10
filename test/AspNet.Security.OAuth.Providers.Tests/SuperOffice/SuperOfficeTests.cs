@@ -92,5 +92,27 @@ namespace AspNet.Security.OAuth.SuperOffice
             // Assert
             AssertClaim(claims, claimType, claimValue);
         }
+
+        [Fact]
+        public async Task Cannot_Sign_In_Using_SuperOffice_With_Invalid_Token_Audience()
+        {
+            // Arrange
+            static void ConfigureServices(IServiceCollection services)
+            {
+                services.AddSingleton<JwtSecurityTokenHandler, FrozenJwtSecurityTokenHandler>();
+                services.PostConfigureAll<SuperOfficeAuthenticationOptions>((options) =>
+                {
+                    options.TokenValidationParameters.ValidAudience = "not-the-right-audience";
+                });
+            }
+
+            using var server = CreateTestServer(ConfigureServices);
+
+            // Act
+            var exception = await Assert.ThrowsAsync<Exception>(() => AuthenticateUserAsync(server));
+
+            // Assert
+            exception.InnerException.ShouldBeOfType<SecurityTokenValidationException>();
+        }
     }
 }
