@@ -6,13 +6,11 @@
 
 using System;
 using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 using System.Threading.Tasks;
-using AspNet.Security.OAuth.SuperOffice;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Shouldly;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -29,9 +27,14 @@ namespace AspNet.Security.OAuth.SuperOffice
 
         protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
         {
+            Microsoft.IdentityModel.Logging.IdentityModelEventSource.ShowPII = true;
+
             builder.AddSuperOffice(options =>
             {
                 ConfigureDefaults(builder, options);
+
+                options.ClientId = "gg454918d75b1b53101065c16ee51123";
+                options.TokenValidationParameters.ValidAudience = options.ClientId;
             });
         }
 
@@ -52,13 +55,7 @@ namespace AspNet.Security.OAuth.SuperOffice
             // Arrange
             static void ConfigureServices(IServiceCollection services)
             {
-                Microsoft.IdentityModel.Logging.IdentityModelEventSource.ShowPII = true;
-                services.AddSingleton<JwtSecurityTokenHandler, MockJwtSecurityTokenHandler>();
-                services.PostConfigureAll<SuperOfficeAuthenticationOptions>((options) =>
-                {
-                    options.ClientId = "gg454918d75b1b53101065c16ee51123";
-                    options.TokenValidationParameters.ValidAudience = options.ClientId;
-                });
+                services.AddSingleton<JwtSecurityTokenHandler, FrozenJwtSecurityTokenHandler>();
             }
 
             using var server = CreateTestServer(ConfigureServices);
@@ -79,12 +76,9 @@ namespace AspNet.Security.OAuth.SuperOffice
             // Arrange
             static void ConfigureServices(IServiceCollection services)
             {
-                Microsoft.IdentityModel.Logging.IdentityModelEventSource.ShowPII = true;
-                services.AddSingleton<JwtSecurityTokenHandler, MockJwtSecurityTokenHandler>();
+                services.AddSingleton<JwtSecurityTokenHandler, FrozenJwtSecurityTokenHandler>();
                 services.PostConfigureAll<SuperOfficeAuthenticationOptions>((options) =>
                 {
-                    options.ClientId = "gg454918d75b1b53101065c16ee51123";
-                    options.TokenValidationParameters.ValidAudience = options.ClientId;
                     options.IncludeFunctionalRightsAsClaims = true;
                 });
             }
@@ -96,14 +90,6 @@ namespace AspNet.Security.OAuth.SuperOffice
 
             // Assert
             AssertClaim(claims, claimType, claimValue);
-        }
-
-        private sealed class MockJwtSecurityTokenHandler : JwtSecurityTokenHandler
-        {
-            protected override void ValidateLifetime(DateTime? notBefore, DateTime? expires, JwtSecurityToken jwtToken, TokenValidationParameters validationParameters)
-            {
-                // Do not validate the lifetime as the test token has expired
-            }
         }
     }
 }
