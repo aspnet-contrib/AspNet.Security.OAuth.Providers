@@ -438,13 +438,5 @@ namespace AspNet.Security.OAuth.Apple
             second.ShouldNotBeEmpty();
             first.ShouldNotBeSameAs(second);
         }
-
-        private sealed class FrozenJwtSecurityTokenHandler : JwtSecurityTokenHandler
-        {
-            protected override void ValidateLifetime(DateTime? notBefore, DateTime? expires, JwtSecurityToken jwtToken, TokenValidationParameters validationParameters)
-            {
-                // Do not validate the lifetime as the test token has expired
-            }
-        }
     }
 }
