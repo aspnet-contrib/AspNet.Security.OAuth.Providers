@@ -114,7 +114,7 @@ namespace AspNet.Security.OAuth.SuperOffice
             base.Validate();
 
             if (_environment == SuperOfficeAuthenticationEnvironment.Production
-                && !AuthorizationEndpoint.StartsWith("https://", System.StringComparison.OrdinalIgnoreCase))
+                && !AuthorizationEndpoint.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
             {
                 throw new NotSupportedException("Production environment requires secure endpoints, i.e. begins with 'https://'.");
             }

@@ -5,7 +5,6 @@
  */
 
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Net.Http;
@@ -161,12 +160,18 @@ namespace AspNet.Security.OAuth.SuperOffice
 
             try
             {
-                return Options.SecurityTokenHandler.ValidateToken(idToken, validationParameters);
+                var result = Options.SecurityTokenHandler.ValidateToken(idToken, validationParameters);
+
+                if (result.Exception != null || !result.IsValid)
+                {
+                    throw new SecurityTokenValidationException("SuperOffice ID token validation failed.", result.Exception);
+                }
+
+                return result;
             }
             catch (Exception ex)
             {
-                throw new SecurityTokenValidationException(
-                    "SuperOffice ID token validation failed for issuer and/or audience.", ex);
+                throw new SecurityTokenValidationException("SuperOffice ID token validation failed.", ex);
             }
         }
     }
