@@ -71,8 +71,12 @@ namespace AspNet.Security.OAuth.SuperOffice
             }
 
             using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
-            var context = new OAuthCreatingTicketContext(new ClaimsPrincipal(identity), properties, Context, Scheme, Options, Backchannel, tokens, payload.RootElement);
+
+            var principal = new ClaimsPrincipal(identity);
+
+            var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload.RootElement);
             context.RunClaimActions();
+
             await Events.CreatingTicket(context);
             return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
         }
@@ -82,8 +86,6 @@ namespace AspNet.Security.OAuth.SuperOffice
             [NotNull] AuthenticationProperties properties,
             [NotNull] ClaimsIdentity identity)
         {
-            var contextIdentifier = string.Empty;
-
             var idToken = tokens.Response.RootElement.GetString("id_token");
 
             if (Options.SaveTokens)
@@ -93,6 +95,8 @@ namespace AspNet.Security.OAuth.SuperOffice
             }
 
             var tokenValidationResult = await ValidateAsync(idToken, Options.TokenValidationParameters.Clone());
+
+            var contextIdentifier = string.Empty;
 
             foreach (var claim in tokenValidationResult.ClaimsIdentity.Claims)
             {
