@@ -40,7 +40,7 @@ and a link to a provider-specific document for that provider. If the provider
 you are using is not listed, it does not have any specific documentation and is
 covered by the section above.
 
-| Provider | Required or optional Settings | Documentation Link |
+| Provider | Required or Optional Settings | Documentation Link |
 |:-:|:-:|:-:|
 | Amazon | _Optional_ | [Documentation](amazon.md "Amazon provider documentation") |
 | Apple | **Required** | [Documentation](sign-in-with-apple.md "Apple provider documentation") |
