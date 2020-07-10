@@ -23,6 +23,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
+using Xunit;
 using Xunit.Abstractions;
 
 namespace AspNet.Security.OAuth
@@ -132,6 +133,38 @@ namespace AspNet.Security.OAuth
             => builder.Services.BuildServiceProvider().GetRequiredService<IHttpClientFactory>().CreateClient();
 
         public LoopbackRedirectHandler LoopbackRedirectHandler { get; set; }
+
+        [Fact]
+        public async Task OnCreatingTicket_Is_Raised_By_Handler()
+        {
+            // Arrange
+            bool onCreatingTicketEventRaised = false;
+
+            void ConfigureServices(IServiceCollection services)
+            {
+                services.PostConfigureAll<TOptions>((options) =>
+                {
+                    options.Events.OnCreatingTicket = (context) =>
+                    {
+                        onCreatingTicketEventRaised = true;
+                        return Task.CompletedTask;
+                    };
+
+                    if (options is Apple.AppleAuthenticationOptions appleOptions)
+                    {
+                        appleOptions.ValidateTokens = false; // Apple test token has expired
+                    }
+                });
+            }
+
+            using var server = CreateTestServer(ConfigureServices);
+
+            // Act
+            var claims = await AuthenticateUserAsync(server);
+
+            // Assert
+            onCreatingTicketEventRaised.ShouldBeTrue();
+        }
 
         /// <summary>
         /// Run the ChannelAsync for authentication
