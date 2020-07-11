@@ -2,6 +2,7 @@
   "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
   "items": [
     {
+      "comment": "See https://developers.facebook.com/docs/instagram-basic-display-api/getting-started#step-5--exchange-the-code-for-a-token",
       "uri": "https://api.instagram.com/oauth/access_token",
       "method": "POST",
       "contentFormat": "json",
@@ -13,13 +14,23 @@
       }
     },
     {
-      "uri": "https://api.instagram.com/v1/users/self?access_token=secret-access-token",
+      "comment": "See https://developers.facebook.com/docs/instagram-basic-display-api/reference/user#user",
+      "uri": "https://graph.instagram.com/me?access_token=secret-access-token&fields=id,username",
       "contentFormat": "json",
       "contentJson": {
-        "data": {
-          "id": "my-id",
-          "full_name": "John Smith"
-        }
+        "id": "17841405793187218",
+        "username": "jayposiris"
+      }
+    },
+    {
+      "comment": "See https://developers.facebook.com/docs/instagram-basic-display-api/reference/user#user",
+      "uri": "https://graph.instagram.com/me?access_token=secret-access-token&fields=id,username,account_type,media_count",
+      "contentFormat": "json",
+      "contentJson": {
+        "id": "17841405793187218",
+        "username": "jayposiris",
+        "account_type": "PERSONAL",
+        "media_count": 42
       }
     }
   ]
