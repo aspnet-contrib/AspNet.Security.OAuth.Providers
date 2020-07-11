@@ -19,4 +19,4 @@ _None._
 
 | Property Name | Property Type | Description | Default Value |
 |:--|:--|:--|:--|
-| `Environment` | `SalesforceAuthenticationEnvironment` | The Salesforce environment to use. | `SalesforceAuthenticationEnvironment.Production` |
+| `Environment` | [`SalesforceAuthenticationEnvironment`](https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers/blob/dev/src/AspNet.Security.OAuth.Salesforce/SalesforceAuthenticationEnvironment.cs "SalesforceAuthenticationEnvironment enumeration") | The Salesforce environment to use. | `SalesforceAuthenticationEnvironment.Production` |

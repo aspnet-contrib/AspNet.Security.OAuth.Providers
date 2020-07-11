@@ -19,4 +19,4 @@ _None._
 
 | Property Name | Property Type | Description | Default Value |
 |:--|:--|:--|:--|
-| `Server` | `EVEOnlineAuthenticationServer` | The EVE Online server to use. | `EVEOnlineAuthenticationServer.Tranquility` |
+| `Server` | [`EVEOnlineAuthenticationServer`](https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers/blob/dev/src/AspNet.Security.OAuth.EVEOnline/EVEOnlineAuthenticationServer.cs "EVEOnlineAuthenticationServer enumeration") | The EVE Online server to use. | `EVEOnlineAuthenticationServer.Tranquility` |

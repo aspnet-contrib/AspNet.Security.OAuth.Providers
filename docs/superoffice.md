@@ -24,7 +24,7 @@ services.AddAuthentication(options => /* Auth configuration */)
 |:--|:--|:--|:--|
 | `Authority` | `string` | The Authority to use when making OpenId Connect calls. | The authority associated with the value of `Environment`. |
 | `ConfigurationManager` | `IConfigurationManager<OpenIdConnectConfiguration>?` | The configuration manager to use for the OpenId configuration. | `null` |
-| `Environment` | `SuperOfficeAuthenticationEnvironment` | The target online environment. | `SuperOfficeAuthenticationEnvironment.Development` |
+| `Environment` | [`SuperOfficeAuthenticationEnvironment`](https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers/blob/dev/src/AspNet.Security.OAuth.SuperOffice/SuperOfficeAuthenticationEnvironment.cs "SuperOfficeAuthenticationEnvironment enumeration") | The target online environment. | `SuperOfficeAuthenticationEnvironment.Development` |
 | `IncludeFunctionalRightsAsClaims` | `bool` | Whether to include functional rights as claims. | `false` |
 | `IncludeIdTokenAsClaims` | `bool` | Whether to include the ID token as a claim. | `false` |
 | `MetadataAddress` | `string` | The URL to use to get the OpenId Connect configuration. | The metadata address associated with the value of `Environment`. |

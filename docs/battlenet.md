@@ -16,7 +16,7 @@ services.AddAuthentication(options => /* Auth configuration */)
 
 | Property Name | Property Type | Description | Default Value |
 |:--|:--|:--|:--|
-| `Region` | `BattleNetAuthenticationRegion` | The region used to determine the appropriate API endpoints. | `BattleNetAuthenticationRegion.America` |
+| `Region` | [`BattleNetAuthenticationRegion`](https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers/blob/dev/src/AspNet.Security.OAuth.BattleNet/BattleNetAuthenticationRegion.cs "BattleNetAuthenticationRegion enumeration") | The region used to determine the appropriate API endpoints. | `BattleNetAuthenticationRegion.America` |
 
 ## Optional Settings
 
