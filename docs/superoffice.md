@@ -16,7 +16,7 @@ services.AddAuthentication(options => /* Auth configuration */)
 
 | Property Name | Property Type | Description | Default Value |
 |:--|:--|:--|:--|
-| `Environment` | `SuperOfficeAuthenticationEnvironment` | The target online environment. | `SuperOfficeAuthenticationEnvironment.Development` |
+| `Environment` | [`SuperOfficeAuthenticationEnvironment`](https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers/blob/dev/src/AspNet.Security.OAuth.SuperOffice/SuperOfficeAuthenticationEnvironment.cs "SuperOfficeAuthenticationEnvironment enumeration") | The target online environment. | `SuperOfficeAuthenticationEnvironment.Development` |
 
 ## Optional Settings
 

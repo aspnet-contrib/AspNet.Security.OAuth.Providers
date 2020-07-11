@@ -19,4 +19,4 @@ _None._
 
 | Property Name | Property Type | Description | Default Value |
 |:--|:--|:--|:--|
-| `ApiVersion` | `string` | The API version to use. | `20150927` |
+| `ApiVersion` | `string` | The API version to use. | `"20150927"` |

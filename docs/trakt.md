@@ -19,4 +19,4 @@ _None._
 
 | Property Name | Property Type | Description | Default Value |
 |:--|:--|:--|:--|
-| `ApiVersion` | `string` | The Trakt API version to use. | `2` |
+| `ApiVersion` | `string` | The Trakt API version to use. | `"2"` |
