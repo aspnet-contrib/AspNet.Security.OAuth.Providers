@@ -60,13 +60,15 @@ namespace AspNet.Security.OAuth.SuperOffice
         public string Authority { get; set; } = string.Empty;
 
         /// <summary>
-        /// Responsible for retrieving, caching, and refreshing the configuration from metadata.
-        /// If not provided, then one will be created using the MetadataAddress and Backchannel properties.
+        /// Gets or sets the configuration manager responsible for retrieving, caching, and refreshing the
+        /// OpenId configuration from metadata. If not provided, then one will be created using the <see cref="MetadataAddress"/>
+        /// and <see cref="RemoteAuthenticationOptions.Backchannel"/> properties.
         /// </summary>
         public IConfigurationManager<OpenIdConnectConfiguration>? ConfigurationManager { get; set; }
 
         /// <summary>
-        /// Sets the target online environment to either development, stage or production.
+        /// Gets or sets the target online environment to either development, stage or production.
+        /// The default value is <see cref="SuperOfficeAuthenticationEnvironment.Development"/>.
         /// </summary>
         public SuperOfficeAuthenticationEnvironment Environment
         {
@@ -83,22 +85,22 @@ namespace AspNet.Security.OAuth.SuperOffice
         }
 
         /// <summary>
-        /// When true user claims will include SuperOffice function rights.
+        /// Gets or sets a value indicating whether user claims will include SuperOffice function rights.
         /// </summary>
         public bool IncludeFunctionalRightsAsClaims { get; set; }
 
         /// <summary>
-        /// When true user claims will include SuperOffice id_token claims.
+        /// Gets or sets a value indicating whether user claims will include the SuperOffice <c>id_token</c> claims.
         /// </summary>
         public bool IncludeIdTokenAsClaims { get; set; }
 
         /// <summary>
-        /// Gets the sets the URI the middleware uses to obtain the OpenId Connect configuration.
+        /// Gets the URI the middleware uses to obtain the OpenId Connect configuration.
         /// </summary>
         public string MetadataAddress { get; internal set; } = string.Empty;
 
         /// <summary>
-        /// Security token validator. Default is <see cref="Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler"/>.
+        /// Gets or sets the security token validator to use.
         /// </summary>
         public JsonWebTokenHandler? SecurityTokenHandler { get; set; }
 
