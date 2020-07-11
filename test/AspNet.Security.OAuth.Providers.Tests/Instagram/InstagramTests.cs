@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 using Xunit.Abstractions;
+using static AspNet.Security.OAuth.Instagram.InstagramAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.Instagram
 {
@@ -28,12 +29,39 @@ namespace AspNet.Security.OAuth.Instagram
         }
 
         [Theory]
-        [InlineData(ClaimTypes.NameIdentifier, "my-id")]
-        [InlineData(ClaimTypes.Name, "John Smith")]
+        [InlineData(ClaimTypes.Name, "jayposiris")]
+        [InlineData(ClaimTypes.NameIdentifier, "17841405793187218")]
         public async Task Can_Sign_In_Using_Instagram(string claimType, string claimValue)
         {
             // Arrange
             using var server = CreateTestServer();
+
+            // Act
+            var claims = await AuthenticateUserAsync(server);
+
+            // Assert
+            AssertClaim(claims, claimType, claimValue);
+        }
+
+        [Theory]
+        [InlineData(ClaimTypes.Name, "jayposiris")]
+        [InlineData(ClaimTypes.NameIdentifier, "17841405793187218")]
+        [InlineData(Claims.AccountType, "PERSONAL")]
+        [InlineData(Claims.MediaCount, "42")]
+        public async Task Can_Sign_In_Using_Instagram_With_Additional_Fields(string claimType, string claimValue)
+        {
+            // Arrange
+            static void ConfigureServices(IServiceCollection services)
+            {
+                services.PostConfigureAll<InstagramAuthenticationOptions>((options) =>
+                {
+                    options.Fields.Add("account_type");
+                    options.Fields.Add("media_count");
+                    options.Scope.Add("user_media");
+                });
+            }
+
+            using var server = CreateTestServer(ConfigureServices);
 
             // Act
             var claims = await AuthenticateUserAsync(server);

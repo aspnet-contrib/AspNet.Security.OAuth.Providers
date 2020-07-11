@@ -14,9 +14,17 @@ A Facebook authentication provider is [available from Microsoft](https://docs.mi
 services.AddAuthentication(options => /* Auth configuration */)
         .AddInstagram(options =>
         {
-            options.ClientId = "my-client-id";
-            options.ClientSecret = "my-client-secret";
-        });
+            options.ClientId = Configuration["Instagram:ClientId"];
+            options.ClientSecret = Configuration["Instagram:ClientSecret"];
+
+            // Optionally return the account type
+            options.Fields.Add("account_type");
+
+            // Optionally return the user's media
+            options.Fields.Add("media_count");
+            options.Fields.Add("media");
+            options.Scope.Add("user_media");
+        })
 ```
 
 ## Required Additional Settings
@@ -27,4 +35,4 @@ _None._
 
 | Property Name | Property Type | Description | Default Value |
 |:--|:--|:--|:--|
-| `UseSignedRequests` | `bool` | Indicates whether requests to the Instagram API's user information endpoint should be signed. | `false` |
+| `Fields` | `ISet<string>` | The list of list of fields and edges to retrieve from the user information endpoint. | `[ "id", "username" ]` |
