@@ -34,7 +34,7 @@ namespace AspNet.Security.OAuth.Reddit
         }
 
         /// <summary>
-        /// Gets or sets the user agent string to pass when sending requests to Reddit.
+        /// Gets or sets the User Agent string to pass when sending requests to Reddit.
         /// Setting this option is strongly recommended to prevent request throttling.
         /// For more information, visit https://github.com/reddit/reddit/wiki/API.
         /// </summary>

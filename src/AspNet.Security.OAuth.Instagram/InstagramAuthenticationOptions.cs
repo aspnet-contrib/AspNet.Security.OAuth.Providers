@@ -32,7 +32,8 @@ namespace AspNet.Security.OAuth.Instagram
         }
 
         /// <summary>
-        /// Gets or sets a boolean indicating whether the userinfo requests
+        /// Gets or sets a boolean indicating whether requests to the
+        /// URL specified by <see cref="OAuthOptions.UserInformationEndpoint"/>
         /// should be signed before being sent to the Instagram API.
         /// Enabling this option is recommended when the client application
         /// has been configured to enforce signed requests.

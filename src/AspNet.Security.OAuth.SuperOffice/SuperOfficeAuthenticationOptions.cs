@@ -13,6 +13,7 @@ using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Protocols;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
+using static AspNet.Security.OAuth.SuperOffice.SuperOfficeAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.SuperOffice
 {
@@ -32,23 +33,23 @@ namespace AspNet.Security.OAuth.SuperOffice
             CallbackPath = SuperOfficeAuthenticationDefaults.CallbackPath;
             Scope.Add("openid");
 
-            ClaimActions.MapJsonKey(ClaimTypes.Name, SuperOfficeAuthenticationConstants.PrincipalNames.FullName);
+            ClaimActions.MapJsonKey(ClaimTypes.Name, PrincipalNames.FullName);
 
-            ClaimActions.MapJsonKey(SuperOfficeAuthenticationConstants.ClaimNames.AssociateId, SuperOfficeAuthenticationConstants.PrincipalNames.AssociateId);
-            ClaimActions.MapJsonKey(SuperOfficeAuthenticationConstants.ClaimNames.Email, SuperOfficeAuthenticationConstants.PrincipalNames.EmailAddress);
-            ClaimActions.MapJsonKey(SuperOfficeAuthenticationConstants.ClaimNames.UserPrincipalName, SuperOfficeAuthenticationConstants.PrincipalNames.Associate);
+            ClaimActions.MapJsonKey(ClaimNames.AssociateId, PrincipalNames.AssociateId);
+            ClaimActions.MapJsonKey(ClaimNames.Email, PrincipalNames.EmailAddress);
+            ClaimActions.MapJsonKey(ClaimNames.UserPrincipalName, PrincipalNames.Associate);
 
-            ClaimActions.MapJsonKey(SuperOfficeAuthenticationConstants.PrincipalNames.BusinessId, SuperOfficeAuthenticationConstants.PrincipalNames.BusinessId);
-            ClaimActions.MapJsonKey(SuperOfficeAuthenticationConstants.PrincipalNames.CategoryId, SuperOfficeAuthenticationConstants.PrincipalNames.CategoryId);
-            ClaimActions.MapJsonKey(SuperOfficeAuthenticationConstants.PrincipalNames.ContactId, SuperOfficeAuthenticationConstants.PrincipalNames.ContactId);
-            ClaimActions.MapJsonKey(SuperOfficeAuthenticationConstants.PrincipalNames.ContextIdentifier, SuperOfficeAuthenticationConstants.PrincipalNames.DatabaseContextIdentifier);
-            ClaimActions.MapJsonKey(SuperOfficeAuthenticationConstants.PrincipalNames.CountryId, SuperOfficeAuthenticationConstants.PrincipalNames.CountryId);
-            ClaimActions.MapJsonKey(SuperOfficeAuthenticationConstants.PrincipalNames.GroupId, SuperOfficeAuthenticationConstants.PrincipalNames.GroupId);
-            ClaimActions.MapJsonKey(SuperOfficeAuthenticationConstants.PrincipalNames.HomeCountryId, SuperOfficeAuthenticationConstants.PrincipalNames.HomeCountryId);
-            ClaimActions.MapJsonKey(SuperOfficeAuthenticationConstants.PrincipalNames.PersonId, SuperOfficeAuthenticationConstants.PrincipalNames.PersonId);
-            ClaimActions.MapJsonKey(SuperOfficeAuthenticationConstants.PrincipalNames.RoleName, SuperOfficeAuthenticationConstants.PrincipalNames.RoleName);
-            ClaimActions.MapJsonKey(SuperOfficeAuthenticationConstants.PrincipalNames.RoleId, SuperOfficeAuthenticationConstants.PrincipalNames.RoleId);
-            ClaimActions.MapJsonKey(SuperOfficeAuthenticationConstants.PrincipalNames.SecondaryGroups, SuperOfficeAuthenticationConstants.PrincipalNames.SecondaryGroups);
+            ClaimActions.MapJsonKey(PrincipalNames.BusinessId, PrincipalNames.BusinessId);
+            ClaimActions.MapJsonKey(PrincipalNames.CategoryId, PrincipalNames.CategoryId);
+            ClaimActions.MapJsonKey(PrincipalNames.ContactId, PrincipalNames.ContactId);
+            ClaimActions.MapJsonKey(PrincipalNames.ContextIdentifier, PrincipalNames.DatabaseContextIdentifier);
+            ClaimActions.MapJsonKey(PrincipalNames.CountryId, PrincipalNames.CountryId);
+            ClaimActions.MapJsonKey(PrincipalNames.GroupId, PrincipalNames.GroupId);
+            ClaimActions.MapJsonKey(PrincipalNames.HomeCountryId, PrincipalNames.HomeCountryId);
+            ClaimActions.MapJsonKey(PrincipalNames.PersonId, PrincipalNames.PersonId);
+            ClaimActions.MapJsonKey(PrincipalNames.RoleName, PrincipalNames.RoleName);
+            ClaimActions.MapJsonKey(PrincipalNames.RoleId, PrincipalNames.RoleId);
+            ClaimActions.MapJsonKey(PrincipalNames.SecondaryGroups, PrincipalNames.SecondaryGroups);
 
             // Add a custom claim action to map FunctionRights to claims
             ClaimActions.Add(new SuperOfficeFunctionalRightsClaimAction(this));
@@ -60,13 +61,15 @@ namespace AspNet.Security.OAuth.SuperOffice
         public string Authority { get; set; } = string.Empty;
 
         /// <summary>
-        /// Responsible for retrieving, caching, and refreshing the configuration from metadata.
-        /// If not provided, then one will be created using the MetadataAddress and Backchannel properties.
+        /// Gets or sets the configuration manager responsible for retrieving, caching, and refreshing the
+        /// OpenId configuration from metadata. If not provided, then one will be created using the <see cref="MetadataAddress"/>
+        /// and <see cref="RemoteAuthenticationOptions.Backchannel"/> properties.
         /// </summary>
         public IConfigurationManager<OpenIdConnectConfiguration>? ConfigurationManager { get; set; }
 
         /// <summary>
-        /// Sets the target online environment to either development, stage or production.
+        /// Gets or sets the target online environment to either development, stage or production.
+        /// The default value is <see cref="SuperOfficeAuthenticationEnvironment.Development"/>.
         /// </summary>
         public SuperOfficeAuthenticationEnvironment Environment
         {
@@ -83,22 +86,22 @@ namespace AspNet.Security.OAuth.SuperOffice
         }
 
         /// <summary>
-        /// When true user claims will include SuperOffice function rights.
+        /// Gets or sets a value indicating whether user claims will include SuperOffice function rights.
         /// </summary>
         public bool IncludeFunctionalRightsAsClaims { get; set; }
 
         /// <summary>
-        /// When true user claims will include SuperOffice id_token claims.
+        /// Gets or sets a value indicating whether user claims will include the SuperOffice <c>id_token</c> claims.
         /// </summary>
         public bool IncludeIdTokenAsClaims { get; set; }
 
         /// <summary>
-        /// Gets the sets the URI the middleware uses to obtain the OpenId Connect configuration.
+        /// Gets the URI the middleware uses to obtain the OpenId Connect configuration.
         /// </summary>
         public string MetadataAddress { get; internal set; } = string.Empty;
 
         /// <summary>
-        /// Security token validator. Default is <see cref="Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler"/>.
+        /// Gets or sets the security token validator to use.
         /// </summary>
         public JsonWebTokenHandler? SecurityTokenHandler { get; set; }
 
@@ -148,26 +151,26 @@ namespace AspNet.Security.OAuth.SuperOffice
             string env = GetEnvironment();
 
             AuthorizationEndpoint = string.Format(CultureInfo.InvariantCulture,
-                SuperOfficeAuthenticationConstants.FormatStrings.AuthorizeEndpoint,
+                FormatStrings.AuthorizeEndpoint,
                 env);
 
             TokenEndpoint = string.Format(CultureInfo.InvariantCulture,
-                SuperOfficeAuthenticationConstants.FormatStrings.TokenEndpoint,
+                FormatStrings.TokenEndpoint,
                 env);
 
             ClaimsIssuer = string.Format(CultureInfo.InvariantCulture,
-                SuperOfficeAuthenticationConstants.FormatStrings.ClaimsIssuer,
+                FormatStrings.ClaimsIssuer,
                 env);
 
             // UserInformationEndpoint will include context identifier after authentication in SuperOfficeAuthenticationHandler.CreateTicketAsync
-            UserInformationEndpoint = string.Concat(ClaimsIssuer, SuperOfficeAuthenticationConstants.FormatStrings.UserInfoEndpoint);
+            UserInformationEndpoint = string.Concat(ClaimsIssuer, FormatStrings.UserInfoEndpoint);
 
             MetadataAddress = string.Format(CultureInfo.InvariantCulture,
-                SuperOfficeAuthenticationConstants.FormatStrings.MetadataEndpoint,
+                FormatStrings.MetadataEndpoint,
                 env);
 
             Authority = string.Format(CultureInfo.InvariantCulture,
-                SuperOfficeAuthenticationConstants.FormatStrings.Authority,
+                FormatStrings.Authority,
                 env);
         }
     }
