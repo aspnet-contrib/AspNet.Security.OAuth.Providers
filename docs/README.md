@@ -33,7 +33,7 @@ provider name you are integrating. So for Spotify, it would be `AddSpotify()`.
 ## Provider-Specific Documentation
 
 Any providers listed here have additional configuration that is either required
-or optional beyond the standard built-in OAuth configuration settings.
+or optional beyond the standard built-in [OAuth configuration settings](https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.authentication.oauth.oauthoptions "OAuthOptions Class").
 
 The table below lists all of the providers that provide additional configuration
 and a link to a provider-specific document for that provider. If the provider
