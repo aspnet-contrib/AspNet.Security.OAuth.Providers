@@ -102,7 +102,7 @@ This project is licensed under the **Apache License**. This means that you can u
 
 Links to the latest stable and nightly NuGet packages for each provider, as well as a link to their integration documentation are listed in the table below.
 
-Documentation for the provider's settings can be found [here](docs/README.md "Provider documentation").
+Documentation for the providers' settings can be found [here](docs/README.md "Provider documentation").
 
 If a provider you're looking for does not exist, consider making a PR to add one.
 
