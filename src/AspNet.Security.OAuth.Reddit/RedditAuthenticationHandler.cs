@@ -108,7 +108,7 @@ namespace AspNet.Security.OAuth.Reddit
                 ["code"] = context.Code
             };
 
-            request.Content = new FormUrlEncodedContent(parameters);
+            request.Content = new FormUrlEncodedContent(parameters!);
 
             using var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
             if (!response.IsSuccessStatusCode)

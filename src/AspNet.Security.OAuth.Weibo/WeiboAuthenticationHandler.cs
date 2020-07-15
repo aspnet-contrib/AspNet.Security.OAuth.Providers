@@ -66,11 +66,11 @@ namespace AspNet.Security.OAuth.Weibo
                 !identity.HasClaim(claim => claim.Type == ClaimTypes.Email) &&
                 Options.Scope.Contains("email"))
             {
-                string email = await GetEmailAsync(tokens);
+                string? email = await GetEmailAsync(tokens);
 
                 if (!string.IsNullOrEmpty(address))
                 {
-                    identity.AddClaim(new Claim(ClaimTypes.Email, email, ClaimValueTypes.String, Options.ClaimsIssuer));
+                    identity.AddClaim(new Claim(ClaimTypes.Email, email!, ClaimValueTypes.String, Options.ClaimsIssuer));
                 }
             }
 
@@ -84,7 +84,7 @@ namespace AspNet.Security.OAuth.Weibo
 
         protected override string FormatScope() => string.Join(",", Options.Scope);
 
-        protected virtual async Task<string> GetEmailAsync([NotNull] OAuthTokenResponse tokens)
+        protected virtual async Task<string?> GetEmailAsync([NotNull] OAuthTokenResponse tokens)
         {
             // See http://open.weibo.com/wiki/2/account/profile/email for more information about the /account/profile/email.json endpoint.
             string address = QueryHelpers.AddQueryString(Options.UserEmailsEndpoint, "access_token", tokens.AccessToken);

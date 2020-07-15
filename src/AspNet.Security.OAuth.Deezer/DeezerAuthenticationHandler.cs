@@ -129,7 +129,7 @@ namespace AspNet.Security.OAuth.Deezer
                 properties.Items.Add(OAuthConstants.CodeVerifierKey, codeVerifier);
 
                 using var sha256 = HashAlgorithm.Create("SHA256");
-                byte[] challengeBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(codeVerifier));
+                byte[] challengeBytes = sha256!.ComputeHash(Encoding.UTF8.GetBytes(codeVerifier));
                 parameters[OAuthConstants.CodeChallengeKey] = WebEncoders.Base64UrlEncode(challengeBytes);
                 parameters[OAuthConstants.CodeChallengeMethodKey] = OAuthConstants.CodeChallengeMethodS256;
             }

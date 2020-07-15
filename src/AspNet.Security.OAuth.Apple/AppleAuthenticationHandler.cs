@@ -176,7 +176,7 @@ namespace AspNet.Security.OAuth.Apple
 
             if (user.TryGetProperty("email", out var email))
             {
-                claims.Add(new Claim(ClaimTypes.Email, email.GetString(), ClaimValueTypes.String, ClaimsIssuer));
+                claims.Add(new Claim(ClaimTypes.Email, email.GetString() ?? string.Empty, ClaimValueTypes.String, ClaimsIssuer));
             }
 
             return claims;
