@@ -63,11 +63,11 @@ namespace AspNet.Security.OAuth.Bitbucket
                 !identity.HasClaim(claim => claim.Type == ClaimTypes.Email) &&
                 Options.Scope.Contains("email"))
             {
-                string address = await GetEmailAsync(tokens);
+                string? address = await GetEmailAsync(tokens);
 
                 if (!string.IsNullOrEmpty(address))
                 {
-                    identity.AddClaim(new Claim(ClaimTypes.Email, address, ClaimValueTypes.String, Options.ClaimsIssuer));
+                    identity.AddClaim(new Claim(ClaimTypes.Email, address!, ClaimValueTypes.String, Options.ClaimsIssuer));
                 }
             }
 
@@ -75,7 +75,7 @@ namespace AspNet.Security.OAuth.Bitbucket
             return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
         }
 
-        protected virtual async Task<string> GetEmailAsync([NotNull] OAuthTokenResponse tokens)
+        protected virtual async Task<string?> GetEmailAsync([NotNull] OAuthTokenResponse tokens)
         {
             using var request = new HttpRequestMessage(HttpMethod.Get, Options.UserEmailsEndpoint);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));

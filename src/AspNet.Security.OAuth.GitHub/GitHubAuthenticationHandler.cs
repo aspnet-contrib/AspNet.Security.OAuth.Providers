@@ -63,7 +63,7 @@ namespace AspNet.Security.OAuth.GitHub
                 !identity.HasClaim(claim => claim.Type == ClaimTypes.Email) &&
                 Options.Scope.Contains("user:email"))
             {
-                string address = await GetEmailAsync(tokens);
+                string? address = await GetEmailAsync(tokens);
 
                 if (!string.IsNullOrEmpty(address))
                 {
@@ -75,7 +75,7 @@ namespace AspNet.Security.OAuth.GitHub
             return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
         }
 
-        protected virtual async Task<string> GetEmailAsync([NotNull] OAuthTokenResponse tokens)
+        protected virtual async Task<string?> GetEmailAsync([NotNull] OAuthTokenResponse tokens)
         {
             // See https://developer.github.com/v3/users/emails/ for more information about the /user/emails endpoint.
             using var request = new HttpRequestMessage(HttpMethod.Get, Options.UserEmailsEndpoint);

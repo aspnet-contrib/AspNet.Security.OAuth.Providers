@@ -102,7 +102,7 @@ namespace AspNet.Security.OAuth.Infrastructure
                        "/me",
                        async context =>
                        {
-                           if (context.User.Identity.IsAuthenticated)
+                           if (context.User.Identity?.IsAuthenticated == true)
                            {
                                string xml = IdentityToXmlString(context.User);
                                byte[] buffer = Encoding.UTF8.GetBytes(xml);

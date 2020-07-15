@@ -67,11 +67,5 @@ namespace AspNet.Security.OAuth.Instagram
             await Options.Events.CreatingTicket(context);
             return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
         }
-
-        [Obsolete("This method is no longer called and will be removed in a future version.")]
-        protected virtual string ComputeSignature([NotNull] string address)
-        {
-            return string.Empty;
-        }
     }
 }

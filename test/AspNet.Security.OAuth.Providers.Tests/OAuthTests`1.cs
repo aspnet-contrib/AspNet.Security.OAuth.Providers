@@ -204,7 +204,8 @@ namespace AspNet.Security.OAuth
 
                 // Assert
                 result.StatusCode.ShouldBe(HttpStatusCode.OK);
-                result.Content.Headers.ContentType.MediaType.ShouldBe("text/xml");
+                result.Content.Headers.ContentType.ShouldNotBeNull();
+                result.Content.Headers.ContentType!.MediaType.ShouldBe("text/xml");
 
                 string xml = await result.Content.ReadAsStringAsync();
 

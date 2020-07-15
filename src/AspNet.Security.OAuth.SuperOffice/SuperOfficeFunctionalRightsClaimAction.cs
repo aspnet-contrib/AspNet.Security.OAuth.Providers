@@ -34,7 +34,7 @@ namespace AspNet.Security.OAuth.SuperOffice
             {
                 foreach (var functionRight in functionRights.EnumerateArray())
                 {
-                    identity.AddClaim(new Claim(SuperOfficeAuthenticationConstants.PrincipalNames.FunctionRights, functionRight.GetString()));
+                    identity.AddClaim(new Claim(SuperOfficeAuthenticationConstants.PrincipalNames.FunctionRights, functionRight.GetString() ?? string.Empty));
                 }
             }
         }

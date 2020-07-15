@@ -27,8 +27,8 @@ namespace AspNet.Security.OAuth.Gitee
             [NotNull] UrlEncoder encoder,
             [NotNull] ISystemClock clock)
             : base(options, logger, encoder, clock)
-            {
-            }
+        {
+        }
 
         protected override async Task<AuthenticationTicket> CreateTicketAsync(
             [NotNull] ClaimsIdentity identity,
@@ -63,7 +63,7 @@ namespace AspNet.Security.OAuth.Gitee
                 !identity.HasClaim(claim => claim.Type == ClaimTypes.Email) &&
                 Options.Scope.Contains("emails"))
             {
-                string address = await GetEmailAsync(tokens);
+                string? address = await GetEmailAsync(tokens);
 
                 if (!string.IsNullOrEmpty(address))
                 {
@@ -75,7 +75,7 @@ namespace AspNet.Security.OAuth.Gitee
             return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
         }
 
-        protected async Task<string> GetEmailAsync([NotNull] OAuthTokenResponse tokens)
+        protected async Task<string?> GetEmailAsync([NotNull] OAuthTokenResponse tokens)
         {
             using var request = new HttpRequestMessage(HttpMethod.Get, Options.UserEmailsEndpoint);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));

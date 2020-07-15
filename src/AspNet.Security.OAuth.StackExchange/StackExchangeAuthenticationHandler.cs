@@ -96,7 +96,7 @@ namespace AspNet.Security.OAuth.StackExchange
 
             using var request = new HttpRequestMessage(HttpMethod.Post, Options.TokenEndpoint)
             {
-                Content = new FormUrlEncodedContent(parameters)
+                Content = new FormUrlEncodedContent(parameters!)
             };
 
             using var response = await Backchannel.SendAsync(request, Context.RequestAborted);

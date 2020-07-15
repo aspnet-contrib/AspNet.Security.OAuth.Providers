@@ -77,7 +77,7 @@ namespace AspNet.Security.OAuth.VisualStudio
                 ["client_assertion_type"] = "urn:ietf:params:oauth:client-assertion-type:jwt-bearer"
             };
 
-            request.Content = new FormUrlEncodedContent(parameters);
+            request.Content = new FormUrlEncodedContent(parameters!);
 
             using var response = await Backchannel.SendAsync(request, Context.RequestAborted);
 

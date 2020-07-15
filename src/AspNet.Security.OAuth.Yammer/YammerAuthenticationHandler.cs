@@ -77,7 +77,7 @@ namespace AspNet.Security.OAuth.Yammer
                 ["grant_type"] = "authorization_code"
             };
 
-            request.Content = new FormUrlEncodedContent(parameters);
+            request.Content = new FormUrlEncodedContent(parameters!);
 
             using var response = await Backchannel.SendAsync(request, Context.RequestAborted);
             if (!response.IsSuccessStatusCode)
