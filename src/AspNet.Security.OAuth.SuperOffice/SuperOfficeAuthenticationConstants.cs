@@ -75,6 +75,11 @@ namespace AspNet.Security.OAuth.SuperOffice
             public const string PrimaryEmail = "http://schemes.superoffice.net/identity/so_primary_email_address";
 
             /// <summary>
+            /// Subject Identifier used to uniquely identity user.
+            /// </summary>
+            public const string SubjectIdentifier = "sub";
+
+            /// <summary>
             /// Identifier used to exchange for a system user ticket.
             /// </summary>
             public const string SystemToken = "http://schemes.superoffice.net/identity/system_token";
