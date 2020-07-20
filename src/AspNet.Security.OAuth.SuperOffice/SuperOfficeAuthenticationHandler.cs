@@ -107,7 +107,7 @@ namespace AspNet.Security.OAuth.SuperOffice
 
                 if (claim.Type == SuperOfficeAuthenticationConstants.ClaimNames.SubjectIdentifier)
                 {
-                    identity.AddClaim(claim);
+                    identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, claim.Value));
                     continue;
                 }
 

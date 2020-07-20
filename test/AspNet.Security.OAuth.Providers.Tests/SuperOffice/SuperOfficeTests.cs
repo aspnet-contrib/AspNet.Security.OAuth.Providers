@@ -40,6 +40,7 @@ namespace AspNet.Security.OAuth.SuperOffice
         }
 
         [Theory]
+        [InlineData(System.Security.Claims.ClaimTypes.NameIdentifier, "johm.demo.smith@superoffice.com")]
         [InlineData(SuperOfficeAuthenticationConstants.PrincipalNames.BusinessId, "4")]
         [InlineData(SuperOfficeAuthenticationConstants.PrincipalNames.CategoryId, "4")]
         [InlineData(SuperOfficeAuthenticationConstants.PrincipalNames.ContactId, "2")]

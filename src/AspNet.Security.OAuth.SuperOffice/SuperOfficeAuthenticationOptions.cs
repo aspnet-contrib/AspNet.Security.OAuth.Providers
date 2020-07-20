@@ -33,7 +33,6 @@ namespace AspNet.Security.OAuth.SuperOffice
             CallbackPath = SuperOfficeAuthenticationDefaults.CallbackPath;
             Scope.Add("openid");
 
-            ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, ClaimNames.SubjectIdentifier);
             ClaimActions.MapJsonKey(ClaimTypes.Name, PrincipalNames.FullName);
             ClaimActions.MapJsonKey(ClaimTypes.Email, PrincipalNames.EmailAddress);
 
