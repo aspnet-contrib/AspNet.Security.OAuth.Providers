@@ -105,6 +105,12 @@ namespace AspNet.Security.OAuth.SuperOffice
                     contextIdentifier = claim.Value;
                 }
 
+                if (claim.Type == SuperOfficeAuthenticationConstants.ClaimNames.SubjectIdentifier)
+                {
+                    identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, claim.Value));
+                    continue;
+                }
+
                 if (Options.IncludeIdTokenAsClaims)
                 {
                     // May be possible same claim names from UserInformationEndpoint and IdToken.

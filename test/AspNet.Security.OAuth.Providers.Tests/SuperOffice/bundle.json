@@ -23,6 +23,7 @@
         "ContactId": 2,
         "CountryId": 826,
         "DatabaseContextIdentifier": "Cust12345",
+        "EMailAddress": "johm.demo.smith@superoffice.com",
         "FunctionRights": [ "allow-bulk-export" ],
         "GroupId": 2,
         "HomeCountryId": 826,

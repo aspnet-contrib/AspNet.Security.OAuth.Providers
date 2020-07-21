@@ -34,6 +34,7 @@ namespace AspNet.Security.OAuth.SuperOffice
             Scope.Add("openid");
 
             ClaimActions.MapJsonKey(ClaimTypes.Name, PrincipalNames.FullName);
+            ClaimActions.MapJsonKey(ClaimTypes.Email, PrincipalNames.EmailAddress);
 
             ClaimActions.MapJsonKey(ClaimNames.AssociateId, PrincipalNames.AssociateId);
             ClaimActions.MapJsonKey(ClaimNames.Email, PrincipalNames.EmailAddress);
