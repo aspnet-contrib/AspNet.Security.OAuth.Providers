@@ -37,7 +37,7 @@ namespace AspNet.Security.OAuth.Deezer
 
         protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] OAuthCodeExchangeContext context)
         {
-            var tokenRequestParameters = new Dictionary<string, string>()
+            var tokenRequestParameters = new Dictionary<string, string?>()
             {
                 ["app_id"] = Options.ClientId,
                 ["secret"] = Options.ClientSecret,
@@ -112,7 +112,7 @@ namespace AspNet.Security.OAuth.Deezer
             var scopeParameter = properties.GetParameter<ICollection<string>>(OAuthChallengeProperties.ScopeKey);
             string scopes = scopeParameter != null ? FormatScope(scopeParameter) : FormatScope();
 
-            var parameters = new Dictionary<string, string>
+            var parameters = new Dictionary<string, string?>
             {
                 ["app_id"] = Options.ClientId,
                 ["redirect_uri"] = redirectUri,

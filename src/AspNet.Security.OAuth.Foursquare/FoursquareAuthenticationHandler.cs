@@ -37,7 +37,7 @@ namespace AspNet.Security.OAuth.Foursquare
         {
             // See https://developer.foursquare.com/overview/versioning
             // for more information about the mandatory "v" and "m" parameters.
-            string address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, new Dictionary<string, string>
+            string address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, new Dictionary<string, string?>
             {
                 ["m"] = "foursquare",
                 ["v"] = !string.IsNullOrEmpty(Options.ApiVersion) ? Options.ApiVersion : FoursquareAuthenticationDefaults.ApiVersion,

@@ -43,7 +43,7 @@ namespace AspNet.Security.OAuth.Odnoklassniki
             string accessSecret = GetHash(algorithm!, tokens.AccessToken + Options.ClientSecret);
             string sign = GetHash(algorithm!, $"application_key={Options.PublicSecret}format=jsonmethod=users.getCurrentUser{accessSecret}");
 
-            string address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, new Dictionary<string, string>
+            string address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, new Dictionary<string, string?>
             {
                 ["application_key"] = Options.PublicSecret ?? string.Empty,
                 ["format"] = "json",
