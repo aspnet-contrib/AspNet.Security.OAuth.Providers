@@ -36,7 +36,7 @@ namespace AspNet.Security.OAuth.Zalo
             [NotNull] OAuthTokenResponse tokens)
         {
             // See https://developers.zalo.me/docs/api/social-api/tai-lieu/thong-tin-nguoi-dung-post-28
-            string address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, new Dictionary<string, string>
+            string address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, new Dictionary<string, string?>
             {
                 ["access_token"] = tokens.AccessToken,
                 ["fields"] = "id,name,birthday,gender"
@@ -74,7 +74,7 @@ namespace AspNet.Security.OAuth.Zalo
 
         protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] OAuthCodeExchangeContext context)
         {
-            string address = QueryHelpers.AddQueryString(Options.TokenEndpoint, new Dictionary<string, string>
+            string address = QueryHelpers.AddQueryString(Options.TokenEndpoint, new Dictionary<string, string?>
             {
                 ["app_id"] = Options.ClientId,
                 ["app_secret"] = Options.ClientSecret,

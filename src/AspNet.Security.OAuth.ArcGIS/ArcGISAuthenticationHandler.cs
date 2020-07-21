@@ -38,7 +38,7 @@ namespace AspNet.Security.OAuth.ArcGIS
             [NotNull] OAuthTokenResponse tokens)
         {
             // Note: the ArcGIS API doesn't support content negotiation via headers.
-            string address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, new Dictionary<string, string>
+            string address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, new Dictionary<string, string?>
             {
                 ["f"] = "json",
                 ["token"] = tokens.AccessToken

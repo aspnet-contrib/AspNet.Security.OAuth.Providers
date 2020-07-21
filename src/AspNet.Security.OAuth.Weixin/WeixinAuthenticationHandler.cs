@@ -59,7 +59,7 @@ namespace AspNet.Security.OAuth.Weixin
             [NotNull] AuthenticationProperties properties,
             [NotNull] OAuthTokenResponse tokens)
         {
-            string address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, new Dictionary<string, string>
+            string address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, new Dictionary<string, string?>
             {
                 ["access_token"] = tokens.AccessToken,
                 ["openid"] = tokens.Response.RootElement.GetString("openid")
@@ -99,7 +99,7 @@ namespace AspNet.Security.OAuth.Weixin
 
         protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] OAuthCodeExchangeContext context)
         {
-            string address = QueryHelpers.AddQueryString(Options.TokenEndpoint, new Dictionary<string, string>()
+            string address = QueryHelpers.AddQueryString(Options.TokenEndpoint, new Dictionary<string, string?>()
             {
                 ["appid"] = Options.ClientId,
                 ["secret"] = Options.ClientSecret,
@@ -146,7 +146,7 @@ namespace AspNet.Security.OAuth.Weixin
                 addRedirectHash = true;
             }
 
-            redirectUri = QueryHelpers.AddQueryString(Options.AuthorizationEndpoint, new Dictionary<string, string>
+            redirectUri = QueryHelpers.AddQueryString(Options.AuthorizationEndpoint, new Dictionary<string, string?>
             {
                 ["appid"] = Options.ClientId,
                 ["scope"] = FormatScope(),

@@ -46,11 +46,12 @@ namespace AspNet.Security.OAuth.StackExchange
                     $"No site was specified for the {nameof(StackExchangeAuthenticationOptions.Site)} property of {nameof(StackExchangeAuthenticationOptions)}.");
             }
 
-            var queryArguments = new Dictionary<string, string>
+            var queryArguments = new Dictionary<string, string?>
             {
                 ["access_token"] = tokens.AccessToken,
                 ["site"] = Options.Site,
             };
+
             if (!string.IsNullOrEmpty(Options.RequestKey))
             {
                 queryArguments["key"] = Options.RequestKey;

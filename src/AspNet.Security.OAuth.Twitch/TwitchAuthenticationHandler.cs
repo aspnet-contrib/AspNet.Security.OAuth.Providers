@@ -32,7 +32,7 @@ namespace AspNet.Security.OAuth.Twitch
         }
 
         protected override string BuildChallengeUrl([NotNull] AuthenticationProperties properties, [NotNull] string redirectUri)
-            => QueryHelpers.AddQueryString(Options.AuthorizationEndpoint, new Dictionary<string, string>
+            => QueryHelpers.AddQueryString(Options.AuthorizationEndpoint, new Dictionary<string, string?>
             {
                 ["client_id"] = Options.ClientId,
                 ["scope"] = FormatScope(),

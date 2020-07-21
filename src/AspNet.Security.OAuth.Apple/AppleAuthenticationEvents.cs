@@ -22,7 +22,7 @@ namespace AspNet.Security.OAuth.Apple
         /// </summary>
         public Func<AppleGenerateClientSecretContext, Task> OnGenerateClientSecret { get; set; } = async context =>
         {
-            var provider = context.HttpContext.RequestServices.GetService<AppleClientSecretGenerator>();
+            var provider = context.HttpContext!.RequestServices!.GetRequiredService<AppleClientSecretGenerator>();
             context.Options.ClientSecret = await provider.GenerateAsync(context);
         };
 

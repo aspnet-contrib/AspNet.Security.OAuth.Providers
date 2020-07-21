@@ -65,7 +65,7 @@ namespace AspNet.Security.OAuth.Automatic
         protected override string BuildChallengeUrl([NotNull] AuthenticationProperties properties, [NotNull] string redirectUri)
         {
             // Note: the redirect_uri parameter is not allowed by Automatic and MUST NOT be sent.
-            return QueryHelpers.AddQueryString(Options.AuthorizationEndpoint, new Dictionary<string, string>
+            return QueryHelpers.AddQueryString(Options.AuthorizationEndpoint, new Dictionary<string, string?>
             {
                 ["client_id"] = Options.ClientId,
                 ["response_type"] = "code",

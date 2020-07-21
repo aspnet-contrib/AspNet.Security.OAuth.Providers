@@ -118,7 +118,7 @@ namespace AspNet.Security.OAuth.Shopify
                 scope = FormatScope();
             }
 
-            string url = QueryHelpers.AddQueryString(uri, new Dictionary<string, string>()
+            string url = QueryHelpers.AddQueryString(uri, new Dictionary<string, string?>()
             {
                 ["client_id"] = Options.ClientId,
                 ["scope"] = scope,
@@ -161,7 +161,7 @@ namespace AspNet.Security.OAuth.Shopify
                 // request the token. This probably isn't necessary, but it's an easy extra verification.
                 var authenticationProperties = Options.StateDataFormat.Unprotect(stateValue);
 
-                string shopNamePropertyValue = authenticationProperties.Items[ShopifyAuthenticationDefaults.ShopNameAuthenticationProperty];
+                string? shopNamePropertyValue = authenticationProperties.Items[ShopifyAuthenticationDefaults.ShopNameAuthenticationProperty];
 
                 if (!string.Equals(shopNamePropertyValue, shopDns, StringComparison.OrdinalIgnoreCase))
                 {

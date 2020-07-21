@@ -99,7 +99,7 @@ namespace AspNet.Security.OAuth.VisualStudio
 
         protected override string BuildChallengeUrl([NotNull] AuthenticationProperties properties, [NotNull] string redirectUri)
         {
-            return QueryHelpers.AddQueryString(Options.AuthorizationEndpoint, new Dictionary<string, string>
+            return QueryHelpers.AddQueryString(Options.AuthorizationEndpoint, new Dictionary<string, string?>
             {
                 ["client_id"] = Options.ClientId,
                 ["response_type"] = "Assertion",
