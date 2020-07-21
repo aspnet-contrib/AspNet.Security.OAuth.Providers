@@ -6,6 +6,7 @@
 
 using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.DependencyInjection;
@@ -40,8 +41,8 @@ namespace AspNet.Security.OAuth.SuperOffice
         }
 
         [Theory]
-        [InlineData(System.Security.Claims.ClaimTypes.NameIdentifier, "johm.demo.smith@superoffice.com")]
-        [InlineData(System.Security.Claims.ClaimTypes.Email, "johm.demo.smith@superoffice.com")]
+        [InlineData(ClaimTypes.NameIdentifier, "johm.demo.smith@superoffice.com")]
+        [InlineData(ClaimTypes.Email, "johm.demo.smith@superoffice.com")]
         [InlineData(SuperOfficeAuthenticationConstants.PrincipalNames.BusinessId, "4")]
         [InlineData(SuperOfficeAuthenticationConstants.PrincipalNames.CategoryId, "4")]
         [InlineData(SuperOfficeAuthenticationConstants.PrincipalNames.ContactId, "2")]
