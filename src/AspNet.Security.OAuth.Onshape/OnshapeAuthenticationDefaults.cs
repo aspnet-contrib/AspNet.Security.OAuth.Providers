@@ -37,16 +37,16 @@ namespace AspNet.Security.OAuth.Onshape
         /// <summary>
         /// Default value for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
         /// </summary>
-        public const string AuthorizationEndpoint = "https://cad.onshape.com/oauth/authorize";
+        public const string AuthorizationEndpoint = "https://oauth.onshape.com/oauth/authorize";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.TokenEndpoint"/>.
         /// </summary>
-        public const string TokenEndpoint = "https://cad.onshape.com/oauth/token";
+        public const string TokenEndpoint = "https://oauth.onshape.com/oauth/token";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
         /// </summary>
-        public const string UserInformationEndpoint = "https://cad.onshape.com/api/users/session";
+        public const string UserInformationEndpoint = "https://cad.onshape.com/api/users/sessioninfo";
     }
 }
