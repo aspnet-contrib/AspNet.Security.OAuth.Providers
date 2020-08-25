@@ -62,7 +62,6 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.NetCore.Analyzers" PrivateAssets="All" />
   </ItemGroup>
 
   <ItemGroup>
