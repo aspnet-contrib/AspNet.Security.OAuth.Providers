@@ -17,7 +17,7 @@ namespace AspNet.Security.OAuth.VisualStudio
         /// <summary>
         /// Default value for <see cref="AuthenticationScheme.Name"/>.
         /// </summary>
-        public const string AuthenticationScheme = "Visual Studio Online";
+        public const string AuthenticationScheme = "VisualStudioOnline";
 
         /// <summary>
         /// Default value for <see cref="AuthenticationScheme.DisplayName"/>.
