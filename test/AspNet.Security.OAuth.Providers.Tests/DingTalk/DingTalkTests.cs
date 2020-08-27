@@ -39,6 +39,7 @@ namespace AspNet.Security.OAuth.DingTalk
             {
                 // Act
                 var claims = await AuthenticateUserAsync(server);
+
                 // Assert
                 AssertClaim(claims, claimType, claimValue);
             }

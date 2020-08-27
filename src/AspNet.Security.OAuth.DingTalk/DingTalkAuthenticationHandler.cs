@@ -109,7 +109,7 @@ namespace AspNet.Security.OAuth.DingTalk
 
         protected override string FormatScope() => string.Join(",", Options.Scope);
 
-        private async Task<System.ReadOnlyMemory<byte>> CopyPayloadAsync(string propertyName, string value)
+        private static async Task<System.ReadOnlyMemory<byte>> CopyPayloadAsync(string propertyName, string value)
         {
             var bufferWriter = new ArrayBufferWriter<byte>();
 
@@ -131,7 +131,7 @@ namespace AspNet.Security.OAuth.DingTalk
             return ts.TotalMilliseconds.ToString("F0", System.Globalization.CultureInfo.InvariantCulture);
         }
 
-        private string Signature(string timestamp, string secret)
+        private static string Signature(string timestamp, string secret)
         {
             secret = secret ?? string.Empty;
             var encoding = System.Text.Encoding.UTF8;
