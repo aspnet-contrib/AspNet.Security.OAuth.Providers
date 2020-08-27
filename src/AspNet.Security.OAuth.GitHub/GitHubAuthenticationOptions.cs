@@ -19,7 +19,6 @@ namespace AspNet.Security.OAuth.GitHub
         public GitHubAuthenticationOptions()
         {
             ClaimsIssuer = GitHubAuthenticationDefaults.Issuer;
-
             CallbackPath = GitHubAuthenticationDefaults.CallbackPath;
 
             AuthorizationEndpoint = GitHubAuthenticationDefaults.AuthorizationEndpoint;
@@ -32,6 +31,11 @@ namespace AspNet.Security.OAuth.GitHub
             ClaimActions.MapJsonKey(Claims.Name, "name");
             ClaimActions.MapJsonKey(Claims.Url, "url");
         }
+
+        /// <summary>
+        /// Gets or sets the domain name to use if using a GitHub Enterprise on-premises deployment.
+        /// </summary>
+        public string? EnterpriseDomain { get; set; }
 
         /// <summary>
         /// Gets or sets the address of the endpoint exposing

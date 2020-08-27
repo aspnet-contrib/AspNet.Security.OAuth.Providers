@@ -8,7 +8,6 @@ using System.Globalization;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.AspNetCore.Http;
 using static AspNet.Security.OAuth.Discord.DiscordAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.Discord
@@ -19,14 +18,26 @@ namespace AspNet.Security.OAuth.Discord
     public class DiscordAuthenticationOptions : OAuthOptions
     {
         /// <summary>
-        /// Root Discord CDN URL path
+        /// Gets or sets the root Discord CDN URL path. The default value is <see cref="Urls.DiscordCdn"/>.
         /// </summary>
         public string DiscordCdn { get; set; } = Urls.DiscordCdn;
 
         /// <summary>
-        /// URL format of the user avatar, using string.format. Substitute {0} for DiscordCdn, {1} for User ID and {2} for Avatar hash. Default of "{0}/avatars/{1}/{2}.png"
+        /// Gets or sets the URL format string for the user avatar URL, using <see cref="string.Format(System.IFormatProvider?, string, object?[])"/>.
+        /// Substitute <c>{0}</c> for <see cref="DiscordCdn"/>, <c>{1}</c> for the user ID and <c>{2}</c> for the Avatar hash.
+        /// The default value is <see cref="Urls.AvatarUrlFormat"/>.
         /// </summary>
         public string DiscordAvatarFormat { get; set; } = Urls.AvatarUrlFormat;
+
+        /// <summary>
+        /// Gets or sets a value which controls how the authorization flow handles existing authorizations.
+        /// The default value of this property is <see langword="null"/> and the <c>prompt</c> query string
+        /// parameter will not be appended to the <see cref="OAuthOptions.AuthorizationEndpoint"/> value.
+        /// Assigning this property any value other than <see langword="null"/> or an empty string will
+        /// automatically append the <c>prompt</c> query string parameter to the <see cref="OAuthOptions.AuthorizationEndpoint"/>
+        /// value, with the specified value.
+        /// </summary>
+        public string? Prompt { get; set; }
 
         public DiscordAuthenticationOptions()
         {

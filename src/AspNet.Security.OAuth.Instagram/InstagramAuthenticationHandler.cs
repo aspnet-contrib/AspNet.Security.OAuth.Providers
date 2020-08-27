@@ -5,13 +5,9 @@
  */
 
 using System;
-using System.Diagnostics;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
-using System.Security.Cryptography;
-using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -42,13 +38,9 @@ namespace AspNet.Security.OAuth.Instagram
         {
             string address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, "access_token", tokens.AccessToken);
 
-            if (Options.UseSignedRequests)
+            if (Options.Fields.Count > 0)
             {
-                // Compute the HMAC256 signature.
-                string signature = ComputeSignature(address);
-
-                // Add the signature to the query string.
-                address = QueryHelpers.AddQueryString(address, "sig", signature);
+                address = QueryHelpers.AddQueryString(address, "fields", string.Join(",", Options.Fields));
             }
 
             using var request = new HttpRequestMessage(HttpMethod.Get, address);
@@ -70,37 +62,16 @@ namespace AspNet.Security.OAuth.Instagram
 
             var principal = new ClaimsPrincipal(identity);
             var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload.RootElement);
-            context.RunClaimActions(payload.RootElement.GetProperty("data"));
+            context.RunClaimActions();
 
             await Options.Events.CreatingTicket(context);
             return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
         }
 
+        [Obsolete("This method is no longer called and will be removed in a future version.")]
         protected virtual string ComputeSignature([NotNull] string address)
         {
-            string query = new UriBuilder(address).Query;
-
-            // Extract the parameters from the query string.
-            string[] parameters =
-                (from parameter in QueryHelpers.ParseQuery(query)
-                 orderby parameter.Key
-                 select $"{parameter.Key}={parameter.Value}").ToArray();
-
-            Debug.Assert(parameters.Length < 1, "No parameters found in query string.");
-
-            // See https://www.instagram.com/developer/secure-api-requests/
-            // for more information about the signature format.
-            byte[] bytes = Encoding.UTF8.GetBytes($"/users/self|{string.Join("|", parameters)}");
-
-            // Compute the HMAC256 signature.
-            byte[] key = Encoding.UTF8.GetBytes(Options.ClientSecret);
-
-            using var algorithm = new HMACSHA256(key);
-
-            byte[] hash = algorithm.ComputeHash(bytes);
-
-            // Convert the hash to its lowercased hexadecimal representation.
-            return BitConverter.ToString(hash).Replace("-", string.Empty, StringComparison.Ordinal).ToLowerInvariant();
+            return string.Empty;
         }
     }
 }

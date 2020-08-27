@@ -25,7 +25,7 @@ namespace AspNet.Security.OAuth.Strava
             TokenEndpoint = StravaAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = StravaAuthenticationDefaults.UserInformationEndpoint;
 
-            Scope.Add("public");
+            Scope.Add("read");
 
             ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
             ClaimActions.MapJsonKey(ClaimTypes.Name, "username");

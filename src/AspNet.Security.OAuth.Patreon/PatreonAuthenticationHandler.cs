@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -34,7 +35,19 @@ namespace AspNet.Security.OAuth.Patreon
             [NotNull] AuthenticationProperties properties,
             [NotNull] OAuthTokenResponse tokens)
         {
-            using var request = new HttpRequestMessage(HttpMethod.Get, Options.UserInformationEndpoint);
+            string endpoint = Options.UserInformationEndpoint;
+
+            if (Options.Fields.Count > 0)
+            {
+                endpoint = QueryHelpers.AddQueryString(endpoint, "fields[user]", string.Join(",", Options.Fields));
+            }
+
+            if (Options.Includes.Count > 0)
+            {
+                endpoint = QueryHelpers.AddQueryString(endpoint, "include", string.Join(",", Options.Includes));
+            }
+
+            using var request = new HttpRequestMessage(HttpMethod.Get, endpoint);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", tokens.AccessToken);
 

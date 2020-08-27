@@ -57,6 +57,7 @@ namespace Mvc.Client
             {
                 options.ClientId = Configuration["GitHub:ClientId"];
                 options.ClientSecret = Configuration["GitHub:ClientSecret"];
+                options.EnterpriseDomain = Configuration["GitHub:EnterpriseDomain"];
                 options.Scope.Add("user:email");
             })
 

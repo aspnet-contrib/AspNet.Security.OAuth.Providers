@@ -18,7 +18,7 @@ namespace AspNet.Security.OAuth.LinkedIn
 {
     public class LinkedInTests : OAuthTests<LinkedInAuthenticationOptions>
     {
-        private Action<LinkedInAuthenticationOptions>? additionalConfiguration = null;
+        private Action<LinkedInAuthenticationOptions>? additionalConfiguration;
 
         public LinkedInTests(ITestOutputHelper outputHelper)
         {

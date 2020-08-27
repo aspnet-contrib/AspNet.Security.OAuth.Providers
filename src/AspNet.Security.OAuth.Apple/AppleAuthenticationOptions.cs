@@ -30,6 +30,11 @@ namespace AspNet.Security.OAuth.Apple
 
             Scope.Add("name");
             Scope.Add("email");
+
+            // Add a custom claim action that maps the email claim from the ID token if
+            // it was not otherwise provided in the user endpoint response.
+            // See https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers/issues/407
+            ClaimActions.Add(new AppleEmailClaimAction(this));
         }
 
         /// <summary>

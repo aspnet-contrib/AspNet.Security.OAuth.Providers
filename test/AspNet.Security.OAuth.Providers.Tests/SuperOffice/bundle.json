@@ -1,0 +1,101 @@
+{
+  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
+  "items": [
+    {
+      "comment": "See https://community.superoffice.com/en/developer/create-apps/concepts/authentication/",
+      "uri": "https://sod.superoffice.com/login/common/oauth/tokens",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "8A:Cust12345.secret-access-token",
+        "expires_in": "300",
+        "id_token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqb2htLmRlbW8uc21pdGhAc3VwZXJvZmZpY2UuY29tIiwibmFtZSI6IkpvaG4gU21pdGgiLCJpc3MiOiJodHRwczovL3NvZC5zdXBlcm9mZmljZS5jb20iLCJpYXQiOjE5MjQzOTA4MDAsImV4cCI6MTkyNDM5MDgwMCwiYXVkIjoiZ2c0NTQ5MThkNzViMWI1MzEwMTA2NWMxNmVlNTExMjMiLCJodHRwOi8vc2NoZW1lcy5zdXBlcm9mZmljZS5uZXQvaWRlbnRpdHkvY3R4IjoiQ3VzdDEyMzQ1In0.XhHllwP6aRR4ZfXj1GlBxCEKKBldYkXef70eX4cjrvlYNLopk62nPnGl6-MxLqjrGHyDIHUo79K3p4_TbDnik2S6FYTeQS_BGNfXC9IuLxuuXnSjU-qhuHpUp1bMt9SBZkz91xDERkqEaTE3E6Q7WLmKAvKapXyJRas3DgAWUfc",
+        "refresh_token": "secret-refresh-token",
+        "token_type": "bearer"
+      }
+    },
+    {
+      "uri": "https://sod.superoffice.com/Cust12345/api/v1/user/currentPrincipal",
+      "contentFormat": "json",
+      "contentJson": {
+        "BusinessId": 4,
+        "CategoryId": 4,
+        "ContactId": 2,
+        "CountryId": 826,
+        "DatabaseContextIdentifier": "Cust12345",
+        "EMailAddress": "johm.demo.smith@superoffice.com",
+        "FunctionRights": [ "allow-bulk-export" ],
+        "GroupId": 2,
+        "HomeCountryId": 826,
+        "PersonId": 5,
+        "RoleId": 1,
+        "RoleName": "User level 0",
+        "SecondaryGroups": 2
+      }
+    },
+    {
+      "comment": "https://community.superoffice.com/en/content/content/online/superoffice-online-open-id-connect/",
+      "uri": "https://sod.superoffice.com/login/.well-known/openid-configuration",
+      "method": "GET",
+      "contentFormat": "json",
+      "contentJson": {
+        "issuer": "https://sod.superoffice.com",
+        "authorization_endpoint": "https://sod.superoffice.com/login/common/oauth/authorize",
+        "token_endpoint": "https://sod.superoffice.com/login/common/oauth/tokens",
+        "end_session_endpoint": "https://sod.superoffice.com/login/logout",
+        "jwks_uri": "https://sod.superoffice.com/login/.well-known/jwks",
+        "scopes_supported": [
+          "openid"
+        ],
+        "response_modes_supported": [
+          "form_post",
+          "fragment",
+          "query"
+        ],
+        "response_types_supported": [
+          "code",
+          "id_token",
+          "code id_token",
+          "token id_token",
+          "token"
+        ],
+        "subject_types_supported": [
+          "public"
+        ],
+        "id_token_signing_alg_values_supported": [
+          "RS256"
+        ],
+        "token_endpoint_auth_methods_supported": [
+          "client_secret_post",
+          "client_secret_basic"
+        ],
+        "grant_types_supported": [
+          "implicit",
+          "authorization_code",
+          "refresh_token"
+        ],
+        "revocation_endpoint": "https://sod.superoffice.com/login/common/oauth/revoke"
+      }
+    },
+    {
+      "comment": "https://community.superoffice.com/en/content/content/online/superoffice-online-open-id-connect/",
+      "uri": "https://sod.superoffice.com/login/.well-known/jwks",
+      "method": "GET",
+      "contentFormat": "json",
+      "contentJson": {
+        "keys": [
+          {
+            "kty": "RSA",
+            "use": "sig",
+            "alg": "RS256",
+            "n": "o91XgZtL5WFwiz3jJAEhn2qWsMXRD1f9QJESXro2JIGeAr6jWRvFO8PC0J78PMe46abHDtYKSo49rJZNumADsrYEzUF_FWmvcB9yhEEAQoG9478SYatzzhgUUEebZ4ob5jJpAxNMCzbDJ_8w5rMXJJqy0lI4vUl6rj9akr29nrM",
+            "e": "AQAB",
+            "x5c": [
+              "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCj3VeBm0vlYXCLPeMkASGfapawxdEPV/1AkRJeujYkgZ4CvqNZG8U7w8LQnvw8x7jppscO1gpKjj2slk26YAOytgTNQX8Vaa9wH3KEQQBCgb3jvxJhq3POGBRQR5tnihvmMmkDE0wLNsMn/zDmsxckmrLSUji9SXquP1qSvb2eswIDAQAB"
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

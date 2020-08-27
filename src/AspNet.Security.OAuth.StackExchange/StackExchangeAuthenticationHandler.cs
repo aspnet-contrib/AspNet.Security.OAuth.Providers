@@ -85,16 +85,18 @@ namespace AspNet.Security.OAuth.StackExchange
 
         protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] OAuthCodeExchangeContext context)
         {
+            var parameters = new Dictionary<string, string>
+            {
+                ["client_id"] = Options.ClientId,
+                ["redirect_uri"] = context.RedirectUri,
+                ["client_secret"] = Options.ClientSecret,
+                ["code"] = context.Code,
+                ["grant_type"] = "authorization_code"
+            };
+
             using var request = new HttpRequestMessage(HttpMethod.Post, Options.TokenEndpoint)
             {
-                Content = new FormUrlEncodedContent(new Dictionary<string, string>
-                {
-                    ["client_id"] = Options.ClientId,
-                    ["redirect_uri"] = context.RedirectUri,
-                    ["client_secret"] = Options.ClientSecret,
-                    ["code"] = context.Code,
-                    ["grant_type"] = "authorization_code"
-                })
+                Content = new FormUrlEncodedContent(parameters)
             };
 
             using var response = await Backchannel.SendAsync(request, Context.RequestAborted);
@@ -117,7 +119,7 @@ namespace AspNet.Security.OAuth.StackExchange
             return OAuthTokenResponse.Success(copy);
         }
 
-        private async Task<JsonDocument> CopyPayloadAsync(Dictionary<string, StringValues> content)
+        private static async Task<JsonDocument> CopyPayloadAsync(Dictionary<string, StringValues> content)
         {
             var bufferWriter = new ArrayBufferWriter<byte>();
 

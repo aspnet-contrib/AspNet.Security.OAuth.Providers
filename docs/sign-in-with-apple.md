@@ -71,3 +71,17 @@ Below are links to a number of other documentation sources, blog posts and sampl
   * [_"What is Sign In with Apple?_](https://auth0.com/blog/what-is-sign-in-with-apple-a-new-identity-provider/ "Sign In with Apple: Learn About the New Identity Provider - auth0.com")
   * [_"Prototyping Sign In with Apple for ASP.NET Core"_](https://blog.martincostello.com/sign-in-with-apple-prototype-for-aspnet-core/ "Prototyping Sign In with Apple for ASP.NET Core")
   * [Sign In with Apple demo app](https://signinwithapple.azurewebsites.net/ "Sign In with Apple demo app - signinwithapple.azurewebsites.net")
+
+## Optional Provider Settings
+
+| Property Name | Property Type | Description | Default Value |
+|:--|:--|:--|:--|
+| `ClientSecretExpiresAfter` | `TimeSpan` | The period of time after which generated client secrets expire if `GenerateClientSecret` is set to `true`. | 6 months |
+| `GenerateClientSecret` | `bool` | Whether to automatically generate a client secret. | `false` |
+| `KeyId` | `string?` | The optional ID for your Sign in with Apple private key. | `null` |
+| `PublicKeyCacheLifetime` | `TimeSpan` | The default period of time to cache Apple public key(s) for. | `TimeSpan.FromMinutes(15)` |
+| `PublicKeyEndpoint` | `string` | The URI to use to retrieve the Apple public keys. | `AppleAuthenticationDefaults.PublicKeyEndpoint` |
+| `PrivateKeyBytes` | `Func<string, Task<byte[]>>?` | An optional delegate to use to get the raw bytes of the client's private key in PKCS #8 format. | `null` |
+| `TeamId` | `string` | The Team ID for your Apple Developer account. | `""` |
+| `TokenAudience` | `string` | The audience used for tokens. | `AppleAuthenticationConstants.Audience` |
+| `ValidateTokens` | `bool` | Whether to validate tokens using Apple's public key. | `true` |

@@ -25,7 +25,6 @@ namespace AspNet.Security.OAuth.Odnoklassniki
         public OdnoklassnikiAuthenticationOptions()
         {
             ClaimsIssuer = OdnoklassnikiAuthenticationDefaults.Issuer;
-
             CallbackPath = OdnoklassnikiAuthenticationDefaults.CallbackPath;
 
             AuthorizationEndpoint = OdnoklassnikiAuthenticationDefaults.AuthorizationEndpoint;
@@ -48,7 +47,7 @@ namespace AspNet.Security.OAuth.Odnoklassniki
         }
 
         /// <summary>
-        /// Public App Key from application registration email.
+        /// Gets or sets the Public App Key from the application registration email.
         /// </summary>
         public string? PublicSecret { get; set; }
     }

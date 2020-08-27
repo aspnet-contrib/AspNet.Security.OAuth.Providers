@@ -23,5 +23,11 @@ namespace AspNet.Security.OAuth.Discord
             public const string AvatarUrl = "urn:discord:avatar:url";
             public const string Discriminator = "urn:discord:user:discriminator";
         }
+
+        public static class UrlQueryParameterValues
+        {
+            public const string Consent = "consent";
+            public const string None = "none";
+        }
     }
 }

@@ -38,7 +38,7 @@ namespace AspNet.Security.OAuth.QQ
         }
 
         /// <summary>
-        /// Gets or sets the URL of the user identification endpoint (aka "OpenID endpoint").
+        /// Gets or sets the URL of the user identification endpoint (a.k.a. the "OpenID endpoint").
         /// </summary>
         public string UserIdentificationEndpoint { get; set; }
     }

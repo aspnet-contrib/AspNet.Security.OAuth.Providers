@@ -39,11 +39,11 @@ namespace AspNet.Security.OAuth.Patreon
         /// <summary>
         /// Default value for <see cref="OAuthOptions.TokenEndpoint"/>.
         /// </summary>
-        public const string TokenEndpoint = "https://api.patreon.com/oauth2/token";
+        public const string TokenEndpoint = "https://www.patreon.com/api/oauth2/token";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
         /// </summary>
-        public const string UserInformationEndpoint = "https://api.patreon.com/oauth2/api/current_user";
+        public const string UserInformationEndpoint = "https://www.patreon.com/api/oauth2/v2/identity";
     }
 }

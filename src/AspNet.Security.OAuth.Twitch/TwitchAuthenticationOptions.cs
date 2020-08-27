@@ -42,7 +42,7 @@ namespace AspNet.Security.OAuth.Twitch
         }
 
         /// <summary>
-        /// Gets or sets a boolean indicating whether the "force_verify=true" flag should be sent to Twitch.
+        /// Gets or sets a value indicating whether the "force_verify=true" flag should be sent to Twitch.
         /// When set to <c>true</c>, Twitch displays the consent screen for every authorization request.
         /// When left to <c>false</c>, the consent screen is skipped if the user is already logged in.
         /// </summary>
