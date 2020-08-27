@@ -31,6 +31,7 @@ public void Configure(IApplicationBuilder app)
 }
 ```
 
+
 See the [/samples](https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers/tree/dev/samples) directory for a complete sample **using ASP.NET Core MVC and supporting multiple social providers**.
 
 ## Contributing
