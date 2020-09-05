@@ -37,6 +37,7 @@ x64/
 
 *_i.c
 *_p.c
+*.binlog
 *.ilk
 *.meta
 *.obj
