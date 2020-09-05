@@ -169,6 +169,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "eng", "eng", "{5D188043-25D
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".vscode", ".vscode", "{ED9006DA-AF38-4629-97F2-DE54395A8A9C}"
 	ProjectSection(SolutionItems) = preProject
+		.vscode\extensions.json = .vscode\extensions.json
 		.vscode\launch.json = .vscode\launch.json
 		.vscode\tasks.json = .vscode\tasks.json
 	EndProjectSection
