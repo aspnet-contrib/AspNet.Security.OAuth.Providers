@@ -79,7 +79,7 @@ namespace AspNet.Security.OAuth.Weibo
             context.RunClaimActions();
 
             await Options.Events.CreatingTicket(context);
-            return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
+            return new AuthenticationTicket(context.Principal!, context.Properties, Scheme.Name);
         }
 
         protected override string FormatScope() => string.Join(",", Options.Scope);

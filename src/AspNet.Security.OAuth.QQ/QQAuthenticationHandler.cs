@@ -83,7 +83,7 @@ namespace AspNet.Security.OAuth.QQ
             context.RunClaimActions();
 
             await Options.Events.CreatingTicket(context);
-            return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
+            return new AuthenticationTicket(context.Principal!, context.Properties, Scheme.Name);
         }
 
         protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] OAuthCodeExchangeContext context)
@@ -144,7 +144,7 @@ namespace AspNet.Security.OAuth.QQ
 
             using var payload = JsonDocument.Parse(body);
 
-            return payload.RootElement.GetString("openid");
+            return payload.RootElement.GetString("openid") ?? string.Empty;
         }
 
         protected override string FormatScope() => string.Join(",", Options.Scope);

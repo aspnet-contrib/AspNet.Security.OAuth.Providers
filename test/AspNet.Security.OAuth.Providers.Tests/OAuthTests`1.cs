@@ -212,7 +212,7 @@ namespace AspNet.Security.OAuth
                 element = XElement.Parse(xml);
             }
 
-            element.Name.ShouldBe("claims");
+            element.Name!.ShouldBe("claims"!);
             element.Elements("claim").Count().ShouldBeGreaterThanOrEqualTo(1);
 
             var claims = new List<Claim>();
@@ -221,10 +221,10 @@ namespace AspNet.Security.OAuth
             {
                 claims.Add(
                     new Claim(
-                        claim.Attribute("type").Value,
-                        claim.Attribute("value").Value,
-                        claim.Attribute("valueType").Value,
-                        claim.Attribute("issuer").Value));
+                        claim.Attribute("type"!) !.Value,
+                        claim.Attribute("value"!) !.Value,
+                        claim.Attribute("valueType"!) !.Value,
+                        claim.Attribute("issuer"!) !.Value));
             }
 
             return claims.ToDictionary((key) => key.Type, (value) => value);

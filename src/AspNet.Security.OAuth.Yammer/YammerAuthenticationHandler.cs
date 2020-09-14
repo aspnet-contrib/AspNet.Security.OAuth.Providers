@@ -60,7 +60,7 @@ namespace AspNet.Security.OAuth.Yammer
 
             await Options.Events.CreatingTicket(context);
 
-            return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
+            return new AuthenticationTicket(context.Principal!, context.Properties, Scheme.Name);
         }
 
         protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] OAuthCodeExchangeContext context)
@@ -95,13 +95,13 @@ namespace AspNet.Security.OAuth.Yammer
             // with the OAuth2 generic middleware, a compliant JSON payload is generated manually.
             // See https://developer.yammer.com/docs/oauth-2 for more information about this process.
             using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
-            string accessToken = payload.RootElement.GetProperty("access_token").GetString("token");
+            string? accessToken = payload.RootElement.GetProperty("access_token").GetString("token");
 
             var token = await CreateAccessTokenAsync(accessToken);
             return OAuthTokenResponse.Success(token);
         }
 
-        private static async Task<JsonDocument> CreateAccessTokenAsync(string accessToken)
+        private static async Task<JsonDocument> CreateAccessTokenAsync(string? accessToken)
         {
             var bufferWriter = new ArrayBufferWriter<byte>();
 

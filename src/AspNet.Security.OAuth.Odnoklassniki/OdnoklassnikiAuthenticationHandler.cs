@@ -74,7 +74,7 @@ namespace AspNet.Security.OAuth.Odnoklassniki
             context.RunClaimActions();
 
             await Options.Events.CreatingTicket(context);
-            return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
+            return new AuthenticationTicket(context.Principal!, context.Properties, Scheme.Name);
         }
 
         private static string GetHash(HashAlgorithm algorithm, string input)

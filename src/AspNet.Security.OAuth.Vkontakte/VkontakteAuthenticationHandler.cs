@@ -71,7 +71,7 @@ namespace AspNet.Security.OAuth.Vkontakte
             context.RunClaimActions(tokens.Response.RootElement);
 
             await Options.Events.CreatingTicket(context);
-            return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
+            return new AuthenticationTicket(context.Principal!, context.Properties, Scheme.Name);
         }
     }
 }

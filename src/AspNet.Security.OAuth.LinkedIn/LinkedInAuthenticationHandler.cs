@@ -81,7 +81,7 @@ namespace AspNet.Security.OAuth.LinkedIn
             }
 
             await Options.Events.CreatingTicket(context);
-            return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
+            return new AuthenticationTicket(context.Principal!, context.Properties, Scheme.Name);
         }
 
         protected virtual async Task<string?> GetEmailAsync([NotNull] OAuthTokenResponse tokens)

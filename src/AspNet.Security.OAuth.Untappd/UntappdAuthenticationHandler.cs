@@ -57,7 +57,7 @@ namespace AspNet.Security.OAuth.Untappd
             context.RunClaimActions(payload.RootElement.GetProperty("user"));
 
             await Options.Events.CreatingTicket(context);
-            return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
+            return new AuthenticationTicket(context.Principal!, context.Properties, Scheme.Name);
         }
     }
 }
