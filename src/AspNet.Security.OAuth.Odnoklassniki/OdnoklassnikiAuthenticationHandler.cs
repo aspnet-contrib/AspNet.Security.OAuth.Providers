@@ -4,8 +4,8 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
@@ -39,9 +39,8 @@ namespace AspNet.Security.OAuth.Odnoklassniki
             [NotNull] AuthenticationProperties properties,
             [NotNull] OAuthTokenResponse tokens)
         {
-            using var algorithm = HashAlgorithm.Create("MD5");
-            string accessSecret = GetHash(algorithm!, tokens.AccessToken + Options.ClientSecret);
-            string sign = GetHash(algorithm!, $"application_key={Options.PublicSecret}format=jsonmethod=users.getCurrentUser{accessSecret}");
+            string accessSecret = GetMD5Hash(tokens.AccessToken + Options.ClientSecret);
+            string sign = GetMD5Hash($"application_key={Options.PublicSecret}format=jsonmethod=users.getCurrentUser{accessSecret}");
 
             string address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, new Dictionary<string, string?>
             {
@@ -77,16 +76,13 @@ namespace AspNet.Security.OAuth.Odnoklassniki
             return new AuthenticationTicket(context.Principal!, context.Properties, Scheme.Name);
         }
 
-        private static string GetHash(HashAlgorithm algorithm, string input)
+        private static string GetMD5Hash(string input)
         {
-            var builder = new StringBuilder();
+#pragma warning disable CA5351
+            byte[] hash = MD5.HashData(Encoding.UTF8.GetBytes(input));
+#pragma warning restore CA5351
 
-            foreach (byte b in algorithm.ComputeHash(Encoding.UTF8.GetBytes(input)))
-            {
-                builder.Append(b.ToString("x2", CultureInfo.InvariantCulture));
-            }
-
-            return builder.ToString();
+            return Convert.ToHexString(hash).ToLowerInvariant();
         }
     }
 }

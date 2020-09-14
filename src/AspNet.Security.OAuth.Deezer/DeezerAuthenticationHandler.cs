@@ -128,8 +128,7 @@ namespace AspNet.Security.OAuth.Deezer
                 // Store this for use during the code redemption.
                 properties.Items.Add(OAuthConstants.CodeVerifierKey, codeVerifier);
 
-                using var sha256 = HashAlgorithm.Create("SHA256");
-                byte[] challengeBytes = sha256!.ComputeHash(Encoding.UTF8.GetBytes(codeVerifier));
+                byte[] challengeBytes = SHA256.HashData(Encoding.UTF8.GetBytes(codeVerifier));
                 parameters[OAuthConstants.CodeChallengeKey] = WebEncoders.Base64UrlEncode(challengeBytes);
                 parameters[OAuthConstants.CodeChallengeMethodKey] = OAuthConstants.CodeChallengeMethodS256;
             }
