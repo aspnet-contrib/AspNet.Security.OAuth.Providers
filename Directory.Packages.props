@@ -4,10 +4,10 @@
     <PackageVersion Include="JetBrains.Annotations" Version="2020.1.0" />
     <PackageVersion Include="JustEat.HttpClientInterception" Version="3.0.0" />
     <PackageVersion Include="MartinCostello.Logging.XUnit" Version="0.1.0" />
-    <PackageVersion Include="Microsoft.AspNetCore.Authentication.Google" Version="5.0.0-preview.8.*" />
-    <PackageVersion Include="Microsoft.AspNetCore.Authentication.Twitter" Version="5.0.0-preview.8.*" />
-    <PackageVersion Include="Microsoft.AspNetCore.Mvc.Testing" Version="5.0.0-preview.8.*" />
-    <PackageVersion Include="Microsoft.AspNetCore.TestHost" Version="5.0.0-preview.8.*" />
+    <PackageVersion Include="Microsoft.AspNetCore.Authentication.Google" Version="5.0.0-rc.1.*" />
+    <PackageVersion Include="Microsoft.AspNetCore.Authentication.Twitter" Version="5.0.0-rc.1.*" />
+    <PackageVersion Include="Microsoft.AspNetCore.Mvc.Testing" Version="5.0.0-rc.1.*" />
+    <PackageVersion Include="Microsoft.AspNetCore.TestHost" Version="5.0.0-rc.1.*" />
     <PackageVersion Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.3.0" />
     <PackageVersion Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="6.6.0" />
     <PackageVersion Include="Moq" Version="4.14.5" />

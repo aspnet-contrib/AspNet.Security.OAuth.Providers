@@ -81,7 +81,7 @@ namespace AspNet.Security.OAuth.StackExchange
             context.RunClaimActions(payload.RootElement.GetProperty("items").EnumerateArray().First());
 
             await Options.Events.CreatingTicket(context);
-            return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
+            return new AuthenticationTicket(context.Principal!, context.Properties, Scheme.Name);
         }
 
         protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] OAuthCodeExchangeContext context)

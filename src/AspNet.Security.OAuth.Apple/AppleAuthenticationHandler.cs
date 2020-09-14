@@ -80,7 +80,7 @@ namespace AspNet.Security.OAuth.Apple
             [NotNull] AuthenticationProperties properties,
             [NotNull] OAuthTokenResponse tokens)
         {
-            string idToken = tokens.Response.RootElement.GetString("id_token");
+            string? idToken = tokens.Response.RootElement.GetString("id_token");
 
             Logger.LogInformation("Creating ticket for Sign in with Apple.");
 
@@ -118,7 +118,7 @@ namespace AspNet.Security.OAuth.Apple
             context.RunClaimActions();
 
             await Options.Events.CreatingTicket(context);
-            return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
+            return new AuthenticationTicket(context.Principal!, context.Properties, Scheme.Name);
         }
 
         /// <inheritdoc />
@@ -170,8 +170,8 @@ namespace AspNet.Security.OAuth.Apple
 
             if (user.TryGetProperty("name", out var name))
             {
-                claims.Add(new Claim(ClaimTypes.GivenName, name.GetString("firstName"), ClaimValueTypes.String, ClaimsIssuer));
-                claims.Add(new Claim(ClaimTypes.Surname, name.GetString("lastName"), ClaimValueTypes.String, ClaimsIssuer));
+                claims.Add(new Claim(ClaimTypes.GivenName, name.GetString("firstName") ?? string.Empty, ClaimValueTypes.String, ClaimsIssuer));
+                claims.Add(new Claim(ClaimTypes.Surname, name.GetString("lastName") ?? string.Empty, ClaimValueTypes.String, ClaimsIssuer));
             }
 
             if (user.TryGetProperty("email", out var email))

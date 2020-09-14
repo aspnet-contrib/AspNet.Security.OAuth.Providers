@@ -61,7 +61,7 @@ namespace AspNet.Security.OAuth.Shopify
 
             // In Shopify, the customer can modify the scope given to the app. Apps should verify
             // that the customer is allowing the required scope.
-            string actualScope = tokens.Response.RootElement.GetString("scope");
+            string actualScope = tokens.Response.RootElement.GetString("scope") ?? string.Empty;
             bool isPersistent = true;
 
             // If the request was for a "per-user" (i.e. no offline access)
@@ -75,9 +75,9 @@ namespace AspNet.Security.OAuth.Shopify
                     identity.AddClaim(new Claim(ClaimTypes.Expiration, expires.ToString("O", CultureInfo.InvariantCulture), ClaimValueTypes.DateTime));
                 }
 
-                actualScope = tokens.Response.RootElement.GetString("associated_user_scope");
+                actualScope = tokens.Response.RootElement.GetString("associated_user_scope") ?? string.Empty;
 
-                string userData = tokens.Response.RootElement.GetString("associated_user");
+                string userData = tokens.Response.RootElement.GetString("associated_user") ?? string.Empty;
                 identity.AddClaim(new Claim(ClaimTypes.UserData, userData));
             }
 
@@ -89,7 +89,7 @@ namespace AspNet.Security.OAuth.Shopify
             context.RunClaimActions();
 
             await Options.Events.CreatingTicket(context);
-            return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
+            return new AuthenticationTicket(context.Principal!, context.Properties, Scheme.Name);
         }
 
         /// <inheritdoc />
@@ -161,7 +161,7 @@ namespace AspNet.Security.OAuth.Shopify
                 // request the token. This probably isn't necessary, but it's an easy extra verification.
                 var authenticationProperties = Options.StateDataFormat.Unprotect(stateValue);
 
-                string? shopNamePropertyValue = authenticationProperties.Items[ShopifyAuthenticationDefaults.ShopNameAuthenticationProperty];
+                string? shopNamePropertyValue = authenticationProperties?.Items[ShopifyAuthenticationDefaults.ShopNameAuthenticationProperty];
 
                 if (!string.Equals(shopNamePropertyValue, shopDns, StringComparison.OrdinalIgnoreCase))
                 {

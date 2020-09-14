@@ -140,7 +140,7 @@ namespace AspNet.Security.OAuth.LinkedIn
                     continue;
                 }
 
-                string pictureUrl = imageIdentifier
+                string? pictureUrl = imageIdentifier
                     .EnumerateArray()
                     .FirstOrDefault()
                     .GetString("identifier");

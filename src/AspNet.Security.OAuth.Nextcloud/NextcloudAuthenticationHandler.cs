@@ -35,7 +35,7 @@ namespace AspNet.Security.OAuth.Nextcloud
             [NotNull] AuthenticationProperties properties,
             [NotNull] OAuthTokenResponse tokens)
         {
-            string userId = tokens.Response.RootElement.GetString("user_id");
+            string userId = tokens.Response.RootElement.GetString("user_id") ?? string.Empty;
             string userEndpoint = Options.UserInformationEndpoint.TrimEnd('/');
             userEndpoint += $"/{Uri.EscapeUriString(userId)}";
 
@@ -62,7 +62,7 @@ namespace AspNet.Security.OAuth.Nextcloud
             context.RunClaimActions();
 
             await Options.Events.CreatingTicket(context);
-            return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
+            return new AuthenticationTicket(context.Principal!, context.Properties, Scheme.Name);
         }
     }
 }

@@ -57,7 +57,7 @@ namespace AspNet.Security.OAuth.Imgur
             context.RunClaimActions(payload.RootElement.GetProperty("data"));
 
             await Options.Events.CreatingTicket(context);
-            return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
+            return new AuthenticationTicket(context.Principal!, context.Properties, Scheme.Name);
         }
     }
 }
