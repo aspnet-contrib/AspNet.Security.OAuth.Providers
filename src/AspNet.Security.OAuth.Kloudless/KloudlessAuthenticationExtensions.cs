@@ -1,11 +1,11 @@
-/*
+﻿/*
  * Licensed under the Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0)
  * See https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers
  * for more information concerning the license and the contributors participating to this project.
  */
 
 using System;
-using AspNet.Security.OAuth.Imgur;
+using AspNet.Security.OAuth.Kloudless;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication;
 
@@ -70,9 +70,9 @@ namespace Microsoft.Extensions.DependencyInjection
             [NotNull] this AuthenticationBuilder builder,
             [NotNull] string scheme,
             [CanBeNull] string caption,
-            [NotNull] Action<ImgurAuthenticationOptions> configuration)
+            [NotNull] Action<KloudlessAuthenticationOptions> configuration)
         {
-            return builder.AddOAuth<ImgurAuthenticationOptions, ImgurAuthenticationHandler>(scheme, caption, configuration);
+            return builder.AddOAuth<KloudlessAuthenticationOptions, KloudlessAuthenticationHandler>(scheme, caption, configuration);
         }
     }
 }
