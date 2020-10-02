@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Primitives;
 
 namespace AspNet.Security.OAuth.LinkedIn
 {
@@ -114,6 +115,61 @@ namespace AspNet.Security.OAuth.LinkedIn
                 .Select((p) => p.GetProperty("handle~"))
                 .Select((p) => p.GetString("emailAddress"))
                 .FirstOrDefault();
+        }
+
+        protected override async Task<HandleRequestResult> HandleRemoteAuthenticateAsync()
+        {
+            // Taken from the base class' implementation so we can modify the status code check
+            // for "access denied" as LinkedIn uses non-standard error codes (see https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers/issues/480).
+            // https://github.com/dotnet/aspnetcore/blob/bbf7c8780c42e3d32aeec8018367037784eb9181/src/Security/Authentication/OAuth/src/OAuthHandler.cs#L49-L87
+            var query = Request.Query;
+
+            var state = query["state"];
+            var properties = Options.StateDataFormat.Unprotect(state);
+
+            if (properties == null)
+            {
+                return HandleRequestResult.Fail("The oauth state was missing or invalid.");
+            }
+
+            // OAuth2 10.12 CSRF
+            if (!ValidateCorrelationId(properties))
+            {
+                return HandleRequestResult.Fail("Correlation failed.", properties);
+            }
+
+            var error = query["error"];
+            if (!StringValues.IsNullOrEmpty(error))
+            {
+                // Note: access_denied errors are special protocol errors indicating the user didn't
+                // approve the authorization demand requested by the remote authorization server.
+                // Since it's a frequent scenario (that is not caused by incorrect configuration),
+                // denied errors are handled differently using HandleAccessDeniedErrorAsync().
+                // Visit https://tools.ietf.org/html/rfc6749#section-4.1.2.1 for more information.
+                var errorDescription = query["error_description"];
+                var errorUri = query["error_uri"];
+
+                // See https://docs.microsoft.com/en-us/linkedin/shared/authentication/authorization-code-flow#application-is-rejected
+                if (StringValues.Equals(error, "access_denied") ||
+                    StringValues.Equals(error, "user_cancelled_login") ||
+                    StringValues.Equals(error, "user_cancelled_authorize"))
+                {
+                    var result = await HandleAccessDeniedErrorAsync(properties);
+                    if (!result.None)
+                    {
+                        return result;
+                    }
+
+                    var deniedEx = new Exception("Access was denied by the resource owner or by the remote server.");
+                    deniedEx.Data["error"] = error.ToString();
+                    deniedEx.Data["error_description"] = errorDescription.ToString();
+                    deniedEx.Data["error_uri"] = errorUri.ToString();
+
+                    return HandleRequestResult.Fail(deniedEx, properties);
+                }
+            }
+
+            return await base.HandleRemoteAuthenticateAsync();
         }
     }
 }
