@@ -4,6 +4,7 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
@@ -54,7 +55,19 @@ namespace AspNet.Security.OAuth.Kloudless
 
             var principal = new ClaimsPrincipal(identity);
             var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload.RootElement);
-            var accounts = payload.RootElement.GetProperty("objects");
+
+            var isObjectsExists = payload.RootElement.TryGetProperty("objects", out var accounts);
+            if (!isObjectsExists)
+            {
+                throw new ArgumentException("Property objects is missing on accounts JSON");
+            }
+
+            var hasAtLeastOneAccount = accounts.GetArrayLength() > 0;
+            if (!hasAtLeastOneAccount)
+            {
+                throw new ArgumentException("Accounts JSON does not contains any account");
+            }
+
             context.RunClaimActions(accounts[0]);
 
             await Options.Events.CreatingTicket(context);

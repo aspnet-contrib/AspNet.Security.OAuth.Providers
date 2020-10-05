@@ -18,7 +18,7 @@ namespace Microsoft.Extensions.DependencyInjection
     {
         /// <summary>
         /// Adds <see cref="KloudlessAuthenticationHandler"/> to the specified
-        /// <see cref="AuthenticationBuilder"/>, which enables Imgur authentication capabilities.
+        /// <see cref="AuthenticationBuilder"/>, which enables Kloudless authentication capabilities.
         /// </summary>
         /// <param name="builder">The authentication builder.</param>
         /// <returns>A reference to this instance after the operation has completed.</returns>

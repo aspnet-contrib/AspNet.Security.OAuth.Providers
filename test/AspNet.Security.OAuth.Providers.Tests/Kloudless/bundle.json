@@ -22,7 +22,14 @@
             "account": "John Smith",
             "service": "google_calendar",
             "created": "2019-03-17T13:57:00+00:00",
-            "modified": "2019-03-17T14:00:00+00:00"
+            "modified": "2020-03-17T13:57:00+00:00",
+            "service_name": "Google Calendar",
+            "admin": false,
+            "effective_scope": "google_calendar:normal.calendar.default:kloudless google_calendar:normal.team.default:kloudless",
+            "api": "core",
+            "type": "account",
+            "enabled": true,
+            "active": true
           }
         ]
       }
