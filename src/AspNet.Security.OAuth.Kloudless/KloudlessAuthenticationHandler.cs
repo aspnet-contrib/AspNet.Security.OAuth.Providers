@@ -56,16 +56,16 @@ namespace AspNet.Security.OAuth.Kloudless
             var principal = new ClaimsPrincipal(identity);
             var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload.RootElement);
 
-            var isObjectsExists = payload.RootElement.TryGetProperty("objects", out var accounts);
-            if (!isObjectsExists)
+            var doesObjectsExist = payload.RootElement.TryGetProperty("objects", out var accounts);
+            if (!doesObjectsExist)
             {
-                throw new ArgumentException("Property objects is missing on accounts JSON");
+                throw new InvalidOperationException("Property objects is missing on accounts JSON");
             }
 
             var hasAtLeastOneAccount = accounts.GetArrayLength() > 0;
             if (!hasAtLeastOneAccount)
             {
-                throw new ArgumentException("Accounts JSON does not contains any account");
+                throw new InvalidOperationException("Accounts JSON does not contains any account");
             }
 
             context.RunClaimActions(accounts[0]);
