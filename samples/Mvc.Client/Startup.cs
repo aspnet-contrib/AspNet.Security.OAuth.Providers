@@ -60,14 +60,7 @@ namespace Mvc.Client
                 options.EnterpriseDomain = Configuration["GitHub:EnterpriseDomain"];
                 options.Scope.Add("user:email");
             })
-            /*
-            .AddKloudless(options =>
-            {
-                options.ClientId = Configuration["Kloudless:ClientId"];
-                options.ClientSecret = Configuration["Kloudless:ClientSecret"];
-                options.Scope.Add("calendar");
-            })
-            */
+
             /*
             .AddApple(options =>
             {
