@@ -31,15 +31,51 @@ namespace AspNet.Security.OAuth.Kloudless
             public const string Active = "urn:kloudless:active";
         }
 
+        /// <summary>
+        /// Kloudless API Scopes
+        /// <para>https://developers.kloudless.com/guides/kb/scopes.html</para>
+        /// </summary>
         public static class Scopes
         {
+            /// <summary>
+            /// Use all available services in kloudless
+            /// <para>Default scope</para>
+            /// </summary>
             public const string Any = "any";
+
+            /// <summary>
+            /// Cloud Storage API category
+            /// </summary>
             public const string Storage = "storage";
+
+            /// <summary>
+            /// Calendar API category
+            /// </summary>
             public const string Calendar = "calendar";
+
+            /// <summary>
+            /// Email API category
+            /// </summary>
             public const string Email = "email";
-            public const string CRM = "crm";
+
+            /// <summary>
+            /// CRM API category
+            /// </summary>
+            public const string Crm = "crm";
+
+            /// <summary>
+            /// Messaging API category
+            /// </summary>
             public const string Messaging = "messaging";
-            public const string ITSM = "itsm";
+
+            /// <summary>
+            /// ITSM API category
+            /// </summary>
+            public const string Itsm = "itsm";
+
+            /// <summary>
+            /// Help Desk API category
+            /// </summary>
             public const string HelpDesk = "helpdesk";
         }
     }
