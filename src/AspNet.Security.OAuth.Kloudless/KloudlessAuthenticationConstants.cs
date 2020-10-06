@@ -30,5 +30,17 @@ namespace AspNet.Security.OAuth.Kloudless
             public const string ProxyConnection = "urn:kloudless:proxy_connection";
             public const string Active = "urn:kloudless:active";
         }
+
+        public static class Scopes
+        {
+            public const string Any = "any";
+            public const string Storage = "storage";
+            public const string Calendar = "calendar";
+            public const string Email = "email";
+            public const string CRM = "crm";
+            public const string Messaging = "messaging";
+            public const string ITSM = "itsm";
+            public const string HelpDesk = "helpdesk";
+        }
     }
 }

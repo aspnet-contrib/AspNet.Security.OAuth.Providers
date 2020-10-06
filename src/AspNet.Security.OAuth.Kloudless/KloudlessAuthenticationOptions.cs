@@ -43,6 +43,8 @@ namespace AspNet.Security.OAuth.Kloudless
             ClaimActions.MapJsonKey(Claims.CustomProperties, "custom_properties");
             ClaimActions.MapJsonKey(Claims.ProxyConnection, "proxy_connection");
             ClaimActions.MapJsonKey(Claims.Active, "active");
+
+            Scope.Add(Scopes.Any);
         }
     }
 }
