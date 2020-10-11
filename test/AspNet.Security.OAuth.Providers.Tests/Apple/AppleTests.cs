@@ -377,7 +377,6 @@ namespace AspNet.Security.OAuth.Apple
 
             using var server = CreateTestServer(ConfigureServices);
 
-            var keyStore = server.Services.GetRequiredService<AppleKeyStore>();
             var options = server.Services.GetRequiredService<IOptions<AppleAuthenticationOptions>>().Value;
 
             var context = new AppleValidateIdTokenContext(
@@ -387,8 +386,8 @@ namespace AspNet.Security.OAuth.Apple
                 "my-token");
 
             // Act
-            byte[] actual1 = await keyStore.LoadPublicKeysAsync(context);
-            byte[] actual2 = await keyStore.LoadPublicKeysAsync(context);
+            byte[] actual1 = await options.KeyStore.LoadPublicKeysAsync(context);
+            byte[] actual2 = await options.KeyStore.LoadPublicKeysAsync(context);
 
             // Assert
             actual1.ShouldNotBeNull();
@@ -410,7 +409,6 @@ namespace AspNet.Security.OAuth.Apple
 
             using var server = CreateTestServer(ConfigureServices);
 
-            var keyStore = server.Services.GetRequiredService<AppleKeyStore>();
             var options = server.Services.GetRequiredService<IOptions<AppleAuthenticationOptions>>().Value;
 
             var context = new AppleValidateIdTokenContext(
@@ -420,7 +418,7 @@ namespace AspNet.Security.OAuth.Apple
                 "my-token");
 
             // Act
-            byte[] first = await keyStore.LoadPublicKeysAsync(context);
+            byte[] first = await options.KeyStore.LoadPublicKeysAsync(context);
 
             // Assert
             first.ShouldNotBeNull();
@@ -430,7 +428,7 @@ namespace AspNet.Security.OAuth.Apple
             await Task.Delay(TimeSpan.FromSeconds(1));
 
             // Act
-            byte[] second = await keyStore.LoadPublicKeysAsync(context);
+            byte[] second = await options.KeyStore.LoadPublicKeysAsync(context);
 
             // Assert
             second.ShouldNotBeNull();

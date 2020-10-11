@@ -13,33 +13,42 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Shouldly;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace AspNet.Security.OAuth.Apple
 {
-    public static class AppleClientSecretGeneratorTests
+    public class AppleClientSecretGeneratorTests
     {
+        private readonly ITestOutputHelper _outputHelper;
+
+        public AppleClientSecretGeneratorTests(ITestOutputHelper outputHelper)
+        {
+            _outputHelper = outputHelper;
+        }
+
         [Fact]
-        public static async Task GenerateAsync_Generates_Valid_Signed_Jwt()
+        public async Task GenerateAsync_Generates_Valid_Signed_Jwt()
         {
             // Arrange
-            var options = new AppleAuthenticationOptions()
+            static void Configure(AppleAuthenticationOptions options)
             {
-                ClientId = "my-client-id",
-                ClientSecretExpiresAfter = TimeSpan.FromMinutes(1),
-                JwtSecurityTokenHandler = new JwtSecurityTokenHandler(),
-                KeyId = "my-key-id",
-                TeamId = "my-team-id",
-                PrivateKeyBytes = (_) => TestKeys.GetPrivateKeyBytesAsync(),
-            };
+                options.ClientId = "my-client-id";
+                options.ClientSecretExpiresAfter = TimeSpan.FromMinutes(1);
+                options.KeyId = "my-key-id";
+                options.TeamId = "my-team-id";
+                options.PrivateKeyBytes = (_) => TestKeys.GetPrivateKeyBytesAsync();
+            }
 
-            await GenerateTokenAsync(options, async (generator, context) =>
+            await GenerateTokenAsync(Configure, async (context) =>
             {
                 var utcNow = DateTimeOffset.UtcNow;
 
                 // Act
-                string token = await generator.GenerateAsync(context);
+                string token = await context.Options.ClientSecretGenerator.GenerateAsync(context);
 
                 // Assert
                 token.ShouldNotBeNullOrWhiteSpace();
@@ -72,21 +81,22 @@ namespace AspNet.Security.OAuth.Apple
         }
 
         [Fact]
-        public static async Task GenerateAsync_Caches_Jwt_Until_Expired()
+        public async Task GenerateAsync_Caches_Jwt_Until_Expired()
         {
             // Arrange
-            var options = new AppleAuthenticationOptions()
+            static void Configure(AppleAuthenticationOptions options)
             {
-                ClientId = "my-client-id",
-                ClientSecretExpiresAfter = TimeSpan.FromSeconds(2),
-                JwtSecurityTokenHandler = new JwtSecurityTokenHandler(),
-                KeyId = "my-key-id",
-                TeamId = "my-team-id",
-                PrivateKeyBytes = (_) => TestKeys.GetPrivateKeyBytesAsync(),
-            };
+                options.ClientId = "my-client-id";
+                options.ClientSecretExpiresAfter = TimeSpan.FromSeconds(2);
+                options.KeyId = "my-key-id";
+                options.TeamId = "my-team-id";
+                options.PrivateKeyBytes = (_) => TestKeys.GetPrivateKeyBytesAsync();
+            }
 
-            await GenerateTokenAsync(options, async (generator, context) =>
+            await GenerateTokenAsync(Configure, async (context) =>
             {
+                AppleClientSecretGenerator generator = context.Options.ClientSecretGenerator;
+
                 // Act
                 string token1 = await generator.GenerateAsync(context);
                 string token2 = await generator.GenerateAsync(context);
@@ -95,7 +105,7 @@ namespace AspNet.Security.OAuth.Apple
                 token2.ShouldBe(token1);
 
                 // Act
-                await Task.Delay(options.ClientSecretExpiresAfter * 2);
+                await Task.Delay(context.Options.ClientSecretExpiresAfter * 2);
                 string token3 = await generator.GenerateAsync(context);
 
                 // Assert
@@ -104,20 +114,19 @@ namespace AspNet.Security.OAuth.Apple
         }
 
         [Fact]
-        public static async Task GenerateAsync_Varies_Key_By_Options()
+        public async Task GenerateAsync_Varies_Key_By_Options()
         {
             // Arrange
             var clientSecretExpiresAfter = TimeSpan.FromSeconds(2);
 
-            var optionsA = new AppleAuthenticationOptions()
+            void ConfigureA(AppleAuthenticationOptions options)
             {
-                ClientId = "my-client-id",
-                ClientSecretExpiresAfter = clientSecretExpiresAfter,
-                JwtSecurityTokenHandler = new JwtSecurityTokenHandler(),
-                KeyId = "my-key-id",
-                TeamId = "my-team-id",
-                PrivateKeyBytes = (_) => TestKeys.GetPrivateKeyBytesAsync(),
-            };
+                options.ClientId = "my-client-id";
+                options.ClientSecretExpiresAfter = clientSecretExpiresAfter;
+                options.KeyId = "my-key-id";
+                options.TeamId = "my-team-id";
+                options.PrivateKeyBytes = (_) => TestKeys.GetPrivateKeyBytesAsync();
+            }
 
             var optionsB = new AppleAuthenticationOptions()
             {
@@ -129,8 +138,10 @@ namespace AspNet.Security.OAuth.Apple
                 PrivateKeyBytes = (_) => TestKeys.GetPrivateKeyBytesAsync(),
             };
 
-            await GenerateTokenAsync(optionsA, async (generator, contextA) =>
+            await GenerateTokenAsync(ConfigureA, async (contextA) =>
             {
+                AppleClientSecretGenerator generator = contextA.Options.ClientSecretGenerator;
+
                 var httpContext = new DefaultHttpContext();
                 var scheme = new AuthenticationScheme("AppleB", "AppleB", typeof(AppleAuthenticationHandler));
                 var contextB = new AppleGenerateClientSecretContext(httpContext, scheme, optionsB);
@@ -164,12 +175,13 @@ namespace AspNet.Security.OAuth.Apple
             });
         }
 
-        private static async Task GenerateTokenAsync(
-            AppleAuthenticationOptions options,
-            Func<AppleClientSecretGenerator, AppleGenerateClientSecretContext, Task> actAndAssert)
+        private async Task GenerateTokenAsync(
+            Action<AppleAuthenticationOptions> configureOptions,
+            Func<AppleGenerateClientSecretContext, Task> actAndAssert)
         {
             // Arrange
             var builder = new WebHostBuilder()
+                .ConfigureLogging((p) => p.AddXUnit(_outputHelper).SetMinimumLevel(LogLevel.Debug))
                 .Configure((app) => app.UseAuthentication())
                 .ConfigureServices((services) =>
                 {
@@ -182,10 +194,13 @@ namespace AspNet.Security.OAuth.Apple
             var httpContext = new DefaultHttpContext();
             var scheme = new AuthenticationScheme("Apple", "Apple", typeof(AppleAuthenticationHandler));
 
-            var context = new AppleGenerateClientSecretContext(httpContext, scheme, options);
-            var generator = host.Services.GetRequiredService<AppleClientSecretGenerator>();
+            var options = host.Services.GetRequiredService<IOptions<AppleAuthenticationOptions>>().Value;
 
-            await actAndAssert(generator, context);
+            configureOptions(options);
+
+            var context = new AppleGenerateClientSecretContext(httpContext, scheme, options);
+
+            await actAndAssert(context);
         }
     }
 }

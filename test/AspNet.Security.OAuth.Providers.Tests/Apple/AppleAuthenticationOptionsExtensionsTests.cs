@@ -6,7 +6,6 @@
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using Moq;
 using Shouldly;
 using Xunit;
 
@@ -29,39 +28,8 @@ namespace AspNet.Security.OAuth.Apple
 
             // Assert
             serviceProvider.GetRequiredService<AppleAuthenticationHandler>().ShouldNotBeNull();
-            serviceProvider.GetRequiredService<AppleClientSecretGenerator>().ShouldNotBeNull();
-            serviceProvider.GetRequiredService<AppleIdTokenValidator>().ShouldNotBeNull();
-            serviceProvider.GetRequiredService<AppleKeyStore>().ShouldNotBeNull();
             serviceProvider.GetRequiredService<IOptions<AppleAuthenticationOptions>>().ShouldNotBeNull();
-        }
-
-        [Fact]
-        public static void AddApple_Does_Not_Overwrite_Existing_Service_Registrations()
-        {
-            // Arrange
-            var keyStore = Mock.Of<AppleKeyStore>();
-            var secretGenerator = Mock.Of<AppleClientSecretGenerator>();
-            var tokenValidator = Mock.Of<AppleIdTokenValidator>();
-
-            var services = new ServiceCollection()
-                .AddSingleton(keyStore)
-                .AddSingleton(secretGenerator)
-                .AddSingleton(tokenValidator);
-
-            services.AddLogging()
-                    .AddAuthentication()
-                    .AddApple();
-
-            // Act
-            using var serviceProvider = services.BuildServiceProvider();
-
-            // Assert
-            serviceProvider.GetRequiredService<AppleAuthenticationHandler>().ShouldNotBeNull();
-            serviceProvider.GetRequiredService<IOptions<AppleAuthenticationOptions>>().ShouldNotBeNull();
-
-            serviceProvider.GetRequiredService<AppleClientSecretGenerator>().ShouldBeSameAs(secretGenerator);
-            serviceProvider.GetRequiredService<AppleIdTokenValidator>().ShouldBeSameAs(tokenValidator);
-            serviceProvider.GetRequiredService<AppleKeyStore>().ShouldBeSameAs(keyStore);
+            serviceProvider.GetRequiredService<IPostConfigureOptions<AppleAuthenticationOptions>>().ShouldNotBeNull();
         }
     }
 }

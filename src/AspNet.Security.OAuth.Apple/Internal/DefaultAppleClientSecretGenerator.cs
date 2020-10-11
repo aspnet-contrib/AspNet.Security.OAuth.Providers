@@ -28,7 +28,7 @@ namespace AspNet.Security.OAuth.Apple.Internal
             [NotNull] AppleKeyStore keyStore,
             [NotNull] IMemoryCache cache,
             [NotNull] ISystemClock clock,
-            [NotNull] CustomCryptoProviderFactory cryptoProviderFactory,
+            [NotNull] CryptoProviderFactory cryptoProviderFactory,
             [NotNull] ILogger<DefaultAppleClientSecretGenerator> logger)
         {
             _keyStore = keyStore;
