@@ -32,9 +32,7 @@ namespace AspNet.Security.OAuth.Apple.Internal
 
         public override async Task ValidateAsync([NotNull] AppleValidateIdTokenContext context)
         {
-            var tokenHandler = context.Options.JwtSecurityTokenHandler ?? new JwtSecurityTokenHandler();
-
-            if (!tokenHandler.CanValidateToken)
+            if (!context.Options.JwtSecurityTokenHandler!.CanValidateToken)
             {
                 throw new NotSupportedException($"The configured {nameof(JwtSecurityTokenHandler)} cannot validate tokens.");
             }
@@ -54,7 +52,7 @@ namespace AspNet.Security.OAuth.Apple.Internal
 
             try
             {
-                tokenHandler.ValidateToken(context.IdToken, parameters, out var _);
+                context.Options.JwtSecurityTokenHandler.ValidateToken(context.IdToken, parameters, out var _);
             }
             catch (Exception ex)
             {

@@ -108,7 +108,7 @@ namespace AspNet.Security.OAuth.Apple
         /// <summary>
         /// Gets or sets the optional <see cref="JwtSecurityTokenHandler"/> to use.
         /// </summary>
-        public JwtSecurityTokenHandler JwtSecurityTokenHandler { get; set; } = new JwtSecurityTokenHandler();
+        public JwtSecurityTokenHandler JwtSecurityTokenHandler { get; set; } = default!;
 
         /// <inheritdoc />
         public override void Validate()
