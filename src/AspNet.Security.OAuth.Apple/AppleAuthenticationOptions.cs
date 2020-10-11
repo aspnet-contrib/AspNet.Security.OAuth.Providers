@@ -5,6 +5,7 @@
  */
 
 using System;
+using System.IdentityModel.Tokens.Jwt;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.OAuth;
 
@@ -103,6 +104,11 @@ namespace AspNet.Security.OAuth.Apple
         /// Gets or sets a value indicating whether to validate tokens using Apple's public key.
         /// </summary>
         public bool ValidateTokens { get; set; } = true;
+
+        /// <summary>
+        /// Gets or sets the optional <see cref="JwtSecurityTokenHandler"/> to use.
+        /// </summary>
+        public JwtSecurityTokenHandler JwtSecurityTokenHandler { get; set; } = new JwtSecurityTokenHandler();
 
         /// <inheritdoc />
         public override void Validate()

@@ -7,7 +7,6 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Text;
@@ -29,8 +28,6 @@ namespace AspNet.Security.OAuth.Apple
     /// </summary>
     public class AppleAuthenticationHandler : OAuthHandler<AppleAuthenticationOptions>
     {
-        private readonly JwtSecurityTokenHandler _tokenHandler;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="AppleAuthenticationHandler"/> class.
         /// </summary>
@@ -38,16 +35,13 @@ namespace AspNet.Security.OAuth.Apple
         /// <param name="logger">The logger to use.</param>
         /// <param name="encoder">The URL encoder to use.</param>
         /// <param name="clock">The system clock to use.</param>
-        /// <param name="tokenHandler">The JWT security token handler to use.</param>
         public AppleAuthenticationHandler(
             [NotNull] IOptionsMonitor<AppleAuthenticationOptions> options,
             [NotNull] ILoggerFactory logger,
             [NotNull] UrlEncoder encoder,
-            [NotNull] ISystemClock clock,
-            [NotNull] JwtSecurityTokenHandler tokenHandler)
+            [NotNull] ISystemClock clock)
             : base(options, logger, encoder, clock)
         {
-            _tokenHandler = tokenHandler;
         }
 
         /// <summary>
@@ -144,7 +138,8 @@ namespace AspNet.Security.OAuth.Apple
         {
             try
             {
-                var securityToken = _tokenHandler.ReadJwtToken(token);
+                var tokenHandler = Options.JwtSecurityTokenHandler ?? new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler();
+                var securityToken = tokenHandler.ReadJwtToken(token);
 
                 return new List<Claim>(securityToken.Claims)
                 {

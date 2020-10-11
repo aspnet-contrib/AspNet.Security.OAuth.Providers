@@ -6,7 +6,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -59,11 +58,11 @@ namespace AspNet.Security.OAuth.Apple
             // Arrange
             static void ConfigureServices(IServiceCollection services)
             {
-                services.AddSingleton<JwtSecurityTokenHandler, FrozenJwtSecurityTokenHandler>();
                 services.PostConfigureAll<AppleAuthenticationOptions>((options) =>
                 {
                     options.GenerateClientSecret = false;
                     options.ClientSecret = "my-client-secret";
+                    options.JwtSecurityTokenHandler = new FrozenJwtSecurityTokenHandler();
                 });
             }
 
@@ -86,11 +85,11 @@ namespace AspNet.Security.OAuth.Apple
             // Arrange
             static void ConfigureServices(IServiceCollection services)
             {
-                services.AddSingleton<JwtSecurityTokenHandler, FrozenJwtSecurityTokenHandler>();
                 services.PostConfigureAll<AppleAuthenticationOptions>((options) =>
                 {
                     options.ClientSecret = string.Empty;
                     options.GenerateClientSecret = true;
+                    options.JwtSecurityTokenHandler = new FrozenJwtSecurityTokenHandler();
                     options.KeyId = "my-key-id";
                     options.TeamId = "my-team-id";
                     options.ValidateTokens = true;
@@ -130,11 +129,11 @@ namespace AspNet.Security.OAuth.Apple
             // Arrange
             static void ConfigureServices(IServiceCollection services)
             {
-                services.AddSingleton<JwtSecurityTokenHandler, FrozenJwtSecurityTokenHandler>();
                 services.PostConfigureAll<AppleAuthenticationOptions>((options) =>
                 {
                     options.ClientSecret = "my-client-secret";
                     options.GenerateClientSecret = false;
+                    options.JwtSecurityTokenHandler = new FrozenJwtSecurityTokenHandler();
                     options.TokenEndpoint = "https://appleid.apple.local/auth/token/email";
                     options.ValidateTokens = false;
                 });
@@ -203,10 +202,10 @@ namespace AspNet.Security.OAuth.Apple
             // Arrange
             static void ConfigureServices(IServiceCollection services)
             {
-                services.AddSingleton<JwtSecurityTokenHandler, FrozenJwtSecurityTokenHandler>();
                 services.PostConfigureAll<AppleAuthenticationOptions>((options) =>
                 {
                     options.ClientId = "my-team";
+                    options.JwtSecurityTokenHandler = new FrozenJwtSecurityTokenHandler();
                     options.ValidateTokens = true;
                 });
             }
@@ -226,9 +225,9 @@ namespace AspNet.Security.OAuth.Apple
             // Arrange
             static void ConfigureServices(IServiceCollection services)
             {
-                services.AddSingleton<JwtSecurityTokenHandler, FrozenJwtSecurityTokenHandler>();
                 services.PostConfigureAll<AppleAuthenticationOptions>((options) =>
                 {
+                    options.JwtSecurityTokenHandler = new FrozenJwtSecurityTokenHandler();
                     options.TokenAudience = "https://apple.local";
                     options.ValidateTokens = true;
                 });
@@ -249,9 +248,9 @@ namespace AspNet.Security.OAuth.Apple
             // Arrange
             static void ConfigureServices(IServiceCollection services)
             {
-                services.AddSingleton<JwtSecurityTokenHandler, FrozenJwtSecurityTokenHandler>();
                 services.PostConfigureAll<AppleAuthenticationOptions>((options) =>
                 {
+                    options.JwtSecurityTokenHandler = new FrozenJwtSecurityTokenHandler();
                     options.PublicKeyEndpoint = "https://appleid.apple.local/auth/keys/invalid";
                     options.ValidateTokens = true;
                 });
@@ -272,9 +271,9 @@ namespace AspNet.Security.OAuth.Apple
             // Arrange
             static void ConfigureServices(IServiceCollection services)
             {
-                services.AddSingleton<JwtSecurityTokenHandler, FrozenJwtSecurityTokenHandler>();
                 services.PostConfigureAll<AppleAuthenticationOptions>((options) =>
                 {
+                    options.JwtSecurityTokenHandler = new FrozenJwtSecurityTokenHandler();
                     options.PublicKeyEndpoint = "https://appleid.apple.local/auth/keys/none";
                     options.ValidateTokens = true;
                 });

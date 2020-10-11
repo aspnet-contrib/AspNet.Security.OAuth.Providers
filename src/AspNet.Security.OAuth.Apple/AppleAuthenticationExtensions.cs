@@ -5,7 +5,6 @@
  */
 
 using System;
-using System.IdentityModel.Tokens.Jwt;
 using AspNet.Security.OAuth.Apple;
 using AspNet.Security.OAuth.Apple.Internal;
 using JetBrains.Annotations;
@@ -80,7 +79,6 @@ namespace Microsoft.Extensions.DependencyInjection
             builder.Services.TryAddSingleton<AppleClientSecretGenerator, DefaultAppleClientSecretGenerator>();
             builder.Services.TryAddSingleton<AppleIdTokenValidator, DefaultAppleIdTokenValidator>();
             builder.Services.TryAddSingleton<AppleKeyStore, DefaultAppleKeyStore>();
-            builder.Services.TryAddSingleton<JwtSecurityTokenHandler>();
 
             // Use a custom CryptoProviderFactory so that keys are not cached and then disposed of, see below:
             // https://github.com/AzureAD/azure-activedirectory-identitymodel-extensions-for-dotnet/issues/1302
