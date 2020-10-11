@@ -106,6 +106,21 @@ namespace AspNet.Security.OAuth.Apple
         public bool ValidateTokens { get; set; } = true;
 
         /// <summary>
+        /// Gets or sets the <see cref="AppleClientSecretGenerator"/> to use.
+        /// </summary>
+        public AppleClientSecretGenerator ClientSecretGenerator { get; set; } = default!;
+
+        /// <summary>
+        /// Gets or sets the <see cref="AppleKeyStore"/> to use.
+        /// </summary>
+        public AppleKeyStore KeyStore { get; set; } = default!;
+
+        /// <summary>
+        /// Gets or sets the <see cref="AppleIdTokenValidator"/> to use.
+        /// </summary>
+        public AppleIdTokenValidator TokenValidator { get; set; } = default!;
+
+        /// <summary>
         /// Gets or sets the optional <see cref="JwtSecurityTokenHandler"/> to use.
         /// </summary>
         public JwtSecurityTokenHandler JwtSecurityTokenHandler { get; set; } = default!;

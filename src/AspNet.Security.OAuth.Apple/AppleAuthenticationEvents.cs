@@ -8,7 +8,6 @@ using System;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace AspNet.Security.OAuth.Apple
 {
@@ -22,8 +21,7 @@ namespace AspNet.Security.OAuth.Apple
         /// </summary>
         public Func<AppleGenerateClientSecretContext, Task> OnGenerateClientSecret { get; set; } = async context =>
         {
-            var provider = context.HttpContext!.RequestServices!.GetRequiredService<AppleClientSecretGenerator>();
-            context.Options.ClientSecret = await provider.GenerateAsync(context);
+            context.Options.ClientSecret = await context.Options.ClientSecretGenerator.GenerateAsync(context);
         };
 
         /// <summary>
@@ -31,8 +29,7 @@ namespace AspNet.Security.OAuth.Apple
         /// </summary>
         public Func<AppleValidateIdTokenContext, Task> OnValidateIdToken { get; set; } = async context =>
         {
-            var validator = context.HttpContext.RequestServices.GetRequiredService<AppleIdTokenValidator>();
-            await validator.ValidateAsync(context);
+            await context.Options.TokenValidator.ValidateAsync(context);
         };
 
         /// <summary>
@@ -42,7 +39,8 @@ namespace AspNet.Security.OAuth.Apple
         /// <returns>
         /// A <see cref="Task"/> representing the completed operation.
         /// </returns>
-        public virtual async Task GenerateClientSecret([NotNull] AppleGenerateClientSecretContext context) => await OnGenerateClientSecret(context);
+        public virtual async Task GenerateClientSecret([NotNull] AppleGenerateClientSecretContext context) =>
+            await OnGenerateClientSecret(context);
 
         /// <summary>
         /// Invoked whenever the ID token needs to be validated.
