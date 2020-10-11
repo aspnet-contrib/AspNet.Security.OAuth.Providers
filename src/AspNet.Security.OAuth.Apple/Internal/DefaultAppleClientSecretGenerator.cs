@@ -59,7 +59,9 @@ namespace AspNet.Security.OAuth.Apple.Internal
                 {
                     _logger.LogError(
                         ex,
-                        $"Failed to generate new client secret for the {context.Scheme.Name} authentication scheme.");
+                        "Failed to generate new client secret for the {SchemeName} authentication scheme.",
+                        context.Scheme.Name);
+
                     throw;
                 }
             });
