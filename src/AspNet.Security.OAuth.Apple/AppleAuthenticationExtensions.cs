@@ -76,6 +76,7 @@ namespace Microsoft.Extensions.DependencyInjection
             [CanBeNull] string caption,
             [NotNull] Action<AppleAuthenticationOptions> configuration)
         {
+            builder.Services.AddMemoryCache();
             builder.Services.TryAddSingleton<AppleClientSecretGenerator, DefaultAppleClientSecretGenerator>();
             builder.Services.TryAddSingleton<AppleIdTokenValidator, DefaultAppleIdTokenValidator>();
             builder.Services.TryAddSingleton<AppleKeyStore, DefaultAppleKeyStore>();
