@@ -6,7 +6,6 @@
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
 using Moq;
 using Shouldly;
 using Xunit;
@@ -40,13 +39,11 @@ namespace AspNet.Security.OAuth.Apple
         public static void AddApple_Does_Not_Overwrite_Existing_Service_Registrations()
         {
             // Arrange
-            var cryptoProviderFactory = Mock.Of<CryptoProviderFactory>();
             var keyStore = Mock.Of<AppleKeyStore>();
             var secretGenerator = Mock.Of<AppleClientSecretGenerator>();
             var tokenValidator = Mock.Of<AppleIdTokenValidator>();
 
             var services = new ServiceCollection()
-                .AddSingleton(cryptoProviderFactory)
                 .AddSingleton(keyStore)
                 .AddSingleton(secretGenerator)
                 .AddSingleton(tokenValidator);
@@ -65,7 +62,6 @@ namespace AspNet.Security.OAuth.Apple
             serviceProvider.GetRequiredService<AppleClientSecretGenerator>().ShouldBeSameAs(secretGenerator);
             serviceProvider.GetRequiredService<AppleIdTokenValidator>().ShouldBeSameAs(tokenValidator);
             serviceProvider.GetRequiredService<AppleKeyStore>().ShouldBeSameAs(keyStore);
-            serviceProvider.GetRequiredService<CryptoProviderFactory>().ShouldBeSameAs(cryptoProviderFactory);
         }
     }
 }

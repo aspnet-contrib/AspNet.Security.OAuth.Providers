@@ -10,7 +10,6 @@ using AspNet.Security.OAuth.Apple.Internal;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.IdentityModel.Tokens;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -82,8 +81,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
             // Use a custom CryptoProviderFactory so that keys are not cached and then disposed of, see below:
             // https://github.com/AzureAD/azure-activedirectory-identitymodel-extensions-for-dotnet/issues/1302
-            builder.Services.TryAddSingleton(
-                (_) => new CryptoProviderFactory() { CacheSignatureProviders = false });
+            builder.Services.AddSingleton<CustomCryptoProviderFactory>();
 
             return builder.AddOAuth<AppleAuthenticationOptions, AppleAuthenticationHandler>(scheme, caption, configuration);
         }
