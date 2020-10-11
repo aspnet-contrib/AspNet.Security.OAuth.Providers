@@ -30,7 +30,7 @@ namespace AspNet.Security.OAuth.Apple
                 ClientSecretExpiresAfter = TimeSpan.FromMinutes(1),
                 KeyId = "my-key-id",
                 TeamId = "my-team-id",
-                PrivateKeyBytes = (keyId) => TestKeys.GetPrivateKeyBytesAsync(),
+                PrivateKeyBytes = (_) => TestKeys.GetPrivateKeyBytesAsync(),
             };
 
             await GenerateTokenAsync(options, async (generator, context) =>
@@ -80,7 +80,7 @@ namespace AspNet.Security.OAuth.Apple
                 ClientSecretExpiresAfter = TimeSpan.FromSeconds(2),
                 KeyId = "my-key-id",
                 TeamId = "my-team-id",
-                PrivateKeyBytes = (keyId) => TestKeys.GetPrivateKeyBytesAsync(),
+                PrivateKeyBytes = (_) => TestKeys.GetPrivateKeyBytesAsync(),
             };
 
             await GenerateTokenAsync(options, async (generator, context) =>
@@ -93,11 +93,70 @@ namespace AspNet.Security.OAuth.Apple
                 token2.ShouldBe(token1);
 
                 // Act
-                await Task.Delay(options.ClientSecretExpiresAfter.Add(options.ClientSecretExpiresAfter));
+                await Task.Delay(options.ClientSecretExpiresAfter * 2);
                 string token3 = await generator.GenerateAsync(context);
 
                 // Assert
                 token3.ShouldNotBe(token1);
+            });
+        }
+
+        [Fact]
+        public static async Task GenerateAsync_Varies_Key_By_Options()
+        {
+            // Arrange
+            var clientSecretExpiresAfter = TimeSpan.FromSeconds(2);
+
+            var optionsA = new AppleAuthenticationOptions()
+            {
+                ClientId = "my-client-id",
+                ClientSecretExpiresAfter = clientSecretExpiresAfter,
+                KeyId = "my-key-id",
+                TeamId = "my-team-id",
+                PrivateKeyBytes = (_) => TestKeys.GetPrivateKeyBytesAsync(),
+            };
+
+            var optionsB = new AppleAuthenticationOptions()
+            {
+                ClientId = "my-other-client-id",
+                ClientSecretExpiresAfter = clientSecretExpiresAfter,
+                KeyId = "my-other-key-id",
+                TeamId = "my-other-team-id",
+                PrivateKeyBytes = (_) => TestKeys.GetPrivateKeyBytesAsync(),
+            };
+
+            await GenerateTokenAsync(optionsA, async (generator, contextA) =>
+            {
+                var httpContext = new DefaultHttpContext();
+                var scheme = new AuthenticationScheme("AppleB", "AppleB", typeof(AppleAuthenticationHandler));
+                var contextB = new AppleGenerateClientSecretContext(httpContext, scheme, optionsB);
+
+                // Act
+                string tokenA1 = await generator.GenerateAsync(contextA);
+                string tokenA2 = await generator.GenerateAsync(contextA);
+
+                string tokenB1 = await generator.GenerateAsync(contextB);
+                string tokenB2 = await generator.GenerateAsync(contextB);
+
+                // Assert
+                tokenA1.ShouldNotBeNullOrWhiteSpace();
+                tokenA1.ShouldBe(tokenA2);
+                tokenB1.ShouldNotBeNullOrWhiteSpace();
+                tokenB1.ShouldBe(tokenB2);
+                tokenA1.ShouldNotBe(tokenB1);
+
+                // Act
+                await Task.Delay(clientSecretExpiresAfter * 2);
+
+                string tokenA3 = await generator.GenerateAsync(contextA);
+                string tokenB3 = await generator.GenerateAsync(contextB);
+
+                // Assert
+                tokenA3.ShouldNotBeNullOrWhiteSpace();
+                tokenB3.ShouldNotBeNullOrWhiteSpace();
+                tokenA3.ShouldNotBe(tokenA1);
+                tokenB3.ShouldNotBe(tokenB1);
+                tokenA3.ShouldNotBe(tokenB3);
             });
         }
 
