@@ -22,7 +22,7 @@ namespace AspNet.Security.OAuth.Apple.Internal
 
         public DefaultAppleIdTokenValidator(
             [NotNull] AppleKeyStore keyStore,
-            [NotNull] CryptoProviderFactory cryptoProviderFactory,
+            [NotNull] CustomCryptoProviderFactory cryptoProviderFactory,
             [NotNull] ILogger<DefaultAppleIdTokenValidator> logger)
         {
             _keyStore = keyStore;
