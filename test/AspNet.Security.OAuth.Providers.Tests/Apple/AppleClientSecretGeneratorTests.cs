@@ -28,6 +28,7 @@ namespace AspNet.Security.OAuth.Apple
             {
                 ClientId = "my-client-id",
                 ClientSecretExpiresAfter = TimeSpan.FromMinutes(1),
+                JwtSecurityTokenHandler = new JwtSecurityTokenHandler(),
                 KeyId = "my-key-id",
                 TeamId = "my-team-id",
                 PrivateKeyBytes = (_) => TestKeys.GetPrivateKeyBytesAsync(),
@@ -78,6 +79,7 @@ namespace AspNet.Security.OAuth.Apple
             {
                 ClientId = "my-client-id",
                 ClientSecretExpiresAfter = TimeSpan.FromSeconds(2),
+                JwtSecurityTokenHandler = new JwtSecurityTokenHandler(),
                 KeyId = "my-key-id",
                 TeamId = "my-team-id",
                 PrivateKeyBytes = (_) => TestKeys.GetPrivateKeyBytesAsync(),
@@ -111,6 +113,7 @@ namespace AspNet.Security.OAuth.Apple
             {
                 ClientId = "my-client-id",
                 ClientSecretExpiresAfter = clientSecretExpiresAfter,
+                JwtSecurityTokenHandler = new JwtSecurityTokenHandler(),
                 KeyId = "my-key-id",
                 TeamId = "my-team-id",
                 PrivateKeyBytes = (_) => TestKeys.GetPrivateKeyBytesAsync(),
@@ -120,6 +123,7 @@ namespace AspNet.Security.OAuth.Apple
             {
                 ClientId = "my-other-client-id",
                 ClientSecretExpiresAfter = clientSecretExpiresAfter,
+                JwtSecurityTokenHandler = new JwtSecurityTokenHandler(),
                 KeyId = "my-other-key-id",
                 TeamId = "my-other-team-id",
                 PrivateKeyBytes = (_) => TestKeys.GetPrivateKeyBytesAsync(),

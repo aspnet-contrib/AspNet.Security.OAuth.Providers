@@ -5,7 +5,6 @@
  */
 
 using System;
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
@@ -104,8 +103,7 @@ namespace AspNet.Security.OAuth.Apple.Internal
             {
                 tokenDescriptor.SigningCredentials = CreateSigningCredentials(context.Options.KeyId!, algorithm);
 
-                var tokenHandler = context.Options.JwtSecurityTokenHandler ?? new JwtSecurityTokenHandler();
-                clientSecret = tokenHandler.CreateEncodedJwt(tokenDescriptor);
+                clientSecret = context.Options.JwtSecurityTokenHandler.CreateEncodedJwt(tokenDescriptor);
             }
 
             _logger.LogTrace("Generated new client secret with value {ClientSecret}.", clientSecret);
