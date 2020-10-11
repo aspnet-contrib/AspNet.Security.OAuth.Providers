@@ -4,7 +4,6 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using System.IdentityModel.Tokens.Jwt;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -44,14 +43,12 @@ namespace AspNet.Security.OAuth.Apple
             var cryptoProviderFactory = Mock.Of<CryptoProviderFactory>();
             var keyStore = Mock.Of<AppleKeyStore>();
             var secretGenerator = Mock.Of<AppleClientSecretGenerator>();
-            var tokenHandler = Mock.Of<JwtSecurityTokenHandler>();
             var tokenValidator = Mock.Of<AppleIdTokenValidator>();
 
             var services = new ServiceCollection()
                 .AddSingleton(cryptoProviderFactory)
                 .AddSingleton(keyStore)
                 .AddSingleton(secretGenerator)
-                .AddSingleton(tokenHandler)
                 .AddSingleton(tokenValidator);
 
             services.AddLogging()
@@ -69,7 +66,6 @@ namespace AspNet.Security.OAuth.Apple
             serviceProvider.GetRequiredService<AppleIdTokenValidator>().ShouldBeSameAs(tokenValidator);
             serviceProvider.GetRequiredService<AppleKeyStore>().ShouldBeSameAs(keyStore);
             serviceProvider.GetRequiredService<CryptoProviderFactory>().ShouldBeSameAs(cryptoProviderFactory);
-            serviceProvider.GetRequiredService<JwtSecurityTokenHandler>().ShouldBeSameAs(tokenHandler);
         }
     }
 }

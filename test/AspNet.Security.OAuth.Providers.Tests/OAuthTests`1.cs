@@ -142,7 +142,6 @@ namespace AspNet.Security.OAuth
 
             void ConfigureServices(IServiceCollection services)
             {
-                services.AddSingleton<System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler, FrozenJwtSecurityTokenHandler>();
                 services.PostConfigureAll<TOptions>((options) =>
                 {
                     options.Events.OnCreatingTicket = (context) =>
@@ -150,6 +149,11 @@ namespace AspNet.Security.OAuth
                         onCreatingTicketEventRaised = true;
                         return Task.CompletedTask;
                     };
+
+                    if (options is Apple.AppleAuthenticationOptions appleOptions)
+                    {
+                        appleOptions.JwtSecurityTokenHandler = new FrozenJwtSecurityTokenHandler();
+                    }
                 });
             }
 
