@@ -9,7 +9,6 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>portable</DebugType>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
     <DefineConstants Condition=" '$(Configuration)' == 'Debug' ">$(DefineConstants);JETBRAINS_ANNOTATIONS</DefineConstants>
     <Nullable>enable</Nullable>
   </PropertyGroup>
