@@ -138,7 +138,7 @@ namespace AspNet.Security.OAuth.SuperOffice
             return _environment switch
             {
                 SuperOfficeAuthenticationEnvironment.Development => "sod",
-                SuperOfficeAuthenticationEnvironment.Stage => "stage",
+                SuperOfficeAuthenticationEnvironment.Stage => "qaonline",
                 SuperOfficeAuthenticationEnvironment.Production => "online",
                 _ => throw new NotSupportedException("Environment property must be set to either Development, Stage or Production.")
             };
