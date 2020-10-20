@@ -28,6 +28,7 @@ namespace AspNet.Security.OAuth.Yahoo
         }
 
         [Theory]
+        [InlineData(ClaimTypes.Email, "john@john-smith.local")]
         [InlineData(ClaimTypes.NameIdentifier, "my-id")]
         [InlineData(ClaimTypes.Name, "John Smith")]
         [InlineData("urn:yahoo:familyname", "Smith")]

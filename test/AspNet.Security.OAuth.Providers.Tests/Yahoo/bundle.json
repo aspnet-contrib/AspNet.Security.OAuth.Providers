@@ -17,6 +17,7 @@
       "contentFormat": "json",
       "contentJson": {
         "sub": "my-id",
+        "email": "john@john-smith.local",
         "name": "John Smith",
         "family_name": "Smith",
         "given_name": "John",
