@@ -27,6 +27,7 @@ namespace AspNet.Security.OAuth.Yahoo
 
             ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "sub");
             ClaimActions.MapJsonKey(ClaimTypes.Name, "name");
+            ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
             ClaimActions.MapJsonKey(Claims.FamilyName, "family_name");
             ClaimActions.MapJsonKey(Claims.GivenName, "given_name");
             ClaimActions.MapJsonKey(Claims.Picture, "picture");
