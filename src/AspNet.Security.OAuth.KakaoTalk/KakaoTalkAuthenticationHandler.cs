@@ -40,7 +40,7 @@ namespace AspNet.Security.OAuth.KakaoTalk
             context.RunClaimActions();
 
             await Options.Events.CreatingTicket(context);
-            return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
+            return new AuthenticationTicket(context.Principal!, context.Properties, Scheme.Name);
         }
 
         private async Task<JsonDocument> GetUserProfileAsync(
