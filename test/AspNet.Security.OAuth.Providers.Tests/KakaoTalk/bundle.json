@@ -1,0 +1,57 @@
+{
+  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
+  "items": [
+    {
+      "uri": "https://kauth.kakao.com/oauth/token",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "secret-access-token",
+        "token_type": "access",
+        "refresh_token": "secret-refresh-token",
+        "expires_in": "300"
+      }
+    },
+    {
+      "uri": "https://kapi.kakao.com/v2/user/me",
+      "contentFormat": "json",
+      "contentJson": {
+        "id": 123094871203,
+        "connected_at": "2020-10-24T09:53:05Z",
+        "properties": {
+          "nickname": "wplong11",
+          "profile_image": "https://picsum.photos/640",
+          "thumbnail_image": "https://picsum.photos/110"
+        },
+        "kakao_account": {
+          "profile_needs_agreement": false,
+          "profile": {
+            "nickname": "wplong11",
+            "thumbnail_image_url": "https://picsum.photos/110",
+            "profile_image_url": "https://picsum.photos/640"
+          },
+          "has_email": true,
+          "email_needs_agreement": false,
+          "is_email_valid": true,
+          "is_email_verified": true,
+          "email": "example@kakao.com",
+          "has_age_range": true,
+          "age_range_needs_agreement": true,
+          "age_range": "20~29",
+          "has_birthday": true,
+          "birthday_needs_agreement": true,
+          "birthday": "0103",
+          "has_birthyear": true,
+          "birthyear_needs_agreement": true,
+          "birthyear": "2020",
+          "has_gender": true,
+          "gender_needs_agreement": true,
+          "gender": "male",
+          "has_phone_number": true,
+          "phone_number_needs_agreement": true,
+          "phone_number": "+82 10-1234-1234"
+        }
+      }
+    }
+  ]
+}
