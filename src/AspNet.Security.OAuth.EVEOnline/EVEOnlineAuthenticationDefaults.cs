@@ -3,7 +3,7 @@
  * See https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers
  * for more information concerning the license and the contributors participating to this project.
  */
-
+using System;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 
@@ -48,6 +48,12 @@ namespace AspNet.Security.OAuth.EVEOnline
             /// Default value for <see cref="OAuthOptions.TokenEndpoint"/>.
             /// </summary>
             public const string TokenEndpoint = "https://login.eveonline.com/v2/oauth/token";
+
+            /// <summary>
+            /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
+            /// </summary>
+            [Obsolete("UserInformationEndpoint is no longer required for V2, info now in JWT token.")]
+            public const string UserInformationEndpoint = "https://login.eveonline.com/oauth/verify";
         }
 
         /// <summary>
@@ -64,6 +70,12 @@ namespace AspNet.Security.OAuth.EVEOnline
             /// Default value for <see cref="OAuthOptions.TokenEndpoint"/>.
             /// </summary>
             public const string TokenEndpoint = "https://sisilogin.testeveonline.com/v2/oauth/token";
+
+            /// <summary>
+            /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
+            /// </summary>
+            [Obsolete("UserInformationEndpoint is no longer required for V2, info now in JWT token.")]
+            public const string UserInformationEndpoint = "https://sisilogin.testeveonline.com/oauth/verify";
         }
     }
 }

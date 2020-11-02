@@ -77,13 +77,24 @@ namespace AspNet.Security.OAuth.EVEOnline
             {
                 var securityToken = _tokenHandler.ReadJwtToken(token);
 
-                return new List<Claim>(securityToken.Claims)
+                var claims = new List<Claim>(securityToken.Claims)
                 {
                     new Claim(ClaimTypes.NameIdentifier, securityToken.Subject.Replace("CHARACTER:EVE:", string.Empty, StringComparison.OrdinalIgnoreCase), ClaimValueTypes.String, ClaimsIssuer),
                     new Claim(ClaimTypes.GivenName, securityToken.Claims.First(x => x.Type.Equals("name", StringComparison.OrdinalIgnoreCase)).Value, ClaimValueTypes.String, ClaimsIssuer),
                     new Claim(ClaimTypes.Name, securityToken.Claims.First(x => x.Type.Equals("name", StringComparison.OrdinalIgnoreCase)).Value, ClaimValueTypes.String, ClaimsIssuer),
                     new Claim(ClaimTypes.Expiration, UnixTimeStampToDateTime(securityToken.Claims.First(x => x.Type.Equals("exp", StringComparison.OrdinalIgnoreCase)).Value), ClaimValueTypes.DateTime, ClaimsIssuer),
                 };
+
+                var scopes = claims.Where(x => x.Type.Equals("scp", StringComparison.OrdinalIgnoreCase)).ToList();
+
+                if (scopes.Any())
+                {
+                    claims.RemoveAll(x => scopes.Contains(x));
+
+                    claims = claims.Append(new Claim(EVEOnlineAuthenticationConstants.Claims.Scopes, string.Join(" ", scopes.Select(x => x.Value)), ClaimValueTypes.String, ClaimsIssuer)).ToList();
+                }
+
+                return claims;
             }
             catch (Exception ex)
             {
@@ -93,10 +104,8 @@ namespace AspNet.Security.OAuth.EVEOnline
 
         private static string UnixTimeStampToDateTime(string unixTimeStamp)
         {
-            // Unix timestamp is seconds past epoch
-            DateTime dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
-            dateTime = dateTime.AddSeconds(double.Parse(unixTimeStamp, CultureInfo.InvariantCulture));
-            return dateTime.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'", CultureInfo.InvariantCulture);
+            DateTimeOffset offset = DateTimeOffset.FromUnixTimeSeconds(long.Parse(unixTimeStamp, CultureInfo.InvariantCulture));
+            return offset.ToString("o");
         }
     }
 }
