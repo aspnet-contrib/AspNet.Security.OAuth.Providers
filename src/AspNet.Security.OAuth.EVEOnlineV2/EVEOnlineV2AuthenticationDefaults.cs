@@ -1,0 +1,69 @@
+/*
+ * Licensed under the Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0)
+ * See https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers
+ * for more information concerning the license and the contributors participating to this project.
+ */
+
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OAuth;
+
+namespace AspNet.Security.OAuth.EVEOnlineV2
+{
+    /// <summary>
+    /// Default values used by the EVEOnlineV2 authentication middleware.
+    /// </summary>
+    public static class EVEOnlineV2AuthenticationDefaults
+    {
+        /// <summary>
+        /// Default value for <see cref="AuthenticationScheme.Name"/>.
+        /// </summary>
+        public const string AuthenticationScheme = "EVEOnlineV2";
+
+        /// <summary>
+        /// Default value for <see cref="AuthenticationScheme.DisplayName"/>.
+        /// </summary>
+        public const string DisplayName = "EVEOnlineV2";
+
+        /// <summary>
+        /// Default value for <see cref="AuthenticationSchemeOptions.ClaimsIssuer"/>.
+        /// </summary>
+        public const string Issuer = "EVEOnlineV2";
+
+        /// <summary>
+        /// Default value for <see cref="RemoteAuthenticationOptions.CallbackPath"/>.
+        /// </summary>
+        public const string CallbackPath = "/signin-eveonlinev2";
+
+        /// <summary>
+        /// Default values for the Tranquility (live) server.
+        /// </summary>
+        public static class Tranquility
+        {
+            /// <summary>
+            /// Default value for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
+            /// </summary>
+            public const string AuthorizationEndpoint = "https://login.eveonline.com/v2/oauth/authorize";
+
+            /// <summary>
+            /// Default value for <see cref="OAuthOptions.TokenEndpoint"/>.
+            /// </summary>
+            public const string TokenEndpoint = "https://login.eveonline.com/v2/oauth/token";
+        }
+
+        /// <summary>
+        /// Default values for the Singularity (test) server.
+        /// </summary>
+        public static class Singularity
+        {
+            /// <summary>
+            /// Default value for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
+            /// </summary>
+            public const string AuthorizationEndpoint = "https://sisilogin.testeveonline.com/v2/oauth/authorize";
+
+            /// <summary>
+            /// Default value for <see cref="OAuthOptions.TokenEndpoint"/>.
+            /// </summary>
+            public const string TokenEndpoint = "https://sisilogin.testeveonline.com/v2/oauth/token";
+        }
+    }
+}
