@@ -48,7 +48,6 @@ namespace AspNet.Security.OAuth.EVEOnline
             [NotNull] AuthenticationProperties properties,
             [NotNull] OAuthTokenResponse tokens)
         {
-            // JwtSecurityToken decodedToken = new JwtSecurityToken(tokens.AccessToken);
             var tokenClaims = ExtractClaimsFromToken(tokens.AccessToken);
 
             foreach (var claim in tokenClaims)
@@ -77,21 +76,23 @@ namespace AspNet.Security.OAuth.EVEOnline
             {
                 var securityToken = _tokenHandler.ReadJwtToken(token);
 
-                var claims = new List<Claim>(securityToken.Claims)
-                {
-                    new Claim(ClaimTypes.NameIdentifier, securityToken.Subject.Replace("CHARACTER:EVE:", string.Empty, StringComparison.OrdinalIgnoreCase), ClaimValueTypes.String, ClaimsIssuer),
-                    new Claim(ClaimTypes.GivenName, securityToken.Claims.First(x => x.Type.Equals("name", StringComparison.OrdinalIgnoreCase)).Value, ClaimValueTypes.String, ClaimsIssuer),
-                    new Claim(ClaimTypes.Name, securityToken.Claims.First(x => x.Type.Equals("name", StringComparison.OrdinalIgnoreCase)).Value, ClaimValueTypes.String, ClaimsIssuer),
-                    new Claim(ClaimTypes.Expiration, UnixTimeStampToDateTime(securityToken.Claims.First(x => x.Type.Equals("exp", StringComparison.OrdinalIgnoreCase)).Value), ClaimValueTypes.DateTime, ClaimsIssuer),
-                };
+                var nameClaim = ExtractClaim(securityToken, "name");
+                var expClaim = ExtractClaim(securityToken, "exp");
 
-                var scopes = claims.Where(x => x.Type.Equals("scp", StringComparison.OrdinalIgnoreCase)).ToList();
+                var claims = new List<Claim>(securityToken.Claims);
+
+                claims.Add(new Claim(ClaimTypes.NameIdentifier, securityToken.Subject.Replace("CHARACTER:EVE:", string.Empty, StringComparison.OrdinalIgnoreCase), ClaimValueTypes.String, ClaimsIssuer));
+                claims.Add(new Claim(ClaimTypes.GivenName, nameClaim.Value, ClaimValueTypes.String, ClaimsIssuer));
+                claims.Add(new Claim(ClaimTypes.Name, nameClaim.Value, ClaimValueTypes.String, ClaimsIssuer));
+                claims.Add(new Claim(ClaimTypes.Expiration, UnixTimeStampToDateTime(expClaim.Value), ClaimValueTypes.DateTime, ClaimsIssuer));
+
+                var scopes = claims.Where(x => string.Equals(x.Type, "scp", StringComparison.OrdinalIgnoreCase)).ToList();
 
                 if (scopes.Any())
                 {
                     claims.RemoveAll(x => scopes.Contains(x));
 
-                    claims = claims.Append(new Claim(EVEOnlineAuthenticationConstants.Claims.Scopes, string.Join(" ", scopes.Select(x => x.Value)), ClaimValueTypes.String, ClaimsIssuer)).ToList();
+                    claims.Add(new Claim(EVEOnlineAuthenticationConstants.Claims.Scopes, string.Join(" ", scopes.Select(x => x.Value)), ClaimValueTypes.String, ClaimsIssuer));
                 }
 
                 return claims;
@@ -102,10 +103,27 @@ namespace AspNet.Security.OAuth.EVEOnline
             }
         }
 
+        private static Claim ExtractClaim(JwtSecurityToken securityToken, string claim)
+        {
+            var extractedClaim = securityToken.Claims.FirstOrDefault(x => string.Equals(x.Type, claim, StringComparison.OrdinalIgnoreCase));
+
+            if (extractedClaim == null)
+            {
+                throw new MissingFieldException($"The claim '{claim}' missing from the JWT token from EVEOnline.");
+            }
+
+            return extractedClaim;
+        }
+
         private static string UnixTimeStampToDateTime(string unixTimeStamp)
         {
-            DateTimeOffset offset = DateTimeOffset.FromUnixTimeSeconds(long.Parse(unixTimeStamp, CultureInfo.InvariantCulture));
-            return offset.ToString("o");
+            if (!long.TryParse(unixTimeStamp, NumberStyles.Any, CultureInfo.InvariantCulture, out long unixTime))
+            {
+                throw new InvalidCastException("The value of the claim 'exp' is not in the format long.");
+            }
+
+            DateTimeOffset offset = DateTimeOffset.FromUnixTimeSeconds(unixTime);
+            return offset.ToString("o", CultureInfo.InvariantCulture);
         }
     }
 }

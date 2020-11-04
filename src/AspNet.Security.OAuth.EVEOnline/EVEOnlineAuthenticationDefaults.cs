@@ -52,7 +52,7 @@ namespace AspNet.Security.OAuth.EVEOnline
             /// <summary>
             /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
             /// </summary>
-            [Obsolete("UserInformationEndpoint is no longer required for V2, info now in JWT token.")]
+            [Obsolete("This value is no longer required for V2, information is now stored in the JWT.")]
             public const string UserInformationEndpoint = "https://login.eveonline.com/oauth/verify";
         }
 
@@ -74,7 +74,7 @@ namespace AspNet.Security.OAuth.EVEOnline
             /// <summary>
             /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
             /// </summary>
-            [Obsolete("UserInformationEndpoint is no longer required for V2, info now in JWT token.")]
+            [Obsolete("This value is no longer required for V2, information is now stored in the JWT.")]
             public const string UserInformationEndpoint = "https://sisilogin.testeveonline.com/oauth/verify";
         }
     }
