@@ -82,7 +82,6 @@ namespace AspNet.Security.OAuth.EVEOnline
                 var claims = new List<Claim>(securityToken.Claims);
 
                 claims.Add(new Claim(ClaimTypes.NameIdentifier, securityToken.Subject.Replace("CHARACTER:EVE:", string.Empty, StringComparison.OrdinalIgnoreCase), ClaimValueTypes.String, ClaimsIssuer));
-                claims.Add(new Claim(ClaimTypes.GivenName, nameClaim.Value, ClaimValueTypes.String, ClaimsIssuer));
                 claims.Add(new Claim(ClaimTypes.Name, nameClaim.Value, ClaimValueTypes.String, ClaimsIssuer));
                 claims.Add(new Claim(ClaimTypes.Expiration, UnixTimeStampToDateTime(expClaim.Value), ClaimValueTypes.DateTime, ClaimsIssuer));
 
