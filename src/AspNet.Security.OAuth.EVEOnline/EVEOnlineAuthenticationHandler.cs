@@ -109,7 +109,7 @@ namespace AspNet.Security.OAuth.EVEOnline
 
             if (extractedClaim == null)
             {
-                throw new MissingFieldException($"The claim '{claim}' missing from the JWT token from EVEOnline.");
+                throw new InvalidOperationException($"The claim '{claim}' is missing from the EVEOnline JWT.");
             }
 
             return extractedClaim;
@@ -119,7 +119,7 @@ namespace AspNet.Security.OAuth.EVEOnline
         {
             if (!long.TryParse(unixTimeStamp, NumberStyles.Any, CultureInfo.InvariantCulture, out long unixTime))
             {
-                throw new InvalidCastException("The value of the claim 'exp' is not in the format long.");
+                throw new InvalidOperationException($"The value {unixTimeStamp} of the 'exp' claim is not a valid 64-bit integer.");
             }
 
             DateTimeOffset offset = DateTimeOffset.FromUnixTimeSeconds(unixTime);
