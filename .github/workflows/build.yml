@@ -48,7 +48,7 @@ jobs:
         $QuarterHours = [Math]::Floor($Now.Minute / 15.0)
         $Revision = $Hours + $QuarterHours + 1
         $BuildId = $Now.ToString("yyyyMMdd") + "." + $Revision
-        Write-Host "_AspNetContribBuildNumber=${BuildId}" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+        Write-Output "_AspNetContribBuildNumber=${BuildId}" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
 
     - name: Build, Test and Package
       if: ${{ runner.os == 'Windows' }}
