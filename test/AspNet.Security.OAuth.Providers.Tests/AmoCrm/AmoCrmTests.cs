@@ -28,6 +28,7 @@ namespace AspNet.Security.OAuth.AmoCrm
         [Theory]
         [InlineData(ClaimTypes.NameIdentifier, "100500")]
         [InlineData(ClaimTypes.Name, "John")]
+        [InlineData(ClaimTypes.Surname, "Smith")]
         [InlineData(ClaimTypes.Email, "john@john-smith.local")]
         public async Task Can_Sign_In_Using_AmoCrm(string claimType, string claimValue)
         {

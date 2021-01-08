@@ -36,7 +36,7 @@ namespace AspNet.Security.OAuth.AmoCrm
         }
 
         /// <summary>
-        /// amoCRM account name.
+        /// Gets or sets the amoCRM account name.
         /// </summary>
         /// <exception cref="ArgumentException">Thrown when <paramref name="value"/> is null or empty string.</exception>
         public string Account
@@ -46,12 +46,12 @@ namespace AspNet.Security.OAuth.AmoCrm
             {
                 if (string.IsNullOrWhiteSpace(value))
                 {
-                    throw new ArgumentException("Invalid account", nameof(value));
+                    throw new ArgumentException("Account cannot be null or white space.", nameof(value));
                 }
 
                 _account = value;
-                TokenEndpoint = string.Format(CultureInfo.InvariantCulture, AmoCrmAuthenticationDefaults.TokenEndpoint, value);
-                UserInformationEndpoint = string.Format(CultureInfo.InvariantCulture, AmoCrmAuthenticationDefaults.UserInformationEndpoint, value);
+                TokenEndpoint = string.Format(CultureInfo.InvariantCulture, AmoCrmAuthenticationDefaults.TokenEndpointFormat, value);
+                UserInformationEndpoint = string.Format(CultureInfo.InvariantCulture, AmoCrmAuthenticationDefaults.UserInformationEndpointFormat, value);
             }
         }
     }

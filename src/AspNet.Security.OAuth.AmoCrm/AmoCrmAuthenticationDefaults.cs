@@ -42,11 +42,11 @@ namespace AspNet.Security.OAuth.AmoCrm
         /// <summary>
         /// Default value for the <see cref="OAuthOptions.TokenEndpoint"/>.
         /// </summary>
-        public const string TokenEndpoint = "https://{0}.amocrm.ru/oauth2/access_token";
+        public const string TokenEndpointFormat = "https://{0}.amocrm.ru/oauth2/access_token";
 
         /// <summary>
         /// Default value for the <see cref="OAuthOptions.UserInformationEndpoint"/>.
         /// </summary>
-        public const string UserInformationEndpoint = "https://{0}.amocrm.ru/v3/user";
+        public const string UserInformationEndpointFormat = "https://{0}.amocrm.ru/v3/user";
     }
 }
