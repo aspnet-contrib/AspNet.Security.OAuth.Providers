@@ -2,11 +2,16 @@
   "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
   "items": [
     {
-      "uri": "https://graph.qq.com/oauth2.0/token?client_id=my-client-id&client_secret=my-client-secret&redirect_uri=http%3A%2F%2Flocalhost%2Fsignin-qq&code=a6ed8e7f-471f-44f1-903b-65946475f351&grant_type=authorization_code",
-      "contentString": "access_token=secret-access-token&token_type=access&refresh_token=secret-refresh-token"
+      "uri": "https://graph.qq.com/oauth2.0/token?client_id=my-client-id&client_secret=my-client-secret&redirect_uri=http%3A%2F%2Flocalhost%2Fsignin-qq&code=a6ed8e7f-471f-44f1-903b-65946475f351&grant_type=authorization_code&fmt=json",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "secret-access-token",
+        "token_type": "access",
+        "refresh_token": "secret-refresh-token"
+      }
     },
     {
-      "uri": "https://graph.qq.com/oauth2.0/me?access_token=secret-access-token",
+      "uri": "https://graph.qq.com/oauth2.0/me?access_token=secret-access-token&fmt=json",
       "contentFormat": "json",
       "contentJson": {
         "openid": "my-open-id"
