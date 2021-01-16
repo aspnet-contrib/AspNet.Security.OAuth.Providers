@@ -38,13 +38,13 @@ namespace AspNet.Security.OAuth.QQ
         }
 
         /// <summary>
+        /// Gets or sets if the union Id (the primary key of an owner for different apps of the QQ platform) should be put into the user claims.
+        /// </summary>
+        public bool ApplyForUnionID { get; set; }
+
+        /// <summary>
         /// Gets or sets the URL of the user identification endpoint (a.k.a. the "OpenID endpoint").
         /// </summary>
         public string UserIdentificationEndpoint { get; set; }
-
-        /// <summary>
-        /// Set if the unionid (the primary key of a user for different apps of QQ platform) should be put into user claims. Default value is <c>false</c>.
-        /// </summary>
-        public bool ApplyForUnionID { get; set; }
     }
 }

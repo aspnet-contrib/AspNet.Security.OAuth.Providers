@@ -13,12 +13,12 @@ namespace AspNet.Security.OAuth.QQ
     {
         public static class Claims
         {
-            public const string UnionId = "urn:qq:unionid";
             public const string AvatarFullUrl = "urn:qq:avatar_full";
             public const string AvatarUrl = "urn:qq:avatar";
             public const string PictureFullUrl = "urn:qq:picture_full";
             public const string PictureMediumUrl = "urn:qq:picture_medium";
             public const string PictureUrl = "urn:qq:picture";
+            public const string UnionId = "urn:qq:unionid";
         }
     }
 }

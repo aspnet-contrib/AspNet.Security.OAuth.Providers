@@ -19,5 +19,5 @@ _None._
 
 | Property Name | Property Type | Description | Default Value |
 |:--|:--|:--|:--|
-| `UserIdentificationEndpoint` | `string` | The address of the endpoint to use for user identification. | `QQAuthenticationDefaults.UserIdentificationEndpoint` |
 | `ApplyForUnionID` | `bool` | Set if the UnionID should be retrieved and put into user claims. | `false` |
+| `UserIdentificationEndpoint` | `string` | The address of the endpoint to use for user identification. | `QQAuthenticationDefaults.UserIdentificationEndpoint` |

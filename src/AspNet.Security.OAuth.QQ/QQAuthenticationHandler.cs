@@ -36,23 +36,23 @@ namespace AspNet.Security.OAuth.QQ
             [NotNull] AuthenticationProperties properties,
             [NotNull] OAuthTokenResponse tokens)
         {
-            var (errorCode, openid, unionid) = await GetUserIdentifierAsync(tokens);
-            if (errorCode != 0 || string.IsNullOrEmpty(openid))
+            (int errorCode, string openId, string unionId) = await GetUserIdentifierAsync(tokens);
+            if (errorCode != 0 || string.IsNullOrEmpty(openId))
             {
-                throw new HttpRequestException($"An error[Code:{errorCode}] occurred while retrieving the user identifier.");
+                throw new HttpRequestException($"An error (Code:{errorCode}) occurred while retrieving the user identifier.");
             }
 
-            identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, openid, ClaimValueTypes.String, Options.ClaimsIssuer));
-            if (!string.IsNullOrEmpty(unionid))
+            identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, openId, ClaimValueTypes.String, Options.ClaimsIssuer));
+            if (!string.IsNullOrEmpty(unionId))
             {
-                identity.AddClaim(new Claim(QQAuthenticationConstants.Claims.UnionId, unionid, ClaimValueTypes.String, Options.ClaimsIssuer));
+                identity.AddClaim(new Claim(QQAuthenticationConstants.Claims.UnionId, unionId, ClaimValueTypes.String, Options.ClaimsIssuer));
             }
 
             string address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, new Dictionary<string, string>(3)
             {
                 ["oauth_consumer_key"] = Options.ClientId,
                 ["access_token"] = tokens.AccessToken,
-                ["openid"] = openid,
+                ["openid"] = openId,
             });
 
             using var response = await Backchannel.GetAsync(address);
@@ -91,7 +91,7 @@ namespace AspNet.Security.OAuth.QQ
 
         protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] OAuthCodeExchangeContext context)
         {
-            // Details see "https://wiki.connect.qq.com/%E4%BD%BF%E7%94%A8authorization_code%E8%8E%B7%E5%8F%96access_token"
+            // See "https://wiki.connect.qq.com/%E4%BD%BF%E7%94%A8authorization_code%E8%8E%B7%E5%8F%96access_token" for details
             string address = QueryHelpers.AddQueryString(Options.TokenEndpoint, new Dictionary<string, string>(6)
             {
                 ["client_id"] = Options.ClientId,
@@ -99,7 +99,7 @@ namespace AspNet.Security.OAuth.QQ
                 ["redirect_uri"] = context.RedirectUri,
                 ["code"] = context.Code,
                 ["grant_type"] = "authorization_code",
-                ["fmt"] = "json" // Return json instead of x-www-form-urlencoded which is default due to historical reasons
+                ["fmt"] = "json" // Return JSON instead of x-www-form-urlencoded which is default due to historical reasons
             });
 
             using var request = new HttpRequestMessage(HttpMethod.Get, address);
@@ -116,19 +116,20 @@ namespace AspNet.Security.OAuth.QQ
                 return OAuthTokenResponse.Failed(new Exception("An error occurred while retrieving an access token."));
             }
 
-            using var rspStream = await response.Content.ReadAsStreamAsync();
-            var payload = JsonDocument.Parse(rspStream);
+            using var responseStream = await response.Content.ReadAsStreamAsync();
+            var payload = JsonDocument.Parse(responseStream);
             return OAuthTokenResponse.Success(payload);
         }
 
-        private async Task<(int errorCode, string openid, string unionid)> GetUserIdentifierAsync(OAuthTokenResponse tokens)
+        private async Task<(int errorCode, string openId, string unionId)> GetUserIdentifierAsync(OAuthTokenResponse tokens)
         {
-            // Details see "https://wiki.connect.qq.com/unionid%E4%BB%8B%E7%BB%8D"
+            // See "https://wiki.connect.qq.com/unionid%E4%BB%8B%E7%BB%8D" for details
             var queryString = new Dictionary<string, string>(3)
             {
-                { "access_token", tokens.AccessToken },
-                { "fmt", "json" }, // Return json instead of jsonpb which is default due to historical reasons
+                ["access_token"] = tokens.AccessToken,
+                ["fmt"] = "json" // Return JSON instead of JSONP which is default due to historical reasons
             };
+
             if (Options.ApplyForUnionID)
             {
                 queryString.Add("unionid", "1");
@@ -149,13 +150,15 @@ namespace AspNet.Security.OAuth.QQ
                 throw new HttpRequestException("An error occurred while retrieving the user identifier.");
             }
 
-            using var rspStream = await response.Content.ReadAsStreamAsync();
-            using JsonDocument payload = JsonDocument.Parse(rspStream);
+            using var responseStream = await response.Content.ReadAsStreamAsync();
+            using JsonDocument payload = JsonDocument.Parse(responseStream);
+
             var payloadRoot = payload.RootElement;
             int errorCode = payloadRoot.TryGetProperty("error", out var errorCodeElement) && errorCodeElement.ValueKind == JsonValueKind.Number
                 ? errorCodeElement.GetInt32()
-                : default;
-            return (errorCode, openid: payloadRoot.GetString("openid"), unionid: payloadRoot.GetString("unionid"));
+                : 0;
+
+            return (errorCode, openId: payloadRoot.GetString("openid"), unionId: payloadRoot.GetString("unionid"));
         }
 
         protected override string FormatScope() => FormatScope(Options.Scope);
