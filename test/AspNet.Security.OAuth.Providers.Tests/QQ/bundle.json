@@ -11,10 +11,11 @@
       }
     },
     {
-      "uri": "https://graph.qq.com/oauth2.0/me?access_token=secret-access-token&fmt=json",
+      "uri": "https://graph.qq.com/oauth2.0/me?access_token=secret-access-token&fmt=json&unionid=1",
       "contentFormat": "json",
       "contentJson": {
-        "openid": "my-open-id"
+        "openid": "my-open-id",
+        "unionid": "my-union-id"
       }
     },
     {
