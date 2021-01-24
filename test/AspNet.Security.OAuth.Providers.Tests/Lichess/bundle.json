@@ -9,7 +9,8 @@
       "contentJson": {
         "access_token": "secret-access-token",
         "token_type": "bearer",
-        "scope": "repo,gist"
+        "refresh_token": "secret-refresh-token",
+        "expires_in": "600"
       }
     },
     {
