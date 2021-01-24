@@ -25,7 +25,7 @@ namespace AspNet.Security.OAuth.Lichess
             /// <summary>
             /// Write your preferences
             /// </summary>
-            public const string PreferencesWrite = "preference:read";
+            public const string PreferencesWrite = "preference:write";
 
             /// <summary>
             /// Read your email address
