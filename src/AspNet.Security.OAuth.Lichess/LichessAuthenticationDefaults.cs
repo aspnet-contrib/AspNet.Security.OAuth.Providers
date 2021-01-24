@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Authentication.OAuth;
 namespace AspNet.Security.OAuth.Lichess
 {
     /// <summary>
-    /// Default values used by the DeviantArt authentication middleware.
+    /// Default values used by the Lichess authentication middleware.
     /// </summary>
     public static class LichessAuthenticationDefaults
     {
