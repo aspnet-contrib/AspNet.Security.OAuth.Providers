@@ -35,8 +35,7 @@ namespace AspNet.Security.OAuth.Lichess
             [NotNull] OAuthTokenResponse tokens)
         {
             // Retrieve basic user information
-            using var payload =
-                await RequestUserInformation(Options.UserInformationEndpoint, tokens.AccessToken, "user profile");
+            using var payload = await RequestUserInformation(Options.UserInformationEndpoint, tokens.AccessToken, "user profile");
 
             var principal = new ClaimsPrincipal(identity);
             var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload.RootElement);
