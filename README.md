@@ -71,6 +71,7 @@ We would love it if you could help contributing to this repository.
 * [Martin Costello](https://github.com/martincostello)
 * [Maxime Roussin-Bélanger](https://github.com/Lorac)
 * [Michael Knowles](https://github.com/mjknowles)
+* [Michael Tanczos](https://github.com/tanczosm)
 * [Patrick Westerhoff](https://github.com/poke)
 * [Robert Shade](https://github.com/robert-shade)
 * [saber-wang](https://github.com/saber-wang)
