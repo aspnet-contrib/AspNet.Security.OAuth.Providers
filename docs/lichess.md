@@ -9,7 +9,7 @@ services.AddAuthentication(options => /* Auth configuration */)
             options.ClientId = "my-client-id";
             options.ClientSecret = "my-client-secret";
 			
-			options.Scope.Clear();
+            options.Scope.Clear();
             options.Scope.Add(LichessAuthenticationConstants.Scopes.EmailRead);
         });
 ```
