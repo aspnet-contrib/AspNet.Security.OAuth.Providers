@@ -22,4 +22,4 @@ _None._
 
 | Property Name | Property Type | Description | Default Value |
 |:--|:--|:--|:--|
-| `Scope` | `string` | The scope you want to use on kloudless, see [documentation](https://developers.kloudless.com/guides/kb/scopes.html "List of possible scopes"). | `KloudlessAuthenticationConstants.Scopes.Any` |
+| `Scope` | `ICollection<string>` | The scope(s) you want to use on Kloudless, see [documentation](https://developers.kloudless.com/guides/kb/scopes.html "List of possible scopes"). | `KloudlessAuthenticationConstants.Scopes.Any` |
