@@ -49,7 +49,7 @@ namespace AspNet.Security.OAuth.ArcGIS
 
             // Request the token
             using var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
-            using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
+            using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
 
             // Note: error responses always return 200 status codes.
             if (payload.RootElement.TryGetProperty("error", out var error))

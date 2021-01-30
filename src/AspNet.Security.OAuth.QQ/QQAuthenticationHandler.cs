@@ -64,12 +64,12 @@ namespace AspNet.Security.OAuth.QQ
                                 "returned a {Status} response with the following payload: {Headers} {Body}.",
                                 /* Status: */ response.StatusCode,
                                 /* Headers: */ response.Headers.ToString(),
-                                /* Body: */ await response.Content.ReadAsStringAsync());
+                                /* Body: */ await response.Content.ReadAsStringAsync(Context.RequestAborted));
 
                 throw new HttpRequestException("An error occurred while retrieving user information.");
             }
 
-            using var stream = await response.Content.ReadAsStreamAsync();
+            using var stream = await response.Content.ReadAsStreamAsync(Context.RequestAborted);
             using var payload = JsonDocument.Parse(stream);
 
             int status = payload.RootElement.GetProperty("ret").GetInt32();
@@ -113,12 +113,12 @@ namespace AspNet.Security.OAuth.QQ
                                 "returned a {Status} response with the following payload: {Headers} {Body}.",
                                 /* Status: */ response.StatusCode,
                                 /* Headers: */ response.Headers.ToString(),
-                                /* Body: */ await response.Content.ReadAsStringAsync());
+                                /* Body: */ await response.Content.ReadAsStringAsync(Context.RequestAborted));
 
                 return OAuthTokenResponse.Failed(new Exception("An error occurred while retrieving an access token."));
             }
 
-            using var stream = await response.Content.ReadAsStreamAsync();
+            using var stream = await response.Content.ReadAsStreamAsync(Context.RequestAborted);
             var payload = JsonDocument.Parse(stream);
 
             return OAuthTokenResponse.Success(payload);
@@ -148,12 +148,12 @@ namespace AspNet.Security.OAuth.QQ
                                 "returned a {Status} response with the following payload: {Headers} {Body}.",
                                 /* Status: */ response.StatusCode,
                                 /* Headers: */ response.Headers.ToString(),
-                                /* Body: */ await response.Content.ReadAsStringAsync());
+                                /* Body: */ await response.Content.ReadAsStringAsync(Context.RequestAborted));
 
                 throw new HttpRequestException("An error occurred while retrieving the user identifier.");
             }
 
-            using var stream = await response.Content.ReadAsStreamAsync();
+            using var stream = await response.Content.ReadAsStreamAsync(Context.RequestAborted);
             using JsonDocument payload = JsonDocument.Parse(stream);
 
             var payloadRoot = payload.RootElement;

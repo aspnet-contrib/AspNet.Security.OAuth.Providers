@@ -72,19 +72,19 @@ namespace AspNet.Security.OAuth.Weixin
                                 "returned a {Status} response with the following payload: {Headers} {Body}.",
                                 /* Status: */ response.StatusCode,
                                 /* Headers: */ response.Headers.ToString(),
-                                /* Body: */ await response.Content.ReadAsStringAsync());
+                                /* Body: */ await response.Content.ReadAsStringAsync(Context.RequestAborted));
 
                 throw new HttpRequestException("An error occurred while retrieving user information.");
             }
 
-            using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
+            using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
             if (!string.IsNullOrEmpty(payload.RootElement.GetString("errcode")))
             {
                 Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
                                 "returned a {Status} response with the following payload: {Headers} {Body}.",
                                 /* Status: */ response.StatusCode,
                                 /* Headers: */ response.Headers.ToString(),
-                                /* Body: */ await response.Content.ReadAsStringAsync());
+                                /* Body: */ await response.Content.ReadAsStringAsync(Context.RequestAborted));
 
                 throw new HttpRequestException("An error occurred while retrieving user information.");
             }
@@ -114,19 +114,19 @@ namespace AspNet.Security.OAuth.Weixin
                                 "returned a {Status} response with the following payload: {Headers} {Body}.",
                                 /* Status: */ response.StatusCode,
                                 /* Headers: */ response.Headers.ToString(),
-                                /* Body: */ await response.Content.ReadAsStringAsync());
+                                /* Body: */ await response.Content.ReadAsStringAsync(Context.RequestAborted));
 
                 return OAuthTokenResponse.Failed(new Exception("An error occurred while retrieving an access token."));
             }
 
-            var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
+            var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
             if (!string.IsNullOrEmpty(payload.RootElement.GetString("errcode")))
             {
                 Logger.LogError("An error occurred while retrieving an access token: the remote server " +
                                 "returned a {Status} response with the following payload: {Headers} {Body}.",
                                 /* Status: */ response.StatusCode,
                                 /* Headers: */ response.Headers.ToString(),
-                                /* Body: */ await response.Content.ReadAsStringAsync());
+                                /* Body: */ await response.Content.ReadAsStringAsync(Context.RequestAborted));
 
                 return OAuthTokenResponse.Failed(new Exception("An error occurred while retrieving an access token."));
             }

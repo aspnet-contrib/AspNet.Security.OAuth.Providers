@@ -65,12 +65,12 @@ namespace AspNet.Security.OAuth.SuperOffice
                                 "returned a {Status} response with the following payload: {Headers} {Body}.",
                                 /* Status: */ response.StatusCode,
                                 /* Headers: */ response.Headers.ToString(),
-                                /* Body: */ await response.Content.ReadAsStringAsync());
+                                /* Body: */ await response.Content.ReadAsStringAsync(Context.RequestAborted));
 
                 throw new HttpRequestException($"An error occurred when retrieving SuperOffice user information ({response.StatusCode}).");
             }
 
-            using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
+            using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
 
             var principal = new ClaimsPrincipal(identity);
 

@@ -51,12 +51,12 @@ namespace AspNet.Security.OAuth.Zalo
                                 "returned a {Status} response with the following payload: {Headers} {Body}.",
                                 /* Status: */ response.StatusCode,
                                 /* Headers: */ response.Headers.ToString(),
-                                /* Body: */ await response.Content.ReadAsStringAsync());
+                                /* Body: */ await response.Content.ReadAsStringAsync(Context.RequestAborted));
 
                 throw new HttpRequestException("An error occurred while retrieving the user profile.");
             }
 
-            using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
+            using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
 
             var principal = new ClaimsPrincipal(identity);
             var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload.RootElement);
@@ -90,12 +90,12 @@ namespace AspNet.Security.OAuth.Zalo
                                 "returned a {Status} response with the following payload: {Headers} {Body}.",
                                 /* Status: */ response.StatusCode,
                                 /* Headers: */ response.Headers.ToString(),
-                                /* Body: */ await response.Content.ReadAsStringAsync());
+                                /* Body: */ await response.Content.ReadAsStringAsync(Context.RequestAborted));
 
                 throw new HttpRequestException("An error occurred while retrieving the user profile.");
             }
 
-            var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
+            var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
 
             return OAuthTokenResponse.Success(payload);
         }

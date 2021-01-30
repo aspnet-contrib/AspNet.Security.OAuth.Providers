@@ -53,12 +53,12 @@ namespace AspNet.Security.OAuth.Weibo
                                 "returned a {Status} response with the following payload: {Headers} {Body}.",
                                 /* Status: */ response.StatusCode,
                                 /* Headers: */ response.Headers.ToString(),
-                                /* Body: */ await response.Content.ReadAsStringAsync());
+                                /* Body: */ await response.Content.ReadAsStringAsync(Context.RequestAborted));
 
                 throw new HttpRequestException("An error occurred while retrieving the user profile.");
             }
 
-            using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
+            using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
 
             // When the email address is not public, retrieve it from
             // the emails endpoint if the user:email scope is specified.
@@ -99,12 +99,12 @@ namespace AspNet.Security.OAuth.Weibo
                                   "the remote server returned a {Status} response with the following payload: {Headers} {Body}.",
                                   /* Status: */ response.StatusCode,
                                   /* Headers: */ response.Headers.ToString(),
-                                  /* Body: */ await response.Content.ReadAsStringAsync());
+                                  /* Body: */ await response.Content.ReadAsStringAsync(Context.RequestAborted));
 
                 throw new HttpRequestException("An error occurred while retrieving the email address associated to the user profile.");
             }
 
-            using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
+            using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
 
             return (from email in payload.RootElement.EnumerateArray()
                     select email.GetString("email")).FirstOrDefault();

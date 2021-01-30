@@ -57,12 +57,12 @@ namespace AspNet.Security.OAuth.KakaoTalk
                                 "returned a {Status} response with the following payload: {Headers} {Body}.",
                                 /* Status: */ response.StatusCode,
                                 /* Headers: */ response.Headers.ToString(),
-                                /* Body: */ await response.Content.ReadAsStringAsync());
+                                /* Body: */ await response.Content.ReadAsStringAsync(Context.RequestAborted));
 
                 throw new HttpRequestException("An error occurred while retrieving the user profile.");
             }
 
-            return JsonDocument.Parse(await response.Content.ReadAsStringAsync());
+            return JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
         }
     }
 }
