@@ -44,7 +44,6 @@ namespace AspNet.Security.OAuth.QQ
             }
 
             identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, openId, ClaimValueTypes.String, Options.ClaimsIssuer));
-
             if (!string.IsNullOrEmpty(unionId))
             {
                 identity.AddClaim(new Claim(QQAuthenticationConstants.Claims.UnionId, unionId, ClaimValueTypes.String, Options.ClaimsIssuer));
