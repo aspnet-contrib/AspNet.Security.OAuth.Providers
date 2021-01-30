@@ -24,7 +24,11 @@ namespace AspNet.Security.OAuth.QQ
 
         protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
         {
-            builder.AddQQ(options => ConfigureDefaults(builder, options));
+            builder.AddQQ(options =>
+            {
+                options.ApplyForUnionId = true;
+                ConfigureDefaults(builder, options);
+            });
         }
 
         [Theory]
@@ -35,6 +39,7 @@ namespace AspNet.Security.OAuth.QQ
         [InlineData("urn:qq:picture_full", "https://qq.local/picture-large.png")]
         [InlineData("urn:qq:avatar", "https://qq.local/avatar.png")]
         [InlineData("urn:qq:avatar_full", "https://qq.local/avatar-large.png")]
+        [InlineData("urn:qq:unionid", "my-union-id")]
         public async Task Can_Sign_In_Using_QQ(string claimType, string claimValue)
         {
             // Arrange

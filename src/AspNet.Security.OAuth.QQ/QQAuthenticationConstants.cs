@@ -18,6 +18,7 @@ namespace AspNet.Security.OAuth.QQ
             public const string PictureFullUrl = "urn:qq:picture_full";
             public const string PictureMediumUrl = "urn:qq:picture_medium";
             public const string PictureUrl = "urn:qq:picture";
+            public const string UnionId = "urn:qq:unionid";
         }
     }
 }
