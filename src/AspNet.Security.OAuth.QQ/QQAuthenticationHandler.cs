@@ -163,6 +163,6 @@ namespace AspNet.Security.OAuth.QQ
 
         protected override string FormatScope() => FormatScope(Options.Scope);
 
-        protected override string FormatScope(IEnumerable<string> scopes) => string.Join(',', scopes);
+        protected override string FormatScope([NotNull] IEnumerable<string> scopes) => string.Join(',', scopes);
     }
 }
