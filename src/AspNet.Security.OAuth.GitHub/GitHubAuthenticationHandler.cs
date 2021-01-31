@@ -46,12 +46,12 @@ namespace AspNet.Security.OAuth.GitHub
                                 "returned a {Status} response with the following payload: {Headers} {Body}.",
                                 /* Status: */ response.StatusCode,
                                 /* Headers: */ response.Headers.ToString(),
-                                /* Body: */ await response.Content.ReadAsStringAsync());
+                                /* Body: */ await response.Content.ReadAsStringAsync(Context.RequestAborted));
 
                 throw new HttpRequestException("An error occurred while retrieving the user profile.");
             }
 
-            using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
+            using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
 
             var principal = new ClaimsPrincipal(identity);
             var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload.RootElement);
@@ -63,7 +63,7 @@ namespace AspNet.Security.OAuth.GitHub
                 !identity.HasClaim(claim => claim.Type == ClaimTypes.Email) &&
                 Options.Scope.Contains("user:email"))
             {
-                string address = await GetEmailAsync(tokens);
+                string? address = await GetEmailAsync(tokens);
 
                 if (!string.IsNullOrEmpty(address))
                 {
@@ -72,10 +72,10 @@ namespace AspNet.Security.OAuth.GitHub
             }
 
             await Options.Events.CreatingTicket(context);
-            return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
+            return new AuthenticationTicket(context.Principal!, context.Properties, Scheme.Name);
         }
 
-        protected virtual async Task<string> GetEmailAsync([NotNull] OAuthTokenResponse tokens)
+        protected virtual async Task<string?> GetEmailAsync([NotNull] OAuthTokenResponse tokens)
         {
             // See https://developer.github.com/v3/users/emails/ for more information about the /user/emails endpoint.
             using var request = new HttpRequestMessage(HttpMethod.Get, Options.UserEmailsEndpoint);
@@ -89,12 +89,12 @@ namespace AspNet.Security.OAuth.GitHub
                                   "the remote server returned a {Status} response with the following payload: {Headers} {Body}.",
                                   /* Status: */ response.StatusCode,
                                   /* Headers: */ response.Headers.ToString(),
-                                  /* Body: */ await response.Content.ReadAsStringAsync());
+                                  /* Body: */ await response.Content.ReadAsStringAsync(Context.RequestAborted));
 
                 throw new HttpRequestException("An error occurred while retrieving the email address associated to the user profile.");
             }
 
-            using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
+            using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
 
             return (from address in payload.RootElement.EnumerateArray()
                     where address.GetProperty("primary").GetBoolean()

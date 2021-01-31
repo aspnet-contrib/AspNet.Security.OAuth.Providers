@@ -52,16 +52,16 @@ namespace AspNet.Security.OAuth.Shopify
                                 "returned a {Status} response with the following payload: {Headers} {Body}.",
                                 /* Status: */ response.StatusCode,
                                 /* Headers: */ response.Headers.ToString(),
-                                /* Body: */ await response.Content.ReadAsStringAsync());
+                                /* Body: */ await response.Content.ReadAsStringAsync(Context.RequestAborted));
 
                 throw new HttpRequestException("An error occurred while retrieving the shop profile.");
             }
 
-            using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
+            using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
 
             // In Shopify, the customer can modify the scope given to the app. Apps should verify
             // that the customer is allowing the required scope.
-            string actualScope = tokens.Response.RootElement.GetString("scope");
+            string actualScope = tokens.Response.RootElement.GetString("scope") ?? string.Empty;
             bool isPersistent = true;
 
             // If the request was for a "per-user" (i.e. no offline access)
@@ -75,9 +75,9 @@ namespace AspNet.Security.OAuth.Shopify
                     identity.AddClaim(new Claim(ClaimTypes.Expiration, expires.ToString("O", CultureInfo.InvariantCulture), ClaimValueTypes.DateTime));
                 }
 
-                actualScope = tokens.Response.RootElement.GetString("associated_user_scope");
+                actualScope = tokens.Response.RootElement.GetString("associated_user_scope") ?? string.Empty;
 
-                string userData = tokens.Response.RootElement.GetString("associated_user");
+                string userData = tokens.Response.RootElement.GetString("associated_user") ?? string.Empty;
                 identity.AddClaim(new Claim(ClaimTypes.UserData, userData));
             }
 
@@ -89,7 +89,7 @@ namespace AspNet.Security.OAuth.Shopify
             context.RunClaimActions();
 
             await Options.Events.CreatingTicket(context);
-            return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
+            return new AuthenticationTicket(context.Principal!, context.Properties, Scheme.Name);
         }
 
         /// <inheritdoc />
@@ -118,7 +118,7 @@ namespace AspNet.Security.OAuth.Shopify
                 scope = FormatScope();
             }
 
-            string url = QueryHelpers.AddQueryString(uri, new Dictionary<string, string>()
+            string url = QueryHelpers.AddQueryString(uri, new Dictionary<string, string?>()
             {
                 ["client_id"] = Options.ClientId,
                 ["scope"] = scope,
@@ -161,7 +161,7 @@ namespace AspNet.Security.OAuth.Shopify
                 // request the token. This probably isn't necessary, but it's an easy extra verification.
                 var authenticationProperties = Options.StateDataFormat.Unprotect(stateValue);
 
-                string shopNamePropertyValue = authenticationProperties.Items[ShopifyAuthenticationDefaults.ShopNameAuthenticationProperty];
+                string? shopNamePropertyValue = authenticationProperties?.Items[ShopifyAuthenticationDefaults.ShopNameAuthenticationProperty];
 
                 if (!string.Equals(shopNamePropertyValue, shopDns, StringComparison.OrdinalIgnoreCase))
                 {
@@ -186,7 +186,7 @@ namespace AspNet.Security.OAuth.Shopify
                 ["code"] = context.Code
             };
 
-            request.Content = new FormUrlEncodedContent(parameters);
+            request.Content = new FormUrlEncodedContent(parameters!);
 
             using var response = await Backchannel.SendAsync(request, Context.RequestAborted);
 
@@ -195,12 +195,12 @@ namespace AspNet.Security.OAuth.Shopify
                 Logger.LogError("An error occurred while retrieving an access token: the remote server returned a {Status} response with the following payload: {Headers} {Body}.",
                                 /* Status: */ response.StatusCode,
                                 /* Headers: */ response.Headers.ToString(),
-                                /* Body: */ await response.Content.ReadAsStringAsync());
+                                /* Body: */ await response.Content.ReadAsStringAsync(Context.RequestAborted));
 
                 return OAuthTokenResponse.Failed(new Exception("An error occurred while retrieving an access token."));
             }
 
-            var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
+            var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
             return OAuthTokenResponse.Success(payload);
         }
     }

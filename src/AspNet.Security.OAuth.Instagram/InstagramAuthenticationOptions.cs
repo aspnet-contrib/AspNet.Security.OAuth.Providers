@@ -36,16 +36,6 @@ namespace AspNet.Security.OAuth.Instagram
         }
 
         /// <summary>
-        /// Gets or sets a boolean indicating whether requests to the
-        /// URL specified by <see cref="OAuthOptions.UserInformationEndpoint"/>
-        /// should be signed before being sent to the Instagram API.
-        /// Enabling this option is recommended when the client application
-        /// has been configured to enforce signed requests.
-        /// </summary>
-        [Obsolete("This property no longer has any effect and will be removed in a future version.")]
-        public bool UseSignedRequests { get; set; }
-
-        /// <summary>
         /// Gets the list of list of fields and edges to retrieve from the user information endpoint.
         /// </summary>
         public ISet<string> Fields { get; } = new HashSet<string>()

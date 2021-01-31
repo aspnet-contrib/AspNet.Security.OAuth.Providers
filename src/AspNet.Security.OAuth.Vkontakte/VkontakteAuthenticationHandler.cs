@@ -36,7 +36,7 @@ namespace AspNet.Security.OAuth.Vkontakte
             [NotNull] AuthenticationProperties properties,
             [NotNull] OAuthTokenResponse tokens)
         {
-            string address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, new Dictionary<string, string>
+            string address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, new Dictionary<string, string?>
             {
                 ["access_token"] = tokens.AccessToken,
                 ["v"] = !string.IsNullOrEmpty(Options.ApiVersion) ? Options.ApiVersion : VkontakteAuthenticationDefaults.ApiVersion
@@ -54,12 +54,12 @@ namespace AspNet.Security.OAuth.Vkontakte
                                 "returned a {Status} response with the following payload: {Headers} {Body}.",
                                 /* Status: */ response.StatusCode,
                                 /* Headers: */ response.Headers.ToString(),
-                                /* Body: */ await response.Content.ReadAsStringAsync());
+                                /* Body: */ await response.Content.ReadAsStringAsync(Context.RequestAborted));
 
                 throw new HttpRequestException("An error occurred while retrieving the user profile.");
             }
 
-            using var container = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
+            using var container = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
             using var enumerator = container.RootElement.GetProperty("response").EnumerateArray();
             var payload = enumerator.First();
 
@@ -71,7 +71,7 @@ namespace AspNet.Security.OAuth.Vkontakte
             context.RunClaimActions(tokens.Response.RootElement);
 
             await Options.Events.CreatingTicket(context);
-            return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
+            return new AuthenticationTicket(context.Principal!, context.Properties, Scheme.Name);
         }
     }
 }

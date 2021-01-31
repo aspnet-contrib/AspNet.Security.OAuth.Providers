@@ -48,19 +48,19 @@ namespace AspNet.Security.OAuth.VisualStudio
                                 "returned a {Status} response with the following payload: {Headers} {Body}.",
                                 /* Status: */ response.StatusCode,
                                 /* Headers: */ response.Headers.ToString(),
-                                /* Body: */ await response.Content.ReadAsStringAsync());
+                                /* Body: */ await response.Content.ReadAsStringAsync(Context.RequestAborted));
 
                 throw new HttpRequestException("An error occurred while retrieving the user profile.");
             }
 
-            var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
+            var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
 
             var principal = new ClaimsPrincipal(identity);
             var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload.RootElement);
             context.RunClaimActions();
 
             await Options.Events.CreatingTicket(context);
-            return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
+            return new AuthenticationTicket(context.Principal!, context.Properties, Scheme.Name);
         }
 
         protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] OAuthCodeExchangeContext context)
@@ -77,7 +77,7 @@ namespace AspNet.Security.OAuth.VisualStudio
                 ["client_assertion_type"] = "urn:ietf:params:oauth:client-assertion-type:jwt-bearer"
             };
 
-            request.Content = new FormUrlEncodedContent(parameters);
+            request.Content = new FormUrlEncodedContent(parameters!);
 
             using var response = await Backchannel.SendAsync(request, Context.RequestAborted);
 
@@ -87,19 +87,19 @@ namespace AspNet.Security.OAuth.VisualStudio
                                 "returned a {Status} response with the following payload: {Headers} {Body}.",
                                 /* Status: */ response.StatusCode,
                                 /* Headers: */ response.Headers.ToString(),
-                                /* Body: */ await response.Content.ReadAsStringAsync());
+                                /* Body: */ await response.Content.ReadAsStringAsync(Context.RequestAborted));
 
                 return OAuthTokenResponse.Failed(new Exception("An error occurred while retrieving an access token."));
             }
 
-            var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
+            var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
 
             return OAuthTokenResponse.Success(payload);
         }
 
         protected override string BuildChallengeUrl([NotNull] AuthenticationProperties properties, [NotNull] string redirectUri)
         {
-            return QueryHelpers.AddQueryString(Options.AuthorizationEndpoint, new Dictionary<string, string>
+            return QueryHelpers.AddQueryString(Options.AuthorizationEndpoint, new Dictionary<string, string?>
             {
                 ["client_id"] = Options.ClientId,
                 ["response_type"] = "Assertion",

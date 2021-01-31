@@ -40,9 +40,9 @@ namespace AspNet.Security.OAuth.Infrastructure
                 if (RedirectMethod == HttpMethod.Post)
                 {
                     var queryString = HttpUtility.ParseQueryString(result.Headers.Location!.Query);
-                    string state = queryString["state"];
+                    string? state = queryString["state"];
 
-                    var parameters = new Dictionary<string, string>()
+                    var parameters = new Dictionary<string, string?>()
                     {
                         ["code"] = "a6ed8e7f-471f-44f1-903b-65946475f351",
                         ["state"] = state,
@@ -56,7 +56,7 @@ namespace AspNet.Security.OAuth.Infrastructure
                         }
                     }
 
-                    content = new FormUrlEncodedContent(parameters);
+                    content = new FormUrlEncodedContent(parameters!);
                 }
                 else
                 {
@@ -89,17 +89,17 @@ namespace AspNet.Security.OAuth.Infrastructure
         {
             // Rewrite the URI to loop back to the redirected URL to simulate the user having
             // successfully authenticated with the external login page they were redirected to.
-            var queryString = HttpUtility.ParseQueryString(responseMessage.Headers.Location.Query);
+            var queryString = HttpUtility.ParseQueryString(responseMessage.Headers.Location!.Query);
 
             string? location = queryString["redirect_uri"] ?? RedirectUri;
-            string state = queryString["state"];
+            string? state = queryString["state"];
 
             var builder = new UriBuilder(location!);
 
             // Retain the _oauthstate parameter in redirect_uri for WeChat (see #262)
             const string OAuthStateKey = "_oauthstate";
             var redirectQuery = HttpUtility.ParseQueryString(builder.Query);
-            string oauthState = redirectQuery[OAuthStateKey];
+            string? oauthState = redirectQuery[OAuthStateKey];
 
             // Remove any query string parameters we do not explictly need to retain
             queryString.Clear();

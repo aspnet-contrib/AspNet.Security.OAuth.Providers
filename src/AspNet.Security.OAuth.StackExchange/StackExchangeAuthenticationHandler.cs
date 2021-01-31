@@ -46,11 +46,12 @@ namespace AspNet.Security.OAuth.StackExchange
                     $"No site was specified for the {nameof(StackExchangeAuthenticationOptions.Site)} property of {nameof(StackExchangeAuthenticationOptions)}.");
             }
 
-            var queryArguments = new Dictionary<string, string>
+            var queryArguments = new Dictionary<string, string?>
             {
                 ["access_token"] = tokens.AccessToken,
                 ["site"] = Options.Site,
             };
+
             if (!string.IsNullOrEmpty(Options.RequestKey))
             {
                 queryArguments["key"] = Options.RequestKey;
@@ -68,19 +69,19 @@ namespace AspNet.Security.OAuth.StackExchange
                                 "returned a {Status} response with the following payload: {Headers} {Body}.",
                                 /* Status: */ response.StatusCode,
                                 /* Headers: */ response.Headers.ToString(),
-                                /* Body: */ await response.Content.ReadAsStringAsync());
+                                /* Body: */ await response.Content.ReadAsStringAsync(Context.RequestAborted));
 
                 throw new HttpRequestException("An error occurred while retrieving the user profile.");
             }
 
-            using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
+            using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
 
             var principal = new ClaimsPrincipal(identity);
             var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload.RootElement);
             context.RunClaimActions(payload.RootElement.GetProperty("items").EnumerateArray().First());
 
             await Options.Events.CreatingTicket(context);
-            return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
+            return new AuthenticationTicket(context.Principal!, context.Properties, Scheme.Name);
         }
 
         protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] OAuthCodeExchangeContext context)
@@ -96,7 +97,7 @@ namespace AspNet.Security.OAuth.StackExchange
 
             using var request = new HttpRequestMessage(HttpMethod.Post, Options.TokenEndpoint)
             {
-                Content = new FormUrlEncodedContent(parameters)
+                Content = new FormUrlEncodedContent(parameters!)
             };
 
             using var response = await Backchannel.SendAsync(request, Context.RequestAborted);
@@ -106,14 +107,14 @@ namespace AspNet.Security.OAuth.StackExchange
                                 "returned a {Status} response with the following payload: {Headers} {Body}.",
                                 /* Status: */ response.StatusCode,
                                 /* Headers: */ response.Headers.ToString(),
-                                /* Body: */ await response.Content.ReadAsStringAsync());
+                                /* Body: */ await response.Content.ReadAsStringAsync(Context.RequestAborted));
 
                 return OAuthTokenResponse.Failed(new Exception("An error occurred while retrieving an access token."));
             }
 
             // Note: StackExchange's token endpoint doesn't return JSON but uses application/x-www-form-urlencoded.
             // Since OAuthTokenResponse expects a JSON payload, a response is manually created using the returned values.
-            var content = QueryHelpers.ParseQuery(await response.Content.ReadAsStringAsync());
+            var content = QueryHelpers.ParseQuery(await response.Content.ReadAsStringAsync(Context.RequestAborted));
 
             var copy = await CopyPayloadAsync(content);
             return OAuthTokenResponse.Success(copy);

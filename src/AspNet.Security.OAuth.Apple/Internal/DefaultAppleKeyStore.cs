@@ -73,12 +73,12 @@ namespace AspNet.Security.OAuth.Apple.Internal
                                  "returned a {Status} response with the following payload: {Headers} {Body}.",
                                  /* Status: */ response.StatusCode,
                                  /* Headers: */ response.Headers.ToString(),
-                                 /* Body: */ await response.Content.ReadAsStringAsync());
+                                 /* Body: */ await response.Content.ReadAsStringAsync(context.HttpContext.RequestAborted));
 
                 throw new HttpRequestException("An error occurred while retrieving the public keys from Apple.");
             }
 
-            return await response.Content.ReadAsByteArrayAsync();
+            return await response.Content.ReadAsByteArrayAsync(context.HttpContext.RequestAborted);
         }
     }
 }

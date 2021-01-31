@@ -7,7 +7,6 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Text;
@@ -29,8 +28,6 @@ namespace AspNet.Security.OAuth.Apple
     /// </summary>
     public class AppleAuthenticationHandler : OAuthHandler<AppleAuthenticationOptions>
     {
-        private readonly JwtSecurityTokenHandler _tokenHandler;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="AppleAuthenticationHandler"/> class.
         /// </summary>
@@ -38,16 +35,13 @@ namespace AspNet.Security.OAuth.Apple
         /// <param name="logger">The logger to use.</param>
         /// <param name="encoder">The URL encoder to use.</param>
         /// <param name="clock">The system clock to use.</param>
-        /// <param name="tokenHandler">The JWT security token handler to use.</param>
         public AppleAuthenticationHandler(
             [NotNull] IOptionsMonitor<AppleAuthenticationOptions> options,
             [NotNull] ILoggerFactory logger,
             [NotNull] UrlEncoder encoder,
-            [NotNull] ISystemClock clock,
-            [NotNull] JwtSecurityTokenHandler tokenHandler)
+            [NotNull] ISystemClock clock)
             : base(options, logger, encoder, clock)
         {
-            _tokenHandler = tokenHandler;
         }
 
         /// <summary>
@@ -80,7 +74,7 @@ namespace AspNet.Security.OAuth.Apple
             [NotNull] AuthenticationProperties properties,
             [NotNull] OAuthTokenResponse tokens)
         {
-            string idToken = tokens.Response.RootElement.GetString("id_token");
+            string? idToken = tokens.Response.RootElement.GetString("id_token");
 
             Logger.LogInformation("Creating ticket for Sign in with Apple.");
 
@@ -118,7 +112,7 @@ namespace AspNet.Security.OAuth.Apple
             context.RunClaimActions();
 
             await Options.Events.CreatingTicket(context);
-            return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
+            return new AuthenticationTicket(context.Principal!, context.Properties, Scheme.Name);
         }
 
         /// <inheritdoc />
@@ -144,7 +138,7 @@ namespace AspNet.Security.OAuth.Apple
         {
             try
             {
-                var securityToken = _tokenHandler.ReadJwtToken(token);
+                var securityToken = Options.JwtSecurityTokenHandler.ReadJwtToken(token);
 
                 return new List<Claim>(securityToken.Claims)
                 {
@@ -170,13 +164,13 @@ namespace AspNet.Security.OAuth.Apple
 
             if (user.TryGetProperty("name", out var name))
             {
-                claims.Add(new Claim(ClaimTypes.GivenName, name.GetString("firstName"), ClaimValueTypes.String, ClaimsIssuer));
-                claims.Add(new Claim(ClaimTypes.Surname, name.GetString("lastName"), ClaimValueTypes.String, ClaimsIssuer));
+                claims.Add(new Claim(ClaimTypes.GivenName, name.GetString("firstName") ?? string.Empty, ClaimValueTypes.String, ClaimsIssuer));
+                claims.Add(new Claim(ClaimTypes.Surname, name.GetString("lastName") ?? string.Empty, ClaimValueTypes.String, ClaimsIssuer));
             }
 
             if (user.TryGetProperty("email", out var email))
             {
-                claims.Add(new Claim(ClaimTypes.Email, email.GetString(), ClaimValueTypes.String, ClaimsIssuer));
+                claims.Add(new Claim(ClaimTypes.Email, email.GetString() ?? string.Empty, ClaimValueTypes.String, ClaimsIssuer));
             }
 
             return claims;
