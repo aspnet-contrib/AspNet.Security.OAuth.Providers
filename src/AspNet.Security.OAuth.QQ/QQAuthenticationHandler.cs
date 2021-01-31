@@ -130,7 +130,7 @@ namespace AspNet.Security.OAuth.QQ
                 ["fmt"] = "json" // Return JSON instead of JSONP which is default due to historical reasons
             };
 
-            if (Options.ApplyForUnionID)
+            if (Options.ApplyForUnionId)
             {
                 queryString.Add("unionid", "1");
             }
