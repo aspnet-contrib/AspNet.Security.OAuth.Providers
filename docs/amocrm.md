@@ -14,7 +14,9 @@ services.AddAuthentication(options => /* Auth configuration */)
 
 ## Required Additional Settings
 
-_None._
+| Property Name | Property Type | Description | Default Value |
+|:--|:--|:--|:--|
+| `Account` | `string?` | The amoCRM account. | `example` |
 
 ## Optional Settings
 
