@@ -26,7 +26,7 @@ namespace AspNet.Security.OAuth.QQ
         {
             builder.AddQQ(options =>
             {
-                options.ApplyForUnionID = true;
+                options.ApplyForUnionId = true;
                 ConfigureDefaults(builder, options);
             });
         }
