@@ -72,6 +72,7 @@ namespace AspNet.Security.OAuth.QQ
             using var payload = JsonDocument.Parse(stream);
 
             int status = payload.RootElement.GetProperty("ret").GetInt32();
+
             if (status != 0)
             {
                 Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
