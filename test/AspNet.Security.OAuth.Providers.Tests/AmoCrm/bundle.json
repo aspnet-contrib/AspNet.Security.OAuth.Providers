@@ -1,0 +1,32 @@
+﻿{
+  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
+  "items": [
+    {
+      "uri": "https://example.amocrm.ru/oauth2/access_token",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "secret-access-token",
+        "token_type": "access",
+        "refresh_token": "secret-refresh-token",
+        "expires_in": "300"
+      }
+    },
+    {
+      "uri": "https://example.amocrm.ru/v3/user",
+      "contentFormat": "json",
+      "contentJson": {
+        "id": 100500,
+        "name": "John",
+        "last_name": "Smith",
+        "email": "john@john-smith.local",
+        "full_name": "John Smith",
+        "_links": {
+          "self": {
+            "href": "https://example.amocrm.ru/v3/users/100500/"
+          }
+        }
+      }
+    }
+  ]
+}

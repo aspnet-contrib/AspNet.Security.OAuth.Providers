@@ -181,3 +181,4 @@ $RECYCLE.BIN/
 *.p12
 *.pem
 *.pfx
+.idea
