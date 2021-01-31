@@ -27,7 +27,7 @@ namespace AspNet.Security.OAuth.Lichess
             builder.AddLichess(options =>
             {
                 ConfigureDefaults(builder, options);
-                options.Scope.Add(LiChessAuthenticationConstants.Scopes.EmailRead);
+                options.Scope.Add(LichessAuthenticationConstants.Scopes.EmailRead);
             });
         }
 
