@@ -56,7 +56,7 @@ namespace AspNet.Security.OAuth.Lichess
         }
 
         /// <summary>
-        /// Perform a backchannel request to obtain user information at a specified endpoint
+        /// Performs a backchannel request to obtain user information from the specified endpoint
         /// </summary>
         /// <param name="endpoint">Endpoint to return information from</param>
         /// <param name="accessToken">Bearer token for authentication</param>
