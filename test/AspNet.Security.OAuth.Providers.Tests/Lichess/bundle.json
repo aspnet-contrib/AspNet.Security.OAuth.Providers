@@ -1,0 +1,97 @@
+{
+  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
+  "items": [
+    {
+      "comment": "https://lichess.org/api#section/Authentication",
+      "uri": "https://oauth.lichess.org/oauth",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "secret-access-token",
+        "token_type": "bearer",
+        "refresh_token": "secret-refresh-token",
+        "expires_in": "600"
+      }
+    },
+    {
+      "comment": "https://lichess.org/api#operation/accountMe",
+      "uri": "https://lichess.org/api/account",
+      "contentFormat": "json",
+      "contentJson": {
+        "id": "georges",
+        "username": "Georges",
+        "online": true,
+        "perfs": {
+          "chess960": {},
+          "atomic": {},
+          "racingKings": {},
+          "ultraBullet": {},
+          "blitz": {},
+          "kingOfTheHill": {},
+          "bullet": {},
+          "correspondence": {},
+          "horde": {},
+          "puzzle": {},
+          "classical": {},
+          "rapid": {}
+        },
+        "createdAt": 1290415680000,
+        "disabled": false,
+        "tosViolation": false,
+        "booster": false,
+        "profile": {
+          "country": "EC",
+          "location": "string",
+          "bio": "Free bugs!",
+          "firstName": "Thibault",
+          "lastName": "Duplessis",
+          "fideRating": 1500,
+          "uscfRating": 1500,
+          "ecfRating": 1500,
+          "links": "github.com/ornicar\r\ntwitter.com/ornicar"
+        },
+        "seenAt": 1522636452014,
+        "patron": true,
+        "playTime": {
+          "total": 3296897,
+          "tv": 12134
+        },
+        "language": "en-GB",
+        "title": "NM",
+        "url": "https://lichess.org/@/georges",
+        "playing": "https://lichess.org/yqfLYJ5E/black",
+        "nbFollowing": 299,
+        "nbFollowers": 2735,
+        "completionRate": 97,
+        "count": {
+          "all": 9265,
+          "rated": 7157,
+          "ai": 531,
+          "draw": 340,
+          "drawH": 331,
+          "loss": 4480,
+          "lossH": 4207,
+          "win": 4440,
+          "winH": 4378,
+          "bookmark": 71,
+          "playing": 6,
+          "import": 66,
+          "me": 0
+        },
+        "streaming": false,
+        "followable": true,
+        "following": false,
+        "blocking": false,
+        "followsYou": false
+      }
+    },
+    {
+      "comment": "https://lichess.org/api#operation/accountEmail",
+      "uri": "https://lichess.org/api/account/email",
+      "contentFormat": "json",
+      "contentJson": {
+        "email": "abathur@mail.org"
+      }
+    }
+  ]
+}
