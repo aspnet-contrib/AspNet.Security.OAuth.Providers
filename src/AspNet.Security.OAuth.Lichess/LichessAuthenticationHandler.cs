@@ -61,7 +61,7 @@ namespace AspNet.Security.OAuth.Lichess
         /// <param name="endpoint">Endpoint to return information from</param>
         /// <param name="accessToken">Bearer token for authentication</param>
         /// <param name="requestInformationType">Descriptive text of type of information request in event of exception</param>
-        /// <returns>Parsed Json Document response from endpoint</returns>
+        /// <returns>Parsed JSON document response from endpoint</returns>
         private async Task<JsonDocument> RequestUserInformation(string endpoint, string accessToken, string requestInformationType)
         {
             using var request = new HttpRequestMessage(HttpMethod.Get, endpoint);
