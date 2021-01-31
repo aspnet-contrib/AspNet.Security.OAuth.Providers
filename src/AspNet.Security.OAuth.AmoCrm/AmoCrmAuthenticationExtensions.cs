@@ -47,15 +47,15 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <see cref="ApplicationBuilder"/>, which enables amoCRM authentication capabilities.
         /// </summary>
         /// <param name="builder">The authentication builder.</param>
-        /// <param name="schema">The authentication scheme associated with this instance.</param>
+        /// <param name="scheme">The authentication scheme associated with this instance.</param>
         /// <param name="configuration">The delegate used to configure the amoCRM options.</param>
         /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
         public static AuthenticationBuilder AddAmoCrm(
             [NotNull] this AuthenticationBuilder builder,
-            [NotNull] string schema,
+            [NotNull] string scheme,
             [NotNull] Action<AmoCrmAuthenticationOptions> configuration)
         {
-            return builder.AddAmoCrm(schema, AmoCrmAuthenticationDefaults.DisplayName, configuration);
+            return builder.AddAmoCrm(scheme, AmoCrmAuthenticationDefaults.DisplayName, configuration);
         }
 
         /// <summary>
@@ -63,17 +63,17 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <see cref="ApplicationBuilder"/>, which enables amoCRM authentication capabilities.
         /// </summary>
         /// <param name="builder">The authentication builder.</param>
-        /// <param name="schema">The authentication scheme associated with this instance.</param>
+        /// <param name="scheme">The authentication scheme associated with this instance.</param>
         /// <param name="caption">The optional display name associated with this instance.</param>
         /// <param name="configuration">The delegate used to configure the amoCRM options.</param>
         /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
         public static AuthenticationBuilder AddAmoCrm(
             [NotNull] this AuthenticationBuilder builder,
-            [NotNull] string schema,
+            [NotNull] string scheme,
             [NotNull] string caption,
             [NotNull] Action<AmoCrmAuthenticationOptions> configuration)
         {
-            return builder.AddOAuth<AmoCrmAuthenticationOptions, AmoCrmAuthenticationHandler>(schema, caption, configuration);
+            return builder.AddOAuth<AmoCrmAuthenticationOptions, AmoCrmAuthenticationHandler>(scheme, caption, configuration);
         }
     }
 }
