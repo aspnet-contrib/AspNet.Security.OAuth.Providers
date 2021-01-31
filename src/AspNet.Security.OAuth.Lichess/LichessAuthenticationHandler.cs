@@ -18,8 +18,18 @@ using Microsoft.Extensions.Options;
 
 namespace AspNet.Security.OAuth.Lichess
 {
+    /// <summary>
+    /// Defines a handler for authentication using Lichess.
+    /// </summary>
     public class LichessAuthenticationHandler : OAuthHandler<LichessAuthenticationOptions>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LichessAuthenticationHandler"/> class.
+        /// </summary>
+        /// <param name="options">The authentication options.</param>
+        /// <param name="logger">The logger to use.</param>
+        /// <param name="encoder">The URL encoder to use.</param>
+        /// <param name="clock">The system clock to use.</param>
         public LichessAuthenticationHandler(
             [NotNull] IOptionsMonitor<LichessAuthenticationOptions> options,
             [NotNull] ILoggerFactory logger,
@@ -29,6 +39,7 @@ namespace AspNet.Security.OAuth.Lichess
         {
         }
 
+        /// <inheritdoc />
         protected override async Task<AuthenticationTicket> CreateTicketAsync(
             [NotNull] ClaimsIdentity identity,
             [NotNull] AuthenticationProperties properties,
