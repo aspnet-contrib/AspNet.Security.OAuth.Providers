@@ -46,9 +46,9 @@ namespace AspNet.Security.OAuth.Lichess
                 !identity.HasClaim(claim => claim.Type == ClaimTypes.Email) &&
                 Options.Scope.Contains(LiChessAuthenticationConstants.Scopes.EmailRead))
             {
-                using var payloadEmail = await RequestUserInformation(Options.UserEmailsEndpoint, tokens.AccessToken, "email address");
+                using var emailPayload = await RequestUserInformation(Options.UserEmailsEndpoint, tokens.AccessToken, "email address");
 
-                context.RunClaimActions(payloadEmail.RootElement);
+                context.RunClaimActions(emailPayload.RootElement);
             }
 
             await Options.Events.CreatingTicket(context);
