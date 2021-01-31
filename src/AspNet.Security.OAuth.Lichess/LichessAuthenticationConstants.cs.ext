@@ -9,7 +9,7 @@ namespace AspNet.Security.OAuth.Lichess
     /// <summary>
     /// Contains constants specific to the <see cref="LichessAuthenticationHandler"/>.
     /// </summary>
-    public static class LiChessAuthenticationConstants
+    public static class LichessAuthenticationConstants
     {
         /// <summary>
         /// Lichess API Scopes
