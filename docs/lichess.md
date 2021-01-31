@@ -22,5 +22,5 @@ _None._
 
 | Property Name | Property Type | Description | Default Value |
 |:--|:--|:--|:--|
-| `Scope` | `string` | The scope you want to use on lichess, see [documentation](https://lichess.org/api#section/Authentication "List of possible scopes"). |  |
+| `Scope` | `ICollection<string>` | The scope(s) you want to use on Lichess, see [documentation](https://lichess.org/api#section/Authentication "List of possible scopes"). |  |
 | `UserEmailsEndpoint` | `string` | The address of the endpoint exposing the email addresses associated with the logged in user. | `LichessAuthenticationDefaults.UserEmailsEndpoint` |
