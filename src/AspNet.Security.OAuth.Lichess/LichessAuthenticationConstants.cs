@@ -43,6 +43,11 @@ namespace AspNet.Security.OAuth.Lichess
             public const string ChallengeWrite = "challenge:write";
 
             /// <summary>
+            /// Create or delete bulk challenges
+            /// </summary>
+            public const string ChallengeBulk = "challenge:bulk";
+
+            /// <summary>
             /// Read private studies and broadcasts
             /// </summary>
             public const string StudyRead = "study:read";
