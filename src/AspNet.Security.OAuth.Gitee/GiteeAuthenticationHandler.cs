@@ -27,8 +27,8 @@ namespace AspNet.Security.OAuth.Gitee
             [NotNull] UrlEncoder encoder,
             [NotNull] ISystemClock clock)
             : base(options, logger, encoder, clock)
-            {
-            }
+        {
+        }
 
         protected override async Task<AuthenticationTicket> CreateTicketAsync(
             [NotNull] ClaimsIdentity identity,
@@ -46,12 +46,12 @@ namespace AspNet.Security.OAuth.Gitee
                                 "returned a {Status} response with the following payload: {Headers} {Body}.",
                                 /* Status: */ response.StatusCode,
                                 /* Headers: */ response.Headers.ToString(),
-                                /* Body: */ await response.Content.ReadAsStringAsync());
+                                /* Body: */ await response.Content.ReadAsStringAsync(Context.RequestAborted));
 
                 throw new HttpRequestException("An error occurred while retrieving the user profile.");
             }
 
-            using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
+            using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
 
             var principal = new ClaimsPrincipal(identity);
             var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload.RootElement);
@@ -63,7 +63,7 @@ namespace AspNet.Security.OAuth.Gitee
                 !identity.HasClaim(claim => claim.Type == ClaimTypes.Email) &&
                 Options.Scope.Contains("emails"))
             {
-                string address = await GetEmailAsync(tokens);
+                string? address = await GetEmailAsync(tokens);
 
                 if (!string.IsNullOrEmpty(address))
                 {
@@ -72,10 +72,10 @@ namespace AspNet.Security.OAuth.Gitee
             }
 
             await Options.Events.CreatingTicket(context);
-            return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
+            return new AuthenticationTicket(context.Principal!, context.Properties, Scheme.Name);
         }
 
-        protected async Task<string> GetEmailAsync([NotNull] OAuthTokenResponse tokens)
+        protected async Task<string?> GetEmailAsync([NotNull] OAuthTokenResponse tokens)
         {
             using var request = new HttpRequestMessage(HttpMethod.Get, Options.UserEmailsEndpoint);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -88,12 +88,12 @@ namespace AspNet.Security.OAuth.Gitee
                                   "the remote server returned a {Status} response with the following payload: {Headers} {Body}.",
                                   /* Status: */ response.StatusCode,
                                   /* Headers: */ response.Headers.ToString(),
-                                  /* Body: */ await response.Content.ReadAsStringAsync());
+                                  /* Body: */ await response.Content.ReadAsStringAsync(Context.RequestAborted));
 
                 throw new HttpRequestException("An error occurred while retrieving the email address associated to the user profile.");
             }
 
-            using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
+            using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
 
             return (from address in payload.RootElement.EnumerateArray()
                     select address.GetString("email")).FirstOrDefault();

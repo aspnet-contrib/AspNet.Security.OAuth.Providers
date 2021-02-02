@@ -1,6 +1,6 @@
 {
   "tools": {
-    "dotnet": "3.1.401"
+    "dotnet": "5.0.102"
   },
 
   "msbuild-sdks": {

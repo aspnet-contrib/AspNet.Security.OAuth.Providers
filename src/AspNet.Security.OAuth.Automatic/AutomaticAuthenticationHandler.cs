@@ -47,25 +47,25 @@ namespace AspNet.Security.OAuth.Automatic
                                 "returned a {Status} response with the following payload: {Headers} {Body}.",
                                 /* Status: */ response.StatusCode,
                                 /* Headers: */ response.Headers.ToString(),
-                                /* Body: */ await response.Content.ReadAsStringAsync());
+                                /* Body: */ await response.Content.ReadAsStringAsync(Context.RequestAborted));
 
                 throw new HttpRequestException("An error occurred while retrieving the user profile.");
             }
 
-            using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
+            using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
 
             var principal = new ClaimsPrincipal(identity);
             var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload.RootElement);
             context.RunClaimActions();
 
             await Options.Events.CreatingTicket(context);
-            return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
+            return new AuthenticationTicket(context.Principal!, context.Properties, Scheme.Name);
         }
 
         protected override string BuildChallengeUrl([NotNull] AuthenticationProperties properties, [NotNull] string redirectUri)
         {
             // Note: the redirect_uri parameter is not allowed by Automatic and MUST NOT be sent.
-            return QueryHelpers.AddQueryString(Options.AuthorizationEndpoint, new Dictionary<string, string>
+            return QueryHelpers.AddQueryString(Options.AuthorizationEndpoint, new Dictionary<string, string?>
             {
                 ["client_id"] = Options.ClientId,
                 ["response_type"] = "code",

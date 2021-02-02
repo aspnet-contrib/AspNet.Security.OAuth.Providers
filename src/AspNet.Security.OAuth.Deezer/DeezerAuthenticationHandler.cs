@@ -37,7 +37,7 @@ namespace AspNet.Security.OAuth.Deezer
 
         protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] OAuthCodeExchangeContext context)
         {
-            var tokenRequestParameters = new Dictionary<string, string>()
+            var tokenRequestParameters = new Dictionary<string, string?>()
             {
                 ["app_id"] = Options.ClientId,
                 ["secret"] = Options.ClientSecret,
@@ -66,12 +66,12 @@ namespace AspNet.Security.OAuth.Deezer
                                 /* Error: */  Error,
                                 /* Status: */ response.StatusCode,
                                 /* Headers: */ response.Headers.ToString(),
-                                /* Body: */ await response.Content.ReadAsStringAsync());
+                                /* Body: */ await response.Content.ReadAsStringAsync(Context.RequestAborted));
 
                 return OAuthTokenResponse.Failed(new Exception(Error));
             }
 
-            var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
+            var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
             return OAuthTokenResponse.Success(payload);
         }
 
@@ -92,19 +92,19 @@ namespace AspNet.Security.OAuth.Deezer
                                 "returned a {Status} response with the following payload: {Headers} {Body}.",
                                 /* Status: */ response.StatusCode,
                                 /* Headers: */ response.Headers.ToString(),
-                                /* Body: */ await response.Content.ReadAsStringAsync());
+                                /* Body: */ await response.Content.ReadAsStringAsync(Context.RequestAborted));
 
                 throw new HttpRequestException("An error occurred while retrieving the user profile.");
             }
 
-            using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
+            using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
 
             var principal = new ClaimsPrincipal(identity);
             var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload.RootElement);
             context.RunClaimActions();
 
             await Options.Events.CreatingTicket(context);
-            return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
+            return new AuthenticationTicket(context.Principal!, context.Properties, Scheme.Name);
         }
 
         protected override string BuildChallengeUrl([NotNull] AuthenticationProperties properties, [NotNull] string redirectUri)
@@ -112,7 +112,7 @@ namespace AspNet.Security.OAuth.Deezer
             var scopeParameter = properties.GetParameter<ICollection<string>>(OAuthChallengeProperties.ScopeKey);
             string scopes = scopeParameter != null ? FormatScope(scopeParameter) : FormatScope();
 
-            var parameters = new Dictionary<string, string>
+            var parameters = new Dictionary<string, string?>
             {
                 ["app_id"] = Options.ClientId,
                 ["redirect_uri"] = redirectUri,
@@ -128,8 +128,7 @@ namespace AspNet.Security.OAuth.Deezer
                 // Store this for use during the code redemption.
                 properties.Items.Add(OAuthConstants.CodeVerifierKey, codeVerifier);
 
-                using var sha256 = HashAlgorithm.Create("SHA256");
-                byte[] challengeBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(codeVerifier));
+                byte[] challengeBytes = SHA256.HashData(Encoding.UTF8.GetBytes(codeVerifier));
                 parameters[OAuthConstants.CodeChallengeKey] = WebEncoders.Base64UrlEncode(challengeBytes);
                 parameters[OAuthConstants.CodeChallengeMethodKey] = OAuthConstants.CodeChallengeMethodS256;
             }

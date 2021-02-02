@@ -142,7 +142,6 @@ namespace AspNet.Security.OAuth
 
             void ConfigureServices(IServiceCollection services)
             {
-                services.AddSingleton<System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler, FrozenJwtSecurityTokenHandler>();
                 services.PostConfigureAll<TOptions>((options) =>
                 {
                     options.Events.OnCreatingTicket = (context) =>
@@ -150,6 +149,11 @@ namespace AspNet.Security.OAuth
                         onCreatingTicketEventRaised = true;
                         return Task.CompletedTask;
                     };
+
+                    if (options is Apple.AppleAuthenticationOptions appleOptions)
+                    {
+                        appleOptions.JwtSecurityTokenHandler = new FrozenJwtSecurityTokenHandler();
+                    }
                 });
             }
 
@@ -204,14 +208,15 @@ namespace AspNet.Security.OAuth
 
                 // Assert
                 result.StatusCode.ShouldBe(HttpStatusCode.OK);
-                result.Content.Headers.ContentType.MediaType.ShouldBe("text/xml");
+                result.Content.Headers.ContentType.ShouldNotBeNull();
+                result.Content.Headers.ContentType!.MediaType.ShouldBe("text/xml");
 
                 string xml = await result.Content.ReadAsStringAsync();
 
                 element = XElement.Parse(xml);
             }
 
-            element.Name.ShouldBe("claims");
+            element.Name!.ShouldBe("claims"!);
             element.Elements("claim").Count().ShouldBeGreaterThanOrEqualTo(1);
 
             var claims = new List<Claim>();
@@ -220,10 +225,10 @@ namespace AspNet.Security.OAuth
             {
                 claims.Add(
                     new Claim(
-                        claim.Attribute("type").Value,
-                        claim.Attribute("value").Value,
-                        claim.Attribute("valueType").Value,
-                        claim.Attribute("issuer").Value));
+                        claim.Attribute("type"!) !.Value,
+                        claim.Attribute("value"!) !.Value,
+                        claim.Attribute("valueType"!) !.Value,
+                        claim.Attribute("issuer"!) !.Value));
             }
 
             return claims.ToDictionary((key) => key.Type, (value) => value);

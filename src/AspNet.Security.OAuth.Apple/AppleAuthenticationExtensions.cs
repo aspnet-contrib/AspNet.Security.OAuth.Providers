@@ -5,13 +5,11 @@
  */
 
 using System;
-using System.IdentityModel.Tokens.Jwt;
 using AspNet.Security.OAuth.Apple;
-using AspNet.Security.OAuth.Apple.Internal;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.IdentityModel.Tokens;
+using Microsoft.Extensions.Options;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -76,15 +74,9 @@ namespace Microsoft.Extensions.DependencyInjection
             [CanBeNull] string caption,
             [NotNull] Action<AppleAuthenticationOptions> configuration)
         {
-            builder.Services.TryAddSingleton<AppleClientSecretGenerator, DefaultAppleClientSecretGenerator>();
-            builder.Services.TryAddSingleton<AppleIdTokenValidator, DefaultAppleIdTokenValidator>();
-            builder.Services.TryAddSingleton<AppleKeyStore, DefaultAppleKeyStore>();
-            builder.Services.TryAddSingleton<JwtSecurityTokenHandler>();
-
-            // Use a custom CryptoProviderFactory so that keys are not cached and then disposed of, see below:
-            // https://github.com/AzureAD/azure-activedirectory-identitymodel-extensions-for-dotnet/issues/1302
-            builder.Services.TryAddSingleton(
-                (_) => new CryptoProviderFactory() { CacheSignatureProviders = false });
+            builder.Services.AddMemoryCache();
+            builder.Services.AddOptions();
+            builder.Services.TryAddSingleton<IPostConfigureOptions<AppleAuthenticationOptions>, ApplePostConfigureOptions>();
 
             return builder.AddOAuth<AppleAuthenticationOptions, AppleAuthenticationHandler>(scheme, caption, configuration);
         }

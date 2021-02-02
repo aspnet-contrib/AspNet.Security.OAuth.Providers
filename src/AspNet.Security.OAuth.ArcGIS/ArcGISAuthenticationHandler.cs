@@ -38,7 +38,7 @@ namespace AspNet.Security.OAuth.ArcGIS
             [NotNull] OAuthTokenResponse tokens)
         {
             // Note: the ArcGIS API doesn't support content negotiation via headers.
-            string address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, new Dictionary<string, string>
+            string address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, new Dictionary<string, string?>
             {
                 ["f"] = "json",
                 ["token"] = tokens.AccessToken
@@ -49,7 +49,7 @@ namespace AspNet.Security.OAuth.ArcGIS
 
             // Request the token
             using var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
-            using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
+            using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
 
             // Note: error responses always return 200 status codes.
             if (payload.RootElement.TryGetProperty("error", out var error))
@@ -68,7 +68,7 @@ namespace AspNet.Security.OAuth.ArcGIS
             context.RunClaimActions();
 
             await Options.Events.CreatingTicket(context);
-            return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
+            return new AuthenticationTicket(context.Principal!, context.Properties, Scheme.Name);
         }
     }
 }

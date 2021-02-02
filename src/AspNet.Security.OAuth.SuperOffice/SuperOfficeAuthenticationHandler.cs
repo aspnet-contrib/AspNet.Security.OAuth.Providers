@@ -65,12 +65,12 @@ namespace AspNet.Security.OAuth.SuperOffice
                                 "returned a {Status} response with the following payload: {Headers} {Body}.",
                                 /* Status: */ response.StatusCode,
                                 /* Headers: */ response.Headers.ToString(),
-                                /* Body: */ await response.Content.ReadAsStringAsync());
+                                /* Body: */ await response.Content.ReadAsStringAsync(Context.RequestAborted));
 
                 throw new HttpRequestException($"An error occurred when retrieving SuperOffice user information ({response.StatusCode}).");
             }
 
-            using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
+            using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
 
             var principal = new ClaimsPrincipal(identity);
 
@@ -78,7 +78,7 @@ namespace AspNet.Security.OAuth.SuperOffice
             context.RunClaimActions();
 
             await Events.CreatingTicket(context);
-            return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
+            return new AuthenticationTicket(context.Principal!, context.Properties, Scheme.Name);
         }
 
         private async Task<string> ProcessIdTokenAndGetContactIdentifierAsync(
@@ -86,7 +86,7 @@ namespace AspNet.Security.OAuth.SuperOffice
             [NotNull] AuthenticationProperties properties,
             [NotNull] ClaimsIdentity identity)
         {
-            var idToken = tokens.Response.RootElement.GetString("id_token");
+            string? idToken = tokens.Response.RootElement.GetString("id_token");
 
             if (Options.SaveTokens)
             {
@@ -131,7 +131,7 @@ namespace AspNet.Security.OAuth.SuperOffice
         /// <param name="idToken">The id_token JWT.</param>
         private static void SaveIdToken(
             [NotNull] AuthenticationProperties properties,
-            [NotNull] string idToken)
+            [NotNull] string? idToken)
         {
             if (!string.IsNullOrWhiteSpace(idToken))
             {
@@ -147,7 +147,7 @@ namespace AspNet.Security.OAuth.SuperOffice
         }
 
         private async Task<TokenValidationResult> ValidateAsync(
-            [NotNull] string idToken,
+            [NotNull] string? idToken,
             [NotNull] TokenValidationParameters validationParameters)
         {
             if (Options.SecurityTokenHandler == null)
