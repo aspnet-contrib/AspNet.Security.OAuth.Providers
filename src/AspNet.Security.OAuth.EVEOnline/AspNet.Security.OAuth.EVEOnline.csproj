@@ -6,13 +6,14 @@
 
   <PropertyGroup>
     <Description>ASP.NET Core security middleware enabling EVEOnline authentication.</Description>
-    <Authors>Mariusz Zieliński;Chino Chang</Authors>
+    <Authors>Mariusz Zieliński;Chino Chang;Matthew Moore</Authors>
     <PackageTags>aspnetcore;authentication;eveonline;oauth;security</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="JetBrains.Annotations" PrivateAssets="All" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" />
   </ItemGroup>
 
 </Project>

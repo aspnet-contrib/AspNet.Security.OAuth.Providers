@@ -48,11 +48,6 @@ namespace AspNet.Security.OAuth.EVEOnline
             /// Default value for <see cref="OAuthOptions.TokenEndpoint"/>.
             /// </summary>
             public const string TokenEndpoint = "https://login.eveonline.com/oauth/token";
-
-            /// <summary>
-            /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
-            /// </summary>
-            public const string UserInformationEndpoint = "https://login.eveonline.com/oauth/verify";
         }
 
         /// <summary>
@@ -69,11 +64,6 @@ namespace AspNet.Security.OAuth.EVEOnline
             /// Default value for <see cref="OAuthOptions.TokenEndpoint"/>.
             /// </summary>
             public const string TokenEndpoint = "https://sisilogin.testeveonline.com/oauth/token";
-
-            /// <summary>
-            /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
-            /// </summary>
-            public const string UserInformationEndpoint = "https://sisilogin.testeveonline.com/oauth/verify";
         }
     }
 }
