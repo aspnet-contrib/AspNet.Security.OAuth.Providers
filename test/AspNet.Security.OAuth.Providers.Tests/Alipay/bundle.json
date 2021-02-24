@@ -2,7 +2,7 @@
   "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
   "items": [
     {
-      "uri": "https://openapi.alipay.com/gateway.do?app_id=my-client-id&charset=UTF-8&code=a6ed8e7f-471f-44f1-903b-65946475f351&format=JSON&grant_type=authorization_code&method=alipay.system.oauth.token&sign=N%2FaOwlxqraDgrI7%2FUUrzZuSUmuh0p7bf%2BZ6uGL%2FFjgfXyZD9vvkc3E6UCmsyIe4AqZDIlHWIY5gplOn9K9k%2BdhbXqpxGazxRZaI%2Fl3hIg%2BeaVpPhnOy8QxUt%2FZEw01RFpyoIdyXCNZ5QnsOX9i5sqPTHBqDIEgBxXL0BUkJ4LvPLPF1duKuq2tDlgshnv8hdY5g7Be6ssZkFMaIGm%2Bun%2B2Zp%2BBbVhUGT2DfOxCQTK2jD3S0lqprOXkm2ehtByJec17Xkzm8lpR3o2eHPGwftXkMmGKozJ9LPUFAVPMd098IJr25I01teiZE3jM5AJBQ4uIUOFKjZb3ZA5nbYftcASw%3D%3D&sign_type=RSA2&timestamp=2019-12-14 22%3A22%3A22&version=1.0",
+      "uri": "https://openapi.alipay.com/gateway.do?app_id=my-client-id&charset=utf-8&code=a6ed8e7f-471f-44f1-903b-65946475f351&format=JSON&grant_type=authorization_code&method=alipay.system.oauth.token&sign=SrIEIcIcSBkZMTbHiIuO7zB3pTAbhFYINfMvT2YoKofzQaA4e2EbFTsAMlqAA4qTriMUgkhFV0i6l%2By5lAVm7Lfp3f62qVN8XGgHLbjyMQ7NbKKnF2yeK0frvS0i3pVyIxo%2BMY59gTps9kuiMRCZR%2F%2B%2BPRCfnfICFpEzbjlJnKKhbJDdz7lCgj5gd6onNbFmeSIRQIyjwRXsckUP2%2B8UWNuQu%2FJm8eNpCzCgfCZzeW9B3XQNojYMMYJzKkMUSrN7D3HFB9YGhHBtSl1VyUA5wKu713qU1aOIC7FrhQyLFjfFh3IDx118SfaAecklS7IogFx2FzfRD%2BGcPpNe7GfDZQ%3D%3D&sign_type=RSA2&timestamp=2019-12-14 22%3A22%3A22&version=1.0",
       "contentFormat": "json",
       "contentJson": {
         "alipay_system_oauth_token_response": {
@@ -16,7 +16,7 @@
       }
     },
     {
-      "uri": "https://openapi.alipay.com/gateway.do?app_id=my-client-id&auth_token=secret-access-token&charset=UTF-8&format=JSON&method=alipay.user.info.share&sign=vtlysqDY0PqWaGjqJ2PqrWosDA0Oxt6rHmocdO4V3R1CSM%2BULuYrlbIkBhtVv%2F2eHDvspbnSdI%2FxNO386kejg%2B4yrgcOAmDZelGbh5WjtIN0vPti0VhoqSL2UiqhgZCtMjqLry84%2FABaCEq3I6KEEtqyOJlQeZ9oGFJJLj0c4xLTz7yJjamplzq%2FuPAaOs1S5roG6hAGXhkQw4zIuYenkpSf3BQ8iom0Q2EMAyTnzsG%2FEdmocCqW48e3mrX6izjEdF5tpqbzfGFzjjcgfFHBGBlA2haUThxpFEfY4mtxvdcaxRQ%2FEPlkUYFXP5v%2FGeL%2F6C2A7Gg4NMstx7yl88Gh%2Fg%3D%3D&sign_type=RSA2&timestamp=2019-12-14 22%3A22%3A22&version=1.0",
+      "uri": "https://openapi.alipay.com/gateway.do?app_id=my-client-id&auth_token=secret-access-token&charset=utf-8&format=JSON&method=alipay.user.info.share&sign=2p4it2sIBgsMmRGtpuDIJvKwtQV%2BxrX5CQ6Z2Bj34IZjdBQ6OPTWdem7pMvKhIjETc9cMc%2B0CTc5JtyDoRNdmTybp%2BEu7%2FEJpdNt3TuMw1pUckRKL7aBnlxQTRgJ4%2FQuKa8VN%2FXiktKCRX2NXX%2FQBnMs9h2tT2JTNz3LemfkrzZYcAS2gjLy%2Bp9itWoG24XaSE8i7jkrQEU%2FF51xzB35IWIFGZiZ1ArKF%2BExIiJ0LwYSj4d9nrbze7wN1Td48qova3ulu3PvqzFnQR3o9wO4esJpdn49AFOVnoRuViDT6hEONeoeucEQQYRwredM3WHsbvG7OEkUlVmxlOD%2Bru70ow%3D%3D&sign_type=RSA2&timestamp=2019-12-14 22%3A22%3A22&version=1.0",
       "contentFormat": "json",
       "contentJson": {
         "alipay_user_info_share_response": {
