@@ -1,0 +1,36 @@
+{
+  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
+  "items": [
+    {
+      "uri": "https://openapi.alipay.com/gateway.do?app_id=my-client-id&charset=UTF-8&code=a6ed8e7f-471f-44f1-903b-65946475f351&format=JSON&grant_type=authorization_code&method=alipay.system.oauth.token&sign=N%2FaOwlxqraDgrI7%2FUUrzZuSUmuh0p7bf%2BZ6uGL%2FFjgfXyZD9vvkc3E6UCmsyIe4AqZDIlHWIY5gplOn9K9k%2BdhbXqpxGazxRZaI%2Fl3hIg%2BeaVpPhnOy8QxUt%2FZEw01RFpyoIdyXCNZ5QnsOX9i5sqPTHBqDIEgBxXL0BUkJ4LvPLPF1duKuq2tDlgshnv8hdY5g7Be6ssZkFMaIGm%2Bun%2B2Zp%2BBbVhUGT2DfOxCQTK2jD3S0lqprOXkm2ehtByJec17Xkzm8lpR3o2eHPGwftXkMmGKozJ9LPUFAVPMd098IJr25I01teiZE3jM5AJBQ4uIUOFKjZb3ZA5nbYftcASw%3D%3D&sign_type=RSA2&timestamp=2019-12-14 22%3A22%3A22&version=1.0",
+      "contentFormat": "json",
+      "contentJson": {
+        "alipay_system_oauth_token_response": {
+          "user_id": "my-id",
+          "access_token": "secret-access-token",
+          "expires_in": "300",
+          "refresh_token": "secret-refresh-token",
+          "re_expires_in": "300"
+        },
+        "sign": "sign"
+      }
+    },
+    {
+      "uri": "https://openapi.alipay.com/gateway.do?app_id=my-client-id&auth_token=secret-access-token&charset=UTF-8&format=JSON&method=alipay.user.info.share&sign=vtlysqDY0PqWaGjqJ2PqrWosDA0Oxt6rHmocdO4V3R1CSM%2BULuYrlbIkBhtVv%2F2eHDvspbnSdI%2FxNO386kejg%2B4yrgcOAmDZelGbh5WjtIN0vPti0VhoqSL2UiqhgZCtMjqLry84%2FABaCEq3I6KEEtqyOJlQeZ9oGFJJLj0c4xLTz7yJjamplzq%2FuPAaOs1S5roG6hAGXhkQw4zIuYenkpSf3BQ8iom0Q2EMAyTnzsG%2FEdmocCqW48e3mrX6izjEdF5tpqbzfGFzjjcgfFHBGBlA2haUThxpFEfY4mtxvdcaxRQ%2FEPlkUYFXP5v%2FGeL%2F6C2A7Gg4NMstx7yl88Gh%2Fg%3D%3D&sign_type=RSA2&timestamp=2019-12-14 22%3A22%3A22&version=1.0",
+      "contentFormat": "json",
+      "contentJson": {
+        "alipay_user_info_share_response": {
+          "code": "10000",
+          "msg": "Success",
+          "user_id": "my-id",
+          "avatar": "http://tfsimg.alipay.com/images/partner/T1uIxXXbpXXXXXXXX",
+          "province": "my-province",
+          "city": "my-city",
+          "nick_name": "my-nickname",
+          "gender": "M"
+        },
+        "sign": "sign"
+      }
+    }
+  ]
+}
