@@ -72,7 +72,7 @@ namespace AspNet.Security.OAuth.LinkedIn
         /// 3. Returns the first value.
         /// </summary>
         /// <see cref="DefaultMultiLocaleStringResolver(IReadOnlyDictionary{string, string}, string?)"/>
-        public Func<IReadOnlyDictionary<string, string>, string?, string> MultiLocaleStringResolver { get; set; } = DefaultMultiLocaleStringResolver;
+        public Func<IReadOnlyDictionary<string, string?>, string?, string?> MultiLocaleStringResolver { get; set; } = DefaultMultiLocaleStringResolver;
 
         /// <summary>
         /// Gets the <c>MultiLocaleString</c> value using the configured resolver.
@@ -100,7 +100,7 @@ namespace AspNet.Security.OAuth.LinkedIn
                 preferredLocaleKey = $"{preferredLocale.GetString("language")}_{preferredLocale.GetString("country")}";
             }
 
-            var preferredLocales = new Dictionary<string, string>();
+            var preferredLocales = new Dictionary<string, string?>();
 
             foreach (var element in propertyLocalized.EnumerateObject())
             {
@@ -140,7 +140,7 @@ namespace AspNet.Security.OAuth.LinkedIn
                     continue;
                 }
 
-                string pictureUrl = imageIdentifier
+                string? pictureUrl = imageIdentifier
                     .EnumerateArray()
                     .FirstOrDefault()
                     .GetString("identifier");
@@ -164,7 +164,7 @@ namespace AspNet.Security.OAuth.LinkedIn
         /// <param name="localizedValues">The localized values with culture keys.</param>
         /// <param name="preferredLocale">The preferred locale, if provided by LinkedIn.</param>
         /// <returns>The localized value.</returns>
-        private static string DefaultMultiLocaleStringResolver(IReadOnlyDictionary<string, string> localizedValues, string? preferredLocale)
+        private static string? DefaultMultiLocaleStringResolver(IReadOnlyDictionary<string, string?> localizedValues, string? preferredLocale)
         {
             if (!string.IsNullOrEmpty(preferredLocale) &&
                 localizedValues.TryGetValue(preferredLocale, out string? preferredLocaleValue))

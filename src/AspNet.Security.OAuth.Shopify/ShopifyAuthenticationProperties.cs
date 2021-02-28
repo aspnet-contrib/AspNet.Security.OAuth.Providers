@@ -26,7 +26,7 @@ namespace AspNet.Security.OAuth.Shopify
         /// installation.
         /// </param>
         public ShopifyAuthenticationProperties(string shopName)
-            : this(shopName, null)
+            : this(shopName, new Dictionary<string, string?>())
         {
         }
 
@@ -38,7 +38,7 @@ namespace AspNet.Security.OAuth.Shopify
         /// installation.
         /// </param>
         /// <param name="items">Set Items values.</param>
-        public ShopifyAuthenticationProperties(string shopName, IDictionary<string, string>? items)
+        public ShopifyAuthenticationProperties(string shopName, IDictionary<string, string?> items)
             : base(items)
         {
             SetShopName(shopName);

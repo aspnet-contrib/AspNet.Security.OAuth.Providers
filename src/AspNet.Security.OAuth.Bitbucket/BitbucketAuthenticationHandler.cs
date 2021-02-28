@@ -46,12 +46,12 @@ namespace AspNet.Security.OAuth.Bitbucket
                                 "returned a {Status} response with the following payload: {Headers} {Body}.",
                                 /* Status: */ response.StatusCode,
                                 /* Headers: */ response.Headers.ToString(),
-                                /* Body: */ await response.Content.ReadAsStringAsync());
+                                /* Body: */ await response.Content.ReadAsStringAsync(Context.RequestAborted));
 
                 throw new HttpRequestException("An error occurred while retrieving the user profile.");
             }
 
-            using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
+            using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
 
             var principal = new ClaimsPrincipal(identity);
             var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload.RootElement);
@@ -63,19 +63,19 @@ namespace AspNet.Security.OAuth.Bitbucket
                 !identity.HasClaim(claim => claim.Type == ClaimTypes.Email) &&
                 Options.Scope.Contains("email"))
             {
-                string address = await GetEmailAsync(tokens);
+                string? address = await GetEmailAsync(tokens);
 
                 if (!string.IsNullOrEmpty(address))
                 {
-                    identity.AddClaim(new Claim(ClaimTypes.Email, address, ClaimValueTypes.String, Options.ClaimsIssuer));
+                    identity.AddClaim(new Claim(ClaimTypes.Email, address!, ClaimValueTypes.String, Options.ClaimsIssuer));
                 }
             }
 
             await Options.Events.CreatingTicket(context);
-            return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
+            return new AuthenticationTicket(context.Principal!, context.Properties, Scheme.Name);
         }
 
-        protected virtual async Task<string> GetEmailAsync([NotNull] OAuthTokenResponse tokens)
+        protected virtual async Task<string?> GetEmailAsync([NotNull] OAuthTokenResponse tokens)
         {
             using var request = new HttpRequestMessage(HttpMethod.Get, Options.UserEmailsEndpoint);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -88,12 +88,12 @@ namespace AspNet.Security.OAuth.Bitbucket
                                   "the remote server returned a {Status} response with the following payload: {Headers} {Body}.",
                                   /* Status: */ response.StatusCode,
                                   /* Headers: */ response.Headers.ToString(),
-                                  /* Body: */ await response.Content.ReadAsStringAsync());
+                                  /* Body: */ await response.Content.ReadAsStringAsync(Context.RequestAborted));
 
                 throw new HttpRequestException("An error occurred while retrieving the email address associated to the user profile.");
             }
 
-            using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
+            using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
 
             return (from address in payload.RootElement.GetProperty("values").EnumerateArray()
                     where address.GetProperty("is_primary").GetBoolean()

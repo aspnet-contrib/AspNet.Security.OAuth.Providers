@@ -5,7 +5,6 @@
  */
 
 using System;
-using System.Buffers;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Security.Claims;
@@ -18,7 +17,6 @@ using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Microsoft.Extensions.Primitives;
 
 namespace AspNet.Security.OAuth.QQ
 {
@@ -38,19 +36,24 @@ namespace AspNet.Security.OAuth.QQ
             [NotNull] AuthenticationProperties properties,
             [NotNull] OAuthTokenResponse tokens)
         {
-            string identifier = await GetUserIdentifierAsync(tokens);
-            if (string.IsNullOrEmpty(identifier))
+            (int errorCode, string? openId, string? unionId) = await GetUserIdentifierAsync(tokens);
+
+            if (errorCode != 0 || string.IsNullOrEmpty(openId))
             {
-                throw new HttpRequestException("An error occurred while retrieving the user identifier.");
+                throw new HttpRequestException($"An error (Code:{errorCode}) occurred while retrieving the user identifier.");
             }
 
-            identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, identifier, ClaimValueTypes.String, Options.ClaimsIssuer));
+            identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, openId, ClaimValueTypes.String, Options.ClaimsIssuer));
+            if (!string.IsNullOrEmpty(unionId))
+            {
+                identity.AddClaim(new Claim(QQAuthenticationConstants.Claims.UnionId, unionId, ClaimValueTypes.String, Options.ClaimsIssuer));
+            }
 
-            string address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, new Dictionary<string, string>
+            string address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, new Dictionary<string, string?>(3)
             {
                 ["oauth_consumer_key"] = Options.ClientId,
                 ["access_token"] = tokens.AccessToken,
-                ["openid"] = identifier,
+                ["openid"] = openId,
             });
 
             using var response = await Backchannel.GetAsync(address);
@@ -60,14 +63,16 @@ namespace AspNet.Security.OAuth.QQ
                                 "returned a {Status} response with the following payload: {Headers} {Body}.",
                                 /* Status: */ response.StatusCode,
                                 /* Headers: */ response.Headers.ToString(),
-                                /* Body: */ await response.Content.ReadAsStringAsync());
+                                /* Body: */ await response.Content.ReadAsStringAsync(Context.RequestAborted));
 
                 throw new HttpRequestException("An error occurred while retrieving user information.");
             }
 
-            using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
+            using var stream = await response.Content.ReadAsStreamAsync(Context.RequestAborted);
+            using var payload = JsonDocument.Parse(stream);
 
             int status = payload.RootElement.GetProperty("ret").GetInt32();
+
             if (status != 0)
             {
                 Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
@@ -83,18 +88,20 @@ namespace AspNet.Security.OAuth.QQ
             context.RunClaimActions();
 
             await Options.Events.CreatingTicket(context);
-            return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
+            return new AuthenticationTicket(context.Principal!, context.Properties, Scheme.Name);
         }
 
         protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] OAuthCodeExchangeContext context)
         {
-            string address = QueryHelpers.AddQueryString(Options.TokenEndpoint, new Dictionary<string, string>()
+            // See https://wiki.connect.qq.com/%E4%BD%BF%E7%94%A8authorization_code%E8%8E%B7%E5%8F%96access_token for details
+            string address = QueryHelpers.AddQueryString(Options.TokenEndpoint, new Dictionary<string, string?>(6)
             {
                 ["client_id"] = Options.ClientId,
                 ["client_secret"] = Options.ClientSecret,
                 ["redirect_uri"] = context.RedirectUri,
                 ["code"] = context.Code,
                 ["grant_type"] = "authorization_code",
+                ["fmt"] = "json" // Return JSON instead of x-www-form-urlencoded which is default due to historical reasons
             });
 
             using var request = new HttpRequestMessage(HttpMethod.Get, address);
@@ -106,20 +113,32 @@ namespace AspNet.Security.OAuth.QQ
                                 "returned a {Status} response with the following payload: {Headers} {Body}.",
                                 /* Status: */ response.StatusCode,
                                 /* Headers: */ response.Headers.ToString(),
-                                /* Body: */ await response.Content.ReadAsStringAsync());
+                                /* Body: */ await response.Content.ReadAsStringAsync(Context.RequestAborted));
 
                 return OAuthTokenResponse.Failed(new Exception("An error occurred while retrieving an access token."));
             }
 
-            var content = QueryHelpers.ParseQuery(await response.Content.ReadAsStringAsync());
-            var payload = await CopyPayloadAsync(content);
+            using var stream = await response.Content.ReadAsStreamAsync(Context.RequestAborted);
+            var payload = JsonDocument.Parse(stream);
 
             return OAuthTokenResponse.Success(payload);
         }
 
-        private async Task<string> GetUserIdentifierAsync(OAuthTokenResponse tokens)
+        private async Task<(int errorCode, string? openId, string? unionId)> GetUserIdentifierAsync(OAuthTokenResponse tokens)
         {
-            string address = QueryHelpers.AddQueryString(Options.UserIdentificationEndpoint, "access_token", tokens.AccessToken);
+            // See https://wiki.connect.qq.com/unionid%E4%BB%8B%E7%BB%8D for details
+            var queryString = new Dictionary<string, string?>(3)
+            {
+                ["access_token"] = tokens.AccessToken,
+                ["fmt"] = "json" // Return JSON instead of JSONP which is default due to historical reasons
+            };
+
+            if (Options.ApplyForUnionId)
+            {
+                queryString.Add("unionid", "1");
+            }
+
+            string address = QueryHelpers.AddQueryString(Options.UserIdentificationEndpoint, queryString);
             using var request = new HttpRequestMessage(HttpMethod.Get, address);
 
             using var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
@@ -129,43 +148,26 @@ namespace AspNet.Security.OAuth.QQ
                                 "returned a {Status} response with the following payload: {Headers} {Body}.",
                                 /* Status: */ response.StatusCode,
                                 /* Headers: */ response.Headers.ToString(),
-                                /* Body: */ await response.Content.ReadAsStringAsync());
+                                /* Body: */ await response.Content.ReadAsStringAsync(Context.RequestAborted));
 
                 throw new HttpRequestException("An error occurred while retrieving the user identifier.");
             }
 
-            string body = await response.Content.ReadAsStringAsync();
+            using var stream = await response.Content.ReadAsStreamAsync(Context.RequestAborted);
+            using JsonDocument payload = JsonDocument.Parse(stream);
 
-            int index = body.IndexOf("{", StringComparison.Ordinal);
-            if (index > 0)
-            {
-                body = body.Substring(index, body.LastIndexOf("}", StringComparison.Ordinal) - index + 1);
-            }
+            var payloadRoot = payload.RootElement;
 
-            using var payload = JsonDocument.Parse(body);
+            int errorCode =
+                payloadRoot.TryGetProperty("error", out var errorCodeElement) && errorCodeElement.ValueKind == JsonValueKind.Number ?
+                errorCodeElement.GetInt32() :
+                0;
 
-            return payload.RootElement.GetString("openid");
+            return (errorCode, openId: payloadRoot.GetString("openid"), unionId: payloadRoot.GetString("unionid"));
         }
 
-        protected override string FormatScope() => string.Join(",", Options.Scope);
+        protected override string FormatScope() => FormatScope(Options.Scope);
 
-        private static async Task<JsonDocument> CopyPayloadAsync(Dictionary<string, StringValues> content)
-        {
-            var bufferWriter = new ArrayBufferWriter<byte>();
-
-            using var writer = new Utf8JsonWriter(bufferWriter);
-
-            writer.WriteStartObject();
-
-            foreach (var item in content)
-            {
-                writer.WriteString(item.Key, item.Value);
-            }
-
-            writer.WriteEndObject();
-            await writer.FlushAsync();
-
-            return JsonDocument.Parse(bufferWriter.WrittenMemory);
-        }
+        protected override string FormatScope([NotNull] IEnumerable<string> scopes) => string.Join(',', scopes);
     }
 }

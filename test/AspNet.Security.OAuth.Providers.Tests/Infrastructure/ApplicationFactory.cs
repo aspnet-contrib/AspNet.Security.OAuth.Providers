@@ -102,7 +102,7 @@ namespace AspNet.Security.OAuth.Infrastructure
                        "/me",
                        async context =>
                        {
-                           if (context.User.Identity.IsAuthenticated)
+                           if (context.User.Identity?.IsAuthenticated == true)
                            {
                                string xml = IdentityToXmlString(context.User);
                                byte[] buffer = Encoding.UTF8.GetBytes(xml);
@@ -122,18 +122,18 @@ namespace AspNet.Security.OAuth.Infrastructure
 
         private static string IdentityToXmlString(ClaimsPrincipal user)
         {
-            var element = new XElement("claims");
+            var element = new XElement("claims"!);
 
             foreach (var identity in user.Identities)
             {
                 foreach (var claim in identity.Claims)
                 {
                     var node = new XElement(
-                        "claim",
-                        new XAttribute("type", claim.Type),
-                        new XAttribute("value", claim.Value),
-                        new XAttribute("valueType", claim.ValueType),
-                        new XAttribute("issuer", claim.Issuer));
+                        "claim"!,
+                        new XAttribute("type"!, claim.Type),
+                        new XAttribute("value"!, claim.Value),
+                        new XAttribute("valueType"!, claim.ValueType),
+                        new XAttribute("issuer"!, claim.Issuer));
 
                     element.Add(node);
                 }

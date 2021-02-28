@@ -5,12 +5,12 @@
  */
 
 using System;
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 
@@ -18,25 +18,22 @@ namespace AspNet.Security.OAuth.Apple.Internal
 {
     internal sealed class DefaultAppleClientSecretGenerator : AppleClientSecretGenerator
     {
+        private readonly IMemoryCache _cache;
         private readonly ISystemClock _clock;
         private readonly ILogger _logger;
         private readonly AppleKeyStore _keyStore;
-        private readonly JwtSecurityTokenHandler _tokenHandler;
         private readonly CryptoProviderFactory _cryptoProviderFactory;
-
-        private string? _clientSecret;
-        private DateTimeOffset _expiresAt;
 
         public DefaultAppleClientSecretGenerator(
             [NotNull] AppleKeyStore keyStore,
+            [NotNull] IMemoryCache cache,
             [NotNull] ISystemClock clock,
-            [NotNull] JwtSecurityTokenHandler tokenHandler,
             [NotNull] CryptoProviderFactory cryptoProviderFactory,
             [NotNull] ILogger<DefaultAppleClientSecretGenerator> logger)
         {
             _keyStore = keyStore;
+            _cache = cache;
             _clock = clock;
-            _tokenHandler = tokenHandler;
             _cryptoProviderFactory = cryptoProviderFactory;
             _logger = logger;
         }
@@ -44,20 +41,40 @@ namespace AspNet.Security.OAuth.Apple.Internal
         /// <inheritdoc />
         public override async Task<string> GenerateAsync([NotNull] AppleGenerateClientSecretContext context)
         {
-            if (_clientSecret == null || _clock.UtcNow >= _expiresAt)
+            string key = CreateCacheKey(context.Options);
+
+            return await _cache.GetOrCreateAsync(key, async (entry) =>
             {
                 try
                 {
-                    (_clientSecret, _expiresAt) = await GenerateNewSecretAsync(context);
+                    (string clientSecret, DateTimeOffset expiresAt) = await GenerateNewSecretAsync(context);
+                    entry.AbsoluteExpiration = expiresAt;
+                    return clientSecret;
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, $"Failed to generate new client secret for the {context.Scheme.Name} authentication scheme.");
+                    _logger.LogError(
+                        ex,
+                        "Failed to generate new client secret for the {SchemeName} authentication scheme.",
+                        context.Scheme.Name);
+
                     throw;
                 }
-            }
+            });
+        }
 
-            return _clientSecret;
+        private static string CreateCacheKey(AppleAuthenticationOptions options)
+        {
+            var segments = new[]
+            {
+                nameof(DefaultAppleClientSecretGenerator),
+                "ClientSecret",
+                options.TeamId,
+                options.ClientId,
+                options.KeyId
+            };
+
+            return string.Join("+", segments);
         }
 
         private async Task<(string clientSecret, DateTimeOffset expiresAt)> GenerateNewSecretAsync(
@@ -86,7 +103,7 @@ namespace AspNet.Security.OAuth.Apple.Internal
             {
                 tokenDescriptor.SigningCredentials = CreateSigningCredentials(context.Options.KeyId!, algorithm);
 
-                clientSecret = _tokenHandler.CreateEncodedJwt(tokenDescriptor);
+                clientSecret = context.Options.JwtSecurityTokenHandler.CreateEncodedJwt(tokenDescriptor);
             }
 
             _logger.LogTrace("Generated new client secret with value {ClientSecret}.", clientSecret);

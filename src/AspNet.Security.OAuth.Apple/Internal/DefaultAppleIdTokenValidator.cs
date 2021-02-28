@@ -18,24 +18,21 @@ namespace AspNet.Security.OAuth.Apple.Internal
     {
         private readonly ILogger _logger;
         private readonly AppleKeyStore _keyStore;
-        private readonly JwtSecurityTokenHandler _tokenHandler;
         private readonly CryptoProviderFactory _cryptoProviderFactory;
 
         public DefaultAppleIdTokenValidator(
             [NotNull] AppleKeyStore keyStore,
-            [NotNull] JwtSecurityTokenHandler tokenHandler,
             [NotNull] CryptoProviderFactory cryptoProviderFactory,
             [NotNull] ILogger<DefaultAppleIdTokenValidator> logger)
         {
             _keyStore = keyStore;
-            _tokenHandler = tokenHandler;
             _cryptoProviderFactory = cryptoProviderFactory;
             _logger = logger;
         }
 
         public override async Task ValidateAsync([NotNull] AppleValidateIdTokenContext context)
         {
-            if (!_tokenHandler.CanValidateToken)
+            if (!context.Options.JwtSecurityTokenHandler.CanValidateToken)
             {
                 throw new NotSupportedException($"The configured {nameof(JwtSecurityTokenHandler)} cannot validate tokens.");
             }
@@ -55,7 +52,7 @@ namespace AspNet.Security.OAuth.Apple.Internal
 
             try
             {
-                _tokenHandler.ValidateToken(context.IdToken, parameters, out var _);
+                context.Options.JwtSecurityTokenHandler.ValidateToken(context.IdToken, parameters, out var _);
             }
             catch (Exception ex)
             {
