@@ -5,11 +5,11 @@
  */
 
 using System;
+using AspNet.Security.OAuth.Line;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.Extensions.DependencyInjection;
 
-namespace AspNet.Security.OAuth.Line
+namespace Microsoft.Extensions.DependencyInjection
 {
     /// <summary>
     /// Extension methods to add Line authentication capabilities to an HTTP application pipeline.

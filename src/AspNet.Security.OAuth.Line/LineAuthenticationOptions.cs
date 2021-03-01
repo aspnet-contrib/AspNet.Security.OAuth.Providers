@@ -35,6 +35,13 @@ namespace AspNet.Security.OAuth.Line
         }
 
         /// <summary>
+        /// Used to force the consent screen to be displayed even if the user has already granted all requested permissions.
+        /// When set to <c>true</c>, Line displays the consent screen for every authorization request.
+        /// When left to <c>false</c>, the consent screen is skipped if the user has already granted.
+        /// </summary>
+        public bool Prompt { get; set; }
+
+        /// <summary>
         /// Gets or sets the address of the endpoint exposing
         /// the email addresses associated with the logged in user.
         /// </summary>

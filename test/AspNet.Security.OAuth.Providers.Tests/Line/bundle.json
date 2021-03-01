@@ -1,0 +1,40 @@
+{
+  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
+  "items": [
+    {
+      "comment": "https://developers.line.biz/en/reference/line-login/#issue-access-token",
+      "uri": "https://api.line.me/oauth2/v2.1/token",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "secret-access-token",
+        "id_token": "secret-id-token",
+        "token_type": "Bearer",
+        "refresh_token": "secret-refresh-token",
+        "scope": "profile,openid,email",
+        "expires_in": "2592000"
+      }
+    },
+    {
+      "comment": "https://developers.line.biz/en/reference/line-login/#get-user-profile",
+      "uri": "https://api.line.me/v2/profile",
+      "contentFormat": "json",
+      "contentJson": {
+        "userId": "my-user-id",
+        "displayName": "my-display-name",
+        "pictureUrl": "my-picture"
+      }
+    },
+    {
+      "comment": "https://developers.line.biz/en/docs/line-login/integrate-line-login/#verify-id-token",
+      "uri": "https://api.line.me/oauth2/v2.1/verify",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "email": "my-email",
+        "name": "my-display-name",
+        "picture": "https://profile.line-scdn.net/0h8Mb..."
+      }
+    }
+  ]
+}

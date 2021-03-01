@@ -53,6 +53,7 @@ covered by the section above.
 | Gitee | _Optional_ | [Documentation](gitee.md "Gitee provider documentation") |
 | Instagram | _Optional_ | [Documentation](instagram.md "Instagram provider documentation") |
 | Kloudless | _Optional_ | [Documentation](kloudless.md "Kloudless provider documentation") |
+| Line | _Optional_ | [Documentation](line.md "Line provider documentation") |
 | LinkedIn | _Optional_ | [Documentation](linkedin.md "LinkedIn provider documentation") |
 | Odnoklassniki | _Optional_ | [Documentation](odnoklassniki.md "Odnoklassniki provider documentation") |
 | Okta | **Required** | [Documentation](okta.md "Okta provider documentation") |

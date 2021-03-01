@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -31,21 +32,54 @@ namespace AspNet.Security.OAuth.Line
         {
         }
 
-        // private const string OauthState = "_oauthstate";
-        // private const string State = "state";
-        protected override async Task<HandleRequestResult> HandleRemoteAuthenticateAsync()
-        {
-            return await base.HandleRemoteAuthenticateAsync();
-        }
-
         protected override async Task HandleChallengeAsync(AuthenticationProperties properties)
         {
             await base.HandleChallengeAsync(properties);
         }
 
-        protected override string BuildChallengeUrl(AuthenticationProperties properties, string redirectUri)
+        protected override string BuildChallengeUrl([NotNull] AuthenticationProperties properties, [NotNull] string redirectUri)
+            => QueryHelpers.AddQueryString(Options.AuthorizationEndpoint, new Dictionary<string, string>
+            {
+                ["response_type"] = "code",
+                ["client_id"] = Options.ClientId,
+                ["redirect_uri"] = redirectUri,
+                ["state"] = Options.StateDataFormat.Protect(properties),
+                ["scope"] = FormatScope(),
+                ["prompt"] = Options.Prompt ? "consent" : "none"
+            });
+
+        protected override async Task<HandleRequestResult> HandleRemoteAuthenticateAsync()
         {
-            return base.BuildChallengeUrl(properties, redirectUri);
+            return await base.HandleRemoteAuthenticateAsync();
+        }
+
+        protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] OAuthCodeExchangeContext context)
+        {
+            using var request = new HttpRequestMessage(HttpMethod.Post, Options.TokenEndpoint);
+            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            request.Content = new FormUrlEncodedContent(new Dictionary<string, string>
+            {
+                ["grant_type"] = "authorization_code",
+                ["code"] = context.Code,
+                ["redirect_uri"] = context.RedirectUri,
+                ["client_id"] = Options.ClientId,
+                ["client_secret"] = Options.ClientSecret
+            });
+
+            using var response = await Backchannel.SendAsync(request, Context.RequestAborted);
+            if (!response.IsSuccessStatusCode)
+            {
+                Logger.LogError("An error occurred while retrieving an access token: the remote server " +
+                                "returned a {Status} response with the following payload: {Headers} {Body}.",
+                    /* Status: */ response.StatusCode,
+                    /* Headers: */ response.Headers.ToString(),
+                    /* Body: */ await response.Content.ReadAsStringAsync());
+
+                return OAuthTokenResponse.Failed(new Exception("An error occurred while retrieving an access token."));
+            }
+
+            var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
+            return OAuthTokenResponse.Success(payload);
         }
 
         protected override async Task<AuthenticationTicket> CreateTicketAsync(
@@ -74,74 +108,45 @@ namespace AspNet.Security.OAuth.Line
             var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload.RootElement);
             context.RunClaimActions();
 
+            // When the email address is not public, retrieve it from the emails endpoint if the user:email scope is specified.
+            if (!string.IsNullOrEmpty(Options.UserEmailsEndpoint) && Options.Scope.Contains("email"))
+            {
+                string email = await GetEmailAsync(tokens);
+
+                if (!string.IsNullOrEmpty(email))
+                {
+                    identity.AddClaim(new Claim(ClaimTypes.Email, email, ClaimValueTypes.String, Options.ClaimsIssuer));
+                }
+            }
+
             await Options.Events.CreatingTicket(context);
             return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
         }
 
-        protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] OAuthCodeExchangeContext context)
+        protected virtual async Task<string> GetEmailAsync([NotNull] OAuthTokenResponse tokens)
         {
-            using var request = new HttpRequestMessage(HttpMethod.Post, Options.TokenEndpoint);
+            using var request = new HttpRequestMessage(HttpMethod.Post, Options.UserEmailsEndpoint);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             request.Content = new FormUrlEncodedContent(new Dictionary<string, string>
             {
-                ["grant_type"] = "authorization_code",
-                ["code"] = context.Code,
-                ["redirect_uri"] = context.RedirectUri,
-                ["client_id"] = Options.ClientId,
-                ["client_secret"] = Options.ClientSecret
+                ["id_token"] = tokens.Response.RootElement.GetString("id_token"),
+                ["client_id"] = Options.ClientId
             });
 
             using var response = await Backchannel.SendAsync(request, Context.RequestAborted);
             if (!response.IsSuccessStatusCode)
             {
-                Logger.LogError("An error occurred while retrieving an access token: the remote server " +
-                                "returned a {Status} response with the following payload: {Headers} {Body}.",
-                                /* Status: */ response.StatusCode,
-                                /* Headers: */ response.Headers.ToString(),
-                                /* Body: */ await response.Content.ReadAsStringAsync());
+                Logger.LogWarning("An error occurred while retrieving the email address associated with the logged in user: " +
+                                  "the remote server returned a {Status} response with the following payload: {Headers} {Body}.",
+                    /* Status: */ response.StatusCode,
+                    /* Headers: */ response.Headers.ToString(),
+                    /* Body: */ await response.Content.ReadAsStringAsync());
 
-                return OAuthTokenResponse.Failed(new Exception("An error occurred while retrieving an access token."));
+                throw new HttpRequestException("An error occurred while retrieving the email address associated to the user profile.");
             }
 
-            var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
-            return OAuthTokenResponse.Success(payload);
+            using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
+            return payload.RootElement.GetString("email") ?? string.Empty;
         }
-
-        // protected override string BuildChallengeUrl([NotNull] AuthenticationProperties properties, [NotNull] string redirectUri)
-        // {
-        //     string stateValue = Options.StateDataFormat.Protect(properties);
-        //     bool addRedirectHash = false;
-        //
-        //     if (!IsWeixinAuthorizationEndpointInUse())
-        //     {
-        //         // Store state in redirectUri when authorizing Wechat Web pages to prevent "too long state parameters" error
-        //         redirectUri = QueryHelpers.AddQueryString(redirectUri, OauthState, stateValue);
-        //         addRedirectHash = true;
-        //     }
-        //
-        //     redirectUri = QueryHelpers.AddQueryString(Options.AuthorizationEndpoint, new Dictionary<string, string>
-        //     {
-        //         ["appid"] = Options.ClientId,
-        //         ["scope"] = FormatScope(),
-        //         ["response_type"] = "code",
-        //         ["redirect_uri"] = redirectUri,
-        //         [State] = addRedirectHash ? OauthState : stateValue
-        //     });
-        //
-        //     if (addRedirectHash)
-        //     {
-        //         // The parameters necessary for Web Authorization of Wechat
-        //         redirectUri += "#wechat_redirect";
-        //     }
-        //
-        //     return redirectUri;
-        // }
-
-        // protected override string FormatScope() => string.Join(",", Options.Scope);
-
-        // private bool IsWeixinAuthorizationEndpointInUse()
-        // {
-        //     return string.Equals(Options.AuthorizationEndpoint, LineAuthenticationDefaults.AuthorizationEndpoint, StringComparison.OrdinalIgnoreCase);
-        // }
     }
 }
