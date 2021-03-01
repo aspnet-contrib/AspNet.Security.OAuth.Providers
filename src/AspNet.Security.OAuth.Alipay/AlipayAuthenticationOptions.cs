@@ -4,7 +4,6 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using System;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using static AspNet.Security.OAuth.Alipay.AlipayAuthenticationConstants;
@@ -16,8 +15,6 @@ namespace AspNet.Security.OAuth.Alipay
     /// </summary>
     public class AlipayAuthenticationOptions : OAuthOptions
     {
-        public byte[] GetPrivateKeyBytes() => Convert.FromBase64String(ClientSecret);
-
         public AlipayAuthenticationOptions()
         {
             ClaimsIssuer = AlipayAuthenticationDefaults.Issuer;

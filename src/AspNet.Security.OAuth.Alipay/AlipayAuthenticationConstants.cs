@@ -22,7 +22,7 @@ namespace AspNet.Security.OAuth.Alipay
             public const string Nickname = "urn:alipay:nick_name";
 
             /// <summary>
-            /// The user's gender. F: Female; M: Male;
+            /// The user's gender. F: Female; M: Male.
             /// </summary>
             public const string Gender = "urn:alipay:gender";
         }

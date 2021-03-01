@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Licensed under the Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0)
  * See https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers
  * for more information concerning the license and the contributors participating to this project.
@@ -70,7 +70,7 @@ namespace AspNet.Security.OAuth.Alipay
                 ["timestamp"] = Clock.UtcNow.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture),
                 ["version"] = "1.0",
             };
-            sortedParams.Add("sign", GetRSA2Signature(sortedParams, Options.GetPrivateKeyBytes()));
+            sortedParams.Add("sign", GetRSA2Signature(sortedParams));
 
             string address = QueryHelpers.AddQueryString(Options.TokenEndpoint, sortedParams!);
 
@@ -116,7 +116,7 @@ namespace AspNet.Security.OAuth.Alipay
                 ["timestamp"] = Clock.UtcNow.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture),
                 ["version"] = "1.0",
             };
-            sortedParams.Add("sign", GetRSA2Signature(sortedParams, Options.GetPrivateKeyBytes()));
+            sortedParams.Add("sign", GetRSA2Signature(sortedParams));
 
             string address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, sortedParams!);
 
@@ -160,20 +160,18 @@ namespace AspNet.Security.OAuth.Alipay
             return new AuthenticationTicket(context.Principal!, context.Properties, Scheme.Name);
         }
 
-        protected override string FormatScope() => FormatScope(Options.Scope);
-
-        protected override string FormatScope(IEnumerable<string> scopes) => string.Join(',', Options.Scope);
+        protected override string FormatScope([NotNull] IEnumerable<string> scopes) => string.Join(',', Options.Scope);
 
         /// <summary>
         /// Check the code sent back by server for potential server errors.
         /// </summary>
-        /// <param name="e">Main part of json document from response</param>
+        /// <param name="element">Main part of json document from response</param>
         /// <param name="code">Returned code from server</param>
         /// <remarks>See https://opendocs.alipay.com/open/common/105806 for details.</remarks>
         /// <returns>True if succeed, otherwise false.</returns>
-        private static bool ValidateReturnCode(JsonElement e, out string code)
+        private static bool ValidateReturnCode(JsonElement element, out string code)
         {
-            if (!e.TryGetProperty("code", out var codeElement))
+            if (!element.TryGetProperty("code", out var codeElement))
             {
                 code = string.Empty;
                 return true;
@@ -187,8 +185,7 @@ namespace AspNet.Security.OAuth.Alipay
         /// Gets the RSA2(SHA256 with RSA) signature.
         /// </summary>
         /// <param name="sortedPairs">Sorted key-value pairs</param>
-        /// <param name="privateKeyBytes">Private key</param>
-        private static string GetRSA2Signature([NotNull] SortedDictionary<string, string> sortedPairs, byte[] privateKeyBytes)
+        private string GetRSA2Signature([NotNull] SortedDictionary<string, string> sortedPairs)
         {
             var builder = new StringBuilder(128);
 
@@ -207,21 +204,14 @@ namespace AspNet.Security.OAuth.Alipay
 
             string plainText = builder.ToString();
             byte[] plainBytes = Encoding.UTF8.GetBytes(plainText, 0, plainText.Length - 1); // Skip the last '&'
+            byte[] privateKeyBytes = Convert.FromBase64String(Options.ClientSecret);
 
-            // Use ThreadLocal<RSA> instead?
             using var rsa = RSA.Create();
-            try
-            {
-                rsa.ImportRSAPrivateKey(privateKeyBytes, out int _);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            rsa.ImportRSAPrivateKey(privateKeyBytes, out int _);
 
-            byte[] signatureBytes = rsa.SignData(plainBytes, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
+            byte[] encryptedBytes = rsa.SignData(plainBytes, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
 
-            return Convert.ToBase64String(signatureBytes);
+            return Convert.ToBase64String(encryptedBytes);
         }
     }
 }
