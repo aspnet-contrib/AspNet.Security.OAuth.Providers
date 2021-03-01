@@ -24,7 +24,11 @@ namespace AspNet.Security.OAuth.Line
 
         protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
         {
-            builder.AddLine(options => ConfigureDefaults(builder, options));
+            builder.AddLine(options =>
+            {
+                ConfigureDefaults(builder, options);
+                options.Scope.Add("email");
+            });
         }
 
         [Theory]

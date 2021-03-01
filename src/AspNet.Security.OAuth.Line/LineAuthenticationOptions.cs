@@ -27,7 +27,6 @@ namespace AspNet.Security.OAuth.Line
 
             Scope.Add("profile");
             Scope.Add("openid");
-            Scope.Add("email");
 
             ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "userId");
             ClaimActions.MapJsonKey(ClaimTypes.Name, "displayName");

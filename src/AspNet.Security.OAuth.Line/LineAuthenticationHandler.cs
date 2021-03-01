@@ -32,13 +32,8 @@ namespace AspNet.Security.OAuth.Line
         {
         }
 
-        protected override async Task HandleChallengeAsync(AuthenticationProperties properties)
-        {
-            await base.HandleChallengeAsync(properties);
-        }
-
         protected override string BuildChallengeUrl([NotNull] AuthenticationProperties properties, [NotNull] string redirectUri)
-            => QueryHelpers.AddQueryString(Options.AuthorizationEndpoint, new Dictionary<string, string>
+            => QueryHelpers.AddQueryString(Options.AuthorizationEndpoint, new Dictionary<string, string?>
             {
                 ["response_type"] = "code",
                 ["client_id"] = Options.ClientId,
@@ -48,32 +43,29 @@ namespace AspNet.Security.OAuth.Line
                 ["prompt"] = Options.Prompt ? "consent" : "none"
             });
 
-        protected override async Task<HandleRequestResult> HandleRemoteAuthenticateAsync()
-        {
-            return await base.HandleRemoteAuthenticateAsync();
-        }
-
         protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] OAuthCodeExchangeContext context)
         {
             using var request = new HttpRequestMessage(HttpMethod.Post, Options.TokenEndpoint);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            request.Content = new FormUrlEncodedContent(new Dictionary<string, string>
+
+            var parameters = new Dictionary<string, string>
             {
                 ["grant_type"] = "authorization_code",
                 ["code"] = context.Code,
                 ["redirect_uri"] = context.RedirectUri,
                 ["client_id"] = Options.ClientId,
                 ["client_secret"] = Options.ClientSecret
-            });
+            };
+            request.Content = new FormUrlEncodedContent(parameters!);
 
             using var response = await Backchannel.SendAsync(request, Context.RequestAborted);
             if (!response.IsSuccessStatusCode)
             {
                 Logger.LogError("An error occurred while retrieving an access token: the remote server " +
                                 "returned a {Status} response with the following payload: {Headers} {Body}.",
-                    /* Status: */ response.StatusCode,
-                    /* Headers: */ response.Headers.ToString(),
-                    /* Body: */ await response.Content.ReadAsStringAsync());
+                                /* Status: */ response.StatusCode,
+                                /* Headers: */ response.Headers.ToString(),
+                                /* Body: */ await response.Content.ReadAsStringAsync());
 
                 return OAuthTokenResponse.Failed(new Exception("An error occurred while retrieving an access token."));
             }
@@ -111,7 +103,7 @@ namespace AspNet.Security.OAuth.Line
             // When the email address is not public, retrieve it from the emails endpoint if the user:email scope is specified.
             if (!string.IsNullOrEmpty(Options.UserEmailsEndpoint) && Options.Scope.Contains("email"))
             {
-                string email = await GetEmailAsync(tokens);
+                string? email = await GetEmailAsync(tokens);
 
                 if (!string.IsNullOrEmpty(email))
                 {
@@ -120,33 +112,35 @@ namespace AspNet.Security.OAuth.Line
             }
 
             await Options.Events.CreatingTicket(context);
-            return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
+            return new AuthenticationTicket(context.Principal!, context.Properties, Scheme.Name);
         }
 
-        protected virtual async Task<string> GetEmailAsync([NotNull] OAuthTokenResponse tokens)
+        protected virtual async Task<string?> GetEmailAsync([NotNull] OAuthTokenResponse tokens)
         {
             using var request = new HttpRequestMessage(HttpMethod.Post, Options.UserEmailsEndpoint);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            request.Content = new FormUrlEncodedContent(new Dictionary<string, string>
+
+            var parameters = new Dictionary<string, string>
             {
-                ["id_token"] = tokens.Response.RootElement.GetString("id_token"),
+                ["id_token"] = tokens.Response.RootElement.GetString("id_token") ?? string.Empty,
                 ["client_id"] = Options.ClientId
-            });
+            };
+            request.Content = new FormUrlEncodedContent(parameters!);
 
             using var response = await Backchannel.SendAsync(request, Context.RequestAborted);
             if (!response.IsSuccessStatusCode)
             {
                 Logger.LogWarning("An error occurred while retrieving the email address associated with the logged in user: " +
                                   "the remote server returned a {Status} response with the following payload: {Headers} {Body}.",
-                    /* Status: */ response.StatusCode,
-                    /* Headers: */ response.Headers.ToString(),
-                    /* Body: */ await response.Content.ReadAsStringAsync());
+                                  /* Status: */ response.StatusCode,
+                                  /* Headers: */ response.Headers.ToString(),
+                                  /* Body: */ await response.Content.ReadAsStringAsync());
 
                 throw new HttpRequestException("An error occurred while retrieving the email address associated to the user profile.");
             }
 
             using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
-            return payload.RootElement.GetString("email") ?? string.Empty;
+            return payload.RootElement.GetString("email");
         }
     }
 }
