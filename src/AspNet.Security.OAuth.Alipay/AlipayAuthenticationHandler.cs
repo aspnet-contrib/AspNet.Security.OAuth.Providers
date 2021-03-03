@@ -90,7 +90,7 @@ namespace AspNet.Security.OAuth.Alipay
             using var document = JsonDocument.Parse(stream);
 
             var mainElement = document.RootElement.GetProperty("alipay_system_oauth_token_response");
-            if (!ValidateReturnCode(mainElement, out var code))
+            if (!ValidateReturnCode(mainElement, out string code))
             {
                 return OAuthTokenResponse.Failed(new Exception($"An error (Code:{code}) occurred while retrieving an access token."));
             }
@@ -137,7 +137,7 @@ namespace AspNet.Security.OAuth.Alipay
             using var document = JsonDocument.Parse(stream);
             var rootElement = document.RootElement;
 
-            if (!rootElement.TryGetProperty("alipay_user_info_share_response", out var mainElement))
+            if (!rootElement.TryGetProperty("alipay_user_info_share_response", out JsonElement mainElement))
             {
                 string errorCode = rootElement.GetProperty("error_response").GetProperty("code").GetString() !;
                 throw new Exception($"An error (Code:{errorCode}) occurred while retrieving user information.");
@@ -171,7 +171,7 @@ namespace AspNet.Security.OAuth.Alipay
         /// <returns>True if succeed, otherwise false.</returns>
         private static bool ValidateReturnCode(JsonElement element, out string code)
         {
-            if (!element.TryGetProperty("code", out var codeElement))
+            if (!element.TryGetProperty("code", out JsonElement codeElement))
             {
                 code = string.Empty;
                 return true;
