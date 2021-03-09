@@ -61,6 +61,12 @@ Below are links to some issues raised against this repository that were related 
   * [Allow passing in private key as string instead of p8 file (#385)](https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers/issues/385 "Allow passing in private key as string instead of p8 file")
   * [Apple Signin redirects to a blank page 404 Error (#390)](https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers/issues/390 "Apple Signin redirects to a blank page 404 Error")
 
+## Sign in with Apple on iOS
+
+When using _Sign In with Apple_ on an iOS 13+ Device, [Apple provides a different authentication workflow](https://developer.apple.com/documentation/authenticationservices) that returns the validation response to the App instead of in a server callback. Using that response to authenticate a User against your own backend requires sending the response to your servers and [communicating with the Apple authentication endpoint from there](https://developer.apple.com/documentation/sign_in_with_apple/generate_and_validate_tokens). 
+
+This workflow is out of the scope of this package but client secret generation and token validation can provide a starting point for an ASP.NET.Core Integration. Note that the `ClientId` in this case is the App Id where the authentication was requested not your Services Id.
+
 ## Further Reading
 
 Below are links to a number of other documentation sources, blog posts and sample code about Sign in with Apple.
