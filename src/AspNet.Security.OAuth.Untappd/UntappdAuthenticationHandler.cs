@@ -78,9 +78,9 @@ namespace AspNet.Security.OAuth.Untappd
             {
                 Logger.LogWarning("An error occurred while exchanging token codes. " +
                                   "the remote server returned a {Status} response with the following payload: {Headers} {Body}.",
-                    /* Status: */ response.StatusCode,
-                    /* Headers: */ response.Headers.ToString(),
-                    /* Body: */ await response.Content.ReadAsStringAsync(Context.RequestAborted));
+                                  /* Status: */ response.StatusCode,
+                                  /* Headers: */ response.Headers.ToString(),
+                                  /* Body: */ await response.Content.ReadAsStringAsync(Context.RequestAborted));
 
                 throw new HttpRequestException("An error occurred while exchanging token codes.");
             }
