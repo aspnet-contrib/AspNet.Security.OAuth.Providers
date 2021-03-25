@@ -51,7 +51,7 @@ namespace AspNet.Security.OAuth.Untappd
                 context.Properties.Items.Remove(OAuthConstants.CodeVerifierKey);
             }
 
-            var requestContent = new FormUrlEncodedContent(tokenRequestParameters!);
+            using var requestContent = new FormUrlEncodedContent(tokenRequestParameters!);
 
             var builder = new UriBuilder(Options.TokenEndpoint);
             builder.Port = -1;
