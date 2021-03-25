@@ -37,11 +37,11 @@ namespace AspNet.Security.OAuth.Untappd
         {
             var tokenRequestParameters = new Dictionary<string, string>()
             {
-                { "client_id", Options.ClientId },
-                { "redirect_uri", context.RedirectUri },
-                { "client_secret", Options.ClientSecret },
-                { "code", context.Code },
-                { "grant_type", "authorization_code" },
+                ["client_id"] = Options.ClientId,
+                ["redirect_uri"] = context.RedirectUri,
+                ["client_secret"] = Options.ClientSecret,
+                ["code"] = context.Code,
+                ["grant_type"] = "authorization_code",
             };
 
             // PKCE https://tools.ietf.org/html/rfc7636#section-4.5, see BuildChallengeUrl
