@@ -68,7 +68,7 @@ namespace AspNet.Security.OAuth.Untappd
             requestMessage.Content = requestContent;
             requestMessage.Version = Backchannel.DefaultRequestVersion;
 
-            var response = await Backchannel.SendAsync(requestMessage, Context.RequestAborted);
+            using var response = await Backchannel.SendAsync(requestMessage, Context.RequestAborted);
             if (response.IsSuccessStatusCode)
             {
                 var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
