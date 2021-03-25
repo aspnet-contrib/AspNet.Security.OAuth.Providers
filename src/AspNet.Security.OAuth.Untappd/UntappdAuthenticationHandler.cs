@@ -54,13 +54,14 @@ namespace AspNet.Security.OAuth.Untappd
 
             using var requestContent = new FormUrlEncodedContent(tokenRequestParameters!);
 
-            string address = QueryHelpers.AddQueryString(Options.TokenEndpoint, new Dictionary<string, string?>
-            {
-                ["client_id"] = Options.ClientId,
-                ["redirect_uri"] = context.RedirectUri,
-                ["client_secret"] = Options.ClientSecret,
-                ["code"] = context.Code
-            });
+            string address = QueryHelpers.AddQueryString(Options.TokenEndpoint,
+                new Dictionary<string, string?>
+                {
+                    ["client_id"] = Options.ClientId,
+                    ["redirect_uri"] = context.RedirectUri,
+                    ["client_secret"] = Options.ClientSecret,
+                    ["code"] = context.Code
+                });
 
             using var requestMessage = new HttpRequestMessage(HttpMethod.Get, address);
             requestMessage.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -75,18 +76,14 @@ namespace AspNet.Security.OAuth.Untappd
             }
             else
             {
-                var error = "OAuth token endpoint failure: " + await Display(response);
-                return OAuthTokenResponse.Failed(new Exception(error));
-            }
-        }
+                Logger.LogWarning("An error occurred while exchanging token codes. " +
+                                  "the remote server returned a {Status} response with the following payload: {Headers} {Body}.",
+                    /* Status: */ response.StatusCode,
+                    /* Headers: */ response.Headers.ToString(),
+                    /* Body: */ await response.Content.ReadAsStringAsync(Context.RequestAborted));
 
-        private static async Task<string> Display(HttpResponseMessage response)
-        {
-            var output = new StringBuilder();
-            output.Append("Status: " + response.StatusCode + ";");
-            output.Append("Headers: " + response.Headers.ToString() + ";");
-            output.Append("Body: " + await response.Content.ReadAsStringAsync() + ";");
-            return output.ToString();
+                throw new HttpRequestException("An error occurred while exchanging token codes.");
+            }
         }
 
         protected override async Task<AuthenticationTicket> CreateTicketAsync(
