@@ -1,0 +1,61 @@
+﻿{
+  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
+  "items": [
+    {
+      "comment": "https://github.com/projectestac/moodle-local_oauth",
+      "uri": "https://moodle.local/local/oauth/token.php",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "79d687a0ea4910c6662b2e38116528fdcd65f0d1",
+        "expires_in": 3600,
+        "token_type": "Bearer",
+        "scope": "user_info",
+        "refresh_token": "c1de730eef1b2072b48799000ec7cde4ea6d2af0"
+      }
+    },
+    {
+      "comment": "https://github.com/projectestac/moodle-local_oauth",
+      "uri": "https://moodle.local/local/oauth/user_info.php",
+      "contentFormat": "json",
+      "contentJson": {
+        "id": "22",
+        "username": "johndoe",
+        "idnumber": "1234567",
+        "firstname": "John",
+        "lastname": "Doe",
+        "email": "john.doe@example.com",
+        "lang": "en",
+        "phone1": "7654321"
+      }
+    },
+    {
+      "comment": "https://github.com/projectestac/moodle-local_oauth",
+      "uri": "https://zh.moodle.local/local/oauth/token.php",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "79d687a0ea4910c6662b2e38116528fdcd65f0d1",
+        "expires_in": 3600,
+        "token_type": "Bearer",
+        "scope": "user_info",
+        "refresh_token": "c1de730eef1b2072b48799000ec7cde4ea6d2af0"
+      }
+    },
+    {
+      "comment": "https://github.com/projectestac/moodle-local_oauth",
+      "uri": "https://zh.moodle.local/local/oauth/user_info.php",
+      "contentFormat": "json",
+      "contentJson": {
+        "id": "22",
+        "username": "zhangsan",
+        "idnumber": "ZH1234567",
+        "firstname": "三",
+        "lastname": "张",
+        "email": "zhangsan@example.com",
+        "lang": "zh_CN",
+        "phone1": "7654321"
+      }
+    }
+  ]
+}
