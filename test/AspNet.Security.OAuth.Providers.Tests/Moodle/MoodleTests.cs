@@ -68,7 +68,7 @@ namespace AspNet.Security.OAuth.Moodle
         {
             // Arrange
             static string ChangeToZhUrl(string currentUrl)
-            => currentUrl.Replace("://moodle.local", "://zh.moodle.local", System.StringComparison.InvariantCulture);
+                => currentUrl.Replace("://moodle.local", "://zh.moodle.local", System.StringComparison.InvariantCulture);
 
             static void ConfigureServices(IServiceCollection services)
             {
