@@ -30,13 +30,9 @@ namespace AspNet.Security.OAuth.Moodle
             ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "username");
 
             ClaimActions.MapCustomJson(ClaimTypes.Name,
-                e =>
-                    e.GetString("lang")?.StartsWith("zh", System.StringComparison.OrdinalIgnoreCase) ?? false ?
-                        e.GetString("lastname") +
-                        e.GetString("firstname") :
-                   e.GetString("firstname") +
-                   " " +
-                   e.GetString("lastname"));
+                e => e.GetString("lang")?.StartsWith("zh", StringComparison.OrdinalIgnoreCase) ?? false
+                      ? e.GetString("lastname") + e.GetString("firstname")
+                      : e.GetString("firstname") + " " + e.GetString("lastname"));
             ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
             ClaimActions.MapJsonKey(ClaimTypes.MobilePhone, "phone1");
             ClaimActions.MapJsonKey(Claims.FirstName, "firstname");
