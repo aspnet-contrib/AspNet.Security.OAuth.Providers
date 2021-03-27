@@ -53,5 +53,40 @@ namespace AspNet.Security.OAuth.Moodle
             // Assert
             AssertClaim(claims, claimType, claimValue);
         }
+
+        [Theory]
+        [InlineData(ClaimTypes.Name, "张三")]
+        [InlineData(ClaimTypes.NameIdentifier, "zhangsan")]
+        [InlineData(ClaimTypes.Email, "zhangsan@example.com")]
+        [InlineData(ClaimTypes.Surname, "张")]
+        [InlineData(ClaimTypes.GivenName, "三")]
+        [InlineData(ClaimTypes.MobilePhone, "7654321")]
+        [InlineData(Claims.IdNumber, "ZH1234567")]
+        [InlineData(Claims.MoodleId, "22")]
+        [InlineData(Claims.Language, "zh_CN")]
+        public async Task Can_Sign_In_Using_Moodle_In_Chinese(string claimType, string claimValue)
+        {
+            // Arrange
+            static string ChangeToZhUrl(string currentUrl)
+            => currentUrl.Replace("://moodle.local", "://zh.moodle.local", System.StringComparison.InvariantCulture);
+
+            static void ConfigureServices(IServiceCollection services)
+            {
+                services.PostConfigureAll<MoodleAuthenticationOptions>((options) =>
+                {
+                    options.AuthorizationEndpoint = ChangeToZhUrl(options.AuthorizationEndpoint);
+                    options.TokenEndpoint = ChangeToZhUrl(options.TokenEndpoint);
+                    options.UserInformationEndpoint = ChangeToZhUrl(options.UserInformationEndpoint);
+                });
+            }
+
+            using var server = CreateTestServer(ConfigureServices);
+
+            // Act
+            var claims = await AuthenticateUserAsync(server);
+
+            // Assert
+            AssertClaim(claims, claimType, claimValue);
+        }
     }
 }

@@ -5,8 +5,8 @@
  */
 
 using System;
-using System.Diagnostics.CodeAnalysis;
 using AspNet.Security.OAuth.Moodle;
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
