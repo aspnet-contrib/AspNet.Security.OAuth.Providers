@@ -35,8 +35,8 @@ namespace AspNet.Security.OAuth.Moodle
                       : e.GetString("firstname") + " " + e.GetString("lastname"));
             ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
             ClaimActions.MapJsonKey(ClaimTypes.MobilePhone, "phone1");
-            ClaimActions.MapJsonKey(Claims.FirstName, "firstname");
-            ClaimActions.MapJsonKey(Claims.LastName, "lastname");
+            ClaimActions.MapJsonKey(ClaimTypes.GivenName, "firstname");
+            ClaimActions.MapJsonKey(ClaimTypes.Surname, "lastname");
             ClaimActions.MapJsonKey(Claims.IdNumber, "idnumber");
             ClaimActions.MapJsonKey(Claims.MoodleId, "id");
             ClaimActions.MapJsonKey(Claims.Language, "lang");

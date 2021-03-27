@@ -13,8 +13,6 @@ namespace AspNet.Security.OAuth.Moodle
     {
         public static class Claims
         {
-            public const string FirstName = "urn:moodle:firstname";
-            public const string LastName = "urn:moodle:lastname";
             public const string IdNumber = "urn:moodle:idnumber";
             public const string MoodleId = "urn:moodle:id";
             public const string Language = "urn:moodle:lang";
