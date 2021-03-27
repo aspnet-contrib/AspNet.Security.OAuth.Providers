@@ -8,6 +8,8 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using AspNet.Security.OAuth.Moodle;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Options;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -72,6 +74,7 @@ namespace Microsoft.Extensions.DependencyInjection
             [NotNull] string caption,
             [NotNull] Action<MoodleAuthenticationOptions> configuration)
         {
+            builder.Services.TryAddSingleton<IPostConfigureOptions<MoodleAuthenticationOptions>, MoodlePostConfigureOptions>();
             return builder.AddOAuth<MoodleAuthenticationOptions, MoodleAuthenticationHandler>(scheme, caption, configuration);
         }
     }

@@ -4,6 +4,7 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using System;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
@@ -21,10 +22,8 @@ namespace AspNet.Security.OAuth.Moodle
         /// </summary>
         public MoodleAuthenticationOptions()
         {
-            AuthorizationEndpoint = MoodleAuthenticationDefaults.AuthorizationEndpoint;
+            ClaimsIssuer = MoodleAuthenticationDefaults.Issuer;
             CallbackPath = MoodleAuthenticationDefaults.CallbackPath;
-            TokenEndpoint = MoodleAuthenticationDefaults.TokenEndpoint;
-            UserInformationEndpoint = MoodleAuthenticationDefaults.UserInformationEndpoint;
 
             Scope.Add("user_info");
 
@@ -32,9 +31,12 @@ namespace AspNet.Security.OAuth.Moodle
 
             ClaimActions.MapCustomJson(ClaimTypes.Name,
                 e =>
-                    e.GetString("lang")?.StartsWith("zh", System.StringComparison.InvariantCultureIgnoreCase) ?? false ?
-                        $"{e.GetString("lastname")}{e.GetString("firstname")}" :
-                    $"{e.GetString("firstname")} {e.GetString("lastname")}");
+                    e.GetString("lang")?.StartsWith("zh", System.StringComparison.OrdinalIgnoreCase) ?? false ?
+                        e.GetString("lastname") +
+                        e.GetString("firstname") :
+                   e.GetString("firstname") +
+                   " " +
+                   e.GetString("lastname"));
             ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
             ClaimActions.MapJsonKey(ClaimTypes.MobilePhone, "phone1");
             ClaimActions.MapJsonKey(Claims.FirstName, "firstname");
@@ -45,18 +47,36 @@ namespace AspNet.Security.OAuth.Moodle
         }
 
         /// <summary>
-        /// Use the moodle url to initialize <see cref="OAuthOptions.AuthorizationEndpoint" />,
-        /// <see cref="OAuthOptions.TokenEndpoint" /> and <see cref="OAuthOptions.UserInformationEndpoint" />.
+        /// Gets or sets the Moodle domain (Org URL) to use for authentication.
+        /// For example: 'moodledomain.com'.
         /// </summary>
-        /// <param name="moodleSite">Url for your moodle site, like 'http://moodledomain.com'</param>
-        /// <returns>Options changed.</returns>
-        public MoodleAuthenticationOptions UseMoodleSite(string moodleSite)
+        public string? Domain { get; set; }
+
+        /// <inheritdoc/>
+        public override void Validate()
         {
-            AuthorizationEndpoint =
-                    $"{moodleSite}/local/oauth/login.php";
-            TokenEndpoint = $"{moodleSite}/local/oauth/token.php";
-            UserInformationEndpoint = $"{moodleSite}/local/oauth/user_info.php";
-            return this;
+            base.Validate();
+
+            if (!Uri.TryCreate(AuthorizationEndpoint, UriKind.Absolute, out var _))
+            {
+                throw new ArgumentException(
+                    $"The '{nameof(AuthorizationEndpoint)}' option must be set to a valid URI.",
+                    nameof(AuthorizationEndpoint));
+            }
+
+            if (!Uri.TryCreate(TokenEndpoint, UriKind.Absolute, out var _))
+            {
+                throw new ArgumentException(
+                    $"The '{nameof(TokenEndpoint)}' option must be set to a valid URI.",
+                    nameof(TokenEndpoint));
+            }
+
+            if (!Uri.TryCreate(UserInformationEndpoint, UriKind.Absolute, out var _))
+            {
+                throw new ArgumentException(
+                    $"The '{nameof(UserInformationEndpoint)}' option must be set to a valid URI.",
+                    nameof(UserInformationEndpoint));
+            }
         }
     }
 }

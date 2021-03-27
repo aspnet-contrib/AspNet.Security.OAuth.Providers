@@ -37,16 +37,16 @@ namespace AspNet.Security.OAuth.Moodle
         /// <summary>
         /// Default value for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
         /// </summary>
-        public static readonly string AuthorizationEndpoint = "http://moodledomain.com/local/oauth/login.php";
+        public static readonly string AuthorizationEndpointPath = "/local/oauth/login.php";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.TokenEndpoint"/>.
         /// </summary>
-        public static readonly string TokenEndpoint = "http://moodledomain.com/local/oauth/token.php";
+        public static readonly string TokenEndpointPath = "/local/oauth/token.php";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
         /// </summary>
-        public static readonly string UserInformationEndpoint = "http://moodledomain.com/local/oauth/user_info.php";
+        public static readonly string UserInformationEndpointPath = "/local/oauth/user_info.php";
     }
 }
