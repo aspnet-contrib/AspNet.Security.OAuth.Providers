@@ -1,6 +1,6 @@
 # Integrating the Moodle Provider
 
-Applies to the Moodle plugin [projectestac/moodle-local_oauth](https://github.com/projectestac/moodle-local_oauth).
+Applies to the Moodle plugin [HIT-ReFreSH/moodle-local_oauth](https://github.com/HIT-ReFreSH/moodle-local_oauth).
 
 ## Example
 
