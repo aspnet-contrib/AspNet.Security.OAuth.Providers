@@ -43,7 +43,6 @@ namespace AspNet.Security.OAuth.Moodle
             ClaimActions.MapJsonKey(Claims.MoodleId, "id");
             ClaimActions.MapJsonKey(Claims.Language, "lang");
             ClaimActions.MapJsonKey(Claims.Description, "description");
-
         }
 
         /// <summary>
