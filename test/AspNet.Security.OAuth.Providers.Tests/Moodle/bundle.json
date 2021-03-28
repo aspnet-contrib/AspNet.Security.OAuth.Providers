@@ -26,7 +26,10 @@
         "lastname": "Doe",
         "email": "john.doe@example.com",
         "lang": "en",
-        "phone1": "7654321"
+        "phone1": "7654321",
+        "auth": "manual",
+        "country": "avalon",
+        "description": "John Doe's Moodle account" 
       }
     },
     {
@@ -54,7 +57,10 @@
         "lastname": "张",
         "email": "zhangsan@example.com",
         "lang": "zh_CN",
-        "phone1": "7654321"
+        "phone1": "7654321",
+        "auth": "casattras",
+        "country": "秦",
+        "description": "张三的 Moodle 账号"
       }
     }
   ]

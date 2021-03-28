@@ -39,9 +39,12 @@ namespace AspNet.Security.OAuth.Moodle
         [InlineData(ClaimTypes.Surname, "Doe")]
         [InlineData(ClaimTypes.GivenName, "John")]
         [InlineData(ClaimTypes.MobilePhone, "7654321")]
+        [InlineData(ClaimTypes.Country, "avalon")]
+        [InlineData(ClaimTypes.AuthenticationMethod, "manual")]
         [InlineData(Claims.IdNumber, "1234567")]
         [InlineData(Claims.MoodleId, "22")]
         [InlineData(Claims.Language, "en")]
+        [InlineData(Claims.Description, "John Doe's Moodle account")]
         public async Task Can_Sign_In_Using_Moodle(string claimType, string claimValue)
         {
             // Arrange
@@ -64,6 +67,9 @@ namespace AspNet.Security.OAuth.Moodle
         [InlineData(Claims.IdNumber, "ZH1234567")]
         [InlineData(Claims.MoodleId, "22")]
         [InlineData(Claims.Language, "zh_CN")]
+        [InlineData(ClaimTypes.Country, "秦")]
+        [InlineData(ClaimTypes.AuthenticationMethod, "casattras")]
+        [InlineData(Claims.Description, "张三的 Moodle 账号")]
         public async Task Can_Sign_In_Using_Moodle_In_Chinese(string claimType, string claimValue)
         {
             // Arrange
