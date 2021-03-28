@@ -2,7 +2,7 @@
   "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
   "items": [
     {
-      "comment": "https://github.com/projectestac/moodle-local_oauth",
+      "comment": "https://github.com/HIT-ReFreSH/moodle-local_oauth",
       "uri": "https://moodle.local/local/oauth/token.php",
       "method": "POST",
       "contentFormat": "json",
@@ -15,7 +15,7 @@
       }
     },
     {
-      "comment": "https://github.com/projectestac/moodle-local_oauth",
+      "comment": "https://github.com/HIT-ReFreSH/moodle-local_oauth",
       "uri": "https://moodle.local/local/oauth/user_info.php",
       "contentFormat": "json",
       "contentJson": {
@@ -26,11 +26,14 @@
         "lastname": "Doe",
         "email": "john.doe@example.com",
         "lang": "en",
-        "phone1": "7654321"
+        "phone1": "7654321",
+        "auth": "manual",
+        "country": "avalon",
+        "description": "John Doe's Moodle account" 
       }
     },
     {
-      "comment": "https://github.com/projectestac/moodle-local_oauth",
+      "comment": "https://github.com/HIT-ReFreSH/moodle-local_oauth",
       "uri": "https://zh.moodle.local/local/oauth/token.php",
       "method": "POST",
       "contentFormat": "json",
@@ -43,7 +46,7 @@
       }
     },
     {
-      "comment": "https://github.com/projectestac/moodle-local_oauth",
+      "comment": "https://github.com/HIT-ReFreSH/moodle-local_oauth",
       "uri": "https://zh.moodle.local/local/oauth/user_info.php",
       "contentFormat": "json",
       "contentJson": {
@@ -54,7 +57,10 @@
         "lastname": "张",
         "email": "zhangsan@example.com",
         "lang": "zh_CN",
-        "phone1": "7654321"
+        "phone1": "7654321",
+        "auth": "casattras",
+        "country": "秦",
+        "description": "张三的 Moodle 账号"
       }
     }
   ]

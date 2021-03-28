@@ -37,9 +37,12 @@ namespace AspNet.Security.OAuth.Moodle
             ClaimActions.MapJsonKey(ClaimTypes.MobilePhone, "phone1");
             ClaimActions.MapJsonKey(ClaimTypes.GivenName, "firstname");
             ClaimActions.MapJsonKey(ClaimTypes.Surname, "lastname");
+            ClaimActions.MapJsonKey(ClaimTypes.AuthenticationMethod, "auth");
+            ClaimActions.MapJsonKey(ClaimTypes.Country, "country");
             ClaimActions.MapJsonKey(Claims.IdNumber, "idnumber");
             ClaimActions.MapJsonKey(Claims.MoodleId, "id");
             ClaimActions.MapJsonKey(Claims.Language, "lang");
+            ClaimActions.MapJsonKey(Claims.Description, "description");
         }
 
         /// <summary>
