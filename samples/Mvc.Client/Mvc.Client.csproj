@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
+    <IsShipping>false</IsShipping>
     <TargetFrameworks>net6.0</TargetFrameworks>
     <UserSecretsId>AspNet.Security.OAuth.Providers.Mvc.Client</UserSecretsId>
   </PropertyGroup>
