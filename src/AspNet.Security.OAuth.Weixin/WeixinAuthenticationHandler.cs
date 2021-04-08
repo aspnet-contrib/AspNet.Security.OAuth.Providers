@@ -62,7 +62,7 @@ namespace AspNet.Security.OAuth.Weixin
             string address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, new Dictionary<string, string?>
             {
                 ["access_token"] = tokens.AccessToken,
-                ["openid"] = tokens.Response.RootElement.GetString("openid")
+                ["openid"] = tokens.Response?.RootElement.GetString("openid")
             });
 
             using var response = await Backchannel.GetAsync(address);

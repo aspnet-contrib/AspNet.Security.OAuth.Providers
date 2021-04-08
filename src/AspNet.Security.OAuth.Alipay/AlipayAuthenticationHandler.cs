@@ -58,7 +58,7 @@ namespace AspNet.Security.OAuth.Alipay
         protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] OAuthCodeExchangeContext context)
         {
             // See https://opendocs.alipay.com/apis/api_9/alipay.system.oauth.token for details.
-            var sortedParams = new SortedDictionary<string, string>()
+            var sortedParams = new SortedDictionary<string, string?>()
             {
                 ["app_id"] = Options.ClientId,
                 ["charset"] = "utf-8",
@@ -105,7 +105,7 @@ namespace AspNet.Security.OAuth.Alipay
             [NotNull] OAuthTokenResponse tokens)
         {
             // See https://opendocs.alipay.com/apis/api_2/alipay.user.info.share for details.
-            var sortedParams = new SortedDictionary<string, string>()
+            var sortedParams = new SortedDictionary<string, string?>()
             {
                 ["app_id"] = Options.ClientId,
                 ["auth_token"] = tokens.AccessToken,
@@ -185,7 +185,7 @@ namespace AspNet.Security.OAuth.Alipay
         /// Gets the RSA2(SHA256 with RSA) signature.
         /// </summary>
         /// <param name="sortedPairs">Sorted key-value pairs</param>
-        private string GetRSA2Signature([NotNull] SortedDictionary<string, string> sortedPairs)
+        private string GetRSA2Signature([NotNull] SortedDictionary<string, string?> sortedPairs)
         {
             var builder = new StringBuilder(128);
 

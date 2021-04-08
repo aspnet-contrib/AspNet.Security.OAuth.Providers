@@ -35,9 +35,9 @@ namespace AspNet.Security.OAuth.Nextcloud
             [NotNull] AuthenticationProperties properties,
             [NotNull] OAuthTokenResponse tokens)
         {
-            string userId = tokens.Response.RootElement.GetString("user_id") ?? string.Empty;
+            string userId = tokens.Response!.RootElement.GetString("user_id") ?? string.Empty;
             string userEndpoint = Options.UserInformationEndpoint.TrimEnd('/');
-            userEndpoint += $"/{Uri.EscapeUriString(userId)}";
+            userEndpoint += $"/{Uri.EscapeDataString(userId)}";
 
             using var request = new HttpRequestMessage(HttpMethod.Get, userEndpoint);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));

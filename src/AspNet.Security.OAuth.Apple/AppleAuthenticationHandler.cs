@@ -74,7 +74,7 @@ namespace AspNet.Security.OAuth.Apple
             [NotNull] AuthenticationProperties properties,
             [NotNull] OAuthTokenResponse tokens)
         {
-            string? idToken = tokens.Response.RootElement.GetString("id_token");
+            string? idToken = tokens.Response!.RootElement.GetString("id_token");
 
             Logger.LogInformation("Creating ticket for Sign in with Apple.");
 

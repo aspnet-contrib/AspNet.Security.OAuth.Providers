@@ -4,15 +4,15 @@
     <PackageReference Update="JetBrains.Annotations" Version="2021.1.0" />
     <PackageReference Update="JustEat.HttpClientInterception" Version="3.1.0" />
     <PackageReference Update="MartinCostello.Logging.XUnit" Version="0.1.1" />
-    <PackageReference Update="Microsoft.AspNetCore.Authentication.Google" Version="5.0.6" />
-    <PackageReference Update="Microsoft.AspNetCore.Authentication.Twitter" Version="5.0.6" />
-    <PackageReference Update="Microsoft.AspNetCore.Mvc.Testing" Version="5.0.6" />
-    <PackageReference Update="Microsoft.AspNetCore.TestHost" Version="5.0.6" />
-    <PackageReference Update="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="6.6.0" />
+    <PackageReference Update="Microsoft.AspNetCore.Authentication.Google" Version="6.0.0-preview.3.21201.13" />
+    <PackageReference Update="Microsoft.AspNetCore.Authentication.Twitter" Version="6.0.0-preview.3.21201.13" />
+    <PackageReference Update="Microsoft.AspNetCore.Mvc.Testing" Version="6.0.0-preview.3.21201.13" />
+    <PackageReference Update="Microsoft.AspNetCore.TestHost" Version="6.0.0-preview.3.21201.13" />
+    <PackageReference Update="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="6.10.0" />
     <PackageReference Update="Moq" Version="4.16.1" />
     <PackageReference Update="Shouldly" Version="4.0.3" />
     <PackageReference Update="StyleCop.Analyzers" Version="1.1.118" />
-    <PackageReference Update="System.IdentityModel.Tokens.Jwt" Version="6.6.0" />
+    <PackageReference Update="System.IdentityModel.Tokens.Jwt" Version="6.10.0" />
   </ItemGroup>
 
 </Project>

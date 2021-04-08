@@ -86,7 +86,7 @@ namespace AspNet.Security.OAuth.SuperOffice
             [NotNull] AuthenticationProperties properties,
             [NotNull] ClaimsIdentity identity)
         {
-            string? idToken = tokens.Response.RootElement.GetString("id_token");
+            string? idToken = tokens.Response!.RootElement.GetString("id_token");
 
             if (Options.SaveTokens)
             {

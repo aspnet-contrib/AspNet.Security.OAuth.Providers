@@ -52,9 +52,6 @@ namespace AspNet.Security.OAuth.Infrastructure
         private static void Configure<TOptions>(IWebHostBuilder builder, OAuthTests<TOptions> tests)
             where TOptions : OAuthOptions
         {
-            // Use a dummy content root
-            builder.UseContentRoot(".");
-
             // Route application logs to xunit output for debugging
             builder.ConfigureLogging(logging =>
             {
@@ -145,7 +142,10 @@ namespace AspNet.Security.OAuth.Infrastructure
         private sealed class TestApplicationFactory : WebApplicationFactory<Program>
         {
             protected override IWebHostBuilder CreateWebHostBuilder()
-                => new WebHostBuilder();
+            {
+                return new WebHostBuilder()
+                    .UseSetting("TEST_CONTENTROOT_ASPNET_SECURITY_OAUTH_PROVIDERS_TESTS", "."); // Use a dummy content root
+            }
         }
     }
 }
