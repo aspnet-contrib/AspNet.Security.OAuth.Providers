@@ -41,12 +41,14 @@ namespace AspNet.Security.OAuth
                 .ThrowsOnMissingRegistration()
                 .RegisterBundle(Path.Combine(BundleName, "bundle.json"));
 
+#pragma warning disable DF0022 // Marks indisposed objects assinged to a property, originated in an object creation.
             LoopbackRedirectHandler = new LoopbackRedirectHandler
             {
                 RedirectMethod = RedirectMethod,
                 RedirectParameters = RedirectParameters,
                 RedirectUri = RedirectUri,
             };
+#pragma warning restore DF0022 // Marks indisposed objects assinged to a property, originated in an object creation.
         }
 
         /// <summary>
@@ -130,7 +132,10 @@ namespace AspNet.Security.OAuth
         /// The HTTP client to use for the remote identity provider.
         /// </returns>
         protected HttpClient CreateBackchannel(AuthenticationBuilder builder)
-            => builder.Services.BuildServiceProvider().GetRequiredService<IHttpClientFactory>().CreateClient();
+        {
+            using var serviceProvider = builder.Services.BuildServiceProvider();
+            return serviceProvider.GetRequiredService<IHttpClientFactory>().CreateClient();
+        }
 
         public LoopbackRedirectHandler LoopbackRedirectHandler { get; set; }
 

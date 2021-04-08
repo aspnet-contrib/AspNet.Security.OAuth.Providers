@@ -1,0 +1,58 @@
+{
+  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
+  "items": [
+    {
+      "uri": "https://Test.bitrix24.com/oauth/token/",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "secret-access-token",
+        "token_type": "access",
+        "refresh_token": "secret-refresh-token",
+        "expires_in": "300"
+      }
+    },
+    {
+      "uri": "https://Test.bitrix24.com/rest/user.current.json",
+      "contentFormat": "json",
+      "contentJson": {
+        "result": {
+          "ID": "1",
+          "ACTIVE": true,
+          "EMAIL": "sigurd@example.com",
+          "NAME": "Administrator",
+          "LAST_NAME": "X",
+          "SECOND_NAME": "Y",
+          "PERSONAL_GENDER": "",
+          "PERSONAL_PROFESSION": "",
+          "PERSONAL_WWW": "",
+          "PERSONAL_BIRTHDAY": "1955-04-10T00:00:00+03:00",
+          "PERSONAL_PHOTO": "\/upload\/main\/80c\/44169_C5_PrimalWaterE500CC.jpg",
+          "PERSONAL_ICQ": "",
+          "PERSONAL_PHONE": "",
+          "PERSONAL_FAX": "",
+          "PERSONAL_MOBILE": "",
+          "PERSONAL_PAGER": "",
+          "PERSONAL_STREET": "",
+          "PERSONAL_CITY": "",
+          "PERSONAL_STATE": "",
+          "PERSONAL_ZIP": "",
+          "PERSONAL_COUNTRY": "0",
+          "WORK_COMPANY": "",
+          "WORK_POSITION": "",
+          "UF_DEPARTMENT": [ 128 ],
+          "UF_INTERESTS": null,
+          "UF_SKILLS": null,
+          "UF_WEB_SITES": null,
+          "UF_XING": null,
+          "UF_LINKEDIN": null,
+          "UF_FACEBOOK": null,
+          "UF_TWITTER": null,
+          "UF_SKYPE": null,
+          "UF_DISTRICT": null,
+          "UF_PHONE_INNER": null
+        }
+      }
+    }
+  ]
+}
