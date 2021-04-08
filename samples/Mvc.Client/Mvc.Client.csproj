@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
+    <IsShipping>false</IsShipping>
     <TargetFrameworks>$(DefaultNetCoreTargetFramework)</TargetFrameworks>
     <UserSecretsId>AspNet.Security.OAuth.Providers.Mvc.Client</UserSecretsId>
   </PropertyGroup>
