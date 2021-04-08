@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <RootNamespace>AspNet.Security.OAuth</RootNamespace>
-    <TargetFrameworks>net5.0</TargetFrameworks>
+    <TargetFrameworks>net6.0</TargetFrameworks>
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
     <NoWarn>$(NoWarn);CA1707;CA2227</NoWarn>

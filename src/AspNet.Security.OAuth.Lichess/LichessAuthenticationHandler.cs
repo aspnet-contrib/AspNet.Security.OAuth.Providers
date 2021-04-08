@@ -46,7 +46,7 @@ namespace AspNet.Security.OAuth.Lichess
             [NotNull] OAuthTokenResponse tokens)
         {
             // Retrieve basic user information
-            using var payload = await RequestUserInformationAsync(Options.UserInformationEndpoint, tokens.AccessToken, "user profile");
+            using var payload = await RequestUserInformationAsync(Options.UserInformationEndpoint, tokens.AccessToken!, "user profile");
 
             var principal = new ClaimsPrincipal(identity);
             var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload.RootElement);
@@ -57,7 +57,7 @@ namespace AspNet.Security.OAuth.Lichess
                 !identity.HasClaim(claim => claim.Type == ClaimTypes.Email) &&
                 Options.Scope.Contains(LichessAuthenticationConstants.Scopes.EmailRead))
             {
-                using var emailPayload = await RequestUserInformationAsync(Options.UserEmailsEndpoint, tokens.AccessToken, "email address");
+                using var emailPayload = await RequestUserInformationAsync(Options.UserEmailsEndpoint, tokens.AccessToken!, "email address");
 
                 context.RunClaimActions(emailPayload.RootElement);
             }

@@ -120,9 +120,9 @@ namespace AspNet.Security.OAuth.Line
             using var request = new HttpRequestMessage(HttpMethod.Post, Options.UserEmailsEndpoint);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-            var parameters = new Dictionary<string, string>
+            var parameters = new Dictionary<string, string?>
             {
-                ["id_token"] = tokens.Response.RootElement.GetString("id_token") ?? string.Empty,
+                ["id_token"] = tokens.Response?.RootElement.GetString("id_token") ?? string.Empty,
                 ["client_id"] = Options.ClientId
             };
             request.Content = new FormUrlEncodedContent(parameters!);

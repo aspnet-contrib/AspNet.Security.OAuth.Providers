@@ -1,7 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
+  <!-- Workaround for https://github.com/dotnet/sdk/pull/16777 until 6.0 preview 4 -->
   <PropertyGroup>
-    <TargetFrameworks>net5.0</TargetFrameworks>
+    <NoWarn>$(NoWarn);SA1518;SA1633</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TargetFrameworks>net6.0</TargetFrameworks>
     <UserSecretsId>AspNet.Security.OAuth.Providers.Mvc.Client</UserSecretsId>
   </PropertyGroup>
 

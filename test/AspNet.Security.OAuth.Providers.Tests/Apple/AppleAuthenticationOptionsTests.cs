@@ -18,7 +18,7 @@ namespace AspNet.Security.OAuth.Apple
             var options = new AppleAuthenticationOptions()
             {
                 ClientId = "my-client-id",
-                ClientSecret = null,
+                ClientSecret = null!,
             };
 
             // Act and Assert
@@ -33,7 +33,7 @@ namespace AspNet.Security.OAuth.Apple
             {
                 ClientId = "my-client-id",
                 GenerateClientSecret = true,
-                AuthorizationEndpoint = null,
+                AuthorizationEndpoint = null!,
             };
 
             // Act and Assert
@@ -48,7 +48,7 @@ namespace AspNet.Security.OAuth.Apple
             {
                 ClientId = "my-client-id",
                 GenerateClientSecret = true,
-                TokenEndpoint = null,
+                TokenEndpoint = null!,
             };
 
             // Act and Assert

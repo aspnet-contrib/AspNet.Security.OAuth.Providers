@@ -78,7 +78,7 @@ namespace Mvc.Client
                 options.ClientSecret = Configuration["Dropbox:ClientSecret"];
             });
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Latest);
+            services.AddMvc();
         }
 
         public void Configure(IApplicationBuilder app)
