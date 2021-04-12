@@ -64,6 +64,7 @@ namespace AspNet.Security.OAuth.Bitrix24
         {
             var authorizationHeader = new AuthenticationHeaderValue("Bearer", tokens.AccessToken);
             Backchannel.DefaultRequestHeaders.Authorization = authorizationHeader;
+
             using var response = await Backchannel.GetAsync(Options.UserInformationEndpoint, Context.RequestAborted);
             if (!response.IsSuccessStatusCode)
             {

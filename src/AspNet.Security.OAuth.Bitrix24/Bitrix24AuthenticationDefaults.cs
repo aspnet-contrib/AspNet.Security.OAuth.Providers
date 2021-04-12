@@ -37,16 +37,16 @@ namespace AspNet.Security.OAuth.Bitrix24
         /// <summary>
         /// Default value for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
         /// </summary>
-        public const string AuthorizationEndpoint = "https://{0}/oauth/authorize/";
+        public const string AuthorizationEndpointPath = "/oauth/authorize/";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.TokenEndpoint"/>.
         /// </summary>
-        public const string TokenEndpoint = "https://{0}/oauth/token/";
+        public const string TokenEndpointPath = "/oauth/token/";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
         /// </summary>
-        public const string UserInformationEndpoint = "https://{0}/rest/user.current.json";
+        public const string UserInformationEndpointPath = "/rest/user.current.json";
     }
 }

@@ -8,6 +8,8 @@ using System;
 using AspNet.Security.OAuth.Bitrix24;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Options;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -72,6 +74,7 @@ namespace Microsoft.Extensions.DependencyInjection
             [CanBeNull] string caption,
             [NotNull] Action<Bitrix24AuthenticationOptions> configuration)
         {
+            builder.Services.TryAddSingleton<IPostConfigureOptions<Bitrix24AuthenticationOptions>, Bitrix24PostConfigureOptions>();
             return builder.AddOAuth<Bitrix24AuthenticationOptions, Bitrix24AuthenticationHandler>(scheme, caption, configuration);
         }
     }

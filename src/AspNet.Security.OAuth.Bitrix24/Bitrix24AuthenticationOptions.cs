@@ -4,6 +4,7 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using System;
 using System.Globalization;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
@@ -17,69 +18,47 @@ namespace AspNet.Security.OAuth.Bitrix24
     /// </summary>
     public class Bitrix24AuthenticationOptions : OAuthOptions
     {
-        private string? tenantHostName;
-
-        public string? TenantHostName
-        {
-            get
-            {
-                return tenantHostName;
-            }
-
-            set
-            {
-                tenantHostName = value;
-                AuthorizationEndpoint = string.Format(CultureInfo.InvariantCulture, Bitrix24AuthenticationDefaults.AuthorizationEndpoint, value);
-                TokenEndpoint = string.Format(CultureInfo.InvariantCulture, Bitrix24AuthenticationDefaults.TokenEndpoint, value);
-                UserInformationEndpoint = string.Format(CultureInfo.InvariantCulture, Bitrix24AuthenticationDefaults.UserInformationEndpoint, value);
-            }
-        }
-
         public Bitrix24AuthenticationOptions()
         {
             ClaimsIssuer = Bitrix24AuthenticationDefaults.Issuer;
             CallbackPath = Bitrix24AuthenticationDefaults.CallbackPath;
 
-            AuthorizationEndpoint = Bitrix24AuthenticationDefaults.AuthorizationEndpoint;
-            TokenEndpoint = Bitrix24AuthenticationDefaults.TokenEndpoint;
-            UserInformationEndpoint = Bitrix24AuthenticationDefaults.UserInformationEndpoint;
+            AuthorizationEndpoint = Bitrix24AuthenticationDefaults.AuthorizationEndpointPath;
+            TokenEndpoint = Bitrix24AuthenticationDefaults.TokenEndpointPath;
+            UserInformationEndpoint = Bitrix24AuthenticationDefaults.UserInformationEndpointPath;
 
             ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, UserFields.Id);
             ClaimActions.MapJsonKey(ClaimTypes.Email, UserFields.Email);
             ClaimActions.MapCustomJson(ClaimTypes.Name, json => string.Join(' ', json.GetProperty(UserFields.Name).GetString(), json.GetProperty(UserFields.SecondName).GetString(), json.GetProperty(UserFields.LastName).GetString()));
-            ClaimActions.MapJsonKey(ClaimTypes.GivenName, UserFields.Name);
-            ClaimActions.MapJsonKey(Claims.MiddleName, UserFields.SecondName);
-            ClaimActions.MapJsonKey(ClaimTypes.Surname, UserFields.LastName);
-            ClaimActions.MapJsonKey(ClaimTypes.Gender, UserFields.PersonalGender);
-            ClaimActions.MapJsonKey(ClaimTypes.Webpage, UserFields.PersonalWww);
-            ClaimActions.MapJsonKey(ClaimTypes.DateOfBirth, UserFields.PersonalBirthday);
-            ClaimActions.MapJsonKey(ClaimTypes.HomePhone, UserFields.PersonalPhone);
-            ClaimActions.MapJsonKey(ClaimTypes.MobilePhone, UserFields.PersonalMobile);
-            ClaimActions.MapJsonKey(ClaimTypes.StreetAddress, UserFields.PersonalStreet);
-            ClaimActions.MapJsonKey(ClaimTypes.StateOrProvince, UserFields.PersonalState);
-            ClaimActions.MapJsonKey(ClaimTypes.PostalCode, UserFields.PersonalZip);
-            ClaimActions.MapJsonKey(ClaimTypes.Country, UserFields.PersonalCountry);
+        }
 
-            ClaimActions.MapJsonKey(Claims.IsActive, UserFields.Active);
-            ClaimActions.MapJsonKey(Claims.Profession, UserFields.PersonalProfession);
-            ClaimActions.MapJsonKey(Claims.Photo, UserFields.PersonalPhoto);
-            ClaimActions.MapJsonKey(Claims.ICQ, UserFields.PersonalIcq);
-            ClaimActions.MapJsonKey(Claims.Fax, UserFields.PersonalFax);
-            ClaimActions.MapJsonKey(Claims.Pager, UserFields.PersonalPager);
-            ClaimActions.MapJsonKey(Claims.City, UserFields.PersonalCity);
-            ClaimActions.MapJsonKey(Claims.Company, UserFields.WorkCompany);
-            ClaimActions.MapJsonKey(Claims.Position, UserFields.WorkPosition);
-            ClaimActions.MapJsonKey(Claims.UfDepartment, UserFields.UfDepartment);
-            ClaimActions.MapJsonKey(Claims.UfInterests, UserFields.UfInterests);
-            ClaimActions.MapJsonKey(Claims.UfSkills, UserFields.UfSkills);
-            ClaimActions.MapJsonKey(Claims.UfWebSites, UserFields.UfWebSites);
-            ClaimActions.MapJsonKey(Claims.UfXing, UserFields.UfXing);
-            ClaimActions.MapJsonKey(Claims.UfLinkedin, UserFields.UfLinkedin);
-            ClaimActions.MapJsonKey(Claims.UfFacebook, UserFields.UfFacebook);
-            ClaimActions.MapJsonKey(Claims.UfTwitter, UserFields.UfTwitter);
-            ClaimActions.MapJsonKey(Claims.UfSkype, UserFields.UfSkype);
-            ClaimActions.MapJsonKey(Claims.UfDistrict, UserFields.UfDistrict);
-            ClaimActions.MapJsonKey(Claims.UfPhoneInner, UserFields.UfPhoneInner);
+        public string? Domain { get; set; }
+
+        /// <inheritdoc/>
+        public override void Validate()
+        {
+            base.Validate();
+
+            if (!Uri.TryCreate(AuthorizationEndpoint, UriKind.Absolute, out var _))
+            {
+                throw new ArgumentException(
+                    $"The '{nameof(AuthorizationEndpoint)}' option must be set to a valid URI.",
+                    nameof(AuthorizationEndpoint));
+            }
+
+            if (!Uri.TryCreate(TokenEndpoint, UriKind.Absolute, out var _))
+            {
+                throw new ArgumentException(
+                    $"The '{nameof(TokenEndpoint)}' option must be set to a valid URI.",
+                    nameof(TokenEndpoint));
+            }
+
+            if (!Uri.TryCreate(UserInformationEndpoint, UriKind.Absolute, out var _))
+            {
+                throw new ArgumentException(
+                    $"The '{nameof(UserInformationEndpoint)}' option must be set to a valid URI.",
+                    nameof(UserInformationEndpoint));
+            }
         }
     }
 }

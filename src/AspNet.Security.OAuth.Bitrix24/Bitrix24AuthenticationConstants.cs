@@ -17,7 +17,7 @@ namespace AspNet.Security.OAuth.Bitrix24
             public const string MiddleName = "second_name";
             public const string City = "personal_city";
             public const string Photo = "personal_photo";
-            public const string ICQ = "personal_icq";
+            public const string Icq = "personal_icq";
             public const string Fax = "personal_fax";
             public const string Pager = "personal_pager";
             public const string Company = "work_company";
@@ -36,7 +36,7 @@ namespace AspNet.Security.OAuth.Bitrix24
             public const string UfPhoneInner = "uf_phone_inner";
         }
 
-        internal static class UserFields
+        public static class UserFields
         {
             public const string Id = "ID";
             public const string Active = "ACTIVE";
@@ -77,180 +77,194 @@ namespace AspNet.Security.OAuth.Bitrix24
         public static class Scopes
         {
             /// <summary>
-            /// <a href="https://dev.1c-bitrix.ru/rest_help/bizproc/index.php" target="_blank">Бизнес-процессы</a>
+            /// Workflows (<a href="https://training.bitrix24.com/rest_help/workflows/index.php">documentation</a>)
+            /// Бизнес-процессы (<a href="https://dev.1c-bitrix.ru/rest_help/bizproc/index.php">документация</a>)
             /// </summary>
             public const string BizProc = "bizproc";
 
             /// <summary>
-            /// <a href="https://training.bitrix24.com/rest_help/calendar/index.php">Calendar</a>
-            /// <a href="https://dev.1c-bitrix.ru/rest_help/calendar/index.php" target="_blank">Календарь</a>
+            /// Calendar (<a href="https://training.bitrix24.com/rest_help/calendar/index.php">documentation</a>)<br/>
+            /// Календарь (<a href="https://dev.1c-bitrix.ru/rest_help/calendar/index.php">документация</a>)
             /// </summary>
             public const string Calendar = "calendar";
 
             /// <summary>
-            /// <a href="https://dev.1c-bitrix.ru/rest_help/scope_telephony/voximplant/voximplant_infocall_startwithsound.php" target="_blank">voximplant.infocall.startwithsound</a>
-            /// <a href = "https://dev.1c-bitrix.ru/rest_help/scope_telephony/voximplant/voximplant_infocall_startwithtext.php" target="_blank">voximplant.infocall.startwithtext</a>
+            /// Calls, required for <see cref="Telephony"/> when using methods <a href="https://training.bitrix24.com/rest_help/scope_telephony/voximplant/voximplant_infocall_startwithsound.php">voximplant.infocall.startwithsound</a>, <a href="https://training.bitrix24.com/rest_help/scope_telephony/voximplant/voximplant_infocall_startwithtext.php">voximplant.infocall.startwithtext</a>)<br/>
+            /// Звонки, требуется для <see cref="Telephony"/> при использовании методов <a href="https://dev.1c-bitrix.ru/rest_help/scope_telephony/voximplant/voximplant_infocall_startwithsound.php">voximplant.infocall.startwithsound</a>, <a href="https://dev.1c-bitrix.ru/rest_help/scope_telephony/voximplant/voximplant_infocall_startwithtext.php">voximplant.infocall.startwithtext</a>)
             /// </summary>
             public const string Call = "call";
 
             /// <summary>
-            /// <a href="https://dev.1c-bitrix.ru/rest_help/catalog/index.php" target="_blank">Торговый каталог</a>
+            /// Commercial Catalog (<a href="https://training.bitrix24.com/rest_help/catalog/index.php">documentation</a>)<br/>
+            /// Торговый каталог (<a href="https://dev.1c-bitrix.ru/rest_help/catalog/index.php">документация</a>)
             /// </summary>
             public const string Catalog = "catalog";
 
             /// <summary>
-            /// <a href="https://dev.1c-bitrix.ru/rest_help/application_embedding/index.php#contact_center" target="_blank">Контакт-центр</a>
+            /// Contact-center (<a href="https://training.bitrix24.com/rest_help/application_embedding/index.php#contact_center">documentation</a>)<br/>
+            /// Контакт-центр (<a href="https://dev.1c-bitrix.ru/rest_help/application_embedding/index.php#contact_center">документация</a>)
             /// </summary>
             public const string ContactCenter = "contact_center";
 
             /// <summary>
-            /// <a href="https://training.bitrix24.com/rest_help/crm/index.php" title="" target="_blank">CRM (English)</a>
-            /// <a href = "https://dev.1c-bitrix.ru/rest_help/crm/index.php" title="" target="_blank">CRM (Русский)</a>
+            /// CRM (English <a href="https://training.bitrix24.com/rest_help/crm/index.php">documentation</a>)<br/>
+            /// CRM (на русском <a href="https://dev.1c-bitrix.ru/rest_help/crm/index.php">документация</a>)
             /// </summary>
             public const string Crm = "crm";
 
             /// <summary>
-            /// <a href="https://training.bitrix24.com/rest_help/departments/index.php" title="" target="_blank">Departments</a>
-            /// <a href="https://dev.1c-bitrix.ru/rest_help/departments/index.php" title="" target="_blank">Структура компании</a>
+            /// Departments (<a href="https://training.bitrix24.com/rest_help/departments/index.php">documentation</a>)<br/>
+            /// Структура компании (<a href="https://dev.1c-bitrix.ru/rest_help/departments/index.php">документация</a>)
             /// </summary>
             public const string Department = "department";
 
             /// <summary>
-            /// <a href="https://training.bitrix24.com/rest_help/disk/index.php" title="" target="_blank">Drive</a>
-            /// <a href = "https://dev.1c-bitrix.ru/rest_help/disk/index.php" title="" target="_blank">Диск</a>
+            /// Drive (<a href="https://training.bitrix24.com/rest_help/disk/index.php">documentation</a>)<br/>
+            /// Диск (<a href="https://dev.1c-bitrix.ru/rest_help/disk/index.php">документация</a>)
             /// </summary>
             public const string Disk = "disk";
 
             /// <summary>
-            /// <a href="https://dev.1c-bitrix.ru/rest_help/documentgenerator/index.php" title="" target="_blank">Генератор документов</a>
+            /// Document Generator (<a href="https://training.bitrix24.com/rest_help/documentgenerator/index.php">documentation</a>)<br/>
+            /// Генератор документов (<a href="https://dev.1c-bitrix.ru/rest_help/documentgenerator/index.php">документация</a>)
             /// </summary>
             public const string DocumentGenerator = "documentgenerator";
 
             /// <summary>
-            /// <a href="https://training.bitrix24.com/rest_help/entity/index.php" title="" target="_blank">Data Storage</a>
-            /// <a href = "https://dev.1c-bitrix.ru/rest_help/entity/index.php" title="" target="_blank">Хранилище данных</a>
+            /// Data Storage (<a href="https://training.bitrix24.com/rest_help/entity/index.php">documentation</a>)<br/>
+            /// Хранилище данных (<a href="https://dev.1c-bitrix.ru/rest_help/entity/index.php">документация</a>)
             /// </summary>
             public const string Entity = "entity";
 
             /// <summary>
-            /// <a href="https://dev.1c-bitrix.ru/rest_help/faceid/index.php" title="" target="_blank">Распознавание лиц</a>
+            /// Face Identification (no documentation in English)<br/>
+            /// Распознавание лиц (<a href="https://dev.1c-bitrix.ru/rest_help/faceid/index.php">документация</a>)
             /// </summary>
             public const string FaceId = "faceid";
 
             /// <summary>
-            /// <a href="https://training.bitrix24.com/rest_help/im/index.php" title="" target="_blank">Notifications</a>
-            /// <a href="https://dev.1c-bitrix.ru/rest_help/im/index.php" title="" target="_blank">Чат и уведомления</a>
+            /// Notifications (<a href="https://training.bitrix24.com/rest_help/im/index.php">documentation</a>)<br/>
+            /// Чат и уведомления (<a href="https://dev.1c-bitrix.ru/rest_help/im/index.php">документация</a>)
             /// </summary>
             public const string Im = "im";
 
             /// <summary>
-            /// <a href="https://training.bitrix24.com/rest_help/imbot/index.php" title="" target="_blank">Chat bots</a>
-            /// <a href = "https://dev.1c-bitrix.ru/rest_help/imbot/index.php" title="" target="_blank">Создание и управление Чат-ботами</a>
+            /// Chat Bots (<a href="https://training.bitrix24.com/rest_help/imbot/index.php">documentation</a>)<br/>
+            /// Чат-боты, сообщения и Открытые линии (<a href="https://dev.1c-bitrix.ru/rest_help/imbot/index.php">документация</a>)
             /// </summary>
             public const string ImBot = "imbot";
 
             /// <summary>
-            /// <a href="https://dev.1c-bitrix.ru/learning/course/index.php?COURSE_ID=93&amp;LESSON_ID=8025" title="" target="_blank">Открытые линии</a>
+            /// Open channels (<a href="https://training.bitrix24.com/rest_help/imconnector/setting_line/index.php">documentation</a>)
+            /// Открытые линии (<a href="https://dev.1c-bitrix.ru/rest_help/imconnector/setting_line/index.php">документация</a>)
             /// </summary>
             public const string ImOpenLines = "imopenlines";
 
             /// <summary>
-            /// <a href="https://dev.1c-bitrix.ru/rest_help/application_embedding/index.php#intranet" target="_blank">Интранет</a>
+            /// Intranet (<a href="https://training.bitrix24.com/rest_help/application_embedding/index.php#intranet">documentation</a>)<br/>
+            /// Интранет (<a href="https://dev.1c-bitrix.ru/rest_help/application_embedding/index.php#intranet">документация</a>)
             /// </summary>
             public const string Intranet = "intranet";
 
             /// <summary>
-            /// <a href="https://dev.1c-bitrix.ru/rest_help/landing/index.php" title="" target="_blank">Сайты</a>
+            /// Sites (<a href="https://training.bitrix24.com/rest_help/landing/index.php">documentation</a>)<br/>
+            /// Сайты (<a href="https://dev.1c-bitrix.ru/rest_help/landing/index.php">документация</a>)
             /// </summary>
             public const string Landing = "landing";
 
             /// <summary>
-            /// <a href="https://training.bitrix24.com/rest_help/lists/index.php" title="" target="_blank">Lists</a>
-            /// <a href = "https://dev.1c-bitrix.ru/rest_help/lists/index.php" title="" target="_blank">Списки</a>
+            /// Lists (<a href="https://training.bitrix24.com/rest_help/lists/index.php">documentation</a>)<br/>
+            /// Списки (<a href="https://dev.1c-bitrix.ru/rest_help/lists/index.php">документация</a>)
             /// </summary>
             public const string Lists = "lists";
 
             /// <summary>
-            /// <a href="https://training.bitrix24.com/rest_help/log/index.php" title="" target="_blank">Activity Stream</a>
-            /// <a href = "https://dev.1c-bitrix.ru/rest_help/log/index.php" title="" target="_blank">Живая лента</a>
+            /// Activity Stream (<a href="https://training.bitrix24.com/rest_help/log/index.php">documentation</a>)<br/>
+            /// Живая лента (<a href="https://dev.1c-bitrix.ru/rest_help/log/index.php">документация</a>)
             /// </summary>
             public const string Log = "log";
 
             /// <summary>
-            /// <a href="https://dev.1c-bitrix.ru/rest_help/mailservice/index.php" title="" target="_blank">Почтовые сервисы</a>
+            /// Mail Service (<a href="https://training.bitrix24.com/rest_help/mail_service/index.php">documentation</a>)<br/>
+            /// Почтовые сервисы (<a href="https://dev.1c-bitrix.ru/rest_help/mailservice/index.php">документация</a>)
             /// </summary>
             public const string MailService = "mailservice";
 
             /// <summary>
-            /// https://training.bitrix24.com/rest_help/message_service/index.php
-            /// https://dev.1c-bitrix.ru/rest_help/messageservice/index.php
+            /// Message Service (<a href="https://training.bitrix24.com/rest_help/message_service/index.php">documentation</a><br/>
+            /// Служба SMS сообщений (<a href="https://dev.1c-bitrix.ru/rest_help/messageservice/index.php">документация</a>)
             /// </summary>
             public const string MessageService = "messageservice";
 
             /// <summary>
-            /// <a href="https://dev.1c-bitrix.ru/rest_help/mobile/index.php" title="" target="_blank">Мобильное приложение</a>
+            /// Mobile application (no documentation in English)<br/>
+            /// Мобильное приложение (<a href="https://dev.1c-bitrix.ru/rest_help/mobile/index.php">документация</a>)
             /// </summary>
             public const string Mobile = "mobile";
 
             /// <summary>
-            /// <a href="https://training.bitrix24.com/rest_help/paysystem/index.php" title="" target="_blank">payment systems</a>
-            /// <a href = "https://dev.1c-bitrix.ru/rest_help/paysystem/index.php" title="" target="_blank">Платёжные системы</a>
+            /// Payment systems (<a href="https://training.bitrix24.com/rest_help/paysystem/index.php">documentation</a>)<br/>
+            /// Платёжные системы (<a href="https://dev.1c-bitrix.ru/rest_help/paysystem/index.php">документация</a>)
             /// </summary>
             public const string PaySystem = "pay_system";
 
             /// <summary>
-            /// <a href="https://training.bitrix24.com/rest_help/application_embedding/index.php" title="" target="_blank">Application embedding</a>
-            /// <a href = "https://dev.1c-bitrix.ru/rest_help/application_embedding/index.php" title="" target="_blank">Встраивание приложений</a>
+            /// Application embedding (<a href="https://training.bitrix24.com/rest_help/application_embedding/index.php">documentation</a>)<br/>
+            /// Встраивание приложений (<a href="https://dev.1c-bitrix.ru/rest_help/application_embedding/index.php">документация</a>)
             /// </summary>
             public const string Placement = "placement";
 
             /// <summary>
-            /// <a href="https://dev.1c-bitrix.ru/rest_help/pull_push/index.php" title="" target="_blank">Pull&amp;Push</a>
+            /// Pull&amp;Push (<a href="https://training.bitrix24.com/rest_help/pull_push/index.php">documentation</a>)<br/>
+            /// Pull&amp;Push (<a href="https://dev.1c-bitrix.ru/rest_help/pull_push/index.php">документация</a>)
             /// </summary>
             public const string Pull = "pull";
 
             /// <summary>
-            /// <a href="https://dev.1c-bitrix.ru/rest_help/rpa/index.php" title="" target="_blank">Роботизация бизнеса</a>
+            /// Robotic process automation (<a href="https://training.bitrix24.com/rest_help/rpa/index.php">documentation</a>)<br/>
+            /// Роботизация бизнеса (<a href="https://dev.1c-bitrix.ru/rest_help/rpa/index.php">документация</a>)
             /// </summary>
             public const string Rpa = "rpa";
 
             /// <summary>
-            /// <a href="https://dev.1c-bitrix.ru/rest_help/sale/index.php" title="" target="_blank">Интернет-магазин</a>
+            /// Online store (<a href="https://training.bitrix24.com/rest_help/sale/index.php">documentation</a>)<br/>
+            /// Интернет-магазин (<a href="https://dev.1c-bitrix.ru/rest_help/sale/index.php">документация</a>)
             /// </summary>
             public const string Sale = "sale";
 
             /// <summary>
-            /// <a href="https://training.bitrix24.com/rest_help/sonet_group/index.php" title="" target="_blank">Workgroups</a>
-            /// <a href="https://dev.1c-bitrix.ru/rest_help/socialnetwork/sonet_group/index.php" title="" target="_blank">Рабочие группы</a>
+            /// Workgroups (<a href="https://training.bitrix24.com/rest_help/sonet_group/index.php">documentation</a>)<br/>
+            /// Рабочие группы (<a href="https://dev.1c-bitrix.ru/rest_help/socialnetwork/sonet_group/index.php">документация</a>)
             /// </summary>
             public const string SonetGroup = "sonet_group";
 
             /// <summary>
-            /// <a href="https://training.bitrix24.com/rest_help/tasks/index.php" title="" target="_blank">Tasks</a>
-            /// <a href = "https://dev.1c-bitrix.ru/rest_help/tasks/index.php" title="" target="_blank">Задачи</a>
+            /// Tasks (<a href="https://training.bitrix24.com/rest_help/tasks/index.php">documentation</a>)<br/>
+            /// Задачи (<a href="https://dev.1c-bitrix.ru/rest_help/tasks/index.php">документация</a>)
             /// </summary>
             public const string Task = "task";
 
             /// <summary>
-            /// <a href="https://training.bitrix24.com/rest_help/scope_telephony/index.php">Telephony</a>
-            /// <a href = "https://dev.1c-bitrix.ru/rest_help/scope_telephony/index.php" target="_blank">Телефония</a>
+            /// Telephony (<a href="https://training.bitrix24.com/rest_help/scope_telephony/index.php">documentation</a>)<br/>
+            /// Телефония (<a href="https://dev.1c-bitrix.ru/rest_help/scope_telephony/index.php">документация</a>)
             /// </summary>
             public const string Telephony = "telephony";
 
             /// <summary>
-            /// <a href="https://dev.1c-bitrix.ru/rest_help/timeman/index.php" title="" target="_blank">Учет рабочего времени</a>
+            /// Time Management (<a href="https://training.bitrix24.com/rest_help/time_management/index.php">documentation</a>)<br/>
+            /// Учёт рабочего времени (<a href="https://dev.1c-bitrix.ru/rest_help/timeman/index.php">документация</a>)
             /// </summary>
             public const string Timeman = "timeman";
 
             /// <summary>
-            /// <a href="https://training.bitrix24.com/rest_help/users/index.php" title="" target="_blank">Users</a>
-            /// <a href = "https://dev.1c-bitrix.ru/rest_help/users/index.php" title="" target="_blank">Пользователи</a>
+            /// Users (<a href="https://training.bitrix24.com/rest_help/users/index.php">documentation</a>)<br/>
+            /// Пользователи (<a href="https://dev.1c-bitrix.ru/rest_help/users/index.php">документация</a>)
             /// </summary>
             public const string User = "user";
 
             /// <summary>
-            /// <a href="https://training.bitrix24.com/rest_help/userconsent/index.php" title="" target="_blank">User agreement</a>
-            /// <a href = "https://dev.1c-bitrix.ru/rest_help/userconsent/index.php" title="" target="_blank">Работа с соглашениями</a>
+            /// User agreement (<a href="https://training.bitrix24.com/rest_help/userconsent/index.php">documentation</a>)<br/>
+            /// Работа с соглашениями (<a href="https://dev.1c-bitrix.ru/rest_help/userconsent/index.php">документация</a>)
             /// </summary>
             public const string UserConsent = "userconsent";
         }

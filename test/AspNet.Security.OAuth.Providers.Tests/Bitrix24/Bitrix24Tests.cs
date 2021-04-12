@@ -26,7 +26,7 @@ namespace AspNet.Security.OAuth.Bitrix24
         {
             builder.AddBitrix24(options =>
             {
-                options.TenantHostName = "Test.bitrix24.com";
+                options.Domain = "Test.bitrix24.com";
                 ConfigureDefaults(builder, options);
             });
         }
@@ -35,8 +35,6 @@ namespace AspNet.Security.OAuth.Bitrix24
         [InlineData(ClaimTypes.NameIdentifier, "1")]
         [InlineData(ClaimTypes.Name, "Administrator Y X")]
         [InlineData(ClaimTypes.Email, "sigurd@example.com")]
-        [InlineData(ClaimTypes.GivenName, "Administrator")]
-        [InlineData(ClaimTypes.Surname, "X")]
         public async Task Can_Sign_In_Using_Bitrix24(string claimType, string claimValue)
         {
             // Arrange
