@@ -19,7 +19,7 @@ namespace AspNet.Security.OAuth.Bitrix24
         {
             if (string.IsNullOrWhiteSpace(options.Domain))
             {
-                throw new ArgumentException("No Okta domain configured.", nameof(options));
+                throw new ArgumentException("No Bitrix24 domain configured.", nameof(options));
             }
 
             options.AuthorizationEndpoint = CreateUrl(options.Domain, Bitrix24AuthenticationDefaults.AuthorizationEndpointPath);

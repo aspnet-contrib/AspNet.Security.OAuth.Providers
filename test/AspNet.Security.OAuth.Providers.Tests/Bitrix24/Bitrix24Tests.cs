@@ -26,7 +26,7 @@ namespace AspNet.Security.OAuth.Bitrix24
         {
             builder.AddBitrix24(options =>
             {
-                options.Domain = "Test.bitrix24.com";
+                options.Domain = "test.bitrix24.local";
                 ConfigureDefaults(builder, options);
             });
         }

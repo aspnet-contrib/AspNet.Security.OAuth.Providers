@@ -1,4 +1,42 @@
-﻿Available claims
+﻿# Integrating the Bitrix24 Provider
+
+## Example
+
+```csharp
+services.AddAuthentication(options => /* Auth configuration */)
+        .AddBitrix24(options =>
+        {
+            options.Domain = "my-domain";
+            options.ClientId = "my-client-id";
+            options.ClientSecret = "my-client-secret";
+
+            // Optionally declare additional scopes or add claims
+            options.Scope.Add(Scopes.BizProc);
+            options.ClaimActions.MapJsonKey(ClaimTypes.Country, UserFields.PersonalCountry);
+            options.ClaimActions.MapJsonKey(Claims.IsActive, UserFields.Active);;
+        });
+```
+
+## Required Additional Settings
+
+`Domain`
+
+## Optional Settings
+
+### Scopes
+
+See [AspNet.Security.OAuth.Bitrix24.Bitrix24AuthenticationConstants.Scopes](/src/AspNet.Security.OAuth.Bitrix24/Bitrix24AuthenticationConstants.cs)
+
+### ClaimActions
+The fields of the user's profile to add as claims.
+#### Default claims (already included)
+```csharp
+ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, UserFields.Id);
+ClaimActions.MapJsonKey(ClaimTypes.Email, UserFields.Email);
+ClaimActions.MapCustomJson(ClaimTypes.Name, json => string.Join(' ', json.GetProperty(UserFields.Name).GetString(), json.GetProperty(UserFields.SecondName).GetString(), json.GetProperty(UserFields.LastName).GetString()));
+```
+
+#### Available claims
 
 ``` C#
 ClaimActions.MapJsonKey(ClaimTypes.GivenName, UserFields.Name);

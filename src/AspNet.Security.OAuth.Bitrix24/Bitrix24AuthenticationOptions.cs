@@ -32,6 +32,9 @@ namespace AspNet.Security.OAuth.Bitrix24
             ClaimActions.MapCustomJson(ClaimTypes.Name, json => string.Join(' ', json.GetProperty(UserFields.Name).GetString(), json.GetProperty(UserFields.SecondName).GetString(), json.GetProperty(UserFields.LastName).GetString()));
         }
 
+        /// <summary>
+        /// Gets or sets the Bitrix24 domain (Org URL) to use for authentication.
+        /// </summary>
         public string? Domain { get; set; }
 
         /// <inheritdoc/>

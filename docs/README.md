@@ -46,6 +46,7 @@ covered by the section above.
 | Apple | **Required** | [Documentation](sign-in-with-apple.md "Apple provider documentation") |
 | BattleNet | **Required** | [Documentation](battlenet.md "BattleNet provider documentation") |
 | Bitbucket | _Optional_ | [Documentation](bitbucket.md "Bitbucket provider documentation") |
+| Bitrix24 | **Required** | [Documentation](bitrix24.md "Bitrix24 provider documentation") |
 | Discord | _Optional_ | [Documentation](discord.md "Discord provider documentation") |
 | EVEOnline | _Optional_ | [Documentation](eveonline.md "EVEOnline provider documentation") |
 | Foursquare | _Optional_ | [Documentation](foursquare.md "Foursquare provider documentation") |
