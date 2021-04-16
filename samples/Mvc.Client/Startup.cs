@@ -61,6 +61,17 @@ namespace Mvc.Client
                 options.Scope.Add("user:email");
             })
 
+            .AddWorkWeixin(options =>
+            {
+                options.ClientId = Configuration["WorkWeixin:ClientId"];
+                options.AgentId = Configuration["WorkWeixin:AgentId"];
+                options.ClientSecret = Configuration["WorkWeixin:ClientSecret"];
+            })
+            .AddWeixin(options =>
+            {
+                options.ClientId = Configuration["Weixin:ClientId"];
+                options.ClientSecret = Configuration["Weixin:ClientSecret"];
+            })
             /*
             .AddApple(options =>
             {
