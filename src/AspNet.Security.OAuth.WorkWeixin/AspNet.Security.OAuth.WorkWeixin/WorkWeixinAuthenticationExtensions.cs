@@ -74,7 +74,7 @@ namespace Microsoft.Extensions.DependencyInjection
         public static AuthenticationBuilder AddWorkWeixin(
              [NotNull] this AuthenticationBuilder builder,
              [NotNull] string scheme,
-             string caption,
+             [CanBeNull] string caption,
              [NotNull] Action<WorkWeixinAuthenticationOptions> configuration)
         {
             return builder.AddOAuth<WorkWeixinAuthenticationOptions, WorkWeixinAuthenticationHandler>(scheme, caption, configuration);
