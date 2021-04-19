@@ -13,8 +13,9 @@ namespace AspNet.Security.OAuth.WorkWeixin
     {
         public static class Claims
         {
-            public const string Avator = "urn:workweixin:avator";
+            public const string Avatar = "urn:workweixin:avatar";
             public const string Mobile = "urn:workweixin:mobile";
+            public const string Alias = "urn:workweixin:alias";
         }
     }
 }

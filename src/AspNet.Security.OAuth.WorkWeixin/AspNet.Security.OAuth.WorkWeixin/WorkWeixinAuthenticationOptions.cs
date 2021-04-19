@@ -31,8 +31,9 @@ namespace AspNet.Security.OAuth.WorkWeixin
             ClaimActions.MapJsonKey(ClaimTypes.Name, "name");
             ClaimActions.MapJsonKey(ClaimTypes.Gender, "gender");
             ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
-            ClaimActions.MapJsonKey(Claims.Avator, "avator");
+            ClaimActions.MapJsonKey(Claims.Avatar, "avatar");
             ClaimActions.MapJsonKey(Claims.Mobile, "mobile");
+            ClaimActions.MapJsonKey(Claims.Alias, "alias");
         }
 
         /// <summary>
