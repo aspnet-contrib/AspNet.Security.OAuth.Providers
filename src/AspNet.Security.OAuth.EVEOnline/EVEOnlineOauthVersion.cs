@@ -7,19 +7,19 @@
 namespace AspNet.Security.OAuth
 {
     /// <summary>
-    /// Defines a list of servers used to determine the appropriate
+    /// Defines a list of versions used to help determine the appropriate
     /// API endpoints when communicating with EVEOnline.
     /// </summary>
-    public enum EVEOnlineAuthenticationServer
+    public enum EVEOnlineOauthVersion
     {
         /// <summary>
-        /// Everyone else server.
+        /// Version 1 Oauth Server.
         /// </summary>
-        Tranquility = 0,
+        V1,
 
         /// <summary>
-        /// Chinese server.
+        /// Version 2 Oauth Server.
         /// </summary>
-        Serenity = 1
+        V2
     }
 }
