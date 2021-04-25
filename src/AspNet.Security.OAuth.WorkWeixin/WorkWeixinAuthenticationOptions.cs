@@ -37,7 +37,7 @@ namespace AspNet.Security.OAuth.WorkWeixin
         }
 
         /// <summary>
-        /// <see cref="AgentId"/>
+        /// The web application ID of the licensor
         /// </summary>
         public string AgentId { get; set; } = default!;
 

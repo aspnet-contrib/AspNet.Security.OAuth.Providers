@@ -18,10 +18,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="WorkWeixin\bundle.json" />
-  </ItemGroup>
-
-  <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 
@@ -33,10 +29,6 @@
     <PackageReference Include="Microsoft.AspNetCore.TestHost" />
     <PackageReference Include="Moq" />
     <PackageReference Include="Shouldly" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\src\AspNet.Security.OAuth.WorkWeixin\AspNet.Security.OAuth.WorkWeixin\AspNet.Security.OAuth.WorkWeixin.csproj" />
   </ItemGroup>
 
 </Project>

@@ -14,10 +14,6 @@
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Twitter" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\src\AspNet.Security.OAuth.WorkWeixin\AspNet.Security.OAuth.WorkWeixin\AspNet.Security.OAuth.WorkWeixin.csproj" />
-  </ItemGroup>
-
   <Target Name="AddGeneratedContentItems" BeforeTargets="AssignTargetPaths">
     <ItemGroup>
       <Content Include="*.p8" CopyToPublishDirectory="PreserveNewest" Exclude="$(DefaultItemExcludes)" />

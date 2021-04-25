@@ -25,11 +25,11 @@ namespace AspNet.Security.OAuth.WorkWeixin
     public class WorkWeixinAuthenticationHandler : OAuthHandler<WorkWeixinAuthenticationOptions>
     {
         public WorkWeixinAuthenticationHandler(
-        [NotNull] IOptionsMonitor<WorkWeixinAuthenticationOptions> options,
-        [NotNull] ILoggerFactory logger,
-        [NotNull] UrlEncoder encoder,
-        [NotNull] ISystemClock clock)
-        : base(options, logger, encoder, clock)
+            [NotNull] IOptionsMonitor<WorkWeixinAuthenticationOptions> options,
+            [NotNull] ILoggerFactory logger,
+            [NotNull] UrlEncoder encoder,
+            [NotNull] ISystemClock clock)
+            : base(options, logger, encoder, clock)
         {
         }
 
@@ -38,10 +38,10 @@ namespace AspNet.Security.OAuth.WorkWeixin
             [NotNull] AuthenticationProperties properties,
             [NotNull] OAuthTokenResponse tokens)
         {
-            (int errCode, string? userId) = await GetUserIdentityfierAsync(tokens);
-            if (errCode != 0 || string.IsNullOrEmpty(userId))
+            (int errorCode, string? userId) = await GetUserIdentifierAsync(tokens);
+            if (errorCode != 0 || string.IsNullOrEmpty(userId))
             {
-                throw new HttpRequestException($"An error (Code:{errCode}) occurred while retrieving the user identitfier");
+                throw new Exception($"An error (Code:{errorCode}) occurred while retrieving the user identifier");
             }
 
             string address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, new Dictionary<string, string?>
@@ -50,7 +50,7 @@ namespace AspNet.Security.OAuth.WorkWeixin
                 ["userid"] = userId,
             });
 
-            using var response = await Backchannel.GetAsync(address);
+            using var response = await Backchannel.GetAsync(address, Context.RequestAborted);
             if (!response.IsSuccessStatusCode)
             {
                 Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
@@ -64,15 +64,15 @@ namespace AspNet.Security.OAuth.WorkWeixin
 
             using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
 
-            errCode = payload.RootElement.GetProperty("errcode").GetInt32();
-            if (errCode != 0)
+            errorCode = payload.RootElement.GetProperty("errcode").GetInt32();
+            if (errorCode != 0)
             {
                 Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
-                          "returned a {Status} response with the following message: {Message} .",
-                          /* Status: */ errCode,
+                          "returned a {ErrorCode} response with the following message: {Message} .",
+                          /* ErrorCode: */ errorCode,
                           /* Message: */ payload.RootElement.GetString("errmsg"));
 
-                throw new HttpRequestException("An error occurred while retrieving user information.");
+                throw new Exception("An error occurred while retrieving user information.");
             }
 
             var principal = new ClaimsPrincipal(identity);
@@ -91,7 +91,7 @@ namespace AspNet.Security.OAuth.WorkWeixin
                 ["corpsecret"] = Options.ClientSecret,
             });
 
-            using var response = await Backchannel.GetAsync(address);
+            using var response = await Backchannel.GetAsync(address, Context.RequestAborted);
             if (!response.IsSuccessStatusCode)
             {
                 Logger.LogError("An error occurred while retrieving an access token: the remote server " +
@@ -122,7 +122,7 @@ namespace AspNet.Security.OAuth.WorkWeixin
             return redirectUri;
         }
 
-        private async Task<(int errCode, string? userId)> GetUserIdentityfierAsync(OAuthTokenResponse tokens)
+        private async Task<(int errorCode, string? userId)> GetUserIdentifierAsync(OAuthTokenResponse tokens)
         {
             var code = Request.Query["code"];
             string address = QueryHelpers.AddQueryString(Options.UserIdentificationEndpoint, new Dictionary<string, string?>
@@ -131,10 +131,10 @@ namespace AspNet.Security.OAuth.WorkWeixin
                 ["code"] = code,
             });
 
-            using var response = await Backchannel.GetAsync(address);
+            using var response = await Backchannel.GetAsync(address, Context.RequestAborted);
             if (!response.IsSuccessStatusCode)
             {
-                Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
+                Logger.LogError("An error occurred while retrieving the user identifier: the remote server " +
                                 "returned a {Status} response with the following payload: {Headers} {Body}.",
                                 /* Status: */ response.StatusCode,
                                 /* Headers: */ response.Headers.ToString(),
@@ -145,8 +145,8 @@ namespace AspNet.Security.OAuth.WorkWeixin
 
             using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
 
-            int errCode = payload.RootElement.TryGetProperty("errcode", out var errCodeElement) && errCodeElement.ValueKind == JsonValueKind.Number ? errCodeElement.GetInt32() : 0;
-            return (errCode, userId: payload.RootElement.GetString("UserId"));
+            int errorCode = payload.RootElement.TryGetProperty("errcode", out var errCodeElement) && errCodeElement.ValueKind == JsonValueKind.Number ? errCodeElement.GetInt32() : 0;
+            return (errorCode, userId: payload.RootElement.GetString("UserId"));
         }
     }
 }
