@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Licensed under the Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0)
  * See https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers
  * for more information concerning the license and the contributors participating to this project.
@@ -26,12 +26,17 @@ namespace AspNet.Security.OAuth.Keycloak
             AuthorizationEndpoint = KeycloakAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = KeycloakAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = KeycloakAuthenticationDefaults.UserInformationEndpoint;
-
-            // TODO Add any required scopes
-            // Scope.Add("?");
-
-            // TODO Map any claims
-            // ClaimActions.MapJsonKey(ClaimTypes.Email, "?");
+            Scope.Add("openid");
+            Scope.Add("email");
+            Scope.Add("roles");
+            ClaimActions.MapAll();
+            ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
+            ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "sub");
+            ClaimActions.MapJsonKey(ClaimTypes.Name, "name");
+            ClaimActions.MapJsonKey(ClaimTypes.GivenName, "given_name");
+            ClaimActions.MapJsonKey(ClaimTypes.Role, "roles");
         }
+
+        public string BaseUrl { get; set; } = string.Empty;
     }
 }

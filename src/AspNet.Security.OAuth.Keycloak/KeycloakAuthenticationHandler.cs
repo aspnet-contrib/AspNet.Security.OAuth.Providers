@@ -1,9 +1,11 @@
-/*
+﻿/*
  * Licensed under the Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0)
  * See https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
@@ -13,7 +15,6 @@ using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -48,14 +49,10 @@ namespace AspNet.Security.OAuth.Keycloak
         {
             var endpoint = Options.UserInformationEndpoint;
 
-            // TODO Append any additional query string parameters required
-            //endpoint = QueryHelpers.AddQueryString(endpoint, "token", tokens.AccessToken);
-
             using var request = new HttpRequestMessage(HttpMethod.Get, endpoint);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-            // TODO Add any HTTP request headers required
-            //request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", tokens.AccessToken);
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", tokens.AccessToken);
 
             using var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
             if (!response.IsSuccessStatusCode)
@@ -70,7 +67,6 @@ namespace AspNet.Security.OAuth.Keycloak
             }
 
             using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
-
             var principal = new ClaimsPrincipal(identity);
             var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload.RootElement);
             context.RunClaimActions();
