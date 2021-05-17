@@ -37,12 +37,12 @@ namespace AspNet.Security.OAuth.WorkWeixin
         }
 
         /// <summary>
-        /// The web application ID of the licensor
+        /// Gets or sets the web application ID of the licensor.
         /// </summary>
         public string AgentId { get; set; } = default!;
 
         /// <summary>
-        /// Gets or sets the URL of the user identification endpoint(a.k.a the "OpenID endpoint")
+        /// Gets or sets the URL of the user identification endpoint (a.k.a the "OpenID endpoint").
         /// </summary>
         public string UserIdentificationEndpoint { get; set; }
     }

@@ -41,7 +41,7 @@ namespace AspNet.Security.OAuth.WorkWeixin
             (int errorCode, string? userId) = await GetUserIdentifierAsync(tokens);
             if (errorCode != 0 || string.IsNullOrEmpty(userId))
             {
-                throw new Exception($"An error (Code:{errorCode}) occurred while retrieving the user identifier");
+                throw new Exception($"An error (Code:{errorCode}) occurred while retrieving the user identifier.");
             }
 
             string address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, new Dictionary<string, string?>
@@ -68,9 +68,9 @@ namespace AspNet.Security.OAuth.WorkWeixin
             if (errorCode != 0)
             {
                 Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
-                          "returned a {ErrorCode} response with the following message: {Message} .",
-                          /* ErrorCode: */ errorCode,
-                          /* Message: */ payload.RootElement.GetString("errmsg"));
+                              "returned a {ErrorCode} response with the following message: {Message} .",
+                              /* ErrorCode: */ errorCode,
+                              /* Message: */ payload.RootElement.GetString("errmsg"));
 
                 throw new Exception("An error occurred while retrieving user information.");
             }
@@ -140,7 +140,7 @@ namespace AspNet.Security.OAuth.WorkWeixin
                                 /* Headers: */ response.Headers.ToString(),
                                 /* Body: */ await response.Content.ReadAsStringAsync(Context.RequestAborted));
 
-                throw new HttpRequestException("An error occurred while retrieving user information.");
+                throw new HttpRequestException("An error occurred while retrieving the user identifier.");
             }
 
             using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
