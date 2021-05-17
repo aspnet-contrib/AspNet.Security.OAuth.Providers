@@ -44,6 +44,7 @@ namespace AspNet.Security.OAuth.WorkWeixin
                 throw new Exception($"An error (Code:{errorCode}) occurred while retrieving the user identifier.");
             }
 
+            // See https://open.work.weixin.qq.com/api/doc/90000/90135/90196 for details.
             string address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, new Dictionary<string, string?>
             {
                 ["access_token"] = tokens.AccessToken,
@@ -85,6 +86,7 @@ namespace AspNet.Security.OAuth.WorkWeixin
 
         protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] OAuthCodeExchangeContext context)
         {
+            // See https://open.work.weixin.qq.com/api/doc/90000/90135/91039 for details.
             string address = QueryHelpers.AddQueryString(Options.TokenEndpoint, new Dictionary<string, string?>()
             {
                 ["corpid"] = Options.ClientId,
@@ -124,6 +126,7 @@ namespace AspNet.Security.OAuth.WorkWeixin
 
         private async Task<(int errorCode, string? userId)> GetUserIdentifierAsync(OAuthTokenResponse tokens)
         {
+            // See https://open.work.weixin.qq.com/api/doc/90000/90135/91023 for details.
             var code = Request.Query["code"];
             string address = QueryHelpers.AddQueryString(Options.UserIdentificationEndpoint, new Dictionary<string, string?>
             {
