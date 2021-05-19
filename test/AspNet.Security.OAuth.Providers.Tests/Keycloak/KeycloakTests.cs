@@ -28,7 +28,10 @@ namespace AspNet.Security.OAuth.Keycloak
         }
 
         [Theory]
-        [InlineData(ClaimTypes.NameIdentifier, "my-id")]
+        [InlineData(ClaimTypes.NameIdentifier, "995c1500-0dca-495e-ba72-2499d370d181")]
+        [InlineData(ClaimTypes.Email, "john@smith.com")]
+        [InlineData(ClaimTypes.GivenName, "John")]
+        [InlineData(ClaimTypes.Role, "admin")]
         [InlineData(ClaimTypes.Name, "John Smith")]
         public async Task Can_Sign_In_Using_Keycloak(string claimType, string claimValue)
         {

@@ -2,6 +2,7 @@
 // See https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers
 // for more information concerning the license and the contributors participating to this project.
 
+using System;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Options;
 
@@ -14,12 +15,25 @@ namespace AspNet.Security.OAuth.Keycloak
     {
         public void PostConfigure([NotNull] string name, [NotNull] KeycloakAuthenticationOptions options)
         {
-            if (!string.IsNullOrWhiteSpace(options.BaseUrl))
+            if (!string.IsNullOrWhiteSpace(options.Domain))
             {
-                options.AuthorizationEndpoint = options.BaseUrl + KeycloakAuthenticationDefaults.AuthorizationEndpoint;
-                options.TokenEndpoint = options.BaseUrl + KeycloakAuthenticationDefaults.TokenEndpoint;
-                options.UserInformationEndpoint = options.BaseUrl + KeycloakAuthenticationDefaults.UserInformationEndpoint;
+                options.AuthorizationEndpoint = CreateUrl(options.Domain, KeycloakAuthenticationDefaults.AuthorizationEndpoint);
+                options.TokenEndpoint = CreateUrl(options.Domain, KeycloakAuthenticationDefaults.TokenEndpoint);
+                options.UserInformationEndpoint = CreateUrl(options.Domain, KeycloakAuthenticationDefaults.UserInformationEndpoint);
             }
+        }
+
+        private static string CreateUrl(string domain, string path)
+        {
+            // Enforce use of HTTPS
+            var builder = new UriBuilder(domain)
+            {
+                Path = path,
+                Port = -1,
+                Scheme = "https",
+            };
+
+            return builder.Uri.ToString();
         }
     }
 }

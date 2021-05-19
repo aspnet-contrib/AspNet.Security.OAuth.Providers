@@ -26,9 +26,8 @@ namespace AspNet.Security.OAuth.Keycloak
             AuthorizationEndpoint = KeycloakAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = KeycloakAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = KeycloakAuthenticationDefaults.UserInformationEndpoint;
-            Scope.Add("openid");
-            Scope.Add("email");
-            Scope.Add("roles");
+
+            // Required to map custom claims
             ClaimActions.MapAll();
             ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
             ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "sub");
@@ -37,6 +36,10 @@ namespace AspNet.Security.OAuth.Keycloak
             ClaimActions.MapJsonKey(ClaimTypes.Role, "roles");
         }
 
-        public string BaseUrl { get; set; } = string.Empty;
+        /// <summary>
+        /// Gets or sets the Keycloak domain (Org URL) to use for authentication.
+        /// For example: 'keycloakdomain.com'.
+        /// </summary>
+        public string? Domain { get; set; }
     }
 }
