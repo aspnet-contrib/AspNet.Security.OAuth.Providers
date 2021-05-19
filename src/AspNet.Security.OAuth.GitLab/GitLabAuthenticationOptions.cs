@@ -26,9 +26,7 @@ namespace AspNet.Security.OAuth.GitLab
             TokenEndpoint = GitLabAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = GitLabAuthenticationDefaults.UserInformationEndpoint;
 
-            Scope.Add("openid");
-            Scope.Add("profile");
-            Scope.Add("email");
+            // Available scopes: https://docs.gitlab.com/ee/integration/oauth_provider.html
             Scope.Add("read_user");
 
             ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
