@@ -41,7 +41,7 @@ namespace AspNet.Security.OAuth.Keycloak
 
         /// <summary>
         /// Gets or sets the Keycloak domain (Org URL) to use for authentication.
-        /// For example: 'keycloakdomain.com'.
+        /// For example: <c>keycloakdomain.com</c>.
         /// </summary>
         public string? Domain { get; set; }
     }
