@@ -1,0 +1,30 @@
+{
+  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
+  "items": [
+    {
+      "uri": "https://www.coinbase.com/oauth/token",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "secret-access-token",
+        "token_type": "access",
+        "refresh_token": "secret-refresh-token",
+        "expires_in": "300"
+      }
+    },
+    {
+      "uri": "https://api.coinbase.com/v2/user",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "id": "9da7a204-544e-5fd1-9a12-61176c5d4cd8",
+        "name": "John Smith",
+        "username":  "jsmith",
+        "profile_location": "test",
+        "profile_bio": "test",
+        "profile_url": "https://coinbase.com/jsmith",
+        "avatar_url": "https://images.coinbase.com/avatar?h=vR%2FY8igBoPwuwGren5JMwvDNGpURAY%2F0nRIOgH%2FY2Qh%2BQ6nomR3qusA%2Bh6o2%0Af9rH&s=128"
+      }
+    }
+  ]
+}
