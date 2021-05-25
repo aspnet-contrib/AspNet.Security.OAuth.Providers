@@ -24,7 +24,11 @@ namespace AspNet.Security.OAuth.Keycloak
 
         protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
         {
-            builder.AddKeycloak(options => ConfigureDefaults(builder, options));
+            builder.AddKeycloak(options =>
+            {
+                ConfigureDefaults(builder, options);
+                options.Domain = "keycloak.local";
+            });
         }
 
         [Theory]

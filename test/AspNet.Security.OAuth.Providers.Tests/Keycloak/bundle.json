@@ -2,14 +2,26 @@
   "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
   "items": [
     {
-      "uri": "https://keycloak.local/protocol/openid-connect/auth",
+      "uri": "https://keycloak.local/protocol/openid-connect/token",
       "method": "POST",
       "contentFormat": "json",
       "contentJson": {
-        "access_token": "secret-access-token",
-        "token_type": "access",
-        "refresh_token": "secret-refresh-token",
-        "expires_in": "300"
+        "access_token": "79d687a0ea4910c6662b2e38116528fdcd65f0d1",
+        "expires_in": 3600,
+        "token_type": "Bearer",
+        "scope": "openid",
+        "refresh_token": "c1de730eef1b2072b48799000ec7cde4ea6d2af0"
+      }
+    },
+    {
+      "uri": "https://keycloak.local/protocol/openid-connect/userinfo",
+      "contentFormat": "json",
+      "contentJson": {
+        "sub": "995c1500-0dca-495e-ba72-2499d370d181",
+        "roles": "admin",
+        "name": "John Smith",
+        "given_name": "John",
+        "email": "john@smith.com"
       }
     }
   ]
