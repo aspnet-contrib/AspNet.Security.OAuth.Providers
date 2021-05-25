@@ -21,7 +21,7 @@ services.AddAuthentication(options => /* Auth configuration */)
 
 | Property Name | Property Type | Description                                                                         | Default Value |
 | :------------ | :------------ | :---------------------------------------------------------------------------------- | :------------ |
-| `Domain`      | `string?`     | The Keycloak domain to use for authentication. This is the url of realm in Keycloak | `null`        |
+| `Domain`      | `string?`     | The Keycloak domain to use for authentication. This is the URL of the realm in Keycloak. | `null`        |
 
 ## Optional Settings
 
