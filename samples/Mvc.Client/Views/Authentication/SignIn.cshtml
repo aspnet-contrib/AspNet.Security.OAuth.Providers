@@ -5,7 +5,7 @@
     <h1>Authentication</h1>
     <p class="lead text-left">Sign in using one of these external providers:</p>
 
-    @foreach (var scheme in Model.OrderBy(p => p.DisplayName))
+    @foreach (var scheme in Model!.OrderBy(p => p.DisplayName))
     {
         <form action="/signin" method="post">
             <input type="hidden" name="Provider" value="@scheme.Name" />
