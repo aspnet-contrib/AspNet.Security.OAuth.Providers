@@ -27,8 +27,8 @@ namespace AspNet.Security.OAuth.Keycloak
             TokenEndpoint = KeycloakAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = KeycloakAuthenticationDefaults.UserInformationEndpoint;
 
-            // Required to map custom claims
-            ClaimActions.MapAll();
+            Scope.Add("openid");
+
             ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
             ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "sub");
             ClaimActions.MapJsonKey(ClaimTypes.Name, "name");
