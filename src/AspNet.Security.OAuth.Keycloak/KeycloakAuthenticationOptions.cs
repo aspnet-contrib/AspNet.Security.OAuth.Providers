@@ -26,6 +26,7 @@ namespace AspNet.Security.OAuth.Keycloak
             AuthorizationEndpoint = KeycloakAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = KeycloakAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = KeycloakAuthenticationDefaults.UserInformationEndpoint;
+
             Scope.Add("openid");
             Scope.Add("email");
             Scope.Add("roles");
