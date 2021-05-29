@@ -5,7 +5,6 @@
  */
 
 using System;
-using System.Buffers;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -13,6 +12,7 @@ using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Text.Json;
+using System.Text.Json.Node;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication;
@@ -116,27 +116,15 @@ namespace AspNet.Security.OAuth.StackExchange
             // Since OAuthTokenResponse expects a JSON payload, a response is manually created using the returned values.
             var content = QueryHelpers.ParseQuery(await response.Content.ReadAsStringAsync(Context.RequestAborted));
 
-            var copy = await CopyPayloadAsync(content);
-            return OAuthTokenResponse.Success(copy);
-        }
+            var node = new JsonObject();
 
-        private static async Task<JsonDocument> CopyPayloadAsync(Dictionary<string, StringValues> content)
-        {
-            var bufferWriter = new ArrayBufferWriter<byte>();
-
-            using var writer = new Utf8JsonWriter(bufferWriter);
-
-            writer.WriteStartObject();
-
-            foreach (var item in content)
+            foreach ((string key, StringValues value) in content)
             {
-                writer.WriteString(item.Key, item.Value);
+                node[key] = value.ToString();
             }
 
-            writer.WriteEndObject();
-            await writer.FlushAsync();
-
-            return JsonDocument.Parse(bufferWriter.WrittenMemory);
+            var copy = JsonDocument.Parse(node.ToJsonString());
+            return OAuthTokenResponse.Success(copy);
         }
     }
 }
