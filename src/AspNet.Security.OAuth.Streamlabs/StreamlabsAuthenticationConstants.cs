@@ -22,8 +22,8 @@ namespace AspNet.Security.OAuth.Streamlabs
             public const string TwitchIconUrl = "urn:streamlabs:twitchiconurl";
             public const string TwitchId = "urn:streamlabs:twitchid";
             public const string TwitchName = "urn:streamlabs:twitchname";
-            public const string YoutubeId = "urn:streamlabs:youtubeid";
-            public const string YoutubeTitle = "urn:streamlabs:youtubetitle";
+            public const string YouTubeId = "urn:streamlabs:youtubeid";
+            public const string YouTubeTitle = "urn:streamlabs:youtubetitle";
         }
     }
 }
