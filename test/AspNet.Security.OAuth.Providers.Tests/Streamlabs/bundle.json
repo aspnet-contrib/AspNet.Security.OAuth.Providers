@@ -1,0 +1,36 @@
+{
+  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
+  "items": [
+    {
+      "uri": "https://streamlabs.com/api/v1.0/token",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "secret-access-token",
+        "token_type": "access",
+        "refresh_token": "secret-refresh-token",
+        "expires_in": "300"
+      }
+    },  
+    {
+      "comment": "https://dev.streamlabs.com/reference#user",
+      "uri": "https://streamlabs.com/api/v1.0/user",
+      "contentFormat": "json",
+      "contentJson": {
+        "streamlabs": {
+          "id": 8798311,
+          "display_name": "Sertay",
+          "username": "sertay",
+          "thumbnail": "https://static-cdn.jtvnw.net/jtv_user_pictures/3bec2329-a591-40fe-852b-24b9eb88f351-profile_image-300x300.png",
+          "primary": "twitch"
+        },
+        "twitch": {
+          "id": 163981644,
+          "display_name": "Sertay",
+          "name": "sertay",
+          "icon_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/3bec2329-a591-40fe-852b-24b9eb88f351-profile_image-300x300.png"
+        }
+      }
+    }
+  ]
+}
