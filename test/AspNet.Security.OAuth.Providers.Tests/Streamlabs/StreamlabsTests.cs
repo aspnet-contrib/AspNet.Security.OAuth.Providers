@@ -37,6 +37,10 @@ namespace AspNet.Security.OAuth.Streamlabs
         [InlineData("urn:streamlabs:twitchid", "163981644")]
         [InlineData("urn:streamlabs:twitchname", "sertay")]
         [InlineData("urn:streamlabs:twitchdisplayname", "Sertay")]
+        [InlineData("urn:streamlabs:facebookid", "15645645654645")]
+        [InlineData("urn:streamlabs:facebookname", "Sertay")]
+        [InlineData("urn:streamlabs:youtubeid", "UCC8H-NrBvYEqZ5KG-jzS_Oy")]
+        [InlineData("urn:streamlabs:youtubetitle", "Sertay")]
         public async Task Can_Sign_In_Using_Streamlabs(string claimType, string claimValue)
         {
             // Arrange
