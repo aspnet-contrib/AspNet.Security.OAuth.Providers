@@ -4,7 +4,7 @@
 
 ```csharp
 services.AddWorkWeixin(options => /* Auth configuration */)
-        .AddQQ(options =>
+        .AddWorkWeixin(options =>
         {
             options.ClientId = "my-client-id";
             options.ClientSecret = "my-client-secret";
@@ -14,11 +14,14 @@ services.AddWorkWeixin(options => /* Auth configuration */)
 
 ## Required Additional Settings
 
-_None._
+
+| Property Name | Property Type | Description | Default Value |
+|:--|:--|:--|:--|
+| `AgentId` | `string` | Gets or sets the web application ID of the licensor. | `null` |
+
 
 ## Optional Settings
 
 | Property Name | Property Type | Description | Default Value |
 |:--|:--|:--|:--|
-| `AgentId` | `string` | Gets or sets the web application ID of the licensor. | `default!` |
-| `UserIdentificationEndpoint` | `string` | The address of the endpoint to use for user identification. | `WorkWeixinAuthenticationDefaults.UserIdentificationEndpoint` |
+| `UserIdentificationEndpoint` | `string` | The address of the endpoint to use for user identification. | `WorkWeixinAuthenticationDefaults.

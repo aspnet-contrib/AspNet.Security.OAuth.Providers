@@ -30,8 +30,11 @@ namespace AspNet.Security.OAuth.WorkWeixin
         [Theory]
         [InlineData(ClaimTypes.NameIdentifier, "my-user-id")]
         [InlineData(ClaimTypes.Name, "wql")]
-        [InlineData("urn:workweixin:mobile", "888888")]
+        [InlineData(ClaimTypes.Gender, "male")]
         [InlineData(ClaimTypes.Email, "wql1994@126.com")]
+        [InlineData("urn:workweixin:avatar", "https://work.weixin.qq.local/avatar.png")]
+        [InlineData("urn:workweixin:mobile", "888888")]
+        [InlineData("urn:workweixin:alias", "my-alias")]
         public async Task Can_Sign_In_Using_WorkWeixin(string claimType, string claimValue)
         {
             // Arrange

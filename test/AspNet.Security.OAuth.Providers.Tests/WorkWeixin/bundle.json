@@ -28,8 +28,11 @@
         "errcode": 0,
         "userid": "my-user-id",
         "name": "wql",
+        "gender": "male",
         "mobile": 888888,
-        "email": "wql1994@126.com"
+        "email": "wql1994@126.com",
+        "avatar": "https://work.weixin.qq.local/avatar.png",
+        "alias": "my-alias"
       }
     }
   ]
