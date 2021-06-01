@@ -3,7 +3,7 @@
 ## Example
 
 ```csharp
-services.AddWorkWeixin(options => /* Auth configuration */)
+services.AddAuthentication(options => /* Auth configuration */)
         .AddWorkWeixin(options =>
         {
             options.ClientId = "my-client-id";
@@ -24,4 +24,4 @@ services.AddWorkWeixin(options => /* Auth configuration */)
 
 | Property Name | Property Type | Description | Default Value |
 |:--|:--|:--|:--|
-| `UserIdentificationEndpoint` | `string` | The address of the endpoint to use for user identification. | `WorkWeixinAuthenticationDefaults.
+| `UserIdentificationEndpoint` | `string` | The address of the endpoint to use for user identification. | `WorkWeixinAuthenticationDefaults.UserIdentificationEndpoint` |
