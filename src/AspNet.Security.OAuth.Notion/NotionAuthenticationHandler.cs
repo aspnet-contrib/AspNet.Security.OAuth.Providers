@@ -87,7 +87,7 @@ namespace AspNet.Security.OAuth.Notion
                 Options,
                 Backchannel,
                 tokens,
-                tokens.Response.RootElement);
+                tokens!.Response!.RootElement);
             context.RunClaimActions();
 
             await Options.Events.CreatingTicket(context);
