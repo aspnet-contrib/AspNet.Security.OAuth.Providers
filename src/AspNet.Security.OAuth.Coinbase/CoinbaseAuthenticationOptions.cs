@@ -27,7 +27,7 @@ namespace AspNet.Security.OAuth.Coinbase
             UserInformationEndpoint = CoinbaseAuthenticationDefaults.UserInformationEndpoint;
 
             ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
-            ClaimActions.MapJsonKey(ClaimTypes.Name, "name", "name");
+            ClaimActions.MapJsonKey(ClaimTypes.Name, "name");
             ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
 
             ClaimActions.MapJsonKey(Claims.Username, "username");
