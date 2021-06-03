@@ -28,13 +28,14 @@ namespace AspNet.Security.OAuth.Coinbase
         }
 
         [Theory]
-        [InlineData(ClaimTypes.NameIdentifier, "9da7a204-544e-5fd1-9a12-61176c5d4cd8")]
+        [InlineData(ClaimTypes.Email, "john.smith@coinbase.local")]
         [InlineData(ClaimTypes.Name, "John Smith")]
-        [InlineData("urn:coinbase:username", "jsmith")]
-        [InlineData("urn:coinbase:profile_location", "test")]
-        [InlineData("urn:coinbase:profile_bio", "test")]
-        [InlineData("urn:coinbase:profile_url", "https://coinbase.com/jsmith")]
+        [InlineData(ClaimTypes.NameIdentifier, "9da7a204-544e-5fd1-9a12-61176c5d4cd8")]
         [InlineData("urn:coinbase:avatar_url", "https://images.coinbase.com/avatar?h=vR%2FY8igBoPwuwGren5JMwvDNGpURAY%2F0nRIOgH%2FY2Qh%2BQ6nomR3qusA%2Bh6o2%0Af9rH&s=128")]
+        [InlineData("urn:coinbase:profile_bio", "test")]
+        [InlineData("urn:coinbase:profile_location", "test")]
+        [InlineData("urn:coinbase:profile_url", "https://coinbase.com/jsmith")]
+        [InlineData("urn:coinbase:username", "jsmith")]
         public async Task Can_Sign_In_Using_Coinbase(string claimType, string claimValue)
         {
             // Arrange

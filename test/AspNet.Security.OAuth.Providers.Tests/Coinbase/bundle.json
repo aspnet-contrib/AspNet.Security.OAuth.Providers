@@ -18,8 +18,9 @@
       "contentFormat": "json",
       "contentJson": {
         "id": "9da7a204-544e-5fd1-9a12-61176c5d4cd8",
+        "email": "john.smith@coinbase.local",
         "name": "John Smith",
-        "username":  "jsmith",
+        "username": "jsmith",
         "profile_location": "test",
         "profile_bio": "test",
         "profile_url": "https://coinbase.com/jsmith",
