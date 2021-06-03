@@ -31,4 +31,11 @@
     <PackageReference Include="Shouldly" />
   </ItemGroup>
 
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Reflection.AssemblyMetadataAttribute">
+      <_Parameter1>SolutionRoot</_Parameter1>
+      <_Parameter2>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)../../'))</_Parameter2>
+    </AssemblyAttribute>
+  </ItemGroup>
+  
 </Project>

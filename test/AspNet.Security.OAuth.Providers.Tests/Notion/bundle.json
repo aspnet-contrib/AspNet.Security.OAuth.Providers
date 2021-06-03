@@ -1,0 +1,17 @@
+{
+  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
+  "items": [
+    {
+      "comment": "https://developers.notion.com/docs/authorization#authorizing-public-integrations",
+      "uri": "https://api.notion.com/v1/oauth/token",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "someaccesstoken",
+        "workspace_name": "mif",
+        "workspace_icon": "icon",
+        "bot_id": "mybot"
+      }
+    }
+  ]
+}
