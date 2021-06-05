@@ -117,7 +117,7 @@ namespace AspNet.Security.OAuth.Apple.Internal
 
             try
             {
-                algorithm.ImportPkcs8PrivateKey(keyBlob, out int _);
+                algorithm.ImportPkcs8PrivateKey(keyBlob, out _);
                 return algorithm;
             }
             catch (Exception)
