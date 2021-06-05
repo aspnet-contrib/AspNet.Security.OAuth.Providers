@@ -56,21 +56,21 @@ namespace AspNet.Security.OAuth.Moodle
         {
             base.Validate();
 
-            if (!Uri.TryCreate(AuthorizationEndpoint, UriKind.Absolute, out var _))
+            if (!Uri.TryCreate(AuthorizationEndpoint, UriKind.Absolute, out _))
             {
                 throw new ArgumentException(
                     $"The '{nameof(AuthorizationEndpoint)}' option must be set to a valid URI.",
                     nameof(AuthorizationEndpoint));
             }
 
-            if (!Uri.TryCreate(TokenEndpoint, UriKind.Absolute, out var _))
+            if (!Uri.TryCreate(TokenEndpoint, UriKind.Absolute, out _))
             {
                 throw new ArgumentException(
                     $"The '{nameof(TokenEndpoint)}' option must be set to a valid URI.",
                     nameof(TokenEndpoint));
             }
 
-            if (!Uri.TryCreate(UserInformationEndpoint, UriKind.Absolute, out var _))
+            if (!Uri.TryCreate(UserInformationEndpoint, UriKind.Absolute, out _))
             {
                 throw new ArgumentException(
                     $"The '{nameof(UserInformationEndpoint)}' option must be set to a valid URI.",

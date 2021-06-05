@@ -34,16 +34,16 @@ namespace AspNet.Security.OAuth.GitHub
 
             // Assert
             options.AuthorizationEndpoint.ShouldStartWith("https://github.local/");
-            Uri.TryCreate(options.AuthorizationEndpoint, UriKind.Absolute, out var _).ShouldBeTrue();
+            Uri.TryCreate(options.AuthorizationEndpoint, UriKind.Absolute, out _).ShouldBeTrue();
 
             options.TokenEndpoint.ShouldStartWith("https://github.local/");
-            Uri.TryCreate(options.TokenEndpoint, UriKind.Absolute, out var _).ShouldBeTrue();
+            Uri.TryCreate(options.TokenEndpoint, UriKind.Absolute, out _).ShouldBeTrue();
 
             options.UserEmailsEndpoint.ShouldStartWith("https://github.local/api/v3/");
-            Uri.TryCreate(options.UserEmailsEndpoint, UriKind.Absolute, out var _).ShouldBeTrue();
+            Uri.TryCreate(options.UserEmailsEndpoint, UriKind.Absolute, out _).ShouldBeTrue();
 
             options.UserInformationEndpoint.ShouldStartWith("https://github.local/api/v3/");
-            Uri.TryCreate(options.UserInformationEndpoint, UriKind.Absolute, out var _).ShouldBeTrue();
+            Uri.TryCreate(options.UserInformationEndpoint, UriKind.Absolute, out _).ShouldBeTrue();
         }
 
         [Theory]
@@ -66,16 +66,16 @@ namespace AspNet.Security.OAuth.GitHub
 
             // Assert
             options.AuthorizationEndpoint.ShouldStartWith("https://github.com/");
-            Uri.TryCreate(options.AuthorizationEndpoint, UriKind.Absolute, out var _).ShouldBeTrue();
+            Uri.TryCreate(options.AuthorizationEndpoint, UriKind.Absolute, out _).ShouldBeTrue();
 
             options.TokenEndpoint.ShouldStartWith("https://github.com/");
-            Uri.TryCreate(options.TokenEndpoint, UriKind.Absolute, out var _).ShouldBeTrue();
+            Uri.TryCreate(options.TokenEndpoint, UriKind.Absolute, out _).ShouldBeTrue();
 
             options.UserEmailsEndpoint.ShouldStartWith("https://api.github.com/");
-            Uri.TryCreate(options.UserEmailsEndpoint, UriKind.Absolute, out var _).ShouldBeTrue();
+            Uri.TryCreate(options.UserEmailsEndpoint, UriKind.Absolute, out _).ShouldBeTrue();
 
             options.UserInformationEndpoint.ShouldStartWith("https://api.github.com/");
-            Uri.TryCreate(options.UserInformationEndpoint, UriKind.Absolute, out var _).ShouldBeTrue();
+            Uri.TryCreate(options.UserInformationEndpoint, UriKind.Absolute, out _).ShouldBeTrue();
         }
     }
 }

@@ -34,13 +34,13 @@ namespace AspNet.Security.OAuth.Moodle
 
             // Assert
             options.AuthorizationEndpoint.ShouldStartWith("https://moodle.local/local/oauth/login.php");
-            Uri.TryCreate(options.AuthorizationEndpoint, UriKind.Absolute, out var _).ShouldBeTrue();
+            Uri.TryCreate(options.AuthorizationEndpoint, UriKind.Absolute, out _).ShouldBeTrue();
 
             options.TokenEndpoint.ShouldStartWith("https://moodle.local/local/oauth/token.php");
-            Uri.TryCreate(options.TokenEndpoint, UriKind.Absolute, out var _).ShouldBeTrue();
+            Uri.TryCreate(options.TokenEndpoint, UriKind.Absolute, out _).ShouldBeTrue();
 
             options.UserInformationEndpoint.ShouldStartWith("https://moodle.local/local/oauth/user_info.php");
-            Uri.TryCreate(options.UserInformationEndpoint, UriKind.Absolute, out var _).ShouldBeTrue();
+            Uri.TryCreate(options.UserInformationEndpoint, UriKind.Absolute, out _).ShouldBeTrue();
         }
 
         [Theory]
