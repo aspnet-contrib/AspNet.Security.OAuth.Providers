@@ -5,9 +5,14 @@
  */
 
 using System;
-using System.IdentityModel.Tokens.Jwt;
+using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
+using Microsoft.IdentityModel.JsonWebTokens;
+using Microsoft.IdentityModel.Protocols;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+using Microsoft.IdentityModel.Tokens;
 
 namespace AspNet.Security.OAuth.Apple
 {
@@ -29,6 +34,7 @@ namespace AspNet.Security.OAuth.Apple
 
             Events = new AppleAuthenticationEvents();
 
+            Scope.Add("openid");
             Scope.Add("name");
             Scope.Add("email");
 
@@ -46,6 +52,13 @@ namespace AspNet.Security.OAuth.Apple
         /// The default client secret lifetime is 6 months.
         /// </remarks>
         public TimeSpan ClientSecretExpiresAfter { get; set; } = TimeSpan.FromSeconds(15777000); // 6 months in seconds
+
+        /// <summary>
+        /// Gets or sets the configuration manager responsible for retrieving, caching, and refreshing the
+        /// OpenID configuration from metadata. If not provided, then one will be created using the <see cref="MetadataEndpoint"/>
+        /// and <see cref="RemoteAuthenticationOptions.Backchannel"/> properties.
+        /// </summary>
+        public IConfigurationManager<OpenIdConnectConfiguration>? ConfigurationManager { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="AppleAuthenticationEvents"/> used to handle authentication events.
@@ -67,28 +80,19 @@ namespace AspNet.Security.OAuth.Apple
         public string? KeyId { get; set; }
 
         /// <summary>
-        /// Gets or sets the default period of time to cache the Apple public key(s)
-        /// retrieved from the endpoint specified by <see cref="PublicKeyEndpoint"/>.
+        /// Gets or sets the URI the middleware uses to obtain the OpenID Connect configuration.
         /// </summary>
-        /// <remarks>
-        /// The default public key cache lifetime is 15 minutes.
-        /// </remarks>
-        public TimeSpan PublicKeyCacheLifetime { get; set; } = TimeSpan.FromMinutes(15);
-
-        /// <summary>
-        /// Gets or sets the URI the middleware will access to obtain the public key for
-        /// validating tokens if <see cref="ValidateTokens"/> is <see langword="true"/>.
-        /// </summary>
-        public string PublicKeyEndpoint { get; set; } = AppleAuthenticationDefaults.PublicKeyEndpoint;
+        public string MetadataEndpoint { get; set; } = AppleAuthenticationDefaults.MetadataEndpoint;
 
         /// <summary>
         /// Gets or sets an optional delegate to get the raw bytes of the client's private key
-        /// which is passed the value of the <see cref="KeyId"/> property.
+        /// which is passed the value of the <see cref="KeyId"/> property and the <see cref="CancellationToken"/>
+        /// associated with the current HTTP request.
         /// </summary>
         /// <remarks>
         /// The private key should be in PKCS #8 (<c>.p8</c>) format.
         /// </remarks>
-        public Func<string, Task<byte[]>>? PrivateKeyBytes { get; set; }
+        public Func<string, CancellationToken, Task<byte[]>>? PrivateKeyBytes { get; set; }
 
         /// <summary>
         /// Gets or sets the Team ID for your Apple Developer account.
@@ -111,19 +115,19 @@ namespace AspNet.Security.OAuth.Apple
         public AppleClientSecretGenerator ClientSecretGenerator { get; set; } = default!;
 
         /// <summary>
-        /// Gets or sets the <see cref="AppleKeyStore"/> to use.
-        /// </summary>
-        public AppleKeyStore KeyStore { get; set; } = default!;
-
-        /// <summary>
         /// Gets or sets the <see cref="AppleIdTokenValidator"/> to use.
         /// </summary>
         public AppleIdTokenValidator TokenValidator { get; set; } = default!;
 
         /// <summary>
-        /// Gets or sets the optional <see cref="JwtSecurityTokenHandler"/> to use.
+        /// Gets or sets the optional <see cref="JsonWebTokenHandler"/> to use.
         /// </summary>
-        public JwtSecurityTokenHandler JwtSecurityTokenHandler { get; set; } = default!;
+        public JsonWebTokenHandler SecurityTokenHandler { get; set; } = default!;
+
+        /// <summary>
+        /// Gets or sets the parameters used to validate identity tokens.
+        /// </summary>
+        public TokenValidationParameters TokenValidationParameters { get; set; } = default!;
 
         /// <inheritdoc />
         public override void Validate()
@@ -186,12 +190,9 @@ namespace AspNet.Security.OAuth.Apple
                 }
             }
 
-            if (ValidateTokens)
+            if (ConfigurationManager == null)
             {
-                if (string.IsNullOrEmpty(PublicKeyEndpoint))
-                {
-                    throw new ArgumentException($"The '{nameof(PublicKeyEndpoint)}' option must be provided if the '{nameof(ValidateTokens)}' option is set to true.", nameof(PublicKeyEndpoint));
-                }
+                throw new InvalidOperationException($"The {nameof(MetadataEndpoint)}, or {nameof(ConfigurationManager)} option must be provided.");
             }
         }
     }

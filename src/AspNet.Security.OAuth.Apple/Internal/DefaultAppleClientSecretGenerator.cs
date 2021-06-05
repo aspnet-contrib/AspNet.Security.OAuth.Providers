@@ -21,17 +21,14 @@ namespace AspNet.Security.OAuth.Apple.Internal
         private readonly IMemoryCache _cache;
         private readonly ISystemClock _clock;
         private readonly ILogger _logger;
-        private readonly AppleKeyStore _keyStore;
         private readonly CryptoProviderFactory _cryptoProviderFactory;
 
         public DefaultAppleClientSecretGenerator(
-            [NotNull] AppleKeyStore keyStore,
             [NotNull] IMemoryCache cache,
             [NotNull] ISystemClock clock,
             [NotNull] CryptoProviderFactory cryptoProviderFactory,
             [NotNull] ILogger<DefaultAppleClientSecretGenerator> logger)
         {
-            _keyStore = keyStore;
             _cache = cache;
             _clock = clock;
             _cryptoProviderFactory = cryptoProviderFactory;
@@ -96,14 +93,14 @@ namespace AspNet.Security.OAuth.Apple.Internal
                 Subject = new ClaimsIdentity(new[] { subject }),
             };
 
-            byte[] keyBlob = await _keyStore.LoadPrivateKeyAsync(context);
+            byte[] keyBlob = await context.Options.PrivateKeyBytes!(context.Options.KeyId!, context.HttpContext.RequestAborted);
             string clientSecret;
 
             using (var algorithm = CreateAlgorithm(keyBlob))
             {
                 tokenDescriptor.SigningCredentials = CreateSigningCredentials(context.Options.KeyId!, algorithm);
 
-                clientSecret = context.Options.JwtSecurityTokenHandler.CreateEncodedJwt(tokenDescriptor);
+                clientSecret = context.Options.SecurityTokenHandler.CreateToken(tokenDescriptor);
             }
 
             _logger.LogTrace("Generated new client secret with value {ClientSecret}.", clientSecret);

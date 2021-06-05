@@ -49,6 +49,7 @@ namespace AspNet.Security.OAuth.Apple
         /// <returns>
         /// A <see cref="Task"/> representing the completed operation.
         /// </returns>
-        public virtual async Task ValidateIdToken([NotNull] AppleValidateIdTokenContext context) => await OnValidateIdToken(context);
+        public virtual async Task ValidateIdToken([NotNull] AppleValidateIdTokenContext context) =>
+            await OnValidateIdToken(context);
     }
 }

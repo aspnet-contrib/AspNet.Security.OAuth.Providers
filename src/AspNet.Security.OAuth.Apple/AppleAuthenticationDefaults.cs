@@ -40,9 +40,9 @@ namespace AspNet.Security.OAuth.Apple
         public const string AuthorizationEndpoint = "https://appleid.apple.com/auth/authorize";
 
         /// <summary>
-        /// Default value for the endpoint to get the Apple public key to verify ID token signatures.
+        /// Default value for <see cref="AppleAuthenticationOptions.MetadataEndpoint"/>.
         /// </summary>
-        public const string PublicKeyEndpoint = "https://appleid.apple.com/auth/keys";
+        public const string MetadataEndpoint = "https://appleid.apple.com/.well-known/openid-configuration";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.TokenEndpoint"/>.

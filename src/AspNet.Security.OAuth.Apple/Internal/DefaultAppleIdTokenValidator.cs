@@ -5,11 +5,11 @@
  */
 
 using System;
-using System.IdentityModel.Tokens.Jwt;
-using System.Text;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.JsonWebTokens;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
 
 namespace AspNet.Security.OAuth.Apple.Internal
@@ -17,50 +17,55 @@ namespace AspNet.Security.OAuth.Apple.Internal
     internal sealed class DefaultAppleIdTokenValidator : AppleIdTokenValidator
     {
         private readonly ILogger _logger;
-        private readonly AppleKeyStore _keyStore;
-        private readonly CryptoProviderFactory _cryptoProviderFactory;
 
         public DefaultAppleIdTokenValidator(
-            [NotNull] AppleKeyStore keyStore,
-            [NotNull] CryptoProviderFactory cryptoProviderFactory,
             [NotNull] ILogger<DefaultAppleIdTokenValidator> logger)
         {
-            _keyStore = keyStore;
-            _cryptoProviderFactory = cryptoProviderFactory;
             _logger = logger;
         }
 
         public override async Task ValidateAsync([NotNull] AppleValidateIdTokenContext context)
         {
-            if (!context.Options.JwtSecurityTokenHandler.CanValidateToken)
+            if (context.Options.SecurityTokenHandler is null)
             {
-                throw new NotSupportedException($"The configured {nameof(JwtSecurityTokenHandler)} cannot validate tokens.");
+                throw new InvalidOperationException("The options SecurityTokenHandler is null.");
             }
 
-            byte[] keysJson = await _keyStore.LoadPublicKeysAsync(context);
-
-            string json = Encoding.UTF8.GetString(keysJson);
-            var keySet = JsonWebKeySet.Create(json);
-
-            var parameters = new TokenValidationParameters()
+            if (!context.Options.SecurityTokenHandler.CanValidateToken)
             {
-                CryptoProviderFactory = _cryptoProviderFactory,
-                IssuerSigningKeys = keySet.Keys,
-                ValidAudience = context.Options.ClientId,
-                ValidIssuer = context.Options.TokenAudience,
-            };
+                throw new NotSupportedException($"The configured {nameof(JsonWebTokenHandler)} cannot validate tokens.");
+            }
+
+            if (context.Options.ConfigurationManager is null)
+            {
+                throw new InvalidOperationException($"An OpenID Connect configuration manager has not been set on the {nameof(AppleAuthenticationOptions)} instance.");
+            }
+
+            if (context.Options.TokenValidationParameters is null)
+            {
+                throw new InvalidOperationException($"Token validation parameters have not been set on the {nameof(AppleAuthenticationOptions)} instance.");
+            }
+
+            OpenIdConnectConfiguration configuration = await context.Options.ConfigurationManager.GetConfigurationAsync(context.HttpContext.RequestAborted);
+
+            context.Options.TokenValidationParameters.IssuerSigningKeys = configuration.JsonWebKeySet.Keys;
 
             try
             {
-                context.Options.JwtSecurityTokenHandler.ValidateToken(context.IdToken, parameters, out _);
+                var result = context.Options.SecurityTokenHandler.ValidateToken(context.IdToken, context.Options.TokenValidationParameters);
+
+                if (result.Exception != null || !result.IsValid)
+                {
+                    throw new SecurityTokenValidationException("Apple ID token validation failed.", result.Exception);
+                }
             }
             catch (Exception ex)
             {
                 _logger.LogError(
                     ex,
                     "Apple ID token validation failed for issuer {TokenIssuer} and audience {TokenAudience}.",
-                    parameters.ValidIssuer,
-                    parameters.ValidAudience);
+                    context.Options.TokenValidationParameters.ValidIssuer,
+                    context.Options.TokenValidationParameters.ValidAudience);
 
                 _logger.LogTrace(
                     ex,

@@ -134,20 +134,5 @@ namespace AspNet.Security.OAuth.Apple
             // Act and Assert
             Assert.Throws<ArgumentOutOfRangeException>("ClientSecretExpiresAfter", () => options.Validate());
         }
-
-        [Fact]
-        public static void Validate_Throws_If_PublicKeyEndpoint_Is_Null_With_Token_Validation()
-        {
-            // Arrange
-            var options = new AppleAuthenticationOptions()
-            {
-                ClientId = "my-client-id",
-                ClientSecret = "my-client-secret",
-                PublicKeyEndpoint = null!,
-            };
-
-            // Act and Assert
-            Assert.Throws<ArgumentException>("PublicKeyEndpoint", () => options.Validate());
-        }
     }
 }
