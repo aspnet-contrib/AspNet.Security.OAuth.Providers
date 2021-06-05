@@ -74,7 +74,7 @@ namespace AspNet.Security.OAuth.Apple.Internal
                 options.KeyId
             };
 
-            return string.Join("+", segments);
+            return string.Join('+', segments);
         }
 
         private async Task<(string clientSecret, DateTimeOffset expiresAt)> GenerateNewSecretAsync(

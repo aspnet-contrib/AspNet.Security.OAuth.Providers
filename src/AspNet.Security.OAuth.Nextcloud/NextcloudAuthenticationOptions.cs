@@ -35,7 +35,7 @@ namespace AspNet.Security.OAuth.Nextcloud
                     if (TryGetData(user, out var data) &&
                         data.TryGetProperty("groups", out var groups))
                     {
-                        return string.Join(",", groups.EnumerateArray().Select((p) => p.GetString()));
+                        return string.Join(',', groups.EnumerateArray().Select((p) => p.GetString()));
                     }
 
                     return null;

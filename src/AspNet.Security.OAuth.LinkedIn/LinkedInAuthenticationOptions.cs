@@ -42,7 +42,7 @@ namespace AspNet.Security.OAuth.LinkedIn
             ClaimActions.MapCustomJson(Claims.PictureUrls, user =>
             {
                 var urls = GetPictureUrls(user);
-                return urls == null ? null : string.Join(",", urls);
+                return urls == null ? null : string.Join(',', urls);
             });
         }
 
@@ -118,7 +118,7 @@ namespace AspNet.Security.OAuth.LinkedIn
                 GetMultiLocaleString(user, ProfileFields.LastName),
             };
 
-            return string.Join(" ", nameParts.Where(s => !string.IsNullOrWhiteSpace(s)));
+            return string.Join(' ', nameParts.Where(s => !string.IsNullOrWhiteSpace(s)));
         }
 
         private static IEnumerable<string> GetPictureUrls(JsonElement user)

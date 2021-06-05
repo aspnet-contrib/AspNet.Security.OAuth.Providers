@@ -164,7 +164,7 @@ namespace AspNet.Security.OAuth.Weixin
             return redirectUri;
         }
 
-        protected override string FormatScope() => string.Join(",", Options.Scope);
+        protected override string FormatScope() => string.Join(',', Options.Scope);
 
         private bool IsWeixinAuthorizationEndpointInUse()
         {
