@@ -95,7 +95,7 @@ namespace AspNet.Security.OAuth.Shopify
         /// <inheritdoc />
         protected override string FormatScope()
         {
-            return string.Join(",", Options.Scope);
+            return string.Join(',', Options.Scope);
         }
 
         /// <inheritdoc />

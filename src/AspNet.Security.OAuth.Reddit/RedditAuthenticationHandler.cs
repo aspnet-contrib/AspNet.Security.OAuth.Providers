@@ -85,7 +85,7 @@ namespace AspNet.Security.OAuth.Reddit
             // Note: Reddit requires a non-standard comma-separated scope.
             // See https://github.com/reddit/reddit/wiki/OAuth2#authorization
             // and http://tools.ietf.org/html/rfc6749#section-3.3.
-            return string.Join(",", Options.Scope);
+            return string.Join(',', Options.Scope);
         }
 
         protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] OAuthCodeExchangeContext context)
