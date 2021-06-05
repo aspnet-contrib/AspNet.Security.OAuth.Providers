@@ -130,7 +130,7 @@ namespace AspNet.Security.OAuth.Apple.Internal
 
             // Use a custom CryptoProviderFactory so that keys are not cached and then disposed of, see below:
             // https://github.com/AzureAD/azure-activedirectory-identitymodel-extensions-for-dotnet/issues/1302
-            return new SigningCredentials(key, SecurityAlgorithms.EcdsaSha256Signature)
+            return new SigningCredentials(key, SecurityAlgorithms.EcdsaSha256)
             {
                 CryptoProviderFactory = _cryptoProviderFactory,
             };
