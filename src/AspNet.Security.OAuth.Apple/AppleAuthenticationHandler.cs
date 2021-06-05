@@ -138,7 +138,7 @@ namespace AspNet.Security.OAuth.Apple
         {
             try
             {
-                var securityToken = Options.JwtSecurityTokenHandler.ReadJwtToken(token);
+                var securityToken = Options.SecurityTokenHandler.ReadJsonWebToken(token);
 
                 return new List<Claim>(securityToken.Claims)
                 {

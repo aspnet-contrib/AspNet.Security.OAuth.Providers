@@ -152,7 +152,7 @@ namespace AspNet.Security.OAuth
 
                     if (options is Apple.AppleAuthenticationOptions appleOptions)
                     {
-                        appleOptions.JwtSecurityTokenHandler = new FrozenJwtSecurityTokenHandler();
+                        appleOptions.TokenValidationParameters.ValidateLifetime = false;
                     }
                 });
             }

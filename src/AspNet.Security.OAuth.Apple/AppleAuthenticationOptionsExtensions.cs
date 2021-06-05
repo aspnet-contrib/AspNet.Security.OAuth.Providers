@@ -33,7 +33,7 @@ namespace Microsoft.Extensions.DependencyInjection
             [NotNull] Func<string, IFileInfo> privateKeyFile)
         {
             options.GenerateClientSecret = true;
-            options.PrivateKeyBytes = async (keyId) =>
+            options.PrivateKeyBytes = async (keyId, _) =>
             {
                 var fileInfo = privateKeyFile(keyId);
 

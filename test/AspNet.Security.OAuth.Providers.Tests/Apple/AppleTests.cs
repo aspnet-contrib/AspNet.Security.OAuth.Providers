@@ -10,9 +10,7 @@ using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Shouldly;
@@ -63,7 +61,7 @@ namespace AspNet.Security.OAuth.Apple
                 {
                     options.GenerateClientSecret = false;
                     options.ClientSecret = "my-client-secret";
-                    options.JwtSecurityTokenHandler = new FrozenJwtSecurityTokenHandler();
+                    options.TokenValidationParameters.ValidateLifetime = false;
                 });
             }
 
@@ -90,11 +88,11 @@ namespace AspNet.Security.OAuth.Apple
                 {
                     options.ClientSecret = string.Empty;
                     options.GenerateClientSecret = true;
-                    options.JwtSecurityTokenHandler = new FrozenJwtSecurityTokenHandler();
                     options.KeyId = "my-key-id";
                     options.TeamId = "my-team-id";
+                    options.TokenValidationParameters.ValidateLifetime = false;
                     options.ValidateTokens = true;
-                    options.PrivateKeyBytes = async (keyId) =>
+                    options.PrivateKeyBytes = async (keyId, _) =>
                     {
                         Assert.Equal("my-key-id", keyId);
                         return await TestKeys.GetPrivateKeyBytesAsync();
@@ -134,8 +132,8 @@ namespace AspNet.Security.OAuth.Apple
                 {
                     options.ClientSecret = "my-client-secret";
                     options.GenerateClientSecret = false;
-                    options.JwtSecurityTokenHandler = new FrozenJwtSecurityTokenHandler();
                     options.TokenEndpoint = "https://appleid.apple.local/auth/token/email";
+                    options.TokenValidationParameters.ValidateLifetime = false;
                     options.ValidateTokens = false;
                 });
             }
@@ -194,7 +192,8 @@ namespace AspNet.Security.OAuth.Apple
             var exception = await Assert.ThrowsAsync<Exception>(() => AuthenticateUserAsync(server));
 
             // Assert
-            exception.InnerException.ShouldBeOfType<SecurityTokenExpiredException>();
+            exception.InnerException.ShouldBeOfType<SecurityTokenValidationException>();
+            exception.InnerException.InnerException.ShouldBeOfType<SecurityTokenExpiredException>();
         }
 
         [Fact]
@@ -205,8 +204,8 @@ namespace AspNet.Security.OAuth.Apple
             {
                 services.PostConfigureAll<AppleAuthenticationOptions>((options) =>
                 {
-                    options.ClientId = "my-team";
-                    options.JwtSecurityTokenHandler = new FrozenJwtSecurityTokenHandler();
+                    options.TokenValidationParameters.ValidAudience = "my-team";
+                    options.TokenValidationParameters.ValidateLifetime = false;
                     options.ValidateTokens = true;
                 });
             }
@@ -217,7 +216,8 @@ namespace AspNet.Security.OAuth.Apple
             var exception = await Assert.ThrowsAsync<Exception>(() => AuthenticateUserAsync(server));
 
             // Assert
-            exception.InnerException.ShouldBeOfType<SecurityTokenInvalidAudienceException>();
+            exception.InnerException.ShouldBeOfType<SecurityTokenValidationException>();
+            exception.InnerException.InnerException.ShouldBeOfType<SecurityTokenInvalidAudienceException>();
         }
 
         [Fact]
@@ -228,8 +228,8 @@ namespace AspNet.Security.OAuth.Apple
             {
                 services.PostConfigureAll<AppleAuthenticationOptions>((options) =>
                 {
-                    options.JwtSecurityTokenHandler = new FrozenJwtSecurityTokenHandler();
-                    options.TokenAudience = "https://apple.local";
+                    options.TokenValidationParameters.ValidIssuer = "https://apple.local";
+                    options.TokenValidationParameters.ValidateLifetime = false;
                     options.ValidateTokens = true;
                 });
             }
@@ -240,53 +240,8 @@ namespace AspNet.Security.OAuth.Apple
             var exception = await Assert.ThrowsAsync<Exception>(() => AuthenticateUserAsync(server));
 
             // Assert
-            exception.InnerException.ShouldBeOfType<SecurityTokenInvalidIssuerException>();
-        }
-
-        [Fact]
-        public async Task Cannot_Sign_In_Using_Apple_With_Invalid_Signing_Key()
-        {
-            // Arrange
-            static void ConfigureServices(IServiceCollection services)
-            {
-                services.PostConfigureAll<AppleAuthenticationOptions>((options) =>
-                {
-                    options.JwtSecurityTokenHandler = new FrozenJwtSecurityTokenHandler();
-                    options.PublicKeyEndpoint = "https://appleid.apple.local/auth/keys/invalid";
-                    options.ValidateTokens = true;
-                });
-            }
-
-            using var server = CreateTestServer(ConfigureServices);
-
-            // Act
-            var exception = await Assert.ThrowsAsync<Exception>(() => AuthenticateUserAsync(server));
-
-            // Assert
-            exception.InnerException.ShouldBeOfType<SecurityTokenInvalidSignatureException>();
-        }
-
-        [Fact]
-        public async Task Cannot_Sign_In_Using_Apple_With_Unknown_Signing_Key()
-        {
-            // Arrange
-            static void ConfigureServices(IServiceCollection services)
-            {
-                services.PostConfigureAll<AppleAuthenticationOptions>((options) =>
-                {
-                    options.JwtSecurityTokenHandler = new FrozenJwtSecurityTokenHandler();
-                    options.PublicKeyEndpoint = "https://appleid.apple.local/auth/keys/none";
-                    options.ValidateTokens = true;
-                });
-            }
-
-            using var server = CreateTestServer(ConfigureServices);
-
-            // Act
-            var exception = await Assert.ThrowsAsync<Exception>(() => AuthenticateUserAsync(server));
-
-            // Assert
-            exception.InnerException.ShouldBeOfType<SecurityTokenUnableToValidateException>();
+            exception.InnerException.ShouldBeOfType<SecurityTokenValidationException>();
+            exception.InnerException.InnerException.ShouldBeOfType<SecurityTokenInvalidIssuerException>();
         }
 
         [Fact]
@@ -334,9 +289,10 @@ namespace AspNet.Security.OAuth.Apple
 
             // Assert
             exception.InnerException.ShouldNotBeNull();
-            exception.InnerException.ShouldBeOfType<ArgumentException>();
-            exception.InnerException!.Message.ShouldNotBeNull();
-            exception.InnerException.Message.ShouldStartWith("IDX");
+            exception.InnerException.ShouldBeOfType<SecurityTokenValidationException>();
+            exception.InnerException.InnerException.ShouldBeOfType<ArgumentException>();
+            exception.InnerException.InnerException!.Message.ShouldNotBeNull();
+            exception.InnerException.InnerException.Message.ShouldStartWith("IDX");
         }
 
         [Fact]
@@ -362,79 +318,6 @@ namespace AspNet.Security.OAuth.Apple
             exception.InnerException.ShouldBeOfType<InvalidOperationException>();
             exception.InnerException!.Message.ShouldNotBeNull();
             exception.InnerException.Message.ShouldBe("No Apple ID token was returned in the OAuth token response.");
-        }
-
-        [Fact]
-        public async Task Apple_Public_Keys_Are_Cached()
-        {
-            // Arrange
-            static void ConfigureServices(IServiceCollection services)
-            {
-                services.PostConfigureAll<AppleAuthenticationOptions>((options) =>
-                {
-                    options.PublicKeyCacheLifetime = TimeSpan.FromMinutes(1);
-                });
-            }
-
-            using var server = CreateTestServer(ConfigureServices);
-
-            var options = server.Services.GetRequiredService<IOptions<AppleAuthenticationOptions>>().Value;
-
-            var context = new AppleValidateIdTokenContext(
-                new DefaultHttpContext(),
-                new AuthenticationScheme("apple", "Apple", typeof(AppleAuthenticationHandler)),
-                options,
-                "my-token");
-
-            // Act
-            byte[] actual1 = await options.KeyStore.LoadPublicKeysAsync(context);
-            byte[] actual2 = await options.KeyStore.LoadPublicKeysAsync(context);
-
-            // Assert
-            actual1.ShouldNotBeNull();
-            actual1.ShouldNotBeEmpty();
-            actual1.ShouldBeSameAs(actual2);
-        }
-
-        [Fact]
-        public async Task Apple_Public_Keys_Are_Reloaded_Once_Cache_Lieftime_Expires()
-        {
-            // Arrange
-            static void ConfigureServices(IServiceCollection services)
-            {
-                services.PostConfigureAll<AppleAuthenticationOptions>((options) =>
-                {
-                    options.PublicKeyCacheLifetime = TimeSpan.FromSeconds(0.25);
-                });
-            }
-
-            using var server = CreateTestServer(ConfigureServices);
-
-            var options = server.Services.GetRequiredService<IOptions<AppleAuthenticationOptions>>().Value;
-
-            var context = new AppleValidateIdTokenContext(
-                new DefaultHttpContext(),
-                new AuthenticationScheme("apple", "Apple", typeof(AppleAuthenticationHandler)),
-                options,
-                "my-token");
-
-            // Act
-            byte[] first = await options.KeyStore.LoadPublicKeysAsync(context);
-
-            // Assert
-            first.ShouldNotBeNull();
-            first.ShouldNotBeEmpty();
-
-            // Arrange
-            await Task.Delay(TimeSpan.FromSeconds(1));
-
-            // Act
-            byte[] second = await options.KeyStore.LoadPublicKeysAsync(context);
-
-            // Assert
-            second.ShouldNotBeNull();
-            second.ShouldNotBeEmpty();
-            first.ShouldNotBeSameAs(second);
         }
     }
 }

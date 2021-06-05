@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.JsonWebTokens;
 using Shouldly;
 using Xunit;
 using Xunit.Abstractions;
@@ -40,7 +41,7 @@ namespace AspNet.Security.OAuth.Apple
                 options.ClientSecretExpiresAfter = TimeSpan.FromMinutes(1);
                 options.KeyId = "my-key-id";
                 options.TeamId = "my-team-id";
-                options.PrivateKeyBytes = (_) => TestKeys.GetPrivateKeyBytesAsync();
+                options.PrivateKeyBytes = (_, _) => TestKeys.GetPrivateKeyBytesAsync();
             }
 
             await GenerateTokenAsync(Configure, async (context) =>
@@ -62,8 +63,9 @@ namespace AspNet.Security.OAuth.Apple
                 securityToken.ShouldNotBeNull();
 
                 securityToken.Header.ShouldNotBeNull();
-                securityToken.Header.ShouldContainKeyAndValue("alg", "ES256");
+                securityToken.Header.ShouldContainKeyAndValue("alg", "http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256");
                 securityToken.Header.ShouldContainKeyAndValue("kid", "my-key-id");
+                securityToken.Header.ShouldContainKeyAndValue("typ", "JWT");
 
                 securityToken.Payload.ShouldNotBeNull();
                 securityToken.Payload.ShouldContainKey("exp");
@@ -90,7 +92,7 @@ namespace AspNet.Security.OAuth.Apple
                 options.ClientSecretExpiresAfter = TimeSpan.FromSeconds(2);
                 options.KeyId = "my-key-id";
                 options.TeamId = "my-team-id";
-                options.PrivateKeyBytes = (_) => TestKeys.GetPrivateKeyBytesAsync();
+                options.PrivateKeyBytes = (_, _) => TestKeys.GetPrivateKeyBytesAsync();
             }
 
             await GenerateTokenAsync(Configure, async (context) =>
@@ -125,17 +127,17 @@ namespace AspNet.Security.OAuth.Apple
                 options.ClientSecretExpiresAfter = clientSecretExpiresAfter;
                 options.KeyId = "my-key-id";
                 options.TeamId = "my-team-id";
-                options.PrivateKeyBytes = (_) => TestKeys.GetPrivateKeyBytesAsync();
+                options.PrivateKeyBytes = (_, _) => TestKeys.GetPrivateKeyBytesAsync();
             }
 
             var optionsB = new AppleAuthenticationOptions()
             {
                 ClientId = "my-other-client-id",
                 ClientSecretExpiresAfter = clientSecretExpiresAfter,
-                JwtSecurityTokenHandler = new JwtSecurityTokenHandler(),
+                SecurityTokenHandler = new JsonWebTokenHandler(),
                 KeyId = "my-other-key-id",
                 TeamId = "my-other-team-id",
-                PrivateKeyBytes = (_) => TestKeys.GetPrivateKeyBytesAsync(),
+                PrivateKeyBytes = (_, _) => TestKeys.GetPrivateKeyBytesAsync(),
             };
 
             await GenerateTokenAsync(ConfigureA, async (contextA) =>
