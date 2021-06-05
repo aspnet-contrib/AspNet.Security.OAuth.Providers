@@ -63,7 +63,7 @@ namespace AspNet.Security.OAuth.Apple
                 securityToken.ShouldNotBeNull();
 
                 securityToken.Header.ShouldNotBeNull();
-                securityToken.Header.ShouldContainKeyAndValue("alg", "http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256");
+                securityToken.Header.ShouldContainKeyAndValue("alg", "ES256");
                 securityToken.Header.ShouldContainKeyAndValue("kid", "my-key-id");
                 securityToken.Header.ShouldContainKeyAndValue("typ", "JWT");
 
