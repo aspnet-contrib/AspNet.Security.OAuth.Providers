@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.JsonWebTokens;
-using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
 
 namespace AspNet.Security.OAuth.Apple.Internal
@@ -46,15 +45,16 @@ namespace AspNet.Security.OAuth.Apple.Internal
                 throw new InvalidOperationException($"Token validation parameters have not been set on the {nameof(AppleAuthenticationOptions)} instance.");
             }
 
-            OpenIdConnectConfiguration configuration = await context.Options.ConfigurationManager.GetConfigurationAsync(context.HttpContext.RequestAborted);
+            var configuration = await context.Options.ConfigurationManager.GetConfigurationAsync(context.HttpContext.RequestAborted);
 
-            context.Options.TokenValidationParameters.IssuerSigningKeys = configuration.JsonWebKeySet.Keys;
+            var validationParameters = context.Options.TokenValidationParameters.Clone();
+            validationParameters.IssuerSigningKeys = configuration.JsonWebKeySet.Keys;
 
             try
             {
-                var result = context.Options.SecurityTokenHandler.ValidateToken(context.IdToken, context.Options.TokenValidationParameters);
+                var result = context.Options.SecurityTokenHandler.ValidateToken(context.IdToken, validationParameters);
 
-                if (result.Exception != null || !result.IsValid)
+                if (result.Exception is not null || !result.IsValid)
                 {
                     throw new SecurityTokenValidationException("Apple ID token validation failed.", result.Exception);
                 }
@@ -64,8 +64,8 @@ namespace AspNet.Security.OAuth.Apple.Internal
                 _logger.LogError(
                     ex,
                     "Apple ID token validation failed for issuer {TokenIssuer} and audience {TokenAudience}.",
-                    context.Options.TokenValidationParameters.ValidIssuer,
-                    context.Options.TokenValidationParameters.ValidAudience);
+                    validationParameters.ValidIssuer,
+                    validationParameters.ValidAudience);
 
                 _logger.LogTrace(
                     ex,
