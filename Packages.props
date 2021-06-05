@@ -12,7 +12,6 @@
     <PackageReference Update="Moq" Version="4.16.1" />
     <PackageReference Update="Shouldly" Version="4.0.3" />
     <PackageReference Update="StyleCop.Analyzers" Version="1.1.118" />
-    <PackageReference Update="System.IdentityModel.Tokens.Jwt" Version="6.10.0" />
   </ItemGroup>
 
 </Project>
