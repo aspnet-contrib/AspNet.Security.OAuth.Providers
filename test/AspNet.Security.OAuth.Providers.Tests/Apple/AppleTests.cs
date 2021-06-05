@@ -45,6 +45,7 @@ namespace AspNet.Security.OAuth.Apple
             {
                 ConfigureDefaults(builder, options);
                 options.ClientId = "com.martincostello.signinwithapple.test.client";
+                options.SaveTokens = true;
             });
         }
 

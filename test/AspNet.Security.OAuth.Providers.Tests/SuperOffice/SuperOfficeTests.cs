@@ -35,6 +35,7 @@ namespace AspNet.Security.OAuth.SuperOffice
                 ConfigureDefaults(builder, options);
 
                 options.ClientId = "gg454918d75b1b53101065c16ee51123";
+                options.SaveTokens = true;
                 options.TokenValidationParameters.ValidAudience = options.ClientId;
                 options.TokenValidationParameters.ValidIssuer = "https://sod.superoffice.com";
             });
