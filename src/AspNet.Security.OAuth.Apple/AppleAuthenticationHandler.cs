@@ -339,7 +339,7 @@ namespace AspNet.Security.OAuth.Apple
                     }
                 }
 
-                string? idToken = tokens.Response.RootElement.GetString("id_token");
+                string? idToken = tokens.Response?.RootElement.GetString("id_token");
 
                 if (!string.IsNullOrEmpty(idToken))
                 {
