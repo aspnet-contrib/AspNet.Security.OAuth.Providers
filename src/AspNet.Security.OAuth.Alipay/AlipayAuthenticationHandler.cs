@@ -207,7 +207,7 @@ namespace AspNet.Security.OAuth.Alipay
             byte[] privateKeyBytes = Convert.FromBase64String(Options.ClientSecret);
 
             using var rsa = RSA.Create();
-            rsa.ImportRSAPrivateKey(privateKeyBytes, out int _);
+            rsa.ImportRSAPrivateKey(privateKeyBytes, out _);
 
             byte[] encryptedBytes = rsa.SignData(plainBytes, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
 

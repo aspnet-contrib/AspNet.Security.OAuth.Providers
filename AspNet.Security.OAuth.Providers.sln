@@ -184,7 +184,37 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.NetEa
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{C2CA4B38-AA21-4CA4-8799-2E8C8C06754F}"
 	ProjectSection(SolutionItems) = preProject
+		docs\amazon.md = docs\amazon.md
+		docs\amocrm.md = docs\amocrm.md
+		docs\battlenet.md = docs\battlenet.md
+		docs\bitbucket.md = docs\bitbucket.md
+		docs\discord.md = docs\discord.md
+		docs\eveonline.md = docs\eveonline.md
+		docs\foursquare.md = docs\foursquare.md
+		docs\gitee.md = docs\gitee.md
+		docs\github.md = docs\github.md
+		docs\instagram.md = docs\instagram.md
+		docs\keycloak.md = docs\keycloak.md
+		docs\kloudless.md = docs\kloudless.md
+		docs\lichess.md = docs\lichess.md
+		docs\line.md = docs\line.md
+		docs\linkedin.md = docs\linkedin.md
+		docs\moodle.md = docs\moodle.md
+		docs\odnoklassniki.md = docs\odnoklassniki.md
+		docs\okta.md = docs\okta.md
+		docs\patreon.md = docs\patreon.md
+		docs\qq.md = docs\qq.md
+		docs\README.md = docs\README.md
+		docs\reddit.md = docs\reddit.md
+		docs\salesforce.md = docs\salesforce.md
 		docs\sign-in-with-apple.md = docs\sign-in-with-apple.md
+		docs\stackexchange.md = docs\stackexchange.md
+		docs\superoffice.md = docs\superoffice.md
+		docs\trakt.md = docs\trakt.md
+		docs\twitch.md = docs\twitch.md
+		docs\vkontakte.md = docs\vkontakte.md
+		docs\weibo.md = docs\weibo.md
+		docs\workweixin.md = docs\workweixin.md
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.Basecamp", "src\AspNet.Security.OAuth.Basecamp\AspNet.Security.OAuth.Basecamp.csproj", "{42306484-B2BF-4B52-B950-E0CDFA58B02A}"
@@ -220,7 +250,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.Keycl
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.WorkWeixin", "src\AspNet.Security.OAuth.WorkWeixin\AspNet.Security.OAuth.WorkWeixin.csproj", "{C40ED377-E365-45FB-8B42-27BE82CC7BE3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.Notion", "src\AspNet.Security.OAuth.Notion\AspNet.Security.OAuth.Notion.csproj", "{DF2786DF-234D-4A8C-B166-0B8F8B7D527B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.Notion", "src\AspNet.Security.OAuth.Notion\AspNet.Security.OAuth.Notion.csproj", "{DF2786DF-234D-4A8C-B166-0B8F8B7D527B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -524,10 +554,6 @@ Global
 		{514D2D1E-E72F-4998-9DF3-D841F399AB37}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{514D2D1E-E72F-4998-9DF3-D841F399AB37}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{514D2D1E-E72F-4998-9DF3-D841F399AB37}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DF2786DF-234D-4A8C-B166-0B8F8B7D527B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DF2786DF-234D-4A8C-B166-0B8F8B7D527B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DF2786DF-234D-4A8C-B166-0B8F8B7D527B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DF2786DF-234D-4A8C-B166-0B8F8B7D527B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{01C2AC98-B615-49F8-80A5-475A2B75A8FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{01C2AC98-B615-49F8-80A5-475A2B75A8FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{01C2AC98-B615-49F8-80A5-475A2B75A8FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -536,6 +562,10 @@ Global
 		{C40ED377-E365-45FB-8B42-27BE82CC7BE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C40ED377-E365-45FB-8B42-27BE82CC7BE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C40ED377-E365-45FB-8B42-27BE82CC7BE3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF2786DF-234D-4A8C-B166-0B8F8B7D527B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF2786DF-234D-4A8C-B166-0B8F8B7D527B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF2786DF-234D-4A8C-B166-0B8F8B7D527B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF2786DF-234D-4A8C-B166-0B8F8B7D527B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -621,9 +651,9 @@ Global
 		{1745B11F-F700-4604-B61F-54B962A6BE9A} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 		{839267B9-492D-47B6-A6AF-454282142123} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 		{514D2D1E-E72F-4998-9DF3-D841F399AB37} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
-		{DF2786DF-234D-4A8C-B166-0B8F8B7D527B} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 		{01C2AC98-B615-49F8-80A5-475A2B75A8FD} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 		{C40ED377-E365-45FB-8B42-27BE82CC7BE3} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
+		{DF2786DF-234D-4A8C-B166-0B8F8B7D527B} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C7B54DE2-6407-4802-AD9C-CE54BF414C8C}

@@ -40,7 +40,7 @@ namespace AspNet.Security.OAuth.Instagram
 
             if (Options.Fields.Count > 0)
             {
-                address = QueryHelpers.AddQueryString(address, "fields", string.Join(",", Options.Fields));
+                address = QueryHelpers.AddQueryString(address, "fields", string.Join(',', Options.Fields));
             }
 
             using var request = new HttpRequestMessage(HttpMethod.Get, address);

@@ -74,7 +74,7 @@ namespace AspNet.Security.OAuth.Apple.Internal
                 options.KeyId
             };
 
-            return string.Join("+", segments);
+            return string.Join('+', segments);
         }
 
         private async Task<(string clientSecret, DateTimeOffset expiresAt)> GenerateNewSecretAsync(
@@ -117,7 +117,7 @@ namespace AspNet.Security.OAuth.Apple.Internal
 
             try
             {
-                algorithm.ImportPkcs8PrivateKey(keyBlob, out int _);
+                algorithm.ImportPkcs8PrivateKey(keyBlob, out _);
                 return algorithm;
             }
             catch (Exception)

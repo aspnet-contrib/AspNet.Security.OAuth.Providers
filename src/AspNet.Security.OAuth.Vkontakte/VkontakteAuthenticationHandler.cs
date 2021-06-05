@@ -44,7 +44,7 @@ namespace AspNet.Security.OAuth.Vkontakte
 
             if (Options.Fields.Count != 0)
             {
-                address = QueryHelpers.AddQueryString(address, "fields", string.Join(",", Options.Fields));
+                address = QueryHelpers.AddQueryString(address, "fields", string.Join(',', Options.Fields));
             }
 
             using var response = await Backchannel.GetAsync(address, Context.RequestAborted);

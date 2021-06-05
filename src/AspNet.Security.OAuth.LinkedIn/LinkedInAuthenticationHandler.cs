@@ -46,7 +46,7 @@ namespace AspNet.Security.OAuth.LinkedIn
             // If at least one field is specified, append the fields to the endpoint URL.
             if (fields.Count > 0)
             {
-                requestUri = QueryHelpers.AddQueryString(requestUri, "projection", $"({string.Join(",", fields)})");
+                requestUri = QueryHelpers.AddQueryString(requestUri, "projection", $"({string.Join(',', fields)})");
             }
 
             using var request = new HttpRequestMessage(HttpMethod.Get, requestUri);

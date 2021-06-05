@@ -50,7 +50,7 @@ namespace AspNet.Security.OAuth.Amazon
 
             if (Options.Fields.Count > 0)
             {
-                endpoint = QueryHelpers.AddQueryString(endpoint, "fields", string.Join(",", Options.Fields));
+                endpoint = QueryHelpers.AddQueryString(endpoint, "fields", string.Join(',', Options.Fields));
             }
 
             using var request = new HttpRequestMessage(HttpMethod.Get, endpoint);

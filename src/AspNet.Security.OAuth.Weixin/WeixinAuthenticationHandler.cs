@@ -43,7 +43,7 @@ namespace AspNet.Security.OAuth.Weixin
                 if (Request.Query.TryGetValue(OauthState, out var stateValue))
                 {
                     var query = Request.Query.ToDictionary(c => c.Key, c => c.Value, StringComparer.OrdinalIgnoreCase);
-                    if (query.TryGetValue(State, out var _))
+                    if (query.TryGetValue(State, out _))
                     {
                         query[State] = stateValue;
                         Request.QueryString = QueryString.Create(query);
@@ -164,7 +164,7 @@ namespace AspNet.Security.OAuth.Weixin
             return redirectUri;
         }
 
-        protected override string FormatScope() => string.Join(",", Options.Scope);
+        protected override string FormatScope() => string.Join(',', Options.Scope);
 
         private bool IsWeixinAuthorizationEndpointInUse()
         {
