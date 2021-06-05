@@ -5,7 +5,7 @@ on:
     branches: [ dev, rel/*, dev-6.0.0 ]
     tags: [ '*' ]
   pull_request:
-    branches: [ dev, rel/* ]
+    branches: [ dev, rel/*, dev-6.0.0 ]
   workflow_dispatch:
 
 jobs:
