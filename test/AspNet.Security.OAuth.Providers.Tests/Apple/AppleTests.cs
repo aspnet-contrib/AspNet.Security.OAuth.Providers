@@ -92,10 +92,10 @@ namespace AspNet.Security.OAuth.Apple
                     options.TeamId = "my-team-id";
                     options.TokenValidationParameters.ValidateLifetime = false;
                     options.ValidateTokens = true;
-                    options.PrivateKeyBytes = async (keyId, _) =>
+                    options.PrivateKey = async (keyId, cancellationToken) =>
                     {
                         Assert.Equal("my-key-id", keyId);
-                        return await TestKeys.GetPrivateKeyBytesAsync();
+                        return await TestKeys.GetPrivateKeyAsync(cancellationToken);
                     };
                 });
             }
