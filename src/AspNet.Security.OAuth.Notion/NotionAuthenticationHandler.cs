@@ -51,7 +51,7 @@ namespace AspNet.Security.OAuth.Notion
                 context.Properties.Items.Remove(OAuthConstants.CodeVerifierKey);
             }
 
-            var requestContent = new FormUrlEncodedContent(tokenRequestParameters!);
+            using var requestContent = new FormUrlEncodedContent(tokenRequestParameters!);
 
             using var requestMessage = new HttpRequestMessage(HttpMethod.Post, Options.TokenEndpoint);
             requestMessage.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
