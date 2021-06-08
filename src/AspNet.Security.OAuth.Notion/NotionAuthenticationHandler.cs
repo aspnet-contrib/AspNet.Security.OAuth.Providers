@@ -55,6 +55,7 @@ namespace AspNet.Security.OAuth.Notion
 
             using var requestMessage = new HttpRequestMessage(HttpMethod.Post, Options.TokenEndpoint);
             requestMessage.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
             byte[] byteArray = Encoding.ASCII.GetBytes(Options.ClientId + ":" + Options.ClientSecret);
             requestMessage.Headers.Authorization =
                 new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
