@@ -93,7 +93,7 @@ namespace AspNet.Security.OAuth.Notion
             return new AuthenticationTicket(context.Principal!, context.Properties, Scheme.Name);
         }
 
-        private static async Task<string> Display(HttpResponseMessage response)
+        private static async Task<string> DisplayAsync(HttpResponseMessage response)
         {
             var output = new StringBuilder();
             output.Append("Status: ").Append(response.StatusCode).Append(';');
