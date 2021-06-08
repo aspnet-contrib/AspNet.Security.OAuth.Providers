@@ -68,7 +68,7 @@ namespace AspNet.Security.OAuth.Notion
                 return OAuthTokenResponse.Success(payload);
             }
 
-            var error = "OAuth token endpoint failure: " + await Display(response);
+            var error = "OAuth token endpoint failure: " + await DisplayAsync(response);
             return OAuthTokenResponse.Failed(new Exception(error));
         }
 
