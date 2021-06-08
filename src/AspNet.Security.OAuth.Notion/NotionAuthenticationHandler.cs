@@ -95,9 +95,9 @@ namespace AspNet.Security.OAuth.Notion
         private static async Task<string> Display(HttpResponseMessage response)
         {
             var output = new StringBuilder();
-            output.Append("Status: " + response.StatusCode + ";");
-            output.Append("Headers: " + response.Headers + ";");
-            output.Append("Body: " + await response.Content.ReadAsStringAsync() + ";");
+            output.Append("Status: ").Append(response.StatusCode).Append(';');
+            output.Append("Headers: ").Append(response.Headers).Append(';');
+            output.Append("Body: ").Append(await response.Content.ReadAsStringAsync()).Append(';');
             return output.ToString();
         }
     }
