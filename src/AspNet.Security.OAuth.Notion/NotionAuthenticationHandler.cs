@@ -47,7 +47,7 @@ namespace AspNet.Security.OAuth.Notion
             if (context.Properties.Items.TryGetValue(OAuthConstants.CodeVerifierKey, out var codeVerifier) &&
                 !string.IsNullOrEmpty(codeVerifier))
             {
-                tokenRequestParameters.Add(OAuthConstants.CodeVerifierKey, codeVerifier);
+                tokenRequestParameters[OAuthConstants.CodeVerifierKey] = codeVerifier;
                 context.Properties.Items.Remove(OAuthConstants.CodeVerifierKey);
             }
 
