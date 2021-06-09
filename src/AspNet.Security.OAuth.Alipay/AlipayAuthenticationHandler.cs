@@ -222,10 +222,10 @@ namespace AspNet.Security.OAuth.Alipay
 
             var parameters = new Dictionary<string, string>
             {
-                { "app_id", Options.ClientId }, // Replace "client_id"
-                { "scope", scope },
-                { "response_type", "code" },
-                { "redirect_uri", redirectUri },
+                ["app_id"] = Options.ClientId, // Used instead of "client_id"
+                ["scope"] = scope,
+                ["response_type"] = "code",
+                ["redirect_uri"] = redirectUri,
             };
 
             if (Options.UsePkce)
