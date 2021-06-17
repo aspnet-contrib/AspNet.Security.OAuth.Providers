@@ -32,7 +32,7 @@ namespace AspNet.Security.OAuth.Notion
         {
         }
 
-        protected override async Task<OAuthTokenResponse> ExchangeCodeAsync(OAuthCodeExchangeContext context)
+        protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] OAuthCodeExchangeContext context)
         {
             var tokenRequestParameters = new Dictionary<string, string>()
             {

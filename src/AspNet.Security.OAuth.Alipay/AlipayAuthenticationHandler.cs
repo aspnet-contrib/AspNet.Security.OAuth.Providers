@@ -215,7 +215,7 @@ namespace AspNet.Security.OAuth.Alipay
         }
 
          /// <inheritdoc />
-        protected override string BuildChallengeUrl(AuthenticationProperties properties, string redirectUri)
+        protected override string BuildChallengeUrl([NotNull] AuthenticationProperties properties, [NotNull] string redirectUri)
         {
             var scopeParameter = properties.GetParameter<ICollection<string>>(OAuthChallengeProperties.ScopeKey);
             var scope = scopeParameter != null ? FormatScope(scopeParameter) : FormatScope();
