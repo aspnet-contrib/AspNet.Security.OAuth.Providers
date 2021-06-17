@@ -4,10 +4,10 @@
     <PackageReference Update="JetBrains.Annotations" Version="2021.1.0" />
     <PackageReference Update="JustEat.HttpClientInterception" Version="3.1.0" />
     <PackageReference Update="MartinCostello.Logging.XUnit" Version="0.1.1" />
-    <PackageReference Update="Microsoft.AspNetCore.Authentication.Google" Version="6.0.0-preview.4.21253.5" />
-    <PackageReference Update="Microsoft.AspNetCore.Authentication.Twitter" Version="6.0.0-preview.4.21253.5" />
-    <PackageReference Update="Microsoft.AspNetCore.Mvc.Testing" Version="6.0.0-preview.4.21253.5" />
-    <PackageReference Update="Microsoft.AspNetCore.TestHost" Version="6.0.0-preview.4.21253.5" />
+    <PackageReference Update="Microsoft.AspNetCore.Authentication.Google" Version="6.0.0-preview.5.21301.17" />
+    <PackageReference Update="Microsoft.AspNetCore.Authentication.Twitter" Version="6.0.0-preview.5.21301.17" />
+    <PackageReference Update="Microsoft.AspNetCore.Mvc.Testing" Version="6.0.0-preview.5.21301.17" />
+    <PackageReference Update="Microsoft.AspNetCore.TestHost" Version="6.0.0-preview.5.21301.17" />
     <PackageReference Update="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="6.10.0" />
     <PackageReference Update="Moq" Version="4.16.1" />
     <PackageReference Update="Shouldly" Version="4.0.3" />
