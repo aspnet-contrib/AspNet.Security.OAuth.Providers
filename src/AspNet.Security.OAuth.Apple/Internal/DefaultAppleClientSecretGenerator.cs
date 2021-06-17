@@ -93,10 +93,10 @@ namespace AspNet.Security.OAuth.Apple.Internal
                 Subject = new ClaimsIdentity(new[] { subject }),
             };
 
-            byte[] keyBlob = await context.Options.PrivateKeyBytes!(context.Options.KeyId!, context.HttpContext.RequestAborted);
+            string pem = await context.Options.PrivateKey!(context.Options.KeyId!, context.HttpContext.RequestAborted);
             string clientSecret;
 
-            using (var algorithm = CreateAlgorithm(keyBlob))
+            using (var algorithm = CreateAlgorithm(pem))
             {
                 tokenDescriptor.SigningCredentials = CreateSigningCredentials(context.Options.KeyId!, algorithm);
 
@@ -108,13 +108,13 @@ namespace AspNet.Security.OAuth.Apple.Internal
             return (clientSecret, expiresAt);
         }
 
-        private static ECDsa CreateAlgorithm(byte[] keyBlob)
+        private static ECDsa CreateAlgorithm(ReadOnlySpan<char> pem)
         {
             var algorithm = ECDsa.Create();
 
             try
             {
-                algorithm.ImportPkcs8PrivateKey(keyBlob, out _);
+                algorithm.ImportFromPem(pem);
                 return algorithm;
             }
             catch (Exception)
