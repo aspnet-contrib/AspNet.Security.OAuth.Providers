@@ -12,7 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace AspNet.Security.OAuth.Mixcloud
 {
     /// <summary>
-    /// Extension methods to add  authentication capabilities to an HTTP application pipeline.
+    /// Extension methods to add Mixcloud authentication capabilities to an HTTP application pipeline.
     /// </summary>
     public static class MixcloudAuthenticationExtensions
     {
