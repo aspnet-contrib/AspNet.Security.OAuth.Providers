@@ -28,7 +28,7 @@ namespace AspNet.Security.OAuth.Mixcloud
             ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "key");
             ClaimActions.MapJsonKey(ClaimTypes.Name, "username");
             ClaimActions.MapJsonKey(Claims.FullName, "name");
-            ClaimActions.MapJsonKey(Claims.Bio, "biog");
+            ClaimActions.MapJsonKey(Claims.Biography, "biog");
             ClaimActions.MapJsonKey(Claims.City, "city");
             ClaimActions.MapJsonKey(ClaimTypes.Country, "country");
 

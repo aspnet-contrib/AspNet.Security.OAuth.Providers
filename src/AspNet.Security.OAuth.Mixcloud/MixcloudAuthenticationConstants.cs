@@ -16,7 +16,7 @@ namespace AspNet.Security.OAuth.Mixcloud
             public const string FullName = "urn:mixcloud:fullname";
             public const string ProfileUrl = "urn:mixcloud:profileurl";
             public const string City = "urn:mixcloud:city";
-            public const string Bio = "urn:mixcloud:bio";
+            public const string Biography = "urn:mixcloud:biography";
             public const string ProfileImageUrl = "urn:mixcloud:profileimageurl";
             public const string ProfileThumbnailUrl = "urn:mixcloud:profilethumbnailurl";
         }

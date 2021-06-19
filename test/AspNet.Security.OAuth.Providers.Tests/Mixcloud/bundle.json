@@ -21,6 +21,7 @@
         "country": "GB",
         "name": "John Q Smith",
         "city": "London",
+        "biog": "I am John Smith.",
         "url": "https://mixcloud.local/JohnSmith",
         "pictures": {
           "small": "https://mixcloud.local/images/small",

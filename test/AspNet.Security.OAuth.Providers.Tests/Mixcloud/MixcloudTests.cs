@@ -30,6 +30,7 @@ namespace AspNet.Security.OAuth.Mixcloud
         [InlineData(ClaimTypes.NameIdentifier, "my-id")]
         [InlineData(ClaimTypes.Name, "John-Smith")]
         [InlineData(ClaimTypes.Country, "GB")]
+        [InlineData("urn:mixcloud:biography", "I am John Smith.")]
         [InlineData("urn:mixcloud:city", "London")]
         [InlineData("urn:mixcloud:fullname", "John Q Smith")]
         [InlineData("urn:mixcloud:profileurl", "https://mixcloud.local/JohnSmith")]

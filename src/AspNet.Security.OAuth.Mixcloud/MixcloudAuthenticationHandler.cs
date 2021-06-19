@@ -67,6 +67,7 @@ namespace AspNet.Security.OAuth.Mixcloud
 
             var state = Options.StateDataFormat.Protect(properties);
             parameters["state"] = state;
+            // Mixcloud does not appear to support the `state` parameter, so have to bundle it here:
             parameters["redirect_uri"] = QueryHelpers.AddQueryString(redirectUri, "state", state);
 
             return QueryHelpers.AddQueryString(Options.AuthorizationEndpoint, parameters);
@@ -143,6 +144,7 @@ namespace AspNet.Security.OAuth.Mixcloud
                 return HandleRequestResult.Fail("Code was not found.", properties);
             }
 
+            // Mixcloud does not appear to support the `state` parameter, so have to unbundle it here:
             var redirectUri = QueryHelpers.AddQueryString(BuildRedirectUri(Options.CallbackPath), "state", state);
             var codeExchangeContext = new OAuthCodeExchangeContext(properties, code, redirectUri);
             using var tokens = await ExchangeCodeAsync(codeExchangeContext);
