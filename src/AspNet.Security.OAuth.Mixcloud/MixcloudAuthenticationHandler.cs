@@ -44,9 +44,9 @@ namespace AspNet.Security.OAuth.Mixcloud
 
             var parameters = new Dictionary<string, string?>
             {
-                { "client_id", Options.ClientId },
-                { "scope", scope },
-                { "response_type", "code" }
+                ["client_id"] = Options.ClientId,
+                ["scope"] = scope,
+                ["response_type"] = "code"
             };
 
             if (Options.UsePkce)
