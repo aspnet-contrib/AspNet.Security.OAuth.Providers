@@ -28,11 +28,11 @@ namespace AspNet.Security.OAuth.Mixcloud
 
         [Theory]
         [InlineData(ClaimTypes.NameIdentifier, "my-id")]
-        [InlineData(ClaimTypes.Name, "John Smith")]
+        [InlineData(ClaimTypes.Name, "John-Smith")]
         [InlineData(ClaimTypes.Country, "GB")]
         [InlineData("urn:mixcloud:city", "London")]
-        [InlineData("urn:mixcloud:name", "John Q Smith")]
-        [InlineData("urn:mixcloud:profileurl", "https://soundcloud.local/JohnSmith")]
+        [InlineData("urn:mixcloud:fullname", "John Q Smith")]
+        [InlineData("urn:mixcloud:profileurl", "https://mixcloud.local/JohnSmith")]
         [InlineData("urn:mixcloud:profileimageurl", "https://mixcloud.local/images/320wx320h")]
         [InlineData("urn:mixcloud:profilethumbnailurl", "https://mixcloud.local/images/thumbnail")]
         public async Task Can_Sign_In_Using_Mixcloud(string claimType, string claimValue)
