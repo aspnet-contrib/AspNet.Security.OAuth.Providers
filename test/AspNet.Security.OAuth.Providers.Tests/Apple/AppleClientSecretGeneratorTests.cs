@@ -117,12 +117,13 @@ namespace AspNet.Security.OAuth.Apple
         public async Task GenerateAsync_Varies_Key_By_Options()
         {
             // Arrange
-            var clientSecretExpiresAfter = TimeSpan.FromSeconds(2);
+            var clientSecretExpiresAfter = TimeSpan.FromSeconds(3);
 
             void ConfigureA(AppleAuthenticationOptions options)
             {
                 options.ClientId = "my-client-id";
                 options.ClientSecretExpiresAfter = clientSecretExpiresAfter;
+                options.JwtSecurityTokenHandler = new FrozenJwtSecurityTokenHandler();
                 options.KeyId = "my-key-id";
                 options.TeamId = "my-team-id";
                 options.PrivateKeyBytes = (_) => TestKeys.GetPrivateKeyBytesAsync();
@@ -132,7 +133,7 @@ namespace AspNet.Security.OAuth.Apple
             {
                 ClientId = "my-other-client-id",
                 ClientSecretExpiresAfter = clientSecretExpiresAfter,
-                JwtSecurityTokenHandler = new JwtSecurityTokenHandler(),
+                JwtSecurityTokenHandler = new FrozenJwtSecurityTokenHandler(),
                 KeyId = "my-other-key-id",
                 TeamId = "my-other-team-id",
                 PrivateKeyBytes = (_) => TestKeys.GetPrivateKeyBytesAsync(),
@@ -155,13 +156,13 @@ namespace AspNet.Security.OAuth.Apple
 
                 // Assert
                 tokenA1.ShouldNotBeNullOrWhiteSpace();
-                tokenA1.ShouldBe(tokenA2);
+                tokenA2.ShouldBe(tokenA1);
                 tokenB1.ShouldNotBeNullOrWhiteSpace();
-                tokenB1.ShouldBe(tokenB2);
-                tokenA1.ShouldNotBe(tokenB1);
+                tokenB2.ShouldBe(tokenB1);
+                tokenB1.ShouldNotBe(tokenA1);
 
                 // Act
-                await Task.Delay(clientSecretExpiresAfter * 2);
+                await Task.Delay(clientSecretExpiresAfter * 3);
 
                 string tokenA3 = await generator.GenerateAsync(contextA);
                 string tokenB3 = await generator.GenerateAsync(contextB);
