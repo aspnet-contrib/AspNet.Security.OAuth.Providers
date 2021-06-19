@@ -156,10 +156,10 @@ namespace AspNet.Security.OAuth.Apple
 
                 // Assert
                 tokenA1.ShouldNotBeNullOrWhiteSpace();
-                tokenA1.ShouldBe(tokenA2);
+                tokenA2.ShouldBe(tokenA1);
                 tokenB1.ShouldNotBeNullOrWhiteSpace();
-                tokenB1.ShouldBe(tokenB2);
-                tokenA1.ShouldNotBe(tokenB1);
+                tokenB2.ShouldBe(tokenB1);
+                tokenB1.ShouldNotBe(tokenA1);
 
                 // Act
                 await Task.Delay(clientSecretExpiresAfter * 3);
