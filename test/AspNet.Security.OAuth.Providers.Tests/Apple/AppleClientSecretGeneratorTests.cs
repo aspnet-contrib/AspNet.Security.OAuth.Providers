@@ -123,6 +123,7 @@ namespace AspNet.Security.OAuth.Apple
             {
                 options.ClientId = "my-client-id";
                 options.ClientSecretExpiresAfter = clientSecretExpiresAfter;
+                options.JwtSecurityTokenHandler = new FrozenJwtSecurityTokenHandler();
                 options.KeyId = "my-key-id";
                 options.TeamId = "my-team-id";
                 options.PrivateKeyBytes = (_) => TestKeys.GetPrivateKeyBytesAsync();
@@ -132,7 +133,7 @@ namespace AspNet.Security.OAuth.Apple
             {
                 ClientId = "my-other-client-id",
                 ClientSecretExpiresAfter = clientSecretExpiresAfter,
-                JwtSecurityTokenHandler = new JwtSecurityTokenHandler(),
+                JwtSecurityTokenHandler = new FrozenJwtSecurityTokenHandler(),
                 KeyId = "my-other-key-id",
                 TeamId = "my-other-team-id",
                 PrivateKeyBytes = (_) => TestKeys.GetPrivateKeyBytesAsync(),
@@ -161,7 +162,7 @@ namespace AspNet.Security.OAuth.Apple
                 tokenA1.ShouldNotBe(tokenB1);
 
                 // Act
-                await Task.Delay(clientSecretExpiresAfter * 2);
+                await Task.Delay(clientSecretExpiresAfter * 3);
 
                 string tokenA3 = await generator.GenerateAsync(contextA);
                 string tokenB3 = await generator.GenerateAsync(contextB);
