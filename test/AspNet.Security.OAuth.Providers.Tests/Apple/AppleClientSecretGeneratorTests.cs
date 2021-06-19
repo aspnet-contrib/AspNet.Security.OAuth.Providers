@@ -117,7 +117,7 @@ namespace AspNet.Security.OAuth.Apple
         public async Task GenerateAsync_Varies_Key_By_Options()
         {
             // Arrange
-            var clientSecretExpiresAfter = TimeSpan.FromSeconds(2);
+            var clientSecretExpiresAfter = TimeSpan.FromSeconds(3);
 
             void ConfigureA(AppleAuthenticationOptions options)
             {
