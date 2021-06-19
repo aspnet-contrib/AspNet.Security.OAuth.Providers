@@ -19,7 +19,6 @@ namespace AspNet.Security.OAuth.Mixcloud
         public MixcloudAuthenticationOptions()
         {
             ClaimsIssuer = MixcloudAuthenticationDefaults.Issuer;
-
             CallbackPath = MixcloudAuthenticationDefaults.CallbackPath;
 
             AuthorizationEndpoint = MixcloudAuthenticationDefaults.AuthorizationEndpoint;
