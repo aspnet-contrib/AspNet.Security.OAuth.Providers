@@ -67,6 +67,7 @@ namespace AspNet.Security.OAuth.Mixcloud
 
             var state = Options.StateDataFormat.Protect(properties);
             parameters["state"] = state;
+
             // Mixcloud does not appear to support the `state` parameter, so have to bundle it here:
             parameters["redirect_uri"] = QueryHelpers.AddQueryString(redirectUri, "state", state);
 
