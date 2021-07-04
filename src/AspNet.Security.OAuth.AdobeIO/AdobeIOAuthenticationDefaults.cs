@@ -44,12 +44,7 @@ namespace AspNet.Security.OAuth.AdobeIO
         /// <summary>
         /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
         /// </summary>
-        public const string UserInformationEndpoint = "https://api.github.com" + UserInformationEndpointPath;
-
-        /// <summary>
-        /// Default path to use for the GitHub Enterprise v3 REST API.
-        /// </summary>
-        public const string EnterpriseApiPath = "/api/v3";
+        public const string UserInformationEndpoint = "https://ims-na1.adobelogin.com/ims" + UserInformationEndpointPath;
 
         /// <summary>
         /// Default path to use for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
@@ -64,6 +59,6 @@ namespace AspNet.Security.OAuth.AdobeIO
         /// <summary>
         /// Default path to use for <see cref="OAuthOptions.UserInformationEndpoint"/>.
         /// </summary>
-        public const string UserInformationEndpointPath = "/userinfo";
+        public const string UserInformationEndpointPath = "/userinfo/v2";
     }
 }

@@ -4,7 +4,10 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
+using static AspNet.Security.OAuth.AdobeIO.AdobeIOAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.AdobeIO
 {
@@ -22,7 +25,15 @@ namespace AspNet.Security.OAuth.AdobeIO
             TokenEndpoint = AdobeIOAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = AdobeIOAuthenticationDefaults.UserInformationEndpoint;
             Scope.Clear();
-            Scope.Add("openId,AdobeID");
+            Scope.Add("openid,AdobeID");
+            ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "sub");
+            ClaimActions.MapJsonKey(ClaimTypes.Name, "name");
+            ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
+            ClaimActions.MapJsonKey(ClaimTypes.GivenName, "given_name");
+            ClaimActions.MapJsonKey(ClaimTypes.Surname, "family_name");
+            ClaimActions.MapJsonSubKey(ClaimTypes.Country, "address", "country");
+            ClaimActions.MapJsonKey(Claims.AccountType, "account_type");
+            ClaimActions.MapJsonKey(Claims.EmailVerified, "email_verified");
         }
     }
 }
