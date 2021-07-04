@@ -1,0 +1,34 @@
+{
+  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
+  "items": [
+    {
+      "comment": "See https://www.adobe.io/authentication/auth-methods.html#!AdobeDocs/adobeio-auth/master/OAuth/OAuth.md",
+      "uri": "https://ims-na1.adobelogin.com/ims/token",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "secret-access-token",
+        "token_type": "bearer",
+        "scope": "openid,AdobeID"
+      }
+    },
+    {
+      "comment": "See https://www.adobe.io/authentication/auth-methods.html#!AdobeDocs/adobeio-auth/master/Resources/IMS.md",
+      "uri": "https://ims-na1.adobelogin.com/ims/userinfo/v2?client_id=my-client-id",
+      "method": "GET",
+      "contentFormat": "json",
+      "contentJson": {
+        "sub": "B0DC108C5CD449CA0A494133@c62f24cc5b5b7e0e0a494004",
+        "account_type": "ent",
+        "email_verified": true,
+        "address": {
+          "country": "US"
+        },
+        "name": "John Sample",
+        "given_name": "John",
+        "family_name": "Sample",
+        "email": "jsample@email.com"
+      }
+    }
+  ]
+}
