@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
+
   <PropertyGroup>
     <Description>ASP.NET Core security middleware enabling AdobeIO authentication.</Description>
     <Authors>biltongza</Authors>
