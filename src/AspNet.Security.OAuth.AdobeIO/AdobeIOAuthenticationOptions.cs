@@ -24,8 +24,10 @@ namespace AspNet.Security.OAuth.AdobeIO
             AuthorizationEndpoint = AdobeIOAuthenticationDefaults.AuthorizationEndpoint;
             TokenEndpoint = AdobeIOAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = AdobeIOAuthenticationDefaults.UserInformationEndpoint;
+
             Scope.Add("openid");
             Scope.Add("AdobeID");
+
             ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "sub");
             ClaimActions.MapJsonKey(ClaimTypes.Name, "name");
             ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
