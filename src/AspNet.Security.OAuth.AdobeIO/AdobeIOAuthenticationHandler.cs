@@ -4,6 +4,7 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -63,5 +64,9 @@ namespace AspNet.Security.OAuth.AdobeIO
             await Options.Events.CreatingTicket(context);
             return new AuthenticationTicket(context.Principal!, context.Properties, Scheme.Name);
         }
+
+        /// <inheritdoc/>
+        protected override string FormatScope([NotNull] IEnumerable<string> scopes)
+            => string.Join(',', scopes);
     }
 }
