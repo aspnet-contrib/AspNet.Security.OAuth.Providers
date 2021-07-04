@@ -34,31 +34,16 @@ namespace AspNet.Security.OAuth.AdobeIO
         /// <summary>
         /// Default value for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
         /// </summary>
-        public const string AuthorizationEndpoint = "https://ims-na1.adobelogin.com/ims" + AuthorizationEndpointPath;
+        public const string AuthorizationEndpoint = "https://ims-na1.adobelogin.com/ims/authorize/v2";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.TokenEndpoint"/>.
         /// </summary>
-        public const string TokenEndpoint = "https://ims-na1.adobelogin.com/ims" + TokenEndpointPath;
+        public const string TokenEndpoint = "https://ims-na1.adobelogin.com/ims/token";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
         /// </summary>
-        public const string UserInformationEndpoint = "https://ims-na1.adobelogin.com/ims" + UserInformationEndpointPath;
-
-        /// <summary>
-        /// Default path to use for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
-        /// </summary>
-        public const string AuthorizationEndpointPath = "/authorize/v2";
-
-        /// <summary>
-        /// Default path to use for <see cref="OAuthOptions.TokenEndpoint"/>.
-        /// </summary>
-        public const string TokenEndpointPath = "/token";
-
-        /// <summary>
-        /// Default path to use for <see cref="OAuthOptions.UserInformationEndpoint"/>.
-        /// </summary>
-        public const string UserInformationEndpointPath = "/userinfo/v2";
+        public const string UserInformationEndpoint = "https://ims-na1.adobelogin.com/ims/userinfo/v2";
     }
 }
