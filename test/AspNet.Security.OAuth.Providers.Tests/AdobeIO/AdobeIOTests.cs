@@ -27,7 +27,6 @@ namespace AspNet.Security.OAuth.AdobeIO
             builder.AddAdobeIO(options =>
             {
                 ConfigureDefaults(builder, options);
-                options.Scope.Add("user:email");
             });
         }
 
