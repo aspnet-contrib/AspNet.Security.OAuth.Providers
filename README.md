@@ -89,6 +89,7 @@ We would love it if you could help contributing to this repository.
 * [zAfLu](https://github.com/zAfLu)
 * [zhengchun](https://github.com/zhengchun)
 * [Volodymyr Baydalka](https://github.com/zVolodymyr)
+* [Logan Dam](https://github.com/biltongza)
 
 ## Support
 
@@ -111,6 +112,7 @@ If a provider you're looking for does not exist, consider making a PR to add one
 
 | Provider | Stable | Nightly | Documentation |
 |:-:|:-:|:-:|:-:|
+| AdobeIO | [![NuGet](https://buildstats.info/nuget/AspNet.Security.OAuth.AdobeIO?includePreReleases=false)](https://www.nuget.org/packages/AspNet.Security.OAuth.AdobeIO/ "Download AspNet.Security.OAuth.AdobeIO from NuGet.org") | [![MyGet](https://buildstats.info/myget/aspnet-contrib/AspNet.Security.OAuth.AdobeIO?includePreReleases=true)](https://www.myget.org/feed/aspnet-contrib/package/nuget/AspNet.Security.OAuth.AdobeIO "Download AspNet.Security.OAuth.AdobeIO from MyGet.org") | [Documentation](https://www.adobe.io/authentication/auth-methods.html#!AdobeDocs/adobeio-auth/master/AuthenticationOverview/AuthenticationGuide.md "AdobeIO developer documentation") |
 | Alipay | [![NuGet](https://buildstats.info/nuget/AspNet.Security.OAuth.Alipay?includePreReleases=false)](https://www.nuget.org/packages/AspNet.Security.OAuth.Alipay/ "Download AspNet.Security.OAuth.Alipay from NuGet.org") | [![MyGet](https://buildstats.info/myget/aspnet-contrib/AspNet.Security.OAuth.Alipay?includePreReleases=true)](https://www.myget.org/feed/aspnet-contrib/package/nuget/AspNet.Security.OAuth.Alipay "Download AspNet.Security.OAuth.Alipay from MyGet.org") | [Documentation](https://opendocs.alipay.com/open/01emu5 "Alipay developer documentation") |
 | Amazon | [![NuGet](https://buildstats.info/nuget/AspNet.Security.OAuth.Amazon?includePreReleases=false)](https://www.nuget.org/packages/AspNet.Security.OAuth.Amazon/ "Download AspNet.Security.OAuth.Amazon from NuGet.org") | [![MyGet](https://buildstats.info/myget/aspnet-contrib/AspNet.Security.OAuth.Amazon?includePreReleases=true)](https://www.myget.org/feed/aspnet-contrib/package/nuget/AspNet.Security.OAuth.Amazon "Download AspNet.Security.OAuth.Amazon from MyGet.org") | [Documentation](https://developer.amazon.com/docs/login-with-amazon/documentation-overview.html "Amazon developer documentation") |
 | amoCRM | [![NuGet](https://buildstats.info/nuget/AspNet.Security.OAuth.AmoCrm?includePreReleases=false)](https://www.nuget.org/packages/AspNet.Security.OAuth.AmoCrm/ "Download AspNet.Security.OAuth.AmoCrm from NuGet.org") | [![MyGet](https://buildstats.info/myget/aspnet-contrib/AspNet.Security.OAuth.AmoCrm?includePreReleases=true)](https://www.myget.org/feed/aspnet-contrib/package/nuget/AspNet.Security.OAuth.AmoCrm "Download AspNet.Security.OAuth.AmoCrm from MyGet.org") | [Documentation](https://www.amocrm.com/developers/content/oauth/step-by-step/ "amoCRM developer documentation") |
