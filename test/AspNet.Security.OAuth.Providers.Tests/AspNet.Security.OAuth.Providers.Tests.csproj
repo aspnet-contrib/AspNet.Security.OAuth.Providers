@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <RootNamespace>AspNet.Security.OAuth</RootNamespace>
-    <TargetFrameworks>net5.0</TargetFrameworks>
+    <TargetFrameworks>$(DefaultNetCoreTargetFramework)</TargetFrameworks>
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
     <NoWarn>$(NoWarn);CA1707;CA2227</NoWarn>
@@ -37,5 +37,5 @@
       <_Parameter2>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)../../'))</_Parameter2>
     </AssemblyAttribute>
   </ItemGroup>
-  
+
 </Project>
