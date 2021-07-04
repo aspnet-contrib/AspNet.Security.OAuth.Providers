@@ -125,7 +125,6 @@ namespace AspNet.Security.OAuth.Apple
             {
                 options.ClientId = "my-client-id";
                 options.ClientSecretExpiresAfter = clientSecretExpiresAfter;
-                options.JwtSecurityTokenHandler = new FrozenJwtSecurityTokenHandler();
                 options.KeyId = "my-key-id";
                 options.TeamId = "my-team-id";
                 options.PrivateKeyBytes = (_, _) => TestKeys.GetPrivateKeyBytesAsync();
