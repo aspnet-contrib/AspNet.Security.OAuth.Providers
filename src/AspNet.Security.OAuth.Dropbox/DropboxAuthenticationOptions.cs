@@ -16,7 +16,7 @@ namespace AspNet.Security.OAuth.Dropbox
     public class DropboxAuthenticationOptions : OAuthOptions
     {
         /// <summary>
-        /// Gets or sets what the response type from Dropbox should be:  Online, Offline or Legacy
+        /// Gets or sets what the response type from Dropbox should be: Online, Offline or Legacy.
         /// </summary>
         public string? AccessType { get; set; }
 
