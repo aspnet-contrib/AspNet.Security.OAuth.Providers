@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Licensed under the Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0)
  * See https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers
  * for more information concerning the license and the contributors participating to this project.
@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -27,6 +28,26 @@ namespace AspNet.Security.OAuth.Dropbox
             [NotNull] ISystemClock clock)
             : base(options, logger, encoder, clock)
         {
+        }
+
+        /// <inheritdoc />
+        protected override string BuildChallengeUrl(
+            [NotNull] AuthenticationProperties properties,
+            [NotNull] string redirectUri)
+        {
+            string challengeUrl = base.BuildChallengeUrl(properties, redirectUri);
+
+            if (!string.IsNullOrEmpty(Options.AccessType))
+            {
+                challengeUrl = QueryHelpers.AddQueryString(challengeUrl, "token_access_type", Options.AccessType);
+            }
+
+            if (!string.IsNullOrEmpty(Options.ResponseType))
+            {
+                challengeUrl = QueryHelpers.AddQueryString(challengeUrl, "response_type", Options.ResponseType);
+            }
+
+            return challengeUrl;
         }
 
         protected override async Task<AuthenticationTicket> CreateTicketAsync(
