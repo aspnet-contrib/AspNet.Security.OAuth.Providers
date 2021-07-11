@@ -42,11 +42,6 @@ namespace AspNet.Security.OAuth.Dropbox
                 challengeUrl = QueryHelpers.AddQueryString(challengeUrl, "token_access_type", Options.AccessType);
             }
 
-            if (!string.IsNullOrEmpty(Options.ResponseType))
-            {
-                challengeUrl = QueryHelpers.AddQueryString(challengeUrl, "response_type", Options.ResponseType);
-            }
-
             return challengeUrl;
         }
 

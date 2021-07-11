@@ -20,11 +20,6 @@ namespace AspNet.Security.OAuth.Dropbox
         /// </summary>
         public string? AccessType { get; set; }
 
-        /// <summary>
-        /// Gets or sets the Response Type requested from Dropbox:  Token or Code
-        /// </summary>
-        public string? ResponseType { get; set; }
-
         public DropboxAuthenticationOptions()
         {
             ClaimsIssuer = DropboxAuthenticationDefaults.Issuer;
