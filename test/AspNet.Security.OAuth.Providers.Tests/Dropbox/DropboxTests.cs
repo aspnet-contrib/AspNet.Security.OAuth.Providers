@@ -63,7 +63,7 @@ namespace AspNet.Security.OAuth.Dropbox
                     {
                         OnRedirectToAuthorizationEndpoint = ctx =>
                         {
-                            accessTypeIsSet = ctx.RedirectUri.Contains($"token_access_type={value}", StringComparison.InvariantCulture);
+                            accessTypeIsSet = ctx.RedirectUri.Contains($"token_access_type={value}", StringComparison.OrdinalIgnoreCase);
                             ctx.Response.Redirect(ctx.RedirectUri);
                             return Task.CompletedTask;
                         }
