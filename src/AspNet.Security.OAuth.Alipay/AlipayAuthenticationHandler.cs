@@ -207,11 +207,46 @@ namespace AspNet.Security.OAuth.Alipay
             byte[] privateKeyBytes = Convert.FromBase64String(Options.ClientSecret);
 
             using var rsa = RSA.Create();
-            rsa.ImportRSAPrivateKey(privateKeyBytes, out int _);
+            rsa.ImportRSAPrivateKey(privateKeyBytes, out _);
 
             byte[] encryptedBytes = rsa.SignData(plainBytes, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
 
             return Convert.ToBase64String(encryptedBytes);
+        }
+
+         /// <inheritdoc />
+        protected override string BuildChallengeUrl([NotNull] AuthenticationProperties properties, [NotNull] string redirectUri)
+        {
+            var scopeParameter = properties.GetParameter<ICollection<string>>(OAuthChallengeProperties.ScopeKey);
+            var scope = scopeParameter != null ? FormatScope(scopeParameter) : FormatScope();
+
+            var parameters = new Dictionary<string, string>
+            {
+                ["app_id"] = Options.ClientId, // Used instead of "client_id"
+                ["scope"] = scope,
+                ["response_type"] = "code",
+                ["redirect_uri"] = redirectUri,
+            };
+
+            if (Options.UsePkce)
+            {
+                var bytes = new byte[32];
+                RandomNumberGenerator.Fill(bytes);
+                var codeVerifier = Microsoft.AspNetCore.Authentication.Base64UrlTextEncoder.Encode(bytes);
+
+                // Store this for use during the code redemption.
+                properties.Items.Add(OAuthConstants.CodeVerifierKey, codeVerifier);
+
+                var challengeBytes = SHA256.HashData(Encoding.UTF8.GetBytes(codeVerifier));
+                var codeChallenge = WebEncoders.Base64UrlEncode(challengeBytes);
+
+                parameters[OAuthConstants.CodeChallengeKey] = codeChallenge;
+                parameters[OAuthConstants.CodeChallengeMethodKey] = OAuthConstants.CodeChallengeMethodS256;
+            }
+
+            parameters["state"] = Options.StateDataFormat.Protect(properties);
+
+            return QueryHelpers.AddQueryString(Options.AuthorizationEndpoint, parameters!);
         }
     }
 }

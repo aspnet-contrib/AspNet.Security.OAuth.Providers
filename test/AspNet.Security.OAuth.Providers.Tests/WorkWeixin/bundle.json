@@ -1,0 +1,39 @@
+{
+  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
+  "items": [
+    {
+      "uri": "https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=my-client-id&corpsecret=my-client-secret",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "secret-access-token",
+        "errcode": 0,
+        "errmsg": "ok",
+        "expires_in": 7200
+      }
+    },
+    {
+      "uri": "https://qyapi.weixin.qq.com/cgi-bin/user/getuserinfo?access_token=secret-access-token&code=a6ed8e7f-471f-44f1-903b-65946475f351",
+      "contentFormat": "json",
+      "contentJson": {
+        "errcode": 0,
+        "errmsg": "ok",
+        "UserId": "my-user-id"
+      }
+    },
+
+    {
+      "uri": "https://qyapi.weixin.qq.com/cgi-bin/user/get?access_token=secret-access-token&userid=my-user-id",
+      "contentFormat": "json",
+      "contentJson": {
+        "errcode": 0,
+        "userid": "my-user-id",
+        "name": "wql",
+        "gender": "male",
+        "mobile": 888888,
+        "email": "wql1994@126.com",
+        "avatar": "https://work.weixin.qq.local/avatar.png",
+        "alias": "my-alias"
+      }
+    }
+  ]
+}

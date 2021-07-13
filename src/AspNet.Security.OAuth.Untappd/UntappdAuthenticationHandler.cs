@@ -1,18 +1,23 @@
-/*
+﻿/*
  * Licensed under the Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0)
  * See https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
+using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Threading.Tasks;
+using System.Web;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -27,6 +32,58 @@ namespace AspNet.Security.OAuth.Untappd
             [NotNull] ISystemClock clock)
             : base(options, logger, encoder, clock)
         {
+        }
+
+        protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] OAuthCodeExchangeContext context)
+        {
+            var tokenRequestParameters = new Dictionary<string, string>()
+            {
+                ["client_id"] = Options.ClientId,
+                ["redirect_uri"] = context.RedirectUri,
+                ["client_secret"] = Options.ClientSecret,
+                ["code"] = context.Code,
+                ["grant_type"] = "authorization_code",
+            };
+
+            // PKCE https://tools.ietf.org/html/rfc7636#section-4.5, see BuildChallengeUrl
+            if (context.Properties.Items.TryGetValue(OAuthConstants.CodeVerifierKey, out var codeVerifier))
+            {
+                tokenRequestParameters.Add(OAuthConstants.CodeVerifierKey, codeVerifier!);
+                context.Properties.Items.Remove(OAuthConstants.CodeVerifierKey);
+            }
+
+            using var requestContent = new FormUrlEncodedContent(tokenRequestParameters!);
+
+            string address = QueryHelpers.AddQueryString(Options.TokenEndpoint,
+                new Dictionary<string, string?>
+                {
+                    ["client_id"] = Options.ClientId,
+                    ["redirect_uri"] = context.RedirectUri,
+                    ["client_secret"] = Options.ClientSecret,
+                    ["code"] = context.Code
+                });
+
+            using var requestMessage = new HttpRequestMessage(HttpMethod.Get, address);
+            requestMessage.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            requestMessage.Content = requestContent;
+            requestMessage.Version = Backchannel.DefaultRequestVersion;
+
+            using var response = await Backchannel.SendAsync(requestMessage, Context.RequestAborted);
+            if (response.IsSuccessStatusCode)
+            {
+                var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
+                return OAuthTokenResponse.Success(payload);
+            }
+            else
+            {
+                Logger.LogWarning("An error occurred while exchanging token codes. " +
+                                  "the remote server returned a {Status} response with the following payload: {Headers} {Body}.",
+                                  /* Status: */ response.StatusCode,
+                                  /* Headers: */ response.Headers.ToString(),
+                                  /* Body: */ await response.Content.ReadAsStringAsync(Context.RequestAborted));
+
+                throw new HttpRequestException("An error occurred while exchanging token codes.");
+            }
         }
 
         protected override async Task<AuthenticationTicket> CreateTicketAsync(
@@ -54,7 +111,8 @@ namespace AspNet.Security.OAuth.Untappd
 
             var principal = new ClaimsPrincipal(identity);
             var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload.RootElement);
-            context.RunClaimActions(payload.RootElement.GetProperty("user"));
+
+            context.RunClaimActions(payload.RootElement.GetProperty("response").GetProperty("user"));
 
             await Options.Events.CreatingTicket(context);
             return new AuthenticationTicket(context.Principal!, context.Properties, Scheme.Name);

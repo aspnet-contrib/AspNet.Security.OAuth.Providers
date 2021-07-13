@@ -140,6 +140,6 @@ namespace AspNet.Security.OAuth.Deezer
 
         /// <inheritdoc/>
         protected override string FormatScope([NotNull] IEnumerable<string> scopes)
-            => string.Join(",", scopes);
+            => string.Join(',', scopes);
     }
 }

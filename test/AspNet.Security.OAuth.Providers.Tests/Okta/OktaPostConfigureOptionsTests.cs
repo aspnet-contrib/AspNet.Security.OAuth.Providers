@@ -34,13 +34,13 @@ namespace AspNet.Security.OAuth.Okta
 
             // Assert
             options.AuthorizationEndpoint.ShouldStartWith("https://okta.local/oauth2/default/v1/");
-            Uri.TryCreate(options.AuthorizationEndpoint, UriKind.Absolute, out var _).ShouldBeTrue();
+            Uri.TryCreate(options.AuthorizationEndpoint, UriKind.Absolute, out _).ShouldBeTrue();
 
             options.TokenEndpoint.ShouldStartWith("https://okta.local/oauth2/default/v1/");
-            Uri.TryCreate(options.TokenEndpoint, UriKind.Absolute, out var _).ShouldBeTrue();
+            Uri.TryCreate(options.TokenEndpoint, UriKind.Absolute, out _).ShouldBeTrue();
 
             options.UserInformationEndpoint.ShouldStartWith("https://okta.local/oauth2/default/v1/");
-            Uri.TryCreate(options.UserInformationEndpoint, UriKind.Absolute, out var _).ShouldBeTrue();
+            Uri.TryCreate(options.UserInformationEndpoint, UriKind.Absolute, out _).ShouldBeTrue();
         }
 
         [Theory]

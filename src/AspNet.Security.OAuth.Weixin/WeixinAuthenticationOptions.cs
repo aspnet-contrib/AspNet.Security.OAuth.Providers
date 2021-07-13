@@ -44,7 +44,7 @@ namespace AspNet.Security.OAuth.Weixin
                     return null;
                 }
 
-                return string.Join(",", value.EnumerateArray().Select(element => element.GetString()));
+                return string.Join(',', value.EnumerateArray().Select(element => element.GetString()));
             });
         }
     }

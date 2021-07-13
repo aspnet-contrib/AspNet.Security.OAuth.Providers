@@ -52,7 +52,7 @@ namespace AspNet.Security.OAuth.Apple.Internal
 
             try
             {
-                context.Options.JwtSecurityTokenHandler.ValidateToken(context.IdToken, parameters, out var _);
+                context.Options.JwtSecurityTokenHandler.ValidateToken(context.IdToken, parameters, out _);
             }
             catch (Exception ex)
             {

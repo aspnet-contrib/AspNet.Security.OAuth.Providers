@@ -63,6 +63,6 @@ namespace AspNet.Security.OAuth.Strava
             return new AuthenticationTicket(context.Principal!, context.Properties, Scheme.Name);
         }
 
-        protected override string FormatScope() => string.Join(",", Options.Scope);
+        protected override string FormatScope() => string.Join(',', Options.Scope);
     }
 }
