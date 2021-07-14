@@ -9,6 +9,7 @@
       "contentJson": {
         "access_token": "ABCDEFG",
         "token_type": "bearer",
+        "refresh_token": "secret-refresh-token",
         "account_id": "dbid:AAH4f99T0taONIb-OurWxbNQ6ywGRopQngc",
         "uid": "12345"
       }
