@@ -40,7 +40,7 @@ namespace AspNet.Security.OAuth.Line
                 ["redirect_uri"] = redirectUri,
                 ["state"] = Options.StateDataFormat.Protect(properties),
                 ["scope"] = FormatScope(),
-                ["prompt"] = Options.Prompt ? "consent" : "none"
+                ["prompt"] = Options.Prompt ? "consent" : string.Empty
             });
 
         protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] OAuthCodeExchangeContext context)
