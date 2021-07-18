@@ -2,24 +2,14 @@
   "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
   "items": [
     {
-      "uri": "https://login.eveonline.com/oauth/token",
+      "uri": "https://login.eveonline.com/v2/oauth/token",
       "method": "POST",
       "contentFormat": "json",
       "contentJson": {
-        "access_token": "secret-access-token",
-        "token_type": "access",
-        "refresh_token": "secret-refresh-token",
-        "expires_in": "300"
-      }
-    },
-    {
-      "uri": "https://login.eveonline.com/oauth/verify",
-      "contentFormat": "json",
-      "contentJson": {
-        "CharacterID": "my-id",
-        "CharacterName": "John Smith",
-        "ExpiresOn": "2019-12-31T23:59:59+00:00",
-        "Scopes": "my-scopes"
+        "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzY3AiOlsiZXNpLXNraWxscy5yZWFkX3NraWxscy52MSIsImVzaS1za2lsbHMucmVhZF9za2lsbHF1ZXVlLnYxIl0sImp0aSI6Ijk5OGUxMmM3LTMyNDEtNDNjNS04MzU1LTJjNDg4MjJlMGExYiIsImtpZCI6IkpXVC1TaWduYXR1cmUtS2V5Iiwic3ViIjoiQ0hBUkFDVEVSOkVWRToxMjMxMjMiLCJhenAiOiJteTNyZHBhcnR5Y2xpZW50aWQiLCJuYW1lIjoiU29tZSBCbG9rZSIsIm93bmVyIjoiOFBtekNlVEtiNFZGVURySExjL0FlWlhEU1dNPSIsImV4cCI6MTUzNDQxMjUwNCwiaXNzIjoibG9naW4uZXZlb25saW5lLmNvbSJ9.XBnz9kANrAzyc6hUX9KDwwhPlIbuAePyWXFIHbpVXfc",
+        "refresh_token": "sdfsdfsdfwd",
+        "expires_in": "1199",
+        "token_type": "Bearer"
       }
     }
   ]

@@ -28,10 +28,10 @@ namespace AspNet.Security.OAuth.EVEOnline
         }
 
         [Theory]
-        [InlineData(ClaimTypes.NameIdentifier, "my-id")]
-        [InlineData(ClaimTypes.Name, "John Smith")]
-        [InlineData(ClaimTypes.Expiration, "2019-12-31T23:59:59+00:00")]
-        [InlineData("urn:eveonline:scopes", "my-scopes")]
+        [InlineData(ClaimTypes.NameIdentifier, "123123")]
+        [InlineData(ClaimTypes.Name, "Some Bloke")]
+        [InlineData(ClaimTypes.Expiration, "2018-08-16T09:41:44+00:00")]
+        [InlineData(EVEOnlineAuthenticationConstants.Claims.Scopes, "esi-skills.read_skills.v1 esi-skills.read_skillqueue.v1")]
         public async Task Can_Sign_In_Using_EVE_Online(string claimType, string claimValue)
         {
             // Arrange

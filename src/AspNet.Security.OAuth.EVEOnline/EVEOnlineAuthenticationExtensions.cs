@@ -5,9 +5,11 @@
  */
 
 using System;
+using System.IdentityModel.Tokens.Jwt;
 using AspNet.Security.OAuth.EVEOnline;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -72,6 +74,8 @@ namespace Microsoft.Extensions.DependencyInjection
             [CanBeNull] string caption,
             [NotNull] Action<EVEOnlineAuthenticationOptions> configuration)
         {
+            builder.Services.TryAddSingleton<JwtSecurityTokenHandler>();
+
             return builder.AddOAuth<EVEOnlineAuthenticationOptions, EVEOnlineAuthenticationHandler>(scheme, caption, configuration);
         }
     }

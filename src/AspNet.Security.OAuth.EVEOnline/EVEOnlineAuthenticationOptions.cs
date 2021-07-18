@@ -5,10 +5,7 @@
  */
 
 using System;
-using System.Security.Claims;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
-using static AspNet.Security.OAuth.EVEOnline.EVEOnlineAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.EVEOnline
 {
@@ -23,11 +20,6 @@ namespace AspNet.Security.OAuth.EVEOnline
             CallbackPath = EVEOnlineAuthenticationDefaults.CallbackPath;
 
             Server = EVEOnlineAuthenticationServer.Tranquility;
-
-            ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "CharacterID");
-            ClaimActions.MapJsonKey(ClaimTypes.Name, "CharacterName");
-            ClaimActions.MapJsonKey(ClaimTypes.Expiration, "ExpiresOn");
-            ClaimActions.MapJsonKey(Claims.Scopes, "Scopes");
         }
 
         /// <summary>
@@ -43,13 +35,11 @@ namespace AspNet.Security.OAuth.EVEOnline
                     case EVEOnlineAuthenticationServer.Tranquility:
                         AuthorizationEndpoint = EVEOnlineAuthenticationDefaults.Tranquility.AuthorizationEndpoint;
                         TokenEndpoint = EVEOnlineAuthenticationDefaults.Tranquility.TokenEndpoint;
-                        UserInformationEndpoint = EVEOnlineAuthenticationDefaults.Tranquility.UserInformationEndpoint;
                         break;
 
                     case EVEOnlineAuthenticationServer.Singularity:
                         AuthorizationEndpoint = EVEOnlineAuthenticationDefaults.Singularity.AuthorizationEndpoint;
                         TokenEndpoint = EVEOnlineAuthenticationDefaults.Singularity.TokenEndpoint;
-                        UserInformationEndpoint = EVEOnlineAuthenticationDefaults.Singularity.UserInformationEndpoint;
                         break;
 
                     default:
