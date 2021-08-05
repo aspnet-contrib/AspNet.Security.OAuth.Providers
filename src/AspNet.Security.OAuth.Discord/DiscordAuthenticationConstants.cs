@@ -11,16 +11,9 @@ namespace AspNet.Security.OAuth.Discord
     /// </summary>
     public static class DiscordAuthenticationConstants
     {
-        public static class Urls
-        {
-            public const string DiscordCdn = "https://cdn.discordapp.com";
-            public const string AvatarUrlFormat = "{0}/avatars/{1}/{2}.png";
-        }
-
         public static class Claims
         {
             public const string AvatarHash = "urn:discord:avatar:hash";
-            public const string AvatarUrl = "urn:discord:avatar:url";
             public const string Discriminator = "urn:discord:user:discriminator";
         }
 

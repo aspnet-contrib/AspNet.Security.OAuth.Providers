@@ -37,7 +37,6 @@ namespace AspNet.Security.OAuth.Discord
         [InlineData(ClaimTypes.Email, "john@john-smith.local")]
         [InlineData(Claims.Discriminator, "1234")]
         [InlineData(Claims.AvatarHash, "dummy-avatar-hash")]
-        [InlineData(Claims.AvatarUrl, "https://cdn.discordapp.com/avatars/my-id/dummy-avatar-hash.png")]
         public async Task Can_Sign_In_Using_Discord(string claimType, string claimValue)
         {
             // Arrange
