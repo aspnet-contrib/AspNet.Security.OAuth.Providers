@@ -257,6 +257,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.Mixcl
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.AdobeIO", "src\AspNet.Security.OAuth.AdobeIO\AspNet.Security.OAuth.AdobeIO.csproj", "{91BB9A49-9C88-4132-96E4-2D6148ACDE77}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.Zendesk", "src\AspNet.Security.OAuth.Zendesk\AspNet.Security.OAuth.Zendesk.csproj", "{C90BA18B-E6C4-4E84-AFCC-58A4EE13BA40}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -579,6 +581,10 @@ Global
 		{91BB9A49-9C88-4132-96E4-2D6148ACDE77}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{91BB9A49-9C88-4132-96E4-2D6148ACDE77}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{91BB9A49-9C88-4132-96E4-2D6148ACDE77}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C90BA18B-E6C4-4E84-AFCC-58A4EE13BA40}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C90BA18B-E6C4-4E84-AFCC-58A4EE13BA40}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C90BA18B-E6C4-4E84-AFCC-58A4EE13BA40}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C90BA18B-E6C4-4E84-AFCC-58A4EE13BA40}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -669,6 +675,7 @@ Global
 		{DF2786DF-234D-4A8C-B166-0B8F8B7D527B} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 		{7A2EC21F-D411-4B45-AA3B-70143C1A9E2F} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 		{91BB9A49-9C88-4132-96E4-2D6148ACDE77} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
+		{C90BA18B-E6C4-4E84-AFCC-58A4EE13BA40} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C7B54DE2-6407-4802-AD9C-CE54BF414C8C}

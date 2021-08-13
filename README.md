@@ -1,3 +1,4 @@
+
 # AspNet.Security.OAuth.Providers
 
 **AspNet.Security.OAuth.Providers** is a **collection of security middleware** that you can use in your **ASP.NET Core** application to support social authentication providers like **[GitHub](https://github.com/)**, **[Foursquare](https://foursquare.com/)** or **[Dropbox](https://www.dropbox.com/)**. It is directly inspired by **[Jerrie Pelser](https://github.com/jerriep)**'s initiative, **[Owin.Security.Providers](https://github.com/RockstarLabs/OwinOAuthProviders)**.
@@ -67,6 +68,7 @@ We would love it if you could help contributing to this repository.
 * [Kévin Chalet](https://github.com/kevinchalet)
 * [Konstantin Mamaev](https://github.com/MrMeison)
 * [LeaFrock](https://github.com/LeaFrock)
+* [Levi Muriuki](https://github.com/levimatheri)
 * [Luke Fulliton](https://github.com/lukefulliton)
 * [Mariusz Zieliński](https://github.com/mariozski)
 * [Martin Costello](https://github.com/martincostello)
@@ -189,6 +191,7 @@ If a provider you're looking for does not exist, consider making a PR to add one
 | Yammer | [![NuGet](https://buildstats.info/nuget/AspNet.Security.OAuth.Yammer?includePreReleases=false)](https://www.nuget.org/packages/AspNet.Security.OAuth.Yammer/ "Download AspNet.Security.OAuth.Yammer from NuGet.org") | [![MyGet](https://buildstats.info/myget/aspnet-contrib/AspNet.Security.OAuth.Yammer?includePreReleases=true)](https://www.myget.org/feed/aspnet-contrib/package/nuget/AspNet.Security.OAuth.Yammer "Download AspNet.Security.OAuth.Yammer from MyGet.org") | [Documentation](https://developer.yammer.com/docs/oauth-2 "Yammer developer documentation") |
 | Yandex | [![NuGet](https://buildstats.info/nuget/AspNet.Security.OAuth.Yandex?includePreReleases=false)](https://www.nuget.org/packages/AspNet.Security.OAuth.Yandex/ "Download AspNet.Security.OAuth.Yandex from NuGet.org") | [![MyGet](https://buildstats.info/myget/aspnet-contrib/AspNet.Security.OAuth.Yandex?includePreReleases=true)](https://www.myget.org/feed/aspnet-contrib/package/nuget/AspNet.Security.OAuth.Yandex "Download AspNet.Security.OAuth.Yandex from MyGet.org") | [Documentation](https://tech.yandex.com/oauth/ "Yandex developer documentation") |
 | Zalo | [![NuGet](https://buildstats.info/nuget/AspNet.Security.OAuth.Zalo?includePreReleases=false)](https://www.nuget.org/packages/AspNet.Security.OAuth.Zalo/ "Download AspNet.Security.OAuth.Zalo from NuGet.org") | [![MyGet](https://buildstats.info/myget/aspnet-contrib/AspNet.Security.OAuth.Zalo?includePreReleases=true)](https://www.myget.org/feed/aspnet-contrib/package/nuget/AspNet.Security.OAuth.Zalo "Download AspNet.Security.OAuth.Zalo from MyGet.org") | [Documentation](https://developers.zalo.me/docs/api/social-api-4 "Zalo developer documentation") |
+| Zendesk | [![NuGet](https://buildstats.info/nuget/AspNet.Security.OAuth.Zendesk?includePreReleases=false)](https://www.nuget.org/packages/AspNet.Security.OAuth.Zendesk/ "Download AspNet.Security.OAuth.Zendesk from NuGet.org") | [![MyGet](https://buildstats.info/myget/aspnet-contrib/AspNet.Security.OAuth.Zendesk?includePreReleases=true)](https://www.myget.org/feed/aspnet-contrib/package/nuget/AspNet.Security.OAuth.Zendesk "Download AspNet.Security.OAuth.Zendesk from MyGet.org") | [Documentation](https://support.zendesk.com/hc/en-us/articles/203663836#topic_ar1_mfs_qk "Zendesk developer documentation") |
 
 <!--
 | CHANGEME | [![NuGet](https://buildstats.info/nuget/AspNet.Security.OAuth.CHANGEME?includePreReleases=false)](https://www.nuget.org/packages/AspNet.Security.OAuth.CHANGEME/ "Download AspNet.Security.OAuth.CHANGEME from NuGet.org") | [![MyGet](https://buildstats.info/myget/aspnet-contrib/AspNet.Security.OAuth.CHANGEME?includePreReleases=true)](https://www.myget.org/feed/aspnet-contrib/package/nuget/AspNet.Security.OAuth.CHANGEME "Download AspNet.Security.OAuth.CHANGEME from MyGet.org") | [Documentation](CHANGEME "CHANGEME developer documentation") |
