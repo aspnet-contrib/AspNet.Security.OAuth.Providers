@@ -53,6 +53,6 @@ namespace AspNet.Security.OAuth.Trakt
         /// <summary>
         /// Default value for <see cref="TraktAuthenticationOptions.ApiVersion"/>.
         /// </summary>
-        public const string ApiVersion = "2";
+        public static readonly string ApiVersion = "2";
     }
 }

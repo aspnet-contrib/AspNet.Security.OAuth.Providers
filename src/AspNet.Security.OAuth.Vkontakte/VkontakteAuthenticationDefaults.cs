@@ -52,6 +52,6 @@ namespace AspNet.Security.OAuth.Vkontakte
         /// <summary>
         /// Default API version.
         /// </summary>
-        public const string ApiVersion = "5.131";
+        public static readonly string ApiVersion = "5.131";
     }
 }

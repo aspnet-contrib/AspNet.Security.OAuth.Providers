@@ -52,6 +52,6 @@ namespace AspNet.Security.OAuth.Foursquare
         /// <summary>
         /// Default value for <see cref="FoursquareAuthenticationOptions.ApiVersion"/>.
         /// </summary>
-        public const string ApiVersion = "20150927";
+        public static readonly string ApiVersion = "20150927";
     }
 }
