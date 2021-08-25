@@ -67,16 +67,7 @@ services.AddAuthentication(options => /* Auth configuration */)
 
 ### Issues Loading Private Key
 
-If you encounter issues loading the private key of the certificate, the reasons could include one of the two scenarios:
-
-  1. Using .NET Core 2.x on Linux or macOS
-  1. Using Windows Server with IIS
-
-#### .NET Core 2.x on Linux or macOS
-
-For the first scenario, before .NET Core 3.0 non-Windows platforms did not support loading `.p8` (PKCS #8) files. If you cannot use .NET Core 3.1 or later, it is recommended that you create a `.pfx` certificate file from your `.p8` file and use that instead.
-
-Further information can be found in this GitHub issue: https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers/issues/390
+If you encounter issues loading the private key of the certificate, the reasons could include one of the following scenarios.
 
 #### Windows Server with IIS
 
