@@ -93,7 +93,7 @@ namespace AspNet.Security.OAuth.Apple.Internal
                 Subject = new ClaimsIdentity(new[] { subject }),
             };
 
-            string pem = await context.Options.PrivateKey!(context.Options.KeyId!, context.HttpContext.RequestAborted);
+            var pem = await context.Options.PrivateKey!(context.Options.KeyId!, context.HttpContext.RequestAborted);
             string clientSecret;
 
             using (var algorithm = CreateAlgorithm(pem))
@@ -108,13 +108,13 @@ namespace AspNet.Security.OAuth.Apple.Internal
             return (clientSecret, expiresAt);
         }
 
-        private static ECDsa CreateAlgorithm(ReadOnlySpan<char> pem)
+        private static ECDsa CreateAlgorithm(ReadOnlyMemory<char> pem)
         {
             var algorithm = ECDsa.Create();
 
             try
             {
-                algorithm.ImportFromPem(pem);
+                algorithm.ImportFromPem(pem.Span);
                 return algorithm;
             }
             catch (Exception)

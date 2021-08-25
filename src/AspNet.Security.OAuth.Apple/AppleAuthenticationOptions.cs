@@ -92,7 +92,7 @@ namespace AspNet.Security.OAuth.Apple
         /// <remarks>
         /// The private key should be in PKCS #8 (<c>.p8</c>) format.
         /// </remarks>
-        public Func<string, CancellationToken, Task<string>>? PrivateKey { get; set; }
+        public Func<string, CancellationToken, Task<ReadOnlyMemory<char>>>? PrivateKey { get; set; }
 
         /// <summary>
         /// Gets or sets the Team ID for your Apple Developer account.

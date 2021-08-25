@@ -4,6 +4,7 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using System;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,7 +13,7 @@ namespace AspNet.Security.OAuth.Apple
 {
     internal static class TestKeys
     {
-        internal static async Task<string> GetPrivateKeyAsync(CancellationToken cancellationToken = default)
-            => await File.ReadAllTextAsync(Path.Combine("Apple", "test.p8"), cancellationToken);
+        internal static async Task<ReadOnlyMemory<char>> GetPrivateKeyAsync(CancellationToken cancellationToken = default)
+            => (await File.ReadAllTextAsync(Path.Combine("Apple", "test.p8"), cancellationToken)).AsMemory();
     }
 }

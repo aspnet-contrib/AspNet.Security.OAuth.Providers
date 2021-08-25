@@ -40,7 +40,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 using var stream = fileInfo.CreateReadStream();
                 using var reader = new StreamReader(stream);
 
-                return await reader.ReadToEndAsync();
+                return (await reader.ReadToEndAsync()).AsMemory();
             };
 
             return options;
