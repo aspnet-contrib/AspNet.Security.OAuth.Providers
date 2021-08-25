@@ -25,7 +25,7 @@ _None._
 
 Versions of the Discord provider before version `6.0.0` would automatically map the user's avatar URL as the `urn:discord:avatar:url` claim.
 
-This functionality is no longer built-in (see #584 and #585), but can be added to your application with some extra code similar to that shown in the sample below.
+This functionality is no longer built-in (see [#584](https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers/issues/584) and [#585](https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers/pull/585)), but can be added to your application with some extra code similar to that shown in the sample below.
 
 ```csharp
 services.AddAuthentication(options => /* Auth configuration */)
