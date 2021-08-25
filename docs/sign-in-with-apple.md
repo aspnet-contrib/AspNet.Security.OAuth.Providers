@@ -10,7 +10,7 @@ This document provides some additional information and context to help you confi
 
 Unlike other providers, the `ClientSecret` property is not used as _Sign in with Apple_ does not use a static client secret value. Instead the client secret has to be generated using a private key file provided by Apple from the Developer Portal that is used with the Key ID and Team ID to create a signed JSON Web Token (JWT).
 
-The provider comes with a built-in extension method ([`UsePrivateKey(string)`](https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers/blob/8e4c19008f518f3730bab90a980e01347ba6f3d3/src/AspNet.Security.OAuth.Apple/AppleAuthenticationOptionsExtensions.cs#L20-L33 "UsePrivateKey() extension method")) to generate they secret from a `.p8` certificate file on disk that you provide. Here's a [code example](https://github.com/martincostello/SignInWithAppleSample/blob/245bb70a164b66ec98ea3c2040a7387b0a3e8f0e/src/SignInWithApple/Startup.cs#L37-L46 "Example code to configure the Apple provider"):
+The provider comes with a built-in extension method ([`UsePrivateKey(string)`](https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers/blob/8e4c19008f518f3730bab90a980e01347ba6f3d3/src/AspNet.Security.OAuth.Apple/AppleAuthenticationOptionsExtensions.cs#L20-L33 "UsePrivateKey() extension method")) to generate they secret from a `.p8` certificate file on disk that you provide. Here's a code example:
 
 ```csharp
 services.AddAuthentication(options => /* Auth configuration */)
@@ -25,7 +25,45 @@ services.AddAuthentication(options => /* Auth configuration */)
         });
 ```
 
-Alternatively you can use the [`Func<string, Task<byte[]>> PrivateKeyBytes`](https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers/blob/8e4c19008f518f3730bab90a980e01347ba6f3d3/src/AspNet.Security.OAuth.Apple/AppleAuthenticationOptions.cs#L78-L85 "Definition of PrivateKeyBytes property") property of the `AppleAuthenticationOptions` class to provide a delegate to a custom method of your own that loads the private key's bytes from another location, such as Azure Key Vault, Kubernetes secrets etc.
+Alternatively you can use the `Func<string, Task<ReadOnlyMemory<char>>> PrivateKey` property of the `AppleAuthenticationOptions` class to provide a delegate to a custom method of your own that loads the private key's bytes from another location, such as Azure Key Vault, Kubernetes secrets etc.
+
+Below are two examples of this approach.
+
+#### Loading from an Environment Variable
+
+```csharp
+services.AddAuthentication(options => /* Auth configuration */)
+        .AddApple(options =>
+        {
+            options.ClientId = Configuration["Apple:ClientId"];
+            options.KeyId = Configuration["Apple:KeyId"];
+            options.TeamId = Configuration["Apple:TeamId"];
+            options.PrivateKey = (keyId, _) =>
+            {
+                return Task.FromResult(Configuration[$"Apple:Key:{keyId}"].AsMemory());
+            };
+        });
+```
+
+#### Loading from Azure Key Vault
+
+```csharp
+services.AddAuthentication(options => /* Auth configuration */)
+        .AddApple()
+        .Services
+        .AddOptions<AppleAuthenticationOptions>(AppleAuthenticationDefaults.AuthenticationScheme)
+        .Configure<IConfiguration, SecretClient>((options, configuration, client) =>
+        {
+            options.ClientId = configuration["Apple:ClientId"];
+            options.KeyId = configuration["Apple:KeyId"];
+            options.TeamId = configuration["Apple:TeamId"];
+            options.PrivateKey = async (keyId, cancellationToken) =>
+            {
+                var secret = await client.GetSecretAsync($"AuthKey-{keyId}", cancellationToken: cancellationToken);
+                return secret.Value.Value.AsMemory();
+            };
+        });
+```
 
 ### Issues Loading Private Key
 
@@ -63,7 +101,7 @@ Below are links to some issues raised against this repository that were related 
 
 ## Sign in with Apple on iOS
 
-When using _Sign In with Apple_ on an iOS 13+ Device, [Apple provides a different authentication workflow](https://developer.apple.com/documentation/authenticationservices) that returns the validation response to the app instead of in a server callback. Using that response to authenticate a user against your own backend requires sending the response to your servers and [communicating with the Apple authentication endpoint from there](https://developer.apple.com/documentation/sign_in_with_apple/generate_and_validate_tokens). 
+When using _Sign In with Apple_ on an iOS 13+ Device, [Apple provides a different authentication workflow](https://developer.apple.com/documentation/authenticationservices) that returns the validation response to the app instead of in a server callback. Using that response to authenticate a user against your own backend requires sending the response to your servers and [communicating with the Apple authentication endpoint from there](https://developer.apple.com/documentation/sign_in_with_apple/generate_and_validate_tokens).
 
 This workflow is out of the scope of this package but client secret generation and token validation can provide a starting point for an ASP.NET.Core integration. Note that the `ClientId` in this case is the App Id where the authentication was requested, not your Services Id.
 
