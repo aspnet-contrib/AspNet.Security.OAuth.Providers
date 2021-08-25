@@ -10,7 +10,7 @@ This document provides some additional information and context to help you confi
 
 Unlike other providers, the `ClientSecret` property is not used as _Sign in with Apple_ does not use a static client secret value. Instead the client secret has to be generated using a private key file provided by Apple from the Developer Portal that is used with the Key ID and Team ID to create a signed JSON Web Token (JWT).
 
-The provider comes with a built-in extension method ([`UsePrivateKey(string)`](https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers/blob/8e4c19008f518f3730bab90a980e01347ba6f3d3/src/AspNet.Security.OAuth.Apple/AppleAuthenticationOptionsExtensions.cs#L20-L33 "UsePrivateKey() extension method")) to generate they secret from a `.p8` certificate file on disk that you provide. Here's a code example:
+The provider comes with a built-in extension method `UsePrivateKey(string)` to generate they secret from a `.p8` certificate file on disk that you provide. Here's a code example:
 
 ```csharp
 services.AddAuthentication(options => /* Auth configuration */)
@@ -125,7 +125,7 @@ Below are links to a number of other documentation sources, blog posts and sampl
 | `ConfigurationManager` | `IConfigurationManager<OpenIdConnectConfiguration>?` | The configuration manager to use for the OpenID configuration. | `null` |
 | `GenerateClientSecret` | `bool` | Whether to automatically generate a client secret. | `false` |
 | `KeyId` | `string?` | The optional ID for your Sign in with Apple private key. | `null` |
-| `PrivateKeyBytes` | `Func<string, Task<byte[]>>?` | An optional delegate to use to get the raw bytes of the client's private key in PKCS #8 format. | `null` |
+| `PrivateKeyBytes` | `Func<string, Task<ReadOnlyMemory<char>>>?` | An optional delegate to use to get the characters of the client's private key in PKCS #8 format. | `null` |
 | `TeamId` | `string` | The Team ID for your Apple Developer account. | `""` |
 | `TokenAudience` | `string` | The audience used for tokens. | `AppleAuthenticationConstants.Audience` |
 | `TokenValidator` | `AppleIdTokenValidator` | A service that validates Apple ID tokens. | `An internal implementation` |
