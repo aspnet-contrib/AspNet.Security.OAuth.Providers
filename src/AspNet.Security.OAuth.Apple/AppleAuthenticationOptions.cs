@@ -85,14 +85,14 @@ namespace AspNet.Security.OAuth.Apple
         public string MetadataEndpoint { get; set; } = AppleAuthenticationDefaults.MetadataEndpoint;
 
         /// <summary>
-        /// Gets or sets an optional delegate to get the raw bytes of the client's private key
-        /// which is passed the value of the <see cref="KeyId"/> property and the <see cref="CancellationToken"/>
+        /// Gets or sets an optional delegate to get the client's private key which is passed
+        /// the value of the <see cref="KeyId"/> property and the <see cref="CancellationToken"/>
         /// associated with the current HTTP request.
         /// </summary>
         /// <remarks>
         /// The private key should be in PKCS #8 (<c>.p8</c>) format.
         /// </remarks>
-        public Func<string, CancellationToken, Task<byte[]>>? PrivateKeyBytes { get; set; }
+        public Func<string, CancellationToken, Task<string>>? PrivateKey { get; set; }
 
         /// <summary>
         /// Gets or sets the Team ID for your Apple Developer account.

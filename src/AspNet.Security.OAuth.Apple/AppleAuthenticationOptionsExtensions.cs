@@ -33,22 +33,14 @@ namespace Microsoft.Extensions.DependencyInjection
             [NotNull] Func<string, IFileInfo> privateKeyFile)
         {
             options.GenerateClientSecret = true;
-            options.PrivateKeyBytes = async (keyId, _) =>
+            options.PrivateKey = async (keyId, _) =>
             {
                 var fileInfo = privateKeyFile(keyId);
 
                 using var stream = fileInfo.CreateReadStream();
                 using var reader = new StreamReader(stream);
 
-                string privateKey = await reader.ReadToEndAsync();
-
-                if (privateKey.StartsWith("-----BEGIN PRIVATE KEY-----", StringComparison.Ordinal))
-                {
-                    string[] lines = privateKey.Split('\n');
-                    privateKey = string.Join(string.Empty, lines[1..^1]);
-                }
-
-                return Convert.FromBase64String(privateKey);
+                return await reader.ReadToEndAsync();
             };
 
             return options;

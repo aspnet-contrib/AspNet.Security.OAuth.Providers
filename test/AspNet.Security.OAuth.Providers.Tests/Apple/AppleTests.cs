@@ -92,10 +92,10 @@ namespace AspNet.Security.OAuth.Apple
                     options.TeamId = "my-team-id";
                     options.TokenValidationParameters.ValidateLifetime = false;
                     options.ValidateTokens = true;
-                    options.PrivateKeyBytes = async (keyId, _) =>
+                    options.PrivateKey = async (keyId, cancellationToken) =>
                     {
                         Assert.Equal("my-key-id", keyId);
-                        return await TestKeys.GetPrivateKeyBytesAsync();
+                        return await TestKeys.GetPrivateKeyAsync(cancellationToken);
                     };
                 });
             }
@@ -265,7 +265,6 @@ namespace AspNet.Security.OAuth.Apple
             // Assert
             exception.InnerException.ShouldNotBeNull();
             exception.InnerException.ShouldBeOfType<InvalidOperationException>();
-            exception.InnerException!.Message.ShouldNotBeNull();
             exception.InnerException.Message.ShouldBe("No Apple ID token was returned in the OAuth token response.");
         }
 
