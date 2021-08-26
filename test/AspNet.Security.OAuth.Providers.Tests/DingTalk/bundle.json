@@ -1,0 +1,118 @@
+{
+  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
+  "items": [
+    {
+      "uri": "https://oapi.dingtalk.com/gettoken?appkey=my-client-id&appsecret=my-client-secret",
+      "contentFormat": "json",
+      "contentJson": {
+        "errcode": 0,
+        "access_token": "secret-access-token",
+        "errmsg": "ok",
+        "expires_in": 7200
+      }
+    },
+    {
+      "uri": "https://oapi.dingtalk.com/sns/getuserinfo_bycode?accessKey=my-client-id&timestamp=1576362142000&signature=1BzWTiS4H2VCnl%2FZRp9nUXFdJDzQ5xpVH6JZsW2Jk2w%3D",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "errcode": 0,
+        "user_info": {
+          "nick": "my-nick",
+          "unionid": "dingdkjjojoixxxx",
+          "openid": "dingsdsqwlklklxxxx",
+          "main_org_auth_high_level": true
+        },
+        "errmsg": "ok"
+      }
+    },
+    {
+      "uri": "https://oapi.dingtalk.com/topapi/user/getbyunionid?access_token=secret-access-token",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "errcode": 0,
+        "errmsg": "ok",
+        "result": {
+          "contact_type": 0,
+          "userid": "zhangsan"
+        },
+        "request_id": "zcqi5450rpit"
+      }
+    },
+    {
+      "uri": "https://oapi.dingtalk.com/topapi/v2/user/get?access_token=secret-access-token",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "errcode": 0,
+        "errmsg": "ok",
+        "result": {
+          "extension": "{\"爱好\":\"旅游\",\"年龄\":\"24\"}",
+          "unionid": "xBnhjgjmofhhsLxxx",
+          "boss": false,
+          "unionEmpExt": {
+            "corpId": "ding1c417cfd9e3142d1acaaa37764f9xxxx",
+            "userid": "45694432-1019596262",
+            "unionEmpMapList": [
+              {
+                "corpId": "ding1c417cfd9e3142d1acaaa37764f9xxxx",
+                "userid": "45694432-1019596262"
+              }
+            ]
+          },
+          "role_list": [
+            {
+              "group_name": "默认",
+              "id": 1507113578,
+              "name": "主管理员"
+            }
+          ],
+          "admin": true,
+          "remark": "杨XX",
+          "title": "服务经理",
+          "hired_date": 1598457600000,
+          "userid": "manager4220",
+          "work_place": "杭州",
+          "dept_order_list": [
+            {
+              "dept_id": 1,
+              "order": 176318669012199520
+            },
+            {
+              "dept_id": 379661095,
+              "order": 176318556766960500
+            }
+          ],
+          "real_authed": true,
+          "dept_id_list": [
+            1,
+            379661095
+          ],
+          "job_number": "10001",
+          "email": "1@example.com",
+          "leader_in_dept": [
+            {
+              "dept_id": 379661095,
+              "leader": false
+            },
+            {
+              "dept_id": 1,
+              "leader": false
+            }
+          ],
+          "manager_userid": "user01",
+          "mobile": "188xxxx1234",
+          "active": true,
+          "telephone": "010-8xxxx6-2345",
+          "avatar": "https://work.dingtalk.local/avatar.png",
+          "hide_mobile": false,
+          "senior": false,
+          "name": "杨xxx",
+          "state_code": "86"
+        },
+        "request_id": "51jql88tpa6g"
+      }
+    }
+  ]
+}

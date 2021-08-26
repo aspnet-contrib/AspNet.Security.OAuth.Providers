@@ -42,12 +42,6 @@ namespace AspNet.Security.OAuth.DingTalk
             ClaimActions.MapJsonKey(Claims.Active, "active");
         }
 
-        public bool IsUseUserPasswordLogin
-        {
-            get { return AuthorizationEndpoint == DingTalkAuthenticationDefaults.AuthorizationUserPassEndpoint; }
-            set { AuthorizationEndpoint = value ? DingTalkAuthenticationDefaults.AuthorizationUserPassEndpoint : DingTalkAuthenticationDefaults.AuthorizationEndpoint; }
-        }
-
         public string AppId
         {
             get => ClientId;

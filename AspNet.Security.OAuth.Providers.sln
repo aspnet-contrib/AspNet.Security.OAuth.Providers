@@ -188,6 +188,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{C2CA4B38-A
 		docs\amocrm.md = docs\amocrm.md
 		docs\battlenet.md = docs\battlenet.md
 		docs\bitbucket.md = docs\bitbucket.md
+		docs\dingtalk.md = docs\dingtalk.md
 		docs\discord.md = docs\discord.md
 		docs\dropbox.md = docs\dropbox.md
 		docs\eveonline.md = docs\eveonline.md
