@@ -1,13 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>$(DefaultNetCoreTargetFramework)</TargetFramework>
+    <TargetFrameworks>$(DefaultNetCoreTargetFramework)</TargetFrameworks>
   </PropertyGroup>
 
   <PropertyGroup>
     <Description>ASP.NET Core security middleware enabling QuickBooks authentication.</Description>
     <Authors>RekingShui</Authors>
     <PackageTags>quickbooks;aspnetcore;authentication;oauth;security</PackageTags>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>
