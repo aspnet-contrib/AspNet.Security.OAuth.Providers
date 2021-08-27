@@ -1,0 +1,23 @@
+{
+  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
+  "items": [
+    {
+      "uri": "https://oauth.platform.intuit.com/oauth2/v1/tokens/bearer",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "secret-access-token",
+        "token_type": "access",
+        "refresh_token": "secret-refresh-token",
+        "expires_in": "300"
+      }
+    },
+    {
+      "uri": "https://sandbox-accounts.platform.intuit.com/v1/openid_connect/userinfo?client_id=my-client-id",
+      "contentFormat": "json",
+      "contentJson": {
+        "email": "rekingshui@gmail.com"
+      }
+    }
+  ]
+}
