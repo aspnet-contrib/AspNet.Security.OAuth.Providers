@@ -6,7 +6,7 @@
 
   <PropertyGroup>
     <Description>ASP.NET Core security middleware enabling QuickBooks authentication.</Description>
-    <Authors>biltongza</Authors>
+    <Authors>RekingShui</Authors>
     <PackageTags>quickbooks;aspnetcore;authentication;oauth;security</PackageTags>
   </PropertyGroup>
 
