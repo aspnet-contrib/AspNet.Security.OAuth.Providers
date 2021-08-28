@@ -221,7 +221,7 @@ namespace AspNet.Security.OAuth.DingTalk
             });
             using var requestContent = new ReadOnlyMemoryContent(await CopyPayloadAsync("tmp_auth_code", code));
             requestContent.Headers.ContentType = new MediaTypeHeaderValue(MediaTypeNames.Application.Json);
-            using var response = await Backchannel.PostAsync(address, requestContent);
+            using var response = await Backchannel.PostAsync(address, requestContent, Context.RequestAborted);
             if (!response.IsSuccessStatusCode)
             {
                 Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
