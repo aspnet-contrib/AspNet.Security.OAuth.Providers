@@ -202,9 +202,9 @@ namespace AspNet.Security.OAuth.DingTalk
             byte[] keyByte = encoding.GetBytes(secret);
             byte[] messageBytes = encoding.GetBytes(timestamp);
 
-            using (var hmacsha256 = new HMACSHA256(keyByte))
+            using (var hmac = new HMACSHA256(keyByte))
             {
-                byte[] hashMessage = hmacsha256.ComputeHash(messageBytes);
+                byte[] hashMessage = hmac.ComputeHash(messageBytes);
                 return System.Convert.ToBase64String(hashMessage);
             }
         }
