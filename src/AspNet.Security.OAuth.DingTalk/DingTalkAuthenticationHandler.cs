@@ -34,7 +34,7 @@ namespace AspNet.Security.OAuth.DingTalk
         {
         }
 
-        protected override string BuildChallengeUrl(AuthenticationProperties properties, string redirectUri)
+        protected override string BuildChallengeUrl([NotNull] AuthenticationProperties properties, [NotNull] string redirectUri)
         {
             string stateValue = Options.StateDataFormat.Protect(properties);
             return QueryHelpers.AddQueryString(Options.AuthorizationEndpoint, new Dictionary<string, string?>
