@@ -67,7 +67,7 @@ namespace AspNet.Security.OAuth.DingTalk
                 throw new HttpRequestException("An error occurred while retrieving user information.");
             }
 
-            var content = await response.Content.ReadAsStringAsync();
+            var content = await response.Content.ReadAsStringAsync(Context.RequestAborted);
             using var payload = JsonDocument.Parse(content);
 
             var status = payload.RootElement.GetProperty("errcode").GetInt32();
