@@ -12,8 +12,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <FrameworkReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="IppDotNetSdkForQuickBooksApiV3" Version="14.6.1" />
     <PackageReference Include="JetBrains.Annotations" PrivateAssets="All" />
   </ItemGroup>
 
