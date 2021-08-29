@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 using Xunit.Abstractions;
+using static AspNet.Security.OAuth.QuickBooks.QuickBooksAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.QuickBooksTests
 {
@@ -32,7 +33,10 @@ namespace AspNet.Security.OAuth.QuickBooksTests
         }
 
         [Theory]
-        [InlineData(ClaimTypes.Email, "rekingshui@gmail.com")]
+        [InlineData(ClaimTypes.NameIdentifier, "2039290222")]
+        [InlineData(ClaimTypes.MobilePhone, "(314)000-0000")]
+        [InlineData(ClaimTypes.Email, "john.smith@test.local")]
+        [InlineData(Claims.EmailVerified, "true")]
         public async Task Can_Sign_In_Using_QuickBooks(string claimType, string claimValue)
         {
             // Arrange

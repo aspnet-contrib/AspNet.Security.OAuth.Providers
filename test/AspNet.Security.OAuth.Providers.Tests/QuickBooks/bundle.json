@@ -16,7 +16,10 @@
       "uri": "https://sandbox-accounts.platform.intuit.com/v1/openid_connect/userinfo?client_id=my-client-id",
       "contentFormat": "json",
       "contentJson": {
-        "email": "rekingshui@gmail.com"
+        "sub": "2039290222",
+        "mobilephone": "(314)000-0000",
+        "email": "john.smith@test.local",
+        "emailVerified": "true"
       }
     }
   ]
