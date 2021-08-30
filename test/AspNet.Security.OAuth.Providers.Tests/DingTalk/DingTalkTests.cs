@@ -37,6 +37,9 @@ namespace AspNet.Security.OAuth.DingTalk
         [InlineData("urn:dingtalk:avatar", "https://work.dingtalk.local/avatar.png")]
         [InlineData("urn:dingtalk:nick", "my-nick")]
         [InlineData("urn:dingtalk:active", "True")]
+        [InlineData("urn:dingtalk:openid", "dingsdsqwlklklxxxx")]
+        [InlineData("urn:dingtalk:unionid", "dingdkjjojoixxxx")]
+        [InlineData("urn:dingtalk:main_org_auth_high_level", "True")]
         public async Task Can_Sign_In_Using_DingTalk(string claimType, string claimValue)
         {
             // Arrange

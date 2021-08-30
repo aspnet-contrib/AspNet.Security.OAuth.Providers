@@ -25,7 +25,7 @@ namespace AspNet.Security.OAuth.DingTalk
             AuthorizationEndpoint = DingTalkAuthenticationDefaults.AuthorizationEndpoint;
             UserInformationEndpoint = DingTalkAuthenticationDefaults.UserInformationEndpoint;
             TokenEndpoint = DingTalkAuthenticationDefaults.TokenEndpoint;
-            GetByUnionidEndpoint = DingTalkAuthenticationDefaults.GetByUnionidEndpoint;
+            GetByUnionIdEndpoint = DingTalkAuthenticationDefaults.GetByUnionidEndpoint;
             GetUserInfoByCodeEndpoint = DingTalkAuthenticationDefaults.GetUserInfoByCodeEndpoint;
 
             Scope.Add("snsapi_login");
@@ -42,18 +42,6 @@ namespace AspNet.Security.OAuth.DingTalk
             ClaimActions.MapJsonKey(Claims.Active, "active");
         }
 
-        public string AppId
-        {
-            get => ClientId;
-            set => ClientId = value;
-        }
-
-        public string AppSecret
-        {
-            get => ClientSecret;
-            set => ClientSecret = value;
-        }
-
         /// <summary>
         /// Address book language.
         ///     zh_CN: Chinese (default)
@@ -62,9 +50,9 @@ namespace AspNet.Security.OAuth.DingTalk
         public string Language { get; set; } = "zh_CN";
 
         /// <summary>
-        /// Gets or sets the URL of the Unioni endpoint.
+        /// Gets or sets the URL of the UnionId endpoint.
         /// </summary>
-        public string GetByUnionidEndpoint { get; set; }
+        public string GetByUnionIdEndpoint { get; set; }
 
         /// <summary>
         /// Gets or sets the URL of the UserInfo endpoint.
