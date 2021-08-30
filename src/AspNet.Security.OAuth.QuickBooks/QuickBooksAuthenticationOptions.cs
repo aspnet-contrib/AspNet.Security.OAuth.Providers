@@ -16,8 +16,6 @@ namespace AspNet.Security.OAuth.QuickBooks
     /// </summary>
     public class QuickBooksAuthenticationOptions : OAuthOptions
     {
-        private readonly string scopeValOpenId = "openid email profile phone address";
-
         public QuickBooksAuthenticationOptions()
         {
             ClaimsIssuer = QuickBooksAuthenticationDefaults.Issuer;
@@ -27,7 +25,10 @@ namespace AspNet.Security.OAuth.QuickBooks
             TokenEndpoint = QuickBooksAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = QuickBooksAuthenticationDefaults.UserInformationEndpoint;
 
-            Scope.Add(scopeValOpenId);
+            Scope.Add("openid");
+            Scope.Add("profile");
+            Scope.Add("phone");
+            Scope.Add("email");
 
             ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "sub");
             ClaimActions.MapJsonKey(ClaimTypes.MobilePhone, "mobilephone");

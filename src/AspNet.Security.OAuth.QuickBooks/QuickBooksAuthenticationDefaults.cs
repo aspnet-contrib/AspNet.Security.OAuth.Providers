@@ -44,6 +44,6 @@ namespace AspNet.Security.OAuth.QuickBooks
         /// <summary>
         /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
         /// </summary>
-        public const string UserInformationEndpoint = "https://sandbox-accounts.platform.intuit.com/v1/openid_connect/userinfo";
+        public const string UserInformationEndpoint = "https://accounts.platform.intuit.com/v1/openid_connect/userinfo";
     }
 }

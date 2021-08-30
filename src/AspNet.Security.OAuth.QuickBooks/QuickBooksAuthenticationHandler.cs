@@ -63,9 +63,5 @@ namespace AspNet.Security.OAuth.QuickBooks
             await Options.Events.CreatingTicket(context);
             return new AuthenticationTicket(context.Principal!, context.Properties, Scheme.Name);
         }
-
-        /// <inheritdoc/>
-        protected override string FormatScope([NotNull] IEnumerable<string> scopes)
-            => string.Join(',', scopes);
     }
 }
