@@ -25,7 +25,7 @@ namespace AspNet.Security.OAuth.DingTalk
             AuthorizationEndpoint = DingTalkAuthenticationDefaults.AuthorizationEndpoint;
             UserInformationEndpoint = DingTalkAuthenticationDefaults.UserInformationEndpoint;
             TokenEndpoint = DingTalkAuthenticationDefaults.TokenEndpoint;
-            GetByUnionIdEndpoint = DingTalkAuthenticationDefaults.GetByUnionidEndpoint;
+            GetByUnionIdEndpoint = DingTalkAuthenticationDefaults.GetByUnionIdEndpoint;
             GetUserInfoByCodeEndpoint = DingTalkAuthenticationDefaults.GetUserInfoByCodeEndpoint;
 
             Scope.Add("snsapi_login");

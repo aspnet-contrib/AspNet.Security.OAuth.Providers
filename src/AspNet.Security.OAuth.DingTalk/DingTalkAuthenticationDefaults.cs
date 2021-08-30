@@ -52,7 +52,7 @@ namespace AspNet.Security.OAuth.DingTalk
         /// <summary>
         /// Default value for <see cref="DingTalkAuthenticationOptions.GetByUnionIdEndpoint"/>.
         /// </summary>
-        public const string GetByUnionidEndpoint = "https://oapi.dingtalk.com/topapi/user/getbyunionid";
+        public const string GetByUnionIdEndpoint = "https://oapi.dingtalk.com/topapi/user/getbyunionid";
 
         /// <summary>
         /// Default value for <see cref="DingTalkAuthenticationOptions.GetUserInfoByCodeEndpoint"/>.
