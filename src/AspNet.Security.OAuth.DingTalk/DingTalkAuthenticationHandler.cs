@@ -73,10 +73,11 @@ namespace AspNet.Security.OAuth.DingTalk
 
             // See https://developers.dingtalk.com/document/app/query-user-details for details.
             var address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, "access_token", tokens.AccessToken);
-            using var requestContent = new ReadOnlyMemoryContent(await CopyPayloadAsync(new Dictionary<string, Microsoft.Extensions.Primitives.StringValues>
+
+            using var requestContent = new ReadOnlyMemoryContent(JsonSerializer.SerializeToUtf8Bytes(new
             {
-                ["userid"] = userIdentifier.userid,
-                ["language"] = Options.Language
+                userid = userIdentifier.userid,
+                language = Options.Language
             }));
             requestContent.Headers.ContentType = new MediaTypeHeaderValue(MediaTypeNames.Application.Json);
             using var response = await Backchannel.PostAsync(address, requestContent, Context.RequestAborted);
@@ -93,7 +94,7 @@ namespace AspNet.Security.OAuth.DingTalk
             return new AuthenticationTicket(context.Principal!, context.Properties, Scheme.Name);
         }
 
-        protected override string FormatScope() => string.Join(",", Options.Scope);
+        protected override string FormatScope() => string.Join(',', Options.Scope);
 
         private static async Task<System.ReadOnlyMemory<byte>> MergePayloadAsync(JsonElement result, (string? nick, string? unionid, string? openid, bool mainOrgAuthHighLevel) userInfoTmp)
         {
@@ -110,41 +111,6 @@ namespace AspNet.Security.OAuth.DingTalk
 
             writer.WriteEndObject();
             await writer.FlushAsync();
-            return bufferWriter.WrittenMemory;
-        }
-
-        private static async Task<System.ReadOnlyMemory<byte>> CopyPayloadAsync(string propertyName, string value)
-        {
-            var bufferWriter = new ArrayBufferWriter<byte>();
-
-            using var writer = new Utf8JsonWriter(bufferWriter);
-
-            writer.WriteStartObject();
-
-            writer.WriteString(propertyName, value);
-
-            writer.WriteEndObject();
-            await writer.FlushAsync();
-
-            return bufferWriter.WrittenMemory;
-        }
-
-        private static async Task<System.ReadOnlyMemory<byte>> CopyPayloadAsync(Dictionary<string, Microsoft.Extensions.Primitives.StringValues> content)
-        {
-            var bufferWriter = new ArrayBufferWriter<byte>();
-
-            using var writer = new Utf8JsonWriter(bufferWriter);
-
-            writer.WriteStartObject();
-
-            foreach (var item in content)
-            {
-                writer.WriteString(item.Key, item.Value);
-            }
-
-            writer.WriteEndObject();
-            await writer.FlushAsync();
-
             return bufferWriter.WrittenMemory;
         }
 
@@ -202,7 +168,10 @@ namespace AspNet.Security.OAuth.DingTalk
                 ["timestamp"] = timestamp,
                 ["signature"] = Signature(timestamp, Options.ClientSecret),
             });
-            using var requestContent = new ReadOnlyMemoryContent(await CopyPayloadAsync("tmp_auth_code", code));
+            using var requestContent = new ReadOnlyMemoryContent(JsonSerializer.SerializeToUtf8Bytes(new
+            {
+                tmp_auth_code = code
+            }));
             requestContent.Headers.ContentType = new MediaTypeHeaderValue(MediaTypeNames.Application.Json);
             using var response = await Backchannel.PostAsync(address, requestContent, Context.RequestAborted);
             using var payload = await GetPayloadAsync(response);
@@ -215,7 +184,10 @@ namespace AspNet.Security.OAuth.DingTalk
         private async Task<(string? userid, int contactType)> GetUserIdentifierAsync(string unionid, string accessToken)
         {
             var address = QueryHelpers.AddQueryString(Options.GetByUnionIdEndpoint, "access_token", accessToken);
-            using var requestContent = new ReadOnlyMemoryContent(await CopyPayloadAsync("unionid", unionid));
+            using var requestContent = new ReadOnlyMemoryContent(JsonSerializer.SerializeToUtf8Bytes(new
+            {
+                unionid = unionid
+            }));
             requestContent.Headers.ContentType = new MediaTypeHeaderValue(MediaTypeNames.Application.Json);
             using var response = await Backchannel.PostAsync(address, requestContent);
             using var payload = await GetPayloadAsync(response);
