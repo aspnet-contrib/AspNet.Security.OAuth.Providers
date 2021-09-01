@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netcoreapp5.0;netcoreapp3.1</TargetFrameworks>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Description>ASP.NET Core security middleware enabling HubSpot authentication.</Description>
+    <Authors>Carlin Scott</Authors>
+    <Company>Direct Marketing Solutions, LLC</Company>
+    <PackageId>AspNet.Security.OAuth.HubSpot</PackageId>
+    <PackageTags>aspnetcore;authentication;hubspot;oauth;security</PackageTags>
+    <AssemblyVersion>5.0.13.0</AssemblyVersion>
+    <FileVersion>5.0.13.0</FileVersion>
+    <Version>5.0.13-dev</Version>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="JetBrains.Annotations" PrivateAssets="All" />
+  </ItemGroup>
+
+</Project>
