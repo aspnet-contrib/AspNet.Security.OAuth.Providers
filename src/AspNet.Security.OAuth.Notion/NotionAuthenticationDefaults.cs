@@ -37,7 +37,7 @@ namespace AspNet.Security.OAuth.Notion
         /// <summary>
         /// Default value for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
         /// </summary>
-        public const string AuthorizationEndpoint = "https://api.notion.com/v1/oauth/authorize";
+        public const string AuthorizationEndpoint = "https://api.notion.com/v1/oauth/authorize?owner=user";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.TokenEndpoint"/>.
