@@ -70,7 +70,7 @@ namespace AspNet.Security.OAuth.Kloudless
 
             context.RunClaimActions(accounts[0]);
 
-            await Options.Events.CreatingTicket(context);
+            await Events.CreatingTicket(context);
             return new AuthenticationTicket(context.Principal!, context.Properties, Scheme.Name);
         }
     }
