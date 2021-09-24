@@ -13,6 +13,7 @@ using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using AspNet.Security.OAuth.Apple;
 using AspNet.Security.OAuth.Infrastructure;
 using JustEat.HttpClientInterception;
 using MartinCostello.Logging.XUnit;
@@ -22,6 +23,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Shouldly;
 using Xunit;
 using Xunit.Abstractions;
@@ -150,9 +152,63 @@ namespace AspNet.Security.OAuth
                         return Task.CompletedTask;
                     };
 
-                    if (options is Apple.AppleAuthenticationOptions appleOptions)
+                    if (options is AppleAuthenticationOptions appleOptions)
                     {
                         appleOptions.JwtSecurityTokenHandler = new FrozenJwtSecurityTokenHandler();
+                    }
+                });
+            }
+
+            using var server = CreateTestServer(ConfigureServices);
+
+            // Act
+            var claims = await AuthenticateUserAsync(server);
+
+            // Assert
+            onCreatingTicketEventRaised.ShouldBeTrue();
+        }
+
+        [Fact]
+        public async Task OnCreatingTicket_Is_Raised_By_Handler_Using_Custom_Events_Type()
+        {
+            // Arrange
+            bool onCreatingTicketEventRaised = false;
+
+            void ConfigureServices(IServiceCollection services)
+            {
+                services.TryAddScoped((_) =>
+                {
+                    return new CustomOAuthEvents()
+                    {
+                        OnCreatingTicket = (context) =>
+                        {
+                            onCreatingTicketEventRaised = true;
+                            return Task.CompletedTask;
+                        }
+                    };
+                });
+                services.TryAddScoped((_) =>
+                {
+                    return new CustomAppleAuthenticationEvents()
+                    {
+                        OnCreatingTicket = (context) =>
+                        {
+                            onCreatingTicketEventRaised = true;
+                            return Task.CompletedTask;
+                        }
+                    };
+                });
+
+                services.PostConfigureAll<TOptions>((options) =>
+                {
+                    if (options is AppleAuthenticationOptions appleOptions)
+                    {
+                        appleOptions.EventsType = typeof(CustomAppleAuthenticationEvents);
+                        appleOptions.JwtSecurityTokenHandler = new FrozenJwtSecurityTokenHandler();
+                    }
+                    else
+                    {
+                        options.EventsType = typeof(CustomOAuthEvents);
                     }
                 });
             }
@@ -251,6 +307,14 @@ namespace AspNet.Security.OAuth
             {
                 actualValue.ShouldBe(claimValue);
             }
+        }
+
+        private sealed class CustomOAuthEvents : OAuthEvents
+        {
+        }
+
+        private sealed class CustomAppleAuthenticationEvents : AppleAuthenticationEvents
+        {
         }
     }
 }
