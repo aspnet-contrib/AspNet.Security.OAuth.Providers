@@ -69,7 +69,7 @@ namespace AspNet.Security.OAuth.Patreon
             var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload.RootElement);
             context.RunClaimActions(payload.RootElement.GetProperty("data"));
 
-            await Options.Events.CreatingTicket(context);
+            await Events.CreatingTicket(context);
             return new AuthenticationTicket(context.Principal!, context.Properties, Scheme.Name);
         }
     }

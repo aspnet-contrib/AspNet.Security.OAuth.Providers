@@ -70,7 +70,7 @@ namespace AspNet.Security.OAuth.Vkontakte
             // Re-run to get the email claim from the tokens response
             context.RunClaimActions(tokens.Response.RootElement);
 
-            await Options.Events.CreatingTicket(context);
+            await Events.CreatingTicket(context);
             return new AuthenticationTicket(context.Principal!, context.Properties, Scheme.Name);
         }
     }

@@ -111,7 +111,7 @@ namespace AspNet.Security.OAuth.Line
                 }
             }
 
-            await Options.Events.CreatingTicket(context);
+            await Events.CreatingTicket(context);
             return new AuthenticationTicket(context.Principal!, context.Properties, Scheme.Name);
         }
 
