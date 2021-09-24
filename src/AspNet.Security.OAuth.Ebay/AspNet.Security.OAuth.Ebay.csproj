@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net5.0</TargetFrameworks>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Description>ASP.NET Core security middleware enabling Ebay authentication.</Description>
+    <Authors>Nicola Biancolini</Authors>
+    <PackageTags>ebay;aspnetcore;authentication;oauth;security</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="JetBrains.Annotations" Version="2021.1.0" PrivateAssets="All" />
+  </ItemGroup>
+
+</Project>

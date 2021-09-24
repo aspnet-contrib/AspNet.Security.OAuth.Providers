@@ -47,6 +47,7 @@ covered by the section above.
 | BattleNet | **Required** | [Documentation](battlenet.md "BattleNet provider documentation") |
 | Bitbucket | _Optional_ | [Documentation](bitbucket.md "Bitbucket provider documentation") |
 | Discord | _Optional_ | [Documentation](discord.md "Discord provider documentation") |
+| Ebay | **Required** | [Documentation](ebay.md "Ebay provider documentation") |
 | EVEOnline | _Optional_ | [Documentation](eveonline.md "EVEOnline provider documentation") |
 | Foursquare | _Optional_ | [Documentation](foursquare.md "Foursquare provider documentation") |
 | GitHub | _Optional_ | [Documentation](github.md "GitHub provider documentation") |
