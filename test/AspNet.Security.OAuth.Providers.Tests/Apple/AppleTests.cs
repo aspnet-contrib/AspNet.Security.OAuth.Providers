@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
@@ -435,6 +436,120 @@ namespace AspNet.Security.OAuth.Apple
             second.ShouldNotBeNull();
             second.ShouldNotBeEmpty();
             first.ShouldNotBeSameAs(second);
+        }
+
+        [Fact]
+        public async Task Custom_Events_Are_Raised_By_Handler()
+        {
+            // Arrange
+            bool onGenerateClientSecretEventRaised = false;
+            bool onValidateIdTokenEventRaised = false;
+
+            void ConfigureServices(IServiceCollection services)
+            {
+                services.PostConfigureAll<AppleAuthenticationOptions>((options) =>
+                {
+                    var onGenerateClientSecret = options.Events.OnGenerateClientSecret;
+
+                    options.Events.OnGenerateClientSecret = async (context) =>
+                    {
+                        await onGenerateClientSecret(context);
+                        onGenerateClientSecretEventRaised = true;
+                    };
+
+                    var onValidateIdToken = options.Events.OnValidateIdToken;
+
+                    options.Events.OnValidateIdToken = async (context) =>
+                    {
+                        await onValidateIdToken(context);
+                        onValidateIdTokenEventRaised = true;
+                    };
+
+                    options.ClientSecret = string.Empty;
+                    options.GenerateClientSecret = true;
+                    options.JwtSecurityTokenHandler = new FrozenJwtSecurityTokenHandler();
+                    options.KeyId = "my-key-id";
+                    options.TeamId = "my-team-id";
+                    options.ValidateTokens = true;
+                    options.PrivateKeyBytes = async (keyId) =>
+                    {
+                        Assert.Equal("my-key-id", keyId);
+                        return await TestKeys.GetPrivateKeyBytesAsync();
+                    };
+                });
+            }
+
+            using var server = CreateTestServer(ConfigureServices);
+
+            // Act
+            var claims = await AuthenticateUserAsync(server);
+
+            // Assert
+            onGenerateClientSecretEventRaised.ShouldBeTrue();
+            onValidateIdTokenEventRaised.ShouldBeTrue();
+        }
+
+        [Fact]
+        public async Task Custom_Events_Are_Raised_By_Handler_Using_Custom_Events_Type()
+        {
+            // Arrange
+            bool onGenerateClientSecretEventRaised = false;
+            bool onValidateIdTokenEventRaised = false;
+
+            void ConfigureServices(IServiceCollection services)
+            {
+                services.TryAddScoped((_) =>
+                {
+                    var events = new CustomAppleAuthenticationEvents();
+
+                    var onGenerateClientSecret = events.OnGenerateClientSecret;
+
+                    events.OnGenerateClientSecret = async (context) =>
+                    {
+                        await onGenerateClientSecret(context);
+                        onGenerateClientSecretEventRaised = true;
+                    };
+
+                    var onValidateIdToken = events.OnValidateIdToken;
+
+                    events.OnValidateIdToken = async (context) =>
+                    {
+                        await onValidateIdToken(context);
+                        onValidateIdTokenEventRaised = true;
+                    };
+
+                    return events;
+                });
+
+                services.PostConfigureAll<AppleAuthenticationOptions>((options) =>
+                {
+                    options.ClientSecret = string.Empty;
+                    options.EventsType = typeof(CustomAppleAuthenticationEvents);
+                    options.GenerateClientSecret = true;
+                    options.JwtSecurityTokenHandler = new FrozenJwtSecurityTokenHandler();
+                    options.KeyId = "my-key-id";
+                    options.TeamId = "my-team-id";
+                    options.ValidateTokens = true;
+                    options.PrivateKeyBytes = async (keyId) =>
+                    {
+                        Assert.Equal("my-key-id", keyId);
+                        return await TestKeys.GetPrivateKeyBytesAsync();
+                    };
+                });
+            }
+
+            using var server = CreateTestServer(ConfigureServices);
+
+            // Act
+            var claims = await AuthenticateUserAsync(server);
+
+            // Assert
+            onGenerateClientSecretEventRaised.ShouldBeTrue();
+            onValidateIdTokenEventRaised.ShouldBeTrue();
+        }
+
+        private sealed class CustomAppleAuthenticationEvents : AppleAuthenticationEvents
+        {
         }
     }
 }

@@ -96,7 +96,7 @@ namespace AspNet.Security.OAuth.Apple
             if (Options.ValidateTokens)
             {
                 var validateIdContext = new AppleValidateIdTokenContext(Context, Scheme, Options, idToken);
-                await Options.Events.ValidateIdToken(validateIdContext);
+                await Events.ValidateIdToken(validateIdContext);
             }
 
             var tokenClaims = ExtractClaimsFromToken(idToken);
