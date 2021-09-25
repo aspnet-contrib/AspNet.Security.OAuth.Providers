@@ -43,11 +43,11 @@ namespace Microsoft.Extensions.DependencyInjection
 
         /// <summary>
         /// Adds <see cref="EbayAuthenticationHandler"/> to the specified
-        /// <see cref="AuthenticationBuilder"/>, which enables Ebay authentication capabilities.
+        /// <see cref="AuthenticationBuilder"/>, which enables eBay authentication capabilities.
         /// </summary>
         /// <param name="builder">The authentication builder.</param>
         /// <param name="scheme">The authentication scheme associated with this instance.</param>
-        /// <param name="configuration">The delegate used to configure the Dropbox options.</param>
+        /// <param name="configuration">The delegate used to configure the eBay options.</param>
         /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
         public static AuthenticationBuilder AddEbay(
             [NotNull] this AuthenticationBuilder builder,
