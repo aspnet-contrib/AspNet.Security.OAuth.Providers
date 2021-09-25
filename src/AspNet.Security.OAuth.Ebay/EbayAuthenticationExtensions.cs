@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Authentication;
 namespace Microsoft.Extensions.DependencyInjection
 {
     /// <summary>
-    /// Extension methods to add Ebay authentication capabilities to an HTTP application pipeline.
+    /// Extension methods to add eBay authentication capabilities to an HTTP application pipeline.
     /// </summary>
     public static class EbayAuthenticationExtensions
     {
