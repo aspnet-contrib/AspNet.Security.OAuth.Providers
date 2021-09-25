@@ -1,4 +1,4 @@
-# Integrating the Ebay Provider
+# Integrating the eBay Provider
 
 ## Example
 
