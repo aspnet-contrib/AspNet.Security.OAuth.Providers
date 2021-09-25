@@ -31,7 +31,7 @@ namespace AspNet.Security.OAuth.Ebay
         }
 
         /// <summary>
-        /// Gets or sets the redirect uri of application. See official documentation to retrieve the value <see href="https://developer.ebay.com/api-docs/static/oauth-redirect-uri.html"/>.
+        /// Gets or sets the redirect URI of the application, also known as the &quot;RuName&quot;. See the official documentation to retrieve the value: <see href="https://developer.ebay.com/api-docs/static/oauth-redirect-uri.html"/>.
         /// </summary>
         public string RuName { get; set; } = default!;
     }
