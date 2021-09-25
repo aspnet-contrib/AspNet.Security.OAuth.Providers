@@ -4,6 +4,7 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using System;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
@@ -34,5 +35,14 @@ namespace AspNet.Security.OAuth.Ebay
         /// Gets or sets the redirect URI of the application, also known as the &quot;RuName&quot;. See the official documentation to retrieve the value: <see href="https://developer.ebay.com/api-docs/static/oauth-redirect-uri.html"/>.
         /// </summary>
         public string RuName { get; set; } = default!;
+
+        public override void Validate()
+        {
+            base.Validate();
+            if (string.IsNullOrEmpty(RuName))
+            {
+                throw new ArgumentException($"The '{nameof(RuName)}' option must be provided.", nameof(RuName));
+            }
+        }
     }
 }
