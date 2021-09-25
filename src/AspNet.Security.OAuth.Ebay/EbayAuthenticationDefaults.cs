@@ -48,10 +48,5 @@ namespace AspNet.Security.OAuth.Ebay
         /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
         /// </summary>
         public static readonly string UserInformationEndpoint = "https://apiz.ebay.com/commerce/identity/v1/user";
-
-        /// <summary>
-        /// Default prefix for <see cref="OAuthOptions.Scope"/> value.
-        /// </summary>
-        public static readonly string ScopePrefix = "https://api.ebay.com/oauth/api_scope";
     }
 }

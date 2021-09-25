@@ -25,7 +25,7 @@ namespace AspNet.Security.OAuth.Ebay
             TokenEndpoint = EbayAuthenticationDefaults.TokenEndpoint;
             UserInformationEndpoint = EbayAuthenticationDefaults.UserInformationEndpoint;
 
-            Scope.Add("commerce.identity.readonly");
+            Scope.Add("https://api.ebay.com/oauth/api_scope/commerce.identity.readonly");
 
             ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "userId");
             ClaimActions.MapJsonKey(ClaimTypes.Name, "username");

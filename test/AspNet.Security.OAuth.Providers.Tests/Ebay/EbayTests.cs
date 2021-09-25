@@ -27,7 +27,7 @@ namespace AspNet.Security.OAuth.Ebay
         {
             builder.AddEbay(options =>
             {
-                options.RuName = $"localhost{options.CallbackPath}";
+                options.RuName = $"https://localhost{options.CallbackPath}";
                 ConfigureDefaults(builder, options);
             });
         }

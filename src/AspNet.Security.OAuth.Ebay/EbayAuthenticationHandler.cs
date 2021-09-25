@@ -70,7 +70,7 @@ namespace AspNet.Security.OAuth.Ebay
                 ["client_id"] = Options.ClientId,
                 ["redirect_uri"] = Options.RuName!,
                 ["response_type"] = "code",
-                ["scope"] = FormatScope(Options.Scope.Distinct().Select(s => NormalizeScope(s)))
+                ["scope"] = FormatScope(Options.Scope)
             };
             parameters["state"] = Options.StateDataFormat.Protect(properties);
 
@@ -128,16 +128,6 @@ namespace AspNet.Security.OAuth.Ebay
             }
 
             return Uri.EscapeDataString(value).Replace("%20", "+", StringComparison.Ordinal);
-        }
-
-        private static string NormalizeScope(string scope)
-        {
-            if (!scope.StartsWith(EbayAuthenticationDefaults.ScopePrefix, StringComparison.OrdinalIgnoreCase))
-            {
-                scope = string.Format(CultureInfo.InvariantCulture, "{0}/{1}", EbayAuthenticationDefaults.ScopePrefix, scope);
-            }
-
-            return scope;
         }
     }
 }
