@@ -11,6 +11,7 @@
   <ItemGroup>
     <Content Include="xunit.runner.json;**\bundle.json" Exclude="bin\**\bundle.json" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="Apple\test.p8;Apple\test.pfx" CopyToOutputDirectory="PreserveNewest" />
+    <None Remove="**\bundle.json" />
   </ItemGroup>
 
   <ItemGroup>
