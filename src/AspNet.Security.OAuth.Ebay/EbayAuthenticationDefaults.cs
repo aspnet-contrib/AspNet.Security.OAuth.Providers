@@ -17,7 +17,7 @@ namespace AspNet.Security.OAuth.Ebay
         /// <summary>
         /// Default value for <see cref="AuthenticationScheme.Name"/>.
         /// </summary>
-        public const string AuthenticationScheme = "Ebay";
+        public static readonly string AuthenticationScheme = "Ebay";
 
         /// <summary>
         /// Default value for <see cref="AuthenticationScheme.DisplayName"/>.

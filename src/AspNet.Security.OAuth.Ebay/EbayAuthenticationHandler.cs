@@ -11,7 +11,6 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
-using System.Security.Cryptography;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
@@ -22,8 +21,6 @@ using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Microsoft.Extensions.Primitives;
-using Microsoft.Net.Http.Headers;
 
 namespace AspNet.Security.OAuth.Ebay
 {
@@ -44,45 +41,45 @@ namespace AspNet.Security.OAuth.Ebay
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", tokens.AccessToken);
 
-            using var response = await this.Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, this.Context.RequestAborted);
+            using var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
             if (!response.IsSuccessStatusCode)
             {
                 Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
                                 "returned a {Status} response with the following payload: {Headers} {Body}.",
                                 /* Status: */ response.StatusCode,
                                 /* Headers: */ response.Headers.ToString(),
-                                /* Body: */ await response.Content.ReadAsStringAsync(this.Context.RequestAborted));
+                                /* Body: */ await response.Content.ReadAsStringAsync(Context.RequestAborted));
 
                 throw new HttpRequestException("An error occurred while retrieving the user profile.");
             }
 
-            using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(this.Context.RequestAborted));
+            using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
 
             var principal = new ClaimsPrincipal(identity);
-            var context = new OAuthCreatingTicketContext(principal, properties, this.Context, this.Scheme, this.Options, this.Backchannel, tokens, payload.RootElement);
+            var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload.RootElement);
             context.RunClaimActions(payload.RootElement);
 
             await Events.CreatingTicket(context);
-            return new AuthenticationTicket(context.Principal!, context.Properties, this.Scheme.Name);
+            return new AuthenticationTicket(context.Principal!, context.Properties, Scheme.Name);
         }
 
         protected override string BuildChallengeUrl([NotNull] AuthenticationProperties properties, [NotNull] string redirectUri)
         {
             var parameters = new Dictionary<string, string>
             {
-                ["client_id"] = this.Options.ClientId,
-                ["redirect_uri"] = this.Options.RuName!,
+                ["client_id"] = Options.ClientId,
+                ["redirect_uri"] = Options.RuName!,
                 ["response_type"] = "code",
-                ["scope"] = this.FormatScope(this.Options.Scope.Distinct().Select(s => NormalizeScope(s)))
+                ["scope"] = FormatScope(Options.Scope.Distinct().Select(s => NormalizeScope(s)))
             };
-            parameters["state"] = this.Options.StateDataFormat.Protect(properties);
+            parameters["state"] = Options.StateDataFormat.Protect(properties);
 
-            return QueryHelpers.AddQueryString(this.Options.AuthorizationEndpoint, parameters!);
+            return QueryHelpers.AddQueryString(Options.AuthorizationEndpoint, parameters!);
         }
 
         protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] OAuthCodeExchangeContext context)
         {
-            using var request = new HttpRequestMessage(HttpMethod.Post, this.Options.TokenEndpoint);
+            using var request = new HttpRequestMessage(HttpMethod.Post, Options.TokenEndpoint);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             request.Headers.Authorization = CreateAuthorizationHeader();
 
@@ -90,24 +87,24 @@ namespace AspNet.Security.OAuth.Ebay
             {
                 ["grant_type"] = "authorization_code",
                 ["code"] = context.Code,
-                ["redirect_uri"] = this.Options.RuName!
+                ["redirect_uri"] = Options.RuName!
             };
 
             request.Content = new FormUrlEncodedContent(parameters!);
 
-            using var response = await this.Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, this.Context.RequestAborted);
+            using var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
             if (!response.IsSuccessStatusCode)
             {
                 Logger.LogError("An error occurred while retrieving an access token: the remote server " +
                                 "returned a {Status} response with the following payload: {Headers} {Body}.",
                                 /* Status: */ response.StatusCode,
                                 /* Headers: */ response.Headers.ToString(),
-                                /* Body: */ await response.Content.ReadAsStringAsync(this.Context.RequestAborted));
+                                /* Body: */ await response.Content.ReadAsStringAsync(Context.RequestAborted));
 
                 return OAuthTokenResponse.Failed(new Exception("An error occurred while retrieving an access token."));
             }
 
-            var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(this.Context.RequestAborted));
+            var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
 
             return OAuthTokenResponse.Success(payload);
         }
@@ -116,9 +113,9 @@ namespace AspNet.Security.OAuth.Ebay
         {
             string credentials = Convert.ToBase64String(Encoding.ASCII.GetBytes(
                 string.Concat(
-                    EscapeDataString(this.Options.ClientId),
+                    EscapeDataString(Options.ClientId),
                     ":",
-                    EscapeDataString(this.Options.ClientSecret))));
+                    EscapeDataString(Options.ClientSecret))));
 
             return new AuthenticationHeaderValue("Basic", credentials);
         }

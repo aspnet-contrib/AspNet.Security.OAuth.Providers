@@ -17,17 +17,17 @@ namespace AspNet.Security.OAuth.Ebay
     {
         public EbayAuthenticationOptions()
         {
-            this.ClaimsIssuer = EbayAuthenticationDefaults.Issuer;
-            this.CallbackPath = EbayAuthenticationDefaults.CallbackPath;
+            ClaimsIssuer = EbayAuthenticationDefaults.Issuer;
+            CallbackPath = EbayAuthenticationDefaults.CallbackPath;
 
-            this.AuthorizationEndpoint = EbayAuthenticationDefaults.AuthorizationEndpoint;
-            this.TokenEndpoint = EbayAuthenticationDefaults.TokenEndpoint;
-            this.UserInformationEndpoint = EbayAuthenticationDefaults.UserInformationEndpoint;
+            AuthorizationEndpoint = EbayAuthenticationDefaults.AuthorizationEndpoint;
+            TokenEndpoint = EbayAuthenticationDefaults.TokenEndpoint;
+            UserInformationEndpoint = EbayAuthenticationDefaults.UserInformationEndpoint;
 
-            this.Scope.Add("commerce.identity.readonly");
+            Scope.Add("commerce.identity.readonly");
 
-            this.ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "userId");
-            this.ClaimActions.MapJsonKey(ClaimTypes.Name, "username");
+            ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "userId");
+            ClaimActions.MapJsonKey(ClaimTypes.Name, "username");
         }
 
         /// <summary>
