@@ -33,6 +33,6 @@ namespace AspNet.Security.OAuth.Ebay
         /// <summary>
         /// Gets or sets the redirect uri of application. See official documentation to retrieve the value <see href="https://developer.ebay.com/api-docs/static/oauth-redirect-uri.html"/>.
         /// </summary>
-        public string RedirectUrl { get; set; } = default!;
+        public string RuName { get; set; } = default!;
     }
 }

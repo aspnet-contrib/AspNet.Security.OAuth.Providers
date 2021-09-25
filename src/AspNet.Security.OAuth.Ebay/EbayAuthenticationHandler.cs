@@ -38,7 +38,7 @@ namespace AspNet.Security.OAuth.Ebay
         {
         }
 
-        protected override async Task<AuthenticationTicket> CreateTicketAsync(ClaimsIdentity identity, AuthenticationProperties properties, OAuthTokenResponse tokens)
+        protected override async Task<AuthenticationTicket> CreateTicketAsync([NotNull] ClaimsIdentity identity, [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens)
         {
             using var request = new HttpRequestMessage(HttpMethod.Get, EbayAuthenticationDefaults.UserInformationEndpoint);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -66,12 +66,12 @@ namespace AspNet.Security.OAuth.Ebay
             return new AuthenticationTicket(context.Principal!, context.Properties, this.Scheme.Name);
         }
 
-        protected override string BuildChallengeUrl(AuthenticationProperties properties, string redirectUri)
+        protected override string BuildChallengeUrl([NotNull] AuthenticationProperties properties, [NotNull] string redirectUri)
         {
             var parameters = new Dictionary<string, string>
             {
                 ["client_id"] = this.Options.ClientId,
-                ["redirect_uri"] = this.Options.RedirectUrl,
+                ["redirect_uri"] = this.Options.RuName!,
                 ["response_type"] = "code",
                 ["scope"] = this.FormatScope(this.Options.Scope.Distinct().Select(s => NormalizeScope(s)))
             };
@@ -90,7 +90,7 @@ namespace AspNet.Security.OAuth.Ebay
             {
                 ["grant_type"] = "authorization_code",
                 ["code"] = context.Code,
-                ["redirect_uri"] = this.Options.RedirectUrl
+                ["redirect_uri"] = this.Options.RuName!
             };
 
             request.Content = new FormUrlEncodedContent(parameters!);
