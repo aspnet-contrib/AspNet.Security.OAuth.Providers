@@ -62,7 +62,7 @@ namespace AspNet.Security.OAuth.Ebay
             var context = new OAuthCreatingTicketContext(principal, properties, this.Context, this.Scheme, this.Options, this.Backchannel, tokens, payload.RootElement);
             context.RunClaimActions(payload.RootElement);
 
-            await Options.Events.CreatingTicket(context);
+            await Events.CreatingTicket(context);
             return new AuthenticationTicket(context.Principal!, context.Properties, this.Scheme.Name);
         }
 
