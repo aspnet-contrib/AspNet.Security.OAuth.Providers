@@ -9,6 +9,9 @@ using Microsoft.AspNetCore.Authentication.OAuth;
 
 namespace AspNet.Security.OAuth.Ebay
 {
+    /// <summary>
+    /// Default values used by the eBay authentication provider.
+    /// </summary>
     public static class EbayAuthenticationDefaults
     {
         /// <summary>
