@@ -29,7 +29,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
         /// <summary>
         /// Adds <see cref="EbayAuthenticationHandler"/> to the specified
-        /// <see cref="AuthenticationBuilder"/>, which enables Ebay authentication capabilities.
+        /// <see cref="AuthenticationBuilder"/>, which enables eBay authentication capabilities.
         /// </summary>
         /// <param name="builder">The authentication builder.</param>
         /// <param name="configuration">The delegate used to configure the OpenID 2.0 options.</param>
