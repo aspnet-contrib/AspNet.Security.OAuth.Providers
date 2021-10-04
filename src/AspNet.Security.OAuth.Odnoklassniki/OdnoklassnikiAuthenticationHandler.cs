@@ -77,7 +77,7 @@ namespace AspNet.Security.OAuth.Odnoklassniki
         }
 
         protected override string FormatScope([NotNull] IEnumerable<string> scopes)
-            => string.Join(";", scopes);
+            => string.Join(';', scopes);
 
         private static string GetMD5Hash(string input)
         {
