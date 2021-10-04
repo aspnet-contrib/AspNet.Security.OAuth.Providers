@@ -76,6 +76,9 @@ namespace AspNet.Security.OAuth.Odnoklassniki
             return new AuthenticationTicket(context.Principal!, context.Properties, Scheme.Name);
         }
 
+        protected override string FormatScope([NotNull] IEnumerable<string> scopes)
+            => string.Join(';', scopes);
+
         private static string GetMD5Hash(string input)
         {
 #pragma warning disable CA5351
