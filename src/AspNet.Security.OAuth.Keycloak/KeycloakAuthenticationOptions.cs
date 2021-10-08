@@ -4,6 +4,7 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using System;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
@@ -37,9 +38,18 @@ namespace AspNet.Security.OAuth.Keycloak
         }
 
         /// <summary>
+        /// Gets or sets the base address of the Keycloak server.
+        /// </summary>
+        public Uri? BaseAddress { get; set; }
+
+        /// <summary>
         /// Gets or sets the Keycloak domain (Org URL) to use for authentication.
-        /// For example: <c>keycloakdomain.com</c>.
         /// </summary>
         public string? Domain { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Keycloak realm to use for authentication.
+        /// </summary>
+        public string? Realm { get; set; }
     }
 }
