@@ -4,6 +4,7 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
@@ -28,6 +29,7 @@ namespace AspNet.Security.OAuth.Keycloak
             {
                 ConfigureDefaults(builder, options);
                 options.Domain = "keycloak.local";
+                options.Realm = "myrealm";
             });
         }
 
@@ -37,10 +39,44 @@ namespace AspNet.Security.OAuth.Keycloak
         [InlineData(ClaimTypes.GivenName, "John")]
         [InlineData(ClaimTypes.Role, "admin")]
         [InlineData(ClaimTypes.Name, "John Smith")]
-        public async Task Can_Sign_In_Using_Keycloak(string claimType, string claimValue)
+        public async Task Can_Sign_In_Using_Keycloak_BaseAddress(string claimType, string claimValue)
         {
             // Arrange
-            using var server = CreateTestServer();
+            static void ConfigureServices(IServiceCollection services)
+            {
+                services.PostConfigureAll<KeycloakAuthenticationOptions>((options) =>
+                {
+                    options.BaseAddress = new Uri("http://keycloak.local:8080");
+                });
+            }
+
+            using var server = CreateTestServer(ConfigureServices);
+
+            // Act
+            var claims = await AuthenticateUserAsync(server);
+
+            // Assert
+            AssertClaim(claims, claimType, claimValue);
+        }
+
+        [Theory]
+        [InlineData(ClaimTypes.NameIdentifier, "995c1500-0dca-495e-ba72-2499d370d181")]
+        [InlineData(ClaimTypes.Email, "john@smith.com")]
+        [InlineData(ClaimTypes.GivenName, "John")]
+        [InlineData(ClaimTypes.Role, "admin")]
+        [InlineData(ClaimTypes.Name, "John Smith")]
+        public async Task Can_Sign_In_Using_Keycloak_Domain(string claimType, string claimValue)
+        {
+            // Arrange
+            static void ConfigureServices(IServiceCollection services)
+            {
+                services.PostConfigureAll<KeycloakAuthenticationOptions>((options) =>
+                {
+                    options.Domain = "keycloak.local";
+                });
+            }
+
+            using var server = CreateTestServer(ConfigureServices);
 
             // Act
             var claims = await AuthenticateUserAsync(server);

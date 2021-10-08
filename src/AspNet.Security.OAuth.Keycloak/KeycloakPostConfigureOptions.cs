@@ -4,6 +4,7 @@
 
 using System;
 using JetBrains.Annotations;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 
 namespace AspNet.Security.OAuth.Keycloak
@@ -15,23 +16,31 @@ namespace AspNet.Security.OAuth.Keycloak
     {
         public void PostConfigure([NotNull] string name, [NotNull] KeycloakAuthenticationOptions options)
         {
-            if (!string.IsNullOrWhiteSpace(options.Domain))
+            if ((!string.IsNullOrWhiteSpace(options.Domain) || options.BaseAddress is not null) &&
+                !string.IsNullOrWhiteSpace(options.Realm))
             {
-                options.AuthorizationEndpoint = CreateUrl(options.Domain, KeycloakAuthenticationDefaults.AuthorizationEndpoint);
-                options.TokenEndpoint = CreateUrl(options.Domain, KeycloakAuthenticationDefaults.TokenEndpoint);
-                options.UserInformationEndpoint = CreateUrl(options.Domain, KeycloakAuthenticationDefaults.UserInformationEndpoint);
+                options.AuthorizationEndpoint = CreateUrl(options, KeycloakAuthenticationDefaults.AuthorizationEndpoint);
+                options.TokenEndpoint = CreateUrl(options, KeycloakAuthenticationDefaults.TokenEndpoint);
+                options.UserInformationEndpoint = CreateUrl(options, KeycloakAuthenticationDefaults.UserInformationEndpoint);
             }
         }
 
-        private static string CreateUrl(string domain, string path)
+        private static string CreateUrl(KeycloakAuthenticationOptions options, string resource)
         {
-            // Enforce use of HTTPS
-            var builder = new UriBuilder(domain)
+            var builder = options.BaseAddress is not null ?
+                new UriBuilder(options.BaseAddress) :
+                new UriBuilder(options.Domain!);
+
+            // Enforce use of HTTPS if only the domain is specified
+            if (options.BaseAddress is null)
             {
-                Path = path,
-                Port = -1,
-                Scheme = "https",
-            };
+                builder.Port = -1;
+                builder.Scheme = Uri.UriSchemeHttps;
+            }
+
+            builder.Path = new PathString("/auth/realms")
+                .Add("/" + options.Realm!.Trim('/'))
+                .Add(resource);
 
             return builder.Uri.ToString();
         }
