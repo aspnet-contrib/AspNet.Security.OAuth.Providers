@@ -38,7 +38,7 @@ namespace AspNet.Security.OAuth.Keycloak
         }
 
         /// <summary>
-        /// Gets or sets the value for Keycloak client's access type.
+        /// Gets or sets the value for the Keycloak client's access type.
         /// </summary>
         public KeycloakAuthenticationAccessType AccessType { get; set; }
 
@@ -62,20 +62,17 @@ namespace AspNet.Security.OAuth.Keycloak
         {
             try
             {
-                // HACK
-                // We want all of the base validation except for ClientSecret,
+                // HACK We want all of the base validation except for ClientSecret,
                 // so rather than re-implement it all, catch the exception thrown
                 // for that being null and only throw if we aren't using public access type.
                 // This does mean that three checks have to be re-implemented
                 // because the won't be validated if the ClientSecret validation fails.
                 base.Validate();
             }
-            catch (ArgumentException ex) when (ex.ParamName == nameof(ClientSecret))
+            catch (ArgumentException ex) when (ex.ParamName == nameof(ClientSecret) && AccessType == KeycloakAuthenticationAccessType.Public)
             {
-                if (AccessType != KeycloakAuthenticationAccessType.Public)
-                {
-                    throw;
-                }
+                // No client secret is required for a public key.
+                // See https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers/issues/610.
             }
 
             if (string.IsNullOrEmpty(AuthorizationEndpoint))
