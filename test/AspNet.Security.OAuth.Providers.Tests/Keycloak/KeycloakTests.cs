@@ -84,5 +84,33 @@ namespace AspNet.Security.OAuth.Keycloak
             // Assert
             AssertClaim(claims, claimType, claimValue);
         }
+
+        [Theory]
+        [InlineData(ClaimTypes.NameIdentifier, "995c1500-0dca-495e-ba72-2499d370d181")]
+        [InlineData(ClaimTypes.Email, "john@smith.com")]
+        [InlineData(ClaimTypes.GivenName, "John")]
+        [InlineData(ClaimTypes.Role, "admin")]
+        [InlineData(ClaimTypes.Name, "John Smith")]
+        public async Task Can_Sign_In_Using_Keycloak_Public_AccessType(string claimType, string claimValue)
+        {
+            // Arrange
+            static void ConfigureServices(IServiceCollection services)
+            {
+                services.PostConfigureAll<KeycloakAuthenticationOptions>((options) =>
+                {
+                    options.AccessType = KeycloakAuthenticationAccessType.Public;
+                    options.ClientSecret = string.Empty;
+                    options.Domain = "keycloak.local";
+                });
+            }
+
+            using var server = CreateTestServer(ConfigureServices);
+
+            // Act
+            var claims = await AuthenticateUserAsync(server);
+
+            // Assert
+            AssertClaim(claims, claimType, claimValue);
+        }
     }
 }
