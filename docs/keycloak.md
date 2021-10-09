@@ -15,6 +15,19 @@ services.AddAuthentication(options => /* Auth configuration */)
         });
 ```
 
+### Production with Public Access Type
+
+```csharp
+services.AddAuthentication(options => /* Auth configuration */)
+        .AddKeycloak(options =>
+        {
+            options.AccessType = KeycloakAuthenticationAccessType.Public;
+            options.ClientId = "my-client-id";
+            options.Domain = "mydomain.local";
+            options.Realm = "myrealm";
+        });
+```
+
 ### Local Development with Docker
 
 ```csharp
@@ -40,4 +53,6 @@ Only one of either `BaseAddress` or `Domain` is required to be set. If both are 
 
 ## Optional Settings
 
-_None._
+| Property Name | Property Type                      | Description                              | Default Value                                   |
+| :------------ | :--------------------------------- | :--------------------------------------- | :---------------------------------------------- |
+| `AccessType`  | `KeycloakAuthenticationAccessType` | The Keycloak client's access token type. | `KeycloakAuthenticationAccessType.Confidential` |
