@@ -19,5 +19,5 @@ _None._
 
 | Property Name | Property Type | Description | Default Value |
 |:--|:--|:--|:--|
-| `ApiVersion` | `string` | The API version to use. | `"5.78"` |
+| `ApiVersion` | `string` | The API version to use. | `"5.131"` |
 | `Fields` | `ISet<string>` | The [profile fields](https://vk.com/dev/fields "User object") to return from the API. | `[ "id", "first_name", "last_name", "photo_rec", "photo", "hash" ]` |
