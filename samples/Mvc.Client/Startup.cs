@@ -61,6 +61,13 @@ namespace Mvc.Client
                 options.Scope.Add("user:email");
             })
 
+            .AddServiceChannel(options =>
+            {
+                options.UserInformationEndpoint = Configuration["ServiceChannel:UserInformationEndpoint"];
+                options.ClientId = Configuration["ServiceChannel:ClientId"];
+                options.ClientSecret = Configuration["ServiceChannel:ClientSecret"];
+            })
+
             /*
             .AddApple(options =>
             {
