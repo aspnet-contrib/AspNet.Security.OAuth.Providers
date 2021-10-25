@@ -19,31 +19,31 @@ namespace AspNet.Security.OAuth.ServiceChannel
         /// <summary>
         /// Default value for <see cref="AuthenticationScheme.DisplayName"/>.
         /// </summary>
-        public const string DisplayName = "ServiceChannel";
+        public static readonly string DisplayName = "ServiceChannel";
 
         /// <summary>
         /// Default value for <see cref="AuthenticationSchemeOptions.ClaimsIssuer"/>.
         /// </summary>
-        public const string Issuer = "ServiceChannel";
+        public static readonly string Issuer = "ServiceChannel";
 
         /// <summary>
         /// Default value for <see cref="RemoteAuthenticationOptions.CallbackPath"/>.
         /// </summary>
-        public const string CallbackPath = "/signin-servicechannel";
+        public static readonly string CallbackPath = "/signin-servicechannel";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
         /// </summary>
-        public const string AuthorizationEndpoint = "https://login.servicechannel.com/oauth/authorize";
+        public static readonly string AuthorizationEndpoint = "https://login.servicechannel.com/oauth/authorize";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.TokenEndpoint"/>.
         /// </summary>
-        public const string TokenEndpoint = "https://login.servicechannel.com/oauth/token";
+        public static readonly string TokenEndpoint = "https://login.servicechannel.com/oauth/token";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
         /// </summary>
-        public const string UserInformationEndpoint = "https://api.servicechannel.com/v3/users/current/profile";
+        public static readonly string UserInformationEndpoint = "https://api.servicechannel.com/v3/users/current/profile";
     }
 }

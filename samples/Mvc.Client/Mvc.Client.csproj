@@ -14,10 +14,6 @@
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Twitter" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\AspNet.Security.OAuth.ServiceChannel\AspNet.Security.OAuth.ServiceChannel.csproj" />
-  </ItemGroup>
-
   <Target Name="AddGeneratedContentItems" BeforeTargets="AssignTargetPaths">
     <ItemGroup>
       <Content Include="*.p8" CopyToPublishDirectory="PreserveNewest" Exclude="$(DefaultItemExcludes)" />

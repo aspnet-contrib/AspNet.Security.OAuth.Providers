@@ -39,8 +39,4 @@
     </AssemblyAttribute>
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\AspNet.Security.OAuth.ServiceChannel\AspNet.Security.OAuth.ServiceChannel.csproj" />
-  </ItemGroup>
-
 </Project>
