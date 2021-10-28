@@ -4,8 +4,11 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Net.Mime;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Text.Json;
@@ -37,6 +40,48 @@ namespace AspNet.Security.OAuth.Lichess
             [NotNull] ISystemClock clock)
             : base(options, logger, encoder, clock)
         {
+        }
+
+        protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] OAuthCodeExchangeContext context)
+        {
+            var tokenRequestParameters = new Dictionary<string, string?>()
+            {
+                ["grant_type"] = "authorization_code",
+                ["client_id"] = Options.ClientId,
+                ["code"] = context.Code,
+                ["redirect_uri"] = context.RedirectUri
+            };
+
+            // PKCE https://tools.ietf.org/html/rfc7636#section-4.5, see BuildChallengeUrl
+            if (context.Properties.Items.TryGetValue(OAuthConstants.CodeVerifierKey, out string? codeVerifier))
+            {
+                tokenRequestParameters.Add(OAuthConstants.CodeVerifierKey, codeVerifier);
+                context.Properties.Items.Remove(OAuthConstants.CodeVerifierKey);
+            }
+
+            using var requestContent = new FormUrlEncodedContent(tokenRequestParameters!);
+            using var requestMessage = new HttpRequestMessage(HttpMethod.Post, Options.TokenEndpoint);
+
+            requestMessage.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json));
+            requestMessage.Content = requestContent;
+
+            using var response = await Backchannel.SendAsync(requestMessage, Context.RequestAborted);
+            if (!response.IsSuccessStatusCode)
+            {
+                const string Error = "An error occurred while retrieving an OAuth token";
+
+                Logger.LogError("{Error}: the remote server " +
+                                "returned a {Status} response with the following payload: {Headers} {Body}.",
+                                /* Error: */  Error,
+                                /* Status: */ response.StatusCode,
+                                /* Headers: */ response.Headers.ToString(),
+                                /* Body: */ await response.Content.ReadAsStringAsync(Context.RequestAborted));
+
+                return OAuthTokenResponse.Failed(new Exception(Error));
+            }
+
+            var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
+            return OAuthTokenResponse.Success(payload);
         }
 
         /// <inheritdoc />

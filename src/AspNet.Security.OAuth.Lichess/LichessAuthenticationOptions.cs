@@ -17,6 +17,9 @@ namespace AspNet.Security.OAuth.Lichess
     {
         public LichessAuthenticationOptions()
         {
+            // Pkce is now mandatory for LiChess
+            UsePkce = true;
+
             ClaimsIssuer = LichessAuthenticationDefaults.Issuer;
             CallbackPath = LichessAuthenticationDefaults.CallbackPath;
 

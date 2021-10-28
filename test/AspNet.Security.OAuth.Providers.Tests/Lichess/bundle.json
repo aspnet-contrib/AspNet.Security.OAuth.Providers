@@ -4,13 +4,17 @@
     {
       "comment": "https://lichess.org/api#section/Authentication",
       "uri": "https://oauth.lichess.org/oauth",
+      "method": "GET"
+    },
+    {
+      "comment": "https://lichess.org/api#tag/OAuth",
+      "uri": "https://lichess.org/api/token",
       "method": "POST",
       "contentFormat": "json",
       "contentJson": {
+        "token_type": "Bearer",
         "access_token": "secret-access-token",
-        "token_type": "bearer",
-        "refresh_token": "secret-refresh-token",
-        "expires_in": "600"
+        "expires_in": 31536000
       }
     },
     {

@@ -42,7 +42,7 @@ namespace AspNet.Security.OAuth.Lichess
         /// <summary>
         /// Default value for <see cref="OAuthOptions.TokenEndpoint"/>.
         /// </summary>
-        public const string TokenEndpoint = "https://oauth.lichess.org/oauth";
+        public const string TokenEndpoint = "https://lichess.org/api/token";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
