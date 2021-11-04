@@ -4,9 +4,6 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.OAuth;
-
 namespace AspNet.Security.OAuth.MailChimp
 {
     /// <summary>
@@ -22,31 +19,31 @@ namespace AspNet.Security.OAuth.MailChimp
         /// <summary>
         /// Default value for <see cref="AuthenticationScheme.DisplayName"/>.
         /// </summary>
-        public const string DisplayName = "MailChimp";
+        public static readonly string DisplayName = "MailChimp";
 
         /// <summary>
         /// Default value for <see cref="AuthenticationSchemeOptions.ClaimsIssuer"/>.
         /// </summary>
-        public const string Issuer = "MailChimp";
+        public static readonly string Issuer = "MailChimp";
 
         /// <summary>
         /// Default value for <see cref="RemoteAuthenticationOptions.CallbackPath"/>.
         /// </summary>
-        public const string CallbackPath = "/signin-mailchimp";
+        public static readonly string CallbackPath = "/signin-mailchimp";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
         /// </summary>
-        public const string AuthorizationEndpoint = "https://login.mailchimp.com/oauth2/authorize";
+        public static readonly string AuthorizationEndpoint = "https://login.mailchimp.com/oauth2/authorize";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.TokenEndpoint"/>.
         /// </summary>
-        public const string TokenEndpoint = "https://login.mailchimp.com/oauth2/token";
+        public static readonly string TokenEndpoint = "https://login.mailchimp.com/oauth2/token";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
         /// </summary>
-        public const string UserInformationEndpoint = "https://login.mailchimp.com/oauth2/metadata";
+        public static readonly string UserInformationEndpoint = "https://login.mailchimp.com/oauth2/metadata";
     }
 }

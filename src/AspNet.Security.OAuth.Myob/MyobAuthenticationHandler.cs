@@ -6,10 +6,6 @@
 
 using System.Security.Claims;
 using System.Text.Encodings.Web;
-using System.Threading.Tasks;
-using JetBrains.Annotations;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -33,7 +29,7 @@ namespace AspNet.Security.OAuth.Myob
         {
             // Note: MYOB doesn't provide a user information endpoint,
             // so we rely on the details sent back in the token request.
-            var user = tokens.Response.RootElement.GetProperty("user");
+            var user = tokens.Response!.RootElement.GetProperty("user");
 
             var principal = new ClaimsPrincipal(identity);
             var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, user);

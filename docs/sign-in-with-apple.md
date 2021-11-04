@@ -10,7 +10,7 @@ This document provides some additional information and context to help you confi
 
 Unlike other providers, the `ClientSecret` property is not used as _Sign in with Apple_ does not use a static client secret value. Instead the client secret has to be generated using a private key file provided by Apple from the Developer Portal that is used with the Key ID and Team ID to create a signed JSON Web Token (JWT).
 
-The provider comes with a built-in extension method ([`UsePrivateKey(string)`](https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers/blob/8e4c19008f518f3730bab90a980e01347ba6f3d3/src/AspNet.Security.OAuth.Apple/AppleAuthenticationOptionsExtensions.cs#L20-L33 "UsePrivateKey() extension method")) to generate they secret from a `.p8` certificate file on disk that you provide. Here's a [code example](https://github.com/martincostello/SignInWithAppleSample/blob/245bb70a164b66ec98ea3c2040a7387b0a3e8f0e/src/SignInWithApple/Startup.cs#L37-L46 "Example code to configure the Apple provider"):
+The provider comes with a built-in extension method `UsePrivateKey(string)` to generate they secret from a `.p8` certificate file on disk that you provide. Here's a code example:
 
 ```csharp
 services.AddAuthentication(options => /* Auth configuration */)
@@ -25,20 +25,49 @@ services.AddAuthentication(options => /* Auth configuration */)
         });
 ```
 
-Alternatively you can use the [`Func<string, Task<byte[]>> PrivateKeyBytes`](https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers/blob/8e4c19008f518f3730bab90a980e01347ba6f3d3/src/AspNet.Security.OAuth.Apple/AppleAuthenticationOptions.cs#L78-L85 "Definition of PrivateKeyBytes property") property of the `AppleAuthenticationOptions` class to provide a delegate to a custom method of your own that loads the private key's bytes from another location, such as Azure Key Vault, Kubernetes secrets etc.
+Alternatively you can use the `Func<string, Task<ReadOnlyMemory<char>>> PrivateKey` property of the `AppleAuthenticationOptions` class to provide a delegate to a custom method of your own that loads the private key's bytes from another location, such as Azure Key Vault, Kubernetes secrets etc.
+
+Below are two examples of this approach.
+
+#### Loading from an Environment Variable
+
+```csharp
+services.AddAuthentication(options => /* Auth configuration */)
+        .AddApple(options =>
+        {
+            options.ClientId = Configuration["Apple:ClientId"];
+            options.KeyId = Configuration["Apple:KeyId"];
+            options.TeamId = Configuration["Apple:TeamId"];
+            options.PrivateKey = (keyId, _) =>
+            {
+                return Task.FromResult(Configuration[$"Apple:Key:{keyId}"].AsMemory());
+            };
+        });
+```
+
+#### Loading from Azure Key Vault
+
+```csharp
+services.AddAuthentication(options => /* Auth configuration */)
+        .AddApple()
+        .Services
+        .AddOptions<AppleAuthenticationOptions>(AppleAuthenticationDefaults.AuthenticationScheme)
+        .Configure<IConfiguration, SecretClient>((options, configuration, client) =>
+        {
+            options.ClientId = configuration["Apple:ClientId"];
+            options.KeyId = configuration["Apple:KeyId"];
+            options.TeamId = configuration["Apple:TeamId"];
+            options.PrivateKey = async (keyId, cancellationToken) =>
+            {
+                var secret = await client.GetSecretAsync($"AuthKey-{keyId}", cancellationToken: cancellationToken);
+                return secret.Value.Value.AsMemory();
+            };
+        });
+```
 
 ### Issues Loading Private Key
 
-If you encounter issues loading the private key of the certificate, the reasons could include one of the two scenarios:
-
-  1. Using .NET Core 2.x on Linux or macOS
-  1. Using Windows Server with IIS
-
-#### .NET Core 2.x on Linux or macOS
-
-For the first scenario, before .NET Core 3.0 non-Windows platforms did not support loading `.p8` (PKCS #8) files. If you cannot use .NET Core 3.1 or later, it is recommended that you create a `.pfx` certificate file from your `.p8` file and use that instead.
-
-Further information can be found in this GitHub issue: https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers/issues/390
+If you encounter issues loading the private key of the certificate, the reasons could include one of the following scenarios.
 
 #### Windows Server with IIS
 
@@ -63,7 +92,7 @@ Below are links to some issues raised against this repository that were related 
 
 ## Sign in with Apple on iOS
 
-When using _Sign In with Apple_ on an iOS 13+ Device, [Apple provides a different authentication workflow](https://developer.apple.com/documentation/authenticationservices) that returns the validation response to the app instead of in a server callback. Using that response to authenticate a user against your own backend requires sending the response to your servers and [communicating with the Apple authentication endpoint from there](https://developer.apple.com/documentation/sign_in_with_apple/generate_and_validate_tokens). 
+When using _Sign In with Apple_ on an iOS 13+ Device, [Apple provides a different authentication workflow](https://developer.apple.com/documentation/authenticationservices) that returns the validation response to the app instead of in a server callback. Using that response to authenticate a user against your own backend requires sending the response to your servers and [communicating with the Apple authentication endpoint from there](https://developer.apple.com/documentation/sign_in_with_apple/generate_and_validate_tokens).
 
 This workflow is out of the scope of this package but client secret generation and token validation can provide a starting point for an ASP.NET.Core integration. Note that the `ClientId` in this case is the App Id where the authentication was requested, not your Services Id.
 
@@ -84,14 +113,12 @@ Below are links to a number of other documentation sources, blog posts and sampl
 |:--|:--|:--|:--|
 | `ClientSecretExpiresAfter` | `TimeSpan` | The period of time after which generated client secrets expire if `GenerateClientSecret` is set to `true`. | 6 months |
 | `ClientSecretGenerator` | `AppleClientSecretGenerator` | A service that generates client secrets for Sign In with Apple. | _An internal implementation_ |
+| `ConfigurationManager` | `IConfigurationManager<OpenIdConnectConfiguration>?` | The configuration manager to use for the OpenID configuration. | `null` |
 | `GenerateClientSecret` | `bool` | Whether to automatically generate a client secret. | `false` |
-| `JwtSecurityTokenHandler` | `JwtSecurityTokenHandler` | The handler to use to validate JSON Web Keys. | `new JwtSecurityTokenHandler()` |
 | `KeyId` | `string?` | The optional ID for your Sign in with Apple private key. | `null` |
-| `KeyStore` | `AppleKeyStore` | A service that loads private keys to use with Sign In with Apple. | _An internal implementation_ |
-| `PublicKeyCacheLifetime` | `TimeSpan` | The default period of time to cache Apple public key(s) for. | `TimeSpan.FromMinutes(15)` |
-| `PublicKeyEndpoint` | `string` | The URI to use to retrieve the Apple public keys. | `AppleAuthenticationDefaults.PublicKeyEndpoint` |
-| `PrivateKeyBytes` | `Func<string, Task<byte[]>>?` | An optional delegate to use to get the raw bytes of the client's private key in PKCS #8 format. | `null` |
+| `PrivateKeyBytes` | `Func<string, Task<ReadOnlyMemory<char>>>?` | An optional delegate to use to get the characters of the client's private key in PKCS #8 format. | `null` |
 | `TeamId` | `string` | The Team ID for your Apple Developer account. | `""` |
 | `TokenAudience` | `string` | The audience used for tokens. | `AppleAuthenticationConstants.Audience` |
 | `TokenValidator` | `AppleIdTokenValidator` | A service that validates Apple ID tokens. | `An internal implementation` |
+| `TokenValidationParameters` | `TokenValidationParameters` | The JSON Web Token validation parameters to use. | `new TokenValidationParameters()` |
 | `ValidateTokens` | `bool` | Whether to validate tokens using Apple's public key. | `true` |

@@ -4,9 +4,6 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.OAuth;
-
 namespace AspNet.Security.OAuth.KakaoTalk
 {
     /// <summary>
@@ -22,31 +19,31 @@ namespace AspNet.Security.OAuth.KakaoTalk
         /// <summary>
         /// Default value for <see cref="AuthenticationScheme.DisplayName"/>.
         /// </summary>
-        public const string DisplayName = "KakaoTalk";
+        public static readonly string DisplayName = "KakaoTalk";
 
         /// <summary>
         /// Default value for <see cref="AuthenticationSchemeOptions.ClaimsIssuer"/>.
         /// </summary>
-        public const string Issuer = "KakaoTalk";
+        public static readonly string Issuer = "KakaoTalk";
 
         /// <summary>
         /// Default value for <see cref="RemoteAuthenticationOptions.CallbackPath"/>.
         /// </summary>
-        public const string CallbackPath = "/signin-kakaotalk";
+        public static readonly string CallbackPath = "/signin-kakaotalk";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
         /// </summary>
-        public const string AuthorizationEndpoint = "https://kauth.kakao.com/oauth/authorize";
+        public static readonly string AuthorizationEndpoint = "https://kauth.kakao.com/oauth/authorize";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.TokenEndpoint"/>.
         /// </summary>
-        public const string TokenEndpoint = "https://kauth.kakao.com/oauth/token";
+        public static readonly string TokenEndpoint = "https://kauth.kakao.com/oauth/token";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
         /// </summary>
-        public const string UserInformationEndpoint = "https://kapi.kakao.com/v2/user/me";
+        public static readonly string UserInformationEndpoint = "https://kapi.kakao.com/v2/user/me";
     }
 }

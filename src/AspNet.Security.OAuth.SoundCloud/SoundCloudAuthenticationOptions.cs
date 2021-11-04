@@ -5,8 +5,6 @@
  */
 
 using System.Security.Claims;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.OAuth;
 using static AspNet.Security.OAuth.SoundCloud.SoundCloudAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.SoundCloud

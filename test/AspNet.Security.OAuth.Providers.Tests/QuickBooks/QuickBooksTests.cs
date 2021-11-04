@@ -4,13 +4,7 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using System.Security.Claims;
-using System.Threading.Tasks;
 using AspNet.Security.OAuth.QuickBooks;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.Extensions.DependencyInjection;
-using Xunit;
-using Xunit.Abstractions;
 using static AspNet.Security.OAuth.QuickBooks.QuickBooksAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.QuickBooksTests

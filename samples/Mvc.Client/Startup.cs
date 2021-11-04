@@ -5,11 +5,6 @@
  */
 
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Logging;
 
 namespace Mvc.Client
@@ -78,7 +73,7 @@ namespace Mvc.Client
                 options.ClientSecret = Configuration["Dropbox:ClientSecret"];
             });
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Latest);
+            services.AddMvc();
         }
 
         public void Configure(IApplicationBuilder app)

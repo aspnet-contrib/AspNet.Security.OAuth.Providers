@@ -4,15 +4,10 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Text.Json;
-using System.Threading.Tasks;
-using JetBrains.Annotations;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -36,7 +31,7 @@ namespace AspNet.Security.OAuth.Salesforce
         {
             // Note: unlike the other social providers, the userinfo endpoint is user-specific and can't be set globally.
             // For more information, see https://developer.salesforce.com/page/Digging_Deeper_into_OAuth_2.0_on_Force.com
-            using var request = new HttpRequestMessage(HttpMethod.Get, tokens.Response.RootElement.GetString("id"));
+            using var request = new HttpRequestMessage(HttpMethod.Get, tokens.Response!.RootElement.GetString("id"));
 
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", tokens.AccessToken);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));

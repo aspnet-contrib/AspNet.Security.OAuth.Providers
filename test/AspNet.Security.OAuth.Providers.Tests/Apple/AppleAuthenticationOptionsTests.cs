@@ -4,9 +4,6 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using System;
-using Xunit;
-
 namespace AspNet.Security.OAuth.Apple
 {
     public static class AppleAuthenticationOptionsTests
@@ -18,7 +15,7 @@ namespace AspNet.Security.OAuth.Apple
             var options = new AppleAuthenticationOptions()
             {
                 ClientId = "my-client-id",
-                ClientSecret = null,
+                ClientSecret = null!,
             };
 
             // Act and Assert
@@ -33,7 +30,7 @@ namespace AspNet.Security.OAuth.Apple
             {
                 ClientId = "my-client-id",
                 GenerateClientSecret = true,
-                AuthorizationEndpoint = null,
+                AuthorizationEndpoint = null!,
             };
 
             // Act and Assert
@@ -48,7 +45,7 @@ namespace AspNet.Security.OAuth.Apple
             {
                 ClientId = "my-client-id",
                 GenerateClientSecret = true,
-                TokenEndpoint = null,
+                TokenEndpoint = null!,
             };
 
             // Act and Assert
@@ -133,21 +130,6 @@ namespace AspNet.Security.OAuth.Apple
 
             // Act and Assert
             Assert.Throws<ArgumentOutOfRangeException>("ClientSecretExpiresAfter", () => options.Validate());
-        }
-
-        [Fact]
-        public static void Validate_Throws_If_PublicKeyEndpoint_Is_Null_With_Token_Validation()
-        {
-            // Arrange
-            var options = new AppleAuthenticationOptions()
-            {
-                ClientId = "my-client-id",
-                ClientSecret = "my-client-secret",
-                PublicKeyEndpoint = null!,
-            };
-
-            // Act and Assert
-            Assert.Throws<ArgumentException>("PublicKeyEndpoint", () => options.Validate());
         }
     }
 }

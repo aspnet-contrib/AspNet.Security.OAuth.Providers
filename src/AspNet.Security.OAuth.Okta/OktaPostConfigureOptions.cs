@@ -4,8 +4,6 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using System;
-using JetBrains.Annotations;
 using Microsoft.Extensions.Options;
 
 namespace AspNet.Security.OAuth.Okta
@@ -37,7 +35,7 @@ namespace AspNet.Security.OAuth.Okta
             {
                 Path = path,
                 Port = -1,
-                Scheme = "https",
+                Scheme = Uri.UriSchemeHttps,
             };
 
             return builder.Uri.ToString();

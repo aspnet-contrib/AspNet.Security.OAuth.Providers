@@ -4,10 +4,6 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using System;
-using System.Collections.Generic;
-using Xunit;
-
 namespace AspNet.Security.OAuth.Keycloak
 {
     public static class KeycloakAuthenticationOptionsTests
@@ -46,7 +42,7 @@ namespace AspNet.Security.OAuth.Keycloak
             {
                 AccessType = accessType,
                 ClientId = "my-client-id",
-                ClientSecret = null,
+                ClientSecret = null!,
             };
 
             // Act and Assert
@@ -61,7 +57,7 @@ namespace AspNet.Security.OAuth.Keycloak
             var options = new KeycloakAuthenticationOptions()
             {
                 AccessType = accessType,
-                AuthorizationEndpoint = null,
+                AuthorizationEndpoint = null!,
                 ClientId = "my-client-id",
                 ClientSecret = "my-client-secret",
             };
@@ -80,7 +76,7 @@ namespace AspNet.Security.OAuth.Keycloak
                 AccessType = accessType,
                 ClientId = "my-client-id",
                 ClientSecret = "my-client-secret",
-                TokenEndpoint = null,
+                TokenEndpoint = null!,
             };
 
             // Act and Assert

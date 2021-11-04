@@ -4,8 +4,6 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using Microsoft.AspNetCore.Authentication;
-
 namespace AspNet.Security.OAuth.Nextcloud
 {
     /// <summary>
@@ -21,16 +19,16 @@ namespace AspNet.Security.OAuth.Nextcloud
         /// <summary>
         /// Default value for <see cref="AuthenticationScheme.DisplayName"/>.
         /// </summary>
-        public const string DisplayName = "Nextcloud";
+        public static readonly string DisplayName = "Nextcloud";
 
         /// <summary>
         /// Default value for <see cref="AuthenticationSchemeOptions.ClaimsIssuer"/>.
         /// </summary>
-        public const string Issuer = "Nextcloud";
+        public static readonly string Issuer = "Nextcloud";
 
         /// <summary>
         /// Default value for <see cref="RemoteAuthenticationOptions.CallbackPath"/>.
         /// </summary>
-        public const string CallbackPath = "/signin-nextcloud";
+        public static readonly string CallbackPath = "/signin-nextcloud";
     }
 }

@@ -30,7 +30,7 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Setup .NET Core SDK
+    - name: Setup .NET SDK
       uses: actions/setup-dotnet@v1
 
     # Arcade only allows the revision to contain up to two characters, and GitHub Actions does not roll-over

@@ -4,16 +4,9 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using System;
-using System.Collections.Generic;
-using System.Net.Http;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Text.Json;
-using System.Threading.Tasks;
-using JetBrains.Annotations;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -124,7 +117,7 @@ namespace AspNet.Security.OAuth.QQ
             return OAuthTokenResponse.Success(payload);
         }
 
-        private async Task<(int errorCode, string? openId, string? unionId)> GetUserIdentifierAsync(OAuthTokenResponse tokens)
+        private async Task<(int ErrorCode, string? OpenId, string? UnionId)> GetUserIdentifierAsync(OAuthTokenResponse tokens)
         {
             // See https://wiki.connect.qq.com/unionid%E4%BB%8B%E7%BB%8D for details
             var queryString = new Dictionary<string, string?>(3)
@@ -163,7 +156,7 @@ namespace AspNet.Security.OAuth.QQ
                 errorCodeElement.GetInt32() :
                 0;
 
-            return (errorCode, openId: payloadRoot.GetString("openid"), unionId: payloadRoot.GetString("unionid"));
+            return (errorCode, payloadRoot.GetString("openid"), payloadRoot.GetString("unionid"));
         }
 
         protected override string FormatScope() => FormatScope(Options.Scope);

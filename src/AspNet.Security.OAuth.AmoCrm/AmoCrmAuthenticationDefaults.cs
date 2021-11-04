@@ -4,9 +4,6 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.OAuth;
-
 namespace AspNet.Security.OAuth.AmoCrm
 {
     /// <summary>
@@ -22,31 +19,31 @@ namespace AspNet.Security.OAuth.AmoCrm
         /// <summary>
         /// Default value for the <see cref="Microsoft.AspNetCore.Authentication.AuthenticationScheme.DisplayName"/>.
         /// </summary>
-        public const string DisplayName = "amoCRM";
+        public static readonly string DisplayName = "amoCRM";
 
         /// <summary>
         /// Default value for the <see cref="AuthenticationSchemeOptions.ClaimsIssuer"/>.
         /// </summary>
-        public const string Issuer = "amoCRM";
+        public static readonly string Issuer = "amoCRM";
 
         /// <summary>
         /// Default value for the <see cref="RemoteAuthenticationOptions.CallbackPath"/>.
         /// </summary>
-        public const string CallbackPath = "/signin-amocrm";
+        public static readonly string CallbackPath = "/signin-amocrm";
 
         /// <summary>
         /// Default value for the <see cref="OAuthOptions.AuthorizationEndpoint"/>.
         /// </summary>
-        public const string AuthorizationEndpoint = "https://www.amocrm.ru/oauth";
+        public static readonly string AuthorizationEndpoint = "https://www.amocrm.ru/oauth";
 
         /// <summary>
         /// Default value for the <see cref="OAuthOptions.TokenEndpoint"/>.
         /// </summary>
-        public const string TokenEndpointFormat = "https://{0}.amocrm.ru/oauth2/access_token";
+        public static readonly string TokenEndpointFormat = "https://{0}.amocrm.ru/oauth2/access_token";
 
         /// <summary>
         /// Default value for the <see cref="OAuthOptions.UserInformationEndpoint"/>.
         /// </summary>
-        public const string UserInformationEndpointFormat = "https://{0}.amocrm.ru/v3/user";
+        public static readonly string UserInformationEndpointFormat = "https://{0}.amocrm.ru/v3/user";
     }
 }

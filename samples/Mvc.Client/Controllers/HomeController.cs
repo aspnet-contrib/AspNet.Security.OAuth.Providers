@@ -6,11 +6,10 @@
 
 using Microsoft.AspNetCore.Mvc;
 
-namespace Mvc.Client.Controllers
+namespace Mvc.Client.Controllers;
+
+public class HomeController : Controller
 {
-    public class HomeController : Controller
-    {
-        [HttpGet("~/")]
-        public ActionResult Index() => View();
-    }
+    [HttpGet("~/")]
+    public ActionResult Index() => View();
 }

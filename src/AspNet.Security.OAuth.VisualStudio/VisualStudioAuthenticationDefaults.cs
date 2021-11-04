@@ -4,9 +4,6 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.OAuth;
-
 namespace AspNet.Security.OAuth.VisualStudio
 {
     /// <summary>
@@ -22,31 +19,31 @@ namespace AspNet.Security.OAuth.VisualStudio
         /// <summary>
         /// Default value for <see cref="AuthenticationScheme.DisplayName"/>.
         /// </summary>
-        public const string DisplayName = "Visual Studio Online";
+        public static readonly string DisplayName = "Visual Studio Online";
 
         /// <summary>
         /// Default value for <see cref="AuthenticationSchemeOptions.ClaimsIssuer"/>.
         /// </summary>
-        public const string Issuer = "Visual Studio Online";
+        public static readonly string Issuer = "Visual Studio Online";
 
         /// <summary>
         /// Default value for <see cref="RemoteAuthenticationOptions.CallbackPath"/>.
         /// </summary>
-        public const string CallbackPath = "/signin-visualstudio";
+        public static readonly string CallbackPath = "/signin-visualstudio";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
         /// </summary>
-        public const string AuthorizationEndpoint = "https://app.vssps.visualstudio.com/oauth2/authorize";
+        public static readonly string AuthorizationEndpoint = "https://app.vssps.visualstudio.com/oauth2/authorize";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.TokenEndpoint"/>.
         /// </summary>
-        public const string TokenEndpoint = "https://app.vssps.visualstudio.com/oauth2/token";
+        public static readonly string TokenEndpoint = "https://app.vssps.visualstudio.com/oauth2/token";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
         /// </summary>
-        public const string UserInformationEndpoint = "https://app.vssps.visualstudio.com/_apis/profile/profiles/me";
+        public static readonly string UserInformationEndpoint = "https://app.vssps.visualstudio.com/_apis/profile/profiles/me";
     }
 }

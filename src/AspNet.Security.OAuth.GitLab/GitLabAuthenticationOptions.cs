@@ -5,8 +5,6 @@
  */
 
 using System.Security.Claims;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.OAuth;
 using static AspNet.Security.OAuth.GitLab.GitLabAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.GitLab

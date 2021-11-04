@@ -5,8 +5,6 @@
  */
 
 using System.Security.Claims;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.OAuth;
 using static AspNet.Security.OAuth.Weibo.WeiboAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.Weibo

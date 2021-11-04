@@ -4,9 +4,6 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.OAuth;
-
 namespace AspNet.Security.OAuth.Paypal
 {
     /// <summary>
@@ -22,31 +19,31 @@ namespace AspNet.Security.OAuth.Paypal
         /// <summary>
         /// Default value for <see cref="AuthenticationScheme.DisplayName"/>.
         /// </summary>
-        public const string DisplayName = "Paypal";
+        public static readonly string DisplayName = "Paypal";
 
         /// <summary>
         /// Default value for <see cref="AuthenticationSchemeOptions.ClaimsIssuer"/>.
         /// </summary>
-        public const string Issuer = "Paypal";
+        public static readonly string Issuer = "Paypal";
 
         /// <summary>
         /// Default value for <see cref="RemoteAuthenticationOptions.CallbackPath"/>.
         /// </summary>
-        public const string CallbackPath = "/signin-paypal";
+        public static readonly string CallbackPath = "/signin-paypal";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
         /// </summary>
-        public const string AuthorizationEndpoint = "https://www.paypal.com/webapps/auth/protocol/openidconnect/v1/authorize";
+        public static readonly string AuthorizationEndpoint = "https://www.paypal.com/webapps/auth/protocol/openidconnect/v1/authorize";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.TokenEndpoint"/>.
         /// </summary>
-        public const string TokenEndpoint = "https://api.paypal.com/v1/identity/openidconnect/tokenservice";
+        public static readonly string TokenEndpoint = "https://api.paypal.com/v1/identity/openidconnect/tokenservice";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
         /// </summary>
-        public const string UserInformationEndpoint = "https://api.paypal.com/v1/identity/oauth2/userinfo";
+        public static readonly string UserInformationEndpoint = "https://api.paypal.com/v1/identity/oauth2/userinfo";
     }
 }

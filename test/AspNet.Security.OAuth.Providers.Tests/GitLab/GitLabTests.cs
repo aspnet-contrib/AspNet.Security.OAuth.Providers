@@ -4,13 +4,6 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using System.Security.Claims;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.Extensions.DependencyInjection;
-using Xunit;
-using Xunit.Abstractions;
-
 namespace AspNet.Security.OAuth.GitLab
 {
     public class GitLabTests : OAuthTests<GitLabAuthenticationOptions>
