@@ -6,70 +6,69 @@
 
 using AspNet.Security.OAuth.Spotify;
 
-namespace Microsoft.Extensions.DependencyInjection
+namespace Microsoft.Extensions.DependencyInjection;
+
+/// <summary>
+/// Extension methods to add Spotify authentication capabilities to an HTTP application pipeline.
+/// </summary>
+public static class SpotifyAuthenticationExtensions
 {
     /// <summary>
-    /// Extension methods to add Spotify authentication capabilities to an HTTP application pipeline.
+    /// Adds <see cref="SpotifyAuthenticationHandler"/> to the specified
+    /// <see cref="AuthenticationBuilder"/>, which enables Spotify authentication capabilities.
     /// </summary>
-    public static class SpotifyAuthenticationExtensions
+    /// <param name="builder">The authentication builder.</param>
+    /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
+    public static AuthenticationBuilder AddSpotify([NotNull] this AuthenticationBuilder builder)
     {
-        /// <summary>
-        /// Adds <see cref="SpotifyAuthenticationHandler"/> to the specified
-        /// <see cref="AuthenticationBuilder"/>, which enables Spotify authentication capabilities.
-        /// </summary>
-        /// <param name="builder">The authentication builder.</param>
-        /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
-        public static AuthenticationBuilder AddSpotify([NotNull] this AuthenticationBuilder builder)
-        {
-            return builder.AddSpotify(SpotifyAuthenticationDefaults.AuthenticationScheme, options => { });
-        }
+        return builder.AddSpotify(SpotifyAuthenticationDefaults.AuthenticationScheme, options => { });
+    }
 
-        /// <summary>
-        /// Adds <see cref="SpotifyAuthenticationHandler"/> to the specified
-        /// <see cref="AuthenticationBuilder"/>, which enables Spotify authentication capabilities.
-        /// </summary>
-        /// <param name="builder">The authentication builder.</param>
-        /// <param name="configuration">The delegate used to configure the OpenID 2.0 options.</param>
-        /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
-        public static AuthenticationBuilder AddSpotify(
-            [NotNull] this AuthenticationBuilder builder,
-            [NotNull] Action<SpotifyAuthenticationOptions> configuration)
-        {
-            return builder.AddSpotify(SpotifyAuthenticationDefaults.AuthenticationScheme, configuration);
-        }
+    /// <summary>
+    /// Adds <see cref="SpotifyAuthenticationHandler"/> to the specified
+    /// <see cref="AuthenticationBuilder"/>, which enables Spotify authentication capabilities.
+    /// </summary>
+    /// <param name="builder">The authentication builder.</param>
+    /// <param name="configuration">The delegate used to configure the OpenID 2.0 options.</param>
+    /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
+    public static AuthenticationBuilder AddSpotify(
+        [NotNull] this AuthenticationBuilder builder,
+        [NotNull] Action<SpotifyAuthenticationOptions> configuration)
+    {
+        return builder.AddSpotify(SpotifyAuthenticationDefaults.AuthenticationScheme, configuration);
+    }
 
-        /// <summary>
-        /// Adds <see cref="SpotifyAuthenticationHandler"/> to the specified
-        /// <see cref="AuthenticationBuilder"/>, which enables Spotify authentication capabilities.
-        /// </summary>
-        /// <param name="builder">The authentication builder.</param>
-        /// <param name="scheme">The authentication scheme associated with this instance.</param>
-        /// <param name="configuration">The delegate used to configure the Spotify options.</param>
-        /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
-        public static AuthenticationBuilder AddSpotify(
-            [NotNull] this AuthenticationBuilder builder,
-            [NotNull] string scheme,
-            [NotNull] Action<SpotifyAuthenticationOptions> configuration)
-        {
-            return builder.AddSpotify(scheme, SpotifyAuthenticationDefaults.DisplayName, configuration);
-        }
+    /// <summary>
+    /// Adds <see cref="SpotifyAuthenticationHandler"/> to the specified
+    /// <see cref="AuthenticationBuilder"/>, which enables Spotify authentication capabilities.
+    /// </summary>
+    /// <param name="builder">The authentication builder.</param>
+    /// <param name="scheme">The authentication scheme associated with this instance.</param>
+    /// <param name="configuration">The delegate used to configure the Spotify options.</param>
+    /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
+    public static AuthenticationBuilder AddSpotify(
+        [NotNull] this AuthenticationBuilder builder,
+        [NotNull] string scheme,
+        [NotNull] Action<SpotifyAuthenticationOptions> configuration)
+    {
+        return builder.AddSpotify(scheme, SpotifyAuthenticationDefaults.DisplayName, configuration);
+    }
 
-        /// <summary>
-        /// Adds <see cref="SpotifyAuthenticationHandler"/> to the specified
-        /// <see cref="AuthenticationBuilder"/>, which enables Spotify authentication capabilities.
-        /// </summary>
-        /// <param name="builder">The authentication builder.</param>
-        /// <param name="scheme">The authentication scheme associated with this instance.</param>
-        /// <param name="caption">The optional display name associated with this instance.</param>
-        /// <param name="configuration">The delegate used to configure the Spotify options.</param>
-        /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
-        public static AuthenticationBuilder AddSpotify(
-            [NotNull] this AuthenticationBuilder builder,
-            [NotNull] string scheme,
-            [CanBeNull] string caption,
-            [NotNull] Action<SpotifyAuthenticationOptions> configuration)
-        {
-            return builder.AddOAuth<SpotifyAuthenticationOptions, SpotifyAuthenticationHandler>(scheme, caption, configuration);
-        }
+    /// <summary>
+    /// Adds <see cref="SpotifyAuthenticationHandler"/> to the specified
+    /// <see cref="AuthenticationBuilder"/>, which enables Spotify authentication capabilities.
+    /// </summary>
+    /// <param name="builder">The authentication builder.</param>
+    /// <param name="scheme">The authentication scheme associated with this instance.</param>
+    /// <param name="caption">The optional display name associated with this instance.</param>
+    /// <param name="configuration">The delegate used to configure the Spotify options.</param>
+    /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
+    public static AuthenticationBuilder AddSpotify(
+        [NotNull] this AuthenticationBuilder builder,
+        [NotNull] string scheme,
+        [CanBeNull] string caption,
+        [NotNull] Action<SpotifyAuthenticationOptions> configuration)
+    {
+        return builder.AddOAuth<SpotifyAuthenticationOptions, SpotifyAuthenticationHandler>(scheme, caption, configuration);
     }
 }

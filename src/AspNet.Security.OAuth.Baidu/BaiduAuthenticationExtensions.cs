@@ -6,70 +6,69 @@
 
 using AspNet.Security.OAuth.Baidu;
 
-namespace Microsoft.Extensions.DependencyInjection
+namespace Microsoft.Extensions.DependencyInjection;
+
+/// <summary>
+/// Extension methods to add Baidu authentication capabilities to an HTTP application pipeline.
+/// </summary>
+public static class BaiduAuthenticationExtensions
 {
     /// <summary>
-    /// Extension methods to add Baidu authentication capabilities to an HTTP application pipeline.
+    /// Adds <see cref="BaiduAuthenticationHandler"/> to the specified
+    /// <see cref="AuthenticationBuilder"/>, which enables Baidu authentication capabilities.
     /// </summary>
-    public static class BaiduAuthenticationExtensions
+    /// <param name="builder">The authentication builder.</param>
+    /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
+    public static AuthenticationBuilder AddBaidu([NotNull] this AuthenticationBuilder builder)
     {
-        /// <summary>
-        /// Adds <see cref="BaiduAuthenticationHandler"/> to the specified
-        /// <see cref="AuthenticationBuilder"/>, which enables Baidu authentication capabilities.
-        /// </summary>
-        /// <param name="builder">The authentication builder.</param>
-        /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
-        public static AuthenticationBuilder AddBaidu([NotNull] this AuthenticationBuilder builder)
-        {
-            return builder.AddBaidu(BaiduAuthenticationDefaults.AuthenticationScheme, options => { });
-        }
+        return builder.AddBaidu(BaiduAuthenticationDefaults.AuthenticationScheme, options => { });
+    }
 
-        /// <summary>
-        /// Adds <see cref="BaiduAuthenticationHandler"/> to the specified
-        /// <see cref="AuthenticationBuilder"/>, which enables Baidu authentication capabilities.
-        /// </summary>
-        /// <param name="builder">The authentication builder.</param>
-        /// <param name="configuration">The delegate used to configure the OpenID 2.0 options.</param>
-        /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
-        public static AuthenticationBuilder AddBaidu(
-            [NotNull] this AuthenticationBuilder builder,
-            [NotNull] Action<BaiduAuthenticationOptions> configuration)
-        {
-            return builder.AddBaidu(BaiduAuthenticationDefaults.AuthenticationScheme, configuration);
-        }
+    /// <summary>
+    /// Adds <see cref="BaiduAuthenticationHandler"/> to the specified
+    /// <see cref="AuthenticationBuilder"/>, which enables Baidu authentication capabilities.
+    /// </summary>
+    /// <param name="builder">The authentication builder.</param>
+    /// <param name="configuration">The delegate used to configure the OpenID 2.0 options.</param>
+    /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
+    public static AuthenticationBuilder AddBaidu(
+        [NotNull] this AuthenticationBuilder builder,
+        [NotNull] Action<BaiduAuthenticationOptions> configuration)
+    {
+        return builder.AddBaidu(BaiduAuthenticationDefaults.AuthenticationScheme, configuration);
+    }
 
-        /// <summary>
-        /// Adds <see cref="BaiduAuthenticationHandler"/> to the specified
-        /// <see cref="AuthenticationBuilder"/>, which enables Baidu authentication capabilities.
-        /// </summary>
-        /// <param name="builder">The authentication builder.</param>
-        /// <param name="scheme">The authentication scheme associated with this instance.</param>
-        /// <param name="configuration">The delegate used to configure the Baidu options.</param>
-        /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
-        public static AuthenticationBuilder AddBaidu(
-            [NotNull] this AuthenticationBuilder builder,
-            [NotNull] string scheme,
-            [NotNull] Action<BaiduAuthenticationOptions> configuration)
-        {
-            return builder.AddBaidu(scheme, BaiduAuthenticationDefaults.DisplayName, configuration);
-        }
+    /// <summary>
+    /// Adds <see cref="BaiduAuthenticationHandler"/> to the specified
+    /// <see cref="AuthenticationBuilder"/>, which enables Baidu authentication capabilities.
+    /// </summary>
+    /// <param name="builder">The authentication builder.</param>
+    /// <param name="scheme">The authentication scheme associated with this instance.</param>
+    /// <param name="configuration">The delegate used to configure the Baidu options.</param>
+    /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
+    public static AuthenticationBuilder AddBaidu(
+        [NotNull] this AuthenticationBuilder builder,
+        [NotNull] string scheme,
+        [NotNull] Action<BaiduAuthenticationOptions> configuration)
+    {
+        return builder.AddBaidu(scheme, BaiduAuthenticationDefaults.DisplayName, configuration);
+    }
 
-        /// <summary>
-        /// Adds <see cref="BaiduAuthenticationHandler"/> to the specified
-        /// <see cref="AuthenticationBuilder"/>, which enables Baidu authentication capabilities.
-        /// </summary>
-        /// <param name="builder">The authentication builder.</param>
-        /// <param name="scheme">The authentication scheme associated with this instance.</param>
-        /// <param name="caption">The optional display name associated with this instance.</param>
-        /// <param name="configuration">The delegate used to configure the Baidu options.</param>
-        /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
-        public static AuthenticationBuilder AddBaidu(
-            [NotNull] this AuthenticationBuilder builder,
-            [NotNull] string scheme,
-            [CanBeNull] string caption,
-            [NotNull] Action<BaiduAuthenticationOptions> configuration)
-        {
-            return builder.AddOAuth<BaiduAuthenticationOptions, BaiduAuthenticationHandler>(scheme, caption, configuration);
-        }
+    /// <summary>
+    /// Adds <see cref="BaiduAuthenticationHandler"/> to the specified
+    /// <see cref="AuthenticationBuilder"/>, which enables Baidu authentication capabilities.
+    /// </summary>
+    /// <param name="builder">The authentication builder.</param>
+    /// <param name="scheme">The authentication scheme associated with this instance.</param>
+    /// <param name="caption">The optional display name associated with this instance.</param>
+    /// <param name="configuration">The delegate used to configure the Baidu options.</param>
+    /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
+    public static AuthenticationBuilder AddBaidu(
+        [NotNull] this AuthenticationBuilder builder,
+        [NotNull] string scheme,
+        [CanBeNull] string caption,
+        [NotNull] Action<BaiduAuthenticationOptions> configuration)
+    {
+        return builder.AddOAuth<BaiduAuthenticationOptions, BaiduAuthenticationHandler>(scheme, caption, configuration);
     }
 }

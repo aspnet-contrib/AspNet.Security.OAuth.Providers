@@ -9,58 +9,57 @@ using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Protocols;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 
-namespace AspNet.Security.OAuth.SuperOffice
+namespace AspNet.Security.OAuth.SuperOffice;
+
+/// <summary>
+/// Used to setup defaults for all <see cref="SuperOfficeAuthenticationOptions"/>.
+/// </summary>
+public class SuperOfficeAuthenticationPostConfigureOptions : IPostConfigureOptions<SuperOfficeAuthenticationOptions>
 {
-    /// <summary>
-    /// Used to setup defaults for all <see cref="SuperOfficeAuthenticationOptions"/>.
-    /// </summary>
-    public class SuperOfficeAuthenticationPostConfigureOptions : IPostConfigureOptions<SuperOfficeAuthenticationOptions>
+    /// <inheritdoc />
+    public void PostConfigure(
+        [NotNull] string name,
+        [NotNull] SuperOfficeAuthenticationOptions options)
     {
-        /// <inheritdoc />
-        public void PostConfigure(
-            [NotNull] string name,
-            [NotNull] SuperOfficeAuthenticationOptions options)
+        if (string.IsNullOrEmpty(options.TokenValidationParameters.ValidAudience) && !string.IsNullOrEmpty(options.ClientId))
         {
-            if (string.IsNullOrEmpty(options.TokenValidationParameters.ValidAudience) && !string.IsNullOrEmpty(options.ClientId))
-            {
-                options.TokenValidationParameters.ValidAudience = options.ClientId;
-                options.TokenValidationParameters.ValidIssuer = options.ClaimsIssuer;
-            }
+            options.TokenValidationParameters.ValidAudience = options.ClientId;
+            options.TokenValidationParameters.ValidIssuer = options.ClaimsIssuer;
+        }
 
-            // As seen in:
-            // github.com/dotnet/aspnetcore/blob/master/src/Security/Authentication/OpenIdConnect/src/OpenIdConnectPostConfigureOptions.cs#L71-L102
-            // need this now to successfully instantiate ConfigurationManager below.
-            if (options.Backchannel == null)
-            {
+        // As seen in:
+        // github.com/dotnet/aspnetcore/blob/master/src/Security/Authentication/OpenIdConnect/src/OpenIdConnectPostConfigureOptions.cs#L71-L102
+        // need this now to successfully instantiate ConfigurationManager below.
+        if (options.Backchannel == null)
+        {
 #pragma warning disable CA2000 // Dispose objects before losing scope
-                options.Backchannel = new HttpClient(options.BackchannelHttpHandler ?? new HttpClientHandler());
+            options.Backchannel = new HttpClient(options.BackchannelHttpHandler ?? new HttpClientHandler());
 #pragma warning restore CA2000 // Dispose objects before losing scope
-                options.Backchannel.DefaultRequestHeaders.UserAgent.ParseAdd("SuperOffice OAuth handler");
-                options.Backchannel.Timeout = options.BackchannelTimeout;
-                options.Backchannel.MaxResponseContentBufferSize = 1024 * 1024 * 10; // 10 MB
-            }
+            options.Backchannel.DefaultRequestHeaders.UserAgent.ParseAdd("SuperOffice OAuth handler");
+            options.Backchannel.Timeout = options.BackchannelTimeout;
+            options.Backchannel.MaxResponseContentBufferSize = 1024 * 1024 * 10; // 10 MB
+        }
 
-            if (options.ConfigurationManager == null)
+        if (options.ConfigurationManager == null)
+        {
+            if (string.IsNullOrEmpty(options.MetadataAddress))
             {
-                if (string.IsNullOrEmpty(options.MetadataAddress))
-                {
-                    throw new InvalidOperationException($"The MetadataAddress must be set on the {nameof(SuperOfficeAuthenticationOptions)} instance.");
-                }
-
-                options.ConfigurationManager = new ConfigurationManager<OpenIdConnectConfiguration>(
-                    options.MetadataAddress,
-                    new OpenIdConnectConfigurationRetriever(),
-                    new HttpDocumentRetriever(options.Backchannel))
-                {
-                    AutomaticRefreshInterval = TimeSpan.FromDays(1),
-                    RefreshInterval = TimeSpan.FromSeconds(30)
-                };
+                throw new InvalidOperationException($"The MetadataAddress must be set on the {nameof(SuperOfficeAuthenticationOptions)} instance.");
             }
 
-            if (options.SecurityTokenHandler == null)
+            options.ConfigurationManager = new ConfigurationManager<OpenIdConnectConfiguration>(
+                options.MetadataAddress,
+                new OpenIdConnectConfigurationRetriever(),
+                new HttpDocumentRetriever(options.Backchannel))
             {
-                options.SecurityTokenHandler = new JsonWebTokenHandler();
-            }
+                AutomaticRefreshInterval = TimeSpan.FromDays(1),
+                RefreshInterval = TimeSpan.FromSeconds(30)
+            };
+        }
+
+        if (options.SecurityTokenHandler == null)
+        {
+            options.SecurityTokenHandler = new JsonWebTokenHandler();
         }
     }
 }

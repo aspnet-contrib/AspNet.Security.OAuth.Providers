@@ -4,16 +4,15 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-namespace AspNet.Security.OAuth.MailRu
+namespace AspNet.Security.OAuth.MailRu;
+
+/// <summary>
+/// Contains constants specific to the <see cref="MailRuAuthenticationHandler"/>.
+/// </summary>
+public static class MailRuAuthenticationConstants
 {
-    /// <summary>
-    /// Contains constants specific to the <see cref="MailRuAuthenticationHandler"/>.
-    /// </summary>
-    public static class MailRuAuthenticationConstants
+    public static class Claims
     {
-        public static class Claims
-        {
-            public const string ImageUrl = "urn:mailru:profileimage";
-        }
+        public const string ImageUrl = "urn:mailru:profileimage";
     }
 }

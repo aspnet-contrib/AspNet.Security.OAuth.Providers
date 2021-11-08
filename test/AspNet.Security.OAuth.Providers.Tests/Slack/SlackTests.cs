@@ -4,45 +4,44 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-namespace AspNet.Security.OAuth.Slack
+namespace AspNet.Security.OAuth.Slack;
+
+public class SlackTests : OAuthTests<SlackAuthenticationOptions>
 {
-    public class SlackTests : OAuthTests<SlackAuthenticationOptions>
+    public SlackTests(ITestOutputHelper outputHelper)
     {
-        public SlackTests(ITestOutputHelper outputHelper)
+        OutputHelper = outputHelper;
+    }
+
+    public override string DefaultScheme => SlackAuthenticationDefaults.AuthenticationScheme;
+
+    protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
+    {
+        builder.AddSlack(options =>
         {
-            OutputHelper = outputHelper;
-        }
+            ConfigureDefaults(builder, options);
+            options.Scope.Add("identity.avatar");
+            options.Scope.Add("identity.email");
+            options.Scope.Add("identity.team");
+        });
+    }
 
-        public override string DefaultScheme => SlackAuthenticationDefaults.AuthenticationScheme;
+    [Theory]
+    [InlineData(ClaimTypes.NameIdentifier, "T0G9PQBBK|U0G9QF9C6")]
+    [InlineData(ClaimTypes.Name, "Sonny Whether")]
+    [InlineData(ClaimTypes.Email, "bobby@example.com")]
+    [InlineData("urn:slack:team_id", "T0G9PQBBK")]
+    [InlineData("urn:slack:team_name", "Captain Fabian's Naval Supply")]
+    [InlineData("urn:slack:user_id", "U0G9QF9C6")]
+    public async Task Can_Sign_In_Using_Slack(string claimType, string claimValue)
+    {
+        // Arrange
+        using var server = CreateTestServer();
 
-        protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
-        {
-            builder.AddSlack(options =>
-            {
-                ConfigureDefaults(builder, options);
-                options.Scope.Add("identity.avatar");
-                options.Scope.Add("identity.email");
-                options.Scope.Add("identity.team");
-            });
-        }
+        // Act
+        var claims = await AuthenticateUserAsync(server);
 
-        [Theory]
-        [InlineData(ClaimTypes.NameIdentifier, "T0G9PQBBK|U0G9QF9C6")]
-        [InlineData(ClaimTypes.Name, "Sonny Whether")]
-        [InlineData(ClaimTypes.Email, "bobby@example.com")]
-        [InlineData("urn:slack:team_id", "T0G9PQBBK")]
-        [InlineData("urn:slack:team_name", "Captain Fabian's Naval Supply")]
-        [InlineData("urn:slack:user_id", "U0G9QF9C6")]
-        public async Task Can_Sign_In_Using_Slack(string claimType, string claimValue)
-        {
-            // Arrange
-            using var server = CreateTestServer();
-
-            // Act
-            var claims = await AuthenticateUserAsync(server);
-
-            // Assert
-            AssertClaim(claims, claimType, claimValue);
-        }
+        // Assert
+        AssertClaim(claims, claimType, claimValue);
     }
 }

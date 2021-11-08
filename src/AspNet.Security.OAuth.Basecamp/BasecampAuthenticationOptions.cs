@@ -6,25 +6,24 @@
 
 using System.Security.Claims;
 
-namespace AspNet.Security.OAuth.Basecamp
-{
-    /// <summary>
-    /// Defines a set of options used by <see cref="BasecampAuthenticationHandler"/>.
-    /// </summary>
-    public class BasecampAuthenticationOptions : OAuthOptions
-    {
-        public BasecampAuthenticationOptions()
-        {
-            ClaimsIssuer = BasecampAuthenticationDefaults.Issuer;
-            CallbackPath = BasecampAuthenticationDefaults.CallbackPath;
-            AuthorizationEndpoint = BasecampAuthenticationDefaults.AuthorizationEndpoint;
-            TokenEndpoint = BasecampAuthenticationDefaults.TokenEndpoint;
-            UserInformationEndpoint = BasecampAuthenticationDefaults.UserInformationEndpoint;
+namespace AspNet.Security.OAuth.Basecamp;
 
-            ClaimActions.MapJsonSubKey(ClaimTypes.NameIdentifier, "identity", "id");
-            ClaimActions.MapJsonSubKey(ClaimTypes.GivenName, "identity", "first_name");
-            ClaimActions.MapJsonSubKey(ClaimTypes.Surname, "identity", "last_name");
-            ClaimActions.MapJsonSubKey(ClaimTypes.Email, "identity", "email_address");
-        }
+/// <summary>
+/// Defines a set of options used by <see cref="BasecampAuthenticationHandler"/>.
+/// </summary>
+public class BasecampAuthenticationOptions : OAuthOptions
+{
+    public BasecampAuthenticationOptions()
+    {
+        ClaimsIssuer = BasecampAuthenticationDefaults.Issuer;
+        CallbackPath = BasecampAuthenticationDefaults.CallbackPath;
+        AuthorizationEndpoint = BasecampAuthenticationDefaults.AuthorizationEndpoint;
+        TokenEndpoint = BasecampAuthenticationDefaults.TokenEndpoint;
+        UserInformationEndpoint = BasecampAuthenticationDefaults.UserInformationEndpoint;
+
+        ClaimActions.MapJsonSubKey(ClaimTypes.NameIdentifier, "identity", "id");
+        ClaimActions.MapJsonSubKey(ClaimTypes.GivenName, "identity", "first_name");
+        ClaimActions.MapJsonSubKey(ClaimTypes.Surname, "identity", "last_name");
+        ClaimActions.MapJsonSubKey(ClaimTypes.Email, "identity", "email_address");
     }
 }

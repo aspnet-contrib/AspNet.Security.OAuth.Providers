@@ -9,27 +9,26 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using static AspNet.Security.OAuth.ServiceChannel.ServiceChannelAuthenticationConstants;
 
-namespace AspNet.Security.OAuth.ServiceChannel
+namespace AspNet.Security.OAuth.ServiceChannel;
+
+/// <summary>
+/// Defines a set of options used by <see cref="ServiceChannelAuthenticationHandler"/>.
+/// </summary>
+public class ServiceChannelAuthenticationOptions : OAuthOptions
 {
-    /// <summary>
-    /// Defines a set of options used by <see cref="ServiceChannelAuthenticationHandler"/>.
-    /// </summary>
-    public class ServiceChannelAuthenticationOptions : OAuthOptions
+    public ServiceChannelAuthenticationOptions()
     {
-        public ServiceChannelAuthenticationOptions()
-        {
-            ClaimsIssuer = ServiceChannelAuthenticationDefaults.Issuer;
-            CallbackPath = ServiceChannelAuthenticationDefaults.CallbackPath;
+        ClaimsIssuer = ServiceChannelAuthenticationDefaults.Issuer;
+        CallbackPath = ServiceChannelAuthenticationDefaults.CallbackPath;
 
-            AuthorizationEndpoint = ServiceChannelAuthenticationDefaults.AuthorizationEndpoint;
-            TokenEndpoint = ServiceChannelAuthenticationDefaults.TokenEndpoint;
-            UserInformationEndpoint = ServiceChannelAuthenticationDefaults.UserInformationEndpoint;
+        AuthorizationEndpoint = ServiceChannelAuthenticationDefaults.AuthorizationEndpoint;
+        TokenEndpoint = ServiceChannelAuthenticationDefaults.TokenEndpoint;
+        UserInformationEndpoint = ServiceChannelAuthenticationDefaults.UserInformationEndpoint;
 
-            ClaimActions.MapJsonSubKey(ClaimTypes.NameIdentifier, "UserProfile", "UserId");
-            ClaimActions.MapJsonSubKey(ClaimTypes.Name, "UserProfile", "UserName");
-            ClaimActions.MapJsonSubKey(ClaimTypes.Email, "UserProfile", "Email");
-            ClaimActions.MapJsonSubKey(Claims.ProviderId, "UserProfile", "ProviderId");
-            ClaimActions.MapJsonSubKey(Claims.ProviderName, "UserProfile", "ProviderName");
-        }
+        ClaimActions.MapJsonSubKey(ClaimTypes.NameIdentifier, "UserProfile", "UserId");
+        ClaimActions.MapJsonSubKey(ClaimTypes.Name, "UserProfile", "UserName");
+        ClaimActions.MapJsonSubKey(ClaimTypes.Email, "UserProfile", "Email");
+        ClaimActions.MapJsonSubKey(Claims.ProviderId, "UserProfile", "ProviderId");
+        ClaimActions.MapJsonSubKey(Claims.ProviderName, "UserProfile", "ProviderName");
     }
 }

@@ -4,21 +4,20 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-namespace AspNet.Security.OAuth.Nextcloud
+namespace AspNet.Security.OAuth.Nextcloud;
+
+/// <summary>
+/// Contains constants specific to the <see cref="NextcloudAuthenticationHandler"/>.
+/// </summary>
+public static class NextcloudAuthenticationConstants
 {
-    /// <summary>
-    /// Contains constants specific to the <see cref="NextcloudAuthenticationHandler"/>.
-    /// </summary>
-    public static class NextcloudAuthenticationConstants
+    public static class Claims
     {
-        public static class Claims
-        {
-            public const string Groups = "urn:nextcloud:groups";
-            public const string Username = "urn:nextcloud:username";
-            public const string DisplayName = "urn:nextcloud:displayname";
-            public const string IsEnabled = "urn:nextcloud:enabled";
-            public const string Language = "urn:nextcloud:language";
-            public const string Locale = "urn:nextcloud:locale";
-        }
+        public const string Groups = "urn:nextcloud:groups";
+        public const string Username = "urn:nextcloud:username";
+        public const string DisplayName = "urn:nextcloud:displayname";
+        public const string IsEnabled = "urn:nextcloud:enabled";
+        public const string Language = "urn:nextcloud:language";
+        public const string Locale = "urn:nextcloud:locale";
     }
 }

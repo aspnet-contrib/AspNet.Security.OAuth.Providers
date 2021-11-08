@@ -13,41 +13,40 @@ using Xunit;
 using Xunit.Abstractions;
 using static AspNet.Security.OAuth.ServiceChannel.ServiceChannelAuthenticationConstants;
 
-namespace AspNet.Security.OAuth.ServiceChannel
+namespace AspNet.Security.OAuth.ServiceChannel;
+
+public class ServiceChannelTests : OAuthTests<ServiceChannelAuthenticationOptions>
 {
-    public class ServiceChannelTests : OAuthTests<ServiceChannelAuthenticationOptions>
+    public ServiceChannelTests(ITestOutputHelper outputHelper)
     {
-        public ServiceChannelTests(ITestOutputHelper outputHelper)
+        OutputHelper = outputHelper;
+    }
+
+    public override string DefaultScheme => ServiceChannelAuthenticationDefaults.AuthenticationScheme;
+
+    protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
+    {
+        builder.AddServiceChannel(options =>
         {
-            OutputHelper = outputHelper;
-        }
+            ConfigureDefaults(builder, options);
+        });
+    }
 
-        public override string DefaultScheme => ServiceChannelAuthenticationDefaults.AuthenticationScheme;
+    [Theory]
+    [InlineData(ClaimTypes.NameIdentifier, "4034383")]
+    [InlineData(ClaimTypes.Name, "john.smith@test.local")]
+    [InlineData(ClaimTypes.Email, "john.smith@test.local")]
+    [InlineData(Claims.ProviderId, "2000156703")]
+    [InlineData(Claims.ProviderName, "uicccf")]
+    public async Task Can_Sign_In_Using_ServiceChannel(string claimType, string claimValue)
+    {
+        // Arrange
+        using var server = CreateTestServer();
 
-        protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
-        {
-            builder.AddServiceChannel(options =>
-            {
-                ConfigureDefaults(builder, options);
-            });
-        }
+        // Act
+        var claims = await AuthenticateUserAsync(server);
 
-        [Theory]
-        [InlineData(ClaimTypes.NameIdentifier, "4034383")]
-        [InlineData(ClaimTypes.Name, "john.smith@test.local")]
-        [InlineData(ClaimTypes.Email, "john.smith@test.local")]
-        [InlineData(Claims.ProviderId, "2000156703")]
-        [InlineData(Claims.ProviderName, "uicccf")]
-        public async Task Can_Sign_In_Using_ServiceChannel(string claimType, string claimValue)
-        {
-            // Arrange
-            using var server = CreateTestServer();
-
-            // Act
-            var claims = await AuthenticateUserAsync(server);
-
-            // Assert
-            AssertClaim(claims, claimType, claimValue);
-        }
+        // Assert
+        AssertClaim(claims, claimType, claimValue);
     }
 }

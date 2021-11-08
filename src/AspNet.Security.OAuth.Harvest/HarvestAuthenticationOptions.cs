@@ -7,37 +7,36 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 
-namespace AspNet.Security.OAuth.Harvest
+namespace AspNet.Security.OAuth.Harvest;
+
+/// <summary>
+/// Defines a set of options used by <see cref="HarvestAuthenticationHandler"/>.
+/// </summary>
+public class HarvestAuthenticationOptions : OAuthOptions
 {
-    /// <summary>
-    /// Defines a set of options used by <see cref="HarvestAuthenticationHandler"/>.
-    /// </summary>
-    public class HarvestAuthenticationOptions : OAuthOptions
+    public HarvestAuthenticationOptions()
     {
-        public HarvestAuthenticationOptions()
-        {
-            ClaimsIssuer = HarvestAuthenticationDefaults.Issuer;
-            CallbackPath = HarvestAuthenticationDefaults.CallbackPath;
+        ClaimsIssuer = HarvestAuthenticationDefaults.Issuer;
+        CallbackPath = HarvestAuthenticationDefaults.CallbackPath;
 
-            AuthorizationEndpoint = HarvestAuthenticationDefaults.AuthorizationEndpoint;
-            TokenEndpoint = HarvestAuthenticationDefaults.TokenEndpoint;
-            UserInformationEndpoint = HarvestAuthenticationDefaults.UserInformationEndpoint;
+        AuthorizationEndpoint = HarvestAuthenticationDefaults.AuthorizationEndpoint;
+        TokenEndpoint = HarvestAuthenticationDefaults.TokenEndpoint;
+        UserInformationEndpoint = HarvestAuthenticationDefaults.UserInformationEndpoint;
 
-            ClaimActions.MapJsonSubKey(ClaimTypes.NameIdentifier, "user", "id");
-            ClaimActions.MapJsonSubKey(ClaimTypes.GivenName, "user", "first_name");
-            ClaimActions.MapJsonSubKey(ClaimTypes.Surname, "user", "last_name");
-            ClaimActions.MapJsonSubKey(ClaimTypes.Email, "user", "email");
-            ClaimActions.MapCustomJson(
-                ClaimTypes.Name,
-                payload =>
+        ClaimActions.MapJsonSubKey(ClaimTypes.NameIdentifier, "user", "id");
+        ClaimActions.MapJsonSubKey(ClaimTypes.GivenName, "user", "first_name");
+        ClaimActions.MapJsonSubKey(ClaimTypes.Surname, "user", "last_name");
+        ClaimActions.MapJsonSubKey(ClaimTypes.Email, "user", "email");
+        ClaimActions.MapCustomJson(
+            ClaimTypes.Name,
+            payload =>
+            {
+                if (!payload.TryGetProperty("user", out var user))
                 {
-                    if (!payload.TryGetProperty("user", out var user))
-                    {
-                        return null;
-                    }
+                    return null;
+                }
 
-                    return $"{user.GetString("first_name")} {user.GetString("last_name")}".Trim();
-                });
-        }
+                return $"{user.GetString("first_name")} {user.GetString("last_name")}".Trim();
+            });
     }
 }

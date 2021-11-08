@@ -6,39 +6,38 @@
 
 using Microsoft.Extensions.Options;
 
-namespace AspNet.Security.OAuth.Okta
+namespace AspNet.Security.OAuth.Okta;
+
+/// <summary>
+/// A class used to setup defaults for all <see cref="OktaAuthenticationOptions"/>.
+/// </summary>
+public class OktaPostConfigureOptions : IPostConfigureOptions<OktaAuthenticationOptions>
 {
-    /// <summary>
-    /// A class used to setup defaults for all <see cref="OktaAuthenticationOptions"/>.
-    /// </summary>
-    public class OktaPostConfigureOptions : IPostConfigureOptions<OktaAuthenticationOptions>
+    /// <inheritdoc/>
+    public void PostConfigure(
+        [NotNull] string name,
+        [NotNull] OktaAuthenticationOptions options)
     {
-        /// <inheritdoc/>
-        public void PostConfigure(
-            [NotNull] string name,
-            [NotNull] OktaAuthenticationOptions options)
+        if (string.IsNullOrWhiteSpace(options.Domain))
         {
-            if (string.IsNullOrWhiteSpace(options.Domain))
-            {
-                throw new ArgumentException("No Okta domain configured.", nameof(options));
-            }
-
-            options.AuthorizationEndpoint = CreateUrl(options.Domain, OktaAuthenticationDefaults.AuthorizationEndpointPath);
-            options.TokenEndpoint = CreateUrl(options.Domain, OktaAuthenticationDefaults.TokenEndpointPath);
-            options.UserInformationEndpoint = CreateUrl(options.Domain, OktaAuthenticationDefaults.UserInformationEndpointPath);
+            throw new ArgumentException("No Okta domain configured.", nameof(options));
         }
 
-        private static string CreateUrl(string domain, string path)
-        {
-            // Enforce use of HTTPS
-            var builder = new UriBuilder(domain)
-            {
-                Path = path,
-                Port = -1,
-                Scheme = Uri.UriSchemeHttps,
-            };
+        options.AuthorizationEndpoint = CreateUrl(options.Domain, OktaAuthenticationDefaults.AuthorizationEndpointPath);
+        options.TokenEndpoint = CreateUrl(options.Domain, OktaAuthenticationDefaults.TokenEndpointPath);
+        options.UserInformationEndpoint = CreateUrl(options.Domain, OktaAuthenticationDefaults.UserInformationEndpointPath);
+    }
 
-            return builder.Uri.ToString();
-        }
+    private static string CreateUrl(string domain, string path)
+    {
+        // Enforce use of HTTPS
+        var builder = new UriBuilder(domain)
+        {
+            Path = path,
+            Port = -1,
+            Scheme = Uri.UriSchemeHttps,
+        };
+
+        return builder.Uri.ToString();
     }
 }

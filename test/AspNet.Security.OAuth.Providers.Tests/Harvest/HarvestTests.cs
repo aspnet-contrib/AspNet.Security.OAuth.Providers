@@ -4,41 +4,40 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-namespace AspNet.Security.OAuth.Harvest
+namespace AspNet.Security.OAuth.Harvest;
+
+public class HarvestTests : OAuthTests<HarvestAuthenticationOptions>
 {
-    public class HarvestTests : OAuthTests<HarvestAuthenticationOptions>
+    public HarvestTests(ITestOutputHelper outputHelper)
     {
-        public HarvestTests(ITestOutputHelper outputHelper)
+        OutputHelper = outputHelper;
+    }
+
+    public override string DefaultScheme => HarvestAuthenticationDefaults.AuthenticationScheme;
+
+    protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
+    {
+        builder.AddHarvest(options =>
         {
-            OutputHelper = outputHelper;
-        }
+            ConfigureDefaults(builder, options);
+        });
+    }
 
-        public override string DefaultScheme => HarvestAuthenticationDefaults.AuthenticationScheme;
+    [Theory]
+    [InlineData(ClaimTypes.NameIdentifier, "1001")]
+    [InlineData(ClaimTypes.Name, "John Smith")]
+    [InlineData(ClaimTypes.GivenName, "John")]
+    [InlineData(ClaimTypes.Surname, "Smith")]
+    [InlineData(ClaimTypes.Email, "john.smith@mail.com")]
+    public async Task Can_Sign_In_Using_Harvest(string claimType, string claimValue)
+    {
+        // Arrange
+        using var server = CreateTestServer();
 
-        protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
-        {
-            builder.AddHarvest(options =>
-            {
-                ConfigureDefaults(builder, options);
-            });
-        }
+        // Act
+        var claims = await AuthenticateUserAsync(server);
 
-        [Theory]
-        [InlineData(ClaimTypes.NameIdentifier, "1001")]
-        [InlineData(ClaimTypes.Name, "John Smith")]
-        [InlineData(ClaimTypes.GivenName, "John")]
-        [InlineData(ClaimTypes.Surname, "Smith")]
-        [InlineData(ClaimTypes.Email, "john.smith@mail.com")]
-        public async Task Can_Sign_In_Using_Harvest(string claimType, string claimValue)
-        {
-            // Arrange
-            using var server = CreateTestServer();
-
-            // Act
-            var claims = await AuthenticateUserAsync(server);
-
-            // Assert
-            AssertClaim(claims, claimType, claimValue);
-        }
+        // Assert
+        AssertClaim(claims, claimType, claimValue);
     }
 }

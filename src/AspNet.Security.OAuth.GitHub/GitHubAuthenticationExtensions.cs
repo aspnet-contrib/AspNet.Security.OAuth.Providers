@@ -8,71 +8,70 @@ using AspNet.Security.OAuth.GitHub;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
 
-namespace Microsoft.Extensions.DependencyInjection
+namespace Microsoft.Extensions.DependencyInjection;
+
+/// <summary>
+/// Extension methods to add GitHub authentication capabilities to an HTTP application pipeline.
+/// </summary>
+public static class GitHubAuthenticationExtensions
 {
     /// <summary>
-    /// Extension methods to add GitHub authentication capabilities to an HTTP application pipeline.
+    /// Adds <see cref="GitHubAuthenticationHandler"/> to the specified
+    /// <see cref="AuthenticationBuilder"/>, which enables GitHub authentication capabilities.
     /// </summary>
-    public static class GitHubAuthenticationExtensions
+    /// <param name="builder">The authentication builder.</param>
+    /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
+    public static AuthenticationBuilder AddGitHub([NotNull] this AuthenticationBuilder builder)
     {
-        /// <summary>
-        /// Adds <see cref="GitHubAuthenticationHandler"/> to the specified
-        /// <see cref="AuthenticationBuilder"/>, which enables GitHub authentication capabilities.
-        /// </summary>
-        /// <param name="builder">The authentication builder.</param>
-        /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
-        public static AuthenticationBuilder AddGitHub([NotNull] this AuthenticationBuilder builder)
-        {
-            return builder.AddGitHub(GitHubAuthenticationDefaults.AuthenticationScheme, options => { });
-        }
+        return builder.AddGitHub(GitHubAuthenticationDefaults.AuthenticationScheme, options => { });
+    }
 
-        /// <summary>
-        /// Adds <see cref="GitHubAuthenticationHandler"/> to the specified
-        /// <see cref="AuthenticationBuilder"/>, which enables GitHub authentication capabilities.
-        /// </summary>
-        /// <param name="builder">The authentication builder.</param>
-        /// <param name="configuration">The delegate used to configure the OpenID 2.0 options.</param>
-        /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
-        public static AuthenticationBuilder AddGitHub(
-            [NotNull] this AuthenticationBuilder builder,
-            [NotNull] Action<GitHubAuthenticationOptions> configuration)
-        {
-            return builder.AddGitHub(GitHubAuthenticationDefaults.AuthenticationScheme, configuration);
-        }
+    /// <summary>
+    /// Adds <see cref="GitHubAuthenticationHandler"/> to the specified
+    /// <see cref="AuthenticationBuilder"/>, which enables GitHub authentication capabilities.
+    /// </summary>
+    /// <param name="builder">The authentication builder.</param>
+    /// <param name="configuration">The delegate used to configure the OpenID 2.0 options.</param>
+    /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
+    public static AuthenticationBuilder AddGitHub(
+        [NotNull] this AuthenticationBuilder builder,
+        [NotNull] Action<GitHubAuthenticationOptions> configuration)
+    {
+        return builder.AddGitHub(GitHubAuthenticationDefaults.AuthenticationScheme, configuration);
+    }
 
-        /// <summary>
-        /// Adds <see cref="GitHubAuthenticationHandler"/> to the specified
-        /// <see cref="AuthenticationBuilder"/>, which enables GitHub authentication capabilities.
-        /// </summary>
-        /// <param name="builder">The authentication builder.</param>
-        /// <param name="scheme">The authentication scheme associated with this instance.</param>
-        /// <param name="configuration">The delegate used to configure the GitHub options.</param>
-        /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
-        public static AuthenticationBuilder AddGitHub(
-            [NotNull] this AuthenticationBuilder builder,
-            [NotNull] string scheme,
-            [NotNull] Action<GitHubAuthenticationOptions> configuration)
-        {
-            return builder.AddGitHub(scheme, GitHubAuthenticationDefaults.DisplayName, configuration);
-        }
+    /// <summary>
+    /// Adds <see cref="GitHubAuthenticationHandler"/> to the specified
+    /// <see cref="AuthenticationBuilder"/>, which enables GitHub authentication capabilities.
+    /// </summary>
+    /// <param name="builder">The authentication builder.</param>
+    /// <param name="scheme">The authentication scheme associated with this instance.</param>
+    /// <param name="configuration">The delegate used to configure the GitHub options.</param>
+    /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
+    public static AuthenticationBuilder AddGitHub(
+        [NotNull] this AuthenticationBuilder builder,
+        [NotNull] string scheme,
+        [NotNull] Action<GitHubAuthenticationOptions> configuration)
+    {
+        return builder.AddGitHub(scheme, GitHubAuthenticationDefaults.DisplayName, configuration);
+    }
 
-        /// <summary>
-        /// Adds <see cref="GitHubAuthenticationHandler"/> to the specified
-        /// <see cref="AuthenticationBuilder"/>, which enables GitHub authentication capabilities.
-        /// </summary>
-        /// <param name="builder">The authentication builder.</param>
-        /// <param name="scheme">The authentication scheme associated with this instance.</param>
-        /// <param name="caption">The optional display name associated with this instance.</param>
-        /// <param name="configuration">The delegate used to configure the GitHub options.</param>
-        /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
-        public static AuthenticationBuilder AddGitHub(
-            [NotNull] this AuthenticationBuilder builder,
-            [NotNull] string scheme,
-            [CanBeNull] string caption,
-            [NotNull] Action<GitHubAuthenticationOptions> configuration)
-        {
-            builder.Services.TryAddSingleton<IPostConfigureOptions<GitHubAuthenticationOptions>, GitHubPostConfigureOptions>();
-            return builder.AddOAuth<GitHubAuthenticationOptions, GitHubAuthenticationHandler>(scheme, caption, configuration);
-        }
+    /// <summary>
+    /// Adds <see cref="GitHubAuthenticationHandler"/> to the specified
+    /// <see cref="AuthenticationBuilder"/>, which enables GitHub authentication capabilities.
+    /// </summary>
+    /// <param name="builder">The authentication builder.</param>
+    /// <param name="scheme">The authentication scheme associated with this instance.</param>
+    /// <param name="caption">The optional display name associated with this instance.</param>
+    /// <param name="configuration">The delegate used to configure the GitHub options.</param>
+    /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
+    public static AuthenticationBuilder AddGitHub(
+        [NotNull] this AuthenticationBuilder builder,
+        [NotNull] string scheme,
+        [CanBeNull] string caption,
+        [NotNull] Action<GitHubAuthenticationOptions> configuration)
+    {
+        builder.Services.TryAddSingleton<IPostConfigureOptions<GitHubAuthenticationOptions>, GitHubPostConfigureOptions>();
+        return builder.AddOAuth<GitHubAuthenticationOptions, GitHubAuthenticationHandler>(scheme, caption, configuration);
     }
 }

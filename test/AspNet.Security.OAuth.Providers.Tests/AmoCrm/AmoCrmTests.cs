@@ -4,36 +4,35 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-namespace AspNet.Security.OAuth.AmoCrm
+namespace AspNet.Security.OAuth.AmoCrm;
+
+public class AmoCrmTests : OAuthTests<AmoCrmAuthenticationOptions>
 {
-    public class AmoCrmTests : OAuthTests<AmoCrmAuthenticationOptions>
+    public override string DefaultScheme => AmoCrmAuthenticationDefaults.AuthenticationScheme;
+
+    protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
     {
-        public override string DefaultScheme => AmoCrmAuthenticationDefaults.AuthenticationScheme;
-
-        protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
+        builder.AddAmoCrm(options =>
         {
-            builder.AddAmoCrm(options =>
-            {
-                options.Account = "example";
-                ConfigureDefaults(builder, options);
-            });
-        }
+            options.Account = "example";
+            ConfigureDefaults(builder, options);
+        });
+    }
 
-        [Theory]
-        [InlineData(ClaimTypes.NameIdentifier, "100500")]
-        [InlineData(ClaimTypes.Name, "John")]
-        [InlineData(ClaimTypes.Surname, "Smith")]
-        [InlineData(ClaimTypes.Email, "john@john-smith.local")]
-        public async Task Can_Sign_In_Using_AmoCrm(string claimType, string claimValue)
-        {
-            // Arrange
-            using var server = CreateTestServer();
+    [Theory]
+    [InlineData(ClaimTypes.NameIdentifier, "100500")]
+    [InlineData(ClaimTypes.Name, "John")]
+    [InlineData(ClaimTypes.Surname, "Smith")]
+    [InlineData(ClaimTypes.Email, "john@john-smith.local")]
+    public async Task Can_Sign_In_Using_AmoCrm(string claimType, string claimValue)
+    {
+        // Arrange
+        using var server = CreateTestServer();
 
-            // Act
-            var claims = await AuthenticateUserAsync(server);
+        // Act
+        var claims = await AuthenticateUserAsync(server);
 
-            // Assert
-            AssertClaim(claims, claimType, claimValue);
-        }
+        // Assert
+        AssertClaim(claims, claimType, claimValue);
     }
 }

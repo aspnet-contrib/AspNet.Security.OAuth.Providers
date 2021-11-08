@@ -8,43 +8,42 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using static AspNet.Security.OAuth.Spotify.SpotifyAuthenticationConstants;
 
-namespace AspNet.Security.OAuth.Spotify
+namespace AspNet.Security.OAuth.Spotify;
+
+/// <summary>
+/// Defines a set of options used by <see cref="SpotifyAuthenticationHandler"/>.
+/// </summary>
+public class SpotifyAuthenticationOptions : OAuthOptions
 {
-    /// <summary>
-    /// Defines a set of options used by <see cref="SpotifyAuthenticationHandler"/>.
-    /// </summary>
-    public class SpotifyAuthenticationOptions : OAuthOptions
+    public SpotifyAuthenticationOptions()
     {
-        public SpotifyAuthenticationOptions()
-        {
-            ClaimsIssuer = SpotifyAuthenticationDefaults.Issuer;
+        ClaimsIssuer = SpotifyAuthenticationDefaults.Issuer;
 
-            CallbackPath = SpotifyAuthenticationDefaults.CallbackPath;
+        CallbackPath = SpotifyAuthenticationDefaults.CallbackPath;
 
-            AuthorizationEndpoint = SpotifyAuthenticationDefaults.AuthorizationEndpoint;
-            TokenEndpoint = SpotifyAuthenticationDefaults.TokenEndpoint;
-            UserInformationEndpoint = SpotifyAuthenticationDefaults.UserInformationEndpoint;
+        AuthorizationEndpoint = SpotifyAuthenticationDefaults.AuthorizationEndpoint;
+        TokenEndpoint = SpotifyAuthenticationDefaults.TokenEndpoint;
+        UserInformationEndpoint = SpotifyAuthenticationDefaults.UserInformationEndpoint;
 
-            ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
-            ClaimActions.MapJsonKey(ClaimTypes.Name, "display_name");
-            ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
-            ClaimActions.MapJsonKey(ClaimTypes.DateOfBirth, "birthdate");
-            ClaimActions.MapJsonKey(ClaimTypes.Country, "country");
-            ClaimActions.MapJsonKey(ClaimTypes.Uri, "uri");
-            ClaimActions.MapJsonKey(Claims.Product, "product");
-            ClaimActions.MapJsonSubKey(Claims.Url, "external_urls", "spotify");
+        ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
+        ClaimActions.MapJsonKey(ClaimTypes.Name, "display_name");
+        ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
+        ClaimActions.MapJsonKey(ClaimTypes.DateOfBirth, "birthdate");
+        ClaimActions.MapJsonKey(ClaimTypes.Country, "country");
+        ClaimActions.MapJsonKey(ClaimTypes.Uri, "uri");
+        ClaimActions.MapJsonKey(Claims.Product, "product");
+        ClaimActions.MapJsonSubKey(Claims.Url, "external_urls", "spotify");
 
-            ClaimActions.MapCustomJson(
-                Claims.ProfilePicture,
-                user =>
+        ClaimActions.MapCustomJson(
+            Claims.ProfilePicture,
+            user =>
+            {
+                if (user.TryGetProperty("images", out var images))
                 {
-                    if (user.TryGetProperty("images", out var images))
-                    {
-                        return images.EnumerateArray().Select((p) => p.GetString("url")).FirstOrDefault();
-                    }
+                    return images.EnumerateArray().Select((p) => p.GetString("url")).FirstOrDefault();
+                }
 
-                    return null;
-                });
-        }
+                return null;
+            });
     }
 }

@@ -4,16 +4,15 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-namespace AspNet.Security.OAuth.Apple
+namespace AspNet.Security.OAuth.Apple;
+
+/// <summary>
+/// Contains constants specific to the <see cref="AppleAuthenticationHandler"/>.
+/// </summary>
+public static class AppleAuthenticationConstants
 {
     /// <summary>
-    /// Contains constants specific to the <see cref="AppleAuthenticationHandler"/>.
+    /// Default value for the token audience.
     /// </summary>
-    public static class AppleAuthenticationConstants
-    {
-        /// <summary>
-        /// Default value for the token audience.
-        /// </summary>
-        public const string Audience = "https://appleid.apple.com";
-    }
+    public const string Audience = "https://appleid.apple.com";
 }

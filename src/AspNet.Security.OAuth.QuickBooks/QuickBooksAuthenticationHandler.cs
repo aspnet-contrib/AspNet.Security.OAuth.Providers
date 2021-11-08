@@ -12,50 +12,49 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace AspNet.Security.OAuth.QuickBooks
+namespace AspNet.Security.OAuth.QuickBooks;
+
+public class QuickBooksAuthenticationHandler : OAuthHandler<QuickBooksAuthenticationOptions>
 {
-    public class QuickBooksAuthenticationHandler : OAuthHandler<QuickBooksAuthenticationOptions>
+    public QuickBooksAuthenticationHandler(
+        [NotNull] IOptionsMonitor<QuickBooksAuthenticationOptions> options,
+        [NotNull] ILoggerFactory logger,
+        [NotNull] UrlEncoder encoder,
+        [NotNull] ISystemClock clock)
+        : base(options, logger, encoder, clock)
     {
-        public QuickBooksAuthenticationHandler(
-            [NotNull] IOptionsMonitor<QuickBooksAuthenticationOptions> options,
-            [NotNull] ILoggerFactory logger,
-            [NotNull] UrlEncoder encoder,
-            [NotNull] ISystemClock clock)
-            : base(options, logger, encoder, clock)
+    }
+
+    protected override async Task<AuthenticationTicket> CreateTicketAsync(
+        [NotNull] ClaimsIdentity identity,
+        [NotNull] AuthenticationProperties properties,
+        [NotNull] OAuthTokenResponse tokens)
+    {
+        string address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, "client_id", Options.ClientId);
+
+        using var request = new HttpRequestMessage(HttpMethod.Get, address);
+        request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", tokens.AccessToken);
+
+        using var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
+        if (!response.IsSuccessStatusCode)
         {
+            Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
+                            "returned a {Status} response with the following payload: {Headers} {Body}.",
+                            /* Status: */ response.StatusCode,
+                            /* Headers: */ response.Headers.ToString(),
+                            /* Body: */ await response.Content.ReadAsStringAsync(Context.RequestAborted));
+
+            throw new HttpRequestException("An error occurred while retrieving the user profile.");
         }
 
-        protected override async Task<AuthenticationTicket> CreateTicketAsync(
-            [NotNull] ClaimsIdentity identity,
-            [NotNull] AuthenticationProperties properties,
-            [NotNull] OAuthTokenResponse tokens)
-        {
-            string address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, "client_id", Options.ClientId);
+        using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
 
-            using var request = new HttpRequestMessage(HttpMethod.Get, address);
-            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", tokens.AccessToken);
+        var principal = new ClaimsPrincipal(identity);
+        var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload.RootElement);
+        context.RunClaimActions();
 
-            using var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
-            if (!response.IsSuccessStatusCode)
-            {
-                Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
-                                "returned a {Status} response with the following payload: {Headers} {Body}.",
-                                /* Status: */ response.StatusCode,
-                                /* Headers: */ response.Headers.ToString(),
-                                /* Body: */ await response.Content.ReadAsStringAsync(Context.RequestAborted));
-
-                throw new HttpRequestException("An error occurred while retrieving the user profile.");
-            }
-
-            using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
-
-            var principal = new ClaimsPrincipal(identity);
-            var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload.RootElement);
-            context.RunClaimActions();
-
-            await Events.CreatingTicket(context);
-            return new AuthenticationTicket(context.Principal!, context.Properties, Scheme.Name);
-        }
+        await Events.CreatingTicket(context);
+        return new AuthenticationTicket(context.Principal!, context.Properties, Scheme.Name);
     }
 }

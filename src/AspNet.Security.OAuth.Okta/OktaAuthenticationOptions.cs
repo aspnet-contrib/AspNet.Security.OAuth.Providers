@@ -6,62 +6,61 @@
 
 using System.Security.Claims;
 
-namespace AspNet.Security.OAuth.Okta
+namespace AspNet.Security.OAuth.Okta;
+
+/// <summary>
+/// Defines a set of options used by <see cref="OktaAuthenticationHandler"/>.
+/// </summary>
+public class OktaAuthenticationOptions : OAuthOptions
 {
     /// <summary>
-    /// Defines a set of options used by <see cref="OktaAuthenticationHandler"/>.
+    /// Initializes a new instance of the <see cref="OktaAuthenticationOptions"/> class.
     /// </summary>
-    public class OktaAuthenticationOptions : OAuthOptions
+    public OktaAuthenticationOptions()
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="OktaAuthenticationOptions"/> class.
-        /// </summary>
-        public OktaAuthenticationOptions()
+        ClaimsIssuer = OktaAuthenticationDefaults.Issuer;
+        CallbackPath = OktaAuthenticationDefaults.CallbackPath;
+
+        Scope.Add("openid");
+        Scope.Add("profile");
+        Scope.Add("email");
+
+        ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
+        ClaimActions.MapJsonKey(ClaimTypes.GivenName, "given_name");
+        ClaimActions.MapJsonKey(ClaimTypes.Name, "name");
+        ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "sub");
+        ClaimActions.MapJsonKey(ClaimTypes.Surname, "family_name");
+    }
+
+    /// <summary>
+    /// Gets or sets the Okta domain (Org URL) to use for authentication.
+    /// </summary>
+    public string? Domain { get; set; }
+
+    /// <inheritdoc/>
+    public override void Validate()
+    {
+        base.Validate();
+
+        if (!Uri.TryCreate(AuthorizationEndpoint, UriKind.Absolute, out _))
         {
-            ClaimsIssuer = OktaAuthenticationDefaults.Issuer;
-            CallbackPath = OktaAuthenticationDefaults.CallbackPath;
-
-            Scope.Add("openid");
-            Scope.Add("profile");
-            Scope.Add("email");
-
-            ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
-            ClaimActions.MapJsonKey(ClaimTypes.GivenName, "given_name");
-            ClaimActions.MapJsonKey(ClaimTypes.Name, "name");
-            ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "sub");
-            ClaimActions.MapJsonKey(ClaimTypes.Surname, "family_name");
+            throw new ArgumentException(
+                $"The '{nameof(AuthorizationEndpoint)}' option must be set to a valid URI.",
+                nameof(AuthorizationEndpoint));
         }
 
-        /// <summary>
-        /// Gets or sets the Okta domain (Org URL) to use for authentication.
-        /// </summary>
-        public string? Domain { get; set; }
-
-        /// <inheritdoc/>
-        public override void Validate()
+        if (!Uri.TryCreate(TokenEndpoint, UriKind.Absolute, out _))
         {
-            base.Validate();
+            throw new ArgumentException(
+                $"The '{nameof(TokenEndpoint)}' option must be set to a valid URI.",
+                nameof(TokenEndpoint));
+        }
 
-            if (!Uri.TryCreate(AuthorizationEndpoint, UriKind.Absolute, out _))
-            {
-                throw new ArgumentException(
-                    $"The '{nameof(AuthorizationEndpoint)}' option must be set to a valid URI.",
-                    nameof(AuthorizationEndpoint));
-            }
-
-            if (!Uri.TryCreate(TokenEndpoint, UriKind.Absolute, out _))
-            {
-                throw new ArgumentException(
-                    $"The '{nameof(TokenEndpoint)}' option must be set to a valid URI.",
-                    nameof(TokenEndpoint));
-            }
-
-            if (!Uri.TryCreate(UserInformationEndpoint, UriKind.Absolute, out _))
-            {
-                throw new ArgumentException(
-                    $"The '{nameof(UserInformationEndpoint)}' option must be set to a valid URI.",
-                    nameof(UserInformationEndpoint));
-            }
+        if (!Uri.TryCreate(UserInformationEndpoint, UriKind.Absolute, out _))
+        {
+            throw new ArgumentException(
+                $"The '{nameof(UserInformationEndpoint)}' option must be set to a valid URI.",
+                nameof(UserInformationEndpoint));
         }
     }
 }

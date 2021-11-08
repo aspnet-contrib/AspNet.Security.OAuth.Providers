@@ -7,28 +7,27 @@
 using System.Security.Claims;
 using static AspNet.Security.OAuth.Yahoo.YahooAuthenticationConstants;
 
-namespace AspNet.Security.OAuth.Yahoo
+namespace AspNet.Security.OAuth.Yahoo;
+
+/// <summary>
+/// Defines a set of options used by <see cref="YahooAuthenticationHandler"/>.
+/// </summary>
+public class YahooAuthenticationOptions : OAuthOptions
 {
-    /// <summary>
-    /// Defines a set of options used by <see cref="YahooAuthenticationHandler"/>.
-    /// </summary>
-    public class YahooAuthenticationOptions : OAuthOptions
+    public YahooAuthenticationOptions()
     {
-        public YahooAuthenticationOptions()
-        {
-            ClaimsIssuer = YahooAuthenticationDefaults.Issuer;
-            CallbackPath = YahooAuthenticationDefaults.CallbackPath;
+        ClaimsIssuer = YahooAuthenticationDefaults.Issuer;
+        CallbackPath = YahooAuthenticationDefaults.CallbackPath;
 
-            AuthorizationEndpoint = YahooAuthenticationDefaults.AuthorizationEndpoint;
-            TokenEndpoint = YahooAuthenticationDefaults.TokenEndpoint;
-            UserInformationEndpoint = YahooAuthenticationDefaults.UserInformationEndpoint;
+        AuthorizationEndpoint = YahooAuthenticationDefaults.AuthorizationEndpoint;
+        TokenEndpoint = YahooAuthenticationDefaults.TokenEndpoint;
+        UserInformationEndpoint = YahooAuthenticationDefaults.UserInformationEndpoint;
 
-            ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "sub");
-            ClaimActions.MapJsonKey(ClaimTypes.Name, "name");
-            ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
-            ClaimActions.MapJsonKey(Claims.FamilyName, "family_name");
-            ClaimActions.MapJsonKey(Claims.GivenName, "given_name");
-            ClaimActions.MapJsonKey(Claims.Picture, "picture");
-        }
+        ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "sub");
+        ClaimActions.MapJsonKey(ClaimTypes.Name, "name");
+        ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
+        ClaimActions.MapJsonKey(Claims.FamilyName, "family_name");
+        ClaimActions.MapJsonKey(Claims.GivenName, "given_name");
+        ClaimActions.MapJsonKey(Claims.Picture, "picture");
     }
 }

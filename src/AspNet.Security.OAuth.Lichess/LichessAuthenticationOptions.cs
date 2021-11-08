@@ -6,35 +6,34 @@
 
 using System.Security.Claims;
 
-namespace AspNet.Security.OAuth.Lichess
+namespace AspNet.Security.OAuth.Lichess;
+
+/// <summary>
+/// Defines a set of options used by <see cref="LichessAuthenticationHandler"/>.
+/// </summary>
+public class LichessAuthenticationOptions : OAuthOptions
 {
-    /// <summary>
-    /// Defines a set of options used by <see cref="LichessAuthenticationHandler"/>.
-    /// </summary>
-    public class LichessAuthenticationOptions : OAuthOptions
+    public LichessAuthenticationOptions()
     {
-        public LichessAuthenticationOptions()
-        {
-            UsePkce = true;
+        UsePkce = true;
 
-            ClaimsIssuer = LichessAuthenticationDefaults.Issuer;
-            CallbackPath = LichessAuthenticationDefaults.CallbackPath;
+        ClaimsIssuer = LichessAuthenticationDefaults.Issuer;
+        CallbackPath = LichessAuthenticationDefaults.CallbackPath;
 
-            AuthorizationEndpoint = LichessAuthenticationDefaults.AuthorizationEndpoint;
-            TokenEndpoint = LichessAuthenticationDefaults.TokenEndpoint;
-            UserInformationEndpoint = LichessAuthenticationDefaults.UserInformationEndpoint;
+        AuthorizationEndpoint = LichessAuthenticationDefaults.AuthorizationEndpoint;
+        TokenEndpoint = LichessAuthenticationDefaults.TokenEndpoint;
+        UserInformationEndpoint = LichessAuthenticationDefaults.UserInformationEndpoint;
 
-            ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
-            ClaimActions.MapJsonKey(ClaimTypes.Name, "username");
-            ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
-            ClaimActions.MapJsonSubKey(ClaimTypes.GivenName, "profile", "firstName");
-            ClaimActions.MapJsonSubKey(ClaimTypes.Surname, "profile", "lastName");
-        }
-
-        /// <summary>
-        /// Gets or sets the address of the endpoint exposing
-        /// the email addresses associated with the logged in user.
-        /// </summary>
-        public string UserEmailsEndpoint { get; set; } = LichessAuthenticationDefaults.UserEmailsEndpoint;
+        ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
+        ClaimActions.MapJsonKey(ClaimTypes.Name, "username");
+        ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
+        ClaimActions.MapJsonSubKey(ClaimTypes.GivenName, "profile", "firstName");
+        ClaimActions.MapJsonSubKey(ClaimTypes.Surname, "profile", "lastName");
     }
+
+    /// <summary>
+    /// Gets or sets the address of the endpoint exposing
+    /// the email addresses associated with the logged in user.
+    /// </summary>
+    public string UserEmailsEndpoint { get; set; } = LichessAuthenticationDefaults.UserEmailsEndpoint;
 }

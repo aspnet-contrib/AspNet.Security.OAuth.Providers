@@ -6,22 +6,21 @@
 
 using System.Security.Claims;
 
-namespace AspNet.Security.OAuth.Gitter
+namespace AspNet.Security.OAuth.Gitter;
+
+public class GitterAuthenticationOptions : OAuthOptions
 {
-    public class GitterAuthenticationOptions : OAuthOptions
+    public GitterAuthenticationOptions()
     {
-        public GitterAuthenticationOptions()
-        {
-            ClaimsIssuer = GitterAuthenticationDefaults.Issuer;
+        ClaimsIssuer = GitterAuthenticationDefaults.Issuer;
 
-            CallbackPath = GitterAuthenticationDefaults.CallbackPath;
+        CallbackPath = GitterAuthenticationDefaults.CallbackPath;
 
-            AuthorizationEndpoint = GitterAuthenticationDefaults.AuthorizationEndpoint;
-            TokenEndpoint = GitterAuthenticationDefaults.TokenEndpoint;
-            UserInformationEndpoint = GitterAuthenticationDefaults.UserInformationEndpoint;
+        AuthorizationEndpoint = GitterAuthenticationDefaults.AuthorizationEndpoint;
+        TokenEndpoint = GitterAuthenticationDefaults.TokenEndpoint;
+        UserInformationEndpoint = GitterAuthenticationDefaults.UserInformationEndpoint;
 
-            ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
-            ClaimActions.MapJsonKey(ClaimTypes.Name, "displayName");
-        }
+        ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
+        ClaimActions.MapJsonKey(ClaimTypes.Name, "displayName");
     }
 }

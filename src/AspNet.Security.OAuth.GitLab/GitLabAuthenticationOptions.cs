@@ -7,32 +7,31 @@
 using System.Security.Claims;
 using static AspNet.Security.OAuth.GitLab.GitLabAuthenticationConstants;
 
-namespace AspNet.Security.OAuth.GitLab
+namespace AspNet.Security.OAuth.GitLab;
+
+/// <summary>
+/// Defines a set of options used by <see cref="GitLabAuthenticationHandler"/>.
+/// </summary>
+public class GitLabAuthenticationOptions : OAuthOptions
 {
     /// <summary>
-    /// Defines a set of options used by <see cref="GitLabAuthenticationHandler"/>.
+    /// Initializes a new instance of the <see cref="GitLabAuthenticationOptions"/> class.
     /// </summary>
-    public class GitLabAuthenticationOptions : OAuthOptions
+    public GitLabAuthenticationOptions()
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="GitLabAuthenticationOptions"/> class.
-        /// </summary>
-        public GitLabAuthenticationOptions()
-        {
-            AuthorizationEndpoint = GitLabAuthenticationDefaults.AuthorizationEndpoint;
-            CallbackPath = GitLabAuthenticationDefaults.CallbackPath;
-            TokenEndpoint = GitLabAuthenticationDefaults.TokenEndpoint;
-            UserInformationEndpoint = GitLabAuthenticationDefaults.UserInformationEndpoint;
+        AuthorizationEndpoint = GitLabAuthenticationDefaults.AuthorizationEndpoint;
+        CallbackPath = GitLabAuthenticationDefaults.CallbackPath;
+        TokenEndpoint = GitLabAuthenticationDefaults.TokenEndpoint;
+        UserInformationEndpoint = GitLabAuthenticationDefaults.UserInformationEndpoint;
 
-            // Available scopes: https://docs.gitlab.com/ee/integration/oauth_provider.html
-            Scope.Add("read_user");
+        // Available scopes: https://docs.gitlab.com/ee/integration/oauth_provider.html
+        Scope.Add("read_user");
 
-            ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
-            ClaimActions.MapJsonKey(ClaimTypes.Name, "username");
-            ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
-            ClaimActions.MapJsonKey(Claims.Name, "name");
-            ClaimActions.MapJsonKey(Claims.Avatar, "avatar_url");
-            ClaimActions.MapJsonKey(Claims.Url, "web_url");
-        }
+        ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
+        ClaimActions.MapJsonKey(ClaimTypes.Name, "username");
+        ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
+        ClaimActions.MapJsonKey(Claims.Name, "name");
+        ClaimActions.MapJsonKey(Claims.Avatar, "avatar_url");
+        ClaimActions.MapJsonKey(Claims.Url, "web_url");
     }
 }

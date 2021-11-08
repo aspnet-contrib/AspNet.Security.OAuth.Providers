@@ -12,101 +12,100 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace AspNet.Security.OAuth.Untappd
+namespace AspNet.Security.OAuth.Untappd;
+
+public class UntappdAuthenticationHandler : OAuthHandler<UntappdAuthenticationOptions>
 {
-    public class UntappdAuthenticationHandler : OAuthHandler<UntappdAuthenticationOptions>
+    public UntappdAuthenticationHandler(
+        [NotNull] IOptionsMonitor<UntappdAuthenticationOptions> options,
+        [NotNull] ILoggerFactory logger,
+        [NotNull] UrlEncoder encoder,
+        [NotNull] ISystemClock clock)
+        : base(options, logger, encoder, clock)
     {
-        public UntappdAuthenticationHandler(
-            [NotNull] IOptionsMonitor<UntappdAuthenticationOptions> options,
-            [NotNull] ILoggerFactory logger,
-            [NotNull] UrlEncoder encoder,
-            [NotNull] ISystemClock clock)
-            : base(options, logger, encoder, clock)
+    }
+
+    protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] OAuthCodeExchangeContext context)
+    {
+        var tokenRequestParameters = new Dictionary<string, string>()
         {
+            ["client_id"] = Options.ClientId,
+            ["redirect_uri"] = context.RedirectUri,
+            ["client_secret"] = Options.ClientSecret,
+            ["code"] = context.Code,
+            ["grant_type"] = "authorization_code",
+        };
+
+        // PKCE https://tools.ietf.org/html/rfc7636#section-4.5, see BuildChallengeUrl
+        if (context.Properties.Items.TryGetValue(OAuthConstants.CodeVerifierKey, out var codeVerifier))
+        {
+            tokenRequestParameters.Add(OAuthConstants.CodeVerifierKey, codeVerifier!);
+            context.Properties.Items.Remove(OAuthConstants.CodeVerifierKey);
         }
 
-        protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] OAuthCodeExchangeContext context)
-        {
-            var tokenRequestParameters = new Dictionary<string, string>()
+        using var requestContent = new FormUrlEncodedContent(tokenRequestParameters!);
+
+        string address = QueryHelpers.AddQueryString(Options.TokenEndpoint,
+            new Dictionary<string, string?>
             {
                 ["client_id"] = Options.ClientId,
                 ["redirect_uri"] = context.RedirectUri,
                 ["client_secret"] = Options.ClientSecret,
-                ["code"] = context.Code,
-                ["grant_type"] = "authorization_code",
-            };
+                ["code"] = context.Code
+            });
 
-            // PKCE https://tools.ietf.org/html/rfc7636#section-4.5, see BuildChallengeUrl
-            if (context.Properties.Items.TryGetValue(OAuthConstants.CodeVerifierKey, out var codeVerifier))
-            {
-                tokenRequestParameters.Add(OAuthConstants.CodeVerifierKey, codeVerifier!);
-                context.Properties.Items.Remove(OAuthConstants.CodeVerifierKey);
-            }
+        using var requestMessage = new HttpRequestMessage(HttpMethod.Get, address);
+        requestMessage.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        requestMessage.Content = requestContent;
+        requestMessage.Version = Backchannel.DefaultRequestVersion;
 
-            using var requestContent = new FormUrlEncodedContent(tokenRequestParameters!);
-
-            string address = QueryHelpers.AddQueryString(Options.TokenEndpoint,
-                new Dictionary<string, string?>
-                {
-                    ["client_id"] = Options.ClientId,
-                    ["redirect_uri"] = context.RedirectUri,
-                    ["client_secret"] = Options.ClientSecret,
-                    ["code"] = context.Code
-                });
-
-            using var requestMessage = new HttpRequestMessage(HttpMethod.Get, address);
-            requestMessage.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            requestMessage.Content = requestContent;
-            requestMessage.Version = Backchannel.DefaultRequestVersion;
-
-            using var response = await Backchannel.SendAsync(requestMessage, Context.RequestAborted);
-            if (response.IsSuccessStatusCode)
-            {
-                var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
-                return OAuthTokenResponse.Success(payload);
-            }
-            else
-            {
-                Logger.LogWarning("An error occurred while exchanging token codes. " +
-                                  "the remote server returned a {Status} response with the following payload: {Headers} {Body}.",
-                                  /* Status: */ response.StatusCode,
-                                  /* Headers: */ response.Headers.ToString(),
-                                  /* Body: */ await response.Content.ReadAsStringAsync(Context.RequestAborted));
-
-                throw new HttpRequestException("An error occurred while exchanging token codes.");
-            }
-        }
-
-        protected override async Task<AuthenticationTicket> CreateTicketAsync(
-            [NotNull] ClaimsIdentity identity,
-            [NotNull] AuthenticationProperties properties,
-            [NotNull] OAuthTokenResponse tokens)
+        using var response = await Backchannel.SendAsync(requestMessage, Context.RequestAborted);
+        if (response.IsSuccessStatusCode)
         {
-            using var request = new HttpRequestMessage(HttpMethod.Get, Options.UserInformationEndpoint);
-            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", tokens.AccessToken);
-
-            using var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
-            if (!response.IsSuccessStatusCode)
-            {
-                Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
-                                "returned a {Status} response with the following payload: {Headers} {Body}.",
-                                /* Status: */ response.StatusCode,
-                                /* Headers: */ response.Headers.ToString(),
-                                /* Body: */ await response.Content.ReadAsStringAsync(Context.RequestAborted));
-
-                throw new HttpRequestException("An error occurred while retrieving the user profile.");
-            }
-
-            using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
-
-            var principal = new ClaimsPrincipal(identity);
-            var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload.RootElement);
-
-            context.RunClaimActions(payload.RootElement.GetProperty("response").GetProperty("user"));
-
-            await Events.CreatingTicket(context);
-            return new AuthenticationTicket(context.Principal!, context.Properties, Scheme.Name);
+            var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
+            return OAuthTokenResponse.Success(payload);
         }
+        else
+        {
+            Logger.LogWarning("An error occurred while exchanging token codes. " +
+                              "the remote server returned a {Status} response with the following payload: {Headers} {Body}.",
+                              /* Status: */ response.StatusCode,
+                              /* Headers: */ response.Headers.ToString(),
+                              /* Body: */ await response.Content.ReadAsStringAsync(Context.RequestAborted));
+
+            throw new HttpRequestException("An error occurred while exchanging token codes.");
+        }
+    }
+
+    protected override async Task<AuthenticationTicket> CreateTicketAsync(
+        [NotNull] ClaimsIdentity identity,
+        [NotNull] AuthenticationProperties properties,
+        [NotNull] OAuthTokenResponse tokens)
+    {
+        using var request = new HttpRequestMessage(HttpMethod.Get, Options.UserInformationEndpoint);
+        request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", tokens.AccessToken);
+
+        using var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
+        if (!response.IsSuccessStatusCode)
+        {
+            Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
+                            "returned a {Status} response with the following payload: {Headers} {Body}.",
+                            /* Status: */ response.StatusCode,
+                            /* Headers: */ response.Headers.ToString(),
+                            /* Body: */ await response.Content.ReadAsStringAsync(Context.RequestAborted));
+
+            throw new HttpRequestException("An error occurred while retrieving the user profile.");
+        }
+
+        using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
+
+        var principal = new ClaimsPrincipal(identity);
+        var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload.RootElement);
+
+        context.RunClaimActions(payload.RootElement.GetProperty("response").GetProperty("user"));
+
+        await Events.CreatingTicket(context);
+        return new AuthenticationTicket(context.Principal!, context.Properties, Scheme.Name);
     }
 }

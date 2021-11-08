@@ -4,17 +4,16 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-namespace AspNet.Security.OAuth.Vkontakte
+namespace AspNet.Security.OAuth.Vkontakte;
+
+/// <summary>
+/// Contains constants specific to the <see cref="VkontakteAuthenticationHandler"/>.
+/// </summary>
+public static class VkontakteAuthenticationConstants
 {
-    /// <summary>
-    /// Contains constants specific to the <see cref="VkontakteAuthenticationHandler"/>.
-    /// </summary>
-    public static class VkontakteAuthenticationConstants
+    public static class Claims
     {
-        public static class Claims
-        {
-            public const string PhotoUrl = "urn:vkontakte:photo:link";
-            public const string ThumbnailUrl = "urn:vkontakte:photo_thumb:link";
-        }
+        public const string PhotoUrl = "urn:vkontakte:photo:link";
+        public const string ThumbnailUrl = "urn:vkontakte:photo_thumb:link";
     }
 }

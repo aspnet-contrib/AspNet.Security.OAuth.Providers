@@ -4,18 +4,17 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-namespace AspNet.Security.OAuth.Spotify
+namespace AspNet.Security.OAuth.Spotify;
+
+/// <summary>
+/// Contains constants specific to the <see cref="SpotifyAuthenticationOptions"/>.
+/// </summary>
+public static class SpotifyAuthenticationConstants
 {
-    /// <summary>
-    /// Contains constants specific to the <see cref="SpotifyAuthenticationOptions"/>.
-    /// </summary>
-    public static class SpotifyAuthenticationConstants
+    public static class Claims
     {
-        public static class Claims
-        {
-            public const string Product = "urn:spotify:product";
-            public const string ProfilePicture = "urn:spotify:profilepicture";
-            public const string Url = "urn:spotify:url";
-        }
+        public const string Product = "urn:spotify:product";
+        public const string ProfilePicture = "urn:spotify:profilepicture";
+        public const string Url = "urn:spotify:url";
     }
 }

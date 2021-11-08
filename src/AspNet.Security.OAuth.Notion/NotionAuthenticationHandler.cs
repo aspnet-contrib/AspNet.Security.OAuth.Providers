@@ -12,88 +12,87 @@ using System.Text.Json;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace AspNet.Security.OAuth.Notion
+namespace AspNet.Security.OAuth.Notion;
+
+public class NotionAuthenticationHandler : OAuthHandler<NotionAuthenticationOptions>
 {
-    public class NotionAuthenticationHandler : OAuthHandler<NotionAuthenticationOptions>
+    public NotionAuthenticationHandler(
+        [NotNull] IOptionsMonitor<NotionAuthenticationOptions> options,
+        [NotNull] ILoggerFactory logger,
+        [NotNull] UrlEncoder encoder,
+        [NotNull] ISystemClock clock)
+        : base(options, logger, encoder, clock)
     {
-        public NotionAuthenticationHandler(
-            [NotNull] IOptionsMonitor<NotionAuthenticationOptions> options,
-            [NotNull] ILoggerFactory logger,
-            [NotNull] UrlEncoder encoder,
-            [NotNull] ISystemClock clock)
-            : base(options, logger, encoder, clock)
+    }
+
+    protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] OAuthCodeExchangeContext context)
+    {
+        var tokenRequestParameters = new Dictionary<string, string>()
         {
+            ["client_id"] = Options.ClientId,
+            ["redirect_uri"] = context.RedirectUri,
+            ["client_secret"] = Options.ClientSecret,
+            ["code"] = context.Code,
+            ["grant_type"] = "authorization_code",
+        };
+
+        // PKCE https://tools.ietf.org/html/rfc7636#section-4.5, see BuildChallengeUrl
+        if (context.Properties.Items.TryGetValue(OAuthConstants.CodeVerifierKey, out var codeVerifier) &&
+            !string.IsNullOrEmpty(codeVerifier))
+        {
+            tokenRequestParameters[OAuthConstants.CodeVerifierKey] = codeVerifier;
+            context.Properties.Items.Remove(OAuthConstants.CodeVerifierKey);
         }
 
-        protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] OAuthCodeExchangeContext context)
+        using var requestContent = new FormUrlEncodedContent(tokenRequestParameters!);
+
+        using var requestMessage = new HttpRequestMessage(HttpMethod.Post, Options.TokenEndpoint);
+        requestMessage.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+        byte[] byteArray = Encoding.ASCII.GetBytes(Options.ClientId + ":" + Options.ClientSecret);
+        requestMessage.Headers.Authorization =
+            new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
+        requestMessage.Content = requestContent;
+        requestMessage.Version = Backchannel.DefaultRequestVersion;
+
+        using var response = await Backchannel.SendAsync(requestMessage, Context.RequestAborted);
+        if (response.IsSuccessStatusCode)
         {
-            var tokenRequestParameters = new Dictionary<string, string>()
-            {
-                ["client_id"] = Options.ClientId,
-                ["redirect_uri"] = context.RedirectUri,
-                ["client_secret"] = Options.ClientSecret,
-                ["code"] = context.Code,
-                ["grant_type"] = "authorization_code",
-            };
-
-            // PKCE https://tools.ietf.org/html/rfc7636#section-4.5, see BuildChallengeUrl
-            if (context.Properties.Items.TryGetValue(OAuthConstants.CodeVerifierKey, out var codeVerifier) &&
-                !string.IsNullOrEmpty(codeVerifier))
-            {
-                tokenRequestParameters[OAuthConstants.CodeVerifierKey] = codeVerifier;
-                context.Properties.Items.Remove(OAuthConstants.CodeVerifierKey);
-            }
-
-            using var requestContent = new FormUrlEncodedContent(tokenRequestParameters!);
-
-            using var requestMessage = new HttpRequestMessage(HttpMethod.Post, Options.TokenEndpoint);
-            requestMessage.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-            byte[] byteArray = Encoding.ASCII.GetBytes(Options.ClientId + ":" + Options.ClientSecret);
-            requestMessage.Headers.Authorization =
-                new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
-            requestMessage.Content = requestContent;
-            requestMessage.Version = Backchannel.DefaultRequestVersion;
-
-            using var response = await Backchannel.SendAsync(requestMessage, Context.RequestAborted);
-            if (response.IsSuccessStatusCode)
-            {
-                var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
-                return OAuthTokenResponse.Success(payload);
-            }
-
-            var error = "OAuth token endpoint failure: " + await DisplayAsync(response, Context.RequestAborted);
-            return OAuthTokenResponse.Failed(new Exception(error));
+            var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
+            return OAuthTokenResponse.Success(payload);
         }
 
-        protected override async Task<AuthenticationTicket> CreateTicketAsync(
-            [NotNull] ClaimsIdentity identity,
-            [NotNull] AuthenticationProperties properties,
-            [NotNull] OAuthTokenResponse tokens)
-        {
-            var principal = new ClaimsPrincipal(identity);
-            var context = new OAuthCreatingTicketContext(
-                principal,
-                properties,
-                Context,
-                Scheme,
-                Options,
-                Backchannel,
-                tokens,
-                tokens!.Response!.RootElement);
-            context.RunClaimActions();
+        var error = "OAuth token endpoint failure: " + await DisplayAsync(response, Context.RequestAborted);
+        return OAuthTokenResponse.Failed(new Exception(error));
+    }
 
-            await Events.CreatingTicket(context);
-            return new AuthenticationTicket(context.Principal!, context.Properties, Scheme.Name);
-        }
+    protected override async Task<AuthenticationTicket> CreateTicketAsync(
+        [NotNull] ClaimsIdentity identity,
+        [NotNull] AuthenticationProperties properties,
+        [NotNull] OAuthTokenResponse tokens)
+    {
+        var principal = new ClaimsPrincipal(identity);
+        var context = new OAuthCreatingTicketContext(
+            principal,
+            properties,
+            Context,
+            Scheme,
+            Options,
+            Backchannel,
+            tokens,
+            tokens!.Response!.RootElement);
+        context.RunClaimActions();
 
-        private static async Task<string> DisplayAsync(HttpResponseMessage response, CancellationToken cancellationToken)
-        {
-            var output = new StringBuilder();
-            output.Append("Status: ").Append(response.StatusCode).Append(';');
-            output.Append("Headers: ").Append(response.Headers).Append(';');
-            output.Append("Body: ").Append(await response.Content.ReadAsStringAsync(cancellationToken)).Append(';');
-            return output.ToString();
-        }
+        await Events.CreatingTicket(context);
+        return new AuthenticationTicket(context.Principal!, context.Properties, Scheme.Name);
+    }
+
+    private static async Task<string> DisplayAsync(HttpResponseMessage response, CancellationToken cancellationToken)
+    {
+        var output = new StringBuilder();
+        output.Append("Status: ").Append(response.StatusCode).Append(';');
+        output.Append("Headers: ").Append(response.Headers).Append(';');
+        output.Append("Body: ").Append(await response.Content.ReadAsStringAsync(cancellationToken)).Append(';');
+        return output.ToString();
     }
 }

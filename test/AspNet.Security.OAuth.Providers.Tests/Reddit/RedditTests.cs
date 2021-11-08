@@ -4,36 +4,35 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-namespace AspNet.Security.OAuth.Reddit
+namespace AspNet.Security.OAuth.Reddit;
+
+public class RedditTests : OAuthTests<RedditAuthenticationOptions>
 {
-    public class RedditTests : OAuthTests<RedditAuthenticationOptions>
+    public RedditTests(ITestOutputHelper outputHelper)
     {
-        public RedditTests(ITestOutputHelper outputHelper)
-        {
-            OutputHelper = outputHelper;
-        }
+        OutputHelper = outputHelper;
+    }
 
-        public override string DefaultScheme => RedditAuthenticationDefaults.AuthenticationScheme;
+    public override string DefaultScheme => RedditAuthenticationDefaults.AuthenticationScheme;
 
-        protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
-        {
-            builder.AddReddit(options => ConfigureDefaults(builder, options));
-        }
+    protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
+    {
+        builder.AddReddit(options => ConfigureDefaults(builder, options));
+    }
 
-        [Theory]
-        [InlineData(ClaimTypes.NameIdentifier, "my-id")]
-        [InlineData(ClaimTypes.Name, "John Smith")]
-        [InlineData("urn:reddit:over18", "True")]
-        public async Task Can_Sign_In_Using_Reddit(string claimType, string claimValue)
-        {
-            // Arrange
-            using var server = CreateTestServer();
+    [Theory]
+    [InlineData(ClaimTypes.NameIdentifier, "my-id")]
+    [InlineData(ClaimTypes.Name, "John Smith")]
+    [InlineData("urn:reddit:over18", "True")]
+    public async Task Can_Sign_In_Using_Reddit(string claimType, string claimValue)
+    {
+        // Arrange
+        using var server = CreateTestServer();
 
-            // Act
-            var claims = await AuthenticateUserAsync(server);
+        // Act
+        var claims = await AuthenticateUserAsync(server);
 
-            // Assert
-            AssertClaim(claims, claimType, claimValue);
-        }
+        // Assert
+        AssertClaim(claims, claimType, claimValue);
     }
 }

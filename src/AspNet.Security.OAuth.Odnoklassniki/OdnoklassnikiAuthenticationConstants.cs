@@ -4,18 +4,17 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-namespace AspNet.Security.OAuth.Odnoklassniki
+namespace AspNet.Security.OAuth.Odnoklassniki;
+
+/// <summary>
+/// Contains constants specific to the <see cref="OdnoklassnikiAuthenticationHandler"/>.
+/// </summary>
+public static class OdnoklassnikiAuthenticationConstants
 {
-    /// <summary>
-    /// Contains constants specific to the <see cref="OdnoklassnikiAuthenticationHandler"/>.
-    /// </summary>
-    public static class OdnoklassnikiAuthenticationConstants
+    public static class Claims
     {
-        public static class Claims
-        {
-            public const string Image1 = "urn:ok:image1";
-            public const string Image2 = "urn:ok:image2";
-            public const string Image3 = "urn:ok:image3";
-        }
+        public const string Image1 = "urn:ok:image1";
+        public const string Image2 = "urn:ok:image2";
+        public const string Image3 = "urn:ok:image3";
     }
 }

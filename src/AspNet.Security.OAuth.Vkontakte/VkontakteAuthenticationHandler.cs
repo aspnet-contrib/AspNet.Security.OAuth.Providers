@@ -11,60 +11,59 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace AspNet.Security.OAuth.Vkontakte
+namespace AspNet.Security.OAuth.Vkontakte;
+
+public class VkontakteAuthenticationHandler : OAuthHandler<VkontakteAuthenticationOptions>
 {
-    public class VkontakteAuthenticationHandler : OAuthHandler<VkontakteAuthenticationOptions>
+    public VkontakteAuthenticationHandler(
+        [NotNull] IOptionsMonitor<VkontakteAuthenticationOptions> options,
+        [NotNull] ILoggerFactory logger,
+        [NotNull] UrlEncoder encoder,
+        [NotNull] ISystemClock clock)
+        : base(options, logger, encoder, clock)
     {
-        public VkontakteAuthenticationHandler(
-            [NotNull] IOptionsMonitor<VkontakteAuthenticationOptions> options,
-            [NotNull] ILoggerFactory logger,
-            [NotNull] UrlEncoder encoder,
-            [NotNull] ISystemClock clock)
-            : base(options, logger, encoder, clock)
+    }
+
+    protected override async Task<AuthenticationTicket> CreateTicketAsync(
+        [NotNull] ClaimsIdentity identity,
+        [NotNull] AuthenticationProperties properties,
+        [NotNull] OAuthTokenResponse tokens)
+    {
+        string address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, new Dictionary<string, string?>
         {
+            ["access_token"] = tokens.AccessToken,
+            ["v"] = !string.IsNullOrEmpty(Options.ApiVersion) ? Options.ApiVersion : VkontakteAuthenticationDefaults.ApiVersion
+        });
+
+        if (Options.Fields.Count != 0)
+        {
+            address = QueryHelpers.AddQueryString(address, "fields", string.Join(',', Options.Fields));
         }
 
-        protected override async Task<AuthenticationTicket> CreateTicketAsync(
-            [NotNull] ClaimsIdentity identity,
-            [NotNull] AuthenticationProperties properties,
-            [NotNull] OAuthTokenResponse tokens)
+        using var response = await Backchannel.GetAsync(address, Context.RequestAborted);
+        if (!response.IsSuccessStatusCode)
         {
-            string address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, new Dictionary<string, string?>
-            {
-                ["access_token"] = tokens.AccessToken,
-                ["v"] = !string.IsNullOrEmpty(Options.ApiVersion) ? Options.ApiVersion : VkontakteAuthenticationDefaults.ApiVersion
-            });
+            Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
+                            "returned a {Status} response with the following payload: {Headers} {Body}.",
+                            /* Status: */ response.StatusCode,
+                            /* Headers: */ response.Headers.ToString(),
+                            /* Body: */ await response.Content.ReadAsStringAsync(Context.RequestAborted));
 
-            if (Options.Fields.Count != 0)
-            {
-                address = QueryHelpers.AddQueryString(address, "fields", string.Join(',', Options.Fields));
-            }
-
-            using var response = await Backchannel.GetAsync(address, Context.RequestAborted);
-            if (!response.IsSuccessStatusCode)
-            {
-                Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
-                                "returned a {Status} response with the following payload: {Headers} {Body}.",
-                                /* Status: */ response.StatusCode,
-                                /* Headers: */ response.Headers.ToString(),
-                                /* Body: */ await response.Content.ReadAsStringAsync(Context.RequestAborted));
-
-                throw new HttpRequestException("An error occurred while retrieving the user profile.");
-            }
-
-            using var container = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
-            using var enumerator = container.RootElement.GetProperty("response").EnumerateArray();
-            var payload = enumerator.First();
-
-            var principal = new ClaimsPrincipal(identity);
-            var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload);
-            context.RunClaimActions();
-
-            // Re-run to get the email claim from the tokens response
-            context.RunClaimActions(tokens.Response!.RootElement);
-
-            await Events.CreatingTicket(context);
-            return new AuthenticationTicket(context.Principal!, context.Properties, Scheme.Name);
+            throw new HttpRequestException("An error occurred while retrieving the user profile.");
         }
+
+        using var container = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
+        using var enumerator = container.RootElement.GetProperty("response").EnumerateArray();
+        var payload = enumerator.First();
+
+        var principal = new ClaimsPrincipal(identity);
+        var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload);
+        context.RunClaimActions();
+
+        // Re-run to get the email claim from the tokens response
+        context.RunClaimActions(tokens.Response!.RootElement);
+
+        await Events.CreatingTicket(context);
+        return new AuthenticationTicket(context.Principal!, context.Properties, Scheme.Name);
     }
 }

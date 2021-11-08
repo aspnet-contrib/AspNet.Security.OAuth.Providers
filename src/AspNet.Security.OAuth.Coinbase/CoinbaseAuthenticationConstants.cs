@@ -4,20 +4,19 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-namespace AspNet.Security.OAuth.Coinbase
+namespace AspNet.Security.OAuth.Coinbase;
+
+/// <summary>
+/// Contains constants specific to the <see cref="CoinbaseAuthenticationHandler"/>.
+/// </summary>
+public static class CoinbaseAuthenticationConstants
 {
-    /// <summary>
-    /// Contains constants specific to the <see cref="CoinbaseAuthenticationHandler"/>.
-    /// </summary>
-    public static class CoinbaseAuthenticationConstants
+    public static class Claims
     {
-        public static class Claims
-        {
-            public const string Username = "urn:coinbase:username";
-            public const string ProfileLocation = "urn:coinbase:profile_location";
-            public const string ProfileBio = "urn:coinbase:profile_bio";
-            public const string ProfileUrl = "urn:coinbase:profile_url";
-            public const string AvatarUrl = "urn:coinbase:avatar_url";
-        }
+        public const string Username = "urn:coinbase:username";
+        public const string ProfileLocation = "urn:coinbase:profile_location";
+        public const string ProfileBio = "urn:coinbase:profile_bio";
+        public const string ProfileUrl = "urn:coinbase:profile_url";
+        public const string AvatarUrl = "urn:coinbase:avatar_url";
     }
 }

@@ -8,420 +8,419 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
 
-namespace AspNet.Security.OAuth.Apple
+namespace AspNet.Security.OAuth.Apple;
+
+public class AppleTests : OAuthTests<AppleAuthenticationOptions>
 {
-    public class AppleTests : OAuthTests<AppleAuthenticationOptions>
+    public AppleTests(ITestOutputHelper outputHelper)
     {
-        public AppleTests(ITestOutputHelper outputHelper)
+        OutputHelper = outputHelper;
+    }
+
+    public override string DefaultScheme => AppleAuthenticationDefaults.AuthenticationScheme;
+
+    protected override HttpMethod RedirectMethod => HttpMethod.Post;
+
+    protected override IDictionary<string, string> RedirectParameters { get; } = new Dictionary<string, string>()
+    {
+        ["user"] = @"{""name"":{""firstName"":""Johnny"",""lastName"":""Appleseed""},""email"":""johnny.appleseed@apple.local""}",
+    };
+
+    protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
+    {
+        IdentityModelEventSource.ShowPII = true;
+
+        builder.AddApple(options =>
         {
-            OutputHelper = outputHelper;
-        }
+            ConfigureDefaults(builder, options);
+            options.ClientId = "com.martincostello.signinwithapple.test.client";
+            options.SaveTokens = true;
+        });
+    }
 
-        public override string DefaultScheme => AppleAuthenticationDefaults.AuthenticationScheme;
-
-        protected override HttpMethod RedirectMethod => HttpMethod.Post;
-
-        protected override IDictionary<string, string> RedirectParameters { get; } = new Dictionary<string, string>()
+    [Theory]
+    [InlineData(ClaimTypes.Email, "johnny.appleseed@apple.local")]
+    [InlineData(ClaimTypes.GivenName, "Johnny")]
+    [InlineData(ClaimTypes.NameIdentifier, "001883.fcc77ba97500402389df96821ad9c790.1517")]
+    [InlineData(ClaimTypes.Surname, "Appleseed")]
+    public async Task Can_Sign_In_Using_Apple_With_Client_Secret(string claimType, string claimValue)
+    {
+        // Arrange
+        static void ConfigureServices(IServiceCollection services)
         {
-            ["user"] = @"{""name"":{""firstName"":""Johnny"",""lastName"":""Appleseed""},""email"":""johnny.appleseed@apple.local""}",
-        };
-
-        protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
-        {
-            IdentityModelEventSource.ShowPII = true;
-
-            builder.AddApple(options =>
+            services.PostConfigureAll<AppleAuthenticationOptions>((options) =>
             {
-                ConfigureDefaults(builder, options);
-                options.ClientId = "com.martincostello.signinwithapple.test.client";
-                options.SaveTokens = true;
+                options.GenerateClientSecret = false;
+                options.ClientSecret = "my-client-secret";
+                options.TokenValidationParameters.ValidateLifetime = false;
             });
         }
 
-        [Theory]
-        [InlineData(ClaimTypes.Email, "johnny.appleseed@apple.local")]
-        [InlineData(ClaimTypes.GivenName, "Johnny")]
-        [InlineData(ClaimTypes.NameIdentifier, "001883.fcc77ba97500402389df96821ad9c790.1517")]
-        [InlineData(ClaimTypes.Surname, "Appleseed")]
-        public async Task Can_Sign_In_Using_Apple_With_Client_Secret(string claimType, string claimValue)
+        using var server = CreateTestServer(ConfigureServices);
+
+        // Act
+        var claims = await AuthenticateUserAsync(server);
+
+        // Assert
+        AssertClaim(claims, claimType, claimValue);
+    }
+
+    [Theory]
+    [InlineData(ClaimTypes.Email, "johnny.appleseed@apple.local")]
+    [InlineData(ClaimTypes.GivenName, "Johnny")]
+    [InlineData(ClaimTypes.NameIdentifier, "001883.fcc77ba97500402389df96821ad9c790.1517")]
+    [InlineData(ClaimTypes.Surname, "Appleseed")]
+    public async Task Can_Sign_In_Using_Apple_With_Private_Key(string claimType, string claimValue)
+    {
+        // Arrange
+        static void ConfigureServices(IServiceCollection services)
         {
-            // Arrange
-            static void ConfigureServices(IServiceCollection services)
+            services.PostConfigureAll<AppleAuthenticationOptions>((options) =>
             {
-                services.PostConfigureAll<AppleAuthenticationOptions>((options) =>
+                options.ClientSecret = string.Empty;
+                options.GenerateClientSecret = true;
+                options.KeyId = "my-key-id";
+                options.TeamId = "my-team-id";
+                options.TokenValidationParameters.ValidateLifetime = false;
+                options.ValidateTokens = true;
+                options.PrivateKey = async (keyId, cancellationToken) =>
                 {
-                    options.GenerateClientSecret = false;
-                    options.ClientSecret = "my-client-secret";
-                    options.TokenValidationParameters.ValidateLifetime = false;
-                });
-            }
-
-            using var server = CreateTestServer(ConfigureServices);
-
-            // Act
-            var claims = await AuthenticateUserAsync(server);
-
-            // Assert
-            AssertClaim(claims, claimType, claimValue);
+                    Assert.Equal("my-key-id", keyId);
+                    return await TestKeys.GetPrivateKeyAsync(cancellationToken);
+                };
+            });
         }
 
-        [Theory]
-        [InlineData(ClaimTypes.Email, "johnny.appleseed@apple.local")]
-        [InlineData(ClaimTypes.GivenName, "Johnny")]
-        [InlineData(ClaimTypes.NameIdentifier, "001883.fcc77ba97500402389df96821ad9c790.1517")]
-        [InlineData(ClaimTypes.Surname, "Appleseed")]
-        public async Task Can_Sign_In_Using_Apple_With_Private_Key(string claimType, string claimValue)
+        using var server = CreateTestServer(ConfigureServices);
+
+        // Act
+        var claims = await AuthenticateUserAsync(server);
+
+        // Assert
+        AssertClaim(claims, claimType, claimValue);
+    }
+
+    [Theory]
+    [InlineData("at_hash", "eOy0y7XVexdkzc7uuDZiCQ")]
+    [InlineData("aud", "com.martincostello.signinwithapple.test.client")]
+    [InlineData("auth_time", "1587211556")]
+    [InlineData("email", "ussckefuz6@privaterelay.appleid.com")]
+    [InlineData("email_verified", "true")]
+    [InlineData("exp", "1587212159")]
+    [InlineData("iat", "1587211559")]
+    [InlineData("iss", "https://appleid.apple.com")]
+    [InlineData("is_private_email", "true")]
+    [InlineData("nonce_supported", "true")]
+    [InlineData("sub", "001883.fcc77ba97500402389df96821ad9c790.1517")]
+    [InlineData(ClaimTypes.Email, "ussckefuz6@privaterelay.appleid.com")]
+    [InlineData(ClaimTypes.NameIdentifier, "001883.fcc77ba97500402389df96821ad9c790.1517")]
+    public async Task Can_Sign_In_Using_Apple_And_Receive_Claims_From_Id_Token(string claimType, string claimValue)
+    {
+        // Arrange
+        static void ConfigureServices(IServiceCollection services)
         {
-            // Arrange
-            static void ConfigureServices(IServiceCollection services)
+            services.PostConfigureAll<AppleAuthenticationOptions>((options) =>
             {
-                services.PostConfigureAll<AppleAuthenticationOptions>((options) =>
-                {
-                    options.ClientSecret = string.Empty;
-                    options.GenerateClientSecret = true;
-                    options.KeyId = "my-key-id";
-                    options.TeamId = "my-team-id";
-                    options.TokenValidationParameters.ValidateLifetime = false;
-                    options.ValidateTokens = true;
-                    options.PrivateKey = async (keyId, cancellationToken) =>
-                    {
-                        Assert.Equal("my-key-id", keyId);
-                        return await TestKeys.GetPrivateKeyAsync(cancellationToken);
-                    };
-                });
-            }
-
-            using var server = CreateTestServer(ConfigureServices);
-
-            // Act
-            var claims = await AuthenticateUserAsync(server);
-
-            // Assert
-            AssertClaim(claims, claimType, claimValue);
+                options.ClientSecret = "my-client-secret";
+                options.GenerateClientSecret = false;
+                options.TokenEndpoint = "https://appleid.apple.local/auth/token/email";
+                options.TokenValidationParameters.ValidateLifetime = false;
+                options.ValidateTokens = false;
+            });
         }
 
-        [Theory]
-        [InlineData("at_hash", "eOy0y7XVexdkzc7uuDZiCQ")]
-        [InlineData("aud", "com.martincostello.signinwithapple.test.client")]
-        [InlineData("auth_time", "1587211556")]
-        [InlineData("email", "ussckefuz6@privaterelay.appleid.com")]
-        [InlineData("email_verified", "true")]
-        [InlineData("exp", "1587212159")]
-        [InlineData("iat", "1587211559")]
-        [InlineData("iss", "https://appleid.apple.com")]
-        [InlineData("is_private_email", "true")]
-        [InlineData("nonce_supported", "true")]
-        [InlineData("sub", "001883.fcc77ba97500402389df96821ad9c790.1517")]
-        [InlineData(ClaimTypes.Email, "ussckefuz6@privaterelay.appleid.com")]
-        [InlineData(ClaimTypes.NameIdentifier, "001883.fcc77ba97500402389df96821ad9c790.1517")]
-        public async Task Can_Sign_In_Using_Apple_And_Receive_Claims_From_Id_Token(string claimType, string claimValue)
+        RedirectParameters.Clear(); // Simulate second sign in where user data is not returned
+
+        using var server = CreateTestServer(ConfigureServices);
+
+        // Act
+        var claims = await AuthenticateUserAsync(server);
+
+        // Assert
+        AssertClaim(claims, claimType, claimValue);
+    }
+
+    [Theory]
+    [InlineData(ClaimTypes.Email, "johnny.appleseed@apple.local")]
+    [InlineData(ClaimTypes.GivenName, "Johnny")]
+    [InlineData(ClaimTypes.NameIdentifier, "001883.fcc77ba97500402389df96821ad9c790.1517")]
+    [InlineData(ClaimTypes.Surname, "Appleseed")]
+    public async Task Can_Sign_In_Using_Apple_With_No_Token_Validation(string claimType, string claimValue)
+    {
+        // Arrange
+        static void ConfigureServices(IServiceCollection services)
         {
-            // Arrange
-            static void ConfigureServices(IServiceCollection services)
+            services.PostConfigureAll<AppleAuthenticationOptions>((options) =>
             {
-                services.PostConfigureAll<AppleAuthenticationOptions>((options) =>
-                {
-                    options.ClientSecret = "my-client-secret";
-                    options.GenerateClientSecret = false;
-                    options.TokenEndpoint = "https://appleid.apple.local/auth/token/email";
-                    options.TokenValidationParameters.ValidateLifetime = false;
-                    options.ValidateTokens = false;
-                });
-            }
-
-            RedirectParameters.Clear(); // Simulate second sign in where user data is not returned
-
-            using var server = CreateTestServer(ConfigureServices);
-
-            // Act
-            var claims = await AuthenticateUserAsync(server);
-
-            // Assert
-            AssertClaim(claims, claimType, claimValue);
+                options.ValidateTokens = false;
+            });
         }
 
-        [Theory]
-        [InlineData(ClaimTypes.Email, "johnny.appleseed@apple.local")]
-        [InlineData(ClaimTypes.GivenName, "Johnny")]
-        [InlineData(ClaimTypes.NameIdentifier, "001883.fcc77ba97500402389df96821ad9c790.1517")]
-        [InlineData(ClaimTypes.Surname, "Appleseed")]
-        public async Task Can_Sign_In_Using_Apple_With_No_Token_Validation(string claimType, string claimValue)
+        using var server = CreateTestServer(ConfigureServices);
+
+        // Act
+        var claims = await AuthenticateUserAsync(server);
+
+        // Assert
+        AssertClaim(claims, claimType, claimValue);
+    }
+
+    [Fact]
+    public async Task Cannot_Sign_In_Using_Apple_With_Expired_Token()
+    {
+        // Arrange
+        static void ConfigureServices(IServiceCollection services)
         {
-            // Arrange
-            static void ConfigureServices(IServiceCollection services)
+            services.PostConfigureAll<AppleAuthenticationOptions>((options) =>
             {
-                services.PostConfigureAll<AppleAuthenticationOptions>((options) =>
-                {
-                    options.ValidateTokens = false;
-                });
-            }
-
-            using var server = CreateTestServer(ConfigureServices);
-
-            // Act
-            var claims = await AuthenticateUserAsync(server);
-
-            // Assert
-            AssertClaim(claims, claimType, claimValue);
+                options.ValidateTokens = true;
+            });
         }
 
-        [Fact]
-        public async Task Cannot_Sign_In_Using_Apple_With_Expired_Token()
+        using var server = CreateTestServer(ConfigureServices);
+
+        // Act
+        var exception = await Assert.ThrowsAsync<Exception>(() => AuthenticateUserAsync(server));
+
+        // Assert
+        exception.InnerException.ShouldBeOfType<SecurityTokenValidationException>();
+        exception.InnerException.InnerException.ShouldBeOfType<SecurityTokenExpiredException>();
+    }
+
+    [Fact]
+    public async Task Cannot_Sign_In_Using_Apple_With_Invalid_Token_Audience()
+    {
+        // Arrange
+        static void ConfigureServices(IServiceCollection services)
         {
-            // Arrange
-            static void ConfigureServices(IServiceCollection services)
+            services.PostConfigureAll<AppleAuthenticationOptions>((options) =>
             {
-                services.PostConfigureAll<AppleAuthenticationOptions>((options) =>
-                {
-                    options.ValidateTokens = true;
-                });
-            }
-
-            using var server = CreateTestServer(ConfigureServices);
-
-            // Act
-            var exception = await Assert.ThrowsAsync<Exception>(() => AuthenticateUserAsync(server));
-
-            // Assert
-            exception.InnerException.ShouldBeOfType<SecurityTokenValidationException>();
-            exception.InnerException.InnerException.ShouldBeOfType<SecurityTokenExpiredException>();
+                options.TokenValidationParameters.ValidAudience = "my-team";
+                options.TokenValidationParameters.ValidateLifetime = false;
+                options.ValidateTokens = true;
+            });
         }
 
-        [Fact]
-        public async Task Cannot_Sign_In_Using_Apple_With_Invalid_Token_Audience()
+        using var server = CreateTestServer(ConfigureServices);
+
+        // Act
+        var exception = await Assert.ThrowsAsync<Exception>(() => AuthenticateUserAsync(server));
+
+        // Assert
+        exception.InnerException.ShouldBeOfType<SecurityTokenValidationException>();
+        exception.InnerException.InnerException.ShouldBeOfType<SecurityTokenInvalidAudienceException>();
+    }
+
+    [Fact]
+    public async Task Cannot_Sign_In_Using_Apple_With_Invalid_Token_Issuer()
+    {
+        // Arrange
+        static void ConfigureServices(IServiceCollection services)
         {
-            // Arrange
-            static void ConfigureServices(IServiceCollection services)
+            services.PostConfigureAll<AppleAuthenticationOptions>((options) =>
             {
-                services.PostConfigureAll<AppleAuthenticationOptions>((options) =>
-                {
-                    options.TokenValidationParameters.ValidAudience = "my-team";
-                    options.TokenValidationParameters.ValidateLifetime = false;
-                    options.ValidateTokens = true;
-                });
-            }
-
-            using var server = CreateTestServer(ConfigureServices);
-
-            // Act
-            var exception = await Assert.ThrowsAsync<Exception>(() => AuthenticateUserAsync(server));
-
-            // Assert
-            exception.InnerException.ShouldBeOfType<SecurityTokenValidationException>();
-            exception.InnerException.InnerException.ShouldBeOfType<SecurityTokenInvalidAudienceException>();
+                options.TokenValidationParameters.ValidIssuer = "https://apple.local";
+                options.TokenValidationParameters.ValidateLifetime = false;
+                options.ValidateTokens = true;
+            });
         }
 
-        [Fact]
-        public async Task Cannot_Sign_In_Using_Apple_With_Invalid_Token_Issuer()
+        using var server = CreateTestServer(ConfigureServices);
+
+        // Act
+        var exception = await Assert.ThrowsAsync<Exception>(() => AuthenticateUserAsync(server));
+
+        // Assert
+        exception.InnerException.ShouldBeOfType<SecurityTokenValidationException>();
+        exception.InnerException.InnerException.ShouldBeOfType<SecurityTokenInvalidIssuerException>();
+    }
+
+    [Fact]
+    public async Task Cannot_Sign_In_Using_Apple_With_Null_Token()
+    {
+        // Arrange
+        static void ConfigureServices(IServiceCollection services)
         {
-            // Arrange
-            static void ConfigureServices(IServiceCollection services)
+            services.PostConfigureAll<AppleAuthenticationOptions>((options) =>
             {
-                services.PostConfigureAll<AppleAuthenticationOptions>((options) =>
-                {
-                    options.TokenValidationParameters.ValidIssuer = "https://apple.local";
-                    options.TokenValidationParameters.ValidateLifetime = false;
-                    options.ValidateTokens = true;
-                });
-            }
-
-            using var server = CreateTestServer(ConfigureServices);
-
-            // Act
-            var exception = await Assert.ThrowsAsync<Exception>(() => AuthenticateUserAsync(server));
-
-            // Assert
-            exception.InnerException.ShouldBeOfType<SecurityTokenValidationException>();
-            exception.InnerException.InnerException.ShouldBeOfType<SecurityTokenInvalidIssuerException>();
+                options.TokenEndpoint = "https://appleid.apple.local/auth/token/null";
+                options.ValidateTokens = true;
+            });
         }
 
-        [Fact]
-        public async Task Cannot_Sign_In_Using_Apple_With_Null_Token()
+        using var server = CreateTestServer(ConfigureServices);
+
+        // Act
+        var exception = await Assert.ThrowsAsync<Exception>(() => AuthenticateUserAsync(server));
+
+        // Assert
+        exception.InnerException.ShouldNotBeNull();
+        exception.InnerException.ShouldBeOfType<InvalidOperationException>();
+        exception.InnerException.Message.ShouldBe("No Apple ID token was returned in the OAuth token response.");
+    }
+
+    [Fact]
+    public async Task Cannot_Sign_In_Using_Apple_With_Malformed_Token()
+    {
+        // Arrange
+        static void ConfigureServices(IServiceCollection services)
         {
-            // Arrange
-            static void ConfigureServices(IServiceCollection services)
+            services.PostConfigureAll<AppleAuthenticationOptions>((options) =>
             {
-                services.PostConfigureAll<AppleAuthenticationOptions>((options) =>
-                {
-                    options.TokenEndpoint = "https://appleid.apple.local/auth/token/null";
-                    options.ValidateTokens = true;
-                });
-            }
-
-            using var server = CreateTestServer(ConfigureServices);
-
-            // Act
-            var exception = await Assert.ThrowsAsync<Exception>(() => AuthenticateUserAsync(server));
-
-            // Assert
-            exception.InnerException.ShouldNotBeNull();
-            exception.InnerException.ShouldBeOfType<InvalidOperationException>();
-            exception.InnerException.Message.ShouldBe("No Apple ID token was returned in the OAuth token response.");
+                options.TokenEndpoint = "https://appleid.apple.local/auth/token/malformed";
+                options.ValidateTokens = true;
+            });
         }
 
-        [Fact]
-        public async Task Cannot_Sign_In_Using_Apple_With_Malformed_Token()
+        using var server = CreateTestServer(ConfigureServices);
+
+        // Act
+        var exception = await Assert.ThrowsAsync<Exception>(() => AuthenticateUserAsync(server));
+
+        // Assert
+        exception.InnerException.ShouldNotBeNull();
+        exception.InnerException.ShouldBeOfType<SecurityTokenValidationException>();
+        exception.InnerException.InnerException.ShouldBeOfType<ArgumentException>();
+        exception.InnerException.InnerException!.Message.ShouldNotBeNull();
+        exception.InnerException.InnerException.Message.ShouldStartWith("IDX");
+    }
+
+    [Fact]
+    public async Task Cannot_Sign_In_Using_Apple_With_No_Token()
+    {
+        // Arrange
+        static void ConfigureServices(IServiceCollection services)
         {
-            // Arrange
-            static void ConfigureServices(IServiceCollection services)
+            services.PostConfigureAll<AppleAuthenticationOptions>((options) =>
             {
-                services.PostConfigureAll<AppleAuthenticationOptions>((options) =>
-                {
-                    options.TokenEndpoint = "https://appleid.apple.local/auth/token/malformed";
-                    options.ValidateTokens = true;
-                });
-            }
-
-            using var server = CreateTestServer(ConfigureServices);
-
-            // Act
-            var exception = await Assert.ThrowsAsync<Exception>(() => AuthenticateUserAsync(server));
-
-            // Assert
-            exception.InnerException.ShouldNotBeNull();
-            exception.InnerException.ShouldBeOfType<SecurityTokenValidationException>();
-            exception.InnerException.InnerException.ShouldBeOfType<ArgumentException>();
-            exception.InnerException.InnerException!.Message.ShouldNotBeNull();
-            exception.InnerException.InnerException.Message.ShouldStartWith("IDX");
+                options.TokenEndpoint = "https://appleid.apple.local/auth/token/none";
+                options.ValidateTokens = true;
+            });
         }
 
-        [Fact]
-        public async Task Cannot_Sign_In_Using_Apple_With_No_Token()
+        using var server = CreateTestServer(ConfigureServices);
+
+        // Act
+        var exception = await Assert.ThrowsAsync<Exception>(() => AuthenticateUserAsync(server));
+
+        // Assert
+        exception.InnerException.ShouldNotBeNull();
+        exception.InnerException.ShouldBeOfType<InvalidOperationException>();
+        exception.InnerException!.Message.ShouldNotBeNull();
+        exception.InnerException.Message.ShouldBe("No Apple ID token was returned in the OAuth token response.");
+    }
+
+    [Fact]
+    public async Task Custom_Events_Are_Raised_By_Handler()
+    {
+        // Arrange
+        bool onGenerateClientSecretEventRaised = false;
+        bool onValidateIdTokenEventRaised = false;
+
+        void ConfigureServices(IServiceCollection services)
         {
-            // Arrange
-            static void ConfigureServices(IServiceCollection services)
+            services.PostConfigureAll<AppleAuthenticationOptions>((options) =>
             {
-                services.PostConfigureAll<AppleAuthenticationOptions>((options) =>
+                var onGenerateClientSecret = options.Events.OnGenerateClientSecret;
+
+                options.Events.OnGenerateClientSecret = async (context) =>
                 {
-                    options.TokenEndpoint = "https://appleid.apple.local/auth/token/none";
-                    options.ValidateTokens = true;
-                });
-            }
+                    await onGenerateClientSecret(context);
+                    onGenerateClientSecretEventRaised = true;
+                };
 
-            using var server = CreateTestServer(ConfigureServices);
+                var onValidateIdToken = options.Events.OnValidateIdToken;
 
-            // Act
-            var exception = await Assert.ThrowsAsync<Exception>(() => AuthenticateUserAsync(server));
+                options.Events.OnValidateIdToken = async (context) =>
+                {
+                    await onValidateIdToken(context);
+                    onValidateIdTokenEventRaised = true;
+                };
 
-            // Assert
-            exception.InnerException.ShouldNotBeNull();
-            exception.InnerException.ShouldBeOfType<InvalidOperationException>();
-            exception.InnerException!.Message.ShouldNotBeNull();
-            exception.InnerException.Message.ShouldBe("No Apple ID token was returned in the OAuth token response.");
+                options.ClientSecret = string.Empty;
+                options.GenerateClientSecret = true;
+                options.KeyId = "my-key-id";
+                options.TeamId = "my-team-id";
+                options.TokenValidationParameters.ValidateLifetime = false;
+                options.ValidateTokens = true;
+                options.PrivateKey = async (keyId, cancellationToken) =>
+                {
+                    Assert.Equal("my-key-id", keyId);
+                    return await TestKeys.GetPrivateKeyAsync(cancellationToken);
+                };
+            });
         }
 
-        [Fact]
-        public async Task Custom_Events_Are_Raised_By_Handler()
-        {
-            // Arrange
-            bool onGenerateClientSecretEventRaised = false;
-            bool onValidateIdTokenEventRaised = false;
+        using var server = CreateTestServer(ConfigureServices);
 
-            void ConfigureServices(IServiceCollection services)
+        // Act
+        var claims = await AuthenticateUserAsync(server);
+
+        // Assert
+        onGenerateClientSecretEventRaised.ShouldBeTrue();
+        onValidateIdTokenEventRaised.ShouldBeTrue();
+    }
+
+    [Fact]
+    public async Task Custom_Events_Are_Raised_By_Handler_Using_Custom_Events_Type()
+    {
+        // Arrange
+        bool onGenerateClientSecretEventRaised = false;
+        bool onValidateIdTokenEventRaised = false;
+
+        void ConfigureServices(IServiceCollection services)
+        {
+            services.TryAddScoped((_) =>
             {
-                services.PostConfigureAll<AppleAuthenticationOptions>((options) =>
+                var events = new CustomAppleAuthenticationEvents();
+
+                var onGenerateClientSecret = events.OnGenerateClientSecret;
+
+                events.OnGenerateClientSecret = async (context) =>
                 {
-                    var onGenerateClientSecret = options.Events.OnGenerateClientSecret;
+                    await onGenerateClientSecret(context);
+                    onGenerateClientSecretEventRaised = true;
+                };
 
-                    options.Events.OnGenerateClientSecret = async (context) =>
-                    {
-                        await onGenerateClientSecret(context);
-                        onGenerateClientSecretEventRaised = true;
-                    };
+                var onValidateIdToken = events.OnValidateIdToken;
 
-                    var onValidateIdToken = options.Events.OnValidateIdToken;
+                events.OnValidateIdToken = async (context) =>
+                {
+                    await onValidateIdToken(context);
+                    onValidateIdTokenEventRaised = true;
+                };
 
-                    options.Events.OnValidateIdToken = async (context) =>
-                    {
-                        await onValidateIdToken(context);
-                        onValidateIdTokenEventRaised = true;
-                    };
+                return events;
+            });
 
-                    options.ClientSecret = string.Empty;
-                    options.GenerateClientSecret = true;
-                    options.KeyId = "my-key-id";
-                    options.TeamId = "my-team-id";
-                    options.TokenValidationParameters.ValidateLifetime = false;
-                    options.ValidateTokens = true;
-                    options.PrivateKey = async (keyId, cancellationToken) =>
-                    {
-                        Assert.Equal("my-key-id", keyId);
-                        return await TestKeys.GetPrivateKeyAsync(cancellationToken);
-                    };
-                });
-            }
-
-            using var server = CreateTestServer(ConfigureServices);
-
-            // Act
-            var claims = await AuthenticateUserAsync(server);
-
-            // Assert
-            onGenerateClientSecretEventRaised.ShouldBeTrue();
-            onValidateIdTokenEventRaised.ShouldBeTrue();
-        }
-
-        [Fact]
-        public async Task Custom_Events_Are_Raised_By_Handler_Using_Custom_Events_Type()
-        {
-            // Arrange
-            bool onGenerateClientSecretEventRaised = false;
-            bool onValidateIdTokenEventRaised = false;
-
-            void ConfigureServices(IServiceCollection services)
+            services.PostConfigureAll<AppleAuthenticationOptions>((options) =>
             {
-                services.TryAddScoped((_) =>
+                options.ClientSecret = string.Empty;
+                options.EventsType = typeof(CustomAppleAuthenticationEvents);
+                options.GenerateClientSecret = true;
+                options.KeyId = "my-key-id";
+                options.TeamId = "my-team-id";
+                options.TokenValidationParameters.ValidateLifetime = false;
+                options.ValidateTokens = true;
+                options.PrivateKey = async (keyId, cancellationToken) =>
                 {
-                    var events = new CustomAppleAuthenticationEvents();
-
-                    var onGenerateClientSecret = events.OnGenerateClientSecret;
-
-                    events.OnGenerateClientSecret = async (context) =>
-                    {
-                        await onGenerateClientSecret(context);
-                        onGenerateClientSecretEventRaised = true;
-                    };
-
-                    var onValidateIdToken = events.OnValidateIdToken;
-
-                    events.OnValidateIdToken = async (context) =>
-                    {
-                        await onValidateIdToken(context);
-                        onValidateIdTokenEventRaised = true;
-                    };
-
-                    return events;
-                });
-
-                services.PostConfigureAll<AppleAuthenticationOptions>((options) =>
-                {
-                    options.ClientSecret = string.Empty;
-                    options.EventsType = typeof(CustomAppleAuthenticationEvents);
-                    options.GenerateClientSecret = true;
-                    options.KeyId = "my-key-id";
-                    options.TeamId = "my-team-id";
-                    options.TokenValidationParameters.ValidateLifetime = false;
-                    options.ValidateTokens = true;
-                    options.PrivateKey = async (keyId, cancellationToken) =>
-                    {
-                        Assert.Equal("my-key-id", keyId);
-                        return await TestKeys.GetPrivateKeyAsync(cancellationToken);
-                    };
-                });
-            }
-
-            using var server = CreateTestServer(ConfigureServices);
-
-            // Act
-            var claims = await AuthenticateUserAsync(server);
-
-            // Assert
-            onGenerateClientSecretEventRaised.ShouldBeTrue();
-            onValidateIdTokenEventRaised.ShouldBeTrue();
+                    Assert.Equal("my-key-id", keyId);
+                    return await TestKeys.GetPrivateKeyAsync(cancellationToken);
+                };
+            });
         }
 
-        private sealed class CustomAppleAuthenticationEvents : AppleAuthenticationEvents
-        {
-        }
+        using var server = CreateTestServer(ConfigureServices);
+
+        // Act
+        var claims = await AuthenticateUserAsync(server);
+
+        // Assert
+        onGenerateClientSecretEventRaised.ShouldBeTrue();
+        onValidateIdTokenEventRaised.ShouldBeTrue();
+    }
+
+    private sealed class CustomAppleAuthenticationEvents : AppleAuthenticationEvents
+    {
     }
 }

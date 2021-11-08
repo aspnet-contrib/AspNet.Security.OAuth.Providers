@@ -6,70 +6,69 @@
 
 using AspNet.Security.OAuth.BattleNet;
 
-namespace Microsoft.Extensions.DependencyInjection
+namespace Microsoft.Extensions.DependencyInjection;
+
+/// <summary>
+/// Extension methods to add Battle.net authentication capabilities to an HTTP application pipeline.
+/// </summary>
+public static class BattleNetAuthenticationExtensions
 {
     /// <summary>
-    /// Extension methods to add Battle.net authentication capabilities to an HTTP application pipeline.
+    /// Adds <see cref="BattleNetAuthenticationHandler"/> to the specified
+    /// <see cref="AuthenticationBuilder"/>, which enables Battle.net authentication capabilities.
     /// </summary>
-    public static class BattleNetAuthenticationExtensions
+    /// <param name="builder">The authentication builder.</param>
+    /// <returns>A reference to this instance after the operation has completed.</returns>
+    public static AuthenticationBuilder AddBattleNet([NotNull] this AuthenticationBuilder builder)
     {
-        /// <summary>
-        /// Adds <see cref="BattleNetAuthenticationHandler"/> to the specified
-        /// <see cref="AuthenticationBuilder"/>, which enables Battle.net authentication capabilities.
-        /// </summary>
-        /// <param name="builder">The authentication builder.</param>
-        /// <returns>A reference to this instance after the operation has completed.</returns>
-        public static AuthenticationBuilder AddBattleNet([NotNull] this AuthenticationBuilder builder)
-        {
-            return builder.AddBattleNet(BattleNetAuthenticationDefaults.AuthenticationScheme, options => { });
-        }
+        return builder.AddBattleNet(BattleNetAuthenticationDefaults.AuthenticationScheme, options => { });
+    }
 
-        /// <summary>
-        /// Adds <see cref="BattleNetAuthenticationHandler"/> to the specified
-        /// <see cref="AuthenticationBuilder"/>, which enables Battle.net authentication capabilities.
-        /// </summary>
-        /// <param name="builder">The authentication builder.</param>
-        /// <param name="configuration">The delegate used to configure the Battle.net options.</param>
-        /// <returns>A reference to this instance after the operation has completed.</returns>
-        public static AuthenticationBuilder AddBattleNet(
-            [NotNull] this AuthenticationBuilder builder,
-            [NotNull] Action<BattleNetAuthenticationOptions> configuration)
-        {
-            return builder.AddBattleNet(BattleNetAuthenticationDefaults.AuthenticationScheme, configuration);
-        }
+    /// <summary>
+    /// Adds <see cref="BattleNetAuthenticationHandler"/> to the specified
+    /// <see cref="AuthenticationBuilder"/>, which enables Battle.net authentication capabilities.
+    /// </summary>
+    /// <param name="builder">The authentication builder.</param>
+    /// <param name="configuration">The delegate used to configure the Battle.net options.</param>
+    /// <returns>A reference to this instance after the operation has completed.</returns>
+    public static AuthenticationBuilder AddBattleNet(
+        [NotNull] this AuthenticationBuilder builder,
+        [NotNull] Action<BattleNetAuthenticationOptions> configuration)
+    {
+        return builder.AddBattleNet(BattleNetAuthenticationDefaults.AuthenticationScheme, configuration);
+    }
 
-        /// <summary>
-        /// Adds <see cref="BattleNetAuthenticationHandler"/> to the specified
-        /// <see cref="AuthenticationBuilder"/>, which enables Battle.net authentication capabilities.
-        /// </summary>
-        /// <param name="builder">The authentication builder.</param>
-        /// <param name="scheme">The authentication scheme associated with this instance.</param>
-        /// <param name="configuration">The delegate used to configure the Battle.net options.</param>
-        /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
-        public static AuthenticationBuilder AddBattleNet(
-            [NotNull] this AuthenticationBuilder builder,
-            [NotNull] string scheme,
-            [NotNull] Action<BattleNetAuthenticationOptions> configuration)
-        {
-            return builder.AddBattleNet(scheme, BattleNetAuthenticationDefaults.DisplayName, configuration);
-        }
+    /// <summary>
+    /// Adds <see cref="BattleNetAuthenticationHandler"/> to the specified
+    /// <see cref="AuthenticationBuilder"/>, which enables Battle.net authentication capabilities.
+    /// </summary>
+    /// <param name="builder">The authentication builder.</param>
+    /// <param name="scheme">The authentication scheme associated with this instance.</param>
+    /// <param name="configuration">The delegate used to configure the Battle.net options.</param>
+    /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
+    public static AuthenticationBuilder AddBattleNet(
+        [NotNull] this AuthenticationBuilder builder,
+        [NotNull] string scheme,
+        [NotNull] Action<BattleNetAuthenticationOptions> configuration)
+    {
+        return builder.AddBattleNet(scheme, BattleNetAuthenticationDefaults.DisplayName, configuration);
+    }
 
-        /// <summary>
-        /// Adds <see cref="BattleNetAuthenticationHandler"/> to the specified
-        /// <see cref="AuthenticationBuilder"/>, which enables Battle.net authentication capabilities.
-        /// </summary>
-        /// <param name="builder">The authentication builder.</param>
-        /// <param name="scheme">The authentication scheme associated with this instance.</param>
-        /// <param name="caption">The optional display name associated with this instance.</param>
-        /// <param name="configuration">The delegate used to configure the Battle.net options.</param>
-        /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
-        public static AuthenticationBuilder AddBattleNet(
-            [NotNull] this AuthenticationBuilder builder,
-            [NotNull] string scheme,
-            [CanBeNull] string caption,
-            [NotNull] Action<BattleNetAuthenticationOptions> configuration)
-        {
-            return builder.AddOAuth<BattleNetAuthenticationOptions, BattleNetAuthenticationHandler>(scheme, caption, configuration);
-        }
+    /// <summary>
+    /// Adds <see cref="BattleNetAuthenticationHandler"/> to the specified
+    /// <see cref="AuthenticationBuilder"/>, which enables Battle.net authentication capabilities.
+    /// </summary>
+    /// <param name="builder">The authentication builder.</param>
+    /// <param name="scheme">The authentication scheme associated with this instance.</param>
+    /// <param name="caption">The optional display name associated with this instance.</param>
+    /// <param name="configuration">The delegate used to configure the Battle.net options.</param>
+    /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
+    public static AuthenticationBuilder AddBattleNet(
+        [NotNull] this AuthenticationBuilder builder,
+        [NotNull] string scheme,
+        [CanBeNull] string caption,
+        [NotNull] Action<BattleNetAuthenticationOptions> configuration)
+    {
+        return builder.AddOAuth<BattleNetAuthenticationOptions, BattleNetAuthenticationHandler>(scheme, caption, configuration);
     }
 }

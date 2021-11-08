@@ -8,28 +8,27 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 
-namespace AspNet.Security.OAuth.Automatic
+namespace AspNet.Security.OAuth.Automatic;
+
+/// <summary>
+/// Defines a set of options used by <see cref="AutomaticAuthenticationHandler"/>.
+/// </summary>
+public class AutomaticAuthenticationOptions : OAuthOptions
 {
-    /// <summary>
-    /// Defines a set of options used by <see cref="AutomaticAuthenticationHandler"/>.
-    /// </summary>
-    public class AutomaticAuthenticationOptions : OAuthOptions
+    public AutomaticAuthenticationOptions()
     {
-        public AutomaticAuthenticationOptions()
-        {
-            ClaimsIssuer = AutomaticAuthenticationDefaults.Issuer;
-            CallbackPath = AutomaticAuthenticationDefaults.CallbackPath;
+        ClaimsIssuer = AutomaticAuthenticationDefaults.Issuer;
+        CallbackPath = AutomaticAuthenticationDefaults.CallbackPath;
 
-            AuthorizationEndpoint = AutomaticAuthenticationDefaults.AuthorizationEndpoint;
-            TokenEndpoint = AutomaticAuthenticationDefaults.TokenEndpoint;
-            UserInformationEndpoint = AutomaticAuthenticationDefaults.UserInformationEndpoint;
+        AuthorizationEndpoint = AutomaticAuthenticationDefaults.AuthorizationEndpoint;
+        TokenEndpoint = AutomaticAuthenticationDefaults.TokenEndpoint;
+        UserInformationEndpoint = AutomaticAuthenticationDefaults.UserInformationEndpoint;
 
-            ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
-            ClaimActions.MapJsonKey(ClaimTypes.GivenName, "first_name");
-            ClaimActions.MapJsonKey(ClaimTypes.Surname, "last_name");
-            ClaimActions.MapJsonKey(ClaimTypes.Name, "username");
-            ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
-            ClaimActions.MapJsonKey(ClaimTypes.Uri, "url");
-        }
+        ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
+        ClaimActions.MapJsonKey(ClaimTypes.GivenName, "first_name");
+        ClaimActions.MapJsonKey(ClaimTypes.Surname, "last_name");
+        ClaimActions.MapJsonKey(ClaimTypes.Name, "username");
+        ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
+        ClaimActions.MapJsonKey(ClaimTypes.Uri, "url");
     }
 }

@@ -7,93 +7,92 @@
 using System.Reflection;
 using System.Runtime.Loader;
 
-namespace AspNet.Security.OAuth
+namespace AspNet.Security.OAuth;
+
+public static class StaticAnalysisTests
 {
-    public static class StaticAnalysisTests
-    {
 #if JETBRAINS_ANNOTATIONS
-        [Xunit.Fact]
+    [Xunit.Fact]
 #endif
-        public static void Publicly_Visible_Parameters_Have_Null_Annotations()
+    public static void Publicly_Visible_Parameters_Have_Null_Annotations()
+    {
+        // Arrange
+        var assemblyNames = GetProviderAssemblyNames();
+        var types = GetPublicTypes(assemblyNames);
+
+        int testedMethods = 0;
+
+        // Act
+        foreach (var type in types)
         {
-            // Arrange
-            var assemblyNames = GetProviderAssemblyNames();
-            var types = GetPublicTypes(assemblyNames);
+            var methods = GetPublicOrProtectedConstructorsOrMethods(type);
 
-            int testedMethods = 0;
-
-            // Act
-            foreach (var type in types)
+            foreach (var method in methods)
             {
-                var methods = GetPublicOrProtectedConstructorsOrMethods(type);
+                var parameters = method.GetParameters();
 
-                foreach (var method in methods)
+                foreach (var parameter in parameters)
                 {
-                    var parameters = method.GetParameters();
+                    bool hasNullabilityAnnotation = parameter
+                        .GetCustomAttributes()
+                        .Any((p) => p.GetType().FullName == "JetBrains.Annotations.CanBeNullAttribute" ||
+                                    p.GetType().FullName == "JetBrains.Annotations.NotNullAttribute");
 
-                    foreach (var parameter in parameters)
-                    {
-                        bool hasNullabilityAnnotation = parameter
-                            .GetCustomAttributes()
-                            .Any((p) => p.GetType().FullName == "JetBrains.Annotations.CanBeNullAttribute" ||
-                                        p.GetType().FullName == "JetBrains.Annotations.NotNullAttribute");
+                    // Assert
+                    hasNullabilityAnnotation.ShouldBeTrue(
+                        $"The {parameter.Name} parameter of {type.Name}.{method.Name} does not have a [NotNull] or [CanBeNull] annotation.");
 
-                        // Assert
-                        hasNullabilityAnnotation.ShouldBeTrue(
-                            $"The {parameter.Name} parameter of {type.Name}.{method.Name} does not have a [NotNull] or [CanBeNull] annotation.");
-
-                        testedMethods++;
-                    }
+                    testedMethods++;
                 }
             }
-
-            testedMethods.ShouldBeGreaterThan(0);
         }
 
-        private static IList<AssemblyName> GetProviderAssemblyNames()
-        {
-            var thisType = typeof(StaticAnalysisTests);
+        testedMethods.ShouldBeGreaterThan(0);
+    }
 
-            var assemblies = thisType.Assembly
-                .GetReferencedAssemblies()
-                .Where((p) => p.FullName.StartsWith(thisType.Namespace + ".", StringComparison.Ordinal))
-                .ToArray();
+    private static IList<AssemblyName> GetProviderAssemblyNames()
+    {
+        var thisType = typeof(StaticAnalysisTests);
 
-            assemblies.ShouldNotBeEmpty();
+        var assemblies = thisType.Assembly
+            .GetReferencedAssemblies()
+            .Where((p) => p.FullName.StartsWith(thisType.Namespace + ".", StringComparison.Ordinal))
+            .ToArray();
 
-            return assemblies;
-        }
+        assemblies.ShouldNotBeEmpty();
 
-        private static IList<Type> GetPublicTypes(IEnumerable<AssemblyName> assemblyNames)
-        {
-            var types = assemblyNames
-                .Select((p) => AssemblyLoadContext.Default.LoadFromAssemblyName(p))
-                .SelectMany((p) => p.GetTypes())
-                .Where((p) => p.IsPublic || p.IsNestedPublic)
-                .ToArray();
+        return assemblies;
+    }
 
-            types.ShouldNotBeEmpty();
+    private static IList<Type> GetPublicTypes(IEnumerable<AssemblyName> assemblyNames)
+    {
+        var types = assemblyNames
+            .Select((p) => AssemblyLoadContext.Default.LoadFromAssemblyName(p))
+            .SelectMany((p) => p.GetTypes())
+            .Where((p) => p.IsPublic || p.IsNestedPublic)
+            .ToArray();
 
-            return types;
-        }
+        types.ShouldNotBeEmpty();
 
-        private static IList<MethodBase> GetPublicOrProtectedConstructorsOrMethods(Type type)
-        {
-            var constructors = type
-                .GetConstructors(BindingFlags.Public | BindingFlags.NonPublic)
-                .Select((p) => (MethodBase)p)
-                .ToArray();
+        return types;
+    }
 
-            var methods = type
-                .GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static)
-                .ToArray();
+    private static IList<MethodBase> GetPublicOrProtectedConstructorsOrMethods(Type type)
+    {
+        var constructors = type
+            .GetConstructors(BindingFlags.Public | BindingFlags.NonPublic)
+            .Select((p) => (MethodBase)p)
+            .ToArray();
 
-            return methods
-                .Concat(constructors)
-                .Where((p) => p.IsPublic || p.IsFamily) // public or protected
-                .Where((p) => !p.IsAbstract)
-                .Where((p) => !p.IsSpecialName) // No property get/set or event add/remove methods
-                .ToArray();
-        }
+        var methods = type
+            .GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static)
+            .ToArray();
+
+        return methods
+            .Concat(constructors)
+            .Where((p) => p.IsPublic || p.IsFamily) // public or protected
+            .Where((p) => !p.IsAbstract)
+            .Where((p) => !p.IsSpecialName) // No property get/set or event add/remove methods
+            .ToArray();
     }
 }

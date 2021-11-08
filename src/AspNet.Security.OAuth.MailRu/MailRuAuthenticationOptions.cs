@@ -7,29 +7,28 @@
 using System.Security.Claims;
 using static AspNet.Security.OAuth.MailRu.MailRuAuthenticationConstants;
 
-namespace AspNet.Security.OAuth.MailRu
+namespace AspNet.Security.OAuth.MailRu;
+
+/// <summary>
+/// Defines a set of options used by <see cref="MailRuAuthenticationHandler"/>.
+/// </summary>
+public class MailRuAuthenticationOptions : OAuthOptions
 {
-    /// <summary>
-    /// Defines a set of options used by <see cref="MailRuAuthenticationHandler"/>.
-    /// </summary>
-    public class MailRuAuthenticationOptions : OAuthOptions
+    public MailRuAuthenticationOptions()
     {
-        public MailRuAuthenticationOptions()
-        {
-            ClaimsIssuer = MailRuAuthenticationDefaults.Issuer;
-            CallbackPath = MailRuAuthenticationDefaults.CallbackPath;
+        ClaimsIssuer = MailRuAuthenticationDefaults.Issuer;
+        CallbackPath = MailRuAuthenticationDefaults.CallbackPath;
 
-            AuthorizationEndpoint = MailRuAuthenticationDefaults.AuthorizationEndpoint;
-            TokenEndpoint = MailRuAuthenticationDefaults.TokenEndpoint;
-            UserInformationEndpoint = MailRuAuthenticationDefaults.UserInformationEndpoint;
+        AuthorizationEndpoint = MailRuAuthenticationDefaults.AuthorizationEndpoint;
+        TokenEndpoint = MailRuAuthenticationDefaults.TokenEndpoint;
+        UserInformationEndpoint = MailRuAuthenticationDefaults.UserInformationEndpoint;
 
-            ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "email");
-            ClaimActions.MapJsonKey(ClaimTypes.Name, "nickname");
-            ClaimActions.MapJsonKey(ClaimTypes.Gender, "gender");
-            ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
-            ClaimActions.MapJsonKey(ClaimTypes.Surname, "last_name");
-            ClaimActions.MapJsonKey(ClaimTypes.GivenName, "first_name");
-            ClaimActions.MapJsonKey(Claims.ImageUrl, "image");
-        }
+        ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "email");
+        ClaimActions.MapJsonKey(ClaimTypes.Name, "nickname");
+        ClaimActions.MapJsonKey(ClaimTypes.Gender, "gender");
+        ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
+        ClaimActions.MapJsonKey(ClaimTypes.Surname, "last_name");
+        ClaimActions.MapJsonKey(ClaimTypes.GivenName, "first_name");
+        ClaimActions.MapJsonKey(Claims.ImageUrl, "image");
     }
 }
