@@ -67,8 +67,6 @@
 
   <PropertyGroup>
     <EnablePackageValidation>$(IsPackable)</EnablePackageValidation>
-    <!-- TODO Remove suppression once 6.0.0 is released. -->
-    <NoWarn>$(NoWarn);PKV006</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
