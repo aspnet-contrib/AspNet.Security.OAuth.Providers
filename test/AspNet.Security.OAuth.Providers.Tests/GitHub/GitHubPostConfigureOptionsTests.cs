@@ -4,10 +4,6 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using System;
-using Shouldly;
-using Xunit;
-
 namespace AspNet.Security.OAuth.GitHub
 {
     public static class GitHubPostConfigureOptionsTests

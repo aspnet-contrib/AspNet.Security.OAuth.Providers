@@ -4,18 +4,11 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Net.Http;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
-using System.Threading.Tasks;
-using JetBrains.Annotations;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -74,7 +67,7 @@ namespace AspNet.Security.OAuth.Apple
             [NotNull] AuthenticationProperties properties,
             [NotNull] OAuthTokenResponse tokens)
         {
-            string? idToken = tokens.Response.RootElement.GetString("id_token");
+            string? idToken = tokens.Response!.RootElement.GetString("id_token");
 
             Logger.LogInformation("Creating ticket for Sign in with Apple.");
 
@@ -138,7 +131,7 @@ namespace AspNet.Security.OAuth.Apple
         {
             try
             {
-                var securityToken = Options.JwtSecurityTokenHandler.ReadJwtToken(token);
+                var securityToken = Options.SecurityTokenHandler.ReadJsonWebToken(token);
 
                 return new List<Claim>(securityToken.Claims)
                 {
@@ -339,7 +332,7 @@ namespace AspNet.Security.OAuth.Apple
                     }
                 }
 
-                string? idToken = tokens.Response.RootElement.GetString("id_token");
+                string? idToken = tokens.Response?.RootElement.GetString("id_token");
 
                 if (!string.IsNullOrEmpty(idToken))
                 {

@@ -4,9 +4,6 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.OAuth;
-
 namespace AspNet.Security.OAuth.Yahoo
 {
     /// <summary>
@@ -22,31 +19,31 @@ namespace AspNet.Security.OAuth.Yahoo
         /// <summary>
         /// Default value for <see cref="AuthenticationScheme.DisplayName"/>.
         /// </summary>
-        public const string DisplayName = "Yahoo";
+        public static readonly string DisplayName = "Yahoo";
 
         /// <summary>
         /// Default value for <see cref="AuthenticationSchemeOptions.ClaimsIssuer"/>.
         /// </summary>
-        public const string Issuer = "Yahoo";
+        public static readonly string Issuer = "Yahoo";
 
         /// <summary>
         /// Default value for <see cref="RemoteAuthenticationOptions.CallbackPath"/>.
         /// </summary>
-        public const string CallbackPath = "/signin-yahoo";
+        public static readonly string CallbackPath = "/signin-yahoo";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
         /// </summary>
-        public const string AuthorizationEndpoint = "https://api.login.yahoo.com/oauth2/request_auth";
+        public static readonly string AuthorizationEndpoint = "https://api.login.yahoo.com/oauth2/request_auth";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.TokenEndpoint"/>.
         /// </summary>
-        public const string TokenEndpoint = "https://api.login.yahoo.com/oauth2/get_token";
+        public static readonly string TokenEndpoint = "https://api.login.yahoo.com/oauth2/get_token";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
         /// </summary>
-        public const string UserInformationEndpoint = "https://api.login.yahoo.com/openid/v1/userinfo";
+        public static readonly string UserInformationEndpoint = "https://api.login.yahoo.com/openid/v1/userinfo";
     }
 }

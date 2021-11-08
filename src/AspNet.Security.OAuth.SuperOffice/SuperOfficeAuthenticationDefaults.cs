@@ -4,8 +4,6 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using Microsoft.AspNetCore.Authentication;
-
 namespace AspNet.Security.OAuth.SuperOffice
 {
     /// <summary>
@@ -21,7 +19,7 @@ namespace AspNet.Security.OAuth.SuperOffice
         /// <summary>
         /// Default value for <see cref="RemoteAuthenticationOptions.CallbackPath"/>.
         /// </summary>
-        public const string CallbackPath = "/signin-superoffice";
+        public static readonly string CallbackPath = "/signin-superoffice";
 
         /// <summary>
         /// Default value for <see cref="AuthenticationScheme.DisplayName"/>.

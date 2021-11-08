@@ -4,9 +4,6 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.OAuth;
-
 namespace AspNet.Security.OAuth.Myob
 {
     /// <summary>
@@ -22,26 +19,26 @@ namespace AspNet.Security.OAuth.Myob
         /// <summary>
         /// Default value for <see cref="AuthenticationScheme.DisplayName"/>.
         /// </summary>
-        public const string DisplayName = "Myob";
+        public static readonly string DisplayName = "Myob";
 
         /// <summary>
         /// Default value for <see cref="AuthenticationSchemeOptions.ClaimsIssuer"/>.
         /// </summary>
-        public const string Issuer = "Myob";
+        public static readonly string Issuer = "Myob";
 
         /// <summary>
         /// Default value for <see cref="RemoteAuthenticationOptions.CallbackPath"/>.
         /// </summary>
-        public const string CallbackPath = "/signin-myob";
+        public static readonly string CallbackPath = "/signin-myob";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
         /// </summary>
-        public const string AuthorizationEndpoint = "https://secure.myob.com/oauth2/account/authorize";
+        public static readonly string AuthorizationEndpoint = "https://secure.myob.com/oauth2/account/authorize";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.TokenEndpoint"/>.
         /// </summary>
-        public const string TokenEndpoint = "https://secure.myob.com/oauth2/v1/authorize";
+        public static readonly string TokenEndpoint = "https://secure.myob.com/oauth2/v1/authorize";
     }
 }

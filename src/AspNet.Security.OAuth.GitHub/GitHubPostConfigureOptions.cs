@@ -4,8 +4,6 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using System;
-using JetBrains.Annotations;
 using Microsoft.Extensions.Options;
 using static AspNet.Security.OAuth.GitHub.GitHubAuthenticationDefaults;
 
@@ -37,7 +35,7 @@ namespace AspNet.Security.OAuth.GitHub
             {
                 Path = path,
                 Port = -1,
-                Scheme = "https",
+                Scheme = Uri.UriSchemeHttps,
             };
 
             return builder.Uri.ToString();

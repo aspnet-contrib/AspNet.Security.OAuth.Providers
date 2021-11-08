@@ -4,18 +4,11 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using System;
 using System.Globalization;
-using System.Linq;
-using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Text.Json;
-using System.Threading.Tasks;
-using JetBrains.Annotations;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.JsonWebTokens;
@@ -86,7 +79,7 @@ namespace AspNet.Security.OAuth.SuperOffice
             [NotNull] AuthenticationProperties properties,
             [NotNull] ClaimsIdentity identity)
         {
-            string? idToken = tokens.Response.RootElement.GetString("id_token");
+            string? idToken = tokens.Response!.RootElement.GetString("id_token");
 
             if (Options.SaveTokens)
             {

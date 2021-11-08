@@ -4,8 +4,6 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using System.Threading.Tasks;
-
 namespace AspNet.Security.OAuth.Apple
 {
     /// <summary>

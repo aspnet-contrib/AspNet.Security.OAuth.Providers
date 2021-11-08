@@ -4,9 +4,6 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.OAuth;
-
 namespace AspNet.Security.OAuth.Alipay
 {
     /// <summary>
@@ -22,31 +19,31 @@ namespace AspNet.Security.OAuth.Alipay
         /// <summary>
         /// Default value for <see cref="AuthenticationScheme.DisplayName"/>.
         /// </summary>
-        public const string DisplayName = "Alipay";
+        public static readonly string DisplayName = "Alipay";
 
         /// <summary>
         /// Default value for <see cref="AuthenticationSchemeOptions.ClaimsIssuer"/>.
         /// </summary>
-        public const string Issuer = "Alipay";
+        public static readonly string Issuer = "Alipay";
 
         /// <summary>
         /// Default value for <see cref="RemoteAuthenticationOptions.CallbackPath"/>.
         /// </summary>
-        public const string CallbackPath = "/signin-alipay";
+        public static readonly string CallbackPath = "/signin-alipay";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
         /// </summary>
-        public const string AuthorizationEndpoint = "https://openauth.alipay.com/oauth2/publicAppAuthorize.htm";
+        public static readonly string AuthorizationEndpoint = "https://openauth.alipay.com/oauth2/publicAppAuthorize.htm";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.TokenEndpoint"/>.
         /// </summary>
-        public const string TokenEndpoint = "https://openapi.alipay.com/gateway.do";
+        public static readonly string TokenEndpoint = "https://openapi.alipay.com/gateway.do";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
         /// </summary>
-        public const string UserInformationEndpoint = "https://openapi.alipay.com/gateway.do";
+        public static readonly string UserInformationEndpoint = "https://openapi.alipay.com/gateway.do";
     }
 }

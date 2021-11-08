@@ -4,13 +4,10 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.OAuth;
-
 namespace AspNet.Security.OAuth.Yammer
 {
     /// <summary>
-    /// Default values used by the Yamer authentication middleware.
+    /// Default values used by the Yammer authentication middleware.
     /// </summary>
     public static class YammerAuthenticationDefaults
     {
@@ -22,31 +19,31 @@ namespace AspNet.Security.OAuth.Yammer
         /// <summary>
         /// Default value for <see cref="AuthenticationScheme.DisplayName"/>.
         /// </summary>
-        public const string DisplayName = "Yammer";
+        public static readonly string DisplayName = "Yammer";
 
         /// <summary>
         /// Default value for <see cref="AuthenticationSchemeOptions.ClaimsIssuer"/>.
         /// </summary>
-        public const string Issuer = "Yammer";
+        public static readonly string Issuer = "Yammer";
 
         /// <summary>
         /// Default value for <see cref="RemoteAuthenticationOptions.CallbackPath"/>.
         /// </summary>
-        public const string CallbackPath = "/signin-yammer";
+        public static readonly string CallbackPath = "/signin-yammer";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
         /// </summary>
-        public const string AuthorizationEndpoint = "https://www.yammer.com/oauth2/authorize";
+        public static readonly string AuthorizationEndpoint = "https://www.yammer.com/oauth2/authorize";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.TokenEndpoint"/>.
         /// </summary>
-        public const string TokenEndpoint = "https://www.yammer.com/oauth2/access_token";
+        public static readonly string TokenEndpoint = "https://www.yammer.com/oauth2/access_token";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
         /// </summary>
-        public const string UserInformationEndpoint = "https://www.yammer.com/api/v1/users/current.json";
+        public static readonly string UserInformationEndpoint = "https://www.yammer.com/api/v1/users/current.json";
     }
 }

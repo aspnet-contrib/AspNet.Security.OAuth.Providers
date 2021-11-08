@@ -4,9 +4,6 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.OAuth;
-
 namespace AspNet.Security.OAuth.Okta
 {
     /// <summary>
@@ -22,31 +19,31 @@ namespace AspNet.Security.OAuth.Okta
         /// <summary>
         /// Default value for <see cref="AuthenticationScheme.DisplayName"/>.
         /// </summary>
-        public const string DisplayName = "Okta";
+        public static readonly string DisplayName = "Okta";
 
         /// <summary>
         /// Default value for <see cref="AuthenticationSchemeOptions.ClaimsIssuer"/>.
         /// </summary>
-        public const string Issuer = "Okta";
+        public static readonly string Issuer = "Okta";
 
         /// <summary>
         /// Default value for <see cref="RemoteAuthenticationOptions.CallbackPath"/>.
         /// </summary>
-        public const string CallbackPath = "/signin-okta";
+        public static readonly string CallbackPath = "/signin-okta";
 
         /// <summary>
         /// Default path to use for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
         /// </summary>
-        public const string AuthorizationEndpointPath = "/oauth2/default/v1/authorize";
+        public static readonly string AuthorizationEndpointPath = "/oauth2/default/v1/authorize";
 
         /// <summary>
         /// Default path to use for <see cref="OAuthOptions.TokenEndpoint"/>.
         /// </summary>
-        public const string TokenEndpointPath = "/oauth2/default/v1/token";
+        public static readonly string TokenEndpointPath = "/oauth2/default/v1/token";
 
         /// <summary>
         /// Default path to use for <see cref="OAuthOptions.UserInformationEndpoint"/>.
         /// </summary>
-        public const string UserInformationEndpointPath = "/oauth2/default/v1/userinfo";
+        public static readonly string UserInformationEndpointPath = "/oauth2/default/v1/userinfo";
     }
 }

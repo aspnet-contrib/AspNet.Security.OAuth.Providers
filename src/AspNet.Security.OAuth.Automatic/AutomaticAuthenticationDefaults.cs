@@ -22,31 +22,31 @@ namespace AspNet.Security.OAuth.Automatic
         /// <summary>
         /// Default value for <see cref="AuthenticationScheme.DisplayName"/>.
         /// </summary>
-        public const string DisplayName = "AutomaticLabs";
+        public static readonly string DisplayName = "AutomaticLabs";
 
         /// <summary>
         /// Default value for <see cref="AuthenticationSchemeOptions.ClaimsIssuer"/>.
         /// </summary>
-        public const string Issuer = "AutomaticLabs";
+        public static readonly string Issuer = "AutomaticLabs";
 
         /// <summary>
         /// Default value for <see cref="RemoteAuthenticationOptions.CallbackPath"/>.
         /// </summary>
-        public const string CallbackPath = "/signin-automatic";
+        public static readonly string CallbackPath = "/signin-automatic";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
         /// </summary>
-        public const string AuthorizationEndpoint = "https://accounts.automatic.com/oauth/authorize";
+        public static readonly string AuthorizationEndpoint = "https://accounts.automatic.com/oauth/authorize";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.TokenEndpoint"/>.
         /// </summary>
-        public const string TokenEndpoint = "https://accounts.automatic.com/oauth/access_token";
+        public static readonly string TokenEndpoint = "https://accounts.automatic.com/oauth/access_token";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
         /// </summary>
-        public const string UserInformationEndpoint = "https://api.automatic.com/user/me/";
+        public static readonly string UserInformationEndpoint = "https://api.automatic.com/user/me/";
     }
 }

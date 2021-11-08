@@ -4,9 +4,6 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using System;
-using JetBrains.Annotations;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AspNet.Security.OAuth.Mixcloud

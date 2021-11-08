@@ -4,9 +4,6 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using System;
-using Xunit;
-
 namespace AspNet.Security.OAuth.Okta
 {
     public static class OktaAuthenticationOptionsTests

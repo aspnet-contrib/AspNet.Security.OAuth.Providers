@@ -4,20 +4,12 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Net.Http;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
-using System.Threading.Tasks;
-using JetBrains.Annotations;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
@@ -58,7 +50,7 @@ namespace AspNet.Security.OAuth.Alipay
         protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] OAuthCodeExchangeContext context)
         {
             // See https://opendocs.alipay.com/apis/api_9/alipay.system.oauth.token for details.
-            var sortedParams = new SortedDictionary<string, string>()
+            var sortedParams = new SortedDictionary<string, string?>()
             {
                 ["app_id"] = Options.ClientId,
                 ["charset"] = "utf-8",
@@ -105,7 +97,7 @@ namespace AspNet.Security.OAuth.Alipay
             [NotNull] OAuthTokenResponse tokens)
         {
             // See https://opendocs.alipay.com/apis/api_2/alipay.user.info.share for details.
-            var sortedParams = new SortedDictionary<string, string>()
+            var sortedParams = new SortedDictionary<string, string?>()
             {
                 ["app_id"] = Options.ClientId,
                 ["auth_token"] = tokens.AccessToken,
@@ -139,7 +131,7 @@ namespace AspNet.Security.OAuth.Alipay
 
             if (!rootElement.TryGetProperty("alipay_user_info_share_response", out JsonElement mainElement))
             {
-                string errorCode = rootElement.GetProperty("error_response").GetProperty("code").GetString() !;
+                string errorCode = rootElement.GetProperty("error_response").GetProperty("code").GetString()!;
                 throw new Exception($"An error (Code:{errorCode}) occurred while retrieving user information.");
             }
 
@@ -148,7 +140,7 @@ namespace AspNet.Security.OAuth.Alipay
                 throw new Exception($"An error (Code:{code}) occurred while retrieving user information.");
             }
 
-            identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, mainElement.GetString("user_id") !, ClaimValueTypes.String, Options.ClaimsIssuer));
+            identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, mainElement.GetString("user_id")!, ClaimValueTypes.String, Options.ClaimsIssuer));
 
             var principal = new ClaimsPrincipal(identity);
             var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, mainElement);
@@ -177,7 +169,7 @@ namespace AspNet.Security.OAuth.Alipay
                 return true;
             }
 
-            code = codeElement.GetString() !;
+            code = codeElement.GetString()!;
             return code == "10000";
         }
 
@@ -185,7 +177,7 @@ namespace AspNet.Security.OAuth.Alipay
         /// Gets the RSA2(SHA256 with RSA) signature.
         /// </summary>
         /// <param name="sortedPairs">Sorted key-value pairs</param>
-        private string GetRSA2Signature([NotNull] SortedDictionary<string, string> sortedPairs)
+        private string GetRSA2Signature([NotNull] SortedDictionary<string, string?> sortedPairs)
         {
             var builder = new StringBuilder(128);
 
@@ -230,8 +222,7 @@ namespace AspNet.Security.OAuth.Alipay
 
             if (Options.UsePkce)
             {
-                var bytes = new byte[32];
-                RandomNumberGenerator.Fill(bytes);
+                var bytes = RandomNumberGenerator.GetBytes(32);
                 var codeVerifier = Microsoft.AspNetCore.Authentication.Base64UrlTextEncoder.Encode(bytes);
 
                 // Store this for use during the code redemption.

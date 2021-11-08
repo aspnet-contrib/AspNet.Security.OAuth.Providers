@@ -4,9 +4,6 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using System;
-using System.Collections.Generic;
-using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Mime;
 using System.Security.Claims;
@@ -14,10 +11,6 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
-using System.Threading.Tasks;
-using JetBrains.Annotations;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -80,7 +73,7 @@ namespace AspNet.Security.OAuth.Deezer
             [NotNull] AuthenticationProperties properties,
             [NotNull] OAuthTokenResponse tokens)
         {
-            string address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, "access_token", tokens.AccessToken);
+            string address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, "access_token", tokens.AccessToken!);
 
             using var request = new HttpRequestMessage(HttpMethod.Get, address);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json));
@@ -121,8 +114,7 @@ namespace AspNet.Security.OAuth.Deezer
 
             if (Options.UsePkce)
             {
-                byte[] bytes = new byte[32];
-                RandomNumberGenerator.Fill(bytes);
+                byte[] bytes = RandomNumberGenerator.GetBytes(32);
                 string codeVerifier = Microsoft.AspNetCore.WebUtilities.Base64UrlTextEncoder.Encode(bytes);
 
                 // Store this for use during the code redemption.

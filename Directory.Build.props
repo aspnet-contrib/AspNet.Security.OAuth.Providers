@@ -3,9 +3,11 @@
   <Import Project="Sdk.props" Sdk="Microsoft.DotNet.Arcade.Sdk" />
 
   <PropertyGroup>
-    <DefaultNetCoreTargetFramework>net5.0</DefaultNetCoreTargetFramework>
+    <DefaultNetCoreTargetFramework>net6.0</DefaultNetCoreTargetFramework>
     <LangVersion>latest</LangVersion>
     <NoWarn>$(NoWarn);CS1591</NoWarn>
+    <!-- TODO Actually resolve this by using the logging source generator -->
+    <NoWarn>$(NoWarn);CA1848</NoWarn>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>portable</DebugType>
@@ -63,6 +65,12 @@
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <EnablePackageValidation>$(IsPackable)</EnablePackageValidation>
+    <!-- TODO Remove suppression once 6.0.0 is released. -->
+    <NoWarn>$(NoWarn);PKV006</NoWarn>
+  </PropertyGroup>
+
   <ItemGroup>
     <AdditionalFiles Include="$(MSBuildThisFileDirectory)stylecop.json" Link="stylecop.json" />
     <PackageReference Include="StyleCop.Analyzers" PrivateAssets="All" />
@@ -71,6 +79,16 @@
   <ItemGroup>
     <ProjectCapability Include="DynamicDependentFile" />
     <ProjectCapability Include="DynamicFileNesting" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Using Include="JetBrains.Annotations" />
+    <Using Include="Microsoft.AspNetCore.Authentication" />
+    <Using Include="Microsoft.AspNetCore.Authentication.OAuth" />
   </ItemGroup>
 
 </Project>

@@ -4,18 +4,11 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Text.Json;
-using System.Threading.Tasks;
-using JetBrains.Annotations;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -61,7 +54,7 @@ namespace AspNet.Security.OAuth.Shopify
 
             // In Shopify, the customer can modify the scope given to the app. Apps should verify
             // that the customer is allowing the required scope.
-            string actualScope = tokens.Response.RootElement.GetString("scope") ?? string.Empty;
+            string actualScope = tokens.Response!.RootElement.GetString("scope") ?? string.Empty;
             bool isPersistent = true;
 
             // If the request was for a "per-user" (i.e. no offline access)
@@ -103,11 +96,8 @@ namespace AspNet.Security.OAuth.Shopify
         {
             if (!properties.Items.TryGetValue(ShopifyAuthenticationDefaults.ShopNameAuthenticationProperty, out string? shopName))
             {
-                string message =
-                    $"Shopify provider AuthenticationProperties must contain {ShopifyAuthenticationDefaults.ShopNameAuthenticationProperty}.";
-
-                Logger.LogError(message);
-                throw new InvalidOperationException(message);
+                Logger.LogError("Shopify provider AuthenticationProperties must contain ShopNameAuthenticationProperty.");
+                throw new InvalidOperationException("Shopify provider AuthenticationProperties must contain ShopNameAuthenticationProperty.");
             }
 
             string uri = string.Format(CultureInfo.InvariantCulture, Options.AuthorizationEndpoint, shopName);

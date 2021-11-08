@@ -4,17 +4,10 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Text.Json;
-using System.Threading.Tasks;
-using JetBrains.Annotations;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -40,7 +33,7 @@ namespace AspNet.Security.OAuth.Weibo
             string address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, new Dictionary<string, string?>
             {
                 ["access_token"] = tokens.AccessToken,
-                ["uid"] = tokens.Response.RootElement.GetString("uid")
+                ["uid"] = tokens.Response!.RootElement.GetString("uid")
             });
 
             using var request = new HttpRequestMessage(HttpMethod.Get, address);
@@ -87,7 +80,7 @@ namespace AspNet.Security.OAuth.Weibo
         protected virtual async Task<string?> GetEmailAsync([NotNull] OAuthTokenResponse tokens)
         {
             // See http://open.weibo.com/wiki/2/account/profile/email for more information about the /account/profile/email.json endpoint.
-            string address = QueryHelpers.AddQueryString(Options.UserEmailsEndpoint, "access_token", tokens.AccessToken);
+            string address = QueryHelpers.AddQueryString(Options.UserEmailsEndpoint, "access_token", tokens.AccessToken!);
 
             using var request = new HttpRequestMessage(HttpMethod.Get, address);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));

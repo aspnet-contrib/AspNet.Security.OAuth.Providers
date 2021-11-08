@@ -4,16 +4,10 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using System;
-using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Text.Json;
-using System.Threading.Tasks;
-using JetBrains.Annotations;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -36,7 +30,7 @@ namespace AspNet.Security.OAuth.Instagram
             [NotNull] AuthenticationProperties properties,
             [NotNull] OAuthTokenResponse tokens)
         {
-            string address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, "access_token", tokens.AccessToken);
+            string address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, "access_token", tokens.AccessToken!);
 
             if (Options.Fields.Count > 0)
             {

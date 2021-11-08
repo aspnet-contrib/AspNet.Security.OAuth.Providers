@@ -4,12 +4,6 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using System.Security.Claims;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.Extensions.DependencyInjection;
-using Xunit;
-
 namespace AspNet.Security.OAuth.AmoCrm
 {
     public class AmoCrmTests : OAuthTests<AmoCrmAuthenticationOptions>

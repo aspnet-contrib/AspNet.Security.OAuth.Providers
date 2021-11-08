@@ -5,13 +5,7 @@
  */
 
 using System.Globalization;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.DependencyInjection;
-using Xunit;
-using Xunit.Abstractions;
 
 namespace AspNet.Security.OAuth.Shopify
 {
@@ -48,7 +42,7 @@ namespace AspNet.Security.OAuth.Shopify
         [InlineData(ClaimTypes.Email, "steve@apple.com")]
         [InlineData(ClaimTypes.Name, "Apple Computers")]
         [InlineData(ClaimTypes.NameIdentifier, "apple.myshopify.com")]
-        [InlineData(ShopifyAuthenticationDefaults.ShopifyPlanNameClaimType, "enterprise")]
+        [InlineData("urn:shopify:plan_name", "enterprise")]
         public async Task Can_Sign_In_Using_Shopify(string claimType, string claimValue)
         {
             // Arrange

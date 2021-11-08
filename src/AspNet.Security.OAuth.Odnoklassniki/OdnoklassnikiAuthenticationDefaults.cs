@@ -4,9 +4,6 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.OAuth;
-
 namespace AspNet.Security.OAuth.Odnoklassniki
 {
     /// <summary>
@@ -22,31 +19,31 @@ namespace AspNet.Security.OAuth.Odnoklassniki
         /// <summary>
         /// Default value for <see cref="AuthenticationScheme.DisplayName"/>.
         /// </summary>
-        public const string DisplayName = "Odnoklassniki";
+        public static readonly string DisplayName = "Odnoklassniki";
 
         /// <summary>
         /// Default value for <see cref="AuthenticationSchemeOptions.ClaimsIssuer"/>.
         /// </summary>
-        public const string Issuer = "Odnoklassniki";
+        public static readonly string Issuer = "Odnoklassniki";
 
         /// <summary>
         /// Default value for <see cref="RemoteAuthenticationOptions.CallbackPath"/>.
         /// </summary>
-        public const string CallbackPath = "/signin-odnoklassniki";
+        public static readonly string CallbackPath = "/signin-odnoklassniki";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
         /// </summary>
-        public const string AuthorizationEndpoint = "https://connect.ok.ru/oauth/authorize";
+        public static readonly string AuthorizationEndpoint = "https://connect.ok.ru/oauth/authorize";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.TokenEndpoint"/>.
         /// </summary>
-        public const string TokenEndpoint = "https://api.ok.ru/oauth/token.do";
+        public static readonly string TokenEndpoint = "https://api.ok.ru/oauth/token.do";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
         /// </summary>
-        public const string UserInformationEndpoint = "https://api.ok.ru/fb.do";
+        public static readonly string UserInformationEndpoint = "https://api.ok.ru/fb.do";
     }
 }

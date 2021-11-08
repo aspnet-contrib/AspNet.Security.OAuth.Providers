@@ -4,12 +4,6 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.Extensions.DependencyInjection;
-using Xunit;
-using Xunit.Abstractions;
-
 namespace AspNet.Security.OAuth.Notion
 {
     public class NotionTests : OAuthTests<NotionAuthenticationOptions>

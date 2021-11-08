@@ -4,8 +4,6 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using System;
-using JetBrains.Annotations;
 using Microsoft.Extensions.Options;
 using static AspNet.Security.OAuth.Zendesk.ZendeskAuthenticationDefaults;
 
@@ -38,7 +36,7 @@ namespace AspNet.Security.OAuth.Zendesk
             {
                 Path = path,
                 Port = -1,
-                Scheme = "https",
+                Scheme = Uri.UriSchemeHttps,
             };
 
             return builder.Uri.ToString();

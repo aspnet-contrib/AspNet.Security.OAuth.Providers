@@ -4,9 +4,6 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.OAuth;
-
 namespace AspNet.Security.OAuth.QQ
 {
     /// <summary>
@@ -22,36 +19,36 @@ namespace AspNet.Security.OAuth.QQ
         /// <summary>
         /// Default value for <see cref="AuthenticationScheme.DisplayName"/>.
         /// </summary>
-        public const string DisplayName = "QQ";
+        public static readonly string DisplayName = "QQ";
 
         /// <summary>
         /// Default value for <see cref="AuthenticationSchemeOptions.ClaimsIssuer"/>.
         /// </summary>
-        public const string Issuer = "QQ";
+        public static readonly string Issuer = "QQ";
 
         /// <summary>
         /// Default value for <see cref="RemoteAuthenticationOptions.CallbackPath"/>.
         /// </summary>
-        public const string CallbackPath = "/signin-qq";
+        public static readonly string CallbackPath = "/signin-qq";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
         /// </summary>
-        public const string AuthorizationEndpoint = "https://graph.qq.com/oauth2.0/authorize";
+        public static readonly string AuthorizationEndpoint = "https://graph.qq.com/oauth2.0/authorize";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.TokenEndpoint"/>.
         /// </summary>
-        public const string TokenEndpoint = "https://graph.qq.com/oauth2.0/token";
+        public static readonly string TokenEndpoint = "https://graph.qq.com/oauth2.0/token";
 
         /// <summary>
         /// Default value for <see cref="QQAuthenticationOptions.UserIdentificationEndpoint"/>.
         /// </summary>
-        public const string UserIdentificationEndpoint = "https://graph.qq.com/oauth2.0/me";
+        public static readonly string UserIdentificationEndpoint = "https://graph.qq.com/oauth2.0/me";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
         /// </summary>
-        public const string UserInformationEndpoint = "https://graph.qq.com/user/get_user_info";
+        public static readonly string UserInformationEndpoint = "https://graph.qq.com/user/get_user_info";
     }
 }

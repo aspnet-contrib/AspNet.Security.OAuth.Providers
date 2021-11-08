@@ -4,9 +4,6 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.OAuth;
-
 namespace AspNet.Security.OAuth.Lichess
 {
     /// <summary>
@@ -22,36 +19,36 @@ namespace AspNet.Security.OAuth.Lichess
         /// <summary>
         /// Default value for <see cref="AuthenticationScheme.DisplayName"/>.
         /// </summary>
-        public const string DisplayName = "Lichess";
+        public static readonly string DisplayName = "Lichess";
 
         /// <summary>
         /// Default value for <see cref="AuthenticationSchemeOptions.ClaimsIssuer"/>.
         /// </summary>
-        public const string Issuer = "Lichess";
+        public static readonly string Issuer = "Lichess";
 
         /// <summary>
         /// Default value for <see cref="RemoteAuthenticationOptions.CallbackPath"/>.
         /// </summary>
-        public const string CallbackPath = "/signin-lichess";
+        public static readonly string CallbackPath = "/signin-lichess";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
         /// </summary>
-        public const string AuthorizationEndpoint = "https://oauth.lichess.org/oauth/authorize";
+        public static readonly string AuthorizationEndpoint = "https://oauth.lichess.org/oauth/authorize";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.TokenEndpoint"/>.
         /// </summary>
-        public const string TokenEndpoint = "https://lichess.org/api/token";
+        public static readonly string TokenEndpoint = "https://lichess.org/api/token";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
         /// </summary>
-        public const string UserInformationEndpoint = "https://lichess.org/api/account";
+        public static readonly string UserInformationEndpoint = "https://lichess.org/api/account";
 
         /// <summary>
         /// Separate endpoint for retrieving email address
         /// </summary>
-        public const string UserEmailsEndpoint = "https://lichess.org/api/account/email";
+        public static readonly string UserEmailsEndpoint = "https://lichess.org/api/account/email";
     }
 }

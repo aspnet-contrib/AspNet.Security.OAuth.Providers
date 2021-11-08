@@ -4,16 +4,7 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using System;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using Shouldly;
-using Xunit;
-using Xunit.Abstractions;
 
 namespace AspNet.Security.OAuth.SuperOffice
 {
@@ -58,12 +49,7 @@ namespace AspNet.Security.OAuth.SuperOffice
         public async Task Can_Sign_In_Using_SuperOffice(string claimType, string claimValue)
         {
             // Arrange
-            static void ConfigureServices(IServiceCollection services)
-            {
-                services.AddSingleton<JwtSecurityTokenHandler, FrozenJwtSecurityTokenHandler>();
-            }
-
-            using var server = CreateTestServer(ConfigureServices);
+            using var server = CreateTestServer();
 
             // Act
             var claims = await AuthenticateUserAsync(server);
@@ -81,7 +67,6 @@ namespace AspNet.Security.OAuth.SuperOffice
             // Arrange
             static void ConfigureServices(IServiceCollection services)
             {
-                services.AddSingleton<JwtSecurityTokenHandler, FrozenJwtSecurityTokenHandler>();
                 services.PostConfigureAll<SuperOfficeAuthenticationOptions>((options) =>
                 {
                     options.IncludeFunctionalRightsAsClaims = true;
@@ -103,7 +88,6 @@ namespace AspNet.Security.OAuth.SuperOffice
             // Arrange
             static void ConfigureServices(IServiceCollection services)
             {
-                services.AddSingleton<JwtSecurityTokenHandler, FrozenJwtSecurityTokenHandler>();
                 services.PostConfigureAll<SuperOfficeAuthenticationOptions>((options) =>
                 {
                     options.TokenValidationParameters.ValidAudience = "not-the-right-audience";

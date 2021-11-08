@@ -4,18 +4,10 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using System;
-using System.Buffers;
-using System.Collections.Generic;
-using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Text.Json;
-using System.Threading.Tasks;
-using JetBrains.Annotations;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -97,26 +89,15 @@ namespace AspNet.Security.OAuth.Yammer
             using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
             string? accessToken = payload.RootElement.GetProperty("access_token").GetString("token");
 
-            var token = await CreateAccessTokenAsync(accessToken);
-            return OAuthTokenResponse.Success(token);
-        }
+            var token = new
+            {
+                access_token = accessToken,
+                token_type = string.Empty,
+                refresh_token = string.Empty,
+                expires_in = string.Empty,
+            };
 
-        private static async Task<JsonDocument> CreateAccessTokenAsync(string? accessToken)
-        {
-            var bufferWriter = new ArrayBufferWriter<byte>();
-
-            using var writer = new Utf8JsonWriter(bufferWriter);
-
-            writer.WriteStartObject();
-            writer.WriteString("access_token", accessToken);
-            writer.WriteString("token_type", string.Empty);
-            writer.WriteString("refresh_token", string.Empty);
-            writer.WriteString("expires_in", string.Empty);
-            writer.WriteEndObject();
-
-            await writer.FlushAsync();
-
-            return JsonDocument.Parse(bufferWriter.WrittenMemory);
+            return OAuthTokenResponse.Success(JsonSerializer.SerializeToDocument(token));
         }
     }
 }

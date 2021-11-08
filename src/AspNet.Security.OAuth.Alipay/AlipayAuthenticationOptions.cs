@@ -4,8 +4,6 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.OAuth;
 using static AspNet.Security.OAuth.Alipay.AlipayAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.Alipay

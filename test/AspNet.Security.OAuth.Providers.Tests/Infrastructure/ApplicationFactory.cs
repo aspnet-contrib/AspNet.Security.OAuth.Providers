@@ -4,15 +4,11 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using System;
-using System.Security.Claims;
 using System.Text;
 using System.Xml.Linq;
-using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Http;
 using Microsoft.Extensions.Logging;
 
@@ -52,9 +48,6 @@ namespace AspNet.Security.OAuth.Infrastructure
         private static void Configure<TOptions>(IWebHostBuilder builder, OAuthTests<TOptions> tests)
             where TOptions : OAuthOptions
         {
-            // Use a dummy content root
-            builder.UseContentRoot(".");
-
             // Route application logs to xunit output for debugging
             builder.ConfigureLogging(logging =>
             {
@@ -145,7 +138,10 @@ namespace AspNet.Security.OAuth.Infrastructure
         private sealed class TestApplicationFactory : WebApplicationFactory<Program>
         {
             protected override IWebHostBuilder CreateWebHostBuilder()
-                => new WebHostBuilder();
+            {
+                return new WebHostBuilder()
+                    .UseSetting("TEST_CONTENTROOT_ASPNET_SECURITY_OAUTH_PROVIDERS_TESTS", "."); // Use a dummy content root
+            }
         }
     }
 }

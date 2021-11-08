@@ -4,9 +4,6 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.OAuth;
-
 namespace AspNet.Security.OAuth.Slack
 {
     /// <summary>
@@ -22,32 +19,32 @@ namespace AspNet.Security.OAuth.Slack
         /// <summary>
         /// Default value for <see cref="AuthenticationScheme.DisplayName"/>.
         /// </summary>
-        public const string DisplayName = "Slack";
+        public static readonly string DisplayName = "Slack";
 
         /// <summary>
         /// Default value for <see cref="AuthenticationSchemeOptions.ClaimsIssuer"/>.
         /// </summary>
-        public const string Issuer = "Slack";
+        public static readonly string Issuer = "Slack";
 
         /// <summary>
         /// Default value for <see cref="RemoteAuthenticationOptions.CallbackPath"/>.
         /// </summary>
-        public const string CallbackPath = "/signin-slack";
+        public static readonly string CallbackPath = "/signin-slack";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
         /// </summary>
-        public const string AuthorizationEndpoint = "https://slack.com/oauth/authorize";
+        public static readonly string AuthorizationEndpoint = "https://slack.com/oauth/authorize";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.TokenEndpoint"/>.
         /// </summary>
-        public const string TokenEndpoint = "https://slack.com/api/oauth.access";
+        public static readonly string TokenEndpoint = "https://slack.com/api/oauth.access";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
         /// For more info about this endpoint, see https://api.slack.com/methods/users.identity.
         /// </summary>
-        public const string UserInformationEndpoint = "https://slack.com/api/users.identity";
+        public static readonly string UserInformationEndpoint = "https://slack.com/api/users.identity";
     }
 }

@@ -4,11 +4,6 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using System;
-using System.Threading.Tasks;
-using JetBrains.Annotations;
-using Microsoft.AspNetCore.Authentication.OAuth;
-
 namespace AspNet.Security.OAuth.Apple
 {
     /// <summary>
@@ -49,6 +44,7 @@ namespace AspNet.Security.OAuth.Apple
         /// <returns>
         /// A <see cref="Task"/> representing the completed operation.
         /// </returns>
-        public virtual async Task ValidateIdToken([NotNull] AppleValidateIdTokenContext context) => await OnValidateIdToken(context);
+        public virtual async Task ValidateIdToken([NotNull] AppleValidateIdTokenContext context) =>
+            await OnValidateIdToken(context);
     }
 }

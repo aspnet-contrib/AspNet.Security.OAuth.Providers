@@ -4,10 +4,7 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using System;
 using AspNet.Security.OAuth.SuperOffice;
-using JetBrains.Annotations;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
 

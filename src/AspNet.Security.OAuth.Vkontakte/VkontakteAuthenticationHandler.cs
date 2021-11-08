@@ -4,16 +4,9 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Text.Json;
-using System.Threading.Tasks;
-using JetBrains.Annotations;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -68,7 +61,7 @@ namespace AspNet.Security.OAuth.Vkontakte
             context.RunClaimActions();
 
             // Re-run to get the email claim from the tokens response
-            context.RunClaimActions(tokens.Response.RootElement);
+            context.RunClaimActions(tokens.Response!.RootElement);
 
             await Events.CreatingTicket(context);
             return new AuthenticationTicket(context.Principal!, context.Properties, Scheme.Name);

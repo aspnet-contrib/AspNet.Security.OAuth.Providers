@@ -4,9 +4,6 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.OAuth;
-
 namespace AspNet.Security.OAuth.Harvest
 {
     /// <summary>
@@ -22,31 +19,31 @@ namespace AspNet.Security.OAuth.Harvest
         /// <summary>
         /// Default value for <see cref="AuthenticationScheme.DisplayName"/>.
         /// </summary>
-        public const string DisplayName = "Harvest";
+        public static readonly string DisplayName = "Harvest";
 
         /// <summary>
         /// Default value for <see cref="AuthenticationSchemeOptions.ClaimsIssuer"/>.
         /// </summary>
-        public const string Issuer = "Harvest";
+        public static readonly string Issuer = "Harvest";
 
         /// <summary>
         /// Default value for <see cref="RemoteAuthenticationOptions.CallbackPath"/>.
         /// </summary>
-        public const string CallbackPath = "/signin-harvest";
+        public static readonly string CallbackPath = "/signin-harvest";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
         /// </summary>
-        public const string AuthorizationEndpoint = "https://id.getharvest.com/oauth2/authorize";
+        public static readonly string AuthorizationEndpoint = "https://id.getharvest.com/oauth2/authorize";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.TokenEndpoint"/>.
         /// </summary>
-        public const string TokenEndpoint = "https://id.getharvest.com/api/v2/oauth2/token";
+        public static readonly string TokenEndpoint = "https://id.getharvest.com/api/v2/oauth2/token";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
         /// </summary>
-        public const string UserInformationEndpoint = "https://id.getharvest.com/api/v2/accounts";
+        public static readonly string UserInformationEndpoint = "https://id.getharvest.com/api/v2/accounts";
     }
 }

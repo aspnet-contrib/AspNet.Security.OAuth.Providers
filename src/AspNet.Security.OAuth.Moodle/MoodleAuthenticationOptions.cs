@@ -4,10 +4,7 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using System;
 using System.Security.Claims;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.OAuth;
 using static AspNet.Security.OAuth.Moodle.MoodleAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.Moodle

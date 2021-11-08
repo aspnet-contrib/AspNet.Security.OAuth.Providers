@@ -4,9 +4,6 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.OAuth;
-
 namespace AspNet.Security.OAuth.SoundCloud
 {
     /// <summary>
@@ -22,31 +19,31 @@ namespace AspNet.Security.OAuth.SoundCloud
         /// <summary>
         /// Default value for <see cref="AuthenticationScheme.DisplayName"/>.
         /// </summary>
-        public const string DisplayName = "SoundCloud";
+        public static readonly string DisplayName = "SoundCloud";
 
         /// <summary>
         /// Default value for <see cref="AuthenticationSchemeOptions.ClaimsIssuer"/>.
         /// </summary>
-        public const string Issuer = "SoundCloud";
+        public static readonly string Issuer = "SoundCloud";
 
         /// <summary>
         /// Default value for <see cref="RemoteAuthenticationOptions.CallbackPath"/>.
         /// </summary>
-        public const string CallbackPath = "/signin-soundcloud";
+        public static readonly string CallbackPath = "/signin-soundcloud";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
         /// </summary>
-        public const string AuthorizationEndpoint = "https://soundcloud.com/connect";
+        public static readonly string AuthorizationEndpoint = "https://soundcloud.com/connect";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.TokenEndpoint"/>.
         /// </summary>
-        public const string TokenEndpoint = "https://api.soundcloud.com/oauth2/token";
+        public static readonly string TokenEndpoint = "https://api.soundcloud.com/oauth2/token";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
         /// </summary>
-        public const string UserInformationEndpoint = "https://api.soundcloud.com/me";
+        public static readonly string UserInformationEndpoint = "https://api.soundcloud.com/me";
     }
 }

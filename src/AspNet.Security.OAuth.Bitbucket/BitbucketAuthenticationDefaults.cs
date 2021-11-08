@@ -4,9 +4,6 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.OAuth;
-
 namespace AspNet.Security.OAuth.Bitbucket
 {
     /// <summary>
@@ -22,22 +19,22 @@ namespace AspNet.Security.OAuth.Bitbucket
         /// <summary>
         /// Default value for <see cref="AuthenticationScheme.DisplayName"/>.
         /// </summary>
-        public const string DisplayName = "Bitbucket";
+        public static readonly string DisplayName = "Bitbucket";
 
         /// <summary>
         /// Default value for <see cref="AuthenticationSchemeOptions.ClaimsIssuer"/>.
         /// </summary>
-        public const string Issuer = "Bitbucket";
+        public static readonly string Issuer = "Bitbucket";
 
         /// <summary>
         /// Default value for <see cref="RemoteAuthenticationOptions.CallbackPath"/>.
         /// </summary>
-        public const string CallbackPath = "/signin-bitbucket";
+        public static readonly string CallbackPath = "/signin-bitbucket";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
         /// </summary>
-        public const string AuthorizationEndpoint = "https://bitbucket.org/site/oauth2/authorize";
+        public static readonly string AuthorizationEndpoint = "https://bitbucket.org/site/oauth2/authorize";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.TokenEndpoint"/>.
@@ -47,11 +44,11 @@ namespace AspNet.Security.OAuth.Bitbucket
         /// <summary>
         /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
         /// </summary>
-        public const string UserInformationEndpoint = "https://api.bitbucket.org/2.0/user";
+        public static readonly string UserInformationEndpoint = "https://api.bitbucket.org/2.0/user";
 
         /// <summary>
         /// Default value for <see cref="BitbucketAuthenticationOptions.UserEmailsEndpoint"/>.
         /// </summary>
-        public const string UserEmailsEndpoint = "https://api.bitbucket.org/2.0/user/emails";
+        public static readonly string UserEmailsEndpoint = "https://api.bitbucket.org/2.0/user/emails";
     }
 }

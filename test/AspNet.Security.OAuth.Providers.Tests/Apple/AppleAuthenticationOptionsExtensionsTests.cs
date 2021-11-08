@@ -4,10 +4,7 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using Shouldly;
-using Xunit;
 
 namespace AspNet.Security.OAuth.Apple
 {

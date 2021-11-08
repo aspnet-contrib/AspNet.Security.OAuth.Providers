@@ -4,9 +4,6 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.OAuth;
-
 namespace AspNet.Security.OAuth.HealthGraph
 {
     /// <summary>
@@ -22,31 +19,31 @@ namespace AspNet.Security.OAuth.HealthGraph
         /// <summary>
         /// Default value for <see cref="AuthenticationScheme.DisplayName"/>.
         /// </summary>
-        public const string DisplayName = "HealthGraph";
+        public static readonly string DisplayName = "HealthGraph";
 
         /// <summary>
         /// Default value for <see cref="AuthenticationSchemeOptions.ClaimsIssuer"/>.
         /// </summary>
-        public const string Issuer = "HealthGraph";
+        public static readonly string Issuer = "HealthGraph";
 
         /// <summary>
         /// Default value for <see cref="RemoteAuthenticationOptions.CallbackPath"/>.
         /// </summary>
-        public const string CallbackPath = "/signin-healthgraph";
+        public static readonly string CallbackPath = "/signin-healthgraph";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
         /// </summary>
-        public const string AuthorizationEndpoint = "https://runkeeper.com/apps/authorize";
+        public static readonly string AuthorizationEndpoint = "https://runkeeper.com/apps/authorize";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.TokenEndpoint"/>.
         /// </summary>
-        public const string TokenEndpoint = "https://runkeeper.com/apps/token";
+        public static readonly string TokenEndpoint = "https://runkeeper.com/apps/token";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
         /// </summary>
-        public const string UserInformationEndpoint = "https://api.runkeeper.com/user";
+        public static readonly string UserInformationEndpoint = "https://api.runkeeper.com/user";
     }
 }

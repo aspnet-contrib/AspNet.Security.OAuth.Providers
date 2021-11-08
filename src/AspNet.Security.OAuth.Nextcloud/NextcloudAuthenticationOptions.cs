@@ -4,11 +4,8 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using System.Linq;
 using System.Security.Claims;
 using System.Text.Json;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
 using static AspNet.Security.OAuth.Nextcloud.NextcloudAuthenticationConstants;
 

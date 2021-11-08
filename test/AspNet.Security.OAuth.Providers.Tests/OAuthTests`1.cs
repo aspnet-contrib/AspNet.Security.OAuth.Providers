@@ -4,29 +4,16 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Net;
-using System.Net.Http;
-using System.Security.Claims;
-using System.Threading.Tasks;
 using System.Xml.Linq;
 using AspNet.Security.OAuth.Apple;
 using AspNet.Security.OAuth.Infrastructure;
 using JustEat.HttpClientInterception;
 using MartinCostello.Logging.XUnit;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Shouldly;
-using Xunit;
-using Xunit.Abstractions;
 
 namespace AspNet.Security.OAuth
 {
@@ -154,7 +141,7 @@ namespace AspNet.Security.OAuth
 
                     if (options is AppleAuthenticationOptions appleOptions)
                     {
-                        appleOptions.JwtSecurityTokenHandler = new FrozenJwtSecurityTokenHandler();
+                        appleOptions.TokenValidationParameters.ValidateLifetime = false;
                     }
                 });
             }
@@ -204,7 +191,7 @@ namespace AspNet.Security.OAuth
                     if (options is AppleAuthenticationOptions appleOptions)
                     {
                         appleOptions.EventsType = typeof(CustomAppleAuthenticationEvents);
-                        appleOptions.JwtSecurityTokenHandler = new FrozenJwtSecurityTokenHandler();
+                        appleOptions.TokenValidationParameters.ValidateLifetime = false;
                     }
                     else
                     {
@@ -281,10 +268,10 @@ namespace AspNet.Security.OAuth
             {
                 claims.Add(
                     new Claim(
-                        claim.Attribute("type"!) !.Value,
-                        claim.Attribute("value"!) !.Value,
-                        claim.Attribute("valueType"!) !.Value,
-                        claim.Attribute("issuer"!) !.Value));
+                        claim.Attribute("type"!)!.Value,
+                        claim.Attribute("value"!)!.Value,
+                        claim.Attribute("valueType"!)!.Value,
+                        claim.Attribute("issuer"!)!.Value));
             }
 
             return claims.ToDictionary((key) => key.Type, (value) => value);

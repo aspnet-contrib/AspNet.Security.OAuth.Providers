@@ -4,19 +4,11 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using System;
-using System.Collections.Generic;
-using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
-using System.Threading;
-using System.Threading.Tasks;
-using JetBrains.Annotations;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -88,7 +80,7 @@ namespace AspNet.Security.OAuth.Notion
                 Options,
                 Backchannel,
                 tokens,
-                tokens.Response.RootElement);
+                tokens!.Response!.RootElement);
             context.RunClaimActions();
 
             await Events.CreatingTicket(context);
