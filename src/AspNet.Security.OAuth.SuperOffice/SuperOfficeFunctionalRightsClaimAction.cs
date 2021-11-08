@@ -8,33 +8,32 @@ using System.Security.Claims;
 using System.Text.Json;
 using Microsoft.AspNetCore.Authentication.OAuth.Claims;
 
-namespace AspNet.Security.OAuth.SuperOffice
-{
-    internal sealed class SuperOfficeFunctionalRightsClaimAction : ClaimAction
-    {
-        private readonly SuperOfficeAuthenticationOptions _options;
+namespace AspNet.Security.OAuth.SuperOffice;
 
-        internal SuperOfficeFunctionalRightsClaimAction(SuperOfficeAuthenticationOptions options)
-            : base(ClaimTypes.Email, ClaimValueTypes.String)
+internal sealed class SuperOfficeFunctionalRightsClaimAction : ClaimAction
+{
+    private readonly SuperOfficeAuthenticationOptions _options;
+
+    internal SuperOfficeFunctionalRightsClaimAction(SuperOfficeAuthenticationOptions options)
+        : base(ClaimTypes.Email, ClaimValueTypes.String)
+    {
+        _options = options;
+    }
+
+    public override void Run(JsonElement userData, ClaimsIdentity identity, string issuer)
+    {
+        if (!_options.IncludeFunctionalRightsAsClaims ||
+            userData.ValueKind != JsonValueKind.Object)
         {
-            _options = options;
+            return;
         }
 
-        public override void Run(JsonElement userData, ClaimsIdentity identity, string issuer)
+        if (userData.TryGetProperty(SuperOfficeAuthenticationConstants.PrincipalNames.FunctionRights, out JsonElement functionRights) &&
+            functionRights.ValueKind == JsonValueKind.Array)
         {
-            if (!_options.IncludeFunctionalRightsAsClaims ||
-                userData.ValueKind != JsonValueKind.Object)
+            foreach (var functionRight in functionRights.EnumerateArray())
             {
-                return;
-            }
-
-            if (userData.TryGetProperty(SuperOfficeAuthenticationConstants.PrincipalNames.FunctionRights, out JsonElement functionRights) &&
-                functionRights.ValueKind == JsonValueKind.Array)
-            {
-                foreach (var functionRight in functionRights.EnumerateArray())
-                {
-                    identity.AddClaim(new Claim(SuperOfficeAuthenticationConstants.PrincipalNames.FunctionRights, functionRight.GetString() ?? string.Empty));
-                }
+                identity.AddClaim(new Claim(SuperOfficeAuthenticationConstants.PrincipalNames.FunctionRights, functionRight.GetString() ?? string.Empty));
             }
         }
     }

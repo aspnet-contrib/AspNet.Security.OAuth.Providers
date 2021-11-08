@@ -7,28 +7,27 @@
 using System.Security.Claims;
 using static AspNet.Security.OAuth.Fitbit.FitbitAuthenticationConstants;
 
-namespace AspNet.Security.OAuth.Fitbit
+namespace AspNet.Security.OAuth.Fitbit;
+
+/// <summary>
+/// Defines a set of options used by <see cref="FitbitAuthenticationHandler"/>.
+/// </summary>
+public class FitbitAuthenticationOptions : OAuthOptions
 {
-    /// <summary>
-    /// Defines a set of options used by <see cref="FitbitAuthenticationHandler"/>.
-    /// </summary>
-    public class FitbitAuthenticationOptions : OAuthOptions
+    public FitbitAuthenticationOptions()
     {
-        public FitbitAuthenticationOptions()
-        {
-            ClaimsIssuer = FitbitAuthenticationDefaults.Issuer;
-            CallbackPath = FitbitAuthenticationDefaults.CallbackPath;
+        ClaimsIssuer = FitbitAuthenticationDefaults.Issuer;
+        CallbackPath = FitbitAuthenticationDefaults.CallbackPath;
 
-            AuthorizationEndpoint = FitbitAuthenticationDefaults.AuthorizationEndpoint;
-            TokenEndpoint = FitbitAuthenticationDefaults.TokenEndpoint;
-            UserInformationEndpoint = FitbitAuthenticationDefaults.UserInformationEndpoint;
+        AuthorizationEndpoint = FitbitAuthenticationDefaults.AuthorizationEndpoint;
+        TokenEndpoint = FitbitAuthenticationDefaults.TokenEndpoint;
+        UserInformationEndpoint = FitbitAuthenticationDefaults.UserInformationEndpoint;
 
-            Scope.Add("profile");
+        Scope.Add("profile");
 
-            ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "encodedId");
-            ClaimActions.MapJsonKey(ClaimTypes.Name, "displayName");
-            ClaimActions.MapJsonKey(Claims.Avatar, "avatar");
-            ClaimActions.MapJsonKey(Claims.Avatar150, "avatar150");
-        }
+        ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "encodedId");
+        ClaimActions.MapJsonKey(ClaimTypes.Name, "displayName");
+        ClaimActions.MapJsonKey(Claims.Avatar, "avatar");
+        ClaimActions.MapJsonKey(Claims.Avatar150, "avatar150");
     }
 }

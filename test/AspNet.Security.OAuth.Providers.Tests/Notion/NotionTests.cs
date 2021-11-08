@@ -4,39 +4,38 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-namespace AspNet.Security.OAuth.Notion
+namespace AspNet.Security.OAuth.Notion;
+
+public class NotionTests : OAuthTests<NotionAuthenticationOptions>
 {
-    public class NotionTests : OAuthTests<NotionAuthenticationOptions>
+    public NotionTests(ITestOutputHelper outputHelper)
     {
-        public NotionTests(ITestOutputHelper outputHelper)
+        OutputHelper = outputHelper;
+    }
+
+    public override string DefaultScheme => NotionAuthenticationDefaults.AuthenticationScheme;
+
+    protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
+    {
+        builder.AddNotion(options =>
         {
-            OutputHelper = outputHelper;
-        }
+            ConfigureDefaults(builder, options);
+        });
+    }
 
-        public override string DefaultScheme => NotionAuthenticationDefaults.AuthenticationScheme;
+    [Theory]
+    [InlineData("urn:notion:workspace_name", "mif")]
+    [InlineData("urn:notion:workspace_icon", "icon")]
+    [InlineData("urn:notion:bot_id", "mybot")]
+    public async Task Can_Sign_In_Using_Notion(string claimType, string claimValue)
+    {
+        // Arrange
+        using var server = CreateTestServer();
 
-        protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
-        {
-            builder.AddNotion(options =>
-            {
-                ConfigureDefaults(builder, options);
-            });
-        }
+        // Act
+        var claims = await AuthenticateUserAsync(server);
 
-        [Theory]
-        [InlineData("urn:notion:workspace_name", "mif")]
-        [InlineData("urn:notion:workspace_icon", "icon")]
-        [InlineData("urn:notion:bot_id", "mybot")]
-        public async Task Can_Sign_In_Using_Notion(string claimType, string claimValue)
-        {
-            // Arrange
-            using var server = CreateTestServer();
-
-            // Act
-            var claims = await AuthenticateUserAsync(server);
-
-            // Assert
-            AssertClaim(claims, claimType, claimValue);
-        }
+        // Assert
+        AssertClaim(claims, claimType, claimValue);
     }
 }

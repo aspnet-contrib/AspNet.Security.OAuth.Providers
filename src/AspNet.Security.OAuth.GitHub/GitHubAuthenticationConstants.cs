@@ -4,17 +4,16 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-namespace AspNet.Security.OAuth.GitHub
+namespace AspNet.Security.OAuth.GitHub;
+
+/// <summary>
+/// Contains constants specific to the <see cref="GitHubAuthenticationHandler"/>.
+/// </summary>
+public static class GitHubAuthenticationConstants
 {
-    /// <summary>
-    /// Contains constants specific to the <see cref="GitHubAuthenticationHandler"/>.
-    /// </summary>
-    public static class GitHubAuthenticationConstants
+    public static class Claims
     {
-        public static class Claims
-        {
-            public const string Name = "urn:github:name";
-            public const string Url = "urn:github:url";
-        }
+        public const string Name = "urn:github:name";
+        public const string Url = "urn:github:url";
     }
 }

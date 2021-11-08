@@ -4,39 +4,38 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-namespace AspNet.Security.OAuth.Imgur
+namespace AspNet.Security.OAuth.Imgur;
+
+public class ImgurTests : OAuthTests<ImgurAuthenticationOptions>
 {
-    public class ImgurTests : OAuthTests<ImgurAuthenticationOptions>
+    public ImgurTests(ITestOutputHelper outputHelper)
     {
-        public ImgurTests(ITestOutputHelper outputHelper)
-        {
-            OutputHelper = outputHelper;
-        }
+        OutputHelper = outputHelper;
+    }
 
-        public override string DefaultScheme => ImgurAuthenticationDefaults.AuthenticationScheme;
+    public override string DefaultScheme => ImgurAuthenticationDefaults.AuthenticationScheme;
 
-        protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
-        {
-            builder.AddImgur(options => ConfigureDefaults(builder, options));
-        }
+    protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
+    {
+        builder.AddImgur(options => ConfigureDefaults(builder, options));
+    }
 
-        [Theory]
-        [InlineData(ClaimTypes.NameIdentifier, "my-id")]
-        [InlineData(ClaimTypes.Name, "John Smith")]
-        [InlineData("urn:imgur:bio", "Software developer")]
-        [InlineData("urn:imgur:created", "2019-03-17T13:57:00+00:00")]
-        [InlineData("urn:imgur:proexpiration", "2019-03-17T14:00:00+00:00")]
-        [InlineData("urn:imgur:reputation", "0")]
-        public async Task Can_Sign_In_Using_Imgur(string claimType, string claimValue)
-        {
-            // Arrange
-            using var server = CreateTestServer();
+    [Theory]
+    [InlineData(ClaimTypes.NameIdentifier, "my-id")]
+    [InlineData(ClaimTypes.Name, "John Smith")]
+    [InlineData("urn:imgur:bio", "Software developer")]
+    [InlineData("urn:imgur:created", "2019-03-17T13:57:00+00:00")]
+    [InlineData("urn:imgur:proexpiration", "2019-03-17T14:00:00+00:00")]
+    [InlineData("urn:imgur:reputation", "0")]
+    public async Task Can_Sign_In_Using_Imgur(string claimType, string claimValue)
+    {
+        // Arrange
+        using var server = CreateTestServer();
 
-            // Act
-            var claims = await AuthenticateUserAsync(server);
+        // Act
+        var claims = await AuthenticateUserAsync(server);
 
-            // Assert
-            AssertClaim(claims, claimType, claimValue);
-        }
+        // Assert
+        AssertClaim(claims, claimType, claimValue);
     }
 }

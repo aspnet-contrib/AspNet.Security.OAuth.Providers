@@ -4,16 +4,15 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-namespace AspNet.Security.OAuth.Patreon
+namespace AspNet.Security.OAuth.Patreon;
+
+/// <summary>
+/// Contains constants specific to the <see cref="PatreonAuthenticationHandler"/>.
+/// </summary>
+public static class PatreonAuthenticationConstants
 {
-    /// <summary>
-    /// Contains constants specific to the <see cref="PatreonAuthenticationHandler"/>.
-    /// </summary>
-    public static class PatreonAuthenticationConstants
+    public static class Claims
     {
-        public static class Claims
-        {
-            public const string Avatar = "urn:patreon:avatar";
-        }
+        public const string Avatar = "urn:patreon:avatar";
     }
 }

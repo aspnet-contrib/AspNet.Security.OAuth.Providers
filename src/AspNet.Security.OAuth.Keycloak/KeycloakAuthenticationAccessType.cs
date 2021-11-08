@@ -2,12 +2,11 @@
 // See https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers
 // for more information concerning the license and the contributors participating to this project.
 
-namespace AspNet.Security.OAuth.Keycloak
+namespace AspNet.Security.OAuth.Keycloak;
+
+public enum KeycloakAuthenticationAccessType
 {
-    public enum KeycloakAuthenticationAccessType
-    {
-        Confidential,
-        Public,
-        BearerOnly,
-    }
+    Confidential,
+    Public,
+    BearerOnly,
 }

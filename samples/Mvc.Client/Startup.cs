@@ -7,99 +7,98 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.IdentityModel.Logging;
 
-namespace Mvc.Client
+namespace Mvc.Client;
+
+public class Startup
 {
-    public class Startup
+    public Startup(IConfiguration configuration, IHostEnvironment hostingEnvironment)
     {
-        public Startup(IConfiguration configuration, IHostEnvironment hostingEnvironment)
+        Configuration = configuration;
+        HostingEnvironment = hostingEnvironment;
+    }
+
+    public IConfiguration Configuration { get; }
+
+    private IHostEnvironment HostingEnvironment { get; }
+
+    public void ConfigureServices(IServiceCollection services)
+    {
+        services.AddRouting();
+
+        services.AddAuthentication(options =>
         {
-            Configuration = configuration;
-            HostingEnvironment = hostingEnvironment;
+            options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+        })
+
+        .AddCookie(options =>
+        {
+            options.LoginPath = "/signin";
+            options.LogoutPath = "/signout";
+        })
+
+        .AddGoogle(options =>
+        {
+            options.ClientId = Configuration["Google:ClientId"];
+            options.ClientSecret = Configuration["Google:ClientSecret"];
+        })
+
+        .AddTwitter(options =>
+        {
+            options.ConsumerKey = Configuration["Twitter:ConsumerKey"];
+            options.ConsumerSecret = Configuration["Twitter:ConsumerSecret"];
+        })
+
+        .AddGitHub(options =>
+        {
+            options.ClientId = Configuration["GitHub:ClientId"];
+            options.ClientSecret = Configuration["GitHub:ClientSecret"];
+            options.EnterpriseDomain = Configuration["GitHub:EnterpriseDomain"];
+            options.Scope.Add("user:email");
+        })
+
+        /*
+        .AddApple(options =>
+        {
+            options.ClientId = Configuration["Apple:ClientId"];
+            options.KeyId = Configuration["Apple:KeyId"];
+            options.TeamId = Configuration["Apple:TeamId"];
+            options.UsePrivateKey(
+                (keyId) => HostingEnvironment.ContentRootFileProvider.GetFileInfo($"AuthKey_{keyId}.p8"));
+        })
+        */
+
+        .AddDropbox(options =>
+        {
+            options.ClientId = Configuration["Dropbox:ClientId"];
+            options.ClientSecret = Configuration["Dropbox:ClientSecret"];
+        });
+
+        services.AddMvc();
+    }
+
+    public void Configure(IApplicationBuilder app)
+    {
+        if (HostingEnvironment.IsDevelopment())
+        {
+            IdentityModelEventSource.ShowPII = true;
         }
 
-        public IConfiguration Configuration { get; }
-
-        private IHostEnvironment HostingEnvironment { get; }
-
-        public void ConfigureServices(IServiceCollection services)
+        // Required to serve files with no extension in the .well-known folder
+        var options = new StaticFileOptions()
         {
-            services.AddRouting();
+            ServeUnknownFileTypes = true,
+        };
 
-            services.AddAuthentication(options =>
-            {
-                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-            })
+        app.UseStaticFiles(options);
 
-            .AddCookie(options =>
-            {
-                options.LoginPath = "/signin";
-                options.LogoutPath = "/signout";
-            })
+        app.UseRouting();
 
-            .AddGoogle(options =>
-            {
-                options.ClientId = Configuration["Google:ClientId"];
-                options.ClientSecret = Configuration["Google:ClientSecret"];
-            })
+        app.UseAuthentication();
+        app.UseAuthorization();
 
-            .AddTwitter(options =>
-            {
-                options.ConsumerKey = Configuration["Twitter:ConsumerKey"];
-                options.ConsumerSecret = Configuration["Twitter:ConsumerSecret"];
-            })
-
-            .AddGitHub(options =>
-            {
-                options.ClientId = Configuration["GitHub:ClientId"];
-                options.ClientSecret = Configuration["GitHub:ClientSecret"];
-                options.EnterpriseDomain = Configuration["GitHub:EnterpriseDomain"];
-                options.Scope.Add("user:email");
-            })
-
-            /*
-            .AddApple(options =>
-            {
-                options.ClientId = Configuration["Apple:ClientId"];
-                options.KeyId = Configuration["Apple:KeyId"];
-                options.TeamId = Configuration["Apple:TeamId"];
-                options.UsePrivateKey(
-                    (keyId) => HostingEnvironment.ContentRootFileProvider.GetFileInfo($"AuthKey_{keyId}.p8"));
-            })
-            */
-
-            .AddDropbox(options =>
-            {
-                options.ClientId = Configuration["Dropbox:ClientId"];
-                options.ClientSecret = Configuration["Dropbox:ClientSecret"];
-            });
-
-            services.AddMvc();
-        }
-
-        public void Configure(IApplicationBuilder app)
+        app.UseEndpoints(endpoints =>
         {
-            if (HostingEnvironment.IsDevelopment())
-            {
-                IdentityModelEventSource.ShowPII = true;
-            }
-
-            // Required to serve files with no extension in the .well-known folder
-            var options = new StaticFileOptions()
-            {
-                ServeUnknownFileTypes = true,
-            };
-
-            app.UseStaticFiles(options);
-
-            app.UseRouting();
-
-            app.UseAuthentication();
-            app.UseAuthorization();
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapDefaultControllerRoute();
-            });
-        }
+            endpoints.MapDefaultControllerRoute();
+        });
     }
 }

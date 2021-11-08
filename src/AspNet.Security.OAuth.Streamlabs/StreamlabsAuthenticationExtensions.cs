@@ -6,70 +6,69 @@
 
 using AspNet.Security.OAuth.Streamlabs;
 
-namespace Microsoft.Extensions.DependencyInjection
+namespace Microsoft.Extensions.DependencyInjection;
+
+/// <summary>
+/// Extension methods to add Streamlabs authentication capabilities to an HTTP application pipeline.
+/// </summary>
+public static class StreamlabsAuthenticationExtensions
 {
     /// <summary>
-    /// Extension methods to add Streamlabs authentication capabilities to an HTTP application pipeline.
+    /// Adds <see cref="StreamlabsAuthenticationHandler"/> to the specified
+    /// <see cref="AuthenticationBuilder"/>, which enables Streamlabs authentication capabilities.
     /// </summary>
-    public static class StreamlabsAuthenticationExtensions
+    /// <param name="builder">The authentication builder.</param>
+    /// <returns>A reference to this instance after the operation has completed.</returns>
+    public static AuthenticationBuilder AddStreamlabs([NotNull] this AuthenticationBuilder builder)
     {
-        /// <summary>
-        /// Adds <see cref="StreamlabsAuthenticationHandler"/> to the specified
-        /// <see cref="AuthenticationBuilder"/>, which enables Streamlabs authentication capabilities.
-        /// </summary>
-        /// <param name="builder">The authentication builder.</param>
-        /// <returns>A reference to this instance after the operation has completed.</returns>
-        public static AuthenticationBuilder AddStreamlabs([NotNull] this AuthenticationBuilder builder)
-        {
-            return builder.AddStreamlabs(StreamlabsAuthenticationDefaults.AuthenticationScheme, options => { });
-        }
+        return builder.AddStreamlabs(StreamlabsAuthenticationDefaults.AuthenticationScheme, options => { });
+    }
 
-        /// <summary>
-        /// Adds <see cref="StreamlabsAuthenticationHandler"/> to the specified
-        /// <see cref="AuthenticationBuilder"/>, which enables Streamlabs authentication capabilities.
-        /// </summary>
-        /// <param name="builder">The authentication builder.</param>
-        /// <param name="configuration">The delegate used to configure the OpenID 2.0 options.</param>
-        /// <returns>A reference to this instance after the operation has completed.</returns>
-        public static AuthenticationBuilder AddStreamlabs(
-            [NotNull] this AuthenticationBuilder builder,
-            [NotNull] Action<StreamlabsAuthenticationOptions> configuration)
-        {
-            return builder.AddStreamlabs(StreamlabsAuthenticationDefaults.AuthenticationScheme, configuration);
-        }
+    /// <summary>
+    /// Adds <see cref="StreamlabsAuthenticationHandler"/> to the specified
+    /// <see cref="AuthenticationBuilder"/>, which enables Streamlabs authentication capabilities.
+    /// </summary>
+    /// <param name="builder">The authentication builder.</param>
+    /// <param name="configuration">The delegate used to configure the OpenID 2.0 options.</param>
+    /// <returns>A reference to this instance after the operation has completed.</returns>
+    public static AuthenticationBuilder AddStreamlabs(
+        [NotNull] this AuthenticationBuilder builder,
+        [NotNull] Action<StreamlabsAuthenticationOptions> configuration)
+    {
+        return builder.AddStreamlabs(StreamlabsAuthenticationDefaults.AuthenticationScheme, configuration);
+    }
 
-        /// <summary>
-        /// Adds <see cref="StreamlabsAuthenticationHandler"/> to the specified
-        /// <see cref="AuthenticationBuilder"/>, which enables Streamlabs authentication capabilities.
-        /// </summary>
-        /// <param name="builder">The authentication builder.</param>
-        /// <param name="scheme">The authentication scheme associated with this instance.</param>
-        /// <param name="configuration">The delegate used to configure the Streamlabs options.</param>
-        /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
-        public static AuthenticationBuilder AddStreamlabs(
-            [NotNull] this AuthenticationBuilder builder,
-            [NotNull] string scheme,
-            [NotNull] Action<StreamlabsAuthenticationOptions> configuration)
-        {
-            return builder.AddStreamlabs(scheme, StreamlabsAuthenticationDefaults.DisplayName, configuration);
-        }
+    /// <summary>
+    /// Adds <see cref="StreamlabsAuthenticationHandler"/> to the specified
+    /// <see cref="AuthenticationBuilder"/>, which enables Streamlabs authentication capabilities.
+    /// </summary>
+    /// <param name="builder">The authentication builder.</param>
+    /// <param name="scheme">The authentication scheme associated with this instance.</param>
+    /// <param name="configuration">The delegate used to configure the Streamlabs options.</param>
+    /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
+    public static AuthenticationBuilder AddStreamlabs(
+        [NotNull] this AuthenticationBuilder builder,
+        [NotNull] string scheme,
+        [NotNull] Action<StreamlabsAuthenticationOptions> configuration)
+    {
+        return builder.AddStreamlabs(scheme, StreamlabsAuthenticationDefaults.DisplayName, configuration);
+    }
 
-        /// <summary>
-        /// Adds <see cref="StreamlabsAuthenticationHandler"/> to the specified
-        /// <see cref="AuthenticationBuilder"/>, which enables Streamlabs authentication capabilities.
-        /// </summary>
-        /// <param name="builder">The authentication builder.</param>
-        /// <param name="scheme">The authentication scheme associated with this instance.</param>
-        /// <param name="caption">The optional display name associated with this instance.</param>
-        /// <param name="configuration">The delegate used to configure the Streamlabs options.</param>
-        /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
-        public static AuthenticationBuilder AddStreamlabs(
-            [NotNull] this AuthenticationBuilder builder,
-            [NotNull] string scheme,
-            [CanBeNull] string caption,
-            [NotNull] Action<StreamlabsAuthenticationOptions> configuration)
-        {
-            return builder.AddOAuth<StreamlabsAuthenticationOptions, StreamlabsAuthenticationHandler>(scheme, caption, configuration);
-        }
+    /// <summary>
+    /// Adds <see cref="StreamlabsAuthenticationHandler"/> to the specified
+    /// <see cref="AuthenticationBuilder"/>, which enables Streamlabs authentication capabilities.
+    /// </summary>
+    /// <param name="builder">The authentication builder.</param>
+    /// <param name="scheme">The authentication scheme associated with this instance.</param>
+    /// <param name="caption">The optional display name associated with this instance.</param>
+    /// <param name="configuration">The delegate used to configure the Streamlabs options.</param>
+    /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
+    public static AuthenticationBuilder AddStreamlabs(
+        [NotNull] this AuthenticationBuilder builder,
+        [NotNull] string scheme,
+        [CanBeNull] string caption,
+        [NotNull] Action<StreamlabsAuthenticationOptions> configuration)
+    {
+        return builder.AddOAuth<StreamlabsAuthenticationOptions, StreamlabsAuthenticationHandler>(scheme, caption, configuration);
     }
 }

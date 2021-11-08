@@ -7,30 +7,29 @@
 using System.Security.Claims;
 using static AspNet.Security.OAuth.ExactOnline.ExactOnlineAuthenticationConstants;
 
-namespace AspNet.Security.OAuth.ExactOnline
+namespace AspNet.Security.OAuth.ExactOnline;
+
+/// <summary>
+/// Defines a set of options used by <see cref="ExactOnlineAuthenticationHandler"/>.
+/// </summary>
+public class ExactOnlineAuthenticationOptions : OAuthOptions
 {
-    /// <summary>
-    /// Defines a set of options used by <see cref="ExactOnlineAuthenticationHandler"/>.
-    /// </summary>
-    public class ExactOnlineAuthenticationOptions : OAuthOptions
+    public ExactOnlineAuthenticationOptions()
     {
-        public ExactOnlineAuthenticationOptions()
-        {
-            ClaimsIssuer = ExactOnlineAuthenticationDefaults.Issuer;
+        ClaimsIssuer = ExactOnlineAuthenticationDefaults.Issuer;
 
-            CallbackPath = ExactOnlineAuthenticationDefaults.CallbackPath;
+        CallbackPath = ExactOnlineAuthenticationDefaults.CallbackPath;
 
-            AuthorizationEndpoint = ExactOnlineAuthenticationDefaults.AuthorizationEndpoint;
-            TokenEndpoint = ExactOnlineAuthenticationDefaults.TokenEndpoint;
-            UserInformationEndpoint = ExactOnlineAuthenticationDefaults.UserInformationEndpoint;
+        AuthorizationEndpoint = ExactOnlineAuthenticationDefaults.AuthorizationEndpoint;
+        TokenEndpoint = ExactOnlineAuthenticationDefaults.TokenEndpoint;
+        UserInformationEndpoint = ExactOnlineAuthenticationDefaults.UserInformationEndpoint;
 
-            ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "UserID");
-            ClaimActions.MapJsonKey(ClaimTypes.GivenName, "FirstName");
-            ClaimActions.MapJsonKey(ClaimTypes.Surname, "LastName");
-            ClaimActions.MapJsonKey(ClaimTypes.Name, "FullName");
-            ClaimActions.MapJsonKey(ClaimTypes.Email, "Email");
-            ClaimActions.MapJsonKey(Claims.Division, "CurrentDivision");
-            ClaimActions.MapJsonKey(Claims.Company, "DivisionCustomerName");
-        }
+        ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "UserID");
+        ClaimActions.MapJsonKey(ClaimTypes.GivenName, "FirstName");
+        ClaimActions.MapJsonKey(ClaimTypes.Surname, "LastName");
+        ClaimActions.MapJsonKey(ClaimTypes.Name, "FullName");
+        ClaimActions.MapJsonKey(ClaimTypes.Email, "Email");
+        ClaimActions.MapJsonKey(Claims.Division, "CurrentDivision");
+        ClaimActions.MapJsonKey(Claims.Company, "DivisionCustomerName");
     }
 }

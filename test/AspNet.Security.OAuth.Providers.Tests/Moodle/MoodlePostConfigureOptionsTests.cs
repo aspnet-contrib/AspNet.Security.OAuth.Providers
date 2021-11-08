@@ -4,58 +4,57 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-namespace AspNet.Security.OAuth.Moodle
+namespace AspNet.Security.OAuth.Moodle;
+
+public static class MoodlePostConfigureOptionsTests
 {
-    public static class MoodlePostConfigureOptionsTests
+    [Theory]
+    [InlineData("moodle.local")]
+    [InlineData("http://moodle.local")]
+    [InlineData("http://moodle.local/")]
+    [InlineData("https://moodle.local")]
+    [InlineData("https://moodle.local/")]
+    public static void PostConfigure_Configures_Valid_Endpoints(string domain)
     {
-        [Theory]
-        [InlineData("moodle.local")]
-        [InlineData("http://moodle.local")]
-        [InlineData("http://moodle.local/")]
-        [InlineData("https://moodle.local")]
-        [InlineData("https://moodle.local/")]
-        public static void PostConfigure_Configures_Valid_Endpoints(string domain)
+        // Arrange
+        string name = "Moodle";
+        var target = new MoodlePostConfigureOptions();
+
+        var options = new MoodleAuthenticationOptions()
         {
-            // Arrange
-            string name = "Moodle";
-            var target = new MoodlePostConfigureOptions();
+            Domain = domain,
+        };
 
-            var options = new MoodleAuthenticationOptions()
-            {
-                Domain = domain,
-            };
+        // Act
+        target.PostConfigure(name, options);
 
-            // Act
-            target.PostConfigure(name, options);
+        // Assert
+        options.AuthorizationEndpoint.ShouldStartWith("https://moodle.local/local/oauth/login.php");
+        Uri.TryCreate(options.AuthorizationEndpoint, UriKind.Absolute, out _).ShouldBeTrue();
 
-            // Assert
-            options.AuthorizationEndpoint.ShouldStartWith("https://moodle.local/local/oauth/login.php");
-            Uri.TryCreate(options.AuthorizationEndpoint, UriKind.Absolute, out _).ShouldBeTrue();
+        options.TokenEndpoint.ShouldStartWith("https://moodle.local/local/oauth/token.php");
+        Uri.TryCreate(options.TokenEndpoint, UriKind.Absolute, out _).ShouldBeTrue();
 
-            options.TokenEndpoint.ShouldStartWith("https://moodle.local/local/oauth/token.php");
-            Uri.TryCreate(options.TokenEndpoint, UriKind.Absolute, out _).ShouldBeTrue();
+        options.UserInformationEndpoint.ShouldStartWith("https://moodle.local/local/oauth/user_info.php");
+        Uri.TryCreate(options.UserInformationEndpoint, UriKind.Absolute, out _).ShouldBeTrue();
+    }
 
-            options.UserInformationEndpoint.ShouldStartWith("https://moodle.local/local/oauth/user_info.php");
-            Uri.TryCreate(options.UserInformationEndpoint, UriKind.Absolute, out _).ShouldBeTrue();
-        }
+    [Theory]
+    [InlineData(null)]
+    [InlineData("")]
+    [InlineData(" ")]
+    public static void PostConfigure_Throws_If_Domain_Is_Invalid(string value)
+    {
+        // Arrange
+        string name = "Moodle";
+        var target = new MoodlePostConfigureOptions();
 
-        [Theory]
-        [InlineData(null)]
-        [InlineData("")]
-        [InlineData(" ")]
-        public static void PostConfigure_Throws_If_Domain_Is_Invalid(string value)
+        var options = new MoodleAuthenticationOptions()
         {
-            // Arrange
-            string name = "Moodle";
-            var target = new MoodlePostConfigureOptions();
+            Domain = value,
+        };
 
-            var options = new MoodleAuthenticationOptions()
-            {
-                Domain = value,
-            };
-
-            // Act and Assert
-            Assert.Throws<ArgumentException>("options", () => target.PostConfigure(name, options));
-        }
+        // Act and Assert
+        Assert.Throws<ArgumentException>("options", () => target.PostConfigure(name, options));
     }
 }

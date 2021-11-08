@@ -8,71 +8,70 @@ using AspNet.Security.OAuth.Moodle;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
 
-namespace Microsoft.Extensions.DependencyInjection
+namespace Microsoft.Extensions.DependencyInjection;
+
+/// <summary>
+/// Extension methods to add Moodle authentication capabilities to an HTTP application pipeline.
+/// </summary>
+public static class MoodleAuthenticationExtensions
 {
     /// <summary>
-    /// Extension methods to add Moodle authentication capabilities to an HTTP application pipeline.
+    /// Adds <see cref="MoodleAuthenticationHandler"/> to the specified
+    /// <see cref="AuthenticationBuilder"/>, which enables Moodle authentication capabilities.
     /// </summary>
-    public static class MoodleAuthenticationExtensions
+    /// <param name="builder">The authentication builder.</param>
+    /// <returns>A reference to this instance after the operation has completed.</returns>
+    public static AuthenticationBuilder AddMoodle([NotNull] this AuthenticationBuilder builder)
     {
-        /// <summary>
-        /// Adds <see cref="MoodleAuthenticationHandler"/> to the specified
-        /// <see cref="AuthenticationBuilder"/>, which enables Moodle authentication capabilities.
-        /// </summary>
-        /// <param name="builder">The authentication builder.</param>
-        /// <returns>A reference to this instance after the operation has completed.</returns>
-        public static AuthenticationBuilder AddMoodle([NotNull] this AuthenticationBuilder builder)
-        {
-            return builder.AddMoodle(MoodleAuthenticationDefaults.AuthenticationScheme, _ => { });
-        }
+        return builder.AddMoodle(MoodleAuthenticationDefaults.AuthenticationScheme, _ => { });
+    }
 
-        /// <summary>
-        /// Adds <see cref="MoodleAuthenticationHandler"/> to the specified
-        /// <see cref="AuthenticationBuilder"/>, which enables Moodle authentication capabilities.
-        /// </summary>
-        /// <param name="builder">The authentication builder.</param>
-        /// <param name="configuration">The delegate used to configure the OpenID 2.0 options.</param>
-        /// <returns>A reference to this instance after the operation has completed.</returns>
-        public static AuthenticationBuilder AddMoodle(
-            [NotNull] this AuthenticationBuilder builder,
-            [NotNull] Action<MoodleAuthenticationOptions> configuration)
-        {
-            return builder.AddMoodle(MoodleAuthenticationDefaults.AuthenticationScheme, configuration);
-        }
+    /// <summary>
+    /// Adds <see cref="MoodleAuthenticationHandler"/> to the specified
+    /// <see cref="AuthenticationBuilder"/>, which enables Moodle authentication capabilities.
+    /// </summary>
+    /// <param name="builder">The authentication builder.</param>
+    /// <param name="configuration">The delegate used to configure the OpenID 2.0 options.</param>
+    /// <returns>A reference to this instance after the operation has completed.</returns>
+    public static AuthenticationBuilder AddMoodle(
+        [NotNull] this AuthenticationBuilder builder,
+        [NotNull] Action<MoodleAuthenticationOptions> configuration)
+    {
+        return builder.AddMoodle(MoodleAuthenticationDefaults.AuthenticationScheme, configuration);
+    }
 
-        /// <summary>
-        /// Adds <see cref="MoodleAuthenticationHandler"/> to the specified
-        /// <see cref="AuthenticationBuilder"/>, which enables Moodle authentication capabilities.
-        /// </summary>
-        /// <param name="builder">The authentication builder.</param>
-        /// <param name="scheme">The authentication scheme associated with this instance.</param>
-        /// <param name="configuration">The delegate used to configure the Moodle options.</param>
-        /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
-        public static AuthenticationBuilder AddMoodle(
-            [NotNull] this AuthenticationBuilder builder,
-            [NotNull] string scheme,
-            [NotNull] Action<MoodleAuthenticationOptions> configuration)
-        {
-            return builder.AddMoodle(scheme, MoodleAuthenticationDefaults.DisplayName, configuration);
-        }
+    /// <summary>
+    /// Adds <see cref="MoodleAuthenticationHandler"/> to the specified
+    /// <see cref="AuthenticationBuilder"/>, which enables Moodle authentication capabilities.
+    /// </summary>
+    /// <param name="builder">The authentication builder.</param>
+    /// <param name="scheme">The authentication scheme associated with this instance.</param>
+    /// <param name="configuration">The delegate used to configure the Moodle options.</param>
+    /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
+    public static AuthenticationBuilder AddMoodle(
+        [NotNull] this AuthenticationBuilder builder,
+        [NotNull] string scheme,
+        [NotNull] Action<MoodleAuthenticationOptions> configuration)
+    {
+        return builder.AddMoodle(scheme, MoodleAuthenticationDefaults.DisplayName, configuration);
+    }
 
-        /// <summary>
-        /// Adds <see cref="MoodleAuthenticationHandler"/> to the specified
-        /// <see cref="AuthenticationBuilder"/>, which enables Moodle authentication capabilities.
-        /// </summary>
-        /// <param name="builder">The authentication builder.</param>
-        /// <param name="scheme">The authentication scheme associated with this instance.</param>
-        /// <param name="caption">The optional display name associated with this instance.</param>
-        /// <param name="configuration">The delegate used to configure the Moodle options.</param>
-        /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
-        public static AuthenticationBuilder AddMoodle(
-            [NotNull] this AuthenticationBuilder builder,
-            [NotNull] string scheme,
-            [NotNull] string caption,
-            [NotNull] Action<MoodleAuthenticationOptions> configuration)
-        {
-            builder.Services.TryAddSingleton<IPostConfigureOptions<MoodleAuthenticationOptions>, MoodlePostConfigureOptions>();
-            return builder.AddOAuth<MoodleAuthenticationOptions, MoodleAuthenticationHandler>(scheme, caption, configuration);
-        }
+    /// <summary>
+    /// Adds <see cref="MoodleAuthenticationHandler"/> to the specified
+    /// <see cref="AuthenticationBuilder"/>, which enables Moodle authentication capabilities.
+    /// </summary>
+    /// <param name="builder">The authentication builder.</param>
+    /// <param name="scheme">The authentication scheme associated with this instance.</param>
+    /// <param name="caption">The optional display name associated with this instance.</param>
+    /// <param name="configuration">The delegate used to configure the Moodle options.</param>
+    /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
+    public static AuthenticationBuilder AddMoodle(
+        [NotNull] this AuthenticationBuilder builder,
+        [NotNull] string scheme,
+        [NotNull] string caption,
+        [NotNull] Action<MoodleAuthenticationOptions> configuration)
+    {
+        builder.Services.TryAddSingleton<IPostConfigureOptions<MoodleAuthenticationOptions>, MoodlePostConfigureOptions>();
+        return builder.AddOAuth<MoodleAuthenticationOptions, MoodleAuthenticationHandler>(scheme, caption, configuration);
     }
 }

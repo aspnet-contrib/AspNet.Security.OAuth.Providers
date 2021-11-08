@@ -4,17 +4,16 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-namespace AspNet.Security.OAuth.ServiceChannel
+namespace AspNet.Security.OAuth.ServiceChannel;
+
+/// <summary>
+/// Contains constants specific to the <see cref="ServiceChannelAuthenticationHandler"/>.
+/// </summary>
+public static class ServiceChannelAuthenticationConstants
 {
-    /// <summary>
-    /// Contains constants specific to the <see cref="ServiceChannelAuthenticationHandler"/>.
-    /// </summary>
-    public static class ServiceChannelAuthenticationConstants
+    public static class Claims
     {
-        public static class Claims
-        {
-            public const string ProviderId = "urn:servicechannel:providerId";
-            public const string ProviderName = "urn:servicechannel:providerName";
-        }
+        public const string ProviderId = "urn:servicechannel:providerId";
+        public const string ProviderName = "urn:servicechannel:providerName";
     }
 }

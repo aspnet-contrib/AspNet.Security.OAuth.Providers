@@ -7,42 +7,41 @@
 using System.Security.Claims;
 using static AspNet.Security.OAuth.QQ.QQAuthenticationConstants;
 
-namespace AspNet.Security.OAuth.QQ
+namespace AspNet.Security.OAuth.QQ;
+
+/// <summary>
+/// Defines a set of options used by <see cref="QQAuthenticationHandler"/>.
+/// </summary>
+public class QQAuthenticationOptions : OAuthOptions
 {
-    /// <summary>
-    /// Defines a set of options used by <see cref="QQAuthenticationHandler"/>.
-    /// </summary>
-    public class QQAuthenticationOptions : OAuthOptions
+    public QQAuthenticationOptions()
     {
-        public QQAuthenticationOptions()
-        {
-            ClaimsIssuer = QQAuthenticationDefaults.Issuer;
-            CallbackPath = QQAuthenticationDefaults.CallbackPath;
+        ClaimsIssuer = QQAuthenticationDefaults.Issuer;
+        CallbackPath = QQAuthenticationDefaults.CallbackPath;
 
-            AuthorizationEndpoint = QQAuthenticationDefaults.AuthorizationEndpoint;
-            TokenEndpoint = QQAuthenticationDefaults.TokenEndpoint;
-            UserIdentificationEndpoint = QQAuthenticationDefaults.UserIdentificationEndpoint;
-            UserInformationEndpoint = QQAuthenticationDefaults.UserInformationEndpoint;
+        AuthorizationEndpoint = QQAuthenticationDefaults.AuthorizationEndpoint;
+        TokenEndpoint = QQAuthenticationDefaults.TokenEndpoint;
+        UserIdentificationEndpoint = QQAuthenticationDefaults.UserIdentificationEndpoint;
+        UserInformationEndpoint = QQAuthenticationDefaults.UserInformationEndpoint;
 
-            Scope.Add("get_user_info");
+        Scope.Add("get_user_info");
 
-            ClaimActions.MapJsonKey(ClaimTypes.Name, "nickname");
-            ClaimActions.MapJsonKey(ClaimTypes.Gender, "gender");
-            ClaimActions.MapJsonKey(Claims.PictureUrl, "figureurl");
-            ClaimActions.MapJsonKey(Claims.PictureMediumUrl, "figureurl_1");
-            ClaimActions.MapJsonKey(Claims.PictureFullUrl, "figureurl_2");
-            ClaimActions.MapJsonKey(Claims.AvatarUrl, "figureurl_qq_1");
-            ClaimActions.MapJsonKey(Claims.AvatarFullUrl, "figureurl_qq_2");
-        }
-
-        /// <summary>
-        /// Gets or sets if the union Id (the primary key of an owner for different apps of the QQ platform) should be put into the user claims.
-        /// </summary>
-        public bool ApplyForUnionId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the URL of the user identification endpoint (a.k.a. the "OpenID endpoint").
-        /// </summary>
-        public string UserIdentificationEndpoint { get; set; }
+        ClaimActions.MapJsonKey(ClaimTypes.Name, "nickname");
+        ClaimActions.MapJsonKey(ClaimTypes.Gender, "gender");
+        ClaimActions.MapJsonKey(Claims.PictureUrl, "figureurl");
+        ClaimActions.MapJsonKey(Claims.PictureMediumUrl, "figureurl_1");
+        ClaimActions.MapJsonKey(Claims.PictureFullUrl, "figureurl_2");
+        ClaimActions.MapJsonKey(Claims.AvatarUrl, "figureurl_qq_1");
+        ClaimActions.MapJsonKey(Claims.AvatarFullUrl, "figureurl_qq_2");
     }
+
+    /// <summary>
+    /// Gets or sets if the union Id (the primary key of an owner for different apps of the QQ platform) should be put into the user claims.
+    /// </summary>
+    public bool ApplyForUnionId { get; set; }
+
+    /// <summary>
+    /// Gets or sets the URL of the user identification endpoint (a.k.a. the "OpenID endpoint").
+    /// </summary>
+    public string UserIdentificationEndpoint { get; set; }
 }

@@ -6,39 +6,38 @@
 
 using Microsoft.Extensions.Options;
 
-namespace AspNet.Security.OAuth.Moodle
+namespace AspNet.Security.OAuth.Moodle;
+
+/// <summary>
+/// A class used to setup defaults for all <see cref="MoodleAuthenticationOptions"/>.
+/// </summary>
+public class MoodlePostConfigureOptions : IPostConfigureOptions<MoodleAuthenticationOptions>
 {
-    /// <summary>
-    /// A class used to setup defaults for all <see cref="MoodleAuthenticationOptions"/>.
-    /// </summary>
-    public class MoodlePostConfigureOptions : IPostConfigureOptions<MoodleAuthenticationOptions>
+    /// <inheritdoc/>
+    public void PostConfigure(
+        [NotNull] string name,
+        [NotNull] MoodleAuthenticationOptions options)
     {
-        /// <inheritdoc/>
-        public void PostConfigure(
-            [NotNull] string name,
-            [NotNull] MoodleAuthenticationOptions options)
+        if (string.IsNullOrWhiteSpace(options.Domain))
         {
-            if (string.IsNullOrWhiteSpace(options.Domain))
-            {
-                throw new ArgumentException("No Moodle domain configured.", nameof(options));
-            }
-
-            options.AuthorizationEndpoint = CreateUrl(options.Domain, MoodleAuthenticationDefaults.AuthorizationEndpointPath);
-            options.TokenEndpoint = CreateUrl(options.Domain, MoodleAuthenticationDefaults.TokenEndpointPath);
-            options.UserInformationEndpoint = CreateUrl(options.Domain, MoodleAuthenticationDefaults.UserInformationEndpointPath);
+            throw new ArgumentException("No Moodle domain configured.", nameof(options));
         }
 
-        private static string CreateUrl(string domain, string path)
-        {
-            // Enforce use of HTTPS
-            var builder = new UriBuilder(domain)
-            {
-                Path = path,
-                Port = -1,
-                Scheme = Uri.UriSchemeHttps,
-            };
+        options.AuthorizationEndpoint = CreateUrl(options.Domain, MoodleAuthenticationDefaults.AuthorizationEndpointPath);
+        options.TokenEndpoint = CreateUrl(options.Domain, MoodleAuthenticationDefaults.TokenEndpointPath);
+        options.UserInformationEndpoint = CreateUrl(options.Domain, MoodleAuthenticationDefaults.UserInformationEndpointPath);
+    }
 
-            return builder.Uri.ToString();
-        }
+    private static string CreateUrl(string domain, string path)
+    {
+        // Enforce use of HTTPS
+        var builder = new UriBuilder(domain)
+        {
+            Path = path,
+            Port = -1,
+            Scheme = Uri.UriSchemeHttps,
+        };
+
+        return builder.Uri.ToString();
     }
 }

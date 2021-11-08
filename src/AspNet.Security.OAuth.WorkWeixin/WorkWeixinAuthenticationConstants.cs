@@ -4,18 +4,17 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-namespace AspNet.Security.OAuth.WorkWeixin
+namespace AspNet.Security.OAuth.WorkWeixin;
+
+/// <summary>
+/// Contains constants specific to the <see cref="WorkWeixinAuthenticationHandler"/>.
+/// </summary>
+public static class WorkWeixinAuthenticationConstants
 {
-    /// <summary>
-    /// Contains constants specific to the <see cref="WorkWeixinAuthenticationHandler"/>.
-    /// </summary>
-    public static class WorkWeixinAuthenticationConstants
+    public static class Claims
     {
-        public static class Claims
-        {
-            public const string Avatar = "urn:workweixin:avatar";
-            public const string Mobile = "urn:workweixin:mobile";
-            public const string Alias = "urn:workweixin:alias";
-        }
+        public const string Avatar = "urn:workweixin:avatar";
+        public const string Mobile = "urn:workweixin:mobile";
+        public const string Alias = "urn:workweixin:alias";
     }
 }

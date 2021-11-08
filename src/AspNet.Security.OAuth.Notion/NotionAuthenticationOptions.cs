@@ -6,25 +6,24 @@
 
 using static AspNet.Security.OAuth.Notion.NotionAuthenticationConstants;
 
-namespace AspNet.Security.OAuth.Notion
+namespace AspNet.Security.OAuth.Notion;
+
+/// <summary>
+/// Defines a set of options used by <see cref="NotionAuthenticationHandler"/>.
+/// </summary>
+public class NotionAuthenticationOptions : OAuthOptions
 {
-    /// <summary>
-    /// Defines a set of options used by <see cref="NotionAuthenticationHandler"/>.
-    /// </summary>
-    public class NotionAuthenticationOptions : OAuthOptions
+    public NotionAuthenticationOptions()
     {
-        public NotionAuthenticationOptions()
-        {
-            ClaimsIssuer = NotionAuthenticationDefaults.Issuer;
+        ClaimsIssuer = NotionAuthenticationDefaults.Issuer;
 
-            CallbackPath = NotionAuthenticationDefaults.CallbackPath;
+        CallbackPath = NotionAuthenticationDefaults.CallbackPath;
 
-            AuthorizationEndpoint = NotionAuthenticationDefaults.AuthorizationEndpoint;
-            TokenEndpoint = NotionAuthenticationDefaults.TokenEndpoint;
+        AuthorizationEndpoint = NotionAuthenticationDefaults.AuthorizationEndpoint;
+        TokenEndpoint = NotionAuthenticationDefaults.TokenEndpoint;
 
-            ClaimActions.MapJsonKey(Claims.WorkspaceName, "workspace_name");
-            ClaimActions.MapJsonKey(Claims.WorkspaceIcon, "workspace_icon");
-            ClaimActions.MapJsonKey(Claims.BotId, "bot_id");
-        }
+        ClaimActions.MapJsonKey(Claims.WorkspaceName, "workspace_name");
+        ClaimActions.MapJsonKey(Claims.WorkspaceIcon, "workspace_icon");
+        ClaimActions.MapJsonKey(Claims.BotId, "bot_id");
     }
 }

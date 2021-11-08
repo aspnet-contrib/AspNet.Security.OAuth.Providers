@@ -4,100 +4,99 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-namespace AspNet.Security.OAuth.Keycloak
+namespace AspNet.Security.OAuth.Keycloak;
+
+public static class KeycloakAuthenticationOptionsTests
 {
-    public static class KeycloakAuthenticationOptionsTests
+    public static IEnumerable<object[]> AccessTypes => new object[][]
     {
-        public static IEnumerable<object[]> AccessTypes => new object[][]
-        {
             new object[] { KeycloakAuthenticationAccessType.BearerOnly },
             new object[] { KeycloakAuthenticationAccessType.Confidential },
             new object[] { KeycloakAuthenticationAccessType.Public },
+    };
+
+    [Theory]
+    [InlineData(null)]
+    [InlineData("")]
+    public static void Validate_Does_Not_Throw_If_ClientSecret_Is_Not_Provided_For_Public_Access_Type(string clientSecret)
+    {
+        // Arrange
+        var options = new KeycloakAuthenticationOptions()
+        {
+            AccessType = KeycloakAuthenticationAccessType.Public,
+            ClientId = "my-client-id",
+            ClientSecret = clientSecret,
         };
 
-        [Theory]
-        [InlineData(null)]
-        [InlineData("")]
-        public static void Validate_Does_Not_Throw_If_ClientSecret_Is_Not_Provided_For_Public_Access_Type(string clientSecret)
+        // Act (no Assert)
+        options.Validate();
+    }
+
+    [Theory]
+    [InlineData(KeycloakAuthenticationAccessType.BearerOnly)]
+    [InlineData(KeycloakAuthenticationAccessType.Confidential)]
+    public static void Validate_Throws_If_ClientSecret_Is_Null(KeycloakAuthenticationAccessType accessType)
+    {
+        // Arrange
+        var options = new KeycloakAuthenticationOptions()
         {
-            // Arrange
-            var options = new KeycloakAuthenticationOptions()
-            {
-                AccessType = KeycloakAuthenticationAccessType.Public,
-                ClientId = "my-client-id",
-                ClientSecret = clientSecret,
-            };
+            AccessType = accessType,
+            ClientId = "my-client-id",
+            ClientSecret = null!,
+        };
 
-            // Act (no Assert)
-            options.Validate();
-        }
+        // Act and Assert
+        Assert.Throws<ArgumentException>("ClientSecret", () => options.Validate());
+    }
 
-        [Theory]
-        [InlineData(KeycloakAuthenticationAccessType.BearerOnly)]
-        [InlineData(KeycloakAuthenticationAccessType.Confidential)]
-        public static void Validate_Throws_If_ClientSecret_Is_Null(KeycloakAuthenticationAccessType accessType)
+    [Theory]
+    [MemberData(nameof(AccessTypes))]
+    public static void Validate_Throws_If_AuthorizationEndpoint_Is_Null(KeycloakAuthenticationAccessType accessType)
+    {
+        // Arrange
+        var options = new KeycloakAuthenticationOptions()
         {
-            // Arrange
-            var options = new KeycloakAuthenticationOptions()
-            {
-                AccessType = accessType,
-                ClientId = "my-client-id",
-                ClientSecret = null!,
-            };
+            AccessType = accessType,
+            AuthorizationEndpoint = null!,
+            ClientId = "my-client-id",
+            ClientSecret = "my-client-secret",
+        };
 
-            // Act and Assert
-            Assert.Throws<ArgumentException>("ClientSecret", () => options.Validate());
-        }
+        // Act and Assert
+        Assert.Throws<ArgumentException>("AuthorizationEndpoint", () => options.Validate());
+    }
 
-        [Theory]
-        [MemberData(nameof(AccessTypes))]
-        public static void Validate_Throws_If_AuthorizationEndpoint_Is_Null(KeycloakAuthenticationAccessType accessType)
+    [Theory]
+    [MemberData(nameof(AccessTypes))]
+    public static void Validate_Throws_If_TokenEndpoint_Is_Null(KeycloakAuthenticationAccessType accessType)
+    {
+        // Arrange
+        var options = new KeycloakAuthenticationOptions()
         {
-            // Arrange
-            var options = new KeycloakAuthenticationOptions()
-            {
-                AccessType = accessType,
-                AuthorizationEndpoint = null!,
-                ClientId = "my-client-id",
-                ClientSecret = "my-client-secret",
-            };
+            AccessType = accessType,
+            ClientId = "my-client-id",
+            ClientSecret = "my-client-secret",
+            TokenEndpoint = null!,
+        };
 
-            // Act and Assert
-            Assert.Throws<ArgumentException>("AuthorizationEndpoint", () => options.Validate());
-        }
+        // Act and Assert
+        Assert.Throws<ArgumentException>("TokenEndpoint", () => options.Validate());
+    }
 
-        [Theory]
-        [MemberData(nameof(AccessTypes))]
-        public static void Validate_Throws_If_TokenEndpoint_Is_Null(KeycloakAuthenticationAccessType accessType)
+    [Theory]
+    [MemberData(nameof(AccessTypes))]
+    public static void Validate_Throws_If_CallbackPath_Is_Null(KeycloakAuthenticationAccessType accessType)
+    {
+        // Arrange
+        var options = new KeycloakAuthenticationOptions()
         {
-            // Arrange
-            var options = new KeycloakAuthenticationOptions()
-            {
-                AccessType = accessType,
-                ClientId = "my-client-id",
-                ClientSecret = "my-client-secret",
-                TokenEndpoint = null!,
-            };
+            AccessType = accessType,
+            CallbackPath = null,
+            ClientId = "my-client-id",
+            ClientSecret = "my-client-secret",
+        };
 
-            // Act and Assert
-            Assert.Throws<ArgumentException>("TokenEndpoint", () => options.Validate());
-        }
-
-        [Theory]
-        [MemberData(nameof(AccessTypes))]
-        public static void Validate_Throws_If_CallbackPath_Is_Null(KeycloakAuthenticationAccessType accessType)
-        {
-            // Arrange
-            var options = new KeycloakAuthenticationOptions()
-            {
-                AccessType = accessType,
-                CallbackPath = null,
-                ClientId = "my-client-id",
-                ClientSecret = "my-client-secret",
-            };
-
-            // Act and Assert
-            Assert.Throws<ArgumentException>("CallbackPath", () => options.Validate());
-        }
+        // Act and Assert
+        Assert.Throws<ArgumentException>("CallbackPath", () => options.Validate());
     }
 }

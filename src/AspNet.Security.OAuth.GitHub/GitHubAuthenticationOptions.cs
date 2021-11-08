@@ -7,38 +7,37 @@
 using System.Security.Claims;
 using static AspNet.Security.OAuth.GitHub.GitHubAuthenticationConstants;
 
-namespace AspNet.Security.OAuth.GitHub
+namespace AspNet.Security.OAuth.GitHub;
+
+/// <summary>
+/// Defines a set of options used by <see cref="GitHubAuthenticationHandler"/>.
+/// </summary>
+public class GitHubAuthenticationOptions : OAuthOptions
 {
-    /// <summary>
-    /// Defines a set of options used by <see cref="GitHubAuthenticationHandler"/>.
-    /// </summary>
-    public class GitHubAuthenticationOptions : OAuthOptions
+    public GitHubAuthenticationOptions()
     {
-        public GitHubAuthenticationOptions()
-        {
-            ClaimsIssuer = GitHubAuthenticationDefaults.Issuer;
-            CallbackPath = GitHubAuthenticationDefaults.CallbackPath;
+        ClaimsIssuer = GitHubAuthenticationDefaults.Issuer;
+        CallbackPath = GitHubAuthenticationDefaults.CallbackPath;
 
-            AuthorizationEndpoint = GitHubAuthenticationDefaults.AuthorizationEndpoint;
-            TokenEndpoint = GitHubAuthenticationDefaults.TokenEndpoint;
-            UserInformationEndpoint = GitHubAuthenticationDefaults.UserInformationEndpoint;
+        AuthorizationEndpoint = GitHubAuthenticationDefaults.AuthorizationEndpoint;
+        TokenEndpoint = GitHubAuthenticationDefaults.TokenEndpoint;
+        UserInformationEndpoint = GitHubAuthenticationDefaults.UserInformationEndpoint;
 
-            ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
-            ClaimActions.MapJsonKey(ClaimTypes.Name, "login");
-            ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
-            ClaimActions.MapJsonKey(Claims.Name, "name");
-            ClaimActions.MapJsonKey(Claims.Url, "url");
-        }
-
-        /// <summary>
-        /// Gets or sets the domain name to use if using a GitHub Enterprise on-premises deployment.
-        /// </summary>
-        public string? EnterpriseDomain { get; set; }
-
-        /// <summary>
-        /// Gets or sets the address of the endpoint exposing
-        /// the email addresses associated with the logged in user.
-        /// </summary>
-        public string UserEmailsEndpoint { get; set; } = GitHubAuthenticationDefaults.UserEmailsEndpoint;
+        ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
+        ClaimActions.MapJsonKey(ClaimTypes.Name, "login");
+        ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
+        ClaimActions.MapJsonKey(Claims.Name, "name");
+        ClaimActions.MapJsonKey(Claims.Url, "url");
     }
+
+    /// <summary>
+    /// Gets or sets the domain name to use if using a GitHub Enterprise on-premises deployment.
+    /// </summary>
+    public string? EnterpriseDomain { get; set; }
+
+    /// <summary>
+    /// Gets or sets the address of the endpoint exposing
+    /// the email addresses associated with the logged in user.
+    /// </summary>
+    public string UserEmailsEndpoint { get; set; } = GitHubAuthenticationDefaults.UserEmailsEndpoint;
 }

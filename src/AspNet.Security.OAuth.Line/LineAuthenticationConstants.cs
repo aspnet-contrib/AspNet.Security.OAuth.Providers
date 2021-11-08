@@ -4,16 +4,15 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-namespace AspNet.Security.OAuth.Line
+namespace AspNet.Security.OAuth.Line;
+
+/// <summary>
+/// Contains constants specific to the <see cref="LineAuthenticationHandler"/>.
+/// </summary>
+public static class LineAuthenticationConstants
 {
-    /// <summary>
-    /// Contains constants specific to the <see cref="LineAuthenticationHandler"/>.
-    /// </summary>
-    public static class LineAuthenticationConstants
+    public static class Claims
     {
-        public static class Claims
-        {
-            public const string PictureUrl = "urn:line:picture_url";
-        }
+        public const string PictureUrl = "urn:line:picture_url";
     }
 }

@@ -4,46 +4,45 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-namespace AspNet.Security.OAuth.Streamlabs
+namespace AspNet.Security.OAuth.Streamlabs;
+
+/// <summary>
+/// Default values used by the Streamlabs authentication middleware.
+/// </summary>
+public static class StreamlabsAuthenticationDefaults
 {
     /// <summary>
-    /// Default values used by the Streamlabs authentication middleware.
+    /// Default value for <see cref="AuthenticationScheme.Name"/>.
     /// </summary>
-    public static class StreamlabsAuthenticationDefaults
-    {
-        /// <summary>
-        /// Default value for <see cref="AuthenticationScheme.Name"/>.
-        /// </summary>
-        public const string AuthenticationScheme = "Streamlabs";
+    public const string AuthenticationScheme = "Streamlabs";
 
-        /// <summary>
-        /// Default value for <see cref="AuthenticationScheme.DisplayName"/>.
-        /// </summary>
-        public static readonly string DisplayName = "Streamlabs";
+    /// <summary>
+    /// Default value for <see cref="AuthenticationScheme.DisplayName"/>.
+    /// </summary>
+    public static readonly string DisplayName = "Streamlabs";
 
-        /// <summary>
-        /// Default value for <see cref="AuthenticationSchemeOptions.ClaimsIssuer"/>.
-        /// </summary>
-        public static readonly string Issuer = "Streamlabs";
+    /// <summary>
+    /// Default value for <see cref="AuthenticationSchemeOptions.ClaimsIssuer"/>.
+    /// </summary>
+    public static readonly string Issuer = "Streamlabs";
 
-        /// <summary>
-        /// Default value for <see cref="RemoteAuthenticationOptions.CallbackPath"/>.
-        /// </summary>
-        public static readonly string CallbackPath = "/signin-streamlabs";
+    /// <summary>
+    /// Default value for <see cref="RemoteAuthenticationOptions.CallbackPath"/>.
+    /// </summary>
+    public static readonly string CallbackPath = "/signin-streamlabs";
 
-        /// <summary>
-        /// Default value for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
-        /// </summary>
-        public static readonly string AuthorizationEndPoint = "https://streamlabs.com/api/v1.0/authorize";
+    /// <summary>
+    /// Default value for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
+    /// </summary>
+    public static readonly string AuthorizationEndPoint = "https://streamlabs.com/api/v1.0/authorize";
 
-        /// <summary>
-        /// Default value for <see cref="OAuthOptions.TokenEndpoint"/>.
-        /// </summary>
-        public static readonly string TokenEndpoint = "https://streamlabs.com/api/v1.0/token";
+    /// <summary>
+    /// Default value for <see cref="OAuthOptions.TokenEndpoint"/>.
+    /// </summary>
+    public static readonly string TokenEndpoint = "https://streamlabs.com/api/v1.0/token";
 
-        /// <summary>
-        /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
-        /// </summary>
-        public static readonly string UserInformationEndpoint = "https://streamlabs.com/api/v1.0/user";
-    }
+    /// <summary>
+    /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
+    /// </summary>
+    public static readonly string UserInformationEndpoint = "https://streamlabs.com/api/v1.0/user";
 }

@@ -7,31 +7,30 @@
 using System.Security.Claims;
 using static AspNet.Security.OAuth.QuickBooks.QuickBooksAuthenticationConstants;
 
-namespace AspNet.Security.OAuth.QuickBooks
+namespace AspNet.Security.OAuth.QuickBooks;
+
+/// <summary>
+/// Defines a set of options used by <see cref="QuickBooksAuthenticationHandler"/>.
+/// </summary>
+public class QuickBooksAuthenticationOptions : OAuthOptions
 {
-    /// <summary>
-    /// Defines a set of options used by <see cref="QuickBooksAuthenticationHandler"/>.
-    /// </summary>
-    public class QuickBooksAuthenticationOptions : OAuthOptions
+    public QuickBooksAuthenticationOptions()
     {
-        public QuickBooksAuthenticationOptions()
-        {
-            ClaimsIssuer = QuickBooksAuthenticationDefaults.Issuer;
-            CallbackPath = QuickBooksAuthenticationDefaults.CallbackPath;
+        ClaimsIssuer = QuickBooksAuthenticationDefaults.Issuer;
+        CallbackPath = QuickBooksAuthenticationDefaults.CallbackPath;
 
-            AuthorizationEndpoint = QuickBooksAuthenticationDefaults.AuthorizationEndpoint;
-            TokenEndpoint = QuickBooksAuthenticationDefaults.TokenEndpoint;
-            UserInformationEndpoint = QuickBooksAuthenticationDefaults.UserInformationEndpoint;
+        AuthorizationEndpoint = QuickBooksAuthenticationDefaults.AuthorizationEndpoint;
+        TokenEndpoint = QuickBooksAuthenticationDefaults.TokenEndpoint;
+        UserInformationEndpoint = QuickBooksAuthenticationDefaults.UserInformationEndpoint;
 
-            Scope.Add("openid");
-            Scope.Add("profile");
-            Scope.Add("phone");
-            Scope.Add("email");
+        Scope.Add("openid");
+        Scope.Add("profile");
+        Scope.Add("phone");
+        Scope.Add("email");
 
-            ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "sub");
-            ClaimActions.MapJsonKey(ClaimTypes.MobilePhone, "mobilephone");
-            ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
-            ClaimActions.MapJsonKey(Claims.EmailVerified, "emailVerified");
-        }
+        ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "sub");
+        ClaimActions.MapJsonKey(ClaimTypes.MobilePhone, "mobilephone");
+        ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
+        ClaimActions.MapJsonKey(Claims.EmailVerified, "emailVerified");
     }
 }

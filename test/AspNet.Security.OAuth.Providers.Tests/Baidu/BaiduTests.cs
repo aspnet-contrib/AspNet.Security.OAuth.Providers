@@ -4,39 +4,38 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-namespace AspNet.Security.OAuth.Baidu
+namespace AspNet.Security.OAuth.Baidu;
+
+public class BaiduTests : OAuthTests<BaiduAuthenticationOptions>
 {
-    public class BaiduTests : OAuthTests<BaiduAuthenticationOptions>
+    public BaiduTests(ITestOutputHelper outputHelper)
     {
-        public BaiduTests(ITestOutputHelper outputHelper)
+        OutputHelper = outputHelper;
+    }
+
+    public override string DefaultScheme => BaiduAuthenticationDefaults.AuthenticationScheme;
+
+    protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
+    {
+        builder.AddBaidu(options =>
         {
-            OutputHelper = outputHelper;
-        }
+            ConfigureDefaults(builder, options);
+        });
+    }
 
-        public override string DefaultScheme => BaiduAuthenticationDefaults.AuthenticationScheme;
+    [Theory]
+    [InlineData(ClaimTypes.NameIdentifier, "my-id")]
+    [InlineData(ClaimTypes.Name, "my-name")]
+    [InlineData("urn:baidu:portrait", "https://tb.himg.baidu.com/sys/portrait/item/my-portrait")]
+    public async Task Can_Sign_In_Using_Baidu(string claimType, string claimValue)
+    {
+        // Arrange
+        using var server = CreateTestServer();
 
-        protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
-        {
-            builder.AddBaidu(options =>
-            {
-                ConfigureDefaults(builder, options);
-            });
-        }
+        // Act
+        var claims = await AuthenticateUserAsync(server);
 
-        [Theory]
-        [InlineData(ClaimTypes.NameIdentifier, "my-id")]
-        [InlineData(ClaimTypes.Name, "my-name")]
-        [InlineData("urn:baidu:portrait", "https://tb.himg.baidu.com/sys/portrait/item/my-portrait")]
-        public async Task Can_Sign_In_Using_Baidu(string claimType, string claimValue)
-        {
-            // Arrange
-            using var server = CreateTestServer();
-
-            // Act
-            var claims = await AuthenticateUserAsync(server);
-
-            // Assert
-            AssertClaim(claims, claimType, claimValue);
-        }
+        // Assert
+        AssertClaim(claims, claimType, claimValue);
     }
 }
