@@ -4,6 +4,7 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using System.Net;
 using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
@@ -14,7 +15,7 @@ using Microsoft.Extensions.Options;
 
 namespace AspNet.Security.OAuth.Line;
 
-public class LineAuthenticationHandler : OAuthHandler<LineAuthenticationOptions>
+public partial class LineAuthenticationHandler : OAuthHandler<LineAuthenticationOptions>
 {
     public LineAuthenticationHandler(
         [NotNull] IOptionsMonitor<LineAuthenticationOptions> options,
@@ -54,12 +55,7 @@ public class LineAuthenticationHandler : OAuthHandler<LineAuthenticationOptions>
         using var response = await Backchannel.SendAsync(request, Context.RequestAborted);
         if (!response.IsSuccessStatusCode)
         {
-            Logger.LogError("An error occurred while retrieving an access token: the remote server " +
-                            "returned a {Status} response with the following payload: {Headers} {Body}.",
-                            /* Status: */ response.StatusCode,
-                            /* Headers: */ response.Headers.ToString(),
-                            /* Body: */ await response.Content.ReadAsStringAsync(Context.RequestAborted));
-
+            await Log.ExchangeCodeErrorAsync(Logger, response, Context.RequestAborted);
             return OAuthTokenResponse.Failed(new Exception("An error occurred while retrieving an access token."));
         }
 
@@ -79,12 +75,7 @@ public class LineAuthenticationHandler : OAuthHandler<LineAuthenticationOptions>
         using var response = await Backchannel.SendAsync(request, Context.RequestAborted);
         if (!response.IsSuccessStatusCode)
         {
-            Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
-                            "returned a {Status} response with the following payload: {Headers} {Body}.",
-                            /* Status: */ response.StatusCode,
-                            /* Headers: */ response.Headers.ToString(),
-                            /* Body: */ await response.Content.ReadAsStringAsync(Context.RequestAborted));
-
+            await Log.UserProfileErrorAsync(Logger, response, Context.RequestAborted);
             throw new HttpRequestException("An error occurred while retrieving user information.");
         }
 
@@ -123,16 +114,62 @@ public class LineAuthenticationHandler : OAuthHandler<LineAuthenticationOptions>
         using var response = await Backchannel.SendAsync(request, Context.RequestAborted);
         if (!response.IsSuccessStatusCode)
         {
-            Logger.LogWarning("An error occurred while retrieving the email address associated with the logged in user: " +
-                              "the remote server returned a {Status} response with the following payload: {Headers} {Body}.",
-                              /* Status: */ response.StatusCode,
-                              /* Headers: */ response.Headers.ToString(),
-                              /* Body: */ await response.Content.ReadAsStringAsync(Context.RequestAborted));
-
+            await Log.EmailAddressErrorAsync(Logger, response, Context.RequestAborted);
             throw new HttpRequestException("An error occurred while retrieving the email address associated to the user profile.");
         }
 
         using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
         return payload.RootElement.GetString("email");
+    }
+
+    private static partial class Log
+    {
+        internal static async Task UserProfileErrorAsync(ILogger logger, HttpResponseMessage response, CancellationToken cancellationToken)
+        {
+            UserProfileError(
+                logger,
+                response.StatusCode,
+                response.Headers.ToString(),
+                await response.Content.ReadAsStringAsync(cancellationToken));
+        }
+
+        internal static async Task ExchangeCodeErrorAsync(ILogger logger, HttpResponseMessage response, CancellationToken cancellationToken)
+        {
+            ExchangeCodeError(
+                logger,
+                response.StatusCode,
+                response.Headers.ToString(),
+                await response.Content.ReadAsStringAsync(cancellationToken));
+        }
+
+        internal static async Task EmailAddressErrorAsync(ILogger logger, HttpResponseMessage response, CancellationToken cancellationToken)
+        {
+            EmailAddressError(
+                logger,
+                response.StatusCode,
+                response.Headers.ToString(),
+                await response.Content.ReadAsStringAsync(cancellationToken));
+        }
+
+        [LoggerMessage(1, LogLevel.Error, "An error occurred while retrieving the user profile: the remote server returned a {Status} response with the following payload: {Headers} {Body}.")]
+        private static partial void UserProfileError(
+            ILogger logger,
+            HttpStatusCode status,
+            string headers,
+            string body);
+
+        [LoggerMessage(2, LogLevel.Error, "An error occurred while retrieving an access token: the remote server returned a {Status} response with the following payload: {Headers} {Body}.")]
+        private static partial void ExchangeCodeError(
+            ILogger logger,
+            HttpStatusCode status,
+            string headers,
+            string body);
+
+        [LoggerMessage(3, LogLevel.Warning, "An error occurred while retrieving the email address associated with the logged in user: the remote server returned a {Status} response with the following payload: {Headers} {Body}.")]
+        private static partial void EmailAddressError(
+            ILogger logger,
+            HttpStatusCode status,
+            string headers,
+            string body);
     }
 }

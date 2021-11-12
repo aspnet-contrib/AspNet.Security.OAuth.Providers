@@ -16,7 +16,7 @@ namespace AspNet.Security.OAuth.Lichess;
 /// <summary>
 /// Defines a handler for authentication using Lichess.
 /// </summary>
-public class LichessAuthenticationHandler : OAuthHandler<LichessAuthenticationOptions>
+public partial class LichessAuthenticationHandler : OAuthHandler<LichessAuthenticationOptions>
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="LichessAuthenticationHandler"/> class.
@@ -77,16 +77,35 @@ public class LichessAuthenticationHandler : OAuthHandler<LichessAuthenticationOp
         using var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
         if (!response.IsSuccessStatusCode)
         {
-            Logger.LogError("An error occurred while retrieving the {RequestInformationType}: the remote server " +
-                            "returned a {Status} response with the following payload: {Headers} {Body}.",
-                            /* RequestInformationType */ requestInformationType,
-                            /* Status: */ response.StatusCode,
-                            /* Headers: */ response.Headers.ToString(),
-                            /* Body: */ await response.Content.ReadAsStringAsync(Context.RequestAborted));
-
+            await Log.RequestErrorAsync(Logger, requestInformationType, response, Context.RequestAborted);
             throw new HttpRequestException($"An error occurred while retrieving the {requestInformationType}.");
         }
 
         return JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
+    }
+
+    private static partial class Log
+    {
+        internal static async Task RequestErrorAsync(
+            ILogger logger,
+            string requestInformationType,
+            HttpResponseMessage response,
+            CancellationToken cancellationToken)
+        {
+            RequestError(
+                logger,
+                requestInformationType,
+                response.StatusCode,
+                response.Headers.ToString(),
+                await response.Content.ReadAsStringAsync(cancellationToken));
+        }
+
+        [LoggerMessage(1, LogLevel.Error, "An error occurred while retrieving the {RequestInformationType}: the remote server returned a {Status} response with the following payload: {Headers} {Body}.")]
+        private static partial void RequestError(
+            ILogger logger,
+            string requestInformationType,
+            System.Net.HttpStatusCode status,
+            string headers,
+            string body);
     }
 }

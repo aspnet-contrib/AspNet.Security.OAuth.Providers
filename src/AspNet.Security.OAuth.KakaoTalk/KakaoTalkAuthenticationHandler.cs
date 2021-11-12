@@ -13,7 +13,7 @@ using Microsoft.Extensions.Options;
 
 namespace AspNet.Security.OAuth.KakaoTalk;
 
-public class KakaoTalkAuthenticationHandler : OAuthHandler<KakaoTalkAuthenticationOptions>
+public partial class KakaoTalkAuthenticationHandler : OAuthHandler<KakaoTalkAuthenticationOptions>
 {
     public KakaoTalkAuthenticationHandler(
         [NotNull] IOptionsMonitor<KakaoTalkAuthenticationOptions> options,
@@ -48,15 +48,29 @@ public class KakaoTalkAuthenticationHandler : OAuthHandler<KakaoTalkAuthenticati
         using var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
         if (!response.IsSuccessStatusCode)
         {
-            Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
-                            "returned a {Status} response with the following payload: {Headers} {Body}.",
-                            /* Status: */ response.StatusCode,
-                            /* Headers: */ response.Headers.ToString(),
-                            /* Body: */ await response.Content.ReadAsStringAsync(Context.RequestAborted));
-
+            await Log.UserProfileErrorAsync(Logger, response, Context.RequestAborted);
             throw new HttpRequestException("An error occurred while retrieving the user profile.");
         }
 
         return JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
+    }
+
+    private static partial class Log
+    {
+        internal static async Task UserProfileErrorAsync(ILogger logger, HttpResponseMessage response, CancellationToken cancellationToken)
+        {
+            UserProfileError(
+                logger,
+                response.StatusCode,
+                response.Headers.ToString(),
+                await response.Content.ReadAsStringAsync(cancellationToken));
+        }
+
+        [LoggerMessage(1, LogLevel.Error, "An error occurred while retrieving the user profile: the remote server returned a {Status} response with the following payload: {Headers} {Body}.")]
+        private static partial void UserProfileError(
+            ILogger logger,
+            System.Net.HttpStatusCode status,
+            string headers,
+            string body);
     }
 }

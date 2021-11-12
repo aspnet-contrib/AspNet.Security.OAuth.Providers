@@ -4,6 +4,7 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using System.Net;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Text.Json;
@@ -13,7 +14,7 @@ using Microsoft.Extensions.Options;
 
 namespace AspNet.Security.OAuth.QQ;
 
-public class QQAuthenticationHandler : OAuthHandler<QQAuthenticationOptions>
+public partial class QQAuthenticationHandler : OAuthHandler<QQAuthenticationOptions>
 {
     public QQAuthenticationHandler(
         [NotNull] IOptionsMonitor<QQAuthenticationOptions> options,
@@ -52,12 +53,7 @@ public class QQAuthenticationHandler : OAuthHandler<QQAuthenticationOptions>
         using var response = await Backchannel.GetAsync(address);
         if (!response.IsSuccessStatusCode)
         {
-            Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
-                            "returned a {Status} response with the following payload: {Headers} {Body}.",
-                            /* Status: */ response.StatusCode,
-                            /* Headers: */ response.Headers.ToString(),
-                            /* Body: */ await response.Content.ReadAsStringAsync(Context.RequestAborted));
-
+            await Log.UserProfileErrorAsync(Logger, response, Context.RequestAborted);
             throw new HttpRequestException("An error occurred while retrieving user information.");
         }
 
@@ -68,11 +64,7 @@ public class QQAuthenticationHandler : OAuthHandler<QQAuthenticationOptions>
 
         if (status != 0)
         {
-            Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
-                            "returned a {Status} response with the following message: {Message}.",
-                            /* Status: */ status,
-                            /* Message: */ payload.RootElement.GetString("msg"));
-
+            Log.UserProfileErrorCode(Logger, status, payload.RootElement.GetString("msg"));
             throw new HttpRequestException("An error occurred while retrieving user information.");
         }
 
@@ -102,12 +94,7 @@ public class QQAuthenticationHandler : OAuthHandler<QQAuthenticationOptions>
         using var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
         if (!response.IsSuccessStatusCode)
         {
-            Logger.LogError("An error occurred while retrieving an access token: the remote server " +
-                            "returned a {Status} response with the following payload: {Headers} {Body}.",
-                            /* Status: */ response.StatusCode,
-                            /* Headers: */ response.Headers.ToString(),
-                            /* Body: */ await response.Content.ReadAsStringAsync(Context.RequestAborted));
-
+            await Log.ExchangeCodeErrorAsync(Logger, response, Context.RequestAborted);
             return OAuthTokenResponse.Failed(new Exception("An error occurred while retrieving an access token."));
         }
 
@@ -137,12 +124,7 @@ public class QQAuthenticationHandler : OAuthHandler<QQAuthenticationOptions>
         using var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
         if (!response.IsSuccessStatusCode)
         {
-            Logger.LogError("An error occurred while retrieving the user identifier: the remote server " +
-                            "returned a {Status} response with the following payload: {Headers} {Body}.",
-                            /* Status: */ response.StatusCode,
-                            /* Headers: */ response.Headers.ToString(),
-                            /* Body: */ await response.Content.ReadAsStringAsync(Context.RequestAborted));
-
+            await Log.UserIdentifierErrorAsync(Logger, response, Context.RequestAborted);
             throw new HttpRequestException("An error occurred while retrieving the user identifier.");
         }
 
@@ -162,4 +144,61 @@ public class QQAuthenticationHandler : OAuthHandler<QQAuthenticationOptions>
     protected override string FormatScope() => FormatScope(Options.Scope);
 
     protected override string FormatScope([NotNull] IEnumerable<string> scopes) => string.Join(',', scopes);
+
+    private static partial class Log
+    {
+        internal static async Task UserProfileErrorAsync(ILogger logger, HttpResponseMessage response, CancellationToken cancellationToken)
+        {
+            UserProfileError(
+                logger,
+                response.StatusCode,
+                response.Headers.ToString(),
+                await response.Content.ReadAsStringAsync(cancellationToken));
+        }
+
+        [LoggerMessage(2, LogLevel.Error, "An error occurred while retrieving the user profile: the remote server returned a {Status} response with the following message: {ErrorMessage}.")]
+        internal static partial void UserProfileErrorCode(
+            ILogger logger,
+            int status,
+            string? errorMessage);
+
+        internal static async Task ExchangeCodeErrorAsync(ILogger logger, HttpResponseMessage response, CancellationToken cancellationToken)
+        {
+            ExchangeCodeError(
+                logger,
+                response.StatusCode,
+                response.Headers.ToString(),
+                await response.Content.ReadAsStringAsync(cancellationToken));
+        }
+
+        internal static async Task UserIdentifierErrorAsync(ILogger logger, HttpResponseMessage response, CancellationToken cancellationToken)
+        {
+            UserIdentifierError(
+                logger,
+                response.StatusCode,
+                response.Headers.ToString(),
+                await response.Content.ReadAsStringAsync(cancellationToken));
+        }
+
+        [LoggerMessage(1, LogLevel.Error, "An error occurred while retrieving the user profile: the remote server returned a {Status} response with the following payload: {Headers} {Body}.")]
+        private static partial void UserProfileError(
+            ILogger logger,
+            HttpStatusCode status,
+            string headers,
+            string body);
+
+        [LoggerMessage(3, LogLevel.Error, "An error occurred while retrieving an access token: the remote server returned a {Status} response with the following payload: {Headers} {Body}.")]
+        private static partial void ExchangeCodeError(
+            ILogger logger,
+            HttpStatusCode status,
+            string headers,
+            string body);
+
+        [LoggerMessage(4, LogLevel.Warning, "An error occurred while retrieving the user identifier: the remote server returned a {Status} response with the following payload: {Headers} {Body}.")]
+        private static partial void UserIdentifierError(
+            ILogger logger,
+            HttpStatusCode status,
+            string headers,
+            string body);
+    }
 }

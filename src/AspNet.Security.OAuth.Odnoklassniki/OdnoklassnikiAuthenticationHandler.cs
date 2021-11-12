@@ -16,7 +16,7 @@ using Microsoft.Extensions.Options;
 
 namespace AspNet.Security.OAuth.Odnoklassniki;
 
-public class OdnoklassnikiAuthenticationHandler : OAuthHandler<OdnoklassnikiAuthenticationOptions>
+public partial class OdnoklassnikiAuthenticationHandler : OAuthHandler<OdnoklassnikiAuthenticationOptions>
 {
     public OdnoklassnikiAuthenticationHandler(
         [NotNull] IOptionsMonitor<OdnoklassnikiAuthenticationOptions> options,
@@ -50,12 +50,7 @@ public class OdnoklassnikiAuthenticationHandler : OAuthHandler<OdnoklassnikiAuth
         using var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
         if (!response.IsSuccessStatusCode)
         {
-            Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
-                            "returned a {Status} response with the following payload: {Headers} {Body}.",
-                            /* Status: */ response.StatusCode,
-                            /* Headers: */ response.Headers.ToString(),
-                            /* Body: */ await response.Content.ReadAsStringAsync(Context.RequestAborted));
-
+            await Log.UserProfileErrorAsync(Logger, response, Context.RequestAborted);
             throw new HttpRequestException("An error occurred while retrieving the user profile.");
         }
 
@@ -79,5 +74,24 @@ public class OdnoklassnikiAuthenticationHandler : OAuthHandler<OdnoklassnikiAuth
 #pragma warning restore CA5351
 
         return Convert.ToHexString(hash).ToLowerInvariant();
+    }
+
+    private static partial class Log
+    {
+        internal static async Task UserProfileErrorAsync(ILogger logger, HttpResponseMessage response, CancellationToken cancellationToken)
+        {
+            UserProfileError(
+                logger,
+                response.StatusCode,
+                response.Headers.ToString(),
+                await response.Content.ReadAsStringAsync(cancellationToken));
+        }
+
+        [LoggerMessage(1, LogLevel.Error, "An error occurred while retrieving the user profile: the remote server returned a {Status} response with the following payload: {Headers} {Body}.")]
+        private static partial void UserProfileError(
+            ILogger logger,
+            System.Net.HttpStatusCode status,
+            string headers,
+            string body);
     }
 }

@@ -14,7 +14,7 @@ using Microsoft.Extensions.Options;
 
 namespace AspNet.Security.OAuth.ArcGIS;
 
-public class ArcGISAuthenticationHandler : OAuthHandler<ArcGISAuthenticationOptions>
+public partial class ArcGISAuthenticationHandler : OAuthHandler<ArcGISAuthenticationOptions>
 {
     public ArcGISAuthenticationHandler(
         [NotNull] IOptionsMonitor<ArcGISAuthenticationOptions> options,
@@ -48,10 +48,7 @@ public class ArcGISAuthenticationHandler : OAuthHandler<ArcGISAuthenticationOpti
         if (payload.RootElement.TryGetProperty("error", out var error))
         {
             // See https://developers.arcgis.com/authentication/server-based-user-logins/ for more information
-            Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
-                            "returned a response with the following error code: {Code} {Message}.",
-                            /* Code: */ error.GetString("code"),
-                            /* Message: */ error.GetString("message"));
+            Log.UserProfileError(Logger, error.GetString("code"), error.GetString("message"));
 
             throw new InvalidOperationException("An error occurred while retrieving the user profile.");
         }
@@ -62,5 +59,14 @@ public class ArcGISAuthenticationHandler : OAuthHandler<ArcGISAuthenticationOpti
 
         await Events.CreatingTicket(context);
         return new AuthenticationTicket(context.Principal!, context.Properties, Scheme.Name);
+    }
+
+    private static partial class Log
+    {
+        [LoggerMessage(1, LogLevel.Error, "An error occurred while retrieving the user profile: the remote server returned a response with the following error code: {Code} {ErrorMessage}.")]
+        internal static partial void UserProfileError(
+            ILogger logger,
+            string? code,
+            string? errorMessage);
     }
 }

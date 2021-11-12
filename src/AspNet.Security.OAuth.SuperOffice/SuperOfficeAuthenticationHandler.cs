@@ -19,7 +19,7 @@ namespace AspNet.Security.OAuth.SuperOffice;
 /// <summary>
 /// Defines a handler for authentication using SuperOffice.
 /// </summary>
-public class SuperOfficeAuthenticationHandler : OAuthHandler<SuperOfficeAuthenticationOptions>
+public partial class SuperOfficeAuthenticationHandler : OAuthHandler<SuperOfficeAuthenticationOptions>
 {
     public SuperOfficeAuthenticationHandler(
         [NotNull] IOptionsMonitor<SuperOfficeAuthenticationOptions> options,
@@ -54,12 +54,7 @@ public class SuperOfficeAuthenticationHandler : OAuthHandler<SuperOfficeAuthenti
         using var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
         if (!response.IsSuccessStatusCode)
         {
-            Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
-                            "returned a {Status} response with the following payload: {Headers} {Body}.",
-                            /* Status: */ response.StatusCode,
-                            /* Headers: */ response.Headers.ToString(),
-                            /* Body: */ await response.Content.ReadAsStringAsync(Context.RequestAborted));
-
+            await Log.UserProfileErrorAsync(Logger, response, Context.RequestAborted);
             throw new HttpRequestException($"An error occurred when retrieving SuperOffice user information ({response.StatusCode}).");
         }
 
@@ -176,5 +171,24 @@ public class SuperOfficeAuthenticationHandler : OAuthHandler<SuperOfficeAuthenti
         {
             throw new SecurityTokenValidationException("SuperOffice ID token validation failed.", ex);
         }
+    }
+
+    private static partial class Log
+    {
+        internal static async Task UserProfileErrorAsync(ILogger logger, HttpResponseMessage response, CancellationToken cancellationToken)
+        {
+            UserProfileError(
+                logger,
+                response.StatusCode,
+                response.Headers.ToString(),
+                await response.Content.ReadAsStringAsync(cancellationToken));
+        }
+
+        [LoggerMessage(1, LogLevel.Error, "An error occurred while retrieving the user profile: the remote server returned a {Status} response with the following payload: {Headers} {Body}.")]
+        private static partial void UserProfileError(
+            ILogger logger,
+            System.Net.HttpStatusCode status,
+            string headers,
+            string body);
     }
 }
