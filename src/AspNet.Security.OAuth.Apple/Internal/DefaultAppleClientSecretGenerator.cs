@@ -12,7 +12,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace AspNet.Security.OAuth.Apple.Internal;
 
-internal sealed class DefaultAppleClientSecretGenerator : AppleClientSecretGenerator
+internal sealed partial class DefaultAppleClientSecretGenerator : AppleClientSecretGenerator
 {
     private readonly IMemoryCache _cache;
     private readonly ISystemClock _clock;
@@ -46,11 +46,7 @@ internal sealed class DefaultAppleClientSecretGenerator : AppleClientSecretGener
             }
             catch (Exception ex)
             {
-                _logger.LogError(
-                    ex,
-                    "Failed to generate new client secret for the {SchemeName} authentication scheme.",
-                    context.Scheme.Name);
-
+                Log.ClientSecretGenerationFailed(_logger, ex, context.Scheme.Name);
                 throw;
             }
         });
@@ -76,10 +72,7 @@ internal sealed class DefaultAppleClientSecretGenerator : AppleClientSecretGener
         var expiresAt = _clock.UtcNow.Add(context.Options.ClientSecretExpiresAfter).UtcDateTime;
         var subject = new Claim("sub", context.Options.ClientId);
 
-        _logger.LogDebug(
-            "Generating new client secret for subject {Subject} that will expire at {ExpiresAt}.",
-            subject.Value,
-            expiresAt);
+        Log.GeneratingNewClientSecret(_logger, subject.Value, expiresAt);
 
         var tokenDescriptor = new SecurityTokenDescriptor()
         {
@@ -99,7 +92,7 @@ internal sealed class DefaultAppleClientSecretGenerator : AppleClientSecretGener
             clientSecret = context.Options.SecurityTokenHandler.CreateToken(tokenDescriptor);
         }
 
-        _logger.LogTrace("Generated new client secret with value {ClientSecret}.", clientSecret);
+        Log.GeneratedNewClientSecret(_logger, clientSecret);
 
         return (clientSecret, expiresAt);
     }
@@ -130,5 +123,23 @@ internal sealed class DefaultAppleClientSecretGenerator : AppleClientSecretGener
         {
             CryptoProviderFactory = _cryptoProviderFactory,
         };
+    }
+
+    private static partial class Log
+    {
+        [LoggerMessage(1, LogLevel.Error, "Failed to generate new client secret for the {SchemeName} authentication scheme.")]
+        internal static partial void ClientSecretGenerationFailed(
+            ILogger logger,
+            Exception exception,
+            string schemeName);
+
+        [LoggerMessage(2, LogLevel.Debug, "Generating new client secret for subject {Subject} that will expire at {ExpiresAt}.")]
+        internal static partial void GeneratingNewClientSecret(
+            ILogger logger,
+            string subject,
+            DateTime expiresAt);
+
+        [LoggerMessage(3, LogLevel.Trace, "Generated new client secret with value {ClientSecret}.")]
+        internal static partial void GeneratedNewClientSecret(ILogger logger, string clientSecret);
     }
 }

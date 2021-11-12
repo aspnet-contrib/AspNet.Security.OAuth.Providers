@@ -19,7 +19,7 @@ namespace AspNet.Security.OAuth.Apple;
 /// <summary>
 /// Defines a handler for authentication using Apple.
 /// </summary>
-public class AppleAuthenticationHandler : OAuthHandler<AppleAuthenticationOptions>
+public partial class AppleAuthenticationHandler : OAuthHandler<AppleAuthenticationOptions>
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="AppleAuthenticationHandler"/> class.
@@ -69,16 +69,16 @@ public class AppleAuthenticationHandler : OAuthHandler<AppleAuthenticationOption
     {
         string? idToken = tokens.Response!.RootElement.GetString("id_token");
 
-        Logger.LogInformation("Creating ticket for Sign in with Apple.");
+        Log.CreatingTicket(Logger);
 
         if (Logger.IsEnabled(LogLevel.Trace))
         {
-            Logger.LogTrace("Access Token: {AccessToken}", tokens.AccessToken);
-            Logger.LogTrace("Refresh Token: {RefreshToken}", tokens.RefreshToken);
-            Logger.LogTrace("Token Type: {TokenType}", tokens.TokenType);
-            Logger.LogTrace("Expires In: {ExpiresIn}", tokens.ExpiresIn);
-            Logger.LogTrace("Response: {TokenResponse}", tokens.Response.RootElement);
-            Logger.LogTrace("ID Token: {IdToken}", idToken);
+            Log.LogAccessToken(Logger, tokens.AccessToken);
+            Log.LogRefreshToken(Logger, tokens.RefreshToken);
+            Log.LogTokenType(Logger, tokens.TokenType);
+            Log.LogExpiresIn(Logger, tokens.ExpiresIn);
+            Log.LogTokenResponse(Logger, tokens.Response.RootElement);
+            Log.LogIdToken(Logger, idToken);
         }
 
         if (string.IsNullOrWhiteSpace(idToken))
@@ -363,5 +363,29 @@ public class AppleAuthenticationHandler : OAuthHandler<AppleAuthenticationOption
         {
             return HandleRequestResult.Fail("Failed to retrieve user information from remote server.", properties);
         }
+    }
+
+    private static partial class Log
+    {
+        [LoggerMessage(1, LogLevel.Information, "Creating ticket for Sign in with Apple.")]
+        internal static partial void CreatingTicket(ILogger logger);
+
+        [LoggerMessage(2, LogLevel.Trace, "Access Token: {AccessToken}", SkipEnabledCheck = true)]
+        internal static partial void LogAccessToken(ILogger logger, string? accessToken);
+
+        [LoggerMessage(3, LogLevel.Trace, "Refresh Token: {RefreshToken}", SkipEnabledCheck = true)]
+        internal static partial void LogRefreshToken(ILogger logger, string? refreshToken);
+
+        [LoggerMessage(4, LogLevel.Trace, "Token Type: {TokenType}", SkipEnabledCheck = true)]
+        internal static partial void LogTokenType(ILogger logger, string? tokenType);
+
+        [LoggerMessage(5, LogLevel.Trace, "Expires In: {ExpiresIn}", SkipEnabledCheck = true)]
+        internal static partial void LogExpiresIn(ILogger logger, string? expiresIn);
+
+        [LoggerMessage(6, LogLevel.Trace, "Response: {TokenResponse}", SkipEnabledCheck = true)]
+        internal static partial void LogTokenResponse(ILogger logger, JsonElement tokenResponse);
+
+        [LoggerMessage(7, LogLevel.Trace, "ID Token: {IdToken}", SkipEnabledCheck = true)]
+        internal static partial void LogIdToken(ILogger logger, string? idToken);
     }
 }

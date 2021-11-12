@@ -10,7 +10,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace AspNet.Security.OAuth.Apple.Internal;
 
-internal sealed class DefaultAppleIdTokenValidator : AppleIdTokenValidator
+internal sealed partial class DefaultAppleIdTokenValidator : AppleIdTokenValidator
 {
     private readonly ILogger _logger;
 
@@ -58,18 +58,18 @@ internal sealed class DefaultAppleIdTokenValidator : AppleIdTokenValidator
         }
         catch (Exception ex)
         {
-            _logger.LogError(
-                ex,
-                "Apple ID token validation failed for issuer {TokenIssuer} and audience {TokenAudience}.",
-                validationParameters.ValidIssuer,
-                validationParameters.ValidAudience);
-
-            _logger.LogTrace(
-                ex,
-                "Apple ID token {IdToken} could not be validated.",
-                context.IdToken);
-
+            Log.TokenValidationFailed(_logger, ex, validationParameters.ValidIssuer, validationParameters.ValidAudience);
+            Log.TokenInvalid(_logger, ex, context.IdToken);
             throw;
         }
+    }
+
+    private static partial class Log
+    {
+        [LoggerMessage(1, LogLevel.Error, "Apple ID token validation failed for issuer {TokenIssuer} and audience {TokenAudience}.")]
+        internal static partial void TokenValidationFailed(ILogger logger, Exception exception, string tokenIssuer, string tokenAudience);
+
+        [LoggerMessage(2, LogLevel.Trace, "Apple ID token {IdToken} could not be validated.")]
+        internal static partial void TokenInvalid(ILogger logger, Exception exception, string idToken);
     }
 }

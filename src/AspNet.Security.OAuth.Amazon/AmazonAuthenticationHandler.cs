@@ -17,7 +17,7 @@ namespace AspNet.Security.OAuth.Amazon;
 /// <summary>
 /// Defines a handler for authentication using Amazon.
 /// </summary>
-public class AmazonAuthenticationHandler : OAuthHandler<AmazonAuthenticationOptions>
+public partial class AmazonAuthenticationHandler : OAuthHandler<AmazonAuthenticationOptions>
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="AmazonAuthenticationHandler"/> class.
@@ -55,12 +55,7 @@ public class AmazonAuthenticationHandler : OAuthHandler<AmazonAuthenticationOpti
         using var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
         if (!response.IsSuccessStatusCode)
         {
-            Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
-                            "returned a {Status} response with the following payload: {Headers} {Body}.",
-                            /* Status: */ response.StatusCode,
-                            /* Headers: */ response.Headers.ToString(),
-                            /* Body: */ await response.Content.ReadAsStringAsync(Context.RequestAborted));
-
+            await Log.UserProfileErrorAsync(Logger, response, Context.RequestAborted);
             throw new HttpRequestException("An error occurred while retrieving the user profile from Amazon.");
         }
 
@@ -72,5 +67,24 @@ public class AmazonAuthenticationHandler : OAuthHandler<AmazonAuthenticationOpti
 
         await Events.CreatingTicket(context);
         return new AuthenticationTicket(context.Principal!, context.Properties, Scheme.Name);
+    }
+
+    private static partial class Log
+    {
+        internal static async Task UserProfileErrorAsync(ILogger logger, HttpResponseMessage response, CancellationToken cancellationToken)
+        {
+            UserProfileError(
+                logger,
+                response.StatusCode,
+                response.Headers.ToString(),
+                await response.Content.ReadAsStringAsync(cancellationToken));
+        }
+
+        [LoggerMessage(1, LogLevel.Error, "An error occurred while retrieving the user profile: the remote server returned a {Status} response with the following payload: {Headers} {Body}.")]
+        private static partial void UserProfileError(
+            ILogger logger,
+            System.Net.HttpStatusCode status,
+            string headers,
+            string body);
     }
 }

@@ -6,8 +6,6 @@
     <DefaultNetCoreTargetFramework>net6.0</DefaultNetCoreTargetFramework>
     <LangVersion>latest</LangVersion>
     <NoWarn>$(NoWarn);CS1591</NoWarn>
-    <!-- TODO Actually resolve this by using the logging source generator -->
-    <NoWarn>$(NoWarn);CA1848</NoWarn>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>portable</DebugType>

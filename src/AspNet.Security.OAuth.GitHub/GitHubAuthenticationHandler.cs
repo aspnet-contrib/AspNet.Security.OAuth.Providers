@@ -13,7 +13,7 @@ using Microsoft.Extensions.Options;
 
 namespace AspNet.Security.OAuth.GitHub;
 
-public class GitHubAuthenticationHandler : OAuthHandler<GitHubAuthenticationOptions>
+public partial class GitHubAuthenticationHandler : OAuthHandler<GitHubAuthenticationOptions>
 {
     public GitHubAuthenticationHandler(
         [NotNull] IOptionsMonitor<GitHubAuthenticationOptions> options,
@@ -36,12 +36,7 @@ public class GitHubAuthenticationHandler : OAuthHandler<GitHubAuthenticationOpti
         using var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
         if (!response.IsSuccessStatusCode)
         {
-            Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
-                            "returned a {Status} response with the following payload: {Headers} {Body}.",
-                            /* Status: */ response.StatusCode,
-                            /* Headers: */ response.Headers.ToString(),
-                            /* Body: */ await response.Content.ReadAsStringAsync(Context.RequestAborted));
-
+            await Log.UserProfileErrorAsync(Logger, response, Context.RequestAborted);
             throw new HttpRequestException("An error occurred while retrieving the user profile.");
         }
 
@@ -79,12 +74,7 @@ public class GitHubAuthenticationHandler : OAuthHandler<GitHubAuthenticationOpti
         using var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
         if (!response.IsSuccessStatusCode)
         {
-            Logger.LogWarning("An error occurred while retrieving the email address associated with the logged in user: " +
-                              "the remote server returned a {Status} response with the following payload: {Headers} {Body}.",
-                              /* Status: */ response.StatusCode,
-                              /* Headers: */ response.Headers.ToString(),
-                              /* Body: */ await response.Content.ReadAsStringAsync(Context.RequestAborted));
-
+            await Log.EmailAddressErrorAsync(Logger, response, Context.RequestAborted);
             throw new HttpRequestException("An error occurred while retrieving the email address associated to the user profile.");
         }
 
@@ -93,5 +83,40 @@ public class GitHubAuthenticationHandler : OAuthHandler<GitHubAuthenticationOpti
         return (from address in payload.RootElement.EnumerateArray()
                 where address.GetProperty("primary").GetBoolean()
                 select address.GetString("email")).FirstOrDefault();
+    }
+
+    private static partial class Log
+    {
+        internal static async Task UserProfileErrorAsync(ILogger logger, HttpResponseMessage response, CancellationToken cancellationToken)
+        {
+            UserProfileError(
+                logger,
+                response.StatusCode,
+                response.Headers.ToString(),
+                await response.Content.ReadAsStringAsync(cancellationToken));
+        }
+
+        internal static async Task EmailAddressErrorAsync(ILogger logger, HttpResponseMessage response, CancellationToken cancellationToken)
+        {
+            EmailAddressError(
+                logger,
+                response.StatusCode,
+                response.Headers.ToString(),
+                await response.Content.ReadAsStringAsync(cancellationToken));
+        }
+
+        [LoggerMessage(1, LogLevel.Error, "An error occurred while retrieving the user profile: the remote server returned a {Status} response with the following payload: {Headers} {Body}.")]
+        private static partial void UserProfileError(
+            ILogger logger,
+            System.Net.HttpStatusCode status,
+            string headers,
+            string body);
+
+        [LoggerMessage(2, LogLevel.Warning, "An error occurred while retrieving the email address associated with the logged in user: the remote server returned a {Status} response with the following payload: {Headers} {Body}.")]
+        private static partial void EmailAddressError(
+            ILogger logger,
+            System.Net.HttpStatusCode status,
+            string headers,
+            string body);
     }
 }

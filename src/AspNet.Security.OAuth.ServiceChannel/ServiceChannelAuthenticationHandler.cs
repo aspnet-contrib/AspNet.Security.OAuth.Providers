@@ -4,22 +4,16 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Text.Json;
-using System.Threading.Tasks;
-using JetBrains.Annotations;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace AspNet.Security.OAuth.ServiceChannel;
 
-public class ServiceChannelAuthenticationHandler : OAuthHandler<ServiceChannelAuthenticationOptions>
+public partial class ServiceChannelAuthenticationHandler : OAuthHandler<ServiceChannelAuthenticationOptions>
 {
     public ServiceChannelAuthenticationHandler(
         [NotNull] IOptionsMonitor<ServiceChannelAuthenticationOptions> options,
@@ -42,12 +36,7 @@ public class ServiceChannelAuthenticationHandler : OAuthHandler<ServiceChannelAu
         using var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
         if (!response.IsSuccessStatusCode)
         {
-            Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
-                            "returned a {Status} response with the following payload: {Headers} {Body}.",
-                            /* Status: */ response.StatusCode,
-                            /* Headers: */ response.Headers.ToString(),
-                            /* Body: */ await response.Content.ReadAsStringAsync(Context.RequestAborted));
-
+            await Log.UserProfileErrorAsync(Logger, response, Context.RequestAborted);
             throw new HttpRequestException("An error occurred while retrieving the user profile.");
         }
 
@@ -59,5 +48,24 @@ public class ServiceChannelAuthenticationHandler : OAuthHandler<ServiceChannelAu
 
         await Events.CreatingTicket(context);
         return new AuthenticationTicket(context.Principal!, context.Properties, Scheme.Name);
+    }
+
+    private static partial class Log
+    {
+        internal static async Task UserProfileErrorAsync(ILogger logger, HttpResponseMessage response, CancellationToken cancellationToken)
+        {
+            UserProfileError(
+                logger,
+                response.StatusCode,
+                response.Headers.ToString(),
+                await response.Content.ReadAsStringAsync(cancellationToken));
+        }
+
+        [LoggerMessage(1, LogLevel.Error, "An error occurred while retrieving the user profile: the remote server returned a {Status} response with the following payload: {Headers} {Body}.")]
+        private static partial void UserProfileError(
+            ILogger logger,
+            System.Net.HttpStatusCode status,
+            string headers,
+            string body);
     }
 }

@@ -4,6 +4,7 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using System.Net;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Text.Json;
@@ -14,7 +15,7 @@ using Microsoft.Extensions.Options;
 
 namespace AspNet.Security.OAuth.Weixin;
 
-public class WeixinAuthenticationHandler : OAuthHandler<WeixinAuthenticationOptions>
+public partial class WeixinAuthenticationHandler : OAuthHandler<WeixinAuthenticationOptions>
 {
     public WeixinAuthenticationHandler(
         [NotNull] IOptionsMonitor<WeixinAuthenticationOptions> options,
@@ -60,24 +61,17 @@ public class WeixinAuthenticationHandler : OAuthHandler<WeixinAuthenticationOpti
         using var response = await Backchannel.GetAsync(address);
         if (!response.IsSuccessStatusCode)
         {
-            Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
-                            "returned a {Status} response with the following payload: {Headers} {Body}.",
-                            /* Status: */ response.StatusCode,
-                            /* Headers: */ response.Headers.ToString(),
-                            /* Body: */ await response.Content.ReadAsStringAsync(Context.RequestAborted));
-
+            await Log.UserProfileErrorAsync(Logger, response, Context.RequestAborted);
             throw new HttpRequestException("An error occurred while retrieving user information.");
         }
 
-        using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
-        if (!string.IsNullOrEmpty(payload.RootElement.GetString("errcode")))
-        {
-            Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
-                            "returned a {Status} response with the following payload: {Headers} {Body}.",
-                            /* Status: */ response.StatusCode,
-                            /* Headers: */ response.Headers.ToString(),
-                            /* Body: */ await response.Content.ReadAsStringAsync(Context.RequestAborted));
+        var json = await response.Content.ReadAsStringAsync(Context.RequestAborted);
+        using var payload = JsonDocument.Parse(json);
 
+        var errorCode = payload.RootElement.GetString("errcode");
+        if (!string.IsNullOrEmpty(errorCode))
+        {
+            Log.UserProfileErrorCode(Logger, errorCode, response.Headers.ToString(), json);
             throw new HttpRequestException("An error occurred while retrieving user information.");
         }
 
@@ -102,24 +96,17 @@ public class WeixinAuthenticationHandler : OAuthHandler<WeixinAuthenticationOpti
         using var response = await Backchannel.GetAsync(address);
         if (!response.IsSuccessStatusCode)
         {
-            Logger.LogError("An error occurred while retrieving an access token: the remote server " +
-                            "returned a {Status} response with the following payload: {Headers} {Body}.",
-                            /* Status: */ response.StatusCode,
-                            /* Headers: */ response.Headers.ToString(),
-                            /* Body: */ await response.Content.ReadAsStringAsync(Context.RequestAborted));
-
+            await Log.ExchangeCodeErrorAsync(Logger, response, Context.RequestAborted);
             return OAuthTokenResponse.Failed(new Exception("An error occurred while retrieving an access token."));
         }
 
-        var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
-        if (!string.IsNullOrEmpty(payload.RootElement.GetString("errcode")))
-        {
-            Logger.LogError("An error occurred while retrieving an access token: the remote server " +
-                            "returned a {Status} response with the following payload: {Headers} {Body}.",
-                            /* Status: */ response.StatusCode,
-                            /* Headers: */ response.Headers.ToString(),
-                            /* Body: */ await response.Content.ReadAsStringAsync(Context.RequestAborted));
+        var json = await response.Content.ReadAsStringAsync(Context.RequestAborted);
+        var payload = JsonDocument.Parse(json);
 
+        var errorCode = payload.RootElement.GetString("errcode");
+        if (!string.IsNullOrEmpty(errorCode))
+        {
+            Log.ExchangeCodeErrorCode(Logger, errorCode, response.Headers.ToString(), json);
             return OAuthTokenResponse.Failed(new Exception("An error occurred while retrieving an access token."));
         }
 
@@ -161,5 +148,54 @@ public class WeixinAuthenticationHandler : OAuthHandler<WeixinAuthenticationOpti
     private bool IsWeixinAuthorizationEndpointInUse()
     {
         return string.Equals(Options.AuthorizationEndpoint, WeixinAuthenticationDefaults.AuthorizationEndpoint, StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static partial class Log
+    {
+        internal static async Task ExchangeCodeErrorAsync(ILogger logger, HttpResponseMessage response, CancellationToken cancellationToken)
+        {
+            ExchangeCodeError(
+                logger,
+                response.StatusCode,
+                response.Headers.ToString(),
+                await response.Content.ReadAsStringAsync(cancellationToken));
+        }
+
+        [LoggerMessage(2, LogLevel.Error, "An error occurred while retrieving an access token with error {ErrorCode}: {Headers} {Body}.")]
+        internal static partial void ExchangeCodeErrorCode(
+            ILogger logger,
+            string errorCode,
+            string headers,
+            string body);
+
+        internal static async Task UserProfileErrorAsync(ILogger logger, HttpResponseMessage response, CancellationToken cancellationToken)
+        {
+            UserProfileError(
+                logger,
+                response.StatusCode,
+                response.Headers.ToString(),
+                await response.Content.ReadAsStringAsync(cancellationToken));
+        }
+
+        [LoggerMessage(4, LogLevel.Error, "An error occurred while retrieving retrieving the user profile with error {ErrorCode}: {Headers} {Body}.")]
+        internal static partial void UserProfileErrorCode(
+            ILogger logger,
+            string errorCode,
+            string headers,
+            string body);
+
+        [LoggerMessage(1, LogLevel.Error, "An error occurred while retrieving an access token: the remote server returned a {Status} response with the following payload: {Headers} {Body}.")]
+        private static partial void ExchangeCodeError(
+            ILogger logger,
+            HttpStatusCode status,
+            string headers,
+            string body);
+
+        [LoggerMessage(3, LogLevel.Error, "An error occurred while retrieving the user profile: the remote server returned a {Status} response with the following payload: {Headers} {Body}.")]
+        private static partial void UserProfileError(
+            ILogger logger,
+            HttpStatusCode status,
+            string headers,
+            string body);
     }
 }

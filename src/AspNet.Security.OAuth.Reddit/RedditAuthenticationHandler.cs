@@ -15,7 +15,7 @@ using Microsoft.Extensions.Options;
 
 namespace AspNet.Security.OAuth.Reddit;
 
-public class RedditAuthenticationHandler : OAuthHandler<RedditAuthenticationOptions>
+public partial class RedditAuthenticationHandler : OAuthHandler<RedditAuthenticationOptions>
 {
     public RedditAuthenticationHandler(
         [NotNull] IOptionsMonitor<RedditAuthenticationOptions> options,
@@ -45,12 +45,7 @@ public class RedditAuthenticationHandler : OAuthHandler<RedditAuthenticationOpti
         using var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
         if (!response.IsSuccessStatusCode)
         {
-            Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
-                            "returned a {Status} response with the following payload: {Headers} {Body}.",
-                            /* Status: */ response.StatusCode,
-                            /* Headers: */ response.Headers.ToString(),
-                            /* Body: */ await response.Content.ReadAsStringAsync(Context.RequestAborted));
-
+            await Log.UserProfileErrorAsync(Logger, response, Context.RequestAborted);
             throw new HttpRequestException("An error occurred while retrieving the user profile.");
         }
 
@@ -106,12 +101,7 @@ public class RedditAuthenticationHandler : OAuthHandler<RedditAuthenticationOpti
         using var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
         if (!response.IsSuccessStatusCode)
         {
-            Logger.LogError("An error occurred while retrieving an access token: the remote server " +
-                            "returned a {Status} response with the following payload: {Headers} {Body}.",
-                            /* Status: */ response.StatusCode,
-                            /* Headers: */ response.Headers.ToString(),
-                            /* Body: */ await response.Content.ReadAsStringAsync(Context.RequestAborted));
-
+            await Log.ExchangeCodeErrorAsync(Logger, response, Context.RequestAborted);
             return OAuthTokenResponse.Failed(new Exception("An error occurred while retrieving an access token."));
         }
 
@@ -139,5 +129,40 @@ public class RedditAuthenticationHandler : OAuthHandler<RedditAuthenticationOpti
                 EscapeDataString(Options.ClientSecret))));
 
         return new AuthenticationHeaderValue("Basic", credentials);
+    }
+
+    private static partial class Log
+    {
+        internal static async Task UserProfileErrorAsync(ILogger logger, HttpResponseMessage response, CancellationToken cancellationToken)
+        {
+            UserProfileError(
+                logger,
+                response.StatusCode,
+                response.Headers.ToString(),
+                await response.Content.ReadAsStringAsync(cancellationToken));
+        }
+
+        internal static async Task ExchangeCodeErrorAsync(ILogger logger, HttpResponseMessage response, CancellationToken cancellationToken)
+        {
+            ExchangeCodeError(
+                logger,
+                response.StatusCode,
+                response.Headers.ToString(),
+                await response.Content.ReadAsStringAsync(cancellationToken));
+        }
+
+        [LoggerMessage(1, LogLevel.Error, "An error occurred while retrieving the user profile: the remote server returned a {Status} response with the following payload: {Headers} {Body}.")]
+        private static partial void UserProfileError(
+            ILogger logger,
+            System.Net.HttpStatusCode status,
+            string headers,
+            string body);
+
+        [LoggerMessage(2, LogLevel.Error, "An error occurred while retrieving an access token: the remote server returned a {Status} response with the following payload: {Headers} {Body}.")]
+        private static partial void ExchangeCodeError(
+            ILogger logger,
+            System.Net.HttpStatusCode status,
+            string headers,
+            string body);
     }
 }

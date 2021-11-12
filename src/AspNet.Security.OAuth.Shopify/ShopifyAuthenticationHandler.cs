@@ -5,6 +5,7 @@
  */
 
 using System.Globalization;
+using System.Net;
 using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
@@ -15,7 +16,7 @@ using Microsoft.Extensions.Options;
 
 namespace AspNet.Security.OAuth.Shopify;
 
-public class ShopifyAuthenticationHandler : OAuthHandler<ShopifyAuthenticationOptions>
+public partial class ShopifyAuthenticationHandler : OAuthHandler<ShopifyAuthenticationOptions>
 {
     public ShopifyAuthenticationHandler(
         [NotNull] IOptionsMonitor<ShopifyAuthenticationOptions> options,
@@ -41,12 +42,7 @@ public class ShopifyAuthenticationHandler : OAuthHandler<ShopifyAuthenticationOp
         using var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
         if (!response.IsSuccessStatusCode)
         {
-            Logger.LogError("An error occurred while retrieving the user profile: the remote server " +
-                            "returned a {Status} response with the following payload: {Headers} {Body}.",
-                            /* Status: */ response.StatusCode,
-                            /* Headers: */ response.Headers.ToString(),
-                            /* Body: */ await response.Content.ReadAsStringAsync(Context.RequestAborted));
-
+            await Log.UserProfileErrorAsync(Logger, response, Context.RequestAborted);
             throw new HttpRequestException("An error occurred while retrieving the shop profile.");
         }
 
@@ -96,7 +92,7 @@ public class ShopifyAuthenticationHandler : OAuthHandler<ShopifyAuthenticationOp
     {
         if (!properties.Items.TryGetValue(ShopifyAuthenticationDefaults.ShopNameAuthenticationProperty, out string? shopName))
         {
-            Logger.LogError("Shopify provider AuthenticationProperties must contain ShopNameAuthenticationProperty.");
+            Log.ShopNameMissing(Logger);
             throw new InvalidOperationException("Shopify provider AuthenticationProperties must contain ShopNameAuthenticationProperty.");
         }
 
@@ -160,7 +156,7 @@ public class ShopifyAuthenticationHandler : OAuthHandler<ShopifyAuthenticationOp
         }
         catch (Exception ex)
         {
-            Logger.LogError(ex, "An error occurred while exchanging tokens: {ErrorMessage}", ex.Message);
+            Log.TokenExchangeError(Logger, ex, ex.Message);
             return OAuthTokenResponse.Failed(ex);
         }
 
@@ -182,15 +178,52 @@ public class ShopifyAuthenticationHandler : OAuthHandler<ShopifyAuthenticationOp
 
         if (!response.IsSuccessStatusCode)
         {
-            Logger.LogError("An error occurred while retrieving an access token: the remote server returned a {Status} response with the following payload: {Headers} {Body}.",
-                            /* Status: */ response.StatusCode,
-                            /* Headers: */ response.Headers.ToString(),
-                            /* Body: */ await response.Content.ReadAsStringAsync(Context.RequestAborted));
-
+            await Log.ExchangeCodeErrorAsync(Logger, response, Context.RequestAborted);
             return OAuthTokenResponse.Failed(new Exception("An error occurred while retrieving an access token."));
         }
 
         var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
         return OAuthTokenResponse.Success(payload);
+    }
+
+    private static partial class Log
+    {
+        internal static async Task UserProfileErrorAsync(ILogger logger, HttpResponseMessage response, CancellationToken cancellationToken)
+        {
+            UserProfileError(
+                logger,
+                response.StatusCode,
+                response.Headers.ToString(),
+                await response.Content.ReadAsStringAsync(cancellationToken));
+        }
+
+        internal static async Task ExchangeCodeErrorAsync(ILogger logger, HttpResponseMessage response, CancellationToken cancellationToken)
+        {
+            ExchangeCodeError(
+                logger,
+                response.StatusCode,
+                response.Headers.ToString(),
+                await response.Content.ReadAsStringAsync(cancellationToken));
+        }
+
+        [LoggerMessage(3, LogLevel.Error, "An error occurred while exchanging tokens: {ErrorMessage}")]
+        internal static partial void TokenExchangeError(ILogger logger, Exception exception, string errorMessage);
+
+        [LoggerMessage(4, LogLevel.Error, "Shopify provider AuthenticationProperties must contain ShopNameAuthenticationProperty.")]
+        internal static partial void ShopNameMissing(ILogger logger);
+
+        [LoggerMessage(1, LogLevel.Error, "An error occurred while retrieving the user profile: the remote server returned a {Status} response with the following payload: {Headers} {Body}.")]
+        private static partial void UserProfileError(
+            ILogger logger,
+            HttpStatusCode status,
+            string headers,
+            string body);
+
+        [LoggerMessage(2, LogLevel.Error, "An error occurred while retrieving an access token: the remote server returned a {Status} response with the following payload: {Headers} {Body}.")]
+        private static partial void ExchangeCodeError(
+            ILogger logger,
+            HttpStatusCode status,
+            string headers,
+            string body);
     }
 }
