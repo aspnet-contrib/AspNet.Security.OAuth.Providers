@@ -4,47 +4,39 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using System.Security.Claims;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.Extensions.DependencyInjection;
-using Xunit;
-using Xunit.Abstractions;
+namespace AspNet.Security.OAuth.Foursquare;
 
-namespace AspNet.Security.OAuth.Foursquare
+public class FoursquareTests : OAuthTests<FoursquareAuthenticationOptions>
 {
-    public class FoursquareTests : OAuthTests<FoursquareAuthenticationOptions>
+    public FoursquareTests(ITestOutputHelper outputHelper)
     {
-        public FoursquareTests(ITestOutputHelper outputHelper)
-        {
-            OutputHelper = outputHelper;
-        }
+        OutputHelper = outputHelper;
+    }
 
-        public override string DefaultScheme => FoursquareAuthenticationDefaults.AuthenticationScheme;
+    public override string DefaultScheme => FoursquareAuthenticationDefaults.AuthenticationScheme;
 
-        protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
-        {
-            builder.AddFoursquare(options => ConfigureDefaults(builder, options));
-        }
+    protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
+    {
+        builder.AddFoursquare(options => ConfigureDefaults(builder, options));
+    }
 
-        [Theory]
-        [InlineData(ClaimTypes.NameIdentifier, "my-id")]
-        [InlineData(ClaimTypes.Name, "John Smith")]
-        [InlineData(ClaimTypes.Email, "john@john-smith.local")]
-        [InlineData(ClaimTypes.GivenName, "John")]
-        [InlineData(ClaimTypes.Surname, "Smith")]
-        [InlineData(ClaimTypes.Gender, "Male")]
-        [InlineData(ClaimTypes.Uri, "https://foursquare.local/john-smith")]
-        public async Task Can_Sign_In_Using_Foursquare(string claimType, string claimValue)
-        {
-            // Arrange
-            using var server = CreateTestServer();
+    [Theory]
+    [InlineData(ClaimTypes.NameIdentifier, "my-id")]
+    [InlineData(ClaimTypes.Name, "John Smith")]
+    [InlineData(ClaimTypes.Email, "john@john-smith.local")]
+    [InlineData(ClaimTypes.GivenName, "John")]
+    [InlineData(ClaimTypes.Surname, "Smith")]
+    [InlineData(ClaimTypes.Gender, "Male")]
+    [InlineData(ClaimTypes.Uri, "https://foursquare.local/john-smith")]
+    public async Task Can_Sign_In_Using_Foursquare(string claimType, string claimValue)
+    {
+        // Arrange
+        using var server = CreateTestServer();
 
-            // Act
-            var claims = await AuthenticateUserAsync(server);
+        // Act
+        var claims = await AuthenticateUserAsync(server);
 
-            // Assert
-            AssertClaim(claims, claimType, claimValue);
-        }
+        // Assert
+        AssertClaim(claims, claimType, claimValue);
     }
 }

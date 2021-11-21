@@ -4,64 +4,60 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using System.Linq;
 using System.Security.Claims;
 using System.Text.Json;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
 using static AspNet.Security.OAuth.Nextcloud.NextcloudAuthenticationConstants;
 
-namespace AspNet.Security.OAuth.Nextcloud
+namespace AspNet.Security.OAuth.Nextcloud;
+
+public class NextcloudAuthenticationOptions : OAuthOptions
 {
-    public class NextcloudAuthenticationOptions : OAuthOptions
+    public NextcloudAuthenticationOptions()
     {
-        public NextcloudAuthenticationOptions()
-        {
-            ClaimsIssuer = NextcloudAuthenticationDefaults.Issuer;
-            CallbackPath = NextcloudAuthenticationDefaults.CallbackPath;
+        ClaimsIssuer = NextcloudAuthenticationDefaults.Issuer;
+        CallbackPath = NextcloudAuthenticationDefaults.CallbackPath;
 
-            ClaimActions.MapCustomJson(ClaimTypes.NameIdentifier, user => GetDataString(user, "id"));
-            ClaimActions.MapCustomJson(Claims.Username, user => GetDataString(user, "id"));
-            ClaimActions.MapCustomJson(Claims.DisplayName, user => GetDataString(user, "displayname"));
-            ClaimActions.MapCustomJson(ClaimTypes.Email, user => GetDataString(user, "email"));
-            ClaimActions.MapCustomJson(Claims.IsEnabled, user => GetDataString(user, "enabled"));
-            ClaimActions.MapCustomJson(Claims.Language, user => GetDataString(user, "language"));
-            ClaimActions.MapCustomJson(Claims.Locale, user => GetDataString(user, "locale"));
-            ClaimActions.MapCustomJson(
-                Claims.Groups,
-                user =>
+        ClaimActions.MapCustomJson(ClaimTypes.NameIdentifier, user => GetDataString(user, "id"));
+        ClaimActions.MapCustomJson(Claims.Username, user => GetDataString(user, "id"));
+        ClaimActions.MapCustomJson(Claims.DisplayName, user => GetDataString(user, "displayname"));
+        ClaimActions.MapCustomJson(ClaimTypes.Email, user => GetDataString(user, "email"));
+        ClaimActions.MapCustomJson(Claims.IsEnabled, user => GetDataString(user, "enabled"));
+        ClaimActions.MapCustomJson(Claims.Language, user => GetDataString(user, "language"));
+        ClaimActions.MapCustomJson(Claims.Locale, user => GetDataString(user, "locale"));
+        ClaimActions.MapCustomJson(
+            Claims.Groups,
+            user =>
+            {
+                if (TryGetData(user, out var data) &&
+                    data.TryGetProperty("groups", out var groups))
                 {
-                    if (TryGetData(user, out var data) &&
-                        data.TryGetProperty("groups", out var groups))
-                    {
-                        return string.Join(",", groups.EnumerateArray().Select((p) => p.GetString()));
-                    }
+                    return string.Join(',', groups.EnumerateArray().Select((p) => p.GetString()));
+                }
 
-                    return null;
-                });
-        }
+                return null;
+            });
+    }
 
-        private static bool TryGetData(JsonElement user, out JsonElement data)
+    private static bool TryGetData(JsonElement user, out JsonElement data)
+    {
+        if (user.TryGetProperty("ocs", out var ocs) &&
+            ocs.TryGetProperty("data", out data))
         {
-            if (user.TryGetProperty("ocs", out var ocs) &&
-                ocs.TryGetProperty("data", out data))
-            {
-                return true;
-            }
-
-            data = default;
-            return false;
+            return true;
         }
 
-        private static string? GetDataString(JsonElement user, string key)
+        data = default;
+        return false;
+    }
+
+    private static string? GetDataString(JsonElement user, string key)
+    {
+        if (TryGetData(user, out var data))
         {
-            if (TryGetData(user, out var data))
-            {
-                return data.GetString(key);
-            }
-
-            return null;
+            return data.GetString(key);
         }
+
+        return null;
     }
 }

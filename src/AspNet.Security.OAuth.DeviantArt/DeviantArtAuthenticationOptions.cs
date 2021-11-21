@@ -5,31 +5,28 @@
  */
 
 using System.Security.Claims;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.OAuth;
 using static AspNet.Security.OAuth.DeviantArt.DeviantArtAuthenticationConstants;
 
-namespace AspNet.Security.OAuth.DeviantArt
+namespace AspNet.Security.OAuth.DeviantArt;
+
+/// <summary>
+/// Defines a set of options used by <see cref="DeviantArtAuthenticationHandler"/>.
+/// </summary>
+public class DeviantArtAuthenticationOptions : OAuthOptions
 {
-    /// <summary>
-    /// Defines a set of options used by <see cref="DeviantArtAuthenticationHandler"/>.
-    /// </summary>
-    public class DeviantArtAuthenticationOptions : OAuthOptions
+    public DeviantArtAuthenticationOptions()
     {
-        public DeviantArtAuthenticationOptions()
-        {
-            ClaimsIssuer = DeviantArtAuthenticationDefaults.Issuer;
-            CallbackPath = DeviantArtAuthenticationDefaults.CallbackPath;
+        ClaimsIssuer = DeviantArtAuthenticationDefaults.Issuer;
+        CallbackPath = DeviantArtAuthenticationDefaults.CallbackPath;
 
-            AuthorizationEndpoint = DeviantArtAuthenticationDefaults.AuthorizationEndpoint;
-            TokenEndpoint = DeviantArtAuthenticationDefaults.TokenEndpoint;
-            UserInformationEndpoint = DeviantArtAuthenticationDefaults.UserInformationEndpoint;
+        AuthorizationEndpoint = DeviantArtAuthenticationDefaults.AuthorizationEndpoint;
+        TokenEndpoint = DeviantArtAuthenticationDefaults.TokenEndpoint;
+        UserInformationEndpoint = DeviantArtAuthenticationDefaults.UserInformationEndpoint;
 
-            Scope.Add("user");
+        Scope.Add("user");
 
-            ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "userid");
-            ClaimActions.MapJsonKey(ClaimTypes.Name, "username");
-            ClaimActions.MapJsonKey(Claims.Username, "username");
-        }
+        ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "userid");
+        ClaimActions.MapJsonKey(ClaimTypes.Name, "username");
+        ClaimActions.MapJsonKey(Claims.Username, "username");
     }
 }

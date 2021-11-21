@@ -4,17 +4,16 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-namespace AspNet.Security.OAuth.Fitbit
+namespace AspNet.Security.OAuth.Fitbit;
+
+/// <summary>
+/// Contains constants specific to the <see cref="FitbitAuthenticationHandler"/>.
+/// </summary>
+public static class FitbitAuthenticationConstants
 {
-    /// <summary>
-    /// Contains constants specific to the <see cref="FitbitAuthenticationHandler"/>.
-    /// </summary>
-    public static class FitbitAuthenticationConstants
+    public static class Claims
     {
-        public static class Claims
-        {
-            public const string Avatar = "urn:fitbit:avatar";
-            public const string Avatar150 = "urn:fitbit:avatar150";
-        }
+        public const string Avatar = "urn:fitbit:avatar";
+        public const string Avatar150 = "urn:fitbit:avatar150";
     }
 }

@@ -4,25 +4,23 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 
-namespace AspNet.Security.OAuth.Apple
+namespace AspNet.Security.OAuth.Apple;
+
+/// <summary>
+/// Contains information about the current request.
+/// </summary>
+public class AppleGenerateClientSecretContext : BaseContext<AppleAuthenticationOptions>
 {
     /// <summary>
-    /// Contains information about the current request.
+    /// Creates a new instance of the <see cref="AppleGenerateClientSecretContext"/> class.
     /// </summary>
-    public class AppleGenerateClientSecretContext : BaseContext<AppleAuthenticationOptions>
+    /// <param name="context">The HTTP context.</param>
+    /// <param name="scheme">The authentication scheme.</param>
+    /// <param name="options">The authentication options associated with the scheme.</param>
+    public AppleGenerateClientSecretContext(HttpContext context, AuthenticationScheme scheme, AppleAuthenticationOptions options)
+        : base(context, scheme, options)
     {
-        /// <summary>
-        /// Creates a new instance of the <see cref="AppleGenerateClientSecretContext"/> class.
-        /// </summary>
-        /// <param name="context">The HTTP context.</param>
-        /// <param name="scheme">The authentication scheme.</param>
-        /// <param name="options">The authentication options associated with the scheme.</param>
-        public AppleGenerateClientSecretContext(HttpContext context, AuthenticationScheme scheme, AppleAuthenticationOptions options)
-            : base(context, scheme, options)
-        {
-        }
     }
 }

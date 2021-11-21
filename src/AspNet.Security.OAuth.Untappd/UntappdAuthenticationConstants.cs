@@ -1,19 +1,18 @@
-/*
+﻿/*
  * Licensed under the Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0)
  * See https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers
  * for more information concerning the license and the contributors participating to this project.
  */
 
-namespace AspNet.Security.OAuth.Untappd
+namespace AspNet.Security.OAuth.Untappd;
+
+/// <summary>
+/// Contains constants specific to the <see cref="UntappdAuthenticationHandler"/>.
+/// </summary>
+public static class UntappdAuthenticationConstants
 {
-    /// <summary>
-    /// Contains constants specific to the <see cref="UntappdAuthenticationHandler"/>.
-    /// </summary>
-    public static class UntappdAuthenticationConstants
+    public static class Claims
     {
-        public static class Claims
-        {
-            public const string Avatar = "urn:untappd:link";
-        }
+        public const string Avatar = "urn:untappd:link";
     }
 }

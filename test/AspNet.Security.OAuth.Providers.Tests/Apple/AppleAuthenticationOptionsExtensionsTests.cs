@@ -4,32 +4,28 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using Shouldly;
-using Xunit;
 
-namespace AspNet.Security.OAuth.Apple
+namespace AspNet.Security.OAuth.Apple;
+
+public static class AppleAuthenticationOptionsExtensionsTests
 {
-    public static class AppleAuthenticationOptionsExtensionsTests
+    [Fact]
+    public static void AddApple_Registers_Services()
     {
-        [Fact]
-        public static void AddApple_Registers_Services()
-        {
-            // Arrange
-            var services = new ServiceCollection();
+        // Arrange
+        var services = new ServiceCollection();
 
-            services.AddLogging()
-                    .AddAuthentication()
-                    .AddApple();
+        services.AddLogging()
+                .AddAuthentication()
+                .AddApple();
 
-            // Act
-            using var serviceProvider = services.BuildServiceProvider();
+        // Act
+        using var serviceProvider = services.BuildServiceProvider();
 
-            // Assert
-            serviceProvider.GetRequiredService<AppleAuthenticationHandler>().ShouldNotBeNull();
-            serviceProvider.GetRequiredService<IOptions<AppleAuthenticationOptions>>().ShouldNotBeNull();
-            serviceProvider.GetRequiredService<IPostConfigureOptions<AppleAuthenticationOptions>>().ShouldNotBeNull();
-        }
+        // Assert
+        serviceProvider.GetRequiredService<AppleAuthenticationHandler>().ShouldNotBeNull();
+        serviceProvider.GetRequiredService<IOptions<AppleAuthenticationOptions>>().ShouldNotBeNull();
+        serviceProvider.GetRequiredService<IPostConfigureOptions<AppleAuthenticationOptions>>().ShouldNotBeNull();
     }
 }

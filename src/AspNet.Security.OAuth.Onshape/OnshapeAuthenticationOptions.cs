@@ -5,28 +5,25 @@
  */
 
 using System.Security.Claims;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.OAuth;
 
-namespace AspNet.Security.OAuth.Onshape
+namespace AspNet.Security.OAuth.Onshape;
+
+/// <summary>
+/// Defines a set of options used by <see cref="OnshapeAuthenticationHandler"/>.
+/// </summary>
+public class OnshapeAuthenticationOptions : OAuthOptions
 {
-    /// <summary>
-    /// Defines a set of options used by <see cref="OnshapeAuthenticationHandler"/>.
-    /// </summary>
-    public class OnshapeAuthenticationOptions : OAuthOptions
+    public OnshapeAuthenticationOptions()
     {
-        public OnshapeAuthenticationOptions()
-        {
-            ClaimsIssuer = OnshapeAuthenticationDefaults.Issuer;
+        ClaimsIssuer = OnshapeAuthenticationDefaults.Issuer;
 
-            CallbackPath = OnshapeAuthenticationDefaults.CallbackPath;
+        CallbackPath = OnshapeAuthenticationDefaults.CallbackPath;
 
-            AuthorizationEndpoint = OnshapeAuthenticationDefaults.AuthorizationEndpoint;
-            TokenEndpoint = OnshapeAuthenticationDefaults.TokenEndpoint;
-            UserInformationEndpoint = OnshapeAuthenticationDefaults.UserInformationEndpoint;
+        AuthorizationEndpoint = OnshapeAuthenticationDefaults.AuthorizationEndpoint;
+        TokenEndpoint = OnshapeAuthenticationDefaults.TokenEndpoint;
+        UserInformationEndpoint = OnshapeAuthenticationDefaults.UserInformationEndpoint;
 
-            ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
-            ClaimActions.MapJsonKey(ClaimTypes.Name, "name");
-        }
+        ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
+        ClaimActions.MapJsonKey(ClaimTypes.Name, "name");
     }
 }

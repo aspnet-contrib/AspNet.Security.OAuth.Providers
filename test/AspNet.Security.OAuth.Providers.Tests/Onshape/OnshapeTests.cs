@@ -4,42 +4,34 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using System.Security.Claims;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.Extensions.DependencyInjection;
-using Xunit;
-using Xunit.Abstractions;
+namespace AspNet.Security.OAuth.Onshape;
 
-namespace AspNet.Security.OAuth.Onshape
+public class OnshapeTests : OAuthTests<OnshapeAuthenticationOptions>
 {
-    public class OnshapeTests : OAuthTests<OnshapeAuthenticationOptions>
+    public OnshapeTests(ITestOutputHelper outputHelper)
     {
-        public OnshapeTests(ITestOutputHelper outputHelper)
-        {
-            OutputHelper = outputHelper;
-        }
+        OutputHelper = outputHelper;
+    }
 
-        public override string DefaultScheme => OnshapeAuthenticationDefaults.AuthenticationScheme;
+    public override string DefaultScheme => OnshapeAuthenticationDefaults.AuthenticationScheme;
 
-        protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
-        {
-            builder.AddOnshape(options => ConfigureDefaults(builder, options));
-        }
+    protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
+    {
+        builder.AddOnshape(options => ConfigureDefaults(builder, options));
+    }
 
-        [Theory]
-        [InlineData(ClaimTypes.NameIdentifier, "my-id")]
-        [InlineData(ClaimTypes.Name, "John Smith")]
-        public async Task Can_Sign_In_Using_Onshape(string claimType, string claimValue)
-        {
-            // Arrange
-            using var server = CreateTestServer();
+    [Theory]
+    [InlineData(ClaimTypes.NameIdentifier, "my-id")]
+    [InlineData(ClaimTypes.Name, "John Smith")]
+    public async Task Can_Sign_In_Using_Onshape(string claimType, string claimValue)
+    {
+        // Arrange
+        using var server = CreateTestServer();
 
-            // Act
-            var claims = await AuthenticateUserAsync(server);
+        // Act
+        var claims = await AuthenticateUserAsync(server);
 
-            // Assert
-            AssertClaim(claims, claimType, claimValue);
-        }
+        // Assert
+        AssertClaim(claims, claimType, claimValue);
     }
 }

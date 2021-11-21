@@ -4,49 +4,45 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.OAuth;
+namespace AspNet.Security.OAuth.DeviantArt;
 
-namespace AspNet.Security.OAuth.DeviantArt
+/// <summary>
+/// Default values used by the DeviantArt authentication middleware.
+/// </summary>
+public static class DeviantArtAuthenticationDefaults
 {
     /// <summary>
-    /// Default values used by the DeviantArt authentication middleware.
+    /// Default value for <see cref="AuthenticationScheme.Name"/>.
     /// </summary>
-    public static class DeviantArtAuthenticationDefaults
-    {
-        /// <summary>
-        /// Default value for <see cref="AuthenticationScheme.Name"/>.
-        /// </summary>
-        public const string AuthenticationScheme = "DeviantArt";
+    public const string AuthenticationScheme = "DeviantArt";
 
-        /// <summary>
-        /// Default value for <see cref="AuthenticationScheme.DisplayName"/>.
-        /// </summary>
-        public const string DisplayName = "DeviantArt";
+    /// <summary>
+    /// Default value for <see cref="AuthenticationScheme.DisplayName"/>.
+    /// </summary>
+    public static readonly string DisplayName = "DeviantArt";
 
-        /// <summary>
-        /// Default value for <see cref="AuthenticationSchemeOptions.ClaimsIssuer"/>.
-        /// </summary>
-        public const string Issuer = "DeviantArt";
+    /// <summary>
+    /// Default value for <see cref="AuthenticationSchemeOptions.ClaimsIssuer"/>.
+    /// </summary>
+    public static readonly string Issuer = "DeviantArt";
 
-        /// <summary>
-        /// Default value for <see cref="RemoteAuthenticationOptions.CallbackPath"/>.
-        /// </summary>
-        public const string CallbackPath = "/signin-deviantart";
+    /// <summary>
+    /// Default value for <see cref="RemoteAuthenticationOptions.CallbackPath"/>.
+    /// </summary>
+    public static readonly string CallbackPath = "/signin-deviantart";
 
-        /// <summary>
-        /// Default value for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
-        /// </summary>
-        public const string AuthorizationEndpoint = "https://www.deviantart.com/oauth2/authorize";
+    /// <summary>
+    /// Default value for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
+    /// </summary>
+    public static readonly string AuthorizationEndpoint = "https://www.deviantart.com/oauth2/authorize";
 
-        /// <summary>
-        /// Default value for <see cref="OAuthOptions.TokenEndpoint"/>.
-        /// </summary>
-        public const string TokenEndpoint = "https://www.deviantart.com/oauth2/token";
+    /// <summary>
+    /// Default value for <see cref="OAuthOptions.TokenEndpoint"/>.
+    /// </summary>
+    public static readonly string TokenEndpoint = "https://www.deviantart.com/oauth2/token";
 
-        /// <summary>
-        /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
-        /// </summary>
-        public const string UserInformationEndpoint = "https://www.deviantart.com/api/v1/oauth2/user/whoami/";
-    }
+    /// <summary>
+    /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
+    /// </summary>
+    public static readonly string UserInformationEndpoint = "https://www.deviantart.com/api/v1/oauth2/user/whoami/";
 }

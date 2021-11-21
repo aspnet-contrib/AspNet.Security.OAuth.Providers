@@ -4,46 +4,38 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using System.Security.Claims;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.Extensions.DependencyInjection;
-using Xunit;
-using Xunit.Abstractions;
+namespace AspNet.Security.OAuth.Yahoo;
 
-namespace AspNet.Security.OAuth.Yahoo
+public class YahooTests : OAuthTests<YahooAuthenticationOptions>
 {
-    public class YahooTests : OAuthTests<YahooAuthenticationOptions>
+    public YahooTests(ITestOutputHelper outputHelper)
     {
-        public YahooTests(ITestOutputHelper outputHelper)
-        {
-            OutputHelper = outputHelper;
-        }
+        OutputHelper = outputHelper;
+    }
 
-        public override string DefaultScheme => YahooAuthenticationDefaults.AuthenticationScheme;
+    public override string DefaultScheme => YahooAuthenticationDefaults.AuthenticationScheme;
 
-        protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
-        {
-            builder.AddYahoo(options => ConfigureDefaults(builder, options));
-        }
+    protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
+    {
+        builder.AddYahoo(options => ConfigureDefaults(builder, options));
+    }
 
-        [Theory]
-        [InlineData(ClaimTypes.Email, "john@john-smith.local")]
-        [InlineData(ClaimTypes.NameIdentifier, "my-id")]
-        [InlineData(ClaimTypes.Name, "John Smith")]
-        [InlineData("urn:yahoo:familyname", "Smith")]
-        [InlineData("urn:yahoo:givenname", "John")]
-        [InlineData("urn:yahoo:picture", "https://www.yahoo.local/JohnSmith/image.png")]
-        public async Task Can_Sign_In_Using_Yahoo(string claimType, string claimValue)
-        {
-            // Arrange
-            using var server = CreateTestServer();
+    [Theory]
+    [InlineData(ClaimTypes.Email, "john@john-smith.local")]
+    [InlineData(ClaimTypes.NameIdentifier, "my-id")]
+    [InlineData(ClaimTypes.Name, "John Smith")]
+    [InlineData("urn:yahoo:familyname", "Smith")]
+    [InlineData("urn:yahoo:givenname", "John")]
+    [InlineData("urn:yahoo:picture", "https://www.yahoo.local/JohnSmith/image.png")]
+    public async Task Can_Sign_In_Using_Yahoo(string claimType, string claimValue)
+    {
+        // Arrange
+        using var server = CreateTestServer();
 
-            // Act
-            var claims = await AuthenticateUserAsync(server);
+        // Act
+        var claims = await AuthenticateUserAsync(server);
 
-            // Assert
-            AssertClaim(claims, claimType, claimValue);
-        }
+        // Assert
+        AssertClaim(claims, claimType, claimValue);
     }
 }

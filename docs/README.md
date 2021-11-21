@@ -47,12 +47,14 @@ covered by the section above.
 | BattleNet | **Required** | [Documentation](battlenet.md "BattleNet provider documentation") |
 | Bitbucket | _Optional_ | [Documentation](bitbucket.md "Bitbucket provider documentation") |
 | Discord | _Optional_ | [Documentation](discord.md "Discord provider documentation") |
+| eBay | **Required** | [Documentation](ebay.md "eBay provider documentation") |
 | EVEOnline | _Optional_ | [Documentation](eveonline.md "EVEOnline provider documentation") |
 | Foursquare | _Optional_ | [Documentation](foursquare.md "Foursquare provider documentation") |
 | GitHub | _Optional_ | [Documentation](github.md "GitHub provider documentation") |
 | Gitee | _Optional_ | [Documentation](gitee.md "Gitee provider documentation") |
 | Instagram | _Optional_ | [Documentation](instagram.md "Instagram provider documentation") |
 | Kloudless | _Optional_ | [Documentation](kloudless.md "Kloudless provider documentation") |
+| Line | _Optional_ | [Documentation](line.md "Line provider documentation") |
 | LinkedIn | _Optional_ | [Documentation](linkedin.md "LinkedIn provider documentation") |
 | Odnoklassniki | _Optional_ | [Documentation](odnoklassniki.md "Odnoklassniki provider documentation") |
 | Okta | **Required** | [Documentation](okta.md "Okta provider documentation") |
@@ -66,3 +68,4 @@ covered by the section above.
 | Twitch | _Optional_ | [Documentation](twitch.md "Twitch provider documentation") |
 | Vkontakte | _Optional_ | [Documentation](vkontakte.md "Vkontakte provider documentation") |
 | Weibo | _Optional_ | [Documentation](weibo.md "Weibo provider documentation") |
+| WorkWeixin (WeCom) | _Optional_ | [Documentation](workweixin.md "WorkWeixin provider documentation") |

@@ -4,17 +4,16 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-namespace AspNet.Security.OAuth.ExactOnline
+namespace AspNet.Security.OAuth.ExactOnline;
+
+/// <summary>
+/// Contains constants specific to the <see cref="ExactOnlineAuthenticationHandler"/>.
+/// </summary>
+public static class ExactOnlineAuthenticationConstants
 {
-    /// <summary>
-    /// Contains constants specific to the <see cref="ExactOnlineAuthenticationHandler"/>.
-    /// </summary>
-    public static class ExactOnlineAuthenticationConstants
+    public static class Claims
     {
-        public static class Claims
-        {
-            public const string Division = "urn:exactonline:division";
-            public const string Company = "urn:exactonline:company";
-        }
+        public const string Division = "urn:exactonline:division";
+        public const string Company = "urn:exactonline:company";
     }
 }

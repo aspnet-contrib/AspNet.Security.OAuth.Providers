@@ -13,19 +13,32 @@
       }
     },
     {
+      "uri": "https://untappd.com/oauth/authorize?client_id=my-client-id&redirect_uri=http%3A%2F%2Flocalhost%2Fsignin-untappd&client_secret=my-client-secret&code=a6ed8e7f-471f-44f1-903b-65946475f351",
+      "method": "GET",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "secret-access-token",
+        "token_type": "access",
+        "refresh_token": "secret-refresh-token",
+        "expires_in": "300"
+      }
+    },
+    {
       "uri": "https://api.untappd.com/v4/user/info",
       "contentFormat": "json",
       "contentJson": {
-        "user": {
-          "id": "my-id",
-          "first_name": "John",
-          "last_name": "Smith",
-          "user_name": "John Smith",
-          "email": "john@john-smith.local",
-          "url": "https://untappd.local/JohnSmith",
-          "user_avatar": "https://untappd.local/john-smith.png"
+        "response": {
+          "user": {
+            "id": "my-id",
+            "first_name": "John",
+            "last_name": "Smith",
+            "user_name": "John Smith",
+            "email": "john@john-smith.local",
+            "url": "https://untappd.local/JohnSmith",
+            "user_avatar": "https://untappd.local/john-smith.png"
+          }
         }
-      }
-    }
+       }
+     }
   ]
 }

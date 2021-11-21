@@ -1,0 +1,39 @@
+{
+  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
+  "items": [
+    {
+      "uri": "https://www.mixcloud.com/oauth/access_token",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "secret-access-token",
+        "token_type": "access",
+        "refresh_token": "secret-refresh-token",
+        "expires_in": "300"
+      }
+    },
+    {
+      "uri": "https://api.mixcloud.com/me?access_token=secret-access-token",
+      "contentFormat": "json",
+      "contentJson": {
+        "key": "my-id",
+        "username": "John-Smith",
+        "country": "GB",
+        "name": "John Q Smith",
+        "city": "London",
+        "biog": "I am John Smith.",
+        "url": "https://mixcloud.local/JohnSmith",
+        "pictures": {
+          "small": "https://mixcloud.local/images/small",
+          "thumbnail": "https://mixcloud.local/images/thumbnail",
+          "medium_mobile": "https://mixcloud.local/images/medium_mobile",
+          "medium": "https://mixcloud.local/images/medium",
+          "large": "https://mixcloud.local/images/large",
+          "320wx320h": "https://mixcloud.local/images/320wx320h",
+          "extra_large": "https://mixcloud.local/images/extra_large",
+          "640wx640h": "https://mixcloud.local/images/640wx640h"
+        }
+      }
+    }
+  ]
+}

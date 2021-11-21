@@ -4,20 +4,17 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using System;
+namespace AspNet.Security.OAuth.Yahoo;
 
-namespace AspNet.Security.OAuth.Yahoo
+/// <summary>
+/// Contains constants specific to the <see cref="YahooAuthenticationHandler"/>.
+/// </summary>
+public static class YahooAuthenticationConstants
 {
-    /// <summary>
-    /// Contains constants specific to the <see cref="YahooAuthenticationHandler"/>.
-    /// </summary>
-    public static class YahooAuthenticationConstants
+    public static class Claims
     {
-        public static class Claims
-        {
-            public const string FamilyName = "urn:yahoo:familyname";
-            public const string GivenName = "urn:yahoo:givenname";
-            public const string Picture = "urn:yahoo:picture";
-        }
+        public const string FamilyName = "urn:yahoo:familyname";
+        public const string GivenName = "urn:yahoo:givenname";
+        public const string Picture = "urn:yahoo:picture";
     }
 }

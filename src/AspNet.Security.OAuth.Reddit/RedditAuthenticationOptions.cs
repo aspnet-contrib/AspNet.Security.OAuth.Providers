@@ -5,39 +5,36 @@
  */
 
 using System.Security.Claims;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.OAuth;
 using static AspNet.Security.OAuth.Reddit.RedditAuthenticationConstants;
 
-namespace AspNet.Security.OAuth.Reddit
+namespace AspNet.Security.OAuth.Reddit;
+
+/// <summary>
+/// Defines a set of options used by <see cref="RedditAuthenticationHandler"/>.
+/// </summary>
+public class RedditAuthenticationOptions : OAuthOptions
 {
-    /// <summary>
-    /// Defines a set of options used by <see cref="RedditAuthenticationHandler"/>.
-    /// </summary>
-    public class RedditAuthenticationOptions : OAuthOptions
+    public RedditAuthenticationOptions()
     {
-        public RedditAuthenticationOptions()
-        {
-            ClaimsIssuer = RedditAuthenticationDefaults.Issuer;
+        ClaimsIssuer = RedditAuthenticationDefaults.Issuer;
 
-            CallbackPath = RedditAuthenticationDefaults.CallbackPath;
+        CallbackPath = RedditAuthenticationDefaults.CallbackPath;
 
-            AuthorizationEndpoint = RedditAuthenticationDefaults.AuthorizationEndpoint;
-            TokenEndpoint = RedditAuthenticationDefaults.TokenEndpoint;
-            UserInformationEndpoint = RedditAuthenticationDefaults.UserInformationEndpoint;
+        AuthorizationEndpoint = RedditAuthenticationDefaults.AuthorizationEndpoint;
+        TokenEndpoint = RedditAuthenticationDefaults.TokenEndpoint;
+        UserInformationEndpoint = RedditAuthenticationDefaults.UserInformationEndpoint;
 
-            Scope.Add("identity");
+        Scope.Add("identity");
 
-            ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
-            ClaimActions.MapJsonKey(ClaimTypes.Name, "name");
-            ClaimActions.MapJsonKey(Claims.Over18, "over_18");
-        }
-
-        /// <summary>
-        /// Gets or sets the User Agent string to pass when sending requests to Reddit.
-        /// Setting this option is strongly recommended to prevent request throttling.
-        /// For more information, visit https://github.com/reddit/reddit/wiki/API.
-        /// </summary>
-        public string? UserAgent { get; set; }
+        ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
+        ClaimActions.MapJsonKey(ClaimTypes.Name, "name");
+        ClaimActions.MapJsonKey(Claims.Over18, "over_18");
     }
+
+    /// <summary>
+    /// Gets or sets the User Agent string to pass when sending requests to Reddit.
+    /// Setting this option is strongly recommended to prevent request throttling.
+    /// For more information, visit https://github.com/reddit/reddit/wiki/API.
+    /// </summary>
+    public string? UserAgent { get; set; }
 }

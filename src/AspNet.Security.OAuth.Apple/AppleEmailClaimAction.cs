@@ -4,33 +4,31 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using System;
 using System.Security.Claims;
 using System.Text.Json;
 using Microsoft.AspNetCore.Authentication.OAuth.Claims;
 
-namespace AspNet.Security.OAuth.Apple
+namespace AspNet.Security.OAuth.Apple;
+
+internal sealed class AppleEmailClaimAction : ClaimAction
 {
-    internal sealed class AppleEmailClaimAction : ClaimAction
+    private readonly AppleAuthenticationOptions _options;
+
+    internal AppleEmailClaimAction(AppleAuthenticationOptions options)
+        : base(ClaimTypes.Email, ClaimValueTypes.String)
     {
-        private readonly AppleAuthenticationOptions _options;
+        _options = options;
+    }
 
-        internal AppleEmailClaimAction(AppleAuthenticationOptions options)
-            : base(ClaimTypes.Email, ClaimValueTypes.String)
+    public override void Run(JsonElement userData, ClaimsIdentity identity, string issuer)
+    {
+        if (!identity.HasClaim((p) => string.Equals(p.Type, ClaimType, StringComparison.OrdinalIgnoreCase)))
         {
-            _options = options;
-        }
+            var emailClaim = identity.FindFirst("email");
 
-        public override void Run(JsonElement userData, ClaimsIdentity identity, string issuer)
-        {
-            if (!identity.HasClaim((p) => string.Equals(p.Type, ClaimType, StringComparison.OrdinalIgnoreCase)))
+            if (!string.IsNullOrEmpty(emailClaim?.Value))
             {
-                var emailClaim = identity.FindFirst("email");
-
-                if (!string.IsNullOrEmpty(emailClaim?.Value))
-                {
-                    identity.AddClaim(new Claim(ClaimType, emailClaim.Value, ValueType, _options.ClaimsIssuer));
-                }
+                identity.AddClaim(new Claim(ClaimType, emailClaim.Value, ValueType, _options.ClaimsIssuer));
             }
         }
     }

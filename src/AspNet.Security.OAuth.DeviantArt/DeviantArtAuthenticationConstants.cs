@@ -4,16 +4,15 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-namespace AspNet.Security.OAuth.DeviantArt
+namespace AspNet.Security.OAuth.DeviantArt;
+
+/// <summary>
+/// Contains constants specific to the <see cref="DeviantArtAuthenticationHandler"/>.
+/// </summary>
+public static class DeviantArtAuthenticationConstants
 {
-    /// <summary>
-    /// Contains constants specific to the <see cref="DeviantArtAuthenticationHandler"/>.
-    /// </summary>
-    public static class DeviantArtAuthenticationConstants
+    public static class Claims
     {
-        public static class Claims
-        {
-            public const string Username = "urn:deviantart:name";
-        }
+        public const string Username = "urn:deviantart:name";
     }
 }

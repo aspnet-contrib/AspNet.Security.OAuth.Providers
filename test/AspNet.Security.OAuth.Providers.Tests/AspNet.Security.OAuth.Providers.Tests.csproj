@@ -2,15 +2,16 @@
 
   <PropertyGroup>
     <RootNamespace>AspNet.Security.OAuth</RootNamespace>
-    <TargetFrameworks>net5.0</TargetFrameworks>
+    <TargetFrameworks>$(DefaultNetCoreTargetFramework)</TargetFrameworks>
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
-    <NoWarn>$(NoWarn);CA1707;CA2227</NoWarn>
+    <NoWarn>$(NoWarn);CA1707;CA2227;CA5404</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
     <Content Include="xunit.runner.json;**\bundle.json" Exclude="bin\**\bundle.json" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="Apple\test.p8;Apple\test.pfx" CopyToOutputDirectory="PreserveNewest" />
+    <None Remove="**\bundle.json" />
   </ItemGroup>
 
   <ItemGroup>
@@ -29,6 +30,21 @@
     <PackageReference Include="Microsoft.AspNetCore.TestHost" />
     <PackageReference Include="Moq" />
     <PackageReference Include="Shouldly" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Microsoft.Extensions.DependencyInjection" />
+    <Using Include="Shouldly" />
+    <Using Include="System.Security.Claims" />
+    <Using Include="Xunit" />
+    <Using Include="Xunit.Abstractions" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Reflection.AssemblyMetadataAttribute">
+      <_Parameter1>SolutionRoot</_Parameter1>
+      <_Parameter2>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)../../'))</_Parameter2>
+    </AssemblyAttribute>
   </ItemGroup>
 
 </Project>

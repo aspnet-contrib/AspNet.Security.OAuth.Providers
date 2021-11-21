@@ -1,0 +1,85 @@
+{
+  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
+  "items": [
+    {
+      "uri": "https://login.servicechannel.com/oauth/token",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "secret-access-token",
+        "token_type": "access",
+        "refresh_token": "secret-refresh-token",
+        "expires_in": "300"
+      }
+    },
+    {
+      "uri": "https://api.servicechannel.com/v3/users/current/profile",
+      "contentFormat": "json",
+      "contentJson": {
+        "UserProfile": {
+          "Token": null,
+          "RoleID": 0,
+          "UserId": 4034383,
+          "AuthUserId": 2813193,
+          "SubscriberId": -1,
+          "SubscriberName": "",
+          "ProviderId": 2000156703,
+          "ProviderName": "uicccf",
+          "FullName": "",
+          "UserName": "john.smith@test.local",
+          "MaximumNteAmount": 0,
+          "Limits": {
+            "NteLimit": {
+              "Amount": 0,
+              "CurrencyId": 1
+            },
+            "ProposalLimit": {
+              "Amount": 0,
+              "CurrencyId": 1
+            },
+            "InvoiceLimit": {
+              "Amount": 0,
+              "CurrencyId": 1
+            }
+          },
+          "IsMultiSubscriber": false,
+          "IsPublicEmail": false,
+          "FirstTimeUser": false,
+          "AccountPayableManager": true,
+          "LocationAccess": "",
+          "DistrictAccess": "",
+          "RegionAccess": "",
+          "PropTeamEmail": "",
+          "Email": "john.smith@test.local",
+          "ParentSubscriberId": 0,
+          "ParentSubscriberName": "",
+          "UserHasInvoiceAccess": false,
+          "IsInternalProviderUser": false,
+          "SetupId": 0,
+          "DefaultScUserSetupId": 0,
+          "IsRedirectToDashboard": false,
+          "CobranderId": 1000,
+          "Microstrategy": 0,
+          "LoginUrl": "https://login.servicechannel.com",
+          "LogoUrl": "http://cdn.servicechannel.com/PRODUCTION/Content/logos/1000.png",
+          "IsUniversalUser": false,
+          "IsMLPUser": false,
+          "UserNameOrFullName": "john.smith@test.local",
+          "UserNameOrEmptyString": "",
+          "Stores": [],
+          "Regions": [],
+          "Districts": [],
+          "TradesPermitted": [],
+          "HasRestrictedAccess": false,
+          "HasLocationNoteRestrictions": false,
+          "Dashboards": [],
+          "Roles": [],
+          "EulaSigned": false
+        },
+        "Stores": {
+          "Stores": []
+        }
+      }
+    }
+  ]
+}

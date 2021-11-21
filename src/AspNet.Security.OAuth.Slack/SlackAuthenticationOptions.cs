@@ -5,37 +5,34 @@
  */
 
 using System.Security.Claims;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
 using static AspNet.Security.OAuth.Slack.SlackAuthenticationConstants;
 
-namespace AspNet.Security.OAuth.Slack
+namespace AspNet.Security.OAuth.Slack;
+
+/// <summary>
+/// Defines a set of options used by <see cref="SlackAuthenticationHandler"/>.
+/// </summary>
+public class SlackAuthenticationOptions : OAuthOptions
 {
-    /// <summary>
-    /// Defines a set of options used by <see cref="SlackAuthenticationHandler"/>.
-    /// </summary>
-    public class SlackAuthenticationOptions : OAuthOptions
+    public SlackAuthenticationOptions()
     {
-        public SlackAuthenticationOptions()
-        {
-            ClaimsIssuer = SlackAuthenticationDefaults.Issuer;
+        ClaimsIssuer = SlackAuthenticationDefaults.Issuer;
 
-            CallbackPath = SlackAuthenticationDefaults.CallbackPath;
+        CallbackPath = SlackAuthenticationDefaults.CallbackPath;
 
-            AuthorizationEndpoint = SlackAuthenticationDefaults.AuthorizationEndpoint;
-            TokenEndpoint = SlackAuthenticationDefaults.TokenEndpoint;
-            UserInformationEndpoint = SlackAuthenticationDefaults.UserInformationEndpoint;
+        AuthorizationEndpoint = SlackAuthenticationDefaults.AuthorizationEndpoint;
+        TokenEndpoint = SlackAuthenticationDefaults.TokenEndpoint;
+        UserInformationEndpoint = SlackAuthenticationDefaults.UserInformationEndpoint;
 
-            ClaimActions.MapCustomJson(ClaimTypes.NameIdentifier, user =>
-                string.Concat(user.GetProperty("team").GetString("id"), "|", user.GetProperty("user").GetString("id")));
-            ClaimActions.MapJsonSubKey(ClaimTypes.Name, "user", "name");
-            ClaimActions.MapJsonSubKey(ClaimTypes.Email, "user", "email");
-            ClaimActions.MapJsonSubKey(Claims.UserId, "user", "id");
-            ClaimActions.MapJsonSubKey(Claims.TeamId, "team", "id");
-            ClaimActions.MapJsonSubKey(Claims.TeamName, "team", "name");
+        ClaimActions.MapCustomJson(ClaimTypes.NameIdentifier, user =>
+            string.Concat(user.GetProperty("team").GetString("id"), "|", user.GetProperty("user").GetString("id")));
+        ClaimActions.MapJsonSubKey(ClaimTypes.Name, "user", "name");
+        ClaimActions.MapJsonSubKey(ClaimTypes.Email, "user", "email");
+        ClaimActions.MapJsonSubKey(Claims.UserId, "user", "id");
+        ClaimActions.MapJsonSubKey(Claims.TeamId, "team", "id");
+        ClaimActions.MapJsonSubKey(Claims.TeamName, "team", "name");
 
-            Scope.Add("identity.basic");
-        }
+        Scope.Add("identity.basic");
     }
 }

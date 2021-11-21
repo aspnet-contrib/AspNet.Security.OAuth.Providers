@@ -4,49 +4,41 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using System.Security.Claims;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.Extensions.DependencyInjection;
-using Xunit;
-using Xunit.Abstractions;
+namespace AspNet.Security.OAuth.Lichess;
 
-namespace AspNet.Security.OAuth.Lichess
+public class LichessTests : OAuthTests<LichessAuthenticationOptions>
 {
-    public class LichessTests : OAuthTests<LichessAuthenticationOptions>
+    public LichessTests(ITestOutputHelper outputHelper)
     {
-        public LichessTests(ITestOutputHelper outputHelper)
+        OutputHelper = outputHelper;
+    }
+
+    public override string DefaultScheme => LichessAuthenticationDefaults.AuthenticationScheme;
+
+    protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
+    {
+        builder.AddLichess(options =>
         {
-            OutputHelper = outputHelper;
-        }
+            ConfigureDefaults(builder, options);
+            options.Scope.Add(LichessAuthenticationConstants.Scopes.EmailRead);
+        });
+    }
 
-        public override string DefaultScheme => LichessAuthenticationDefaults.AuthenticationScheme;
+    [Theory]
+    [InlineData(ClaimTypes.NameIdentifier, "georges")]
+    [InlineData(ClaimTypes.Name, "Georges")]
+    [InlineData(ClaimTypes.Email, "abathur@mail.org")]
+    [InlineData(ClaimTypes.GivenName, "Thibault")]
+    [InlineData(ClaimTypes.Surname, "Duplessis")]
+    public async Task Can_Sign_In_Using_Lichess(string claimType, string claimValue)
+    {
+        // Arrange
+        using var server = CreateTestServer();
 
-        protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
-        {
-            builder.AddLichess(options =>
-            {
-                ConfigureDefaults(builder, options);
-                options.Scope.Add(LichessAuthenticationConstants.Scopes.EmailRead);
-            });
-        }
+        // Act
+        var claims = await AuthenticateUserAsync(server);
 
-        [Theory]
-        [InlineData(ClaimTypes.NameIdentifier, "georges")]
-        [InlineData(ClaimTypes.Name, "Georges")]
-        [InlineData(ClaimTypes.Email, "abathur@mail.org")]
-        [InlineData(ClaimTypes.GivenName, "Thibault")]
-        [InlineData(ClaimTypes.Surname, "Duplessis")]
-        public async Task Can_Sign_In_Using_Lichess(string claimType, string claimValue)
-        {
-            // Arrange
-            using var server = CreateTestServer();
-
-            // Act
-            var claims = await AuthenticateUserAsync(server);
-
-            // Assert
-            AssertClaim(claims, claimType, claimValue);
-        }
+        // Assert
+        AssertClaim(claims, claimType, claimValue);
     }
 }

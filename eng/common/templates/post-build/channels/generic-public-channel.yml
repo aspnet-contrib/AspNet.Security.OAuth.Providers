@@ -1,8 +1,10 @@
 parameters:
+  BARBuildId: ''
+  PromoteToChannelIds: ''
   artifactsPublishingAdditionalParameters: ''
   dependsOn:
   - Validate
-  publishInstallersAndChecksums: false
+  publishInstallersAndChecksums: true
   symbolPublishingAdditionalParameters: ''
   stageName: ''
   channelName: ''
@@ -21,11 +23,14 @@ stages:
   displayName: ${{ parameters.channelName }} Publishing
   jobs:
   - template: ../setup-maestro-vars.yml
+    parameters:
+      BARBuildId: ${{ parameters.BARBuildId }}
+      PromoteToChannelIds: ${{ parameters.PromoteToChannelIds }}
 
   - job: publish_symbols
     displayName: Symbol Publishing
     dependsOn: setupMaestroVars
-    condition: or(contains(dependencies.setupMaestroVars.outputs['setReleaseVars.InitialChannels'], format('[{0}]', ${{ parameters.channelId }} )), eq(dependencies.setupMaestroVars.outputs['setReleaseVars.PromoteToMaestroChannelId'], ${{ parameters.channelId }}))
+    condition: contains(dependencies.setupMaestroVars.outputs['setReleaseVars.TargetChannels'], format('[{0}]', ${{ parameters.channelId }} ))
     variables:
       - group: DotNet-Symbol-Server-Pats
       - name: AzDOProjectName
@@ -37,6 +42,9 @@ stages:
     pool:
       vmImage: 'windows-2019'
     steps:
+      - script: echo "##vso[task.logissue type=warning]Going forward, v2 Arcade publishing is no longer supported. Please read https://github.com/dotnet/arcade/blob/main/Documentation/CorePackages/Publishing.md for details, then contact dnceng if you have further questions."
+        displayName: Warn about v2 Arcade Publishing Usage
+
       - task: DownloadBuildArtifacts@0
         displayName: Download Build Assets
         continueOnError: true
@@ -51,6 +59,7 @@ stages:
             PdbArtifacts/**
             BlobArtifacts/**
           downloadPath: '$(Build.ArtifactStagingDirectory)'
+          checkDownloadedFiles: true
 
       # This is necessary whenever we want to publish/restore to an AzDO private feed
       # Since sdk-task.ps1 tries to restore packages we need to do this authentication here
@@ -99,10 +108,13 @@ stages:
         value: $[ dependencies.setupMaestroVars.outputs['setReleaseVars.AzDOBuildId'] ]
       - name: ArtifactsCategory
         value: ${{ coalesce(variables._DotNetArtifactsCategory, '.NETCore') }}
-    condition: or(contains(dependencies.setupMaestroVars.outputs['setReleaseVars.InitialChannels'], format('[{0}]', ${{ parameters.channelId }} )), eq(dependencies.setupMaestroVars.outputs['setReleaseVars.PromoteToMaestroChannelId'], ${{ parameters.channelId }}))
+    condition: contains(dependencies.setupMaestroVars.outputs['setReleaseVars.TargetChannels'], format('[{0}]', ${{ parameters.channelId }} ))
     pool:
       vmImage: 'windows-2019'
     steps:
+      - script: echo "##vso[task.logissue type=warning]Going forward, v2 Arcade publishing is no longer supported. Please read https://github.com/dotnet/arcade/blob/main/Documentation/CorePackages/Publishing.md for details, then contact dnceng if you have further questions."
+        displayName: Warn about v2 Arcade Publishing Usage
+
       - task: DownloadBuildArtifacts@0
         displayName: Download Build Assets
         continueOnError: true
@@ -118,6 +130,7 @@ stages:
             BlobArtifacts/**
             AssetManifests/**
           downloadPath: '$(Build.ArtifactStagingDirectory)'
+          checkDownloadedFiles: true
 
       - task: NuGetToolInstaller@1
         displayName: 'Install NuGet.exe'
@@ -137,6 +150,7 @@ stages:
         inputs:
           filePath: eng\common\sdk-task.ps1
           arguments: -task PublishArtifactsInManifest -restore -msbuildEngine dotnet
+            /p:PublishingInfraVersion=2
             /p:ArtifactsCategory=$(ArtifactsCategory)
             /p:IsStableBuild=$(IsStableBuild)
             /p:IsInternalBuild=$(IsInternalBuild)

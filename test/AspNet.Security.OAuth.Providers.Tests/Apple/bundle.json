@@ -3,6 +3,49 @@
   "items": [
     {
       "comment": "https://developer.apple.com/documentation/signinwithapplerestapi/fetch_apple_s_public_key_for_verifying_token_signature",
+      "uri": "https://appleid.apple.com/.well-known/openid-configuration",
+      "method": "GET",
+      "contentFormat": "json",
+      "contentJson": {
+        "issuer": "https://appleid.apple.com",
+        "authorization_endpoint": "https://appleid.apple.com/auth/authorize",
+        "token_endpoint": "https://appleid.apple.com/auth/token",
+        "jwks_uri": "https://appleid.apple.com/auth/keys",
+        "response_types_supported": [
+          "code"
+        ],
+        "response_modes_supported": [
+          "query",
+          "fragment",
+          "form_post"
+        ],
+        "subject_types_supported": [
+          "pairwise"
+        ],
+        "id_token_signing_alg_values_supported": [
+          "RS256"
+        ],
+        "scopes_supported": [
+          "openid",
+          "email",
+          "name"
+        ],
+        "token_endpoint_auth_methods_supported": [
+          "client_secret_post"
+        ],
+        "claims_supported": [
+          "aud",
+          "email",
+          "email_verified",
+          "exp",
+          "iat",
+          "iss",
+          "sub"
+        ]
+      }
+    },
+    {
+      "comment": "https://developer.apple.com/documentation/signinwithapplerestapi/fetch_apple_s_public_key_for_verifying_token_signature",
       "uri": "https://appleid.apple.com/auth/keys",
       "method": "GET",
       "contentFormat": "json",
@@ -43,31 +86,6 @@
         "id_token": "eyJraWQiOiI4NkQ4OEtmIiwiYWxnIjoiUlMyNTYifQ.eyJpc3MiOiJodHRwczovL2FwcGxlaWQuYXBwbGUuY29tIiwiYXVkIjoiY29tLm1hcnRpbmNvc3RlbGxvLnNpZ25pbndpdGhhcHBsZS50ZXN0LmNsaWVudCIsImV4cCI6MTU4NzIxMjE1OSwiaWF0IjoxNTg3MjExNTU5LCJzdWIiOiIwMDE4ODMuZmNjNzdiYTk3NTAwNDAyMzg5ZGY5NjgyMWFkOWM3OTAuMTUxNyIsImF0X2hhc2giOiJlT3kweTdYVmV4ZGt6Yzd1dURaaUNRIiwiZW1haWwiOiJ1c3Nja2VmdXo2QHByaXZhdGVyZWxheS5hcHBsZWlkLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjoidHJ1ZSIsImlzX3ByaXZhdGVfZW1haWwiOiJ0cnVlIiwiYXV0aF90aW1lIjoxNTg3MjExNTU2LCJub25jZV9zdXBwb3J0ZWQiOnRydWV9.ZPUgcJlCneXLNZiFDraKpWVtFPSyoxkWgrMlTZ8tM3IBBXOmQFbb75OBQC-JbZHciry96y-sy33O_fF8gaudmInH1EorDIsfryafNd0POD-8pJWY9PiGrGx50c_1DLIIIsYEm0p-JEIfQpzJ-lIWpz9ujv4ChmZx-t3PzPzzZOVlC0q1pATqJaxhY_ntL_u98BZnfAKxzqEhb5q-1TmhtHFaEtAtsd2gGm6PTaM5N-2HXQ8Bh_BlJMH3u_KakFNJRhaezlVIlLtmgxM4VjrxUeIqba-fwBlfGXPonA_xZIHg71ZujJSlYJp3yWW3Kjsb4rUUUff7yEQF5A1LVnghwA",
         "refresh_token": "secret-refresh-token",
         "token_type": "bearer"
-      }
-    },
-    {
-      "uri": "https://appleid.apple.local/auth/keys/none",
-      "method": "GET",
-      "contentFormat": "json",
-      "contentJson": {
-        "keys": []
-      }
-    },
-    {
-      "uri": "https://appleid.apple.local/auth/keys/invalid",
-      "method": "GET",
-      "contentFormat": "json",
-      "contentJson": {
-        "keys": [
-          {
-            "kty": "RSA",
-            "kid": "AIDOPK1",
-            "use": "sig",
-            "alg": "RS256",
-            "n": "lxrwmuYSAsTfn-lUu4goZSXBD9ackM9OJmwUVQHmbZo6GW4Fu_auUdN5zI7Y1dEDfgt7m7QXWbHuMD01HLnD4eRtY-RNwCWdjNfEaZ_esUPY3OVMrNDI15Ns13xspWS3q-13kdGv9jHI28P87RvMpjz_JCpQ5IM44oSyRnYtVJO-320SB8E2Bw92pmrenbp67KRUzTEVfGU4-obP5RZ09OxvCr1io4KJvEOjDJuuoClF66AT72WymtoMdwzUmhINjR0XSqK6H0MdWsjw7ysyd_JhmqX5CAaT9Pgi0J8lU_pcl215oANqjy7Ob-VMhug9eGyxAWVfu_1u6QJKePlE-w",
-            "e": "AQAB"
-          }
-        ]
       }
     },
     {

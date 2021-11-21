@@ -4,44 +4,36 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using System.Security.Claims;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.Extensions.DependencyInjection;
-using Xunit;
-using Xunit.Abstractions;
+namespace AspNet.Security.OAuth.VisualStudio;
 
-namespace AspNet.Security.OAuth.VisualStudio
+public class VisualStudioTests : OAuthTests<VisualStudioAuthenticationOptions>
 {
-    public class VisualStudioTests : OAuthTests<VisualStudioAuthenticationOptions>
+    public VisualStudioTests(ITestOutputHelper outputHelper)
     {
-        public VisualStudioTests(ITestOutputHelper outputHelper)
-        {
-            OutputHelper = outputHelper;
-        }
+        OutputHelper = outputHelper;
+    }
 
-        public override string DefaultScheme => VisualStudioAuthenticationDefaults.AuthenticationScheme;
+    public override string DefaultScheme => VisualStudioAuthenticationDefaults.AuthenticationScheme;
 
-        protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
-        {
-            builder.AddVisualStudio(options => ConfigureDefaults(builder, options));
-        }
+    protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
+    {
+        builder.AddVisualStudio(options => ConfigureDefaults(builder, options));
+    }
 
-        [Theory]
-        [InlineData(ClaimTypes.NameIdentifier, "my-id")]
-        [InlineData(ClaimTypes.Name, "John Smith")]
-        [InlineData(ClaimTypes.Email, "john@john-smith.local")]
-        [InlineData(ClaimTypes.GivenName, "John")]
-        public async Task Can_Sign_In_Using_Visual_Studio(string claimType, string claimValue)
-        {
-            // Arrange
-            using var server = CreateTestServer();
+    [Theory]
+    [InlineData(ClaimTypes.NameIdentifier, "my-id")]
+    [InlineData(ClaimTypes.Name, "John Smith")]
+    [InlineData(ClaimTypes.Email, "john@john-smith.local")]
+    [InlineData(ClaimTypes.GivenName, "John")]
+    public async Task Can_Sign_In_Using_Visual_Studio(string claimType, string claimValue)
+    {
+        // Arrange
+        using var server = CreateTestServer();
 
-            // Act
-            var claims = await AuthenticateUserAsync(server);
+        // Act
+        var claims = await AuthenticateUserAsync(server);
 
-            // Assert
-            AssertClaim(claims, claimType, claimValue);
-        }
+        // Assert
+        AssertClaim(claims, claimType, claimValue);
     }
 }

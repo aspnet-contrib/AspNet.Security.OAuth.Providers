@@ -1,31 +1,28 @@
-/*
+﻿/*
  * Licensed under the Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0)
  * See https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers
  * for more information concerning the license and the contributors participating to this project.
  */
 
 using System.Security.Claims;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.OAuth;
 
-namespace AspNet.Security.OAuth.HealthGraph
+namespace AspNet.Security.OAuth.HealthGraph;
+
+/// <summary>
+/// Defines a set of options used by <see cref="HealthGraphAuthenticationHandler"/>.
+/// </summary>
+public class HealthGraphAuthenticationOptions : OAuthOptions
 {
-    /// <summary>
-    /// Defines a set of options used by <see cref="HealthGraphAuthenticationHandler"/>.
-    /// </summary>
-    public class HealthGraphAuthenticationOptions : OAuthOptions
+    public HealthGraphAuthenticationOptions()
     {
-        public HealthGraphAuthenticationOptions()
-        {
-            ClaimsIssuer = HealthGraphAuthenticationDefaults.Issuer;
+        ClaimsIssuer = HealthGraphAuthenticationDefaults.Issuer;
 
-            CallbackPath = HealthGraphAuthenticationDefaults.CallbackPath;
+        CallbackPath = HealthGraphAuthenticationDefaults.CallbackPath;
 
-            AuthorizationEndpoint = HealthGraphAuthenticationDefaults.AuthorizationEndpoint;
-            TokenEndpoint = HealthGraphAuthenticationDefaults.TokenEndpoint;
-            UserInformationEndpoint = HealthGraphAuthenticationDefaults.UserInformationEndpoint;
+        AuthorizationEndpoint = HealthGraphAuthenticationDefaults.AuthorizationEndpoint;
+        TokenEndpoint = HealthGraphAuthenticationDefaults.TokenEndpoint;
+        UserInformationEndpoint = HealthGraphAuthenticationDefaults.UserInformationEndpoint;
 
-            ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "userID");
-        }
+        ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "userID");
     }
 }

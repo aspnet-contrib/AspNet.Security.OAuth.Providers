@@ -1,34 +1,33 @@
-/*
+﻿/*
  * Licensed under the Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0)
  * See https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using System;
-using Microsoft.AspNetCore.Authentication.OAuth;
+namespace AspNet.Security.OAuth.EVEOnline;
 
-namespace AspNet.Security.OAuth.EVEOnline
+/// <summary>
+/// Defines a set of options used by <see cref="EVEOnlineAuthenticationHandler"/>.
+/// </summary>
+public class EVEOnlineAuthenticationOptions : OAuthOptions
 {
-    /// <summary>
-    /// Defines a set of options used by <see cref="EVEOnlineAuthenticationHandler"/>.
-    /// </summary>
-    public class EVEOnlineAuthenticationOptions : OAuthOptions
+    public EVEOnlineAuthenticationOptions()
     {
-        public EVEOnlineAuthenticationOptions()
-        {
-            ClaimsIssuer = EVEOnlineAuthenticationDefaults.Issuer;
-            CallbackPath = EVEOnlineAuthenticationDefaults.CallbackPath;
+        ClaimsIssuer = EVEOnlineAuthenticationDefaults.Issuer;
+        CallbackPath = EVEOnlineAuthenticationDefaults.CallbackPath;
 
-            Server = EVEOnlineAuthenticationServer.Tranquility;
-        }
+        Server = EVEOnlineAuthenticationServer.Tranquility;
+    }
 
-        /// <summary>
-        /// Sets the server used when communicating with EVE Online
-        /// (by default, <see cref="EVEOnlineAuthenticationServer.Tranquility"/>).
-        /// </summary>
-        public EVEOnlineAuthenticationServer Server
+    /// <summary>
+    /// Sets the server used when communicating with EVE Online
+    /// (by default, <see cref="EVEOnlineAuthenticationServer.Tranquility"/>).
+    /// </summary>
+    public EVEOnlineAuthenticationServer Server
+    {
+        set
         {
-            set
+            switch (value)
             {
                 switch (value)
                 {

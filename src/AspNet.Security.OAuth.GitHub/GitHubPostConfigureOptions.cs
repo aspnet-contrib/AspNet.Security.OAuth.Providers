@@ -4,43 +4,40 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using System;
-using JetBrains.Annotations;
 using Microsoft.Extensions.Options;
 using static AspNet.Security.OAuth.GitHub.GitHubAuthenticationDefaults;
 
-namespace AspNet.Security.OAuth.GitHub
+namespace AspNet.Security.OAuth.GitHub;
+
+/// <summary>
+/// A class used to setup defaults for all <see cref="GitHubAuthenticationOptions"/>.
+/// </summary>
+public class GitHubPostConfigureOptions : IPostConfigureOptions<GitHubAuthenticationOptions>
 {
-    /// <summary>
-    /// A class used to setup defaults for all <see cref="GitHubAuthenticationOptions"/>.
-    /// </summary>
-    public class GitHubPostConfigureOptions : IPostConfigureOptions<GitHubAuthenticationOptions>
+    /// <inheritdoc/>
+    public void PostConfigure(
+        [NotNull] string name,
+        [NotNull] GitHubAuthenticationOptions options)
     {
-        /// <inheritdoc/>
-        public void PostConfigure(
-            [NotNull] string name,
-            [NotNull] GitHubAuthenticationOptions options)
+        if (!string.IsNullOrWhiteSpace(options.EnterpriseDomain))
         {
-            if (!string.IsNullOrWhiteSpace(options.EnterpriseDomain))
-            {
-                options.AuthorizationEndpoint = CreateUrl(options.EnterpriseDomain, AuthorizationEndpointPath);
-                options.TokenEndpoint = CreateUrl(options.EnterpriseDomain, TokenEndpointPath);
-                options.UserEmailsEndpoint = CreateUrl(options.EnterpriseDomain, EnterpriseApiPath + UserEmailsEndpointPath);
-                options.UserInformationEndpoint = CreateUrl(options.EnterpriseDomain, EnterpriseApiPath + UserInformationEndpointPath);
-            }
+            options.AuthorizationEndpoint = CreateUrl(options.EnterpriseDomain, AuthorizationEndpointPath);
+            options.TokenEndpoint = CreateUrl(options.EnterpriseDomain, TokenEndpointPath);
+            options.UserEmailsEndpoint = CreateUrl(options.EnterpriseDomain, EnterpriseApiPath + UserEmailsEndpointPath);
+            options.UserInformationEndpoint = CreateUrl(options.EnterpriseDomain, EnterpriseApiPath + UserInformationEndpointPath);
         }
+    }
 
-        private static string CreateUrl(string domain, string path)
+    private static string CreateUrl(string domain, string path)
+    {
+        // Enforce use of HTTPS
+        var builder = new UriBuilder(domain)
         {
-            // Enforce use of HTTPS
-            var builder = new UriBuilder(domain)
-            {
-                Path = path,
-                Port = -1,
-                Scheme = "https",
-            };
+            Path = path,
+            Port = -1,
+            Scheme = Uri.UriSchemeHttps,
+        };
 
-            return builder.Uri.ToString();
-        }
+        return builder.Uri.ToString();
     }
 }

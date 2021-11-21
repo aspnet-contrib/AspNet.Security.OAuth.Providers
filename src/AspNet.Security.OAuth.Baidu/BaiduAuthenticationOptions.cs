@@ -6,36 +6,33 @@
 
 using System.Net;
 using System.Security.Claims;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
 
-namespace AspNet.Security.OAuth.Baidu
+namespace AspNet.Security.OAuth.Baidu;
+
+/// <summary>
+/// Defines a set of options used by <see cref="BaiduAuthenticationHandler"/>.
+/// </summary>
+public class BaiduAuthenticationOptions : OAuthOptions
 {
-    /// <summary>
-    /// Defines a set of options used by <see cref="BaiduAuthenticationHandler"/>.
-    /// </summary>
-    public class BaiduAuthenticationOptions : OAuthOptions
+    public BaiduAuthenticationOptions()
     {
-        public BaiduAuthenticationOptions()
-        {
-            ClaimsIssuer = BaiduAuthenticationDefaults.Issuer;
-            CallbackPath = BaiduAuthenticationDefaults.CallbackPath;
+        ClaimsIssuer = BaiduAuthenticationDefaults.Issuer;
+        CallbackPath = BaiduAuthenticationDefaults.CallbackPath;
 
-            AuthorizationEndpoint = BaiduAuthenticationDefaults.AuthorizationEndpoint;
-            TokenEndpoint = BaiduAuthenticationDefaults.TokenEndpoint;
-            UserInformationEndpoint = BaiduAuthenticationDefaults.UserInformationEndpoint;
+        AuthorizationEndpoint = BaiduAuthenticationDefaults.AuthorizationEndpoint;
+        TokenEndpoint = BaiduAuthenticationDefaults.TokenEndpoint;
+        UserInformationEndpoint = BaiduAuthenticationDefaults.UserInformationEndpoint;
 
-            ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "uid");
-            ClaimActions.MapJsonKey(ClaimTypes.Name, "uname");
-            ClaimActions.MapCustomJson(BaiduAuthenticationConstants.Claims.Portrait,
-                user =>
-                {
-                    string? portrait = user.GetString("portrait");
-                    return string.IsNullOrWhiteSpace(portrait) ?
-                        null :
-                        $"https://tb.himg.baidu.com/sys/portrait/item/{WebUtility.UrlEncode(portrait)}";
-                });
-        }
+        ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "uid");
+        ClaimActions.MapJsonKey(ClaimTypes.Name, "uname");
+        ClaimActions.MapCustomJson(BaiduAuthenticationConstants.Claims.Portrait,
+            user =>
+            {
+                string? portrait = user.GetString("portrait");
+                return string.IsNullOrWhiteSpace(portrait) ?
+                    null :
+                    $"https://tb.himg.baidu.com/sys/portrait/item/{WebUtility.UrlEncode(portrait)}";
+            });
     }
 }

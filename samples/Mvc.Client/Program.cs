@@ -4,19 +4,15 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
+namespace Mvc.Client;
 
-namespace Mvc.Client
+public static class Program
 {
-    public static class Program
-    {
-        public static void Main(string[] args) =>
-            CreateHostBuilder(args).Build().Run();
+    public static void Main(string[] args) =>
+        CreateHostBuilder(args).Build().Run();
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(
-                    (webBuilder) => webBuilder.UseStartup<Startup>());
-    }
+    public static IHostBuilder CreateHostBuilder(string[] args) =>
+        Host.CreateDefaultBuilder(args)
+            .ConfigureWebHostDefaults(
+                (webBuilder) => webBuilder.UseStartup<Startup>());
 }

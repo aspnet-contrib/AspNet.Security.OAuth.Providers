@@ -4,12 +4,11 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-namespace AspNet.Security.OAuth.Infrastructure
+namespace AspNet.Security.OAuth.Infrastructure;
+
+/// <summary>
+/// A stub class representing the program class for the test application.
+/// </summary>
+public sealed class Program
 {
-    /// <summary>
-    /// A stub class representing the program class for the test application.
-    /// </summary>
-    public sealed class Program
-    {
-    }
 }
