@@ -4,6 +4,8 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using Microsoft.IdentityModel.JsonWebTokens;
+
 namespace AspNet.Security.OAuth.EVEOnline;
 
 /// <summary>
@@ -20,6 +22,11 @@ public class EVEOnlineAuthenticationOptions : OAuthOptions
     }
 
     /// <summary>
+    /// Gets or sets the optional <see cref="JsonWebTokenHandler"/> to use.
+    /// </summary>
+    public JsonWebTokenHandler SecurityTokenHandler { get; set; } = default!;
+
+    /// <summary>
     /// Sets the server used when communicating with EVE Online
     /// (by default, <see cref="EVEOnlineAuthenticationServer.Tranquility"/>).
     /// </summary>
@@ -29,21 +36,18 @@ public class EVEOnlineAuthenticationOptions : OAuthOptions
         {
             switch (value)
             {
-                switch (value)
-                {
-                    case EVEOnlineAuthenticationServer.Tranquility:
-                        AuthorizationEndpoint = EVEOnlineAuthenticationDefaults.Tranquility.AuthorizationEndpoint;
-                        TokenEndpoint = EVEOnlineAuthenticationDefaults.Tranquility.TokenEndpoint;
-                        break;
+                case EVEOnlineAuthenticationServer.Tranquility:
+                    AuthorizationEndpoint = EVEOnlineAuthenticationDefaults.Tranquility.AuthorizationEndpoint;
+                    TokenEndpoint = EVEOnlineAuthenticationDefaults.Tranquility.TokenEndpoint;
+                    break;
 
-                    case EVEOnlineAuthenticationServer.Singularity:
-                        AuthorizationEndpoint = EVEOnlineAuthenticationDefaults.Singularity.AuthorizationEndpoint;
-                        TokenEndpoint = EVEOnlineAuthenticationDefaults.Singularity.TokenEndpoint;
-                        break;
+                case EVEOnlineAuthenticationServer.Singularity:
+                    AuthorizationEndpoint = EVEOnlineAuthenticationDefaults.Singularity.AuthorizationEndpoint;
+                    TokenEndpoint = EVEOnlineAuthenticationDefaults.Singularity.TokenEndpoint;
+                    break;
 
-                    default:
-                        throw new ArgumentException($"Server '{value}' is unsupported.", nameof(value));
-                }
+                default:
+                    throw new ArgumentException($"Server '{value}' is unsupported.", nameof(value));
             }
         }
     }

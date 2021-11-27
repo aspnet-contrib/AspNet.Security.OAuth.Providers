@@ -4,12 +4,9 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using System;
-using System.IdentityModel.Tokens.Jwt;
 using AspNet.Security.OAuth.EVEOnline;
-using JetBrains.Annotations;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Options;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -74,7 +71,7 @@ public static class EVEOnlineAuthenticationExtensions
         [CanBeNull] string caption,
         [NotNull] Action<EVEOnlineAuthenticationOptions> configuration)
     {
-        builder.Services.TryAddSingleton<JwtSecurityTokenHandler>();
+        builder.Services.TryAddSingleton<IPostConfigureOptions<EVEOnlineAuthenticationOptions>, EVEOnlinePostConfigureOptions>();
 
         return builder.AddOAuth<EVEOnlineAuthenticationOptions, EVEOnlineAuthenticationHandler>(scheme, caption, configuration);
     }

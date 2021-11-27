@@ -31,79 +31,41 @@ public static class EVEOnlineAuthenticationDefaults
     /// </summary>
     public static readonly string CallbackPath = "/signin-eveonline";
 
-    /// <summary>
-    /// Default values for the Tranquility (live) server.
-    /// </summary>
     public static class Tranquility
     {
         /// <summary>
         /// Default value for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
         /// </summary>
-        public static readonly string AuthorizationEndpoint = "https://login.eveonline.com/oauth/authorize";
+        public static readonly string AuthorizationEndpoint = "https://login.eveonline.com/v2/oauth/authorize";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.TokenEndpoint"/>.
         /// </summary>
-        public static readonly string TokenEndpoint = "https://login.eveonline.com/oauth/token";
+        public static readonly string TokenEndpoint = "https://login.eveonline.com/v2/oauth/token";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
         /// </summary>
+        [Obsolete("This value is no longer required for V2, information is now stored in the JWT.")]
         public static readonly string UserInformationEndpoint = "https://login.eveonline.com/oauth/verify";
     }
 
-    /// <summary>
-    /// Default values for the Singularity (test) server.
-    /// </summary>
     public static class Singularity
     {
         /// <summary>
         /// Default value for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
         /// </summary>
-        public static readonly string AuthorizationEndpoint = "https://sisilogin.testeveonline.com/oauth/authorize";
+        public static readonly string AuthorizationEndpoint = "https://sisilogin.testeveonline.com/v2/oauth/authorize";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.TokenEndpoint"/>.
         /// </summary>
-        public static class Tranquility
-        {
-            /// <summary>
-            /// Default value for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
-            /// </summary>
-            public static readonly string AuthorizationEndpoint = "https://login.eveonline.com/v2/oauth/authorize";
-
-            /// <summary>
-            /// Default value for <see cref="OAuthOptions.TokenEndpoint"/>.
-            /// </summary>
-            public static readonly string TokenEndpoint = "https://login.eveonline.com/v2/oauth/token";
-
-            /// <summary>
-            /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
-            /// </summary>
-            [Obsolete("This value is no longer required for V2, information is now stored in the JWT.")]
-            public static readonly string UserInformationEndpoint = "https://login.eveonline.com/oauth/verify";
-        }
+        public static readonly string TokenEndpoint = "https://sisilogin.testeveonline.com/v2/oauth/token";
 
         /// <summary>
         /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
         /// </summary>
-        public static class Singularity
-        {
-            /// <summary>
-            /// Default value for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
-            /// </summary>
-            public static readonly string AuthorizationEndpoint = "https://sisilogin.testeveonline.com/v2/oauth/authorize";
-
-            /// <summary>
-            /// Default value for <see cref="OAuthOptions.TokenEndpoint"/>.
-            /// </summary>
-            public static readonly string TokenEndpoint = "https://sisilogin.testeveonline.com/v2/oauth/token";
-
-            /// <summary>
-            /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
-            /// </summary>
-            [Obsolete("This value is no longer required for V2, information is now stored in the JWT.")]
-            public static readonly string UserInformationEndpoint = "https://sisilogin.testeveonline.com/oauth/verify";
-        }
+        [Obsolete("This value is no longer required for V2, information is now stored in the JWT.")]
+        public static readonly string UserInformationEndpoint = "https://sisilogin.testeveonline.com/oauth/verify";
     }
 }

@@ -4,25 +4,24 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
-using System.Net.Http.Headers;
-using System.Security.Claims;
-using System.Text.Encodings.Web;
-using System.Threading.Tasks;
-using System.Text.Json;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.JsonWebTokens;
 
 namespace AspNet.Security.OAuth.EVEOnline;
 
 public partial class EVEOnlineAuthenticationHandler : OAuthHandler<EVEOnlineAuthenticationOptions>
 {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="EVEOnlineAuthenticationHandler"/> class.
+    /// </summary>
+    /// <param name="options">The authentication options.</param>
+    /// <param name="logger">The logger to use.</param>
+    /// <param name="encoder">The URL encoder to use.</param>
+    /// <param name="clock">The system clock to use.</param>
     public EVEOnlineAuthenticationHandler(
         [NotNull] IOptionsMonitor<EVEOnlineAuthenticationOptions> options,
         [NotNull] ILoggerFactory logger,
@@ -31,34 +30,20 @@ public partial class EVEOnlineAuthenticationHandler : OAuthHandler<EVEOnlineAuth
         : base(options, logger, encoder, clock)
     {
     }
-    
-    private readonly JwtSecurityTokenHandler _tokenHandler;
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="EVEOnlineAuthenticationHandler"/> class.
-    /// </summary>
-    /// <param name="options">The authentication options.</param>
-    /// <param name="logger">The logger to use.</param>
-    /// <param name="encoder">The URL encoder to use.</param>
-    /// <param name="clock">The system clock to use.</param>
-    /// <param name="tokenHandler">The JWT security token handler to use.</param>
-    public EVEOnlineAuthenticationHandler(
-        [NotNull] IOptionsMonitor<EVEOnlineAuthenticationOptions> options,
-        [NotNull] ILoggerFactory logger,
-        [NotNull] UrlEncoder encoder,
-        [NotNull] ISystemClock clock,
-        [NotNull] JwtSecurityTokenHandler tokenHandler)
-        : base(options, logger, encoder, clock)
-    {
-        _tokenHandler = tokenHandler;
-    }
 
     protected override async Task<AuthenticationTicket> CreateTicketAsync(
           [NotNull] ClaimsIdentity identity,
           [NotNull] AuthenticationProperties properties,
           [NotNull] OAuthTokenResponse tokens)
     {
-        var tokenClaims = ExtractClaimsFromToken(tokens.AccessToken);
+        string? accessToken = tokens.AccessToken;
+
+        if (string.IsNullOrWhiteSpace(accessToken))
+        {
+            throw new InvalidOperationException("No Access token was returned in the OAuth token.");
+        }
+
+        var tokenClaims = ExtractClaimsFromToken(accessToken);
 
         foreach (var claim in tokenClaims)
         {
@@ -66,10 +51,10 @@ public partial class EVEOnlineAuthenticationHandler : OAuthHandler<EVEOnlineAuth
         }
 
         var principal = new ClaimsPrincipal(identity);
-        var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, tokens.Response.RootElement);
+        var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, tokens.Response!.RootElement);
         context.RunClaimActions();
 
-        await Options.Events.CreatingTicket(context);
+        await Events.CreatingTicket(context);
         return new AuthenticationTicket(context.Principal!, context.Properties, Scheme.Name);
     }
 
@@ -84,7 +69,7 @@ public partial class EVEOnlineAuthenticationHandler : OAuthHandler<EVEOnlineAuth
     {
         try
         {
-            var securityToken = _tokenHandler.ReadJwtToken(token);
+            var securityToken = Options.SecurityTokenHandler.ReadJsonWebToken(token);
 
             var nameClaim = ExtractClaim(securityToken, "name");
             var expClaim = ExtractClaim(securityToken, "exp");
@@ -112,9 +97,9 @@ public partial class EVEOnlineAuthenticationHandler : OAuthHandler<EVEOnlineAuth
         }
     }
 
-    private static Claim ExtractClaim(JwtSecurityToken securityToken, string claim)
+    private static Claim ExtractClaim([NotNull] JsonWebToken token, [NotNull] string claim)
     {
-        var extractedClaim = securityToken.Claims.FirstOrDefault(x => string.Equals(x.Type, claim, StringComparison.OrdinalIgnoreCase));
+        var extractedClaim = token.Claims.FirstOrDefault(x => string.Equals(x.Type, claim, StringComparison.OrdinalIgnoreCase));
 
         if (extractedClaim == null)
         {
