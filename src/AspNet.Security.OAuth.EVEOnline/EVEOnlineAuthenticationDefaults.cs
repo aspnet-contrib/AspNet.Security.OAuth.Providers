@@ -31,6 +31,9 @@ public static class EVEOnlineAuthenticationDefaults
     /// </summary>
     public static readonly string CallbackPath = "/signin-eveonline";
 
+    /// <summary>
+    /// Default values for the Tranquility (live) server.
+    /// </summary>
     public static class Tranquility
     {
         /// <summary>
@@ -46,10 +49,13 @@ public static class EVEOnlineAuthenticationDefaults
         /// <summary>
         /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
         /// </summary>
-        [Obsolete("This value is no longer required for V2, information is now stored in the JWT.")]
+        [Obsolete("This endpoint is no longer used by the EVEOnline provider.")]
         public static readonly string UserInformationEndpoint = "https://login.eveonline.com/oauth/verify";
     }
 
+    /// <summary>
+    /// Default values for the Singularity (test) server.
+    /// </summary>
     public static class Singularity
     {
         /// <summary>
@@ -65,7 +71,7 @@ public static class EVEOnlineAuthenticationDefaults
         /// <summary>
         /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
         /// </summary>
-        [Obsolete("This value is no longer required for V2, information is now stored in the JWT.")]
+        [Obsolete("This endpoint is no longer used by the EVEOnline provider.")]
         public static readonly string UserInformationEndpoint = "https://sisilogin.testeveonline.com/oauth/verify";
     }
 }

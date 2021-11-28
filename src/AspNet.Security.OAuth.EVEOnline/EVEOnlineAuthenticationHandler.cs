@@ -32,15 +32,15 @@ public partial class EVEOnlineAuthenticationHandler : OAuthHandler<EVEOnlineAuth
     }
 
     protected override async Task<AuthenticationTicket> CreateTicketAsync(
-          [NotNull] ClaimsIdentity identity,
-          [NotNull] AuthenticationProperties properties,
-          [NotNull] OAuthTokenResponse tokens)
+        [NotNull] ClaimsIdentity identity,
+        [NotNull] AuthenticationProperties properties,
+        [NotNull] OAuthTokenResponse tokens)
     {
         string? accessToken = tokens.AccessToken;
 
         if (string.IsNullOrWhiteSpace(accessToken))
         {
-            throw new InvalidOperationException("No Access token was returned in the OAuth token.");
+            throw new InvalidOperationException("No access token was returned in the OAuth token.");
         }
 
         var tokenClaims = ExtractClaimsFromToken(accessToken);
@@ -82,11 +82,9 @@ public partial class EVEOnlineAuthenticationHandler : OAuthHandler<EVEOnlineAuth
 
             var scopes = claims.Where(x => string.Equals(x.Type, "scp", StringComparison.OrdinalIgnoreCase)).ToList();
 
-            if (scopes.Any())
+            if (scopes.Count > 0)
             {
-                claims.RemoveAll(x => scopes.Contains(x));
-
-                claims.Add(new Claim(EVEOnlineAuthenticationConstants.Claims.Scopes, string.Join(" ", scopes.Select(x => x.Value)), ClaimValueTypes.String, ClaimsIssuer));
+                claims.Add(new Claim(EVEOnlineAuthenticationConstants.Claims.Scopes, string.Join(' ', scopes.Select(x => x.Value)), ClaimValueTypes.String, ClaimsIssuer));
             }
 
             return claims;
@@ -111,7 +109,7 @@ public partial class EVEOnlineAuthenticationHandler : OAuthHandler<EVEOnlineAuth
 
     private static string UnixTimeStampToDateTime(string unixTimeStamp)
     {
-        if (!long.TryParse(unixTimeStamp, NumberStyles.Any, CultureInfo.InvariantCulture, out long unixTime))
+        if (!long.TryParse(unixTimeStamp, NumberStyles.Integer, CultureInfo.InvariantCulture, out long unixTime))
         {
             throw new InvalidOperationException($"The value {unixTimeStamp} of the 'exp' claim is not a valid 64-bit integer.");
         }
