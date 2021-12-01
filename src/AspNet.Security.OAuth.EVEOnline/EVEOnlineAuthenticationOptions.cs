@@ -4,8 +4,7 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using System.Security.Claims;
-using static AspNet.Security.OAuth.EVEOnline.EVEOnlineAuthenticationConstants;
+using Microsoft.IdentityModel.JsonWebTokens;
 
 namespace AspNet.Security.OAuth.EVEOnline;
 
@@ -20,12 +19,12 @@ public class EVEOnlineAuthenticationOptions : OAuthOptions
         CallbackPath = EVEOnlineAuthenticationDefaults.CallbackPath;
 
         Server = EVEOnlineAuthenticationServer.Tranquility;
-
-        ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "CharacterID");
-        ClaimActions.MapJsonKey(ClaimTypes.Name, "CharacterName");
-        ClaimActions.MapJsonKey(ClaimTypes.Expiration, "ExpiresOn");
-        ClaimActions.MapJsonKey(Claims.Scopes, "Scopes");
     }
+
+    /// <summary>
+    /// Gets or sets the optional <see cref="JsonWebTokenHandler"/> to use.
+    /// </summary>
+    public JsonWebTokenHandler SecurityTokenHandler { get; set; } = default!;
 
     /// <summary>
     /// Sets the server used when communicating with EVE Online
@@ -40,13 +39,11 @@ public class EVEOnlineAuthenticationOptions : OAuthOptions
                 case EVEOnlineAuthenticationServer.Tranquility:
                     AuthorizationEndpoint = EVEOnlineAuthenticationDefaults.Tranquility.AuthorizationEndpoint;
                     TokenEndpoint = EVEOnlineAuthenticationDefaults.Tranquility.TokenEndpoint;
-                    UserInformationEndpoint = EVEOnlineAuthenticationDefaults.Tranquility.UserInformationEndpoint;
                     break;
 
                 case EVEOnlineAuthenticationServer.Singularity:
                     AuthorizationEndpoint = EVEOnlineAuthenticationDefaults.Singularity.AuthorizationEndpoint;
                     TokenEndpoint = EVEOnlineAuthenticationDefaults.Singularity.TokenEndpoint;
-                    UserInformationEndpoint = EVEOnlineAuthenticationDefaults.Singularity.UserInformationEndpoint;
                     break;
 
                 default:

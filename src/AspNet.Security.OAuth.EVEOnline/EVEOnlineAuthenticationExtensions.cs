@@ -5,6 +5,8 @@
  */
 
 using AspNet.Security.OAuth.EVEOnline;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Options;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -69,6 +71,8 @@ public static class EVEOnlineAuthenticationExtensions
         [CanBeNull] string caption,
         [NotNull] Action<EVEOnlineAuthenticationOptions> configuration)
     {
+        builder.Services.TryAddSingleton<IPostConfigureOptions<EVEOnlineAuthenticationOptions>, EVEOnlinePostConfigureOptions>();
+
         return builder.AddOAuth<EVEOnlineAuthenticationOptions, EVEOnlineAuthenticationHandler>(scheme, caption, configuration);
     }
 }

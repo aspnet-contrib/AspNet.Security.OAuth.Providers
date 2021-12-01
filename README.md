@@ -72,6 +72,7 @@ We would love it if you could help contributing to this repository.
 * [Luke Fulliton](https://github.com/lukefulliton)
 * [Mariusz Zieliński](https://github.com/mariozski)
 * [Martin Costello](https://github.com/martincostello)
+* [Matthew Moore](https://github.com/Dusty-Meg)
 * [Maxime Roussin-Bélanger](https://github.com/Lorac)
 * [Michael Knowles](https://github.com/mjknowles)
 * [Michael Tanczos](https://github.com/tanczosm)
