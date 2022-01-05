@@ -25,11 +25,7 @@ public partial class StreamlabsAuthenticationHandler : OAuthHandler<StreamlabsAu
     }
 
     protected override string BuildChallengeUrl([NotNull] AuthenticationProperties properties, [NotNull] string redirectUri)
-    {
-        // TODO Removing this overload is technically a breaking change, so just delegate
-        // to the base implementation until a new major version when this can be removed.
-        return base.BuildChallengeUrl(properties, redirectUri);
-    }
+        => base.BuildChallengeUrl(properties, redirectUri); // TODO This override is the same as the base class' and can be removed in the next major version
 
     protected override async Task<AuthenticationTicket> CreateTicketAsync(
         [NotNull] ClaimsIdentity identity,
