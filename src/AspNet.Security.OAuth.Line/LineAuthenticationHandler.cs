@@ -34,10 +34,7 @@ public partial class LineAuthenticationHandler : OAuthHandler<LineAuthentication
 
     protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] OAuthCodeExchangeContext context)
     {
-        using var request = new HttpRequestMessage(HttpMethod.Post, Options.TokenEndpoint);
-        request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-        var parameters = new Dictionary<string, string>
+        var tokenRequestParameters = new Dictionary<string, string>
         {
             ["grant_type"] = "authorization_code",
             ["code"] = context.Code,
@@ -45,7 +42,17 @@ public partial class LineAuthenticationHandler : OAuthHandler<LineAuthentication
             ["client_id"] = Options.ClientId,
             ["client_secret"] = Options.ClientSecret
         };
-        request.Content = new FormUrlEncodedContent(parameters!);
+
+        // PKCE https://tools.ietf.org/html/rfc7636#section-4.5, see BuildChallengeUrl
+        if (context.Properties.Items.TryGetValue(OAuthConstants.CodeVerifierKey, out var codeVerifier))
+        {
+            tokenRequestParameters.Add(OAuthConstants.CodeVerifierKey, codeVerifier!);
+            context.Properties.Items.Remove(OAuthConstants.CodeVerifierKey);
+        }
+
+        using var request = new HttpRequestMessage(HttpMethod.Post, Options.TokenEndpoint);
+        request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        request.Content = new FormUrlEncodedContent(tokenRequestParameters);
 
         using var response = await Backchannel.SendAsync(request, Context.RequestAborted);
         if (!response.IsSuccessStatusCode)
@@ -104,7 +111,7 @@ public partial class LineAuthenticationHandler : OAuthHandler<LineAuthentication
             ["id_token"] = tokens.Response?.RootElement.GetString("id_token") ?? string.Empty,
             ["client_id"] = Options.ClientId
         };
-        request.Content = new FormUrlEncodedContent(parameters!);
+        request.Content = new FormUrlEncodedContent(parameters);
 
         using var response = await Backchannel.SendAsync(request, Context.RequestAborted);
         if (!response.IsSuccessStatusCode)

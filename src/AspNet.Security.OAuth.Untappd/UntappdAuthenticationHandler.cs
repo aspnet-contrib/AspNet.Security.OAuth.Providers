@@ -44,7 +44,7 @@ public partial class UntappdAuthenticationHandler : OAuthHandler<UntappdAuthenti
             context.Properties.Items.Remove(OAuthConstants.CodeVerifierKey);
         }
 
-        using var requestContent = new FormUrlEncodedContent(tokenRequestParameters!);
+        using var requestContent = new FormUrlEncodedContent(tokenRequestParameters);
 
         string address = QueryHelpers.AddQueryString(Options.TokenEndpoint,
             new Dictionary<string, string?>

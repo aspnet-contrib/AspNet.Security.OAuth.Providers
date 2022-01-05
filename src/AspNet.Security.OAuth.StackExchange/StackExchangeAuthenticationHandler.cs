@@ -73,7 +73,7 @@ public partial class StackExchangeAuthenticationHandler : OAuthHandler<StackExch
 
     protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] OAuthCodeExchangeContext context)
     {
-        var parameters = new Dictionary<string, string>
+        var tokenRequestParameters = new Dictionary<string, string>
         {
             ["client_id"] = Options.ClientId,
             ["redirect_uri"] = context.RedirectUri,
@@ -82,9 +82,16 @@ public partial class StackExchangeAuthenticationHandler : OAuthHandler<StackExch
             ["grant_type"] = "authorization_code"
         };
 
+        // PKCE https://tools.ietf.org/html/rfc7636#section-4.5, see BuildChallengeUrl
+        if (context.Properties.Items.TryGetValue(OAuthConstants.CodeVerifierKey, out var codeVerifier))
+        {
+            tokenRequestParameters.Add(OAuthConstants.CodeVerifierKey, codeVerifier!);
+            context.Properties.Items.Remove(OAuthConstants.CodeVerifierKey);
+        }
+
         using var request = new HttpRequestMessage(HttpMethod.Post, Options.TokenEndpoint)
         {
-            Content = new FormUrlEncodedContent(parameters!)
+            Content = new FormUrlEncodedContent(tokenRequestParameters!)
         };
 
         using var response = await Backchannel.SendAsync(request, Context.RequestAborted);

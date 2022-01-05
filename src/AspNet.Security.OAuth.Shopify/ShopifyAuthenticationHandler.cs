@@ -8,6 +8,8 @@ using System.Globalization;
 using System.Net;
 using System.Net.Http.Headers;
 using System.Security.Claims;
+using System.Security.Cryptography;
+using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using Microsoft.AspNetCore.WebUtilities;
@@ -98,7 +100,7 @@ public partial class ShopifyAuthenticationHandler : OAuthHandler<ShopifyAuthenti
             throw new InvalidOperationException("Shopify provider AuthenticationProperties must contain ShopNameAuthenticationProperty.");
         }
 
-        string uri = string.Format(CultureInfo.InvariantCulture, Options.AuthorizationEndpoint, shopName);
+        string authorizationEndpoint = string.Format(CultureInfo.InvariantCulture, Options.AuthorizationEndpoint, shopName);
 
         // Get the permission scope, which can either be set in options or overridden in AuthenticationProperties.
         if (!properties.Items.TryGetValue(ShopifyAuthenticationDefaults.ShopScopeAuthenticationProperty, out string? scope))
@@ -106,27 +108,57 @@ public partial class ShopifyAuthenticationHandler : OAuthHandler<ShopifyAuthenti
             scope = FormatScope();
         }
 
-        string url = QueryHelpers.AddQueryString(uri, new Dictionary<string, string?>()
+        var parameters = new Dictionary<string, string?>()
         {
             ["client_id"] = Options.ClientId,
             ["scope"] = scope,
             ["redirect_uri"] = redirectUri,
-            ["state"] = Options.StateDataFormat.Protect(properties)
-        });
+        };
+
+        if (Options.UsePkce)
+        {
+            byte[] bytes = RandomNumberGenerator.GetBytes(32);
+            string codeVerifier = Microsoft.AspNetCore.WebUtilities.Base64UrlTextEncoder.Encode(bytes);
+
+            // Store this for use during the code redemption.
+            properties.Items.Add(OAuthConstants.CodeVerifierKey, codeVerifier);
+
+            byte[] challengeBytes = SHA256.HashData(Encoding.UTF8.GetBytes(codeVerifier));
+            parameters[OAuthConstants.CodeChallengeKey] = WebEncoders.Base64UrlEncode(challengeBytes);
+            parameters[OAuthConstants.CodeChallengeMethodKey] = OAuthConstants.CodeChallengeMethodS256;
+        }
+
+        parameters["state"] = Options.StateDataFormat.Protect(properties);
+
+        string challengeUrl = QueryHelpers.AddQueryString(authorizationEndpoint, parameters);
 
         // If we're requesting a per-user, online only, token, add the grant_options query param.
         if (properties.Items.TryGetValue(ShopifyAuthenticationDefaults.GrantOptionsAuthenticationProperty, out string? grantOptions) &&
             grantOptions == ShopifyAuthenticationDefaults.PerUserAuthenticationPropertyValue)
         {
-            url = QueryHelpers.AddQueryString(url, "grant_options[]", ShopifyAuthenticationDefaults.PerUserAuthenticationPropertyValue);
+            challengeUrl = QueryHelpers.AddQueryString(challengeUrl, "grant_options[]", ShopifyAuthenticationDefaults.PerUserAuthenticationPropertyValue);
         }
 
-        return url;
+        return challengeUrl;
     }
 
     /// <inheritdoc />
     protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] OAuthCodeExchangeContext context)
     {
+        var tokenRequestParameters = new Dictionary<string, string>
+        {
+            ["client_id"] = Options.ClientId,
+            ["client_secret"] = Options.ClientSecret,
+            ["code"] = context.Code
+        };
+
+        // PKCE https://tools.ietf.org/html/rfc7636#section-4.5, see BuildChallengeUrl
+        if (context.Properties.Items.TryGetValue(OAuthConstants.CodeVerifierKey, out var codeVerifier))
+        {
+            tokenRequestParameters.Add(OAuthConstants.CodeVerifierKey, codeVerifier!);
+            context.Properties.Items.Remove(OAuthConstants.CodeVerifierKey);
+        }
+
         string shopDns;
 
         try
@@ -166,15 +198,7 @@ public partial class ShopifyAuthenticationHandler : OAuthHandler<ShopifyAuthenti
 
         using var request = new HttpRequestMessage(HttpMethod.Post, uri);
         request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/x-www-form-urlencoded"));
-
-        var parameters = new Dictionary<string, string>
-        {
-            ["client_id"] = Options.ClientId,
-            ["client_secret"] = Options.ClientSecret,
-            ["code"] = context.Code
-        };
-
-        request.Content = new FormUrlEncodedContent(parameters!);
+        request.Content = new FormUrlEncodedContent(tokenRequestParameters);
 
         using var response = await Backchannel.SendAsync(request, Context.RequestAborted);
 

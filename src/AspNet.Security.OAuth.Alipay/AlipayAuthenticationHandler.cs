@@ -51,7 +51,7 @@ public partial class AlipayAuthenticationHandler : OAuthHandler<AlipayAuthentica
     protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] OAuthCodeExchangeContext context)
     {
         // See https://opendocs.alipay.com/apis/api_9/alipay.system.oauth.token for details.
-        var sortedParams = new SortedDictionary<string, string?>()
+        var tokenRequestParameters = new SortedDictionary<string, string?>()
         {
             ["app_id"] = Options.ClientId,
             ["charset"] = "utf-8",
@@ -63,9 +63,16 @@ public partial class AlipayAuthenticationHandler : OAuthHandler<AlipayAuthentica
             ["timestamp"] = Clock.UtcNow.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture),
             ["version"] = "1.0",
         };
-        sortedParams.Add("sign", GetRSA2Signature(sortedParams));
+        tokenRequestParameters.Add("sign", GetRSA2Signature(tokenRequestParameters));
 
-        string address = QueryHelpers.AddQueryString(Options.TokenEndpoint, sortedParams!);
+        // PKCE https://tools.ietf.org/html/rfc7636#section-4.5, see BuildChallengeUrl
+        if (context.Properties.Items.TryGetValue(OAuthConstants.CodeVerifierKey, out var codeVerifier))
+        {
+            tokenRequestParameters.Add(OAuthConstants.CodeVerifierKey, codeVerifier);
+            context.Properties.Items.Remove(OAuthConstants.CodeVerifierKey);
+        }
+
+        string address = QueryHelpers.AddQueryString(Options.TokenEndpoint, tokenRequestParameters);
 
         using var response = await Backchannel.GetAsync(address, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
         if (!response.IsSuccessStatusCode)
@@ -93,7 +100,7 @@ public partial class AlipayAuthenticationHandler : OAuthHandler<AlipayAuthentica
         [NotNull] OAuthTokenResponse tokens)
     {
         // See https://opendocs.alipay.com/apis/api_2/alipay.user.info.share for details.
-        var sortedParams = new SortedDictionary<string, string?>()
+        var parameters = new SortedDictionary<string, string?>()
         {
             ["app_id"] = Options.ClientId,
             ["auth_token"] = tokens.AccessToken,
@@ -104,9 +111,9 @@ public partial class AlipayAuthenticationHandler : OAuthHandler<AlipayAuthentica
             ["timestamp"] = Clock.UtcNow.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture),
             ["version"] = "1.0",
         };
-        sortedParams.Add("sign", GetRSA2Signature(sortedParams));
+        parameters.Add("sign", GetRSA2Signature(parameters));
 
-        string address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, sortedParams!);
+        string address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, parameters);
 
         using var response = await Backchannel.GetAsync(address, Context.RequestAborted);
 
@@ -203,7 +210,7 @@ public partial class AlipayAuthenticationHandler : OAuthHandler<AlipayAuthentica
         var scopeParameter = properties.GetParameter<ICollection<string>>(OAuthChallengeProperties.ScopeKey);
         var scope = scopeParameter != null ? FormatScope(scopeParameter) : FormatScope();
 
-        var parameters = new Dictionary<string, string>
+        var parameters = new Dictionary<string, string?>
         {
             ["app_id"] = Options.ClientId, // Used instead of "client_id"
             ["scope"] = scope,
@@ -213,22 +220,20 @@ public partial class AlipayAuthenticationHandler : OAuthHandler<AlipayAuthentica
 
         if (Options.UsePkce)
         {
-            var bytes = RandomNumberGenerator.GetBytes(32);
-            var codeVerifier = Microsoft.AspNetCore.Authentication.Base64UrlTextEncoder.Encode(bytes);
+            byte[] bytes = RandomNumberGenerator.GetBytes(32);
+            string codeVerifier = Microsoft.AspNetCore.WebUtilities.Base64UrlTextEncoder.Encode(bytes);
 
             // Store this for use during the code redemption.
             properties.Items.Add(OAuthConstants.CodeVerifierKey, codeVerifier);
 
-            var challengeBytes = SHA256.HashData(Encoding.UTF8.GetBytes(codeVerifier));
-            var codeChallenge = WebEncoders.Base64UrlEncode(challengeBytes);
-
-            parameters[OAuthConstants.CodeChallengeKey] = codeChallenge;
+            byte[] challengeBytes = SHA256.HashData(Encoding.UTF8.GetBytes(codeVerifier));
+            parameters[OAuthConstants.CodeChallengeKey] = WebEncoders.Base64UrlEncode(challengeBytes);
             parameters[OAuthConstants.CodeChallengeMethodKey] = OAuthConstants.CodeChallengeMethodS256;
         }
 
         parameters["state"] = Options.StateDataFormat.Protect(properties);
 
-        return QueryHelpers.AddQueryString(Options.AuthorizationEndpoint, parameters!);
+        return QueryHelpers.AddQueryString(Options.AuthorizationEndpoint, parameters);
     }
 
     private static partial class Log

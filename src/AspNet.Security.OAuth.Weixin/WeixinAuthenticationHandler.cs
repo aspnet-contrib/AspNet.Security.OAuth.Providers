@@ -6,6 +6,8 @@
 
 using System.Net;
 using System.Security.Claims;
+using System.Security.Cryptography;
+using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using Microsoft.AspNetCore.Http;
@@ -85,13 +87,22 @@ public partial class WeixinAuthenticationHandler : OAuthHandler<WeixinAuthentica
 
     protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] OAuthCodeExchangeContext context)
     {
-        string address = QueryHelpers.AddQueryString(Options.TokenEndpoint, new Dictionary<string, string?>()
+        var tokenRequestParameters = new Dictionary<string, string?>()
         {
             ["appid"] = Options.ClientId,
             ["secret"] = Options.ClientSecret,
             ["code"] = context.Code,
             ["grant_type"] = "authorization_code"
-        });
+        };
+
+        // PKCE https://tools.ietf.org/html/rfc7636#section-4.5, see BuildChallengeUrl
+        if (context.Properties.Items.TryGetValue(OAuthConstants.CodeVerifierKey, out var codeVerifier))
+        {
+            tokenRequestParameters.Add(OAuthConstants.CodeVerifierKey, codeVerifier!);
+            context.Properties.Items.Remove(OAuthConstants.CodeVerifierKey);
+        }
+
+        string address = QueryHelpers.AddQueryString(Options.TokenEndpoint, tokenRequestParameters);
 
         using var response = await Backchannel.GetAsync(address);
         if (!response.IsSuccessStatusCode)
@@ -115,32 +126,52 @@ public partial class WeixinAuthenticationHandler : OAuthHandler<WeixinAuthentica
 
     protected override string BuildChallengeUrl([NotNull] AuthenticationProperties properties, [NotNull] string redirectUri)
     {
-        string stateValue = Options.StateDataFormat.Protect(properties);
+        var scopeParameter = properties.GetParameter<ICollection<string>>(OAuthChallengeProperties.ScopeKey);
+        var scope = scopeParameter != null ? FormatScope(scopeParameter) : FormatScope();
+
+        var parameters = new Dictionary<string, string?>()
+        {
+            ["appid"] = Options.ClientId,
+            ["scope"] = scope,
+            ["response_type"] = "code",
+        };
+
+        if (Options.UsePkce)
+        {
+            var bytes = RandomNumberGenerator.GetBytes(32);
+            var codeVerifier = Microsoft.AspNetCore.Authentication.Base64UrlTextEncoder.Encode(bytes);
+
+            // Store this for use during the code redemption.
+            properties.Items.Add(OAuthConstants.CodeVerifierKey, codeVerifier);
+
+            var challengeBytes = SHA256.HashData(Encoding.UTF8.GetBytes(codeVerifier));
+
+            parameters[OAuthConstants.CodeChallengeKey] = WebEncoders.Base64UrlEncode(challengeBytes);
+            parameters[OAuthConstants.CodeChallengeMethodKey] = OAuthConstants.CodeChallengeMethodS256;
+        }
+
+        string state = Options.StateDataFormat.Protect(properties);
         bool addRedirectHash = false;
 
         if (!IsWeixinAuthorizationEndpointInUse())
         {
             // Store state in redirectUri when authorizing Wechat Web pages to prevent "too long state parameters" error
-            redirectUri = QueryHelpers.AddQueryString(redirectUri, OauthState, stateValue);
+            redirectUri = QueryHelpers.AddQueryString(redirectUri, OauthState, state);
             addRedirectHash = true;
         }
 
-        redirectUri = QueryHelpers.AddQueryString(Options.AuthorizationEndpoint, new Dictionary<string, string?>
-        {
-            ["appid"] = Options.ClientId,
-            ["scope"] = FormatScope(),
-            ["response_type"] = "code",
-            ["redirect_uri"] = redirectUri,
-            [State] = addRedirectHash ? OauthState : stateValue
-        });
+        parameters["redirect_uri"] = redirectUri;
+        parameters[State] = addRedirectHash ? OauthState : state;
+
+        string challengeUrl = QueryHelpers.AddQueryString(Options.AuthorizationEndpoint, parameters);
 
         if (addRedirectHash)
         {
             // The parameters necessary for Web Authorization of Wechat
-            redirectUri += "#wechat_redirect";
+            challengeUrl += "#wechat_redirect";
         }
 
-        return redirectUri;
+        return challengeUrl;
     }
 
     /// <inheritdoc/>
