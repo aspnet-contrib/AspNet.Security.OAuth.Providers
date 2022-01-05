@@ -105,7 +105,8 @@ public partial class ShopifyAuthenticationHandler : OAuthHandler<ShopifyAuthenti
         // Get the permission scope, which can either be set in options or overridden in AuthenticationProperties.
         if (!properties.Items.TryGetValue(ShopifyAuthenticationDefaults.ShopScopeAuthenticationProperty, out string? scope))
         {
-            scope = FormatScope();
+            var scopeParameter = properties.GetParameter<ICollection<string>>(OAuthChallengeProperties.ScopeKey);
+            scope = scopeParameter != null ? FormatScope(scopeParameter) : FormatScope();
         }
 
         var parameters = new Dictionary<string, string?>()
