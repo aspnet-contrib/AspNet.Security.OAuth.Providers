@@ -53,7 +53,13 @@ public partial class StravaAuthenticationHandler : OAuthHandler<StravaAuthentica
         return new AuthenticationTicket(context.Principal!, context.Properties, Scheme.Name);
     }
 
-    protected override string FormatScope() => string.Join(',', Options.Scope);
+    /// <inheritdoc/>
+    protected override string FormatScope()
+        => FormatScope(Options.Scope); // TODO This override is the same as the base class' and can be removed in the next major version
+
+    /// <inheritdoc/>
+    protected override string FormatScope([NotNull] IEnumerable<string> scopes)
+        => string.Join(',', scopes);
 
     private static partial class Log
     {

@@ -68,12 +68,17 @@ public partial class RedditAuthenticationHandler : OAuthHandler<RedditAuthentica
         return QueryHelpers.AddQueryString(challengeUrl, "duration", "permanent");
     }
 
+    /// <inheritdoc />
     protected override string FormatScope()
+        => FormatScope(Options.Scope); // TODO This override is the same as the base class' and can be removed in the next major version
+
+    /// <inheritdoc />
+    protected override string FormatScope([NotNull] IEnumerable<string> scopes)
     {
         // Note: Reddit requires a non-standard comma-separated scope.
         // See https://github.com/reddit/reddit/wiki/OAuth2#authorization
         // and http://tools.ietf.org/html/rfc6749#section-3.3.
-        return string.Join(',', Options.Scope);
+        return string.Join(',', scopes);
     }
 
     protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] OAuthCodeExchangeContext context)
