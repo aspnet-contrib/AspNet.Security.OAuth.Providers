@@ -53,10 +53,7 @@ public partial class YammerAuthenticationHandler : OAuthHandler<YammerAuthentica
 
     protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] OAuthCodeExchangeContext context)
     {
-        using var request = new HttpRequestMessage(HttpMethod.Post, Options.TokenEndpoint);
-        request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-        var parameters = new Dictionary<string, string>
+        var tokenRequestParameters = new Dictionary<string, string>
         {
             ["client_id"] = Options.ClientId,
             ["redirect_uri"] = context.RedirectUri,
@@ -65,7 +62,16 @@ public partial class YammerAuthenticationHandler : OAuthHandler<YammerAuthentica
             ["grant_type"] = "authorization_code"
         };
 
-        request.Content = new FormUrlEncodedContent(parameters!);
+        // PKCE https://tools.ietf.org/html/rfc7636#section-4.5, see BuildChallengeUrl
+        if (context.Properties.Items.TryGetValue(OAuthConstants.CodeVerifierKey, out var codeVerifier))
+        {
+            tokenRequestParameters.Add(OAuthConstants.CodeVerifierKey, codeVerifier!);
+            context.Properties.Items.Remove(OAuthConstants.CodeVerifierKey);
+        }
+
+        using var request = new HttpRequestMessage(HttpMethod.Post, Options.TokenEndpoint);
+        request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        request.Content = new FormUrlEncodedContent(tokenRequestParameters);
 
         using var response = await Backchannel.SendAsync(request, Context.RequestAborted);
         if (!response.IsSuccessStatusCode)

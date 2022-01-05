@@ -44,7 +44,7 @@ public class NotionAuthenticationHandler : OAuthHandler<NotionAuthenticationOpti
             context.Properties.Items.Remove(OAuthConstants.CodeVerifierKey);
         }
 
-        using var requestContent = new FormUrlEncodedContent(tokenRequestParameters!);
+        using var requestContent = new FormUrlEncodedContent(tokenRequestParameters);
 
         using var requestMessage = new HttpRequestMessage(HttpMethod.Post, Options.TokenEndpoint);
         requestMessage.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));

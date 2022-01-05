@@ -79,7 +79,7 @@ public partial class QQAuthenticationHandler : OAuthHandler<QQAuthenticationOpti
     protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] OAuthCodeExchangeContext context)
     {
         // See https://wiki.connect.qq.com/%E4%BD%BF%E7%94%A8authorization_code%E8%8E%B7%E5%8F%96access_token for details
-        string address = QueryHelpers.AddQueryString(Options.TokenEndpoint, new Dictionary<string, string?>(6)
+        var tokenRequestParameters = new Dictionary<string, string?>()
         {
             ["client_id"] = Options.ClientId,
             ["client_secret"] = Options.ClientSecret,
@@ -87,7 +87,16 @@ public partial class QQAuthenticationHandler : OAuthHandler<QQAuthenticationOpti
             ["code"] = context.Code,
             ["grant_type"] = "authorization_code",
             ["fmt"] = "json" // Return JSON instead of x-www-form-urlencoded which is default due to historical reasons
-        });
+        };
+
+        // PKCE https://tools.ietf.org/html/rfc7636#section-4.5, see BuildChallengeUrl
+        if (context.Properties.Items.TryGetValue(OAuthConstants.CodeVerifierKey, out var codeVerifier))
+        {
+            tokenRequestParameters.Add(OAuthConstants.CodeVerifierKey, codeVerifier!);
+            context.Properties.Items.Remove(OAuthConstants.CodeVerifierKey);
+        }
+
+        string address = QueryHelpers.AddQueryString(Options.TokenEndpoint, tokenRequestParameters);
 
         using var request = new HttpRequestMessage(HttpMethod.Get, address);
 

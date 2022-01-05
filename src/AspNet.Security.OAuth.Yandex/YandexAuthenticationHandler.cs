@@ -54,18 +54,25 @@ public partial class YandexAuthenticationHandler : OAuthHandler<YandexAuthentica
 
     protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] OAuthCodeExchangeContext context)
     {
+        var tokenRequestParameters = new Dictionary<string, string>
+        {
+            ["grant_type"] = "authorization_code",
+            ["redirect_uri"] = context.RedirectUri,
+            ["code"] = context.Code,
+        };
+
+        // PKCE https://tools.ietf.org/html/rfc7636#section-4.5, see BuildChallengeUrl
+        if (context.Properties.Items.TryGetValue(OAuthConstants.CodeVerifierKey, out var codeVerifier))
+        {
+            tokenRequestParameters.Add(OAuthConstants.CodeVerifierKey, codeVerifier!);
+            context.Properties.Items.Remove(OAuthConstants.CodeVerifierKey);
+        }
+
         using var request = new HttpRequestMessage(HttpMethod.Post, Options.TokenEndpoint);
         request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         request.Headers.Authorization = CreateAuthorizationHeader();
 
-        var parameters = new Dictionary<string, string>
-        {
-            ["grant_type"] = "authorization_code",
-            ["redirect_uri"] = context.RedirectUri,
-            ["code"] = context.Code
-        };
-
-        request.Content = new FormUrlEncodedContent(parameters!);
+        request.Content = new FormUrlEncodedContent(tokenRequestParameters);
 
         using var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
         if (!response.IsSuccessStatusCode)

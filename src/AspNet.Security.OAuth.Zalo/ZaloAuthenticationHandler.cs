@@ -64,13 +64,22 @@ public partial class ZaloAuthenticationHandler : OAuthHandler<ZaloAuthentication
 
     protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] OAuthCodeExchangeContext context)
     {
-        string address = QueryHelpers.AddQueryString(Options.TokenEndpoint, new Dictionary<string, string?>
+        var tokenRequestParameters = new Dictionary<string, string?>
         {
             ["app_id"] = Options.ClientId,
             ["app_secret"] = Options.ClientSecret,
             ["code"] = context.Code,
-            ["redirect_uri"] = context.RedirectUri
-        });
+            ["redirect_uri"] = context.RedirectUri,
+        };
+
+        // PKCE https://tools.ietf.org/html/rfc7636#section-4.5, see BuildChallengeUrl
+        if (context.Properties.Items.TryGetValue(OAuthConstants.CodeVerifierKey, out var codeVerifier))
+        {
+            tokenRequestParameters.Add(OAuthConstants.CodeVerifierKey, codeVerifier!);
+            context.Properties.Items.Remove(OAuthConstants.CodeVerifierKey);
+        }
+
+        string address = QueryHelpers.AddQueryString(Options.TokenEndpoint, tokenRequestParameters);
 
         using var request = new HttpRequestMessage(HttpMethod.Get, address);
         using var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);

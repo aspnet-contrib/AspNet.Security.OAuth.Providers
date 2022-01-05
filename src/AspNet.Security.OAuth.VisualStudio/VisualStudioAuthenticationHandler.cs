@@ -54,10 +54,7 @@ public partial class VisualStudioAuthenticationHandler : OAuthHandler<VisualStud
 
     protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] OAuthCodeExchangeContext context)
     {
-        using var request = new HttpRequestMessage(HttpMethod.Post, Options.TokenEndpoint);
-        request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/x-www-form-urlencoded"));
-
-        var parameters = new Dictionary<string, string>
+        var tokenRequestParameters = new Dictionary<string, string>
         {
             ["redirect_uri"] = context.RedirectUri,
             ["client_assertion"] = Options.ClientSecret,
@@ -66,7 +63,16 @@ public partial class VisualStudioAuthenticationHandler : OAuthHandler<VisualStud
             ["client_assertion_type"] = "urn:ietf:params:oauth:client-assertion-type:jwt-bearer"
         };
 
-        request.Content = new FormUrlEncodedContent(parameters!);
+        // PKCE https://tools.ietf.org/html/rfc7636#section-4.5, see BuildChallengeUrl
+        if (context.Properties.Items.TryGetValue(OAuthConstants.CodeVerifierKey, out var codeVerifier))
+        {
+            tokenRequestParameters.Add(OAuthConstants.CodeVerifierKey, codeVerifier!);
+            context.Properties.Items.Remove(OAuthConstants.CodeVerifierKey);
+        }
+
+        using var request = new HttpRequestMessage(HttpMethod.Post, Options.TokenEndpoint);
+        request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/x-www-form-urlencoded"));
+        request.Content = new FormUrlEncodedContent(tokenRequestParameters);
 
         using var response = await Backchannel.SendAsync(request, Context.RequestAborted);
 

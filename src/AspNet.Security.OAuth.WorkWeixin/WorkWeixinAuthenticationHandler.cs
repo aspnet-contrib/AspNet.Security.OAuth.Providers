@@ -6,6 +6,8 @@
 
 using System.Net;
 using System.Security.Claims;
+using System.Security.Cryptography;
+using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using Microsoft.AspNetCore.Http;
@@ -71,11 +73,20 @@ public partial class WorkWeixinAuthenticationHandler : OAuthHandler<WorkWeixinAu
     protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] OAuthCodeExchangeContext context)
     {
         // See https://open.work.weixin.qq.com/api/doc/90000/90135/91039 for details.
-        string address = QueryHelpers.AddQueryString(Options.TokenEndpoint, new Dictionary<string, string?>()
+        var tokenRequestParameters = new Dictionary<string, string?>()
         {
             ["corpid"] = Options.ClientId,
             ["corpsecret"] = Options.ClientSecret,
-        });
+        };
+
+        // PKCE https://tools.ietf.org/html/rfc7636#section-4.5, see BuildChallengeUrl
+        if (context.Properties.Items.TryGetValue(OAuthConstants.CodeVerifierKey, out var codeVerifier))
+        {
+            tokenRequestParameters.Add(OAuthConstants.CodeVerifierKey, codeVerifier!);
+            context.Properties.Items.Remove(OAuthConstants.CodeVerifierKey);
+        }
+
+        string address = QueryHelpers.AddQueryString(Options.TokenEndpoint, tokenRequestParameters);
 
         using var response = await Backchannel.GetAsync(address, Context.RequestAborted);
         if (!response.IsSuccessStatusCode)
@@ -91,16 +102,31 @@ public partial class WorkWeixinAuthenticationHandler : OAuthHandler<WorkWeixinAu
 
     protected override string BuildChallengeUrl([NotNull] AuthenticationProperties properties, [NotNull] string redirectUri)
     {
-        string stateValue = Options.StateDataFormat.Protect(properties);
-        redirectUri = QueryHelpers.AddQueryString(Options.AuthorizationEndpoint, new Dictionary<string, string?>
+        var parameters = new Dictionary<string, string?>
         {
             ["appid"] = Options.ClientId,
             ["agentid"] = Options.AgentId,
             ["redirect_uri"] = redirectUri,
-            ["state"] = stateValue
-        });
+        };
 
-        return redirectUri;
+        if (Options.UsePkce)
+        {
+            var bytes = RandomNumberGenerator.GetBytes(32);
+            var codeVerifier = Microsoft.AspNetCore.Authentication.Base64UrlTextEncoder.Encode(bytes);
+
+            // Store this for use during the code redemption.
+            properties.Items.Add(OAuthConstants.CodeVerifierKey, codeVerifier);
+
+            var challengeBytes = SHA256.HashData(Encoding.UTF8.GetBytes(codeVerifier));
+            var codeChallenge = WebEncoders.Base64UrlEncode(challengeBytes);
+
+            parameters[OAuthConstants.CodeChallengeKey] = codeChallenge;
+            parameters[OAuthConstants.CodeChallengeMethodKey] = OAuthConstants.CodeChallengeMethodS256;
+        }
+
+        parameters["state"] = Options.StateDataFormat.Protect(properties);
+
+        return QueryHelpers.AddQueryString(Options.AuthorizationEndpoint, parameters);
     }
 
     private async Task<(int ErrorCode, string? UserId)> GetUserIdentifierAsync(OAuthTokenResponse tokens)
