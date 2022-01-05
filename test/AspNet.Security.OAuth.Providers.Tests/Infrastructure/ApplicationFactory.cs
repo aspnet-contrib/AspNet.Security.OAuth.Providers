@@ -29,7 +29,7 @@ public static class ApplicationFactory
     /// The test application to use for the authentication provider.
     /// </returns>
     public static WebApplicationFactory<Program> CreateApplication<TOptions>(OAuthTests<TOptions> tests, Action<IServiceCollection>? configureServices = null)
-        where TOptions : OAuthOptions
+        where TOptions : OAuthOptions, new()
     {
 #pragma warning disable CA2000
         return new TestApplicationFactory()
@@ -46,7 +46,7 @@ public static class ApplicationFactory
     }
 
     private static void Configure<TOptions>(IWebHostBuilder builder, OAuthTests<TOptions> tests)
-        where TOptions : OAuthOptions
+        where TOptions : OAuthOptions, new()
     {
         // Route application logs to xunit output for debugging
         builder.ConfigureLogging(logging =>
@@ -79,7 +79,7 @@ public static class ApplicationFactory
     }
 
     private static void ConfigureApplication<TOptions>(IApplicationBuilder app, OAuthTests<TOptions> tests)
-        where TOptions : OAuthOptions
+        where TOptions : OAuthOptions, new()
     {
         tests.ConfigureApplication(app);
 

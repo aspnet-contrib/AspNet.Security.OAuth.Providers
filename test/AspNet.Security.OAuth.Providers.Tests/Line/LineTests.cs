@@ -4,6 +4,8 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using Microsoft.AspNetCore.WebUtilities;
+
 namespace AspNet.Security.OAuth.Line;
 
 public class LineTests : OAuthTests<LineAuthenticationOptions>
@@ -39,5 +41,58 @@ public class LineTests : OAuthTests<LineAuthenticationOptions>
 
         // Assert
         AssertClaim(claims, claimType, claimValue);
+    }
+
+    [Theory]
+    [InlineData(false, false)]
+    [InlineData(true, true)]
+    public async Task BuildChallengeUrl_Generates_Correct_Url(bool usePkce, bool prompt)
+    {
+        // Arrange
+        var options = new LineAuthenticationOptions()
+        {
+            Prompt = prompt,
+            UsePkce = usePkce,
+        };
+
+        string redirectUrl = "https://my-site.local/signin-line";
+
+        // Act
+        Uri actual = await BuildChallengeUriAsync(
+            options,
+            redirectUrl,
+            (options, loggerFactory, encoder, clock) => new LineAuthenticationHandler(options, loggerFactory, encoder, clock));
+
+        // Assert
+        actual.ShouldNotBeNull();
+        actual.ToString().ShouldStartWith("https://access.line.me/oauth2/v2.1/authorize?");
+
+        var query = QueryHelpers.ParseQuery(actual.Query);
+
+        query.ShouldContainKey("state");
+        query.ShouldContainKeyAndValue("client_id", options.ClientId);
+        query.ShouldContainKeyAndValue("redirect_uri", redirectUrl);
+        query.ShouldContainKeyAndValue("response_type", "code");
+        query.ShouldContainKeyAndValue("scope", "profile openid");
+
+        if (usePkce)
+        {
+            query.ShouldContainKey(OAuthConstants.CodeChallengeKey);
+            query.ShouldContainKey(OAuthConstants.CodeChallengeMethodKey);
+        }
+        else
+        {
+            query.ShouldNotContainKey(OAuthConstants.CodeChallengeKey);
+            query.ShouldNotContainKey(OAuthConstants.CodeChallengeMethodKey);
+        }
+
+        if (prompt)
+        {
+            query.ShouldContainKeyAndValue("prompt", "consent");
+        }
+        else
+        {
+            query.ShouldContainKeyAndValue("prompt", string.Empty);
+        }
     }
 }
