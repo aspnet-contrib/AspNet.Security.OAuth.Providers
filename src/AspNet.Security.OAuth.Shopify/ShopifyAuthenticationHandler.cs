@@ -83,9 +83,7 @@ public partial class ShopifyAuthenticationHandler : OAuthHandler<ShopifyAuthenti
 
     /// <inheritdoc />
     protected override string FormatScope()
-    {
-        return string.Join(',', Options.Scope);
-    }
+        => string.Join(',', Options.Scope);
 
     /// <inheritdoc />
     protected override string BuildChallengeUrl([NotNull] AuthenticationProperties properties, [NotNull] string redirectUri)
