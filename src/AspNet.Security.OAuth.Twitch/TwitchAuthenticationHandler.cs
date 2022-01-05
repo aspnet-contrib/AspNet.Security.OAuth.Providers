@@ -27,8 +27,8 @@ public partial class TwitchAuthenticationHandler : OAuthHandler<TwitchAuthentica
 
     protected override string BuildChallengeUrl([NotNull] AuthenticationProperties properties, [NotNull] string redirectUri)
     {
-        var redirectUrl = base.BuildChallengeUrl(properties, redirectUri);
-        return QueryHelpers.AddQueryString(redirectUrl, "force_verify", Options.ForceVerify ? "true" : "false");
+        var challengeUrl = base.BuildChallengeUrl(properties, redirectUri);
+        return QueryHelpers.AddQueryString(challengeUrl, "force_verify", Options.ForceVerify ? "true" : "false");
     }
 
     protected override async Task<AuthenticationTicket> CreateTicketAsync(
