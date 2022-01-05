@@ -5,15 +5,22 @@
  */
 
 using System.Net;
+using System.Reflection;
+using System.Text.Encodings.Web;
 using System.Xml.Linq;
 using AspNet.Security.OAuth.Apple;
 using AspNet.Security.OAuth.Infrastructure;
 using JustEat.HttpClientInterception;
 using MartinCostello.Logging.XUnit;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
+using Microsoft.Extensions.Options;
+using Moq;
 
 namespace AspNet.Security.OAuth;
 
@@ -22,7 +29,7 @@ namespace AspNet.Security.OAuth;
 /// </summary>
 /// <typeparam name="TOptions">The options type for the authentication provider being tested.</typeparam>
 public abstract class OAuthTests<TOptions> : ITestOutputHelperAccessor
-    where TOptions : OAuthOptions
+    where TOptions : OAuthOptions, new()
 {
     protected OAuthTests()
     {
@@ -294,6 +301,64 @@ public abstract class OAuthTests<TOptions> : ITestOutputHelperAccessor
         {
             actualValue.ShouldBe(claimValue);
         }
+    }
+
+    protected async Task<Uri> BuildChallengeUriAsync<THandler>(
+        TOptions options,
+        string redirectUrl,
+        Func<IOptionsMonitor<TOptions>, ILoggerFactory, UrlEncoder, ISystemClock, THandler> factory)
+        where THandler : OAuthHandler<TOptions>
+    {
+        var scheme = new AuthenticationScheme("Test", "Test", typeof(THandler));
+        var context = new DefaultHttpContext();
+
+        options.ClientId ??= "client-id";
+        options.ClientSecret ??= "client-secret";
+
+        if (options.Scope.Count < 1)
+        {
+            options.Scope.Add("scope-1");
+            options.Scope.Add("scope-2");
+        }
+
+        if (options.StateDataFormat is null)
+        {
+            var dataProtector = new Mock<IDataProtector>();
+
+            dataProtector.Setup((p) => p.Protect(It.IsAny<byte[]>()))
+                         .Returns(Array.Empty<byte>());
+
+            options.StateDataFormat ??= new PropertiesDataFormat(dataProtector.Object);
+        }
+
+        var mock = new Mock<IOptionsMonitor<TOptions>>();
+
+        mock.Setup((p) => p.CurrentValue).Returns(options);
+        mock.Setup((p) => p.Get(scheme.Name)).Returns(options);
+
+        var optionsMonitor = mock.Object;
+        var loggerFactory = NullLoggerFactory.Instance;
+        var encoder = UrlEncoder.Default;
+        var clock = new SystemClock();
+
+        var handler = factory(optionsMonitor, loggerFactory, encoder, clock);
+
+        await handler.InitializeAsync(scheme, context);
+
+        var type = handler.GetType();
+        var method = type.GetMethod("BuildChallengeUrl", BindingFlags.NonPublic | BindingFlags.Instance);
+
+        object[] parameters = new object[] { new AuthenticationProperties(), redirectUrl };
+
+        string url = (string)method!.Invoke(handler, parameters)!;
+
+        url.ShouldNotBeNullOrWhiteSpace();
+        if (!Uri.TryCreate(url, UriKind.Absolute, out var uri))
+        {
+            uri.ShouldNotBeNull("The challenge URL is invalid.");
+        }
+
+        return uri;
     }
 
     private sealed class CustomOAuthEvents : OAuthEvents

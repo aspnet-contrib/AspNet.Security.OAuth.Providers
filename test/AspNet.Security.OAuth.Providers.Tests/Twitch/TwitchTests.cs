@@ -4,6 +4,8 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using Microsoft.AspNetCore.WebUtilities;
+
 namespace AspNet.Security.OAuth.Twitch;
 
 public class TwitchTests : OAuthTests<TwitchAuthenticationOptions>
@@ -40,5 +42,60 @@ public class TwitchTests : OAuthTests<TwitchAuthenticationOptions>
 
         // Assert
         AssertClaim(claims, claimType, claimValue);
+    }
+
+    [Theory]
+    [InlineData(false, false)]
+    [InlineData(true, true)]
+    public async Task BuildChallengeUrl_Generates_Correct_Url(bool usePkce, bool forceVerify)
+    {
+        // Arrange
+        var options = new TwitchAuthenticationOptions()
+        {
+            ForceVerify = forceVerify,
+            UsePkce = usePkce,
+        };
+
+        options.Scope.Add("scope-1");
+
+        string redirectUrl = "https://my-site.local/signin-twitch";
+
+        // Act
+        Uri actual = await BuildChallengeUriAsync(
+            options,
+            redirectUrl,
+            (options, loggerFactory, encoder, clock) => new TwitchAuthenticationHandler(options, loggerFactory, encoder, clock));
+
+        // Assert
+        actual.ShouldNotBeNull();
+        actual.ToString().ShouldStartWith("https://id.twitch.tv/oauth2/authorize?");
+
+        var query = QueryHelpers.ParseQuery(actual.Query);
+
+        query.ShouldContainKey("state");
+        query.ShouldContainKeyAndValue("client_id", options.ClientId);
+        query.ShouldContainKeyAndValue("redirect_uri", redirectUrl);
+        query.ShouldContainKeyAndValue("response_type", "code");
+        query.ShouldContainKeyAndValue("scope", "user:read:email scope-1");
+
+        if (usePkce)
+        {
+            query.ShouldContainKey(OAuthConstants.CodeChallengeKey);
+            query.ShouldContainKey(OAuthConstants.CodeChallengeMethodKey);
+        }
+        else
+        {
+            query.ShouldNotContainKey(OAuthConstants.CodeChallengeKey);
+            query.ShouldNotContainKey(OAuthConstants.CodeChallengeMethodKey);
+        }
+
+        if (forceVerify)
+        {
+            query.ShouldContainKey("force_verify", "true");
+        }
+        else
+        {
+            query.ShouldContainKey("force_verify", "false");
+        }
     }
 }
