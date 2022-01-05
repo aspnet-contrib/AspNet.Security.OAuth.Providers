@@ -93,6 +93,6 @@ public class AlipayTests : OAuthTests<AlipayAuthenticationOptions>
 
     private sealed class FixedClock : ISystemClock
     {
-        public DateTimeOffset UtcNow => new DateTimeOffset(2019, 12, 14, 22, 22, 22, TimeSpan.Zero);
+        public DateTimeOffset UtcNow => new(2019, 12, 14, 22, 22, 22, TimeSpan.Zero);
     }
 }
