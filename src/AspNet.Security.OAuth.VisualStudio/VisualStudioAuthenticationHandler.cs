@@ -83,14 +83,15 @@ public partial class VisualStudioAuthenticationHandler : OAuthHandler<VisualStud
 
     protected override string BuildChallengeUrl([NotNull] AuthenticationProperties properties, [NotNull] string redirectUri)
     {
-        return QueryHelpers.AddQueryString(Options.AuthorizationEndpoint, new Dictionary<string, string?>
-        {
-            ["client_id"] = Options.ClientId,
-            ["response_type"] = "Assertion",
-            ["scope"] = FormatScope(),
-            ["redirect_uri"] = redirectUri,
-            ["state"] = Options.StateDataFormat.Protect(properties),
-        });
+        var challengeUrl = base.BuildChallengeUrl(properties, redirectUri);
+
+        // Visual Studio Online/Azure DevOps uses "Assertion" instead of "code"
+        var challengeUri = new Uri(challengeUrl);
+        var query = QueryHelpers.ParseQuery(challengeUri.Query);
+
+        query["response_type"] = "Assertion";
+
+        return QueryHelpers.AddQueryString(Options.AuthorizationEndpoint, query);
     }
 
     private static partial class Log

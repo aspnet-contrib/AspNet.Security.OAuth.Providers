@@ -9,7 +9,6 @@ using System.Security.Claims;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
-using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -51,16 +50,8 @@ public partial class EbayAuthenticationHandler : OAuthHandler<EbayAuthentication
 
     protected override string BuildChallengeUrl([NotNull] AuthenticationProperties properties, [NotNull] string redirectUri)
     {
-        var parameters = new Dictionary<string, string>
-        {
-            ["client_id"] = Options.ClientId,
-            ["redirect_uri"] = Options.RuName!,
-            ["response_type"] = "code",
-            ["scope"] = FormatScope(Options.Scope)
-        };
-        parameters["state"] = Options.StateDataFormat.Protect(properties);
-
-        return QueryHelpers.AddQueryString(Options.AuthorizationEndpoint, parameters!);
+        // eBay uses the RuName for the redirect_uri
+        return base.BuildChallengeUrl(properties, Options.RuName);
     }
 
     protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] OAuthCodeExchangeContext context)

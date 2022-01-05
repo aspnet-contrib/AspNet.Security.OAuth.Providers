@@ -8,7 +8,6 @@ using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Text.Json;
-using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -26,14 +25,11 @@ public partial class StreamlabsAuthenticationHandler : OAuthHandler<StreamlabsAu
     }
 
     protected override string BuildChallengeUrl([NotNull] AuthenticationProperties properties, [NotNull] string redirectUri)
-        => QueryHelpers.AddQueryString(Options.AuthorizationEndpoint, new Dictionary<string, string?>
-        {
-            ["client_id"] = Options.ClientId,
-            ["scope"] = FormatScope(),
-            ["response_type"] = "code",
-            ["redirect_uri"] = redirectUri,
-            ["state"] = Options.StateDataFormat.Protect(properties)
-        });
+    {
+        // Removing this overload is technically a breaking change, so just delegate
+        // to the base implementation until a new major version when this can be removed.
+        return base.BuildChallengeUrl(properties, redirectUri);
+    }
 
     protected override async Task<AuthenticationTicket> CreateTicketAsync(
         [NotNull] ClaimsIdentity identity,
