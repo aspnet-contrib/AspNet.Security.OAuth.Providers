@@ -4,6 +4,8 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using Microsoft.AspNetCore.WebUtilities;
+
 namespace AspNet.Security.OAuth.Dropbox;
 
 public class DropboxTests : OAuthTests<DropboxAuthenticationOptions>
@@ -100,5 +102,58 @@ public class DropboxTests : OAuthTests<DropboxAuthenticationOptions>
 
         // Assert
         refreshTokenIsPresent.ShouldBeTrue();
+    }
+
+    [Theory]
+    [InlineData(false, null)]
+    [InlineData(true, "access-type")]
+    public async Task BuildChallengeUrl_Generates_Correct_Url(bool usePkce, string? accessType)
+    {
+        // Arrange
+        var options = new DropboxAuthenticationOptions()
+        {
+            AccessType = accessType,
+            UsePkce = usePkce,
+        };
+
+        string redirectUrl = "https://my-site.local/signin-dropbox";
+
+        // Act
+        Uri actual = await BuildChallengeUriAsync(
+            options,
+            redirectUrl,
+            (options, loggerFactory, encoder, clock) => new DropboxAuthenticationHandler(options, loggerFactory, encoder, clock));
+
+        // Assert
+        actual.ShouldNotBeNull();
+        actual.ToString().ShouldStartWith("https://www.dropbox.com/oauth2/authorize?");
+
+        var query = QueryHelpers.ParseQuery(actual.Query);
+
+        query.ShouldContainKey("state");
+        query.ShouldContainKeyAndValue("client_id", options.ClientId);
+        query.ShouldContainKeyAndValue("redirect_uri", redirectUrl);
+        query.ShouldContainKeyAndValue("response_type", "code");
+        query.ShouldContainKeyAndValue("scope", "scope-1 scope-2");
+
+        if (usePkce)
+        {
+            query.ShouldContainKey(OAuthConstants.CodeChallengeKey);
+            query.ShouldContainKey(OAuthConstants.CodeChallengeMethodKey);
+        }
+        else
+        {
+            query.ShouldNotContainKey(OAuthConstants.CodeChallengeKey);
+            query.ShouldNotContainKey(OAuthConstants.CodeChallengeMethodKey);
+        }
+
+        if (accessType is null)
+        {
+            query.ShouldNotContainKey("token_access_type");
+        }
+        else
+        {
+            query.ShouldContainKeyAndValue("token_access_type", accessType);
+        }
     }
 }

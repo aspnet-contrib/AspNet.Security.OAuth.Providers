@@ -4,6 +4,7 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
@@ -418,6 +419,50 @@ public class AppleTests : OAuthTests<AppleAuthenticationOptions>
         // Assert
         onGenerateClientSecretEventRaised.ShouldBeTrue();
         onValidateIdTokenEventRaised.ShouldBeTrue();
+    }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task BuildChallengeUrl_Generates_Correct_Url(bool usePkce)
+    {
+        // Arrange
+        var options = new AppleAuthenticationOptions()
+        {
+            UsePkce = usePkce,
+        };
+
+        string redirectUrl = "https://my-site.local/signin-zalo";
+
+        // Act
+        Uri actual = await BuildChallengeUriAsync(
+            options,
+            redirectUrl,
+            (options, loggerFactory, encoder, clock) => new AppleAuthenticationHandler(options, loggerFactory, encoder, clock));
+
+        // Assert
+        actual.ShouldNotBeNull();
+        actual.ToString().ShouldStartWith("https://appleid.apple.com/auth/authorize?");
+
+        var query = QueryHelpers.ParseQuery(actual.Query);
+
+        query.ShouldContainKey("state");
+        query.ShouldContainKeyAndValue("client_id", options.ClientId);
+        query.ShouldContainKeyAndValue("redirect_uri", redirectUrl);
+        query.ShouldContainKeyAndValue("response_mode", "form_post");
+        query.ShouldContainKeyAndValue("response_type", "code");
+        query.ShouldContainKeyAndValue("scope", "openid name email");
+
+        if (usePkce)
+        {
+            query.ShouldContainKey(OAuthConstants.CodeChallengeKey);
+            query.ShouldContainKey(OAuthConstants.CodeChallengeMethodKey);
+        }
+        else
+        {
+            query.ShouldNotContainKey(OAuthConstants.CodeChallengeKey);
+            query.ShouldNotContainKey(OAuthConstants.CodeChallengeMethodKey);
+        }
     }
 
     private sealed class CustomAppleAuthenticationEvents : AppleAuthenticationEvents

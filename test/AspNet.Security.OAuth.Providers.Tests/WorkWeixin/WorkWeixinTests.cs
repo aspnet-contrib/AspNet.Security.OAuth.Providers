@@ -4,6 +4,8 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using Microsoft.AspNetCore.WebUtilities;
+
 namespace AspNet.Security.OAuth.WorkWeixin;
 
 public class WorkWeixinTests : OAuthTests<WorkWeixinAuthenticationOptions>
@@ -38,5 +40,48 @@ public class WorkWeixinTests : OAuthTests<WorkWeixinAuthenticationOptions>
 
         // Assert
         AssertClaim(claims, claimType, claimValue);
+    }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task BuildChallengeUrl_Generates_Correct_Url(bool usePkce)
+    {
+        // Arrange
+        var options = new WorkWeixinAuthenticationOptions()
+        {
+            AgentId = "agent-id",
+            UsePkce = usePkce,
+        };
+
+        string redirectUrl = "https://my-site.local/signin-workweixin";
+
+        // Act
+        Uri actual = await BuildChallengeUriAsync(
+            options,
+            redirectUrl,
+            (options, loggerFactory, encoder, clock) => new WorkWeixinAuthenticationHandler(options, loggerFactory, encoder, clock));
+
+        // Assert
+        actual.ShouldNotBeNull();
+        actual.ToString().ShouldStartWith("https://open.work.weixin.qq.com/wwopen/sso/qrConnect?");
+
+        var query = QueryHelpers.ParseQuery(actual.Query);
+
+        query.ShouldContainKey("state");
+        query.ShouldContainKeyAndValue("agentid", options.AgentId);
+        query.ShouldContainKeyAndValue("appid", options.ClientId);
+        query.ShouldContainKeyAndValue("redirect_uri", redirectUrl);
+
+        if (usePkce)
+        {
+            query.ShouldContainKey(OAuthConstants.CodeChallengeKey);
+            query.ShouldContainKey(OAuthConstants.CodeChallengeMethodKey);
+        }
+        else
+        {
+            query.ShouldNotContainKey(OAuthConstants.CodeChallengeKey);
+            query.ShouldNotContainKey(OAuthConstants.CodeChallengeMethodKey);
+        }
     }
 }

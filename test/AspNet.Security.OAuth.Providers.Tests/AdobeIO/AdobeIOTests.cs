@@ -4,6 +4,8 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using Microsoft.AspNetCore.WebUtilities;
+
 namespace AspNet.Security.OAuth.AdobeIO;
 
 public class AdobeIOTests : OAuthTests<AdobeIOAuthenticationOptions>
@@ -42,5 +44,32 @@ public class AdobeIOTests : OAuthTests<AdobeIOAuthenticationOptions>
 
         // Assert
         AssertClaim(claims, claimType, claimValue);
+    }
+
+    [Fact]
+    public async Task BuildChallengeUrl_Generates_Correct_Url()
+    {
+        // Arrange
+        var options = new AdobeIOAuthenticationOptions();
+
+        string redirectUrl = "https://my-site.local/signin-adobeio";
+
+        // Act
+        Uri actual = await BuildChallengeUriAsync(
+            options,
+            redirectUrl,
+            (options, loggerFactory, encoder, clock) => new AdobeIOAuthenticationHandler(options, loggerFactory, encoder, clock));
+
+        // Assert
+        actual.ShouldNotBeNull();
+        actual.ToString().ShouldStartWith("https://ims-na1.adobelogin.com/ims/authorize/v2?");
+
+        var query = QueryHelpers.ParseQuery(actual.Query);
+
+        query.ShouldContainKey("state");
+        query.ShouldContainKeyAndValue("client_id", options.ClientId);
+        query.ShouldContainKeyAndValue("redirect_uri", redirectUrl);
+        query.ShouldContainKeyAndValue("response_type", "code");
+        query.ShouldContainKeyAndValue("scope", "openid,AdobeID");
     }
 }
