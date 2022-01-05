@@ -26,15 +26,10 @@ public partial class TwitchAuthenticationHandler : OAuthHandler<TwitchAuthentica
     }
 
     protected override string BuildChallengeUrl([NotNull] AuthenticationProperties properties, [NotNull] string redirectUri)
-        => QueryHelpers.AddQueryString(Options.AuthorizationEndpoint, new Dictionary<string, string?>
-        {
-            ["client_id"] = Options.ClientId,
-            ["scope"] = FormatScope(),
-            ["response_type"] = "code",
-            ["redirect_uri"] = redirectUri,
-            ["state"] = Options.StateDataFormat.Protect(properties),
-            ["force_verify"] = Options.ForceVerify ? "true" : "false"
-        });
+    {
+        var redirectUrl = base.BuildChallengeUrl(properties, redirectUri);
+        return QueryHelpers.AddQueryString(redirectUrl, "force_verify", Options.ForceVerify ? "true" : "false");
+    }
 
     protected override async Task<AuthenticationTicket> CreateTicketAsync(
         [NotNull] ClaimsIdentity identity,

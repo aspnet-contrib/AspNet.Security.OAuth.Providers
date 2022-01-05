@@ -53,14 +53,15 @@ public partial class AutomaticAuthenticationHandler : OAuthHandler<AutomaticAuth
 
     protected override string BuildChallengeUrl([NotNull] AuthenticationProperties properties, [NotNull] string redirectUri)
     {
-        // Note: the redirect_uri parameter is not allowed by Automatic and MUST NOT be sent.
-        return QueryHelpers.AddQueryString(Options.AuthorizationEndpoint, new Dictionary<string, string?>
-        {
-            ["client_id"] = Options.ClientId,
-            ["response_type"] = "code",
-            ["scope"] = FormatScope(),
-            ["state"] = Options.StateDataFormat.Protect(properties)
-        });
+        var challengeUrl = base.BuildChallengeUrl(properties, redirectUri);
+
+        // The redirect_uri parameter is not allowed by Automatic and MUST NOT be sent.
+        var challengeUri = new Uri(challengeUrl);
+        var query = QueryHelpers.ParseQuery(challengeUri.Query);
+
+        query.Remove("redirect_uri");
+
+        return QueryHelpers.AddQueryString(Options.AuthorizationEndpoint, query);
     }
 
     private static partial class Log

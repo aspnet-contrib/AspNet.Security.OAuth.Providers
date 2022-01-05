@@ -58,8 +58,8 @@ public partial class ZaloAuthenticationHandler : OAuthHandler<ZaloAuthentication
 
     protected override string BuildChallengeUrl([NotNull] AuthenticationProperties properties, [NotNull] string redirectUri)
     {
-        string address = base.BuildChallengeUrl(properties, redirectUri);
-        return QueryHelpers.AddQueryString(address, "app_id", Options.ClientId);
+        var challengeUrl = base.BuildChallengeUrl(properties, redirectUri);
+        return QueryHelpers.AddQueryString(challengeUrl, "app_id", Options.ClientId);
     }
 
     protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] OAuthCodeExchangeContext context)

@@ -27,15 +27,10 @@ public partial class LineAuthenticationHandler : OAuthHandler<LineAuthentication
     }
 
     protected override string BuildChallengeUrl([NotNull] AuthenticationProperties properties, [NotNull] string redirectUri)
-        => QueryHelpers.AddQueryString(Options.AuthorizationEndpoint, new Dictionary<string, string?>
-        {
-            ["response_type"] = "code",
-            ["client_id"] = Options.ClientId,
-            ["redirect_uri"] = redirectUri,
-            ["state"] = Options.StateDataFormat.Protect(properties),
-            ["scope"] = FormatScope(),
-            ["prompt"] = Options.Prompt ? "consent" : string.Empty
-        });
+    {
+        var challengeUrl = base.BuildChallengeUrl(properties, redirectUri);
+        return QueryHelpers.AddQueryString(challengeUrl, "prompt", Options.Prompt ? "consent" : string.Empty);
+    }
 
     protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] OAuthCodeExchangeContext context)
     {

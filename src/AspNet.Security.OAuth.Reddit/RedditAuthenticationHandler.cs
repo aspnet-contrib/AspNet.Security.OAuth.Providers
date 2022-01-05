@@ -61,11 +61,11 @@ public partial class RedditAuthenticationHandler : OAuthHandler<RedditAuthentica
 
     protected override string BuildChallengeUrl([NotNull] AuthenticationProperties properties, [NotNull] string redirectUri)
     {
-        string address = base.BuildChallengeUrl(properties, redirectUri);
+        string challengeUrl = base.BuildChallengeUrl(properties, redirectUri);
 
         // Add duration=permanent to the authorization request to get an access token that doesn't expire after 1 hour.
         // See https://github.com/reddit/reddit/wiki/OAuth2#authorization for more information.
-        return QueryHelpers.AddQueryString(address, name: "duration", value: "permanent");
+        return QueryHelpers.AddQueryString(challengeUrl, "duration", "permanent");
     }
 
     protected override string FormatScope()
