@@ -26,7 +26,7 @@ public partial class StreamlabsAuthenticationHandler : OAuthHandler<StreamlabsAu
 
     protected override string BuildChallengeUrl([NotNull] AuthenticationProperties properties, [NotNull] string redirectUri)
     {
-        // Removing this overload is technically a breaking change, so just delegate
+        // TODO Removing this overload is technically a breaking change, so just delegate
         // to the base implementation until a new major version when this can be removed.
         return base.BuildChallengeUrl(properties, redirectUri);
     }
