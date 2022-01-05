@@ -4,6 +4,8 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using Microsoft.AspNetCore.WebUtilities;
+
 namespace AspNet.Security.OAuth.Odnoklassniki;
 
 public class OdnoklassnikiTests : OAuthTests<OdnoklassnikiAuthenticationOptions>
@@ -46,5 +48,50 @@ public class OdnoklassnikiTests : OAuthTests<OdnoklassnikiAuthenticationOptions>
 
         // Assert
         AssertClaim(claims, claimType, claimValue);
+    }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task BuildChallengeUrl_Generates_Correct_Url(bool usePkce)
+    {
+        // Arrange
+        var options = new OdnoklassnikiAuthenticationOptions()
+        {
+            UsePkce = usePkce,
+        };
+
+        options.Scope.Add("scope-1");
+
+        string redirectUrl = "https://my-site.local/signin-odnoklassniki";
+
+        // Act
+        Uri actual = await BuildChallengeUriAsync(
+            options,
+            redirectUrl,
+            (options, loggerFactory, encoder, clock) => new OdnoklassnikiAuthenticationHandler(options, loggerFactory, encoder, clock));
+
+        // Assert
+        actual.ShouldNotBeNull();
+        actual.ToString().ShouldStartWith("https://connect.ok.ru/oauth/authorize?");
+
+        var query = QueryHelpers.ParseQuery(actual.Query);
+
+        query.ShouldContainKey("state");
+        query.ShouldContainKeyAndValue("client_id", options.ClientId);
+        query.ShouldContainKeyAndValue("redirect_uri", redirectUrl);
+        query.ShouldContainKeyAndValue("response_type", "code");
+        query.ShouldContainKeyAndValue("scope", "GET_EMAIL;scope-1");
+
+        if (usePkce)
+        {
+            query.ShouldContainKey(OAuthConstants.CodeChallengeKey);
+            query.ShouldContainKey(OAuthConstants.CodeChallengeMethodKey);
+        }
+        else
+        {
+            query.ShouldNotContainKey(OAuthConstants.CodeChallengeKey);
+            query.ShouldNotContainKey(OAuthConstants.CodeChallengeMethodKey);
+        }
     }
 }

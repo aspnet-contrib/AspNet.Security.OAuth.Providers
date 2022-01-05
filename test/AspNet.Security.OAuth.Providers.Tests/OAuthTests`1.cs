@@ -306,11 +306,14 @@ public abstract class OAuthTests<TOptions> : ITestOutputHelperAccessor
     protected async Task<Uri> BuildChallengeUriAsync<THandler>(
         TOptions options,
         string redirectUrl,
-        Func<IOptionsMonitor<TOptions>, ILoggerFactory, UrlEncoder, ISystemClock, THandler> factory)
+        Func<IOptionsMonitor<TOptions>, ILoggerFactory, UrlEncoder, ISystemClock, THandler> factory,
+        AuthenticationProperties? properties = null)
         where THandler : OAuthHandler<TOptions>
     {
         var scheme = new AuthenticationScheme("Test", "Test", typeof(THandler));
         var context = new DefaultHttpContext();
+
+        properties ??= new();
 
         options.ClientId ??= "client-id";
         options.ClientSecret ??= "client-secret";
@@ -348,7 +351,7 @@ public abstract class OAuthTests<TOptions> : ITestOutputHelperAccessor
         var type = handler.GetType();
         var method = type.GetMethod("BuildChallengeUrl", BindingFlags.NonPublic | BindingFlags.Instance);
 
-        object[] parameters = new object[] { new AuthenticationProperties(), redirectUrl };
+        object[] parameters = new object[] { properties, redirectUrl };
 
         string url = (string)method!.Invoke(handler, parameters)!;
 

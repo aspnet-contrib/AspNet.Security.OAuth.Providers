@@ -6,6 +6,7 @@
 
 using System.Globalization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.WebUtilities;
 
 namespace AspNet.Security.OAuth.Shopify;
 
@@ -53,5 +54,54 @@ public class ShopifyTests : OAuthTests<ShopifyAuthenticationOptions>
 
         // Assert
         AssertClaim(claims, claimType, claimValue);
+    }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task BuildChallengeUrl_Generates_Correct_Url(bool usePkce)
+    {
+        // Arrange
+        var options = new ShopifyAuthenticationOptions()
+        {
+            AuthorizationEndpoint = "https://apple.myshopify.com.myshopify.com/admin/oauth/authorize",
+            UsePkce = usePkce,
+        };
+
+        var properties = new AuthenticationProperties();
+        properties.Items["GrantOptions"] = "per-user";
+        properties.Items["ShopName"] = "Apple";
+
+        string redirectUrl = "https://my-site.local/signin-shopify";
+
+        // Act
+        Uri actual = await BuildChallengeUriAsync(
+            options,
+            redirectUrl,
+            (options, loggerFactory, encoder, clock) => new ShopifyAuthenticationHandler(options, loggerFactory, encoder, clock),
+            properties);
+
+        // Assert
+        actual.ShouldNotBeNull();
+        actual.ToString().ShouldStartWith("https://apple.myshopify.com.myshopify.com/admin/oauth/authorize?");
+
+        var query = QueryHelpers.ParseQuery(actual.Query);
+
+        query.ShouldContainKey("state");
+        query.ShouldContainKeyAndValue("client_id", options.ClientId);
+        query.ShouldContainKeyAndValue("redirect_uri", redirectUrl);
+        query.ShouldContainKeyAndValue("scope", "scope-1,scope-2");
+        query.ShouldContainKeyAndValue("grant_options[]", "per-user");
+
+        if (usePkce)
+        {
+            query.ShouldContainKey(OAuthConstants.CodeChallengeKey);
+            query.ShouldContainKey(OAuthConstants.CodeChallengeMethodKey);
+        }
+        else
+        {
+            query.ShouldNotContainKey(OAuthConstants.CodeChallengeKey);
+            query.ShouldNotContainKey(OAuthConstants.CodeChallengeMethodKey);
+        }
     }
 }

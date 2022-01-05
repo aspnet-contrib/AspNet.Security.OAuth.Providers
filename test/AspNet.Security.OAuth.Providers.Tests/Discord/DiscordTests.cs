@@ -4,6 +4,7 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using Microsoft.AspNetCore.WebUtilities;
 using static AspNet.Security.OAuth.Discord.DiscordAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.Discord;
@@ -133,5 +134,60 @@ public class DiscordTests : OAuthTests<DiscordAuthenticationOptions>
 
         // Assert
         promptIsSetToConsent.ShouldBeTrue();
+    }
+
+    [Theory]
+    [InlineData(false, null)]
+    [InlineData(true, "foo")]
+    public async Task BuildChallengeUrl_Generates_Correct_Url(bool usePkce, string? prompt)
+    {
+        // Arrange
+        var options = new DiscordAuthenticationOptions()
+        {
+            Prompt = prompt,
+            UsePkce = usePkce,
+        };
+
+        options.Scope.Add("scope-1");
+
+        string redirectUrl = "https://my-site.local/signin-discord";
+
+        // Act
+        Uri actual = await BuildChallengeUriAsync(
+            options,
+            redirectUrl,
+            (options, loggerFactory, encoder, clock) => new DiscordAuthenticationHandler(options, loggerFactory, encoder, clock));
+
+        // Assert
+        actual.ShouldNotBeNull();
+        actual.ToString().ShouldStartWith("https://discord.com/api/oauth2/authorize?");
+
+        var query = QueryHelpers.ParseQuery(actual.Query);
+
+        query.ShouldContainKey("state");
+        query.ShouldContainKeyAndValue("client_id", options.ClientId);
+        query.ShouldContainKeyAndValue("redirect_uri", redirectUrl);
+        query.ShouldContainKeyAndValue("response_type", "code");
+        query.ShouldContainKeyAndValue("scope", "identify scope-1");
+
+        if (usePkce)
+        {
+            query.ShouldContainKey(OAuthConstants.CodeChallengeKey);
+            query.ShouldContainKey(OAuthConstants.CodeChallengeMethodKey);
+        }
+        else
+        {
+            query.ShouldNotContainKey(OAuthConstants.CodeChallengeKey);
+            query.ShouldNotContainKey(OAuthConstants.CodeChallengeMethodKey);
+        }
+
+        if (prompt is null)
+        {
+            query.ShouldNotContainKey("prompt");
+        }
+        else
+        {
+            query.ShouldContainKeyAndValue("prompt", prompt);
+        }
     }
 }
