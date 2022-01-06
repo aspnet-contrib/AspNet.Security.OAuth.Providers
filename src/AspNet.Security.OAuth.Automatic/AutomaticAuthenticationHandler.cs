@@ -56,7 +56,7 @@ public partial class AutomaticAuthenticationHandler : OAuthHandler<AutomaticAuth
         var challengeUrl = base.BuildChallengeUrl(properties, redirectUri);
 
         // The redirect_uri parameter is not allowed by Automatic and MUST NOT be sent.
-        var challengeUri = new Uri(challengeUrl);
+        var challengeUri = new Uri(challengeUrl, UriKind.Absolute);
         var query = QueryHelpers.ParseQuery(challengeUri.Query);
 
         query.Remove("redirect_uri");

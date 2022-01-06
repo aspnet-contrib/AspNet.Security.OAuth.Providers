@@ -92,7 +92,7 @@ public partial class VisualStudioAuthenticationHandler : OAuthHandler<VisualStud
         var challengeUrl = base.BuildChallengeUrl(properties, redirectUri);
 
         // Visual Studio Online/Azure DevOps uses "Assertion" instead of "code"
-        var challengeUri = new Uri(challengeUrl);
+        var challengeUri = new Uri(challengeUrl, UriKind.Absolute);
         var query = QueryHelpers.ParseQuery(challengeUri.Query);
 
         query["response_type"] = "Assertion";
