@@ -111,7 +111,7 @@ public partial class WorkWeixinAuthenticationHandler : OAuthHandler<WorkWeixinAu
 
         if (Options.UsePkce)
         {
-            var bytes = RandomNumberGenerator.GetBytes(32);
+            var bytes = RandomNumberGenerator.GetBytes(256 / 8);
             var codeVerifier = WebEncoders.Base64UrlEncode(bytes);
 
             // Store this for use during the code redemption.
