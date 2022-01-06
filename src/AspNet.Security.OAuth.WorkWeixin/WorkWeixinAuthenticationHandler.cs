@@ -112,7 +112,7 @@ public partial class WorkWeixinAuthenticationHandler : OAuthHandler<WorkWeixinAu
         if (Options.UsePkce)
         {
             var bytes = RandomNumberGenerator.GetBytes(32);
-            var codeVerifier = Microsoft.AspNetCore.Authentication.Base64UrlTextEncoder.Encode(bytes);
+            var codeVerifier = WebEncoders.Base64UrlEncode(bytes);
 
             // Store this for use during the code redemption.
             properties.Items.Add(OAuthConstants.CodeVerifierKey, codeVerifier);
