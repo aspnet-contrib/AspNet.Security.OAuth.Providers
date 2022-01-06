@@ -54,11 +54,13 @@ public partial class WeixinAuthenticationHandler : OAuthHandler<WeixinAuthentica
         [NotNull] AuthenticationProperties properties,
         [NotNull] OAuthTokenResponse tokens)
     {
-        string address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, new Dictionary<string, string?>
+        var parameters = new Dictionary<string, string?>
         {
             ["access_token"] = tokens.AccessToken,
             ["openid"] = tokens.Response?.RootElement.GetString("openid")
-        });
+        };
+
+        var address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, parameters);
 
         using var response = await Backchannel.GetAsync(address);
         if (!response.IsSuccessStatusCode)
@@ -102,7 +104,7 @@ public partial class WeixinAuthenticationHandler : OAuthHandler<WeixinAuthentica
             context.Properties.Items.Remove(OAuthConstants.CodeVerifierKey);
         }
 
-        string address = QueryHelpers.AddQueryString(Options.TokenEndpoint, tokenRequestParameters);
+        var address = QueryHelpers.AddQueryString(Options.TokenEndpoint, tokenRequestParameters);
 
         using var response = await Backchannel.GetAsync(address);
         if (!response.IsSuccessStatusCode)
@@ -150,8 +152,8 @@ public partial class WeixinAuthenticationHandler : OAuthHandler<WeixinAuthentica
             parameters[OAuthConstants.CodeChallengeMethodKey] = OAuthConstants.CodeChallengeMethodS256;
         }
 
-        string state = Options.StateDataFormat.Protect(properties);
-        bool addRedirectHash = false;
+        var state = Options.StateDataFormat.Protect(properties);
+        var addRedirectHash = false;
 
         if (!IsWeixinAuthorizationEndpointInUse())
         {
@@ -163,7 +165,7 @@ public partial class WeixinAuthenticationHandler : OAuthHandler<WeixinAuthentica
         parameters["redirect_uri"] = redirectUri;
         parameters[State] = addRedirectHash ? OauthState : state;
 
-        string challengeUrl = QueryHelpers.AddQueryString(Options.AuthorizationEndpoint, parameters);
+        var challengeUrl = QueryHelpers.AddQueryString(Options.AuthorizationEndpoint, parameters);
 
         if (addRedirectHash)
         {

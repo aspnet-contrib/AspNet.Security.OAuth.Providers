@@ -35,7 +35,10 @@ public partial class ShopifyAuthenticationHandler : OAuthHandler<ShopifyAuthenti
         [NotNull] AuthenticationProperties properties,
         [NotNull] OAuthTokenResponse tokens)
     {
-        string uri = string.Format(CultureInfo.InvariantCulture, ShopifyAuthenticationDefaults.UserInformationEndpointFormat, properties.Items[ShopifyAuthenticationDefaults.ShopNameAuthenticationProperty]);
+        var uri = string.Format(
+            CultureInfo.InvariantCulture,
+            ShopifyAuthenticationDefaults.UserInformationEndpointFormat,
+            properties.Items[ShopifyAuthenticationDefaults.ShopNameAuthenticationProperty]);
 
         using var request = new HttpRequestMessage(HttpMethod.Get, uri);
         request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -52,15 +55,15 @@ public partial class ShopifyAuthenticationHandler : OAuthHandler<ShopifyAuthenti
 
         // In Shopify, the customer can modify the scope given to the app. Apps should verify
         // that the customer is allowing the required scope.
-        string actualScope = tokens.Response!.RootElement.GetString("scope") ?? string.Empty;
-        bool isPersistent = true;
+        var actualScope = tokens.Response!.RootElement.GetString("scope") ?? string.Empty;
+        var isPersistent = true;
 
         // If the request was for a "per-user" (i.e. no offline access)
         if (tokens.Response.RootElement.TryGetProperty("expires_in", out var expiresInProperty))
         {
             isPersistent = false;
 
-            if (expiresInProperty.TryGetInt32(out int expiresIn))
+            if (expiresInProperty.TryGetInt32(out var expiresIn))
             {
                 var expires = Clock.UtcNow.AddSeconds(expiresIn);
                 identity.AddClaim(new Claim(ClaimTypes.Expiration, expires.ToString("O", CultureInfo.InvariantCulture), ClaimValueTypes.DateTime));
@@ -68,7 +71,7 @@ public partial class ShopifyAuthenticationHandler : OAuthHandler<ShopifyAuthenti
 
             actualScope = tokens.Response.RootElement.GetString("associated_user_scope") ?? string.Empty;
 
-            string userData = tokens.Response.RootElement.GetString("associated_user") ?? string.Empty;
+            var userData = tokens.Response.RootElement.GetString("associated_user") ?? string.Empty;
             identity.AddClaim(new Claim(ClaimTypes.UserData, userData));
         }
 
@@ -94,16 +97,16 @@ public partial class ShopifyAuthenticationHandler : OAuthHandler<ShopifyAuthenti
     /// <inheritdoc />
     protected override string BuildChallengeUrl([NotNull] AuthenticationProperties properties, [NotNull] string redirectUri)
     {
-        if (!properties.Items.TryGetValue(ShopifyAuthenticationDefaults.ShopNameAuthenticationProperty, out string? shopName))
+        if (!properties.Items.TryGetValue(ShopifyAuthenticationDefaults.ShopNameAuthenticationProperty, out var shopName))
         {
             Log.ShopNameMissing(Logger);
             throw new InvalidOperationException("Shopify provider AuthenticationProperties must contain ShopNameAuthenticationProperty.");
         }
 
-        string authorizationEndpoint = string.Format(CultureInfo.InvariantCulture, Options.AuthorizationEndpoint, shopName);
+        var authorizationEndpoint = string.Format(CultureInfo.InvariantCulture, Options.AuthorizationEndpoint, shopName);
 
         // Get the permission scope, which can either be set in options or overridden in AuthenticationProperties.
-        if (!properties.Items.TryGetValue(ShopifyAuthenticationDefaults.ShopScopeAuthenticationProperty, out string? scope))
+        if (!properties.Items.TryGetValue(ShopifyAuthenticationDefaults.ShopScopeAuthenticationProperty, out var scope))
         {
             var scopeParameter = properties.GetParameter<ICollection<string>>(OAuthChallengeProperties.ScopeKey);
             scope = scopeParameter != null ? FormatScope(scopeParameter) : FormatScope();
@@ -118,23 +121,23 @@ public partial class ShopifyAuthenticationHandler : OAuthHandler<ShopifyAuthenti
 
         if (Options.UsePkce)
         {
-            byte[] bytes = RandomNumberGenerator.GetBytes(256 / 8);
-            string codeVerifier = WebEncoders.Base64UrlEncode(bytes);
+            var bytes = RandomNumberGenerator.GetBytes(256 / 8);
+            var codeVerifier = WebEncoders.Base64UrlEncode(bytes);
 
             // Store this for use during the code redemption.
             properties.Items.Add(OAuthConstants.CodeVerifierKey, codeVerifier);
 
-            byte[] challengeBytes = SHA256.HashData(Encoding.UTF8.GetBytes(codeVerifier));
+            var challengeBytes = SHA256.HashData(Encoding.UTF8.GetBytes(codeVerifier));
             parameters[OAuthConstants.CodeChallengeKey] = WebEncoders.Base64UrlEncode(challengeBytes);
             parameters[OAuthConstants.CodeChallengeMethodKey] = OAuthConstants.CodeChallengeMethodS256;
         }
 
         parameters["state"] = Options.StateDataFormat.Protect(properties);
 
-        string challengeUrl = QueryHelpers.AddQueryString(authorizationEndpoint, parameters);
+        var challengeUrl = QueryHelpers.AddQueryString(authorizationEndpoint, parameters);
 
         // If we're requesting a per-user, online only, token, add the grant_options query param.
-        if (properties.Items.TryGetValue(ShopifyAuthenticationDefaults.GrantOptionsAuthenticationProperty, out string? grantOptions) &&
+        if (properties.Items.TryGetValue(ShopifyAuthenticationDefaults.GrantOptionsAuthenticationProperty, out var grantOptions) &&
             grantOptions == ShopifyAuthenticationDefaults.PerUserAuthenticationPropertyValue)
         {
             challengeUrl = QueryHelpers.AddQueryString(challengeUrl, "grant_options[]", ShopifyAuthenticationDefaults.PerUserAuthenticationPropertyValue);
@@ -167,7 +170,7 @@ public partial class ShopifyAuthenticationHandler : OAuthHandler<ShopifyAuthenti
             var shopValue = Context.Request.Query["shop"];
             var stateValue = Context.Request.Query["state"];
 
-            string shop = shopValue.ToString();
+            var shop = shopValue.ToString();
 
             // Shop name must end with myshopify.com
             if (!shop.EndsWith(".myshopify.com", StringComparison.OrdinalIgnoreCase))
@@ -182,7 +185,7 @@ public partial class ShopifyAuthenticationHandler : OAuthHandler<ShopifyAuthenti
             // request the token. This probably isn't necessary, but it's an easy extra verification.
             var authenticationProperties = Options.StateDataFormat.Unprotect(stateValue);
 
-            string? shopNamePropertyValue = authenticationProperties?.Items[ShopifyAuthenticationDefaults.ShopNameAuthenticationProperty];
+            var shopNamePropertyValue = authenticationProperties?.Items[ShopifyAuthenticationDefaults.ShopNameAuthenticationProperty];
 
             if (!string.Equals(shopNamePropertyValue, shopDns, StringComparison.OrdinalIgnoreCase))
             {
@@ -195,7 +198,7 @@ public partial class ShopifyAuthenticationHandler : OAuthHandler<ShopifyAuthenti
             return OAuthTokenResponse.Failed(ex);
         }
 
-        string uri = string.Format(CultureInfo.InvariantCulture, Options.TokenEndpoint, shopDns);
+        var uri = string.Format(CultureInfo.InvariantCulture, Options.TokenEndpoint, shopDns);
 
         using var request = new HttpRequestMessage(HttpMethod.Post, uri);
         request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/x-www-form-urlencoded"));

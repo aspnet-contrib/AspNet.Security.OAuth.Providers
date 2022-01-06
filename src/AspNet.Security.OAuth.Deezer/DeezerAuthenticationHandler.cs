@@ -39,13 +39,13 @@ public partial class DeezerAuthenticationHandler : OAuthHandler<DeezerAuthentica
         };
 
         // PKCE https://tools.ietf.org/html/rfc7636#section-4.5, see BuildChallengeUrl
-        if (context.Properties.Items.TryGetValue(OAuthConstants.CodeVerifierKey, out string? codeVerifier))
+        if (context.Properties.Items.TryGetValue(OAuthConstants.CodeVerifierKey, out var codeVerifier))
         {
             tokenRequestParameters.Add(OAuthConstants.CodeVerifierKey, codeVerifier);
             context.Properties.Items.Remove(OAuthConstants.CodeVerifierKey);
         }
 
-        string endpoint = QueryHelpers.AddQueryString(Options.TokenEndpoint, tokenRequestParameters);
+        var endpoint = QueryHelpers.AddQueryString(Options.TokenEndpoint, tokenRequestParameters);
 
         using var requestMessage = new HttpRequestMessage(HttpMethod.Get, endpoint);
         requestMessage.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json));
@@ -65,7 +65,7 @@ public partial class DeezerAuthenticationHandler : OAuthHandler<DeezerAuthentica
         [NotNull] AuthenticationProperties properties,
         [NotNull] OAuthTokenResponse tokens)
     {
-        string address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, "access_token", tokens.AccessToken!);
+        var address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, "access_token", tokens.AccessToken!);
 
         using var request = new HttpRequestMessage(HttpMethod.Get, address);
         request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json));
@@ -90,7 +90,7 @@ public partial class DeezerAuthenticationHandler : OAuthHandler<DeezerAuthentica
     protected override string BuildChallengeUrl([NotNull] AuthenticationProperties properties, [NotNull] string redirectUri)
     {
         var scopeParameter = properties.GetParameter<ICollection<string>>(OAuthChallengeProperties.ScopeKey);
-        string scopes = scopeParameter != null ? FormatScope(scopeParameter) : FormatScope();
+        var scopes = scopeParameter != null ? FormatScope(scopeParameter) : FormatScope();
 
         var parameters = new Dictionary<string, string?>
         {
@@ -101,13 +101,13 @@ public partial class DeezerAuthenticationHandler : OAuthHandler<DeezerAuthentica
 
         if (Options.UsePkce)
         {
-            byte[] bytes = RandomNumberGenerator.GetBytes(256 / 8);
-            string codeVerifier = WebEncoders.Base64UrlEncode(bytes);
+            var bytes = RandomNumberGenerator.GetBytes(256 / 8);
+            var codeVerifier = WebEncoders.Base64UrlEncode(bytes);
 
             // Store this for use during the code redemption.
             properties.Items.Add(OAuthConstants.CodeVerifierKey, codeVerifier);
 
-            byte[] challengeBytes = SHA256.HashData(Encoding.UTF8.GetBytes(codeVerifier));
+            var challengeBytes = SHA256.HashData(Encoding.UTF8.GetBytes(codeVerifier));
             parameters[OAuthConstants.CodeChallengeKey] = WebEncoders.Base64UrlEncode(challengeBytes);
             parameters[OAuthConstants.CodeChallengeMethodKey] = OAuthConstants.CodeChallengeMethodS256;
         }
