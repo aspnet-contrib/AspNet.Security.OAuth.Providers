@@ -220,7 +220,7 @@ public partial class AlipayAuthenticationHandler : OAuthHandler<AlipayAuthentica
 
         if (Options.UsePkce)
         {
-            byte[] bytes = RandomNumberGenerator.GetBytes(32);
+            byte[] bytes = RandomNumberGenerator.GetBytes(256 / 8);
             string codeVerifier = WebEncoders.Base64UrlEncode(bytes);
 
             // Store this for use during the code redemption.
