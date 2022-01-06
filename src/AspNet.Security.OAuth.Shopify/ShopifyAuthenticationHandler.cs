@@ -119,7 +119,7 @@ public partial class ShopifyAuthenticationHandler : OAuthHandler<ShopifyAuthenti
         if (Options.UsePkce)
         {
             byte[] bytes = RandomNumberGenerator.GetBytes(32);
-            string codeVerifier = Microsoft.AspNetCore.WebUtilities.Base64UrlTextEncoder.Encode(bytes);
+            string codeVerifier = WebEncoders.Base64UrlEncode(bytes);
 
             // Store this for use during the code redemption.
             properties.Items.Add(OAuthConstants.CodeVerifierKey, codeVerifier);
