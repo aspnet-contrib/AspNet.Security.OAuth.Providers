@@ -33,18 +33,20 @@ public partial class WorkWeixinAuthenticationHandler : OAuthHandler<WorkWeixinAu
         [NotNull] AuthenticationProperties properties,
         [NotNull] OAuthTokenResponse tokens)
     {
-        (int errorCode, string? userId) = await GetUserIdentifierAsync(tokens);
+        (var errorCode, var userId) = await GetUserIdentifierAsync(tokens);
         if (errorCode != 0 || string.IsNullOrEmpty(userId))
         {
             throw new Exception($"An error (Code:{errorCode}) occurred while retrieving the user identifier.");
         }
 
         // See https://open.work.weixin.qq.com/api/doc/90000/90135/90196 for details.
-        string address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, new Dictionary<string, string?>
+        var parameters = new Dictionary<string, string?>
         {
             ["access_token"] = tokens.AccessToken,
-            ["userid"] = userId,
-        });
+            ["userid"] = userId
+        };
+
+        var address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, parameters);
 
         using var response = await Backchannel.GetAsync(address, Context.RequestAborted);
         if (!response.IsSuccessStatusCode)
@@ -86,7 +88,7 @@ public partial class WorkWeixinAuthenticationHandler : OAuthHandler<WorkWeixinAu
             context.Properties.Items.Remove(OAuthConstants.CodeVerifierKey);
         }
 
-        string address = QueryHelpers.AddQueryString(Options.TokenEndpoint, tokenRequestParameters);
+        var address = QueryHelpers.AddQueryString(Options.TokenEndpoint, tokenRequestParameters);
 
         using var response = await Backchannel.GetAsync(address, Context.RequestAborted);
         if (!response.IsSuccessStatusCode)
@@ -132,12 +134,13 @@ public partial class WorkWeixinAuthenticationHandler : OAuthHandler<WorkWeixinAu
     private async Task<(int ErrorCode, string? UserId)> GetUserIdentifierAsync(OAuthTokenResponse tokens)
     {
         // See https://open.work.weixin.qq.com/api/doc/90000/90135/91023 for details.
-        var code = Request.Query["code"];
-        string address = QueryHelpers.AddQueryString(Options.UserIdentificationEndpoint, new Dictionary<string, string?>
+        var parameters = new Dictionary<string, string?>
         {
             ["access_token"] = tokens.AccessToken,
-            ["code"] = code,
-        });
+            ["code"] = Request.Query["code"]
+        };
+
+        var address = QueryHelpers.AddQueryString(Options.UserIdentificationEndpoint, parameters);
 
         using var response = await Backchannel.GetAsync(address, Context.RequestAborted);
         if (!response.IsSuccessStatusCode)
@@ -148,7 +151,11 @@ public partial class WorkWeixinAuthenticationHandler : OAuthHandler<WorkWeixinAu
 
         using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
 
-        int errorCode = payload.RootElement.TryGetProperty("errcode", out var errCodeElement) && errCodeElement.ValueKind == JsonValueKind.Number ? errCodeElement.GetInt32() : 0;
+        var errorCode =
+            payload.RootElement.TryGetProperty("errcode", out var errCodeElement) && errCodeElement.ValueKind == JsonValueKind.Number ?
+            errCodeElement.GetInt32() :
+            0;
+
         return (errorCode, payload.RootElement.GetString("UserId"));
     }
 

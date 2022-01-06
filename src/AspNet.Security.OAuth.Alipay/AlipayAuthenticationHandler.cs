@@ -72,7 +72,7 @@ public partial class AlipayAuthenticationHandler : OAuthHandler<AlipayAuthentica
             context.Properties.Items.Remove(OAuthConstants.CodeVerifierKey);
         }
 
-        string address = QueryHelpers.AddQueryString(Options.TokenEndpoint, tokenRequestParameters);
+        var address = QueryHelpers.AddQueryString(Options.TokenEndpoint, tokenRequestParameters);
 
         using var response = await Backchannel.GetAsync(address, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
         if (!response.IsSuccessStatusCode)
@@ -85,7 +85,7 @@ public partial class AlipayAuthenticationHandler : OAuthHandler<AlipayAuthentica
         using var document = JsonDocument.Parse(stream);
 
         var mainElement = document.RootElement.GetProperty("alipay_system_oauth_token_response");
-        if (!ValidateReturnCode(mainElement, out string code))
+        if (!ValidateReturnCode(mainElement, out var code))
         {
             return OAuthTokenResponse.Failed(new Exception($"An error (Code:{code}) occurred while retrieving an access token."));
         }
@@ -113,7 +113,7 @@ public partial class AlipayAuthenticationHandler : OAuthHandler<AlipayAuthentica
         };
         parameters.Add("sign", GetRSA2Signature(parameters));
 
-        string address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, parameters);
+        var address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, parameters);
 
         using var response = await Backchannel.GetAsync(address, Context.RequestAborted);
 
@@ -129,11 +129,11 @@ public partial class AlipayAuthenticationHandler : OAuthHandler<AlipayAuthentica
 
         if (!rootElement.TryGetProperty("alipay_user_info_share_response", out JsonElement mainElement))
         {
-            string errorCode = rootElement.GetProperty("error_response").GetProperty("code").GetString()!;
+            var errorCode = rootElement.GetProperty("error_response").GetProperty("code").GetString()!;
             throw new Exception($"An error (Code:{errorCode}) occurred while retrieving user information.");
         }
 
-        if (!ValidateReturnCode(mainElement, out string code))
+        if (!ValidateReturnCode(mainElement, out var code))
         {
             throw new Exception($"An error (Code:{code}) occurred while retrieving user information.");
         }
@@ -192,14 +192,14 @@ public partial class AlipayAuthenticationHandler : OAuthHandler<AlipayAuthentica
                    .Append('&');
         }
 
-        string plainText = builder.ToString();
-        byte[] plainBytes = Encoding.UTF8.GetBytes(plainText, 0, plainText.Length - 1); // Skip the last '&'
-        byte[] privateKeyBytes = Convert.FromBase64String(Options.ClientSecret);
+        var plainText = builder.ToString();
+        var plainBytes = Encoding.UTF8.GetBytes(plainText, 0, plainText.Length - 1); // Skip the last '&'
+        var privateKeyBytes = Convert.FromBase64String(Options.ClientSecret);
 
         using var rsa = RSA.Create();
         rsa.ImportRSAPrivateKey(privateKeyBytes, out _);
 
-        byte[] encryptedBytes = rsa.SignData(plainBytes, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
+        var encryptedBytes = rsa.SignData(plainBytes, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
 
         return Convert.ToBase64String(encryptedBytes);
     }
@@ -220,13 +220,13 @@ public partial class AlipayAuthenticationHandler : OAuthHandler<AlipayAuthentica
 
         if (Options.UsePkce)
         {
-            byte[] bytes = RandomNumberGenerator.GetBytes(256 / 8);
-            string codeVerifier = WebEncoders.Base64UrlEncode(bytes);
+            var bytes = RandomNumberGenerator.GetBytes(256 / 8);
+            var codeVerifier = WebEncoders.Base64UrlEncode(bytes);
 
             // Store this for use during the code redemption.
             properties.Items.Add(OAuthConstants.CodeVerifierKey, codeVerifier);
 
-            byte[] challengeBytes = SHA256.HashData(Encoding.UTF8.GetBytes(codeVerifier));
+            var challengeBytes = SHA256.HashData(Encoding.UTF8.GetBytes(codeVerifier));
             parameters[OAuthConstants.CodeChallengeKey] = WebEncoders.Base64UrlEncode(challengeBytes);
             parameters[OAuthConstants.CodeChallengeMethodKey] = OAuthConstants.CodeChallengeMethodS256;
         }
