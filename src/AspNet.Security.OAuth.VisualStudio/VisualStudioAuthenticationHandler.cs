@@ -71,7 +71,10 @@ public partial class VisualStudioAuthenticationHandler : OAuthHandler<VisualStud
         }
 
         using var request = new HttpRequestMessage(HttpMethod.Post, Options.TokenEndpoint);
+
+        // TODO Review whether this is just a copy-paste mistake and is redundant by testing with a real instance
         request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/x-www-form-urlencoded"));
+
         request.Content = new FormUrlEncodedContent(tokenRequestParameters);
 
         using var response = await Backchannel.SendAsync(request, Context.RequestAborted);
