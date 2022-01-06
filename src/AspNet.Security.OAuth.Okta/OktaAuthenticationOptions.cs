@@ -33,6 +33,14 @@ public class OktaAuthenticationOptions : OAuthOptions
     }
 
     /// <summary>
+    /// Gets or sets the Okta custom authorization server to use for authentication.
+    /// </summary>
+    /// <remarks>
+    /// The default value is <c>default</c>.
+    /// </remarks>
+    public string AuthorizationServer { get; set; } = OktaAuthenticationDefaults.DefaultAuthorizationServer;
+
+    /// <summary>
     /// Gets or sets the Okta domain (Org URL) to use for authentication.
     /// </summary>
     public string? Domain { get; set; }

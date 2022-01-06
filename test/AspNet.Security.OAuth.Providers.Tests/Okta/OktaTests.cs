@@ -41,4 +41,30 @@ public class OktaTests : OAuthTests<OktaAuthenticationOptions>
         // Assert
         AssertClaim(claims, claimType, claimValue);
     }
+
+    [Theory]
+    [InlineData(ClaimTypes.Email, "jane.doe@example.com")]
+    [InlineData(ClaimTypes.GivenName, "Jane")]
+    [InlineData(ClaimTypes.Name, "Jane Doe")]
+    [InlineData(ClaimTypes.NameIdentifier, "00uid4BxXw6I6TV4m0g4")]
+    [InlineData(ClaimTypes.Surname, "Doe")]
+    public async Task Can_Sign_In_Using_Okta_With_Custom_Authorization_Server(string claimType, string claimValue)
+    {
+        // Arrange
+        static void ConfigureServices(IServiceCollection services)
+        {
+            services.Configure<OktaAuthenticationOptions>("Okta", (options) =>
+            {
+                options.AuthorizationServer = "custom";
+            });
+        }
+
+        using var server = CreateTestServer(ConfigureServices);
+
+        // Act
+        var claims = await AuthenticateUserAsync(server);
+
+        // Assert
+        AssertClaim(claims, claimType, claimValue);
+    }
 }

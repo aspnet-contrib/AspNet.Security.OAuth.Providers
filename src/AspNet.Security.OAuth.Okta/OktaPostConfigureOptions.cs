@@ -4,6 +4,7 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using System.Globalization;
 using Microsoft.Extensions.Options;
 
 namespace AspNet.Security.OAuth.Okta;
@@ -23,13 +24,20 @@ public class OktaPostConfigureOptions : IPostConfigureOptions<OktaAuthentication
             throw new ArgumentException("No Okta domain configured.", nameof(options));
         }
 
-        options.AuthorizationEndpoint = CreateUrl(options.Domain, OktaAuthenticationDefaults.AuthorizationEndpointPath);
-        options.TokenEndpoint = CreateUrl(options.Domain, OktaAuthenticationDefaults.TokenEndpointPath);
-        options.UserInformationEndpoint = CreateUrl(options.Domain, OktaAuthenticationDefaults.UserInformationEndpointPath);
+        if (string.IsNullOrWhiteSpace(options.AuthorizationServer))
+        {
+            throw new ArgumentException("No Okta authorization server configured.", nameof(options));
+        }
+
+        options.AuthorizationEndpoint = CreateUrl(options.Domain, OktaAuthenticationDefaults.AuthorizationEndpointPathFormat, options.AuthorizationServer);
+        options.TokenEndpoint = CreateUrl(options.Domain, OktaAuthenticationDefaults.TokenEndpointPathFormat, options.AuthorizationServer);
+        options.UserInformationEndpoint = CreateUrl(options.Domain, OktaAuthenticationDefaults.UserInformationEndpointPathFormat, options.AuthorizationServer);
     }
 
-    private static string CreateUrl(string domain, string path)
+    private static string CreateUrl(string domain, string pathFormat, params object[] args)
     {
+        var path = string.Format(CultureInfo.InvariantCulture, pathFormat, args);
+
         // Enforce use of HTTPS
         var builder = new UriBuilder(domain)
         {
