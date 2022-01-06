@@ -16,6 +16,7 @@ services.AddAuthentication(options => /* Auth configuration */)
 
 | Property Name | Property Type | Description | Default Value |
 |:--|:--|:--|:--|
+| `AuthorizationServer` | `string` | The Okta custom authorization server to use for authentication. | `default` |
 | `Domain` | `string?` | The Okta domain (_Org URL_) to use for authentication. This can be found on the `/dev/console` page of the Okta admin portal for your account. | `null` |
 
 ## Optional Settings

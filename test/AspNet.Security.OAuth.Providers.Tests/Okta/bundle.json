@@ -41,6 +41,47 @@
         },
         "phone_number": "+1 (425) 555-1212"
       }
+    },
+    {
+      "comment": "https://developer.okta.com/docs/reference/api/oidc/#response-example-success-2",
+      "uri": "https://okta.local/oauth2/custom/v1/token",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "secret-access-token",
+        "token_type": "Bearer",
+        "expires_in": 3600,
+        "scope": "openid email",
+        "refresh_token": "secret-refresh-token",
+        "id_token": "secret-id-token"
+      }
+    },
+    {
+      "comment": "https://developer.okta.com/docs/reference/api/oidc/#userinfo",
+      "uri": "https://okta.local/oauth2/custom/v1/userinfo",
+      "contentFormat": "json",
+      "contentJson": {
+        "sub": "00uid4BxXw6I6TV4m0g4",
+        "name": "Jane Doe",
+        "nickname": "Jan",
+        "given_name": "Jane",
+        "middle_name": "Jenny",
+        "family_name": "Doe",
+        "profile": "https://example.com/jane.doe",
+        "zoneinfo": "America/Los_Angeles",
+        "locale": "en-US",
+        "updated_at": 1311280970,
+        "email": "jane.doe@example.com",
+        "email_verified": true,
+        "address": {
+          "street_address": "123 Hollywood Blvd.",
+          "locality": "Los Angeles",
+          "region": "CA",
+          "postal_code": "90210",
+          "country": "US"
+        },
+        "phone_number": "+1 (425) 555-1212"
+      }
     }
   ]
 }
