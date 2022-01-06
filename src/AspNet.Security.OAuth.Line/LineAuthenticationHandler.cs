@@ -40,7 +40,7 @@ public partial class LineAuthenticationHandler : OAuthHandler<LineAuthentication
             ["code"] = context.Code,
             ["redirect_uri"] = context.RedirectUri,
             ["client_id"] = Options.ClientId,
-            ["client_secret"] = Options.ClientSecret
+            ["client_secret"] = Options.ClientSecret,
         };
 
         // PKCE https://tools.ietf.org/html/rfc7636#section-4.5, see BuildChallengeUrl
@@ -89,7 +89,7 @@ public partial class LineAuthenticationHandler : OAuthHandler<LineAuthentication
         // When the email address is not public, retrieve it from the emails endpoint if the user:email scope is specified.
         if (!string.IsNullOrEmpty(Options.UserEmailsEndpoint) && Options.Scope.Contains("email"))
         {
-            string? email = await GetEmailAsync(tokens);
+            var email = await GetEmailAsync(tokens);
 
             if (!string.IsNullOrEmpty(email))
             {
@@ -103,14 +103,14 @@ public partial class LineAuthenticationHandler : OAuthHandler<LineAuthentication
 
     protected virtual async Task<string?> GetEmailAsync([NotNull] OAuthTokenResponse tokens)
     {
-        using var request = new HttpRequestMessage(HttpMethod.Post, Options.UserEmailsEndpoint);
-        request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
         var parameters = new Dictionary<string, string?>
         {
             ["id_token"] = tokens.Response?.RootElement.GetString("id_token") ?? string.Empty,
-            ["client_id"] = Options.ClientId
+            ["client_id"] = Options.ClientId,
         };
+
+        using var request = new HttpRequestMessage(HttpMethod.Post, Options.UserEmailsEndpoint);
+        request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         request.Content = new FormUrlEncodedContent(parameters);
 
         using var response = await Backchannel.SendAsync(request, Context.RequestAborted);

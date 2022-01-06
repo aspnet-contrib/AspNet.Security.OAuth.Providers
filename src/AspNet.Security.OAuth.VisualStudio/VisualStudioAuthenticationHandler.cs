@@ -60,7 +60,7 @@ public partial class VisualStudioAuthenticationHandler : OAuthHandler<VisualStud
             ["client_assertion"] = Options.ClientSecret,
             ["assertion"] = context.Code,
             ["grant_type"] = "urn:ietf:params:oauth:grant-type:jwt-bearer",
-            ["client_assertion_type"] = "urn:ietf:params:oauth:client-assertion-type:jwt-bearer"
+            ["client_assertion_type"] = "urn:ietf:params:oauth:client-assertion-type:jwt-bearer",
         };
 
         // PKCE https://tools.ietf.org/html/rfc7636#section-4.5, see BuildChallengeUrl

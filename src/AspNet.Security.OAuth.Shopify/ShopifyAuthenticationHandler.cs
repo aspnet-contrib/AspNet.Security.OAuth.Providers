@@ -153,7 +153,7 @@ public partial class ShopifyAuthenticationHandler : OAuthHandler<ShopifyAuthenti
         {
             ["client_id"] = Options.ClientId,
             ["client_secret"] = Options.ClientSecret,
-            ["code"] = context.Code
+            ["code"] = context.Code,
         };
 
         // PKCE https://tools.ietf.org/html/rfc7636#section-4.5, see BuildChallengeUrl

@@ -31,12 +31,14 @@ public partial class FoursquareAuthenticationHandler : OAuthHandler<FoursquareAu
     {
         // See https://developer.foursquare.com/overview/versioning
         // for more information about the mandatory "v" and "m" parameters.
-        string address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, new Dictionary<string, string?>
+        var parameters = new Dictionary<string, string?>
         {
             ["m"] = "foursquare",
             ["v"] = !string.IsNullOrEmpty(Options.ApiVersion) ? Options.ApiVersion : FoursquareAuthenticationDefaults.ApiVersion,
             ["oauth_token"] = tokens.AccessToken,
-        });
+        };
+
+        var address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, parameters);
 
         using var request = new HttpRequestMessage(HttpMethod.Get, address);
 

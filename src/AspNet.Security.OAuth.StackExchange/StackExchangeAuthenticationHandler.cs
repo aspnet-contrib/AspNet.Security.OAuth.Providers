@@ -49,7 +49,7 @@ public partial class StackExchangeAuthenticationHandler : OAuthHandler<StackExch
             queryArguments["key"] = Options.RequestKey;
         }
 
-        string address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, queryArguments);
+        var address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, queryArguments);
 
         using var request = new HttpRequestMessage(HttpMethod.Get, address);
         request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -79,7 +79,7 @@ public partial class StackExchangeAuthenticationHandler : OAuthHandler<StackExch
             ["redirect_uri"] = context.RedirectUri,
             ["client_secret"] = Options.ClientSecret,
             ["code"] = context.Code,
-            ["grant_type"] = "authorization_code"
+            ["grant_type"] = "authorization_code",
         };
 
         // PKCE https://tools.ietf.org/html/rfc7636#section-4.5, see BuildChallengeUrl
@@ -107,7 +107,7 @@ public partial class StackExchangeAuthenticationHandler : OAuthHandler<StackExch
 
         var token = new JsonObject();
 
-        foreach ((string key, StringValues value) in content)
+        foreach ((var key, var value) in content)
         {
             token[key] = value.ToString();
         }

@@ -44,17 +44,17 @@ public partial class UntappdAuthenticationHandler : OAuthHandler<UntappdAuthenti
             context.Properties.Items.Remove(OAuthConstants.CodeVerifierKey);
         }
 
+        var parameters = new Dictionary<string, string?>
+        {
+            ["client_id"] = Options.ClientId,
+            ["redirect_uri"] = context.RedirectUri,
+            ["client_secret"] = Options.ClientSecret,
+            ["code"] = context.Code,
+        };
+
+        var address = QueryHelpers.AddQueryString(Options.TokenEndpoint, parameters);
+
         using var requestContent = new FormUrlEncodedContent(tokenRequestParameters);
-
-        string address = QueryHelpers.AddQueryString(Options.TokenEndpoint,
-            new Dictionary<string, string?>
-            {
-                ["client_id"] = Options.ClientId,
-                ["redirect_uri"] = context.RedirectUri,
-                ["client_secret"] = Options.ClientSecret,
-                ["code"] = context.Code
-            });
-
         using var requestMessage = new HttpRequestMessage(HttpMethod.Get, address);
         requestMessage.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         requestMessage.Content = requestContent;

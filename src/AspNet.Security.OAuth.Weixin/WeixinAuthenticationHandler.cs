@@ -57,7 +57,7 @@ public partial class WeixinAuthenticationHandler : OAuthHandler<WeixinAuthentica
         var parameters = new Dictionary<string, string?>
         {
             ["access_token"] = tokens.AccessToken,
-            ["openid"] = tokens.Response?.RootElement.GetString("openid")
+            ["openid"] = tokens.Response?.RootElement.GetString("openid"),
         };
 
         var address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, parameters);
@@ -94,7 +94,7 @@ public partial class WeixinAuthenticationHandler : OAuthHandler<WeixinAuthentica
             ["appid"] = Options.ClientId,
             ["secret"] = Options.ClientSecret,
             ["code"] = context.Code,
-            ["grant_type"] = "authorization_code"
+            ["grant_type"] = "authorization_code",
         };
 
         // PKCE https://tools.ietf.org/html/rfc7636#section-4.5, see BuildChallengeUrl

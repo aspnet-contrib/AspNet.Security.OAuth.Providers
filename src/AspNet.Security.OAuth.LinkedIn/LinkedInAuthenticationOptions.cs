@@ -106,7 +106,7 @@ public class LinkedInAuthenticationOptions : OAuthOptions
 
     private string GetFullName(JsonElement user)
     {
-        string?[] nameParts = new string?[]
+        var nameParts = new string?[]
         {
                 GetMultiLocaleString(user, ProfileFields.FirstName),
                 GetMultiLocaleString(user, ProfileFields.LastName),
@@ -134,7 +134,7 @@ public class LinkedInAuthenticationOptions : OAuthOptions
                 continue;
             }
 
-            string? pictureUrl = imageIdentifier
+            var pictureUrl = imageIdentifier
                 .EnumerateArray()
                 .FirstOrDefault()
                 .GetString("identifier");
@@ -161,13 +161,13 @@ public class LinkedInAuthenticationOptions : OAuthOptions
     private static string? DefaultMultiLocaleStringResolver(IReadOnlyDictionary<string, string?> localizedValues, string? preferredLocale)
     {
         if (!string.IsNullOrEmpty(preferredLocale) &&
-            localizedValues.TryGetValue(preferredLocale, out string? preferredLocaleValue))
+            localizedValues.TryGetValue(preferredLocale, out var preferredLocaleValue))
         {
             return preferredLocaleValue;
         }
 
-        string currentUIKey = Thread.CurrentThread.CurrentUICulture.ToString().Replace('-', '_');
-        if (localizedValues.TryGetValue(currentUIKey, out string? currentUIValue))
+        var currentUIKey = Thread.CurrentThread.CurrentUICulture.ToString().Replace('-', '_');
+        if (localizedValues.TryGetValue(currentUIKey, out var currentUIValue))
         {
             return currentUIValue;
         }

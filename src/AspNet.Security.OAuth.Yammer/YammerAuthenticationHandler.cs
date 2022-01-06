@@ -59,7 +59,7 @@ public partial class YammerAuthenticationHandler : OAuthHandler<YammerAuthentica
             ["redirect_uri"] = context.RedirectUri,
             ["client_secret"] = Options.ClientSecret,
             ["code"] = context.Code,
-            ["grant_type"] = "authorization_code"
+            ["grant_type"] = "authorization_code",
         };
 
         // PKCE https://tools.ietf.org/html/rfc7636#section-4.5, see BuildChallengeUrl
@@ -84,7 +84,7 @@ public partial class YammerAuthenticationHandler : OAuthHandler<YammerAuthentica
         // with the OAuth2 generic middleware, a compliant JSON payload is generated manually.
         // See https://developer.yammer.com/docs/oauth-2 for more information about this process.
         using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
-        string? accessToken = payload.RootElement.GetProperty("access_token").GetString("token");
+        var accessToken = payload.RootElement.GetProperty("access_token").GetString("token");
 
         var token = new
         {

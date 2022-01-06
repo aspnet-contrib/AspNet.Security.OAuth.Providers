@@ -58,7 +58,7 @@ public partial class YahooAuthenticationHandler : OAuthHandler<YahooAuthenticati
         {
             ["grant_type"] = "authorization_code",
             ["redirect_uri"] = context.RedirectUri,
-            ["code"] = context.Code
+            ["code"] = context.Code,
         };
 
         // PKCE https://tools.ietf.org/html/rfc7636#section-4.5, see BuildChallengeUrl
@@ -97,7 +97,7 @@ public partial class YahooAuthenticationHandler : OAuthHandler<YahooAuthenticati
             return Uri.EscapeDataString(value).Replace("%20", "+", StringComparison.Ordinal);
         }
 
-        string credentials = Convert.ToBase64String(Encoding.ASCII.GetBytes(
+        var credentials = Convert.ToBase64String(Encoding.ASCII.GetBytes(
             string.Concat(
                 EscapeDataString(Options.ClientId),
                 ":",

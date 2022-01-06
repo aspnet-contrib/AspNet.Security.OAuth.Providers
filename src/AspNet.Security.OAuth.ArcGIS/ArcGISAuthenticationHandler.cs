@@ -31,11 +31,13 @@ public partial class ArcGISAuthenticationHandler : OAuthHandler<ArcGISAuthentica
         [NotNull] OAuthTokenResponse tokens)
     {
         // Note: the ArcGIS API doesn't support content negotiation via headers.
-        string address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, new Dictionary<string, string?>
+        var parameters = new Dictionary<string, string?>
         {
             ["f"] = "json",
-            ["token"] = tokens.AccessToken
-        });
+            ["token"] = tokens.AccessToken,
+        };
+
+        var address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, parameters!);
 
         using var request = new HttpRequestMessage(HttpMethod.Get, address);
         request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
