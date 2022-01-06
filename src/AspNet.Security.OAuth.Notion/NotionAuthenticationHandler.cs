@@ -49,7 +49,7 @@ public class NotionAuthenticationHandler : OAuthHandler<NotionAuthenticationOpti
         using var requestMessage = new HttpRequestMessage(HttpMethod.Post, Options.TokenEndpoint);
         requestMessage.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-        byte[] byteArray = Encoding.ASCII.GetBytes(Options.ClientId + ":" + Options.ClientSecret);
+        var byteArray = Encoding.ASCII.GetBytes(Options.ClientId + ":" + Options.ClientSecret);
         requestMessage.Headers.Authorization =
             new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
         requestMessage.Content = requestContent;

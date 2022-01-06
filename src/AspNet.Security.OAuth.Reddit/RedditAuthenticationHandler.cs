@@ -61,7 +61,7 @@ public partial class RedditAuthenticationHandler : OAuthHandler<RedditAuthentica
 
     protected override string BuildChallengeUrl([NotNull] AuthenticationProperties properties, [NotNull] string redirectUri)
     {
-        string challengeUrl = base.BuildChallengeUrl(properties, redirectUri);
+        var challengeUrl = base.BuildChallengeUrl(properties, redirectUri);
 
         // Add duration=permanent to the authorization request to get an access token that doesn't expire after 1 hour.
         // See https://github.com/reddit/reddit/wiki/OAuth2#authorization for more information.
@@ -87,7 +87,7 @@ public partial class RedditAuthenticationHandler : OAuthHandler<RedditAuthentica
         {
             ["grant_type"] = "authorization_code",
             ["redirect_uri"] = context.RedirectUri,
-            ["code"] = context.Code
+            ["code"] = context.Code,
         };
 
         // PKCE https://tools.ietf.org/html/rfc7636#section-4.5, see BuildChallengeUrl
@@ -134,7 +134,7 @@ public partial class RedditAuthenticationHandler : OAuthHandler<RedditAuthentica
             return Uri.EscapeDataString(value).Replace("%20", "+", StringComparison.Ordinal);
         }
 
-        string credentials = Convert.ToBase64String(Encoding.ASCII.GetBytes(
+        var credentials = Convert.ToBase64String(Encoding.ASCII.GetBytes(
             string.Concat(
                 EscapeDataString(Options.ClientId),
                 ":",

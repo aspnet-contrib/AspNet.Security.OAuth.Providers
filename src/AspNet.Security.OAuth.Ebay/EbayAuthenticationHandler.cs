@@ -60,7 +60,7 @@ public partial class EbayAuthenticationHandler : OAuthHandler<EbayAuthentication
         {
             ["grant_type"] = "authorization_code",
             ["code"] = context.Code,
-            ["redirect_uri"] = Options.RuName!
+            ["redirect_uri"] = Options.RuName!,
         };
 
         // PKCE https://tools.ietf.org/html/rfc7636#section-4.5, see BuildChallengeUrl
@@ -90,7 +90,7 @@ public partial class EbayAuthenticationHandler : OAuthHandler<EbayAuthentication
 
     private AuthenticationHeaderValue CreateAuthorizationHeader()
     {
-        string credentials = Convert.ToBase64String(Encoding.ASCII.GetBytes(
+        var credentials = Convert.ToBase64String(Encoding.ASCII.GetBytes(
             string.Concat(
                 EscapeDataString(Options.ClientId),
                 ":",

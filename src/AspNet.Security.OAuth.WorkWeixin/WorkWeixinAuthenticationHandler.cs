@@ -43,7 +43,7 @@ public partial class WorkWeixinAuthenticationHandler : OAuthHandler<WorkWeixinAu
         var parameters = new Dictionary<string, string?>
         {
             ["access_token"] = tokens.AccessToken,
-            ["userid"] = userId
+            ["userid"] = userId,
         };
 
         var address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, parameters);
@@ -137,7 +137,7 @@ public partial class WorkWeixinAuthenticationHandler : OAuthHandler<WorkWeixinAu
         var parameters = new Dictionary<string, string?>
         {
             ["access_token"] = tokens.AccessToken,
-            ["code"] = Request.Query["code"]
+            ["code"] = Request.Query["code"],
         };
 
         var address = QueryHelpers.AddQueryString(Options.UserIdentificationEndpoint, parameters);

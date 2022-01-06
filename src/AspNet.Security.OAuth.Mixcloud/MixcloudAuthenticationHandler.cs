@@ -36,7 +36,7 @@ public partial class MixcloudAuthenticationHandler : OAuthHandler<MixcloudAuthen
         {
             ["client_id"] = Options.ClientId,
             ["scope"] = scope,
-            ["response_type"] = "code"
+            ["response_type"] = "code",
         };
 
         if (Options.UsePkce)

@@ -31,11 +31,13 @@ public partial class WeiboAuthenticationHandler : OAuthHandler<WeiboAuthenticati
         [NotNull] AuthenticationProperties properties,
         [NotNull] OAuthTokenResponse tokens)
     {
-        string address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, new Dictionary<string, string?>
+        var parameters = new Dictionary<string, string?>
         {
             ["access_token"] = tokens.AccessToken,
-            ["uid"] = tokens.Response!.RootElement.GetString("uid")
-        });
+            ["uid"] = tokens.Response!.RootElement.GetString("uid"),
+        };
+
+        var address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, parameters);
 
         using var request = new HttpRequestMessage(HttpMethod.Get, address);
         request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -55,7 +57,7 @@ public partial class WeiboAuthenticationHandler : OAuthHandler<WeiboAuthenticati
             !identity.HasClaim(claim => claim.Type == ClaimTypes.Email) &&
             Options.Scope.Contains("email"))
         {
-            string? email = await GetEmailAsync(tokens);
+            var email = await GetEmailAsync(tokens);
 
             if (!string.IsNullOrEmpty(address))
             {
@@ -82,7 +84,7 @@ public partial class WeiboAuthenticationHandler : OAuthHandler<WeiboAuthenticati
     protected virtual async Task<string?> GetEmailAsync([NotNull] OAuthTokenResponse tokens)
     {
         // See http://open.weibo.com/wiki/2/account/profile/email for more information about the /account/profile/email.json endpoint.
-        string address = QueryHelpers.AddQueryString(Options.UserEmailsEndpoint, "access_token", tokens.AccessToken!);
+        var address = QueryHelpers.AddQueryString(Options.UserEmailsEndpoint, "access_token", tokens.AccessToken!);
 
         using var request = new HttpRequestMessage(HttpMethod.Get, address);
         request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));

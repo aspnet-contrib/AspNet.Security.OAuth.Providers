@@ -31,11 +31,13 @@ public partial class ZaloAuthenticationHandler : OAuthHandler<ZaloAuthentication
         [NotNull] OAuthTokenResponse tokens)
     {
         // See https://developers.zalo.me/docs/api/social-api/tai-lieu/thong-tin-nguoi-dung-post-28
-        string address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, new Dictionary<string, string?>
+        var parameters = new Dictionary<string, string?>
         {
             ["access_token"] = tokens.AccessToken,
-            ["fields"] = "id,name,birthday,gender"
-        });
+            ["fields"] = "id,name,birthday,gender",
+        };
+
+        var address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, parameters);
 
         using var request = new HttpRequestMessage(HttpMethod.Get, address);
 
@@ -79,7 +81,7 @@ public partial class ZaloAuthenticationHandler : OAuthHandler<ZaloAuthentication
             context.Properties.Items.Remove(OAuthConstants.CodeVerifierKey);
         }
 
-        string address = QueryHelpers.AddQueryString(Options.TokenEndpoint, tokenRequestParameters);
+        var address = QueryHelpers.AddQueryString(Options.TokenEndpoint, tokenRequestParameters);
 
         using var request = new HttpRequestMessage(HttpMethod.Get, address);
         using var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);

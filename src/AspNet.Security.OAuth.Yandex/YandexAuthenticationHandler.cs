@@ -98,7 +98,7 @@ public partial class YandexAuthenticationHandler : OAuthHandler<YandexAuthentica
             return Uri.EscapeDataString(value).Replace("%20", "+", StringComparison.Ordinal);
         }
 
-        string credentials = Convert.ToBase64String(Encoding.ASCII.GetBytes(
+        var credentials = Convert.ToBase64String(Encoding.ASCII.GetBytes(
             string.Concat(
                 EscapeDataString(Options.ClientId),
                 ":",

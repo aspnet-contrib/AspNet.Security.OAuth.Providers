@@ -55,7 +55,7 @@ public class ShopifyAuthenticationProperties : AuthenticationProperties
     {
         get
         {
-            string? prop = GetProperty(ShopifyAuthenticationDefaults.GrantOptionsAuthenticationProperty);
+            var prop = GetProperty(ShopifyAuthenticationDefaults.GrantOptionsAuthenticationProperty);
             return string.Equals(prop, ShopifyAuthenticationDefaults.PerUserAuthenticationPropertyValue, StringComparison.OrdinalIgnoreCase);
         }
 
@@ -77,6 +77,6 @@ public class ShopifyAuthenticationProperties : AuthenticationProperties
 
     private string? GetProperty(string propName)
     {
-        return Items.TryGetValue(propName, out string? val) ? val : null;
+        return Items.TryGetValue(propName, out var val) ? val : null;
     }
 }

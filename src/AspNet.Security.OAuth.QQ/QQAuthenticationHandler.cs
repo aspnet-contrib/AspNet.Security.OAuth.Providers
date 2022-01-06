@@ -30,7 +30,7 @@ public partial class QQAuthenticationHandler : OAuthHandler<QQAuthenticationOpti
         [NotNull] AuthenticationProperties properties,
         [NotNull] OAuthTokenResponse tokens)
     {
-        (int errorCode, string? openId, string? unionId) = await GetUserIdentifierAsync(tokens);
+        (var errorCode, var openId, var unionId) = await GetUserIdentifierAsync(tokens);
 
         if (errorCode != 0 || string.IsNullOrEmpty(openId))
         {
@@ -43,12 +43,14 @@ public partial class QQAuthenticationHandler : OAuthHandler<QQAuthenticationOpti
             identity.AddClaim(new Claim(QQAuthenticationConstants.Claims.UnionId, unionId, ClaimValueTypes.String, Options.ClaimsIssuer));
         }
 
-        string address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, new Dictionary<string, string?>(3)
+        var parameters = new Dictionary<string, string?>(3)
         {
             ["oauth_consumer_key"] = Options.ClientId,
             ["access_token"] = tokens.AccessToken,
             ["openid"] = openId,
-        });
+        };
+
+        var address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, parameters);
 
         using var response = await Backchannel.GetAsync(address);
         if (!response.IsSuccessStatusCode)
@@ -60,7 +62,7 @@ public partial class QQAuthenticationHandler : OAuthHandler<QQAuthenticationOpti
         using var stream = await response.Content.ReadAsStreamAsync(Context.RequestAborted);
         using var payload = JsonDocument.Parse(stream);
 
-        int status = payload.RootElement.GetProperty("ret").GetInt32();
+        var status = payload.RootElement.GetProperty("ret").GetInt32();
 
         if (status != 0)
         {
@@ -86,7 +88,7 @@ public partial class QQAuthenticationHandler : OAuthHandler<QQAuthenticationOpti
             ["redirect_uri"] = context.RedirectUri,
             ["code"] = context.Code,
             ["grant_type"] = "authorization_code",
-            ["fmt"] = "json" // Return JSON instead of x-www-form-urlencoded which is default due to historical reasons
+            ["fmt"] = "json", // Return JSON instead of x-www-form-urlencoded which is default due to historical reasons
         };
 
         // PKCE https://tools.ietf.org/html/rfc7636#section-4.5, see BuildChallengeUrl
@@ -96,7 +98,7 @@ public partial class QQAuthenticationHandler : OAuthHandler<QQAuthenticationOpti
             context.Properties.Items.Remove(OAuthConstants.CodeVerifierKey);
         }
 
-        string address = QueryHelpers.AddQueryString(Options.TokenEndpoint, tokenRequestParameters);
+        var address = QueryHelpers.AddQueryString(Options.TokenEndpoint, tokenRequestParameters);
 
         using var request = new HttpRequestMessage(HttpMethod.Get, address);
 
@@ -127,7 +129,7 @@ public partial class QQAuthenticationHandler : OAuthHandler<QQAuthenticationOpti
             queryString.Add("unionid", "1");
         }
 
-        string address = QueryHelpers.AddQueryString(Options.UserIdentificationEndpoint, queryString);
+        var address = QueryHelpers.AddQueryString(Options.UserIdentificationEndpoint, queryString);
         using var request = new HttpRequestMessage(HttpMethod.Get, address);
 
         using var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
@@ -142,7 +144,7 @@ public partial class QQAuthenticationHandler : OAuthHandler<QQAuthenticationOpti
 
         var payloadRoot = payload.RootElement;
 
-        int errorCode =
+        var errorCode =
             payloadRoot.TryGetProperty("error", out var errorCodeElement) && errorCodeElement.ValueKind == JsonValueKind.Number ?
             errorCodeElement.GetInt32() :
             0;

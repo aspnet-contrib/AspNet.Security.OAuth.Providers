@@ -32,17 +32,19 @@ public partial class OdnoklassnikiAuthenticationHandler : OAuthHandler<Odnoklass
         [NotNull] AuthenticationProperties properties,
         [NotNull] OAuthTokenResponse tokens)
     {
-        string accessSecret = GetMD5Hash(tokens.AccessToken + Options.ClientSecret);
-        string sign = GetMD5Hash($"application_key={Options.PublicSecret}format=jsonmethod=users.getCurrentUser{accessSecret}");
+        var accessSecret = GetMD5Hash(tokens.AccessToken + Options.ClientSecret);
+        var sign = GetMD5Hash($"application_key={Options.PublicSecret}format=jsonmethod=users.getCurrentUser{accessSecret}");
 
-        string address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, new Dictionary<string, string?>
+        var parameters = new Dictionary<string, string?>
         {
             ["application_key"] = Options.PublicSecret ?? string.Empty,
             ["format"] = "json",
             ["method"] = "users.getCurrentUser",
             ["sig"] = sign,
             ["access_token"] = tokens.AccessToken,
-        });
+        };
+
+        var address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, parameters);
 
         using var request = new HttpRequestMessage(HttpMethod.Get, address);
         request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -70,7 +72,7 @@ public partial class OdnoklassnikiAuthenticationHandler : OAuthHandler<Odnoklass
     private static string GetMD5Hash(string input)
     {
 #pragma warning disable CA5351
-        byte[] hash = MD5.HashData(Encoding.UTF8.GetBytes(input));
+        var hash = MD5.HashData(Encoding.UTF8.GetBytes(input));
 #pragma warning restore CA5351
 
         return Convert.ToHexString(hash).ToLowerInvariant();
