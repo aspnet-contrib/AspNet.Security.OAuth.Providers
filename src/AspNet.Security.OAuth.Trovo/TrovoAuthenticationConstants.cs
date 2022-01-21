@@ -11,17 +11,9 @@ namespace AspNet.Security.OAuth.Trovo;
 /// </summary>
 public class TrovoAuthenticationConstants
 {
-    public const string GrantType = "authorization_code";
-
     public static class Claims
     {
         public const string ChannelId = "urn:trovo:channelid";
         public const string ProfilePic = "urn:trovo:profilepic";
-    }
-
-    public static class Headers
-    {
-        public const string ClientId = "client-id";
-        public const string Authorization = "OAuth";
     }
 }

@@ -18,6 +18,8 @@ namespace AspNet.Security.OAuth.Trovo;
 
 public partial class TrovoAuthenticationHandler : OAuthHandler<TrovoAuthenticationOptions>
 {
+    private const string ClientIdHeaderName = "client-id";
+
     public TrovoAuthenticationHandler(
         [NotNull] IOptionsMonitor<TrovoAuthenticationOptions> options,
         [NotNull] ILoggerFactory logger,
@@ -33,9 +35,9 @@ public partial class TrovoAuthenticationHandler : OAuthHandler<TrovoAuthenticati
         [NotNull] OAuthTokenResponse tokens)
     {
         using var request = new HttpRequestMessage(HttpMethod.Get, Options.UserInformationEndpoint);
-        request.Headers.Add(TrovoAuthenticationConstants.Headers.ClientId, Options.ClientId);
+        request.Headers.Add(ClientIdHeaderName, Options.ClientId);
         request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json));
-        request.Headers.Authorization = new AuthenticationHeaderValue(TrovoAuthenticationConstants.Headers.Authorization, tokens.AccessToken);
+        request.Headers.Authorization = new AuthenticationHeaderValue("OAuth", tokens.AccessToken);
 
         using var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
         if (!response.IsSuccessStatusCode)
@@ -61,7 +63,7 @@ public partial class TrovoAuthenticationHandler : OAuthHandler<TrovoAuthenticati
             ["redirect_uri"] = context.RedirectUri,
             ["code"] = context.Code,
             ["client_secret"] = Options.ClientSecret,
-            ["grant_type"] = TrovoAuthenticationConstants.GrantType
+            ["grant_type"] = "authorization_code"
         };
 
         // PKCE https://tools.ietf.org/html/rfc7636#section-4.5, see BuildChallengeUrl
@@ -73,7 +75,7 @@ public partial class TrovoAuthenticationHandler : OAuthHandler<TrovoAuthenticati
 
         using var request = new HttpRequestMessage(HttpMethod.Post, Options.TokenEndpoint);
 
-        request.Headers.Add(TrovoAuthenticationConstants.Headers.ClientId, Options.ClientId);
+        request.Headers.Add(ClientIdHeaderName, Options.ClientId);
         request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json));
         request.Content = new StringContent(JsonSerializer.Serialize(tokenRequestParameters), Encoding.UTF8, MediaTypeNames.Application.Json);
 

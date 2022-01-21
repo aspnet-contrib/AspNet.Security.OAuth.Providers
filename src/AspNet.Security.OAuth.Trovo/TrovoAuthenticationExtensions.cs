@@ -9,7 +9,7 @@ using AspNet.Security.OAuth.Trovo;
 namespace Microsoft.Extensions.DependencyInjection;
 
 /// <summary>
-/// Extension methods to add  authentication capabilities to an HTTP application pipeline.
+/// Extension methods to add Trovo  authentication capabilities to an HTTP application pipeline.
 /// </summary>
 public static class TrovoAuthenticationExtensions
 {
