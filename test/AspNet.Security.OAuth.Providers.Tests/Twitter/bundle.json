@@ -1,0 +1,37 @@
+{
+  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
+  "items": [
+    {
+      "uri": "https://api.twitter.com/2/oauth2/token",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "secret-access-token",
+        "token_type": "access",
+        "refresh_token": "secret-refresh-token",
+        "expires_in": "300"
+      }
+    },
+    {
+      "uri": "https://api.twitter.com/2/users/me?expansions=pinned_tweet_id&tweet.fields=text&user.fields=created_at,pinned_tweet_id",
+      "contentFormat": "json",
+      "contentJson": {
+        "data": {
+          "created_at": "2013-12-14T04:35:55.000Z",
+          "username": "TwitterDev",
+          "pinned_tweet_id": "1255542774432063488",
+          "id": "2244994945",
+          "name": "Twitter Dev",
+          "includes": {
+            "tweets": [
+              {
+                "id": "1255542774432063488",
+                "text": "Introducing a new era for the Twitter Developer Platform! https://twitter.com/TwitterDev/status/1460323737035677698?s=20"
+              }
+            ]
+          }
+        }
+      }
+    }
+  ]
+}
