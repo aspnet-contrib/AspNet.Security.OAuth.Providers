@@ -13,7 +13,6 @@
   <ItemGroup>
     <PackageReference Include="JetBrains.Annotations" PrivateAssets="All" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.Twitter" />
   </ItemGroup>
 
   <Target Name="AddGeneratedContentItems" BeforeTargets="AssignTargetPaths">

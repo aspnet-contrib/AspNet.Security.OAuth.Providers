@@ -5,7 +5,6 @@
     <PackageReference Update="JustEat.HttpClientInterception" Version="3.1.1" />
     <PackageReference Update="MartinCostello.Logging.XUnit" Version="0.2.0" />
     <PackageReference Update="Microsoft.AspNetCore.Authentication.Google" Version="6.0.0" />
-    <PackageReference Update="Microsoft.AspNetCore.Authentication.Twitter" Version="6.0.0" />
     <PackageReference Update="Microsoft.AspNetCore.Mvc.Testing" Version="6.0.0" />
     <PackageReference Update="Microsoft.AspNetCore.TestHost" Version="6.0.0" />
     <PackageReference Update="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="6.10.0" />
