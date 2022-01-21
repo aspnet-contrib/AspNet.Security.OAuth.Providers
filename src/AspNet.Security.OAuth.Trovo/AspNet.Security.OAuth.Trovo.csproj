@@ -10,6 +10,11 @@
     <PackageTags>aspnetcore;authentication;oauth;security;trovo</PackageTags>
   </PropertyGroup>
 
+  <!-- TODO Remove once published to NuGet.org -->
+  <PropertyGroup>
+    <DisablePackageBaselineValidation>true</DisablePackageBaselineValidation>
+  </PropertyGroup>
+
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="JetBrains.Annotations" PrivateAssets="All" />
