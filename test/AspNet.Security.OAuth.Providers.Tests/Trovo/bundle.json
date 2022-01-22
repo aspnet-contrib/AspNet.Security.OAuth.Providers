@@ -1,0 +1,28 @@
+{
+  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
+  "items": [
+    {
+      "uri": "https://open-api.trovo.live/openplatform/exchangetoken",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "a0e1b1ee318088304eb542c86d3c2360",
+        "token_type": "bearer",
+        "expires_in": "14400",
+        "refresh_token": "af6f6d8b601ba6b91367c5ce35b11e1f"
+      }
+    },
+    {
+      "uri": "https://open-api.trovo.live/openplatform/getuserinfo",
+      "contentFormat": "json",
+      "contentJson": {
+        "userId": "100000021",
+        "userName": "leafinsummer",
+        "nickName": "leafinsummer",
+        "email": "lxxxxxxxxx@gmail.com",
+        "profilePic": "https://headicon.trovo.live/user/cxq7kbiaaaaabd5cniezh3x5cu.jpeg?t=2",
+        "channelId": "100000021"
+      }
+    }
+  ]
+}

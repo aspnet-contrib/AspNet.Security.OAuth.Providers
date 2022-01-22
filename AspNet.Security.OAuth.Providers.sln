@@ -267,6 +267,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.Ebay"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.ServiceChannel", "src\AspNet.Security.OAuth.ServiceChannel\AspNet.Security.OAuth.ServiceChannel.csproj", "{57633BE6-C7AD-4197-A75A-F38A2312A4D9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.Trovo", "src\AspNet.Security.OAuth.Trovo\AspNet.Security.OAuth.Trovo.csproj", "{DC804C6D-3774-4FA7-8EA6-8C8198995BD6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -605,6 +607,10 @@ Global
 		{57633BE6-C7AD-4197-A75A-F38A2312A4D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{57633BE6-C7AD-4197-A75A-F38A2312A4D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{57633BE6-C7AD-4197-A75A-F38A2312A4D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC804C6D-3774-4FA7-8EA6-8C8198995BD6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC804C6D-3774-4FA7-8EA6-8C8198995BD6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC804C6D-3774-4FA7-8EA6-8C8198995BD6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC804C6D-3774-4FA7-8EA6-8C8198995BD6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -699,6 +705,7 @@ Global
 		{815DA59A-E884-4BAD-B16C-D0B550B40A8D} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 		{574A52D9-E7A5-4E11-8F36-5C8AA7033287} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 		{57633BE6-C7AD-4197-A75A-F38A2312A4D9} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
+		{DC804C6D-3774-4FA7-8EA6-8C8198995BD6} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C7B54DE2-6407-4802-AD9C-CE54BF414C8C}
