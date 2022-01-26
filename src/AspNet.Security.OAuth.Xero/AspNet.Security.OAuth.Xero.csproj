@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <PackageValidationBaselineVersion>6.0.4</PackageValidationBaselineVersion>
+    <TargetFrameworks>$(DefaultNetCoreTargetFramework)</TargetFrameworks>
+  </PropertyGroup>
+
+  <!-- TODO Remove once published to NuGet.org -->
+  <PropertyGroup>
+    <DisablePackageBaselineValidation>true</DisablePackageBaselineValidation>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Description>ASP.NET Core security middleware enabling Xero authentication.</Description>
+    <Authors>Albert Zakiev</Authors>
+    <PackageTags>xero;aspnetcore;authentication;oauth;security</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="JetBrains.Annotations" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" />
+  </ItemGroup>
+
+</Project>

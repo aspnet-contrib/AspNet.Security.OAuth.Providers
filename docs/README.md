@@ -71,3 +71,4 @@ covered by the section above.
 | Vkontakte | _Optional_ | [Documentation](vkontakte.md "Vkontakte provider documentation") |
 | Weibo | _Optional_ | [Documentation](weibo.md "Weibo provider documentation") |
 | WorkWeixin (WeCom) | _Optional_ | [Documentation](workweixin.md "WorkWeixin provider documentation") |
+| Xero | _Optional_ | [Documentation](xero.md "Xero provider documentation") |

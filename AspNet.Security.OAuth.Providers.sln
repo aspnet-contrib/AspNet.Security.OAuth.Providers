@@ -273,6 +273,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.Trovo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.Twitter", "src\AspNet.Security.OAuth.Twitter\AspNet.Security.OAuth.Twitter.csproj", "{82314BA9-8AB2-46B9-AB12-9109619B8331}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.Xero", "src\AspNet.Security.OAuth.Xero\AspNet.Security.OAuth.Xero.csproj", "{1F869094-FAC8-49B5-92A4-706C028CDF93}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -619,6 +621,10 @@ Global
 		{82314BA9-8AB2-46B9-AB12-9109619B8331}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{82314BA9-8AB2-46B9-AB12-9109619B8331}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{82314BA9-8AB2-46B9-AB12-9109619B8331}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F869094-FAC8-49B5-92A4-706C028CDF93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F869094-FAC8-49B5-92A4-706C028CDF93}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F869094-FAC8-49B5-92A4-706C028CDF93}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F869094-FAC8-49B5-92A4-706C028CDF93}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -715,6 +721,7 @@ Global
 		{57633BE6-C7AD-4197-A75A-F38A2312A4D9} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 		{DC804C6D-3774-4FA7-8EA6-8C8198995BD6} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 		{82314BA9-8AB2-46B9-AB12-9109619B8331} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
+		{1F869094-FAC8-49B5-92A4-706C028CDF93} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C7B54DE2-6407-4802-AD9C-CE54BF414C8C}

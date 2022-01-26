@@ -1,0 +1,66 @@
+{
+  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
+  "items": [
+    {
+      "comment": "See https://developer.xero.com/documentation/guides/oauth2/sign-in/#4-using-the-id-token",
+      "uri": "https://identity.xero.com/connect/token",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "id_token": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjFDQUY4RTY2NzcyRDZEQzAyOEQ2NzI2RkQwMjYxNTgxNTcwRUZDMTkiLCJ0eXAiOiJKV1QiLCJ4NXQiOiJISy1PWm5jdGJjQW8xbkp2MENZVmdWY09fQmsifQ.eyJuYmYiOjE2NDMyMTg1NTQsImV4cCI6MTY0MzIxODg1NCwiaXNzIjoiaHR0cHM6Ly9pZGVudGl0eS54ZXJvLmNvbSIsImF1ZCI6Ijc2NjQ1RDE3RUQyOTQxMTQ4N0UwRDlFNURFMkI0OTNCIiwiaWF0IjoxNjQzMjE4NTU0LCJhdF9oYXNoIjoickhjV29pZ19aQnRpanNmVGdQZXplZyIsInNpZCI6ImMzN2M4ZGNlMTQyYzRjZTk4YzFkNjQ2ZGY4M2RhZmViIiwic3ViIjoiODM0ZjA4NDRlZmRmNTM5MGE0NjM5MGViYTM0OTM5YTAiLCJhdXRoX3RpbWUiOjE2NDMyMTgxMzIsInhlcm9fdXNlcmlkIjoiOGJhODVmYjgtZjU0MC00ZWIxLWI1M2QtMDUxOWRhNTNjNDdiIiwiZ2xvYmFsX3Nlc3Npb25faWQiOiJjMzdjOGRjZTE0MmM0Y2U5OGMxZDY0NmRmODNkYWZlYiIsImVtYWlsIjoiZmVjb3BpajI3M0BpY2VzaWxvLmNvbSJ9.eOpB7_eXQ8m6mRKULbdscIKGbYSaCBOdjKxNUViykiJhZSFeg2JC7JWxjpRpxg4jZws9MXlAkICju5VdeuzzP5ovPOMOm4vu0RIIqimlHF5fQy2ldhoyi0lIwBX4RxqwUwW7q3kMLg0AO9TlPC5OZ-0BeRCr-0cLP0UVYuoRBGeROeBXgqU_wTt86nUQ-PjWdJktpsnohbmvb6oDWkYz2Of5vAg-IPHdM9lTjoodj6_vl5H_HmGXZ0PTXzMU314fvoROkGexjRgqZLl14qN6lC-5otK056mD8F_JuUKoPwkBCxizV3wnKqhivV_HZ6GWsodtMra1Q7ycbzkMHZlrEQ",
+        "access_token": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjFDQUY4RTY2NzcyRDZEQzAyOEQ2NzI2RkQwMjYxNTgxNTcwRUZDMTkiLCJ0eXAiOiJKV1QiLCJ4NXQiOiJISy1PWm5jdGJjQW8xbkp2MENZVmdWY09fQmsifQ.eyJuYmYiOjE2NDMyMTg1NTQsImV4cCI6MTY0MzIyMDM1NCwiaXNzIjoiaHR0cHM6Ly9pZGVudGl0eS54ZXJvLmNvbSIsImF1ZCI6Imh0dHBzOi8vaWRlbnRpdHkueGVyby5jb20vcmVzb3VyY2VzIiwiY2xpZW50X2lkIjoiNzY2NDVEMTdFRDI5NDExNDg3RTBEOUU1REUyQjQ5M0IiLCJzdWIiOiI4MzRmMDg0NGVmZGY1MzkwYTQ2MzkwZWJhMzQ5MzlhMCIsImF1dGhfdGltZSI6MTY0MzIxODEzMiwieGVyb191c2VyaWQiOiI4YmE4NWZiOC1mNTQwLTRlYjEtYjUzZC0wNTE5ZGE1M2M0N2IiLCJnbG9iYWxfc2Vzc2lvbl9pZCI6ImMzN2M4ZGNlMTQyYzRjZTk4YzFkNjQ2ZGY4M2RhZmViIiwianRpIjoiZjFjZmI0ODNjN2IxZWZkNWY0YzBlZGRhYTdmZDE0ZDQiLCJhdXRoZW50aWNhdGlvbl9ldmVudF9pZCI6IjBjMDA5OGE3LTkwY2ItNDE2MS1hMGNmLWEwNTZmMjYxZTdjZiIsInNjb3BlIjpbImVtYWlsIiwib3BlbmlkIl19.f6R2ZRYfL-YpXs6BH1oE9DUZwmRkSkO-zFEq8Bp2BYD3JvuPHJl8Y31oeBL-9N6a9FqJWTzMdkkivOeUdI5jpKOGqEzDphprvvYhVqI7jbSJ1gbu6G_OYIXFAno0ZSHNUH_gKwe3TH8s09IXikPNTOCbn0sNtuBmroCWeLoyvqca83wlXKJJXYqDHVg1QpEb4laDjalb43X088qGjry6vPGPc-6gy7YCR1RWsjQTfv26-tMIuyPrKmXcbMf4ocmpu3bqS5A1-7156o25YlnTUcvDlfLMYIVn7W9MB-kUDZXF99mxgqYw5FhkzHG65mhUYQ2-cbxMdHC1UCzoevgoQQ",
+        "expires_in": 1800,
+        "token_type": "Bearer",
+        "scope": "openid email"
+      }
+    },
+    {
+      "comment": "https://developer.xero.com/documentation/guides/oauth2/sign-in/#3-the-auth-flow",
+      "uri": "https://identity.xero.com/.well-known/openid-configuration",
+      "method": "GET",
+      "contentFormat": "json",
+      "contentJson": {
+        "issuer": "https://identity.xero.com",
+        "jwks_uri": "https://identity.xero.com/.well-known/openid-configuration/jwks",
+        "authorization_endpoint": "https://login.xero.com/identity/connect/authorize",
+        "end_session_endpoint": "https://login.xero.com/identity/connect/endsession",
+        "check_session_iframe": "https://login.xero.com/identity/connect/checksession",
+        "token_endpoint": "https://identity.xero.com/connect/token",
+        "userinfo_endpoint": "https://identity.xero.com/connect/userinfo",
+        "revocation_endpoint": "https://identity.xero.com/connect/revocation",
+        "introspection_endpoint": "https://identity.xero.com/connect/introspect",
+        "frontchannel_logout_supported": true,
+        "frontchannel_logout_session_supported": true,
+        "backchannel_logout_supported": true,
+        "backchannel_logout_session_supported": true,
+        "grant_types_supported": [ "authorization_code", "client_credentials", "refresh_token", "implicit", "delegation", "oauth1_migration" ],
+        "response_types_supported": [ "code", "token", "id_token", "id_token token", "code id_token", "code token", "code id_token token" ],
+        "response_modes_supported": [ "form_post", "query", "fragment" ],
+        "token_endpoint_auth_methods_supported": [ "client_secret_basic", "client_secret_post" ],
+        "subject_types_supported": [ "public" ],
+        "id_token_signing_alg_values_supported": [ "RS256" ],
+        "code_challenge_methods_supported": [ "S256" ]
+      }
+    },
+    {
+      "comment": "See https://developer.xero.com/documentation/guides/oauth2/sign-in/#4-using-the-id-token",
+      "uri": "https://identity.xero.com/.well-known/openid-configuration/jwks",
+      "method": "GET",
+      "contentFormat": "json",
+      "contentJson": {
+        "keys": [
+          {
+            "kty": "RSA",
+            "use": "sig",
+            "kid": "1CAF8E66772D6DC028D6726FD0261581570EFC19",
+            "x5t": "HK-OZnctbcAo1nJv0CYVgVcO_Bk",
+            "e": "AQAB",
+            "n": "zF3EI4O33euG7WriakxRBkeko99IuG0A5gzp-thNWFmglx4hdCjQ4-8jB6MM7xdQ2OfC271Ox8sjrDLFRdlGT2fPLLvMwBYi8fb-L_o7KakkU1CGf7YH2F2vSmNEWKMfo6jFOGMya7Cff9Yi2lFyMXlT764tvEVt09TLZ5Kq8rrX-OkFVuHc9Jkb98Bpj-bJxE5ANy-MXyOGXwYsRbTno27RouvqNGWurcCEWCwIhn-xmeI_JPWzV3o_uscPyCMkW-iNTLeeZTo32Tqn2xBNg2qxl7H3ujw1QJYhf5Qc6UD166GB0gG94uxO0TaGde974IBI6FD_6cikTTJpHInAZQ",
+            "x5c": [ "MIIFITCCBAmgAwIBAgIRAO2aYd0RmqejAAAAAFDbwfMwDQYJKoZIhvcNAQELBQAwgboxCzAJBgNVBAYTAlVTMRYwFAYDVQQKEw1FbnRydXN0LCBJbmMuMSgwJgYDVQQLEx9TZWUgd3d3LmVudHJ1c3QubmV0L2xlZ2FsLXRlcm1zMTkwNwYDVQQLEzAoYykgMjAxMiBFbnRydXN0LCBJbmMuIC0gZm9yIGF1dGhvcml6ZWQgdXNlIG9ubHkxLjAsBgNVBAMTJUVudHJ1c3QgQ2VydGlmaWNhdGlvbiBBdXRob3JpdHkgLSBMMUswHhcNMTcwMzA4MTk1MDEwWhcNMTkwNzA4MjAyMDA5WjBRMQswCQYDVQQGEwJOWjETMBEGA1UEBxMKV2VsbGluZ3RvbjERMA8GA1UEChMIWGVybyBMdGQxGjAYBgNVBAMTEWlkZW50aXR5Lnhlcm8uY29tMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAzF3EI4O33euG7WriakxRBkeko99IuG0A5gzp+thNWFmglx4hdCjQ4+8jB6MM7xdQ2OfC271Ox8sjrDLFRdlGT2fPLLvMwBYi8fb+L/o7KakkU1CGf7YH2F2vSmNEWKMfo6jFOGMya7Cff9Yi2lFyMXlT764tvEVt09TLZ5Kq8rrX+OkFVuHc9Jkb98Bpj+bJxE5ANy+MXyOGXwYsRbTno27RouvqNGWurcCEWCwIhn+xmeI/JPWzV3o/uscPyCMkW+iNTLeeZTo32Tqn2xBNg2qxl7H3ujw1QJYhf5Qc6UD166GB0gG94uxO0TaGde974IBI6FD/6cikTTJpHInAZQIDAQABo4IBiDCCAYQwDgYDVR0PAQH/BAQDAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAzBgNVHR8ELDAqMCigJqAkhiJodHRwOi8vY3JsLmVudHJ1c3QubmV0L2xldmVsMWsuY3JsMEsGA1UdIAREMEIwNgYKYIZIAYb6bAoBBTAoMCYGCCsGAQUFBwIBFhpodHRwOi8vd3d3LmVudHJ1c3QubmV0L3JwYTAIBgZngQwBAgIwaAYIKwYBBQUHAQEEXDBaMCMGCCsGAQUFBzABhhdodHRwOi8vb2NzcC5lbnRydXN0Lm5ldDAzBggrBgEFBQcwAoYnaHR0cDovL2FpYS5lbnRydXN0Lm5ldC9sMWstY2hhaW4yNTYuY2VyMBwGA1UdEQQVMBOCEWlkZW50aXR5Lnhlcm8uY29tMB8GA1UdIwQYMBaAFIKicHTdvFM/z3vU981/p2DGCky/MB0GA1UdDgQWBBRFeeDSLzlET3U0/DtzB6I/v20WQjAJBgNVHRMEAjAAMA0GCSqGSIb3DQEBCwUAA4IBAQBLkj/9pEPkITL0MUTCjQMmHQHMCRHpeI1t0oAWkl42PbT+Us2M58WkGoKbwLNh1kwDs2mWw2wBGd8SBGjfiwybhkfyjT7IIDkiPBlfsM0qo4wvGcwRmU86nG4koMX4JMUaqw8rp1OrttOKlUORiTAM9WhgtYnvJrD7TGwNHLkMa1z9Iaz0K//hPCIcGmLBz1uk0KXIwxVQTR7a1DS9yb0vLLwvoRFNuajDESdGhxGuzTe1FcR/xdJTEjH0dZ/+chKvGoUF9W97SZKXgLgpefh/xNgRV5gKrVwBrRuQ9ORoMCnKh8MMgxeTjZqTA6/rSTeNwOVpcCNomYrVP0G4+OSA" ],
+            "alg": "RS256"
+          }
+        ]
+      }
+    }
+  ]
+}
