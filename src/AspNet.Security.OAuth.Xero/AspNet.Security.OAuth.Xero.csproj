@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <PackageValidationBaselineVersion>6.0.3</PackageValidationBaselineVersion>
+    <PackageValidationBaselineVersion>6.0.4</PackageValidationBaselineVersion>
     <TargetFrameworks>$(DefaultNetCoreTargetFramework)</TargetFrameworks>
   </PropertyGroup>
 
