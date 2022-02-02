@@ -134,9 +134,9 @@ public partial class AppleAuthenticationHandler : OAuthHandler<AppleAuthenticati
             var securityToken = Options.SecurityTokenHandler.ReadJsonWebToken(token);
 
             return new List<Claim>(securityToken.Claims)
-                {
-                    new Claim(ClaimTypes.NameIdentifier, securityToken.Subject, ClaimValueTypes.String, ClaimsIssuer),
-                };
+            {
+                new Claim(ClaimTypes.NameIdentifier, securityToken.Subject, ClaimValueTypes.String, ClaimsIssuer),
+            };
         }
         catch (Exception ex)
         {
@@ -302,9 +302,9 @@ public partial class AppleAuthenticationHandler : OAuthHandler<AppleAuthenticati
         if (Options.SaveTokens)
         {
             var authTokens = new List<AuthenticationToken>()
-                {
-                    new AuthenticationToken() { Name = "access_token", Value = tokens.AccessToken },
-                };
+            {
+                new AuthenticationToken() { Name = "access_token", Value = tokens.AccessToken },
+            };
 
             if (!string.IsNullOrEmpty(tokens.RefreshToken))
             {
