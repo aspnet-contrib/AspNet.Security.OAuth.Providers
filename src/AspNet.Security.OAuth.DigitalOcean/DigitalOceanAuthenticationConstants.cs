@@ -36,17 +36,4 @@ public static class DigitalOceanAuthenticationConstants
         /// </summary>
         public const string Write = "write";
     }
-
-    /// <summary>
-    /// DigitalOcean API Response Types
-    /// <para>https://docs.digitalocean.com/reference/api/oauth-api/</para>
-    /// </summary>
-    public static class ResponseTypes
-    {
-        /// <summary>
-        /// Web Application Flow.
-        /// <para>Default scope</para>
-        /// </summary>
-        public const string Code = "code";
-    }
 }

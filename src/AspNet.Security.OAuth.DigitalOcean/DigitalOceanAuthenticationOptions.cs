@@ -21,6 +21,8 @@ public class DigitalOceanAuthenticationOptions : OAuthOptions
         TokenEndpoint = DigitalOceanAuthenticationDefaults.TokenEndpoint;
         UserInformationEndpoint = DigitalOceanAuthenticationDefaults.UserInformationEndpoint;
 
+        Scope.Add(DigitalOceanAuthenticationConstants.Scopes.Read);
+
         ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "uuid");
         ClaimActions.MapJsonKey(ClaimTypes.Name, "name");
         ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
