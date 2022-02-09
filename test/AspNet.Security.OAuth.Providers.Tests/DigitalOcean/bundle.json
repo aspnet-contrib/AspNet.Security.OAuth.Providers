@@ -1,0 +1,23 @@
+{
+  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
+  "items": [
+    {
+      "uri": "https://cloud.digitalocean.com/v1/oauth/token?client_id=my-client-id&client_secret=my-client-secret&redirect_uri=http%3A%2F%2Flocalhost%2Fsignin-digitalocean&code=a6ed8e7f-471f-44f1-903b-65946475f351&grant_type=code",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "secret-access-token",
+        "token_type": "access",
+        "refresh_token": "secret-refresh-token"
+      }
+    },
+    {
+      "uri": "https://cloud.digitalocean.com/v1/oauth/authorize?client_id=secret-access-token&fmt=json&unionid=1",
+      "contentFormat": "json",
+      "contentJson": {
+        "name": "me@test.com",
+        "email": "me@test.com",
+        "uuid": "b5d9f3d9-42b3-47e0-9413-8faab9895c69"
+      }
+    }
+  ]
+}
