@@ -29,6 +29,7 @@ public class DigitalOceanTests : OAuthTests<DigitalOceanAuthenticationOptions>
     [InlineData(ClaimTypes.Name, "me@test.com")]
     [InlineData(ClaimTypes.NameIdentifier, "b5d9f3d9-42b3-47e0-9413-8faab9895c69")]
     [InlineData(ClaimTypes.Email, "me@test.com")]
+    [InlineData("email_verified", "true")]
     public async Task Can_Sign_In_Using_DigitalOcean(string claimType, string claimValue)
     {
         // Arrange
@@ -39,51 +40,5 @@ public class DigitalOceanTests : OAuthTests<DigitalOceanAuthenticationOptions>
 
         // Assert
         AssertClaim(claims, claimType, claimValue);
-    }
-
-    [Theory]
-    [InlineData(false)]
-    [InlineData(true)]
-    public async Task BuildChallengeUrl_Generates_Correct_Url(bool usePkce)
-    {
-        // Arrange
-        var options = new DigitalOceanAuthenticationOptions()
-        {
-            ClientId = "my-client-id",
-            ClientSecret = "my-client-secret",
-        };
-
-        options.Scope.Add("read");
-
-        string redirectUrl = "https://my-site.local/signin-digitalocean";
-
-        // Act
-        Uri actual = await BuildChallengeUriAsync(
-            options,
-            redirectUrl,
-            (options, loggerFactory, encoder, clock) => new DigitalOceanAuthenticationHandler(options, loggerFactory, encoder, clock));
-
-        // Assert
-        actual.ShouldNotBeNull();
-        actual.ToString().ShouldStartWith("https://cloud.digitalocean.com/v1/oauth/authorize?");
-
-        var query = QueryHelpers.ParseQuery(actual.Query);
-
-        query.ShouldContainKey("state");
-        query.ShouldContainKeyAndValue("client_id", options.ClientId);
-        query.ShouldContainKeyAndValue("redirect_uri", redirectUrl);
-        query.ShouldContainKeyAndValue("response_type", "code");
-        query.ShouldContainKeyAndValue("scope", "read");
-
-        if (usePkce)
-        {
-            query.ShouldContainKey(OAuthConstants.CodeChallengeKey);
-            query.ShouldContainKey(OAuthConstants.CodeChallengeMethodKey);
-        }
-        else
-        {
-            query.ShouldNotContainKey(OAuthConstants.CodeChallengeKey);
-            query.ShouldNotContainKey(OAuthConstants.CodeChallengeMethodKey);
-        }
     }
 }

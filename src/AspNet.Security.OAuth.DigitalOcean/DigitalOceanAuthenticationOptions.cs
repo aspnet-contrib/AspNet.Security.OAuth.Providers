@@ -17,9 +17,9 @@ public class DigitalOceanAuthenticationOptions : OAuthOptions
     {
         ClaimsIssuer = DigitalOceanAuthenticationDefaults.Issuer;
         CallbackPath = DigitalOceanAuthenticationDefaults.CallbackPath;
-
         AuthorizationEndpoint = DigitalOceanAuthenticationDefaults.AuthorizationEndpoint;
         TokenEndpoint = DigitalOceanAuthenticationDefaults.TokenEndpoint;
+        UserInformationEndpoint = DigitalOceanAuthenticationDefaults.UserInformationEndpoint;
 
         ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "uuid");
         ClaimActions.MapJsonKey(ClaimTypes.Name, "name");

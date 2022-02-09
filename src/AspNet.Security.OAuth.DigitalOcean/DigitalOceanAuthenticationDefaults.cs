@@ -40,4 +40,9 @@ public static class DigitalOceanAuthenticationDefaults
     /// Default value for <see cref="OAuthOptions.TokenEndpoint"/>.
     /// </summary>
     public static readonly string TokenEndpoint = "https://cloud.digitalocean.com/v1/oauth/token";
+
+    /// <summary>
+    /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
+    /// </summary>
+    public static readonly string UserInformationEndpoint = "https://api.digitalocean.com/v2/account";
 }

@@ -70,12 +70,28 @@ public partial class DigitalOceanAuthenticationHandler : OAuthHandler<DigitalOce
         // so we rely on the details sent back in the token request.
         var user = tokens.Response!.RootElement.GetProperty("info");
 
+        using var request = new HttpRequestMessage(HttpMethod.Get, Options.UserInformationEndpoint);
+        request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", tokens.AccessToken);
+
+        using var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
+        if (!response.IsSuccessStatusCode)
+        {
+            // await Log.UserProfileErrorAsync(Logger, response, Context.RequestAborted);
+            throw new HttpRequestException("An error occurred while retrieving the user profile.");
+        }
+
+        using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
+
+        var account = payload.RootElement.GetProperty("account");
+
+        identity.AddClaim(new Claim("email_verified", account.GetProperty("email_verified").ToString().ToLowerInvariant()));
+
         var principal = new ClaimsPrincipal(identity);
 
         var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, user);
 
         context.RunClaimActions();
-
         await Events.CreatingTicket(context);
         return new AuthenticationTicket(context.Principal!, context.Properties, Scheme.Name);
     }
