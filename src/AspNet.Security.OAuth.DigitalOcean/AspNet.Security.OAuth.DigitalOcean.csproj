@@ -13,7 +13,7 @@
   <PropertyGroup>
     <Description>ASP.NET Core security middleware enabling DigitalOcean authentication.</Description>
     <Authors>Elan Hasson</Authors>
-    <PackageTags>DigitalOcean;aspnetcore;authentication;oauth;security</PackageTags>
+    <PackageTags>digitalocean;aspnetcore;authentication;oauth;security</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
