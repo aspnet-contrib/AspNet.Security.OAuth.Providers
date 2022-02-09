@@ -29,7 +29,7 @@ public class DigitalOceanTests : OAuthTests<DigitalOceanAuthenticationOptions>
     [InlineData(ClaimTypes.Name, "me@test.com")]
     [InlineData(ClaimTypes.NameIdentifier, "b5d9f3d9-42b3-47e0-9413-8faab9895c69")]
     [InlineData(ClaimTypes.Email, "me@test.com")]
-    [InlineData("email_verified", "true")]
+    [InlineData(DigitalOceanAuthenticationConstants.Claims.EmailVerified, "true")]
     public async Task Can_Sign_In_Using_DigitalOcean(string claimType, string claimValue)
     {
         // Arrange

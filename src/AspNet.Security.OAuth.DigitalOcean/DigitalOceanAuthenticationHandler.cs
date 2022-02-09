@@ -81,7 +81,7 @@ public partial class DigitalOceanAuthenticationHandler : OAuthHandler<DigitalOce
 
         var account = payload.RootElement.GetProperty("account");
 
-        identity.AddClaim(new Claim("email_verified", account.GetProperty("email_verified").ToString().ToLowerInvariant()));
+        identity.AddClaim(new Claim(DigitalOceanAuthenticationConstants.Claims.EmailVerified, account.GetProperty("email_verified").GetBoolean().ToString().ToLowerInvariant()));
 
         var principal = new ClaimsPrincipal(identity);
         var user = tokens.Response!.RootElement.GetProperty("info");
@@ -110,7 +110,7 @@ public partial class DigitalOceanAuthenticationHandler : OAuthHandler<DigitalOce
             System.Net.HttpStatusCode status,
             string headers,
             string body);
-        
+
         internal static async Task ExchangeCodeAsync(ILogger logger, HttpResponseMessage response, CancellationToken cancellationToken)
         {
             ExchangeCodeAsync(
