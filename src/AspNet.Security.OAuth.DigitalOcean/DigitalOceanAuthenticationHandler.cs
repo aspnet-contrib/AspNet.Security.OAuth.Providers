@@ -66,10 +66,6 @@ public partial class DigitalOceanAuthenticationHandler : OAuthHandler<DigitalOce
         [NotNull] AuthenticationProperties properties,
         [NotNull] OAuthTokenResponse tokens)
     {
-        // Note: DigitalOcean doesn't provide a user information endpoint
-        // so we rely on the details sent back in the token request.
-        var user = tokens.Response!.RootElement.GetProperty("info");
-
         using var request = new HttpRequestMessage(HttpMethod.Get, Options.UserInformationEndpoint);
         request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", tokens.AccessToken);
@@ -77,7 +73,7 @@ public partial class DigitalOceanAuthenticationHandler : OAuthHandler<DigitalOce
         using var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
         if (!response.IsSuccessStatusCode)
         {
-            // await Log.UserProfileErrorAsync(Logger, response, Context.RequestAborted);
+            await Log.UserProfileErrorAsync(Logger, response, Context.RequestAborted);
             throw new HttpRequestException("An error occurred while retrieving the user profile.");
         }
 
@@ -88,6 +84,7 @@ public partial class DigitalOceanAuthenticationHandler : OAuthHandler<DigitalOce
         identity.AddClaim(new Claim("email_verified", account.GetProperty("email_verified").ToString().ToLowerInvariant()));
 
         var principal = new ClaimsPrincipal(identity);
+        var user = tokens.Response!.RootElement.GetProperty("info");
 
         var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, user);
 
@@ -98,6 +95,22 @@ public partial class DigitalOceanAuthenticationHandler : OAuthHandler<DigitalOce
 
     private static partial class Log
     {
+        internal static async Task UserProfileErrorAsync(ILogger logger, HttpResponseMessage response, CancellationToken cancellationToken)
+        {
+            UserProfileErrorAsync(
+                logger,
+                response.StatusCode,
+                response.Headers.ToString(),
+                await response.Content.ReadAsStringAsync(cancellationToken));
+        }
+
+        [LoggerMessage(2, LogLevel.Error, "An error occurred while retrieving profile data: the remote server returned a {Status} response with the following payload: {Headers} {Body}.")]
+        static partial void UserProfileErrorAsync(
+            ILogger logger,
+            System.Net.HttpStatusCode status,
+            string headers,
+            string body);
+        
         internal static async Task ExchangeCodeAsync(ILogger logger, HttpResponseMessage response, CancellationToken cancellationToken)
         {
             ExchangeCodeAsync(
