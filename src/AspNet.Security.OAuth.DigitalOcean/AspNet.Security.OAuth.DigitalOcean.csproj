@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <PackageValidationBaselineVersion>6.0.4</PackageValidationBaselineVersion>
+    <TargetFrameworks>$(DefaultNetCoreTargetFramework)</TargetFrameworks>
+  </PropertyGroup>
+
+  <!-- TODO Remove once published to NuGet.org -->
+  <PropertyGroup>
+    <DisablePackageBaselineValidation>true</DisablePackageBaselineValidation>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Description>ASP.NET Core security middleware enabling DigitalOcean authentication.</Description>
+    <Authors>Elan Hasson</Authors>
+    <PackageTags>DigitalOcean;aspnetcore;authentication;oauth;security</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="JetBrains.Annotations" PrivateAssets="All" />
+  </ItemGroup>
+
+</Project>
