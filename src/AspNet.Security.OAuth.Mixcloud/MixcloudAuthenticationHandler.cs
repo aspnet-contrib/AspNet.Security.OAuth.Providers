@@ -75,9 +75,6 @@ public partial class MixcloudAuthenticationHandler : OAuthHandler<MixcloudAuthen
         return await base.ExchangeCodeAsync(context);
     }
 
-    protected override Task<HandleRequestResult> HandleRemoteAuthenticateAsync()
-        => base.HandleRemoteAuthenticateAsync(); // TODO This override is the same as the base class' and can be removed in the next major version
-
     protected override async Task<AuthenticationTicket> CreateTicketAsync(
         [NotNull] ClaimsIdentity identity,
         [NotNull] AuthenticationProperties properties,
