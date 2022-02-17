@@ -38,30 +38,30 @@ public class Startup
 
         .AddGoogle(options =>
         {
-            options.ClientId = Configuration["Google:ClientId"];
-            options.ClientSecret = Configuration["Google:ClientSecret"];
+            options.ClientId = Configuration["Google:ClientId"] ?? string.Empty;
+            options.ClientSecret = Configuration["Google:ClientSecret"] ?? string.Empty;
         })
 
         .AddTwitter(options =>
         {
-            options.ClientId = Configuration["Twitter:ClientId"];
-            options.ClientSecret = Configuration["Twitter:ClientSecret"];
+            options.ClientId = Configuration["Twitter:ClientId"] ?? string.Empty;
+            options.ClientSecret = Configuration["Twitter:ClientSecret"] ?? string.Empty;
         })
 
         .AddGitHub(options =>
         {
-            options.ClientId = Configuration["GitHub:ClientId"];
-            options.ClientSecret = Configuration["GitHub:ClientSecret"];
-            options.EnterpriseDomain = Configuration["GitHub:EnterpriseDomain"];
+            options.ClientId = Configuration["GitHub:ClientId"] ?? string.Empty;
+            options.ClientSecret = Configuration["GitHub:ClientSecret"] ?? string.Empty;
+            options.EnterpriseDomain = Configuration["GitHub:EnterpriseDomain"] ?? string.Empty;
             options.Scope.Add("user:email");
         })
 
         /*
         .AddApple(options =>
         {
-            options.ClientId = Configuration["Apple:ClientId"];
-            options.KeyId = Configuration["Apple:KeyId"];
-            options.TeamId = Configuration["Apple:TeamId"];
+            options.ClientId = Configuration["Apple:ClientId"] ?? string.Empty;
+            options.KeyId = Configuration["Apple:KeyId"] ?? string.Empty;
+            options.TeamId = Configuration["Apple:TeamId"] ?? string.Empty;
             options.UsePrivateKey(
                 (keyId) => HostingEnvironment.ContentRootFileProvider.GetFileInfo($"AuthKey_{keyId}.p8"));
         })
@@ -69,8 +69,8 @@ public class Startup
 
         .AddDropbox(options =>
         {
-            options.ClientId = Configuration["Dropbox:ClientId"];
-            options.ClientSecret = Configuration["Dropbox:ClientSecret"];
+            options.ClientId = Configuration["Dropbox:ClientId"] ?? string.Empty;
+            options.ClientSecret = Configuration["Dropbox:ClientSecret"] ?? string.Empty;
         });
 
         services.AddMvc();

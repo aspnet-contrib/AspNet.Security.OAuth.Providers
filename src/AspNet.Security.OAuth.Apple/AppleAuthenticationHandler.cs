@@ -283,7 +283,7 @@ public partial class AppleAuthenticationHandler : OAuthHandler<AppleAuthenticati
             return HandleRequestResult.Fail("Code was not found.", properties);
         }
 
-        var codeExchangeContext = new OAuthCodeExchangeContext(properties, code, BuildRedirectUri(Options.CallbackPath));
+        var codeExchangeContext = new OAuthCodeExchangeContext(properties, code!, BuildRedirectUri(Options.CallbackPath));
 
         using var tokens = await ExchangeCodeAsync(codeExchangeContext);
 
@@ -344,7 +344,7 @@ public partial class AppleAuthenticationHandler : OAuthHandler<AppleAuthenticati
 
         if (parameters.TryGetValue("user", out var userJson))
         {
-            using var user = JsonDocument.Parse(userJson);
+            using var user = JsonDocument.Parse(userJson!);
             var userClaims = ExtractClaimsFromUser(user.RootElement);
 
             foreach (var claim in userClaims)

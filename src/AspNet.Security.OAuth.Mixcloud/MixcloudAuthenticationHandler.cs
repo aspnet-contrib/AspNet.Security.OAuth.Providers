@@ -69,7 +69,7 @@ public partial class MixcloudAuthenticationHandler : OAuthHandler<MixcloudAuthen
         // to the redirect URI before calling the base ExchangeCodeAsync() implementation.
         var state = Request.Query["state"];
 
-        var redirectUri = QueryHelpers.AddQueryString(context.RedirectUri, "state", state);
+        var redirectUri = QueryHelpers.AddQueryString(context.RedirectUri, "state", state!);
         context = new OAuthCodeExchangeContext(context.Properties, context.Code, redirectUri);
 
         return await base.ExchangeCodeAsync(context);
