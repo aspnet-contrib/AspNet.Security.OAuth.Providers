@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RuleSet Name="AspNet.Security.OAuth.Providers Rules" Description="This rule set contains rules for the AspNet.Security.OAuth.Providers solution." ToolsVersion="16.0">
+<RuleSet Name="AspNet.Security.OAuth.Providers Rules" Description="This rule set contains rules for the AspNet.Security.OAuth.Providers solution." ToolsVersion="17.0">
   <IncludeAll Action="Warning" />
   <Rules AnalyzerId="Microsoft.Analyzers.ManagedCodeAnalysis" RuleNamespace="Microsoft.Rules.Managed">
     <Rule Id="CA1014" Action="None" />
