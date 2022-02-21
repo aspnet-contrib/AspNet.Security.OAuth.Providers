@@ -180,7 +180,7 @@ public partial class XeroAuthenticationHandler : OAuthHandler<XeroAuthentication
 
         try
         {
-            var result = Options.SecurityTokenHandler.ValidateToken(idToken, validationParameters);
+            var result = await Options.SecurityTokenHandler.ValidateTokenAsync(idToken, validationParameters);
             if (result.Exception != null || !result.IsValid)
             {
                 throw new SecurityTokenValidationException("Xero ID token validation failed.", result.Exception);
