@@ -7,7 +7,7 @@
     <PackageReference Update="Microsoft.AspNetCore.Authentication.Google" Version="7.0.0-preview.1.22109.13" />
     <PackageReference Update="Microsoft.AspNetCore.Mvc.Testing" Version="7.0.0-preview.1.22109.13" />
     <PackageReference Update="Microsoft.AspNetCore.TestHost" Version="7.0.0-preview.1.22109.13" />
-    <PackageReference Update="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="6.10.0" />
+    <PackageReference Update="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="6.16.0" />
     <PackageReference Update="Moq" Version="4.16.1" />
     <PackageReference Update="Shouldly" Version="4.0.3" />
     <PackageReference Update="StyleCop.Analyzers" Version="1.2.0-beta.406" />
