@@ -30,14 +30,14 @@ public static class AppleAuthenticationOptionsExtensions
         [NotNull] Func<string, IFileInfo> privateKeyFile)
     {
         options.GenerateClientSecret = true;
-        options.PrivateKey = async (keyId, _) =>
+        options.PrivateKey = async (keyId, cancellationToken) =>
         {
             var fileInfo = privateKeyFile(keyId);
 
             using var stream = fileInfo.CreateReadStream();
             using var reader = new StreamReader(stream);
 
-            return (await reader.ReadToEndAsync()).AsMemory();
+            return (await reader.ReadToEndAsync(cancellationToken)).AsMemory();
         };
 
         return options;

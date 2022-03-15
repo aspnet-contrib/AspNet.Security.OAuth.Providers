@@ -16,7 +16,7 @@ public class ZendeskPostConfigureOptions : IPostConfigureOptions<ZendeskAuthenti
 {
     /// <inheritdoc/>
     public void PostConfigure(
-        [NotNull] string name,
+        string? name,
         [NotNull] ZendeskAuthenticationOptions options)
     {
         if (string.IsNullOrWhiteSpace(options.Domain))
