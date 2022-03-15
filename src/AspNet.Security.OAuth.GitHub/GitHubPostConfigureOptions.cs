@@ -16,7 +16,7 @@ public class GitHubPostConfigureOptions : IPostConfigureOptions<GitHubAuthentica
 {
     /// <inheritdoc/>
     public void PostConfigure(
-        [NotNull] string name,
+        string? name,
         [NotNull] GitHubAuthenticationOptions options)
     {
         if (!string.IsNullOrWhiteSpace(options.EnterpriseDomain))

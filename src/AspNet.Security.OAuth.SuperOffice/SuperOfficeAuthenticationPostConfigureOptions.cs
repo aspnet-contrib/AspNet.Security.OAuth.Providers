@@ -18,7 +18,7 @@ public class SuperOfficeAuthenticationPostConfigureOptions : IPostConfigureOptio
 {
     /// <inheritdoc />
     public void PostConfigure(
-        [NotNull] string name,
+        string? name,
         [NotNull] SuperOfficeAuthenticationOptions options)
     {
         if (string.IsNullOrEmpty(options.TokenValidationParameters.ValidAudience) && !string.IsNullOrEmpty(options.ClientId))

@@ -19,6 +19,7 @@ public static class StaticAnalysisTests
         // Arrange
         var assemblyNames = GetProviderAssemblyNames();
         var types = GetPublicTypes(assemblyNames);
+        var nullabilityContext = new NullabilityInfoContext();
 
         int testedMethods = 0;
 
@@ -37,6 +38,13 @@ public static class StaticAnalysisTests
                         .GetCustomAttributes()
                         .Any((p) => p.GetType().FullName == "JetBrains.Annotations.CanBeNullAttribute" ||
                                     p.GetType().FullName == "JetBrains.Annotations.NotNullAttribute");
+
+                    var nullabilityInfo = nullabilityContext.Create(parameter);
+
+                    if (nullabilityInfo.WriteState == NullabilityState.Nullable)
+                    {
+                        continue;
+                    }
 
                     // Assert
                     hasNullabilityAnnotation.ShouldBeTrue(

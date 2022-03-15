@@ -12,7 +12,7 @@ namespace AspNet.Security.OAuth.Keycloak;
 /// </summary>
 public class KeycloakPostConfigureOptions : IPostConfigureOptions<KeycloakAuthenticationOptions>
 {
-    public void PostConfigure([NotNull] string name, [NotNull] KeycloakAuthenticationOptions options)
+    public void PostConfigure(string? name, [NotNull] KeycloakAuthenticationOptions options)
     {
         if ((!string.IsNullOrWhiteSpace(options.Domain) || options.BaseAddress is not null) &&
             !string.IsNullOrWhiteSpace(options.Realm))
