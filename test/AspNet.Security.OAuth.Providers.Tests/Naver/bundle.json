@@ -1,0 +1,37 @@
+{
+  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
+  "items": [
+    {
+      "uri": "https://nid.naver.com/oauth2.0/token",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "secret-access-token",
+        "token_type": "access",
+        "refresh_token": "secret-refresh-token",
+        "expires_in": "300"
+      }
+    },
+    {
+      "uri": "https://openapi.naver.com/v1/nid/me",
+      "contentFormat": "json",
+      "contentJson": {
+        "resultcode": "00",
+        "message": "success",
+        "response": {
+          "id": "dummywdhzWcds8IuVojuH6GoGy6WadDk",
+          "nickname": "christallire",
+          "profile_image": "https:\/\/ssl.pstatic.net\/static\/pwe\/address\/img_profile.png",
+          "age": "30-39",
+          "gender": "M",
+          "email": "example@naver.com",
+          "mobile": "010-1234-1234",
+          "mobile_e164": "+821012341234",
+          "name": "Chris Sung",
+          "birthday": "03-19",
+          "birthyear": "2020"
+        }
+      }
+    }
+  ]
+}
