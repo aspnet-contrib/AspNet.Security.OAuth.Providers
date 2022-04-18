@@ -79,6 +79,16 @@ public partial class WeixinAuthenticationHandler : OAuthHandler<WeixinAuthentica
             throw new HttpRequestException("An error occurred while retrieving user information.");
         }
 
+        (var openId, var unionId) = GetUserIdentifier(payload.RootElement);
+        if (!string.IsNullOrWhiteSpace(unionId))
+        {
+            identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, unionId, ClaimValueTypes.String, Options.ClaimsIssuer));
+        }
+        else
+        {
+            identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, openId!, ClaimValueTypes.String, Options.ClaimsIssuer));
+        }
+
         var principal = new ClaimsPrincipal(identity);
         var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload.RootElement);
         context.RunClaimActions();
@@ -174,6 +184,11 @@ public partial class WeixinAuthenticationHandler : OAuthHandler<WeixinAuthentica
         }
 
         return challengeUrl;
+    }
+
+    private static (string? OpenId, string? UnionId) GetUserIdentifier(JsonElement payloadRoot)
+    {
+        return (payloadRoot.GetString("openid"), payloadRoot.GetString("unionid"));
     }
 
     /// <inheritdoc/>
