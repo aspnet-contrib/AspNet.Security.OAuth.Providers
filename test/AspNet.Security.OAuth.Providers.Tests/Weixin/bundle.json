@@ -30,6 +30,25 @@
           "c"
         ]
       }
+    },
+    {
+      "uri": "https://api.weixin.qq.com/sns/userinfo/nounionid?access_token=secret-access-token&openid=my-open-id",
+      "contentFormat": "json",
+      "contentJson": {
+        "unionid": "",
+        "nickname": "John Smith",
+        "sex": "Male",
+        "country": "CN",
+        "openid": "my-open-id",
+        "province": "Hebei",
+        "city": "Beijing",
+        "headimgurl": "https://weixin.qq.local/image.png",
+        "privilege": [
+          "a",
+          "b",
+          "c"
+        ]
+      }
     }
   ]
 }

@@ -45,6 +45,67 @@ public class WeixinTests : OAuthTests<WeixinAuthenticationOptions>
     }
 
     [Theory]
+    [InlineData(ClaimTypes.NameIdentifier, "my-id")]
+    [InlineData(ClaimTypes.Name, "John Smith")]
+    [InlineData(ClaimTypes.Gender, "Male")]
+    [InlineData(ClaimTypes.Country, "CN")]
+    [InlineData("urn:weixin:city", "Beijing")]
+    [InlineData("urn:weixin:headimgurl", "https://weixin.qq.local/image.png")]
+    [InlineData("urn:weixin:openid", "my-open-id")]
+    [InlineData("urn:weixin:privilege", "a,b,c")]
+    [InlineData("urn:weixin:province", "Hebei")]
+    public async Task Can_Sign_In_Using_Wechat(string claimType, string claimValue)
+    {
+        // Arrange
+        static void ConfigureServices(IServiceCollection services)
+        {
+            services.PostConfigureAll<WeixinAuthenticationOptions>((options) =>
+            {
+                options.AuthorizationEndpoint = "https://open.weixin.qq.com/connect/oauth2/authorize";
+            });
+        }
+
+        using var server = CreateTestServer(ConfigureServices);
+
+        // Act
+        var claims = await AuthenticateUserAsync(server);
+
+        // Assert
+        AssertClaim(claims, claimType, claimValue);
+    }
+
+    [Theory]
+    [InlineData(ClaimTypes.NameIdentifier, "my-open-id")]
+    [InlineData(ClaimTypes.Name, "John Smith")]
+    [InlineData(ClaimTypes.Gender, "Male")]
+    [InlineData(ClaimTypes.Country, "CN")]
+    [InlineData("urn:weixin:city", "Beijing")]
+    [InlineData("urn:weixin:headimgurl", "https://weixin.qq.local/image.png")]
+    [InlineData("urn:weixin:openid", "my-open-id")]
+    [InlineData("urn:weixin:privilege", "a,b,c")]
+    [InlineData("urn:weixin:province", "Hebei")]
+    public async Task Can_Sign_In_Using_Weixin_With_No_Union_Id(string claimType, string claimValue)
+    {
+        // Arrange
+        static void ConfigureServices(IServiceCollection services)
+        {
+            services.PostConfigureAll<WeixinAuthenticationOptions>((options) =>
+            {
+                options.AuthorizationEndpoint = "https://open.weixin.qq.com/connect/oauth2/authorize";
+                options.UserInformationEndpoint = "https://api.weixin.qq.com/sns/userinfo/nounionid";
+            });
+        }
+
+        using var server = CreateTestServer(ConfigureServices);
+
+        // Act
+        var claims = await AuthenticateUserAsync(server);
+
+        // Assert
+        AssertClaim(claims, claimType, claimValue);
+    }
+
+    [Theory]
     [InlineData(false)]
     [InlineData(true)]
     public async Task BuildChallengeUrl_Generates_Correct_Url(bool usePkce)
@@ -55,7 +116,7 @@ public class WeixinTests : OAuthTests<WeixinAuthenticationOptions>
             UsePkce = usePkce,
         };
 
-        string redirectUrl = "https://my-site.local/signin-weixin";
+        var redirectUrl = "https://my-site.local/signin-weixin";
 
         // Act
         Uri actual = await BuildChallengeUriAsync(
