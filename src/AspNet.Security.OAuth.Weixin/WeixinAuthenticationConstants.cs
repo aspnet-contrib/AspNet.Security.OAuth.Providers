@@ -18,5 +18,6 @@ public static class WeixinAuthenticationConstants
         public const string OpenId = "urn:weixin:openid";
         public const string Privilege = "urn:weixin:privilege";
         public const string Province = "urn:weixin:province";
+        public const string UnionId = "urn:weixin:unionid";
     }
 }

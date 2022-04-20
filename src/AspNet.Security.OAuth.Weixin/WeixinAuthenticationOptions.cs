@@ -29,6 +29,8 @@ public class WeixinAuthenticationOptions : OAuthOptions
         ClaimActions.MapJsonKey(ClaimTypes.Name, "nickname");
         ClaimActions.MapJsonKey(ClaimTypes.Gender, "sex");
         ClaimActions.MapJsonKey(ClaimTypes.Country, "country");
+        ClaimActions.MapJsonKey(Claims.OpenId, "openid");
+        ClaimActions.MapJsonKey(Claims.UnionId, "unionid");
         ClaimActions.MapJsonKey(Claims.Province, "province");
         ClaimActions.MapJsonKey(Claims.City, "city");
         ClaimActions.MapJsonKey(Claims.HeadImgUrl, "headimgurl");

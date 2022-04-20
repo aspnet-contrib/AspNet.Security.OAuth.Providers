@@ -80,14 +80,8 @@ public partial class WeixinAuthenticationHandler : OAuthHandler<WeixinAuthentica
         }
 
         (var openId, var unionId) = GetUserIdentifier(payload.RootElement);
-        if (!string.IsNullOrWhiteSpace(unionId))
-        {
-            identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, unionId, ClaimValueTypes.String, Options.ClaimsIssuer));
-        }
-        else
-        {
-            identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, openId!, ClaimValueTypes.String, Options.ClaimsIssuer));
-        }
+        var nameIdentifier = !string.IsNullOrWhiteSpace(unionId) ? unionId : openId;
+        identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, nameIdentifier!, ClaimValueTypes.String, Options.ClaimsIssuer));
 
         var principal = new ClaimsPrincipal(identity);
         var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload.RootElement);
