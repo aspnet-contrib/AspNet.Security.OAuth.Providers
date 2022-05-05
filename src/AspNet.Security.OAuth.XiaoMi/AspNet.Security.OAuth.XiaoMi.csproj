@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>$(DefaultNetCoreTargetFramework)</TargetFrameworks>
+    <PackageValidationBaselineVersion>6.0.7</PackageValidationBaselineVersion>
   </PropertyGroup>
 
   <!-- TODO Remove once published to NuGet.org -->

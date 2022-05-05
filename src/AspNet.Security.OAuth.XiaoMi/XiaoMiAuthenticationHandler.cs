@@ -6,7 +6,6 @@
 
 using System.Net;
 using System.Security.Claims;
-using System.Security.Cryptography;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
@@ -41,7 +40,7 @@ public partial class XiaoMiAuthenticationHandler : OAuthHandler<XiaoMiAuthentica
 
         var address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, parameters);
 
-        using var response = await Backchannel.GetAsync(address);
+        using var response = await Backchannel.GetAsync(address, Context.RequestAborted);
         if (!response.IsSuccessStatusCode)
         {
             await Log.UserProfileErrorAsync(Logger, response, Context.RequestAborted);
@@ -54,7 +53,7 @@ public partial class XiaoMiAuthenticationHandler : OAuthHandler<XiaoMiAuthentica
 
         if (!rootElement.TryGetProperty("data", out JsonElement dataElement))
         {
-            var errorCode = rootElement.GetProperty("code").GetString()!;
+            var errorCode = rootElement.GetString("code")!;
             throw new Exception($"An error (Code:{errorCode}) occurred while retrieving user information.");
         }
 
@@ -88,7 +87,7 @@ public partial class XiaoMiAuthenticationHandler : OAuthHandler<XiaoMiAuthentica
 
         var address = QueryHelpers.AddQueryString(Options.TokenEndpoint, tokenRequestParameters);
 
-        using var response = await Backchannel.GetAsync(address);
+        using var response = await Backchannel.GetAsync(address, Context.RequestAborted);
         if (!response.IsSuccessStatusCode)
         {
             await Log.ExchangeCodeErrorAsync(Logger, response, Context.RequestAborted);
@@ -107,46 +106,6 @@ public partial class XiaoMiAuthenticationHandler : OAuthHandler<XiaoMiAuthentica
 
         return OAuthTokenResponse.Success(payload);
     }
-
-    protected override string BuildChallengeUrl([NotNull] AuthenticationProperties properties, [NotNull] string redirectUri)
-    {
-        var scopeParameter = properties.GetParameter<ICollection<string>>(OAuthChallengeProperties.ScopeKey);
-        var scope = scopeParameter != null ? FormatScope(scopeParameter) : FormatScope();
-
-        var parameters = new Dictionary<string, string?>()
-        {
-            ["client_id"] = Options.ClientId,
-            ["redirect_uri"] = redirectUri,
-            ["scope"] = scope,
-            ["response_type"] = "code",
-        };
-
-        if (Options.UsePkce)
-        {
-            var bytes = RandomNumberGenerator.GetBytes(256 / 8);
-            var codeVerifier = WebEncoders.Base64UrlEncode(bytes);
-
-            // Store this for use during the code redemption.
-            properties.Items.Add(OAuthConstants.CodeVerifierKey, codeVerifier);
-
-            var challengeBytes = SHA256.HashData(Encoding.UTF8.GetBytes(codeVerifier));
-
-            parameters[OAuthConstants.CodeChallengeKey] = WebEncoders.Base64UrlEncode(challengeBytes);
-            parameters[OAuthConstants.CodeChallengeMethodKey] = OAuthConstants.CodeChallengeMethodS256;
-        }
-
-        parameters["state"] = Options.StateDataFormat.Protect(properties);
-
-        return QueryHelpers.AddQueryString(Options.AuthorizationEndpoint, parameters);
-    }
-
-    /// <inheritdoc/>
-    protected override string FormatScope()
-        => FormatScope(Options.Scope); // TODO This override is the same as the base class' and can be removed in the next major version
-
-    /// <inheritdoc/>
-    protected override string FormatScope([NotNull] IEnumerable<string> scopes)
-        => string.Join(',', scopes);
 
     private static partial class Log
     {

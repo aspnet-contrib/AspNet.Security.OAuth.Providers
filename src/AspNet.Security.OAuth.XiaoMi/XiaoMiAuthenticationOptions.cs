@@ -23,8 +23,6 @@ public class XiaoMiAuthenticationOptions : OAuthOptions
         TokenEndpoint = XiaoMiAuthenticationDefaults.TokenEndpoint;
         UserInformationEndpoint = XiaoMiAuthenticationDefaults.UserInformationEndpoint;
 
-        // Scope.Add("1");
-        // Scope.Add("3");
         ClaimActions.MapJsonKey(ClaimTypes.Name, "miliaoNick");
         ClaimActions.MapJsonKey(Claims.MiliaoNick, "miliaoNick");
         ClaimActions.MapJsonKey(Claims.UnionId, "unionId");
