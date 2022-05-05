@@ -44,8 +44,8 @@ public class Startup
 
         .AddTwitter(options =>
         {
-            options.ClientId = Configuration["Twitter:ClientId"];
-            options.ClientSecret = Configuration["Twitter:ClientSecret"];
+            options.ClientId = Configuration["Twitter:ConsumerKey"];
+            options.ClientSecret = Configuration["Twitter:ConsumerSecret"];
         })
 
         .AddGitHub(options =>

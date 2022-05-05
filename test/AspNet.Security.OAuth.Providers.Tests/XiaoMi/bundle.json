@@ -1,0 +1,33 @@
+{
+  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
+  "items": [
+    {
+      "uri": "https://account.xiaomi.com/oauth2/token?client_id=my-client-id&client_secret=my-client-secret&code=a6ed8e7f-471f-44f1-903b-65946475f351&redirect_uri=http%3A%2F%2Flocalhost%2Fsignin-xiaomi&grant_type=authorization_code",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "secret-access-token",
+        "scope": "1,3",
+        "refresh_token": "secret-refresh-token",
+        "expires_in": "300",
+        "openId": "my-open-id",
+        "union_id": "my-union-id",
+        "mac_key": "mac-key",
+        "mac_algorithm": "mac-algorithm"
+      }
+    },
+    {
+      "uri": "https://open.account.xiaomi.com/user/profile?token=secret-access-token&clientId=my-client-id",
+      "contentFormat": "json",
+      "contentJson": {
+        "result": "ok",
+        "description": "Success",
+        "data": {
+          "unionId": "my-union-id",
+          "miliaoNick": "John Smith",
+          "miliaoIcon": "https://xiaomi.local/image.png"
+        },
+        "code": "0"
+      }
+    }
+  ]
+}
