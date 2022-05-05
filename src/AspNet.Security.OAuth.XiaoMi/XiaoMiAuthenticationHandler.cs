@@ -95,7 +95,15 @@ public partial class XiaoMiAuthenticationHandler : OAuthHandler<XiaoMiAuthentica
         }
 
         var json = await response.Content.ReadAsStringAsync(Context.RequestAborted);
-        var payload = JsonDocument.Parse(json.Replace("&&&START&&&", string.Empty, StringComparison.OrdinalIgnoreCase));
+
+        // The json is a special string containing '&&&START&&&' and needs trim it.
+        // See https://dev.mi.com/console/doc/detail?pId=707#_0_1 for details.
+        if (json.StartsWith("&&&START&&&", StringComparison.OrdinalIgnoreCase))
+        {
+            json = json[11..];
+        }
+
+        var payload = JsonDocument.Parse(json);
 
         var errorCode = payload.RootElement.GetString("errcode");
         if (!string.IsNullOrEmpty(errorCode))
