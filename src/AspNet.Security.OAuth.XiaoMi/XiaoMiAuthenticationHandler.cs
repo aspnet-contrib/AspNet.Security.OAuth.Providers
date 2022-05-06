@@ -14,12 +14,12 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace AspNet.Security.OAuth.XiaoMi;
+namespace AspNet.Security.OAuth.Xiaomi;
 
-public partial class XiaoMiAuthenticationHandler : OAuthHandler<XiaoMiAuthenticationOptions>
+public partial class XiaomiAuthenticationHandler : OAuthHandler<XiaomiAuthenticationOptions>
 {
-    public XiaoMiAuthenticationHandler(
-        [NotNull] IOptionsMonitor<XiaoMiAuthenticationOptions> options,
+    public XiaomiAuthenticationHandler(
+        [NotNull] IOptionsMonitor<XiaomiAuthenticationOptions> options,
         [NotNull] ILoggerFactory logger,
         [NotNull] UrlEncoder encoder,
         [NotNull] ISystemClock clock)

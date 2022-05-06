@@ -4,12 +4,12 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-namespace AspNet.Security.OAuth.XiaoMi;
+namespace AspNet.Security.OAuth.Xiaomi;
 
 /// <summary>
-/// Contains constants specific to the <see cref="XiaoMiAuthenticationHandler"/>.
+/// Contains constants specific to the <see cref="XiaomiAuthenticationHandler"/>.
 /// </summary>
-public static class XiaoMiAuthenticationConstants
+public static class XiaomiAuthenticationConstants
 {
     public static class Claims
     {

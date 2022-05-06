@@ -5,23 +5,23 @@
  */
 
 using System.Security.Claims;
-using static AspNet.Security.OAuth.XiaoMi.XiaoMiAuthenticationConstants;
+using static AspNet.Security.OAuth.Xiaomi.XiaomiAuthenticationConstants;
 
-namespace AspNet.Security.OAuth.XiaoMi;
+namespace AspNet.Security.OAuth.Xiaomi;
 
 /// <summary>
-/// Defines a set of options used by <see cref="XiaoMiAuthenticationHandler"/>.
+/// Defines a set of options used by <see cref="XiaomiAuthenticationHandler"/>.
 /// </summary>
-public class XiaoMiAuthenticationOptions : OAuthOptions
+public class XiaomiAuthenticationOptions : OAuthOptions
 {
-    public XiaoMiAuthenticationOptions()
+    public XiaomiAuthenticationOptions()
     {
-        ClaimsIssuer = XiaoMiAuthenticationDefaults.Issuer;
-        CallbackPath = XiaoMiAuthenticationDefaults.CallbackPath;
+        ClaimsIssuer = XiaomiAuthenticationDefaults.Issuer;
+        CallbackPath = XiaomiAuthenticationDefaults.CallbackPath;
 
-        AuthorizationEndpoint = XiaoMiAuthenticationDefaults.AuthorizationEndpoint;
-        TokenEndpoint = XiaoMiAuthenticationDefaults.TokenEndpoint;
-        UserInformationEndpoint = XiaoMiAuthenticationDefaults.UserInformationEndpoint;
+        AuthorizationEndpoint = XiaomiAuthenticationDefaults.AuthorizationEndpoint;
+        TokenEndpoint = XiaomiAuthenticationDefaults.TokenEndpoint;
+        UserInformationEndpoint = XiaomiAuthenticationDefaults.UserInformationEndpoint;
 
         ClaimActions.MapJsonKey(ClaimTypes.Name, "miliaoNick");
         ClaimActions.MapJsonKey(Claims.MiliaoNick, "miliaoNick");

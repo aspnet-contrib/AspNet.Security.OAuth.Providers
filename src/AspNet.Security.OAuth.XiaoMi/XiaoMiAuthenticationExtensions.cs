@@ -4,71 +4,71 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using AspNet.Security.OAuth.XiaoMi;
+using AspNet.Security.OAuth.Xiaomi;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
 /// <summary>
-/// Extension methods to add XiaoMi authentication capabilities to an HTTP application pipeline.
+/// Extension methods to add Xiaomi authentication capabilities to an HTTP application pipeline.
 /// </summary>
-public static class XiaoMiAuthenticationExtensions
+public static class XiaomiAuthenticationExtensions
 {
     /// <summary>
-    /// Adds <see cref="XiaoMiAuthenticationHandler"/> to the specified
-    /// <see cref="AuthenticationBuilder"/>, which enables XiaoMi authentication capabilities.
+    /// Adds <see cref="XiaomiAuthenticationHandler"/> to the specified
+    /// <see cref="AuthenticationBuilder"/>, which enables Xiaomi authentication capabilities.
     /// </summary>
     /// <param name="builder">The authentication builder.</param>
     /// <returns>A reference to this instance after the operation has completed.</returns>
-    public static AuthenticationBuilder AddXiaoMi([NotNull] this AuthenticationBuilder builder)
+    public static AuthenticationBuilder AddXiaomi([NotNull] this AuthenticationBuilder builder)
     {
-        return builder.AddXiaoMi(XiaoMiAuthenticationDefaults.AuthenticationScheme, options => { });
+        return builder.AddXiaomi(XiaomiAuthenticationDefaults.AuthenticationScheme, options => { });
     }
 
     /// <summary>
-    /// Adds <see cref="XiaoMiAuthenticationHandler"/> to the specified
-    /// <see cref="AuthenticationBuilder"/>, which enables XiaoMi authentication capabilities.
+    /// Adds <see cref="XiaomiAuthenticationHandler"/> to the specified
+    /// <see cref="AuthenticationBuilder"/>, which enables Xiaomi authentication capabilities.
     /// </summary>
     /// <param name="builder">The authentication builder.</param>
     /// <param name="configuration">The delegate used to configure the OpenID 2.0 options.</param>
     /// <returns>A reference to this instance after the operation has completed.</returns>
-    public static AuthenticationBuilder AddXiaoMi(
+    public static AuthenticationBuilder AddXiaomi(
         [NotNull] this AuthenticationBuilder builder,
-        [NotNull] Action<XiaoMiAuthenticationOptions> configuration)
+        [NotNull] Action<XiaomiAuthenticationOptions> configuration)
     {
-        return builder.AddXiaoMi(XiaoMiAuthenticationDefaults.AuthenticationScheme, configuration);
+        return builder.AddXiaomi(XiaomiAuthenticationDefaults.AuthenticationScheme, configuration);
     }
 
     /// <summary>
-    /// Adds <see cref="XiaoMiAuthenticationHandler"/> to the specified
-    /// <see cref="AuthenticationBuilder"/>, which enables XiaoMi authentication capabilities.
+    /// Adds <see cref="XiaomiAuthenticationHandler"/> to the specified
+    /// <see cref="AuthenticationBuilder"/>, which enables Xiaomi authentication capabilities.
     /// </summary>
     /// <param name="builder">The authentication builder.</param>
     /// <param name="scheme">The authentication scheme associated with this instance.</param>
-    /// <param name="configuration">The delegate used to configure the XiaoMi options.</param>
+    /// <param name="configuration">The delegate used to configure the Xiaomi options.</param>
     /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
-    public static AuthenticationBuilder AddXiaoMi(
+    public static AuthenticationBuilder AddXiaomi(
         [NotNull] this AuthenticationBuilder builder,
         [NotNull] string scheme,
-        [NotNull] Action<XiaoMiAuthenticationOptions> configuration)
+        [NotNull] Action<XiaomiAuthenticationOptions> configuration)
     {
-        return builder.AddXiaoMi(scheme, XiaoMiAuthenticationDefaults.DisplayName, configuration);
+        return builder.AddXiaomi(scheme, XiaomiAuthenticationDefaults.DisplayName, configuration);
     }
 
     /// <summary>
-    /// Adds <see cref="XiaoMiAuthenticationHandler"/> to the specified
-    /// <see cref="AuthenticationBuilder"/>, which enables XiaoMi authentication capabilities.
+    /// Adds <see cref="XiaomiAuthenticationHandler"/> to the specified
+    /// <see cref="AuthenticationBuilder"/>, which enables Xiaomi authentication capabilities.
     /// </summary>
     /// <param name="builder">The authentication builder.</param>
     /// <param name="scheme">The authentication scheme associated with this instance.</param>
     /// <param name="caption">The optional display name associated with this instance.</param>
-    /// <param name="configuration">The delegate used to configure the XiaoMi options.</param>
+    /// <param name="configuration">The delegate used to configure the Xiaomi options.</param>
     /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
-    public static AuthenticationBuilder AddXiaoMi(
+    public static AuthenticationBuilder AddXiaomi(
         [NotNull] this AuthenticationBuilder builder,
         [NotNull] string scheme,
         [CanBeNull] string caption,
-        [NotNull] Action<XiaoMiAuthenticationOptions> configuration)
+        [NotNull] Action<XiaomiAuthenticationOptions> configuration)
     {
-        return builder.AddOAuth<XiaoMiAuthenticationOptions, XiaoMiAuthenticationHandler>(scheme, caption, configuration);
+        return builder.AddOAuth<XiaomiAuthenticationOptions, XiaomiAuthenticationHandler>(scheme, caption, configuration);
     }
 }

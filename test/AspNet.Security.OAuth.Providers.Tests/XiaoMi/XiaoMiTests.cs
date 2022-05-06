@@ -4,20 +4,20 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-namespace AspNet.Security.OAuth.XiaoMi;
+namespace AspNet.Security.OAuth.Xiaomi;
 
-public class XiaoMiTests : OAuthTests<XiaoMiAuthenticationOptions>
+public class XiaomiTests : OAuthTests<XiaomiAuthenticationOptions>
 {
-    public XiaoMiTests(ITestOutputHelper outputHelper)
+    public XiaomiTests(ITestOutputHelper outputHelper)
     {
         OutputHelper = outputHelper;
     }
 
-    public override string DefaultScheme => XiaoMiAuthenticationDefaults.AuthenticationScheme;
+    public override string DefaultScheme => XiaomiAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
     {
-        builder.AddXiaoMi(options => ConfigureDefaults(builder, options));
+        builder.AddXiaomi(options => ConfigureDefaults(builder, options));
     }
 
     [Theory]
@@ -26,7 +26,7 @@ public class XiaoMiTests : OAuthTests<XiaoMiAuthenticationOptions>
     [InlineData("urn:xiaomi:miliaoIcon", "https://xiaomi.local/image.png")]
     [InlineData("urn:xiaomi:unionId", "my-union-id")]
     [InlineData("urn:xiaomi:miliaoNick", "John Smith")]
-    public async Task Can_Sign_In_Using_XiaoMi(string claimType, string claimValue)
+    public async Task Can_Sign_In_Using_Xiaomi(string claimType, string claimValue)
     {
         // Arrange
         using var server = CreateTestServer();

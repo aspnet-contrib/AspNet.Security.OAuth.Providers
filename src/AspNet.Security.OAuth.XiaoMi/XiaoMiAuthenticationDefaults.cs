@@ -4,22 +4,22 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-namespace AspNet.Security.OAuth.XiaoMi;
+namespace AspNet.Security.OAuth.Xiaomi;
 
 /// <summary>
-/// Default values for XiaoMi authentication.
+/// Default values for Xiaomi authentication.
 /// </summary>
-public static class XiaoMiAuthenticationDefaults
+public static class XiaomiAuthenticationDefaults
 {
     /// <summary>
     /// Default value for <see cref="AuthenticationScheme.Name"/>.
     /// </summary>
-    public const string AuthenticationScheme = "XiaoMi";
+    public const string AuthenticationScheme = "Xiaomi";
 
     /// <summary>
     /// Default value for <see cref="AuthenticationScheme.DisplayName"/>.
     /// </summary>
-    public static readonly string DisplayName = "XiaoMi";
+    public static readonly string DisplayName = "Xiaomi";
 
     /// <summary>
     /// Default value for <see cref="RemoteAuthenticationOptions.CallbackPath"/>.
@@ -29,7 +29,7 @@ public static class XiaoMiAuthenticationDefaults
     /// <summary>
     /// Default value for <see cref="AuthenticationSchemeOptions.ClaimsIssuer"/>.
     /// </summary>
-    public static readonly string Issuer = "XiaoMi";
+    public static readonly string Issuer = "Xiaomi";
 
     /// <summary>
     /// Default value for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
