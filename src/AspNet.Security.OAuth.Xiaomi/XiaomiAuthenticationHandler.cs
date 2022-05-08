@@ -96,11 +96,12 @@ public partial class XiaomiAuthenticationHandler : OAuthHandler<XiaomiAuthentica
 
         var json = await response.Content.ReadAsStringAsync(Context.RequestAborted);
 
-        // The json is a special string containing '&&&START&&&' and needs trim it.
+        // The JSON in the response has a prefix that needs to be removed.
         // See https://dev.mi.com/console/doc/detail?pId=707#_0_1 for details.
-        if (json.StartsWith("&&&START&&&", StringComparison.OrdinalIgnoreCase))
+        const string Prefix = "&&&START&&&";
+        if (json.StartsWith(Prefix, StringComparison.Ordinal))
         {
-            json = json[11..];
+            json = json[Prefix.Length..];
         }
 
         var payload = JsonDocument.Parse(json);
