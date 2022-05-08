@@ -73,3 +73,4 @@ covered by the section above.
 | Weibo | _Optional_ | [Documentation](weibo.md "Weibo provider documentation") |
 | WorkWeixin (WeCom) | _Optional_ | [Documentation](workweixin.md "WorkWeixin provider documentation") |
 | Xero | _Optional_ | [Documentation](xero.md "Xero provider documentation") |
+| Xiaomi | _Optional_ | [Documentation](xiaomi.md "Xiaomi provider documentation") |

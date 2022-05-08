@@ -220,6 +220,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{C2CA4B38-A
 		docs\vkontakte.md = docs\vkontakte.md
 		docs\weibo.md = docs\weibo.md
 		docs\workweixin.md = docs\workweixin.md
+		docs\xiaomi.md = docs\xiaomi.md
 		docs\zendesk.md = docs\zendesk.md
 	EndProjectSection
 EndProject
