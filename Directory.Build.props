@@ -50,10 +50,12 @@
   </PropertyGroup>
 
   <PropertyGroup Condition=" $(RepoRelativeProjectDir.Contains('src')) ">
+    <EnableTrimAnalyzer>true</EnableTrimAnalyzer>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <IncludeSymbols>true</IncludeSymbols>
     <IsPackable>true</IsPackable>
     <IsShipping>true</IsShipping>
+    <IsTrimmable>true</IsTrimmable>
     <Serviceable>false</Serviceable>
   </PropertyGroup>
 

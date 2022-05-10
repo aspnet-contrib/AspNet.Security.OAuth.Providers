@@ -9,6 +9,7 @@ using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Text.Json;
+using System.Text.Json.Nodes;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -86,15 +87,15 @@ public partial class YammerAuthenticationHandler : OAuthHandler<YammerAuthentica
         using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
         var accessToken = payload.RootElement.GetProperty("access_token").GetString("token");
 
-        var token = new
+        var token = new JsonObject()
         {
-            access_token = accessToken,
-            token_type = string.Empty,
-            refresh_token = string.Empty,
-            expires_in = string.Empty,
+            ["access_token"] = accessToken,
+            ["token_type"] = string.Empty,
+            ["refresh_token"] = string.Empty,
+            ["expires_in"] = string.Empty,
         };
 
-        return OAuthTokenResponse.Success(JsonSerializer.SerializeToDocument(token));
+        return OAuthTokenResponse.Success(JsonSerializer.SerializeToDocument(token, CustomJsonSerializerContext.Default.JsonObject));
     }
 
     private static partial class Log

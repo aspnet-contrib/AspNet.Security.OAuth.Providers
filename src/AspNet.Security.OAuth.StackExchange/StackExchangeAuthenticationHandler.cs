@@ -112,7 +112,7 @@ public partial class StackExchangeAuthenticationHandler : OAuthHandler<StackExch
             token[key] = value.ToString();
         }
 
-        return OAuthTokenResponse.Success(JsonSerializer.SerializeToDocument(token));
+        return OAuthTokenResponse.Success(JsonSerializer.SerializeToDocument(token, CustomJsonSerializerContext.Default.JsonObject));
     }
 
     private static partial class Log

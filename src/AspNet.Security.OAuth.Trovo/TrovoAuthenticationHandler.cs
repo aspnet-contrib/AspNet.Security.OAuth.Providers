@@ -73,11 +73,13 @@ public partial class TrovoAuthenticationHandler : OAuthHandler<TrovoAuthenticati
             context.Properties.Items.Remove(OAuthConstants.CodeVerifierKey);
         }
 
+        var json = JsonSerializer.Serialize(tokenRequestParameters, CustomJsonSerializerContext.Default.DictionaryStringString);
+
         using var request = new HttpRequestMessage(HttpMethod.Post, Options.TokenEndpoint);
 
         request.Headers.Add(ClientIdHeaderName, Options.ClientId);
         request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json));
-        request.Content = new StringContent(JsonSerializer.Serialize(tokenRequestParameters), Encoding.UTF8, MediaTypeNames.Application.Json);
+        request.Content = new StringContent(json, Encoding.UTF8, MediaTypeNames.Application.Json);
 
         using var response = await Backchannel.SendAsync(request, Context.RequestAborted);
 
