@@ -4,9 +4,9 @@
     <PackageReference Update="JetBrains.Annotations" Version="2021.3.0" />
     <PackageReference Update="JustEat.HttpClientInterception" Version="3.1.1" />
     <PackageReference Update="MartinCostello.Logging.XUnit" Version="0.2.0" />
-    <PackageReference Update="Microsoft.AspNetCore.Authentication.Google" Version="7.0.0-preview.3.22178.4" />
-    <PackageReference Update="Microsoft.AspNetCore.Mvc.Testing" Version="7.0.0-preview.3.22178.4" />
-    <PackageReference Update="Microsoft.AspNetCore.TestHost" Version="7.0.0-preview.3.22178.4" />
+    <PackageReference Update="Microsoft.AspNetCore.Authentication.Google" Version="7.0.0-preview.4.22251.1" />
+    <PackageReference Update="Microsoft.AspNetCore.Mvc.Testing" Version="7.0.0-preview.4.22251.1" />
+    <PackageReference Update="Microsoft.AspNetCore.TestHost" Version="7.0.0-preview.4.22251.1" />
     <PackageReference Update="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="6.16.0" />
     <PackageReference Update="Moq" Version="4.16.1" />
     <PackageReference Update="Shouldly" Version="4.0.3" />
