@@ -1,19 +1,29 @@
 ### Provider name
 
-_State which provider(s) you are experiencing an issue with._
+<!--
+State which provider(s) you are experiencing an issue with.
+-->
 
 ### Expected behavior
 
-_Explain what you expected to happen._
+<!--
+Explain what you expected to happen.
+-->
 
 ### Actual behavior
 
-_Explain what actually happened. If an exception occurred, please include a stack trace if available._
+<!--
+Explain what actually happened. If an exception occurred, please include a stack trace if available.
+-->
 
 ### Steps to reproduce
 
-_A concise and repeatable example of how to illustrate the issue._
+<!--
+A concise and repeatable example of how to illustrate the issue.
+-->
 
 ### Additional information
 
-_Any additional information that may be useful, such as the version of the package you are using or the version of .NET Core._
+<!--
+Any additional information that may be useful, such as the version of the package you are using or the version of .NET.
+-->
