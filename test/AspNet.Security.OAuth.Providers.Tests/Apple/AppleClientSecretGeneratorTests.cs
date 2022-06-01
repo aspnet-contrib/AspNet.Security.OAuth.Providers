@@ -59,14 +59,26 @@ public class AppleClientSecretGeneratorTests
             securityToken.Header.ShouldContainKeyAndValue("kid", "my-key-id");
             securityToken.Header.ShouldContainKeyAndValue("typ", "JWT");
 
+            // See https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers/issues/684
+            securityToken.Header.Keys.OrderBy((p) => p).ShouldBe(
+                new string[] { "alg", "kid", "typ" },
+                Case.Sensitive,
+                "JWT header contains unexpected additional claims.");
+
             securityToken.Payload.ShouldNotBeNull();
             securityToken.Payload.ShouldContainKey("exp");
             securityToken.Payload.ShouldContainKey("iat");
+            securityToken.Payload.ShouldContainKey("nbf");
             securityToken.Payload.ShouldContainKeyAndValue("aud", "https://appleid.apple.com");
             securityToken.Payload.ShouldContainKeyAndValue("iss", "my-team-id");
             securityToken.Payload.ShouldContainKeyAndValue("sub", "my-client-id");
             securityToken.Payload.Iat.HasValue.ShouldBeTrue();
             securityToken.Payload.Exp.HasValue.ShouldBeTrue();
+
+            securityToken.Payload.Keys.OrderBy((p) => p).ShouldBe(
+                new string[] { "aud", "exp", "iat", "iss", "nbf", "sub" },
+                Case.Sensitive,
+                "JWT payload contains unexpected additional claims.");
 
             ((long)securityToken.Payload.Iat!.Value).ShouldBeGreaterThanOrEqualTo(utcNow.ToUnixTimeSeconds());
             ((long)securityToken.Payload.Exp!.Value).ShouldBeGreaterThanOrEqualTo(utcNow.AddSeconds(60).ToUnixTimeSeconds());
