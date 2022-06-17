@@ -19,7 +19,11 @@ public class WeiboTests : OAuthTests<WeiboAuthenticationOptions>
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
     {
-        builder.AddWeibo(options => ConfigureDefaults(builder, options));
+        builder.AddWeibo(options =>
+        {
+            ConfigureDefaults(builder, options);
+            options.Scope.Add("email");
+        });
     }
 
     [Theory]
@@ -57,6 +61,7 @@ public class WeiboTests : OAuthTests<WeiboAuthenticationOptions>
         };
 
         options.Scope.Add("scope-1");
+        options.Scope.Add("scope-2");
 
         string redirectUrl = "https://my-site.local/signin-weibo";
 
@@ -76,7 +81,7 @@ public class WeiboTests : OAuthTests<WeiboAuthenticationOptions>
         query.ShouldContainKeyAndValue("client_id", options.ClientId);
         query.ShouldContainKeyAndValue("redirect_uri", redirectUrl);
         query.ShouldContainKeyAndValue("response_type", "code");
-        query.ShouldContainKeyAndValue("scope", "email,scope-1");
+        query.ShouldContainKeyAndValue("scope", "scope-1,scope-2");
 
         if (usePkce)
         {
