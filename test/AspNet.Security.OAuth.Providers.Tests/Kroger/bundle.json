@@ -1,0 +1,25 @@
+{
+  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
+  "items": [
+    {
+      "comment": "https://developer.kroger.com/reference#operation/accessToken",
+      "uri": "https://api.kroger.com/v1/connect/oauth2/token",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "secret-access-token",
+        "token_type": "bearer",
+        "expires_in": "1800"
+      }
+    },
+    {
+      "comment": "https://developer.kroger.com/reference#tag/Identity",
+      "uri": "https://api.kroger.com/v1/identity/profile",
+      "contentFormat": "json",
+      "contentJson": {
+        "id": "53990804-cfd1-43f3-8256-bdc9817a4fd0"
+      }
+    }
+  ]
+}
+
