@@ -4,6 +4,7 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using System.Globalization;
 using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
@@ -40,7 +41,7 @@ public partial class HubSpotAuthenticationHandler : OAuthHandler<HubSpotAuthenti
     private async Task<JsonDocument> GetUserProfileAsync(
         [NotNull] OAuthTokenResponse tokens)
     {
-        using var request = new HttpRequestMessage(HttpMethod.Get, Options.UserInformationEndpoint + $"/{tokens.AccessToken}");
+        using var request = new HttpRequestMessage(HttpMethod.Get, string.Format(CultureInfo.InvariantCulture, Options.UserInformationEndpoint, tokens.AccessToken));
         request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         using var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
         if (!response.IsSuccessStatusCode)

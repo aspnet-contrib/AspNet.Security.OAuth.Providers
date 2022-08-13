@@ -49,5 +49,5 @@ public static class HubSpotAuthenticationDefaults
     /// that the token was created for, as well as the Hub ID that the token is associated with.
     /// https://developers.hubspot.com/docs/api/oauth/tokens
     /// </summary>
-    public static readonly string UserInformationEndpoint = "https://api.hubapi.com/oauth/v1/access-tokens";
+    public static readonly string UserInformationEndpointFormat = "https://api.hubapi.com/oauth/v1/access-tokens/{0}";
 }
