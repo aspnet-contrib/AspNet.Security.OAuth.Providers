@@ -17,9 +17,10 @@ public class HubSpotAuthenticationOptions : OAuthOptions
     public HubSpotAuthenticationOptions()
     {
         ClaimsIssuer = HubSpotAuthenticationDefaults.Issuer;
+        CallbackPath = HubSpotAuthenticationDefaults.CallbackPath;
+
         AuthorizationEndpoint = HubSpotAuthenticationDefaults.AuthorizationEndpoint;
         TokenEndpoint = HubSpotAuthenticationDefaults.TokenEndpoint;
-        CallbackPath = HubSpotAuthenticationDefaults.CallbackPath;
         UserInformationEndpoint = HubSpotAuthenticationDefaults.UserInformationEndpointFormat;
 
         ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "user");
