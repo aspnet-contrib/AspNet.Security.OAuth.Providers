@@ -39,7 +39,7 @@ public static class HubSpotAuthenticationDefaults
     /// <summary>
     /// Default value for <see cref="OAuthOptions.TokenEndpoint"/>.
     /// </summary>
-    public static readonly string TokenEndpoint = "	https://api.hubapi.com/oauth/v1/token";
+    public static readonly string TokenEndpoint = "https://api.hubapi.com/oauth/v1/token";
 
     /// <summary>
     /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
