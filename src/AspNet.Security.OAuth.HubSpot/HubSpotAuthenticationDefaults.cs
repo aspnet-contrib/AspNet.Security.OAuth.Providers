@@ -43,11 +43,6 @@ public static class HubSpotAuthenticationDefaults
 
     /// <summary>
     /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
-    /// Get Information for OAuth 2.0 access or refresh token:
-    /// Get the meta data for an access or refresh token.This
-    /// can be used to get the email address of the HubSpot user
-    /// that the token was created for, as well as the Hub ID that the token is associated with.
-    /// https://developers.hubspot.com/docs/api/oauth/tokens
     /// </summary>
     public static readonly string UserInformationEndpointFormat = "https://api.hubapi.com/oauth/v1/access-tokens/{0}";
 }
