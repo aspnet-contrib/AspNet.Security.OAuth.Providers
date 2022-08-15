@@ -9,6 +9,7 @@ using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Text.Json;
+using System.Web;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -41,7 +42,14 @@ public partial class HubSpotAuthenticationHandler : OAuthHandler<HubSpotAuthenti
     private async Task<JsonDocument> GetUserProfileAsync(
         [NotNull] OAuthTokenResponse tokens)
     {
-        using var request = new HttpRequestMessage(HttpMethod.Get, string.Format(CultureInfo.InvariantCulture, Options.UserInformationEndpoint, tokens.AccessToken));
+        // Get the meta data for an access or refresh token.This
+        // can be used to get the email address of the HubSpot user
+        // that the token was created for, as well as the Hub ID that the token is associated with.
+        // https://developers.hubspot.com/docs/api/oauth/tokens
+        var accessToken = HttpUtility.UrlEncode(tokens.AccessToken);
+        var url = string.Format(CultureInfo.InvariantCulture, Options.UserInformationEndpoint, accessToken);
+
+        using var request = new HttpRequestMessage(HttpMethod.Get, url);
         request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         using var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
         if (!response.IsSuccessStatusCode)
