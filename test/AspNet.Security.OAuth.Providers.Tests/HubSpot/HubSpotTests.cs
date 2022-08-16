@@ -4,8 +4,6 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using static AspNet.Security.OAuth.HubSpot.HubSpotAuthenticationConstants;
-
 namespace AspNet.Security.OAuth.HubSpot;
 
 public class HubSpotTests : OAuthTests<HubSpotAuthenticationOptions>
@@ -25,11 +23,10 @@ public class HubSpotTests : OAuthTests<HubSpotAuthenticationOptions>
     [Theory]
     [InlineData(ClaimTypes.NameIdentifier, "dummy@dummymail.com")]
     [InlineData(ClaimTypes.Email, "dummy@dummymail.com")]
-    [InlineData(Claims.HubId, "13371337")]
-    [InlineData(Claims.UserId, "123123")]
-    [InlineData(Claims.AppId, "696969")]
-    [InlineData(Claims.HubDomain, "dev-13371337.com")]
-
+    [InlineData("urn:HubSpot:hub_id", "13371337")]
+    [InlineData("urn:HubSpot:user_id", "123123")]
+    [InlineData("urn:HubSpot:app_id", "696969")]
+    [InlineData("urn:HubSpot:hub_domain", "dev-13371337.com")]
     public async Task Can_Sign_In_Using_HubSpot(string claimType, string claimValue)
     {
         // Arrange
