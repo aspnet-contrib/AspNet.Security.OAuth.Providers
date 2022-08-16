@@ -6,14 +6,10 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <DisablePackageBaselineValidation>true</DisablePackageBaselineValidation>
-  </PropertyGroup>
-
-  <PropertyGroup>
     <Description>ASP.NET Core security middleware enabling HubSpot authentication.</Description>
     <Authors>Shayaan Ahmed Farooqi</Authors>
     <PackageTags>hubspot;aspnetcore;authentication;oauth;security</PackageTags>
-  </PropertyGroup>  
+  </PropertyGroup>
 
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
