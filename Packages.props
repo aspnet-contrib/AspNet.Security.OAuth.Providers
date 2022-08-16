@@ -1,16 +1,16 @@
 <Project>
 
   <ItemGroup>
-    <PackageReference Update="JetBrains.Annotations" Version="2021.3.0" />
-    <PackageReference Update="JustEat.HttpClientInterception" Version="3.1.1" />
-    <PackageReference Update="MartinCostello.Logging.XUnit" Version="0.2.0" />
+    <PackageReference Update="JetBrains.Annotations" Version="2022.1.0" />
+    <PackageReference Update="JustEat.HttpClientInterception" Version="3.1.2" />
+    <PackageReference Update="MartinCostello.Logging.XUnit" Version="0.3.0" />
     <PackageReference Update="Microsoft.AspNetCore.Authentication.Google" Version="7.0.0-preview.7.22376.6" />
     <PackageReference Update="Microsoft.AspNetCore.Mvc.Testing" Version="7.0.0-preview.7.22376.6" />
     <PackageReference Update="Microsoft.AspNetCore.TestHost" Version="7.0.0-preview.7.22376.6" />
     <PackageReference Update="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="6.16.0" />
-    <PackageReference Update="Moq" Version="4.16.1" />
+    <PackageReference Update="Moq" Version="4.18.2" />
     <PackageReference Update="Shouldly" Version="4.0.3" />
-    <PackageReference Update="StyleCop.Analyzers" Version="1.2.0-beta.406" />
+    <PackageReference Update="StyleCop.Analyzers" Version="1.2.0-beta.435" />
   </ItemGroup>
 
 </Project>
