@@ -1,10 +1,10 @@
 {
   "sdk": {
-    "version": "6.0.102"
+    "version": "6.0.400"
   },
-  
+
   "tools": {
-    "dotnet": "6.0.102"
+    "dotnet": "6.0.400"
   },
 
   "msbuild-sdks": {
