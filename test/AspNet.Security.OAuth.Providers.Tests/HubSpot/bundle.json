@@ -1,0 +1,38 @@
+{
+  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
+  "items": [
+    {
+      "uri": "https://api.hubapi.com/oauth/v1/token",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "secret-access-token",
+        "token_type": "bearer",
+        "refresh_token": "secret-refresh-token",
+        "expires_in": "1800"
+      }
+    },
+    {
+      "uri": "https://api.hubapi.com/oauth/v1/access-tokens/secret-access-token",
+      "contentFormat": "json",
+      "contentJson": {
+        "token": "secret-access-token",
+        "user": "dummy@dummymail.com",
+        "hub_domain": "dev-13371337.com",
+        "scopes": [
+        ],
+        "scope_to_scope_group_pks": [
+        ],
+        "trial_scopes": [
+        ],
+        "trial_scope_to_scope_group_pks": [
+        ],
+        "hub_id": 13371337,
+        "app_id": 696969,
+        "expires_in": 619,
+        "user_id": 123123,
+        "token_type": "access"
+      }
+    }
+  ]
+}
