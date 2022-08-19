@@ -1,0 +1,38 @@
+{
+  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
+  "items": [
+    {
+      "comment": "https://marketingapi.snapchat.com/docs/#generate-an-access-token",
+      "uri": "https://accounts.snapchat.com/login/oauth2/access_token",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "eyJpc3MiOiJodHRwczpcL1vwYWNbj3VudHMuc25hcGNoYXQuY29tXC9hY2NvdW50c1wvb2F1dGgyXC90b2tlbiIsInR5cCI6IkpXVCIsImVuYyI6IkExMjhDQkMtSFMyNTYiLCJhbGciOiJkaXIiLCJraWQiOiJhY2Nlc3MtdG9rZW4tYTEyOGNiYy1oczI1Ni4wIn0..kC0b5KF1kSnEkSAIkRtprg.7hIEPoPZbAQeLUg_98Mendu_gc3Dydsv47cmzErhQXh5B03NU0RzQJ6UsYlKLHlYCGyTfG94gNtA3S_R-5mAwZ4yvEQF7bk2wHH38nE9tujpYIFkwOitKBU8O5k_yz4-fUCqtKN_RFOIB04DPHBQZlWaNY_LPsnlkv2bOHuRLtP0JfCVejKEbHmzZIJkoeYG00wlPdYwtqNLgx-fgyT6AOsE1r0_nPmMUCWisfrchWMytO0LLvRAr-jPrv4WpxJ6mZ8--b_ZTD3tHOMg356nLZxSR5WeYi53LQLBphAKdQTlq90ru237wvJ5ui1f_yr5FtigTvNaRMc1ItKAy6zqjKlzUKKSqjpc4_lvyKFAKyRJUufZZZuPBRwN3i2t4ZQ95r28jatwvX_gPYd_0mbCCjI3LUyEhz7DaXLRqKvaakiMwQ2nZ_fqOq_NSW1k3NU1YzdN3sC2Zt1KCkIMRBoQ4BNm3URZ06agLd3aww6pOYs549MwHgT4FCCG_V3ph64CunkJASYdmLglacba881Ch8vLmO7RESFjOdmoC2mN6jg-inX3DvqpAztOjuWgBb0Valc9Bv88mwNYeTMofhICMNMoWS0Mset4r-8hADYwmAuVI5KWoswL3jwp6JNDL8e-adZWpYAQEN49xWGa7LcBxfhGN3plJWF9yA3zY47ELrkJOLXbcxicXqciKBplAa0L-t5hMYZI7PA7GofaWWY2MO_k5eQ6KLEGsPAIYaer0Zc.ExvLbrwcli1b1ck2WddwZA",
+        "scope": "snapchat-marketing-api",
+        "state": "wmKkg0TWgppW8PTBZ20sldUmF7hwvU"
+      }
+    },
+    {
+      "comment": "https://marketingapi.snapchat.com/docs/#user",
+      "uri": "https://adsapi.snapchat.com/v1/me",
+      "contentFormat": "json",
+      "contentJson": {
+        "ok": true,
+        "me": {
+          "id": "id",
+          "updated_at": "2022-08-11T09:09:03.273Z",
+          "created_at": "2022-08-11T08:49:40.839Z",
+          "created_by_app_id": "id",
+          "created_by_user": "id",
+          "last_updated_by_app_id": "id",
+          "last_updated_by_user": "id",
+          "email": "test.testing@testmail.com",
+          "organization_id": "id",
+          "display_name": "Test Testing",
+          "snapchat_username": "ttesting",
+          "member_status": "MEMBER"
+        }
+      }
+    }
+  ]
+}
