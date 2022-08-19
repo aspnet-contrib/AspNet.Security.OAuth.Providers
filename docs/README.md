@@ -63,6 +63,7 @@ covered by the section above.
 | QQ | _Optional_ | [Documentation](qq.md "QQ provider documentation") |
 | Reddit | _Optional_ | [Documentation](reddit.md "Reddit provider documentation") |
 | Salesforce | _Optional_ | [Documentation](salesforce.md "Salesforce provider documentation") |
+| Snapchat | _Optional_ | [Documentation](snapchat.md "Snapchat provider documentation") |
 | StackExchange | _Optional_ | [Documentation](stackexchange.md "StackExchange provider documentation") |
 | SuperOffice | **Required** | [Documentation](superoffice.md "SuperOffice provider documentation") |
 | Trakt | _Optional_ | [Documentation](trakt.md "Trakt provider documentation") |
