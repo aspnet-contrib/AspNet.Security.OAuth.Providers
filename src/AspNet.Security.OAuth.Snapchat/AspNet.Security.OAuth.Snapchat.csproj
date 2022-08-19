@@ -1,9 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>$(DefaultNetCoreTargetFramework)</TargetFrameworks>
     <PackageValidationBaselineVersion>6.0.8</PackageValidationBaselineVersion>
-    <DisablePackageBaselineValidation>true</DisablePackageBaselineValidation>
+    <TargetFrameworks>$(DefaultNetCoreTargetFramework)</TargetFrameworks>
   </PropertyGroup>
 
   <PropertyGroup>
