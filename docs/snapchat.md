@@ -6,11 +6,11 @@
 public void ConfigureServices(IServiceCollection services)
 {
 	services.AddAuthentication(options => /* Auth configuration */)
-			.AddSnapchat(options =>
-			{
-				options.ClientId = "my-client-id";
-				options.ClientSecret = "my-client-secret";
-			});
+	.AddSnapchat(options =>
+	{
+		options.ClientId = "my-client-id";
+		options.ClientSecret = "my-client-secret";
+	});
 }
 		
 public void Configure(IApplicationBuilder app)
