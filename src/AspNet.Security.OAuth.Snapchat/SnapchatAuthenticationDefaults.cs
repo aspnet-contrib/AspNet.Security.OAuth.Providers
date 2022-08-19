@@ -7,7 +7,7 @@
 namespace AspNet.Security.OAuth.Snapchat;
 
 /// <summary>
-/// Default values used by the Slack authentication middleware.
+/// Default values used by the Snapchat authentication middleware.
 /// </summary>
 public static class SnapchatAuthenticationDefaults
 {
@@ -29,7 +29,7 @@ public static class SnapchatAuthenticationDefaults
     /// <summary>
     /// Default value for <see cref="RemoteAuthenticationOptions.CallbackPath"/>.
     /// </summary>
-    public static readonly string CallbackPath = "/snapchat_ads";
+    public static readonly string CallbackPath = "/signin-snapchat";
 
     /// <summary>
     /// Default value for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
@@ -43,7 +43,7 @@ public static class SnapchatAuthenticationDefaults
 
     /// <summary>
     /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
-    /// For more info about this endpoint, see https://marketingapi.snapchat.com/docs/#user.
+    /// For more info about this endpoint, see <c>https://marketingapi.snapchat.com/docs/#user</c>.
     /// </summary>
     public static readonly string UserInformationEndpoint = "https://adsapi.snapchat.com/v1/me";
 }

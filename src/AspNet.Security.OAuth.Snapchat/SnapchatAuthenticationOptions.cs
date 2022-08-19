@@ -33,8 +33,4 @@ public class SnapchatAuthenticationOptions : OAuthOptions
         ClaimActions.MapJsonSubKey(Claims.TeamId, "me", "organization_id");
         ClaimActions.MapJsonSubKey(Claims.MemberStatus, "me", "member_status");
     }
-
-    public string ScopeValue { get; set; } = string.Empty;
-
-    public string State { get; set; } = string.Empty;
 }

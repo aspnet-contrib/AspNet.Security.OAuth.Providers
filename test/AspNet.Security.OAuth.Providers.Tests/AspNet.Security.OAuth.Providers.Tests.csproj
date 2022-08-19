@@ -47,8 +47,4 @@
     </AssemblyAttribute>
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\AspNet.Security.OAuth.Snapchat\AspNet.Security.OAuth.Snapchat.csproj" />
-  </ItemGroup>
-
 </Project>
