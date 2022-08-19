@@ -5,18 +5,18 @@
 ```csharp
 public void ConfigureServices(IServiceCollection services)
 {
-	services.AddAuthentication(options => /* Auth configuration */)
-	.AddSnapchat(options =>
-	{
-		options.ClientId = "my-client-id";
-		options.ClientSecret = "my-client-secret";
-	});
+    services.AddAuthentication(options => /* Auth configuration */)
+            .AddSnapchat(options =>
+            {
+                options.ClientId = "my-client-id";
+                options.ClientSecret = "my-client-secret";
+            });
 }
 		
 public void Configure(IApplicationBuilder app)
 {	
-	app.UseAuthentication();
-	app.UseAuthorization();
+    app.UseAuthentication();
+    app.UseAuthorization();
 }
 ```
 
