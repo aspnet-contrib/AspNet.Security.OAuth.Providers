@@ -28,7 +28,7 @@ public class SnapchatTests : OAuthTests<SnapchatAuthenticationOptions>
     [InlineData(ClaimTypes.Name, "Test Testing")]
     [InlineData(ClaimTypes.Email, "test.testing@testmail.com")]
     [InlineData("member_status", "MEMBER")]
-    [InlineData("organization_id", "id2")]
+    [InlineData("organization_id", "id")]
     [InlineData("id", "id")]
     public async Task Can_Sign_In_Using_Snapchat(string claimType, string claimValue)
     {

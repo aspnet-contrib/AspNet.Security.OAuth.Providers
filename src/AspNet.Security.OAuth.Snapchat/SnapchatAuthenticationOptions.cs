@@ -32,5 +32,6 @@ public class SnapchatAuthenticationOptions : OAuthOptions
         ClaimActions.MapJsonSubKey(Claims.UserId, "me", "id");
         ClaimActions.MapJsonSubKey(Claims.TeamId, "me", "organization_id");
         ClaimActions.MapJsonSubKey(Claims.MemberStatus, "me", "member_status");
+        Scope.Add("snapchat-marketing-api");
     }
 }
