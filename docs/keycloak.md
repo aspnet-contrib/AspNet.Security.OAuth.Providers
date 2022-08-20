@@ -12,6 +12,7 @@ services.AddAuthentication(options => /* Auth configuration */)
             options.ClientSecret = "my-client-secret";
             options.Domain = "mydomain.local";
             options.Realm = "myrealm";
+            options.Version = new Version(19, 0);
         });
 ```
 
@@ -25,6 +26,7 @@ services.AddAuthentication(options => /* Auth configuration */)
             options.ClientId = "my-client-id";
             options.Domain = "mydomain.local";
             options.Realm = "myrealm";
+            options.Version = new Version(19, 0);
         });
 ```
 
@@ -38,6 +40,7 @@ services.AddAuthentication(options => /* Auth configuration */)
             options.ClientId = "my-client-id";
             options.ClientSecret = "my-client-secret";
             options.Realm = "myrealm";
+            options.Version = new Version(19, 0);
         });
 ```
 
@@ -56,3 +59,4 @@ Only one of either `BaseAddress` or `Domain` is required to be set. If both are 
 | Property Name | Property Type                      | Description                              | Default Value                                   |
 | :------------ | :--------------------------------- | :--------------------------------------- | :---------------------------------------------- |
 | `AccessType`  | `KeycloakAuthenticationAccessType` | The Keycloak client's access token type. | `KeycloakAuthenticationAccessType.Confidential` |
+| `Version`     | `Version?`                         | The Keycloak server version.             | `null`                                          |

@@ -12,6 +12,8 @@ namespace AspNet.Security.OAuth.Keycloak;
 /// </summary>
 public class KeycloakPostConfigureOptions : IPostConfigureOptions<KeycloakAuthenticationOptions>
 {
+    private static readonly Version NoAuthPrefixVersion = new(18, 0);
+
     public void PostConfigure(string? name, [NotNull] KeycloakAuthenticationOptions options)
     {
         if ((!string.IsNullOrWhiteSpace(options.Domain) || options.BaseAddress is not null) &&
@@ -36,7 +38,15 @@ public class KeycloakPostConfigureOptions : IPostConfigureOptions<KeycloakAuthen
             builder.Scheme = Uri.UriSchemeHttps;
         }
 
-        builder.Path = new PathString("/auth/realms")
+        var pathBase = new PathString("/");
+
+        if (options.Version is null || options.Version < NoAuthPrefixVersion)
+        {
+            pathBase = pathBase.Add("/auth");
+        }
+
+        builder.Path = pathBase
+            .Add("/realms")
             .Add("/" + options.Realm!.Trim('/'))
             .Add(resource);
 

@@ -52,19 +52,39 @@ public class KeycloakTests : OAuthTests<KeycloakAuthenticationOptions>
     }
 
     [Theory]
-    [InlineData(ClaimTypes.NameIdentifier, "995c1500-0dca-495e-ba72-2499d370d181")]
-    [InlineData(ClaimTypes.Email, "john@smith.com")]
-    [InlineData(ClaimTypes.GivenName, "John")]
-    [InlineData(ClaimTypes.Role, "admin")]
-    [InlineData(ClaimTypes.Name, "John Smith")]
-    public async Task Can_Sign_In_Using_Keycloak_Domain(string claimType, string claimValue)
+    [InlineData(null, ClaimTypes.NameIdentifier, "995c1500-0dca-495e-ba72-2499d370d181")]
+    [InlineData(null, ClaimTypes.Email, "john@smith.com")]
+    [InlineData(null, ClaimTypes.GivenName, "John")]
+    [InlineData(null, ClaimTypes.Role, "admin")]
+    [InlineData(null, ClaimTypes.Name, "John Smith")]
+    [InlineData("17.0", ClaimTypes.NameIdentifier, "995c1500-0dca-495e-ba72-2499d370d181")]
+    [InlineData("17.0", ClaimTypes.Email, "john@smith.com")]
+    [InlineData("17.0", ClaimTypes.GivenName, "John")]
+    [InlineData("17.0", ClaimTypes.Role, "admin")]
+    [InlineData("17.0", ClaimTypes.Name, "John Smith")]
+    [InlineData("18.0", ClaimTypes.NameIdentifier, "995c1500-0dca-495e-ba72-2499d370d181")]
+    [InlineData("18.0", ClaimTypes.Email, "john@smith.com")]
+    [InlineData("18.0", ClaimTypes.GivenName, "John")]
+    [InlineData("18.0", ClaimTypes.Role, "admin")]
+    [InlineData("18.0", ClaimTypes.Name, "John Smith")]
+    [InlineData("19.0", ClaimTypes.NameIdentifier, "995c1500-0dca-495e-ba72-2499d370d181")]
+    [InlineData("19.0", ClaimTypes.Email, "john@smith.com")]
+    [InlineData("19.0", ClaimTypes.GivenName, "John")]
+    [InlineData("19.0", ClaimTypes.Role, "admin")]
+    [InlineData("19.0", ClaimTypes.Name, "John Smith")]
+    public async Task Can_Sign_In_Using_Keycloak_Domain(string? version, string claimType, string claimValue)
     {
         // Arrange
-        static void ConfigureServices(IServiceCollection services)
+        void ConfigureServices(IServiceCollection services)
         {
             services.PostConfigureAll<KeycloakAuthenticationOptions>((options) =>
             {
                 options.Domain = "keycloak.local";
+
+                if (version is not null)
+                {
+                    options.Version = Version.Parse(version);
+                }
             });
         }
 
