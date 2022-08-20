@@ -54,6 +54,11 @@ public class KeycloakAuthenticationOptions : OAuthOptions
     /// </summary>
     public string? Realm { get; set; }
 
+    /// <summary>
+    /// Gets or sets the version of Keycloak being used.
+    /// </summary>
+    public Version? Version { get; set; }
+
     /// <inheritdoc />
     public override void Validate()
     {
