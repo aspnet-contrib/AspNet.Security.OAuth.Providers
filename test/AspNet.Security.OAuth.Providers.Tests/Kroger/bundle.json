@@ -17,7 +17,19 @@
       "uri": "https://api.kroger.com/v1/identity/profile",
       "contentFormat": "json",
       "contentJson": {
-        "id": "53990804-cfd1-43f3-8256-bdc9817a4fd0"
+        "data": {
+          "id": "53990804-cfd1-43f3-8256-bdc9817a4fd0"
+        },
+        "meta": {
+          "pagination": {
+            "total": 0,
+            "start": 0,
+            "limit": 0
+          },
+          "warnings": [
+            "string"
+          ]
+        }
       }
     }
   ]

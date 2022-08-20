@@ -27,6 +27,6 @@ public class KrogerAuthenticationOptions : OAuthOptions
         Scope.Add("cart.basic:write");
         Scope.Add("product.compact");
 
-        ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
+        ClaimActions.MapJsonSubKey(ClaimTypes.NameIdentifier, "data", "id");
     }
 }
