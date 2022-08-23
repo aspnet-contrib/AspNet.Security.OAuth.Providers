@@ -24,8 +24,6 @@ public class KrogerAuthenticationOptions : OAuthOptions
         UserInformationEndpoint = KrogerAuthenticationDefaults.UserInformationEndpoint;
 
         Scope.Add("profile.compact");
-        Scope.Add("cart.basic:write");
-        Scope.Add("product.compact");
 
         ClaimActions.MapJsonSubKey(ClaimTypes.NameIdentifier, "data", "id");
     }
