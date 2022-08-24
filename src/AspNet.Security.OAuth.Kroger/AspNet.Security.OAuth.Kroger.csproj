@@ -1,11 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <DisablePackageBaselineValidation>true</DisablePackageBaselineValidation>
     <PackageValidationBaselineVersion>6.0.9</PackageValidationBaselineVersion>
     <TargetFrameworks>$(DefaultNetCoreTargetFramework)</TargetFrameworks>
   </PropertyGroup>
-  
+
   <PropertyGroup>
     <Description>ASP.NET Core security middleware enabling Kroger authentication.</Description>
     <Authors>Luke Moore</Authors>
