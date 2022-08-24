@@ -283,6 +283,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.HubSp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.Snapchat", "src\AspNet.Security.OAuth.Snapchat\AspNet.Security.OAuth.Snapchat.csproj", "{ECD22287-9B9F-489A-84A7-E66D65A39D73}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.Feishu", "src\AspNet.Security.OAuth.Feishu\AspNet.Security.OAuth.Feishu.csproj", "{B8F9B052-84BF-436C-B22B-CEBD5EB1F8E3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.Kroger", "src\AspNet.Security.OAuth.Kroger\AspNet.Security.OAuth.Kroger.csproj", "{8C7A98A6-5F61-492B-980D-0A9F5F9F5C73}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -645,6 +649,14 @@ Global
 		{ECD22287-9B9F-489A-84A7-E66D65A39D73}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ECD22287-9B9F-489A-84A7-E66D65A39D73}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ECD22287-9B9F-489A-84A7-E66D65A39D73}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B8F9B052-84BF-436C-B22B-CEBD5EB1F8E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8F9B052-84BF-436C-B22B-CEBD5EB1F8E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8F9B052-84BF-436C-B22B-CEBD5EB1F8E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8F9B052-84BF-436C-B22B-CEBD5EB1F8E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C7A98A6-5F61-492B-980D-0A9F5F9F5C73}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C7A98A6-5F61-492B-980D-0A9F5F9F5C73}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C7A98A6-5F61-492B-980D-0A9F5F9F5C73}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C7A98A6-5F61-492B-980D-0A9F5F9F5C73}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -745,6 +757,8 @@ Global
 		{289A91E9-81A9-422D-9CCD-12819081A29A} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 		{23E576EB-6514-4617-8F04-FE7D5540136D} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 		{ECD22287-9B9F-489A-84A7-E66D65A39D73} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
+		{B8F9B052-84BF-436C-B22B-CEBD5EB1F8E3} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
+		{8C7A98A6-5F61-492B-980D-0A9F5F9F5C73} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C7B54DE2-6407-4802-AD9C-CE54BF414C8C}
