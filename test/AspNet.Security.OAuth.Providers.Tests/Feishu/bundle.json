@@ -1,0 +1,39 @@
+{
+  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
+  "items": [
+    {
+      "comment": "https://open.feishu.cn/document/common-capabilities/sso/api/get-access_token",
+      "uri": "https://passport.feishu.cn/suite/passport/oauth/token",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+          "access_token": "secret-access-token",
+          "token_type": "Bearer",
+          "expires_in": 3600,
+          "refresh_token": "secret-refresh-token",
+          "refresh_expires_in": 864000
+      }
+    },
+    {
+      "comment": "https://open.feishu.cn/document/common-capabilities/sso/api/get-user-info",
+      "uri": "https://passport.feishu.cn/suite/passport/oauth/userinfo",
+      "contentFormat": "json",
+      "contentJson": {
+          "sub": "ou_caecc734c2e3328a62489fe0648c4b98779515d3",
+          "name": "test-name",
+          "picture": "https://www.feishu.cn/avatar",
+          "open_id": "test-open-id",
+          "union_id": "test-union-id",
+          "en_name": "Lilei",
+          "tenant_key": "736588c92lxf175d",
+          "avatar_url": "https://www.feishu.cn/avatar/icon",
+          "avatar_thumb": "https://www.feishu.cn/avatar/icon_thumb",
+          "avatar_middle": "https://www.feishu.cn/avatar/icon_middle",
+          "avatar_big": "https://www.feishu.cn/avatar/icon_big",
+          "email": "zhangsan@feishu.cn",
+          "user_id": "5d9bdxxx",
+          "mobile": "+86130xxxx0000"
+      }
+    }
+  ]
+}
