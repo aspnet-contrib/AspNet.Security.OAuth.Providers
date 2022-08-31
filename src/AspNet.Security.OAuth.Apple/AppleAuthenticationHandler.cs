@@ -342,7 +342,7 @@ public partial class AppleAuthenticationHandler : OAuthHandler<AppleAuthenticati
             properties.StoreTokens(authTokens);
         }
 
-        if (parameters.TryGetValue("user", out var userJson))
+        if (!Options.IgnoreUserParameterInCallback && parameters.TryGetValue("user", out var userJson))
         {
             using var user = JsonDocument.Parse(userJson);
             var userClaims = ExtractClaimsFromUser(user.RootElement);
