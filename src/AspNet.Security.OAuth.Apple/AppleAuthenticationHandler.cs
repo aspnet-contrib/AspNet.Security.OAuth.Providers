@@ -172,26 +172,26 @@ public partial class AppleAuthenticationHandler : OAuthHandler<AppleAuthenticati
     /// <inheritdoc />
     protected override async Task<HandleRequestResult> HandleRemoteAuthenticateAsync()
     {
-        bool trustUserResponse;
+        bool trustUserParameter;
         IEnumerable<KeyValuePair<string, StringValues>> source;
 
         // If form_post was used, then read the parameters from the form rather than the query string
         if (string.Equals(Request.Method, HttpMethod.Post.Method, StringComparison.OrdinalIgnoreCase))
         {
-            trustUserResponse = true;
+            trustUserParameter = true;
             source = Request.Form;
         }
         else
         {
             // Do not trust the user query string parameter to
             // prevent an elevation of privilege vulnerability.
-            trustUserResponse = false;
+            trustUserParameter = false;
             source = Request.Query;
         }
 
         var parameters = new Dictionary<string, StringValues>(source);
 
-        return await HandleRemoteAuthenticateAsync(parameters, trustUserResponse);
+        return await HandleRemoteAuthenticateAsync(parameters, trustUserParameter);
     }
 
     private async Task<HandleRequestResult> HandleRemoteAuthenticateAsync(
