@@ -133,40 +133,24 @@ public partial class AppleAuthenticationHandler : OAuthHandler<AppleAuthenticati
         {
             var securityToken = Options.SecurityTokenHandler.ReadJsonWebToken(token);
 
-            return new List<Claim>(securityToken.Claims)
+            var claims = new List<Claim>(securityToken.Claims)
             {
                 new Claim(ClaimTypes.NameIdentifier, securityToken.Subject, ClaimValueTypes.String, ClaimsIssuer),
             };
+
+            var emailClaim = claims.Find((p) => string.Equals(p.Type, "email", StringComparison.Ordinal));
+
+            if (emailClaim is not null)
+            {
+                claims.Add(new Claim(ClaimTypes.Email, emailClaim.Value ?? string.Empty, ClaimValueTypes.String, ClaimsIssuer));
+            }
+
+            return claims;
         }
         catch (Exception ex)
         {
             throw new InvalidOperationException("Failed to parse JWT for claims from Apple ID token.", ex);
         }
-    }
-
-    /// <summary>
-    /// Extracts the claims from the user received from the authorization endpoint.
-    /// </summary>
-    /// <param name="user">The user object to extract the claims from.</param>
-    /// <returns>
-    /// An <see cref="IEnumerable{Claim}"/> containing the claims extracted from the user information.
-    /// </returns>
-    protected virtual IEnumerable<Claim> ExtractClaimsFromUser([NotNull] JsonElement user)
-    {
-        var claims = new List<Claim>();
-
-        if (user.TryGetProperty("name", out var name))
-        {
-            claims.Add(new Claim(ClaimTypes.GivenName, name.GetString("firstName") ?? string.Empty, ClaimValueTypes.String, ClaimsIssuer));
-            claims.Add(new Claim(ClaimTypes.Surname, name.GetString("lastName") ?? string.Empty, ClaimValueTypes.String, ClaimsIssuer));
-        }
-
-        if (user.TryGetProperty("email", out var email))
-        {
-            claims.Add(new Claim(ClaimTypes.Email, email.GetString() ?? string.Empty, ClaimValueTypes.String, ClaimsIssuer));
-        }
-
-        return claims;
     }
 
     /// <inheritdoc />
@@ -340,17 +324,6 @@ public partial class AppleAuthenticationHandler : OAuthHandler<AppleAuthenticati
             }
 
             properties.StoreTokens(authTokens);
-        }
-
-        if (parameters.TryGetValue("user", out var userJson))
-        {
-            using var user = JsonDocument.Parse(userJson!);
-            var userClaims = ExtractClaimsFromUser(user.RootElement);
-
-            foreach (var claim in userClaims)
-            {
-                identity.AddClaim(claim);
-            }
         }
 
         var ticket = await CreateTicketAsync(identity, properties, tokens);

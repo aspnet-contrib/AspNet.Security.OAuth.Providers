@@ -97,6 +97,10 @@ We would love it if you could help contributing to this repository.
 * [Volodymyr Baydalka](https://github.com/zVolodymyr)
 * [Logan Dam](https://github.com/biltongza)
 
+## Security policy
+
+Please see [SECURITY.md](./.github/SECURITY.md) for information about reporting security issues and bugs.
+
 ## Support
 
 **Need help or wanna share your thoughts?** Don't hesitate to join us on Gitter or ask your question on StackOverflow:
