@@ -133,10 +133,19 @@ public partial class AppleAuthenticationHandler : OAuthHandler<AppleAuthenticati
         {
             var securityToken = Options.SecurityTokenHandler.ReadJsonWebToken(token);
 
-            return new List<Claim>(securityToken.Claims)
+            var claims = new List<Claim>(securityToken.Claims)
             {
                 new Claim(ClaimTypes.NameIdentifier, securityToken.Subject, ClaimValueTypes.String, ClaimsIssuer),
             };
+
+            var emailClaim = claims.Find((p) => string.Equals(p.Type, "email", StringComparison.Ordinal));
+
+            if (emailClaim is not null)
+            {
+                claims.Add(new Claim(ClaimTypes.Email, emailClaim.Value ?? string.Empty, ClaimValueTypes.String, ClaimsIssuer));
+            }
+
+            return claims;
         }
         catch (Exception ex)
         {
@@ -159,11 +168,6 @@ public partial class AppleAuthenticationHandler : OAuthHandler<AppleAuthenticati
         {
             claims.Add(new Claim(ClaimTypes.GivenName, name.GetString("firstName") ?? string.Empty, ClaimValueTypes.String, ClaimsIssuer));
             claims.Add(new Claim(ClaimTypes.Surname, name.GetString("lastName") ?? string.Empty, ClaimValueTypes.String, ClaimsIssuer));
-        }
-
-        if (user.TryGetProperty("email", out var email))
-        {
-            claims.Add(new Claim(ClaimTypes.Email, email.GetString() ?? string.Empty, ClaimValueTypes.String, ClaimsIssuer));
         }
 
         return claims;
