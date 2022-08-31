@@ -146,10 +146,19 @@ namespace AspNet.Security.OAuth.Apple
             {
                 var securityToken = _tokenHandler.ReadJwtToken(token);
 
-                return new List<Claim>(securityToken.Claims)
+                var claims = new List<Claim>(securityToken.Claims)
                 {
                     new Claim(ClaimTypes.NameIdentifier, securityToken.Subject, ClaimValueTypes.String, ClaimsIssuer),
                 };
+
+                var emailClaim = claims.Find((p) => string.Equals(p.Type, "email", StringComparison.Ordinal));
+
+                if (emailClaim != null)
+                {
+                    claims.Add(new Claim(ClaimTypes.Email, emailClaim.Value ?? string.Empty, ClaimValueTypes.String, ClaimsIssuer));
+                }
+
+                return claims;
             }
             catch (Exception ex)
             {
@@ -164,6 +173,7 @@ namespace AspNet.Security.OAuth.Apple
         /// <returns>
         /// An <see cref="IEnumerable{Claim}"/> containing the claims extracted from the user information.
         /// </returns>
+        [Obsolete("This method is obsolete and will be removed in a future version.")]
         protected virtual IEnumerable<Claim> ExtractClaimsFromUser([NotNull] JsonElement user)
         {
             var claims = new List<Claim>();
@@ -346,17 +356,6 @@ namespace AspNet.Security.OAuth.Apple
                 }
 
                 properties.StoreTokens(authTokens);
-            }
-
-            if (parameters.TryGetValue("user", out var userJson))
-            {
-                using var user = JsonDocument.Parse(userJson);
-                var userClaims = ExtractClaimsFromUser(user.RootElement);
-
-                foreach (var claim in userClaims)
-                {
-                    identity.AddClaim(claim);
-                }
             }
 
             var ticket = await CreateTicketAsync(identity, properties, tokens);
