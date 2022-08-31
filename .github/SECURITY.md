@@ -8,7 +8,7 @@ The .NET Core and ASP.NET Core support policy, including currently supported ver
 
 ## Reporting a Vulnerability
 
-Security issues and bugs should be reported privately by emailing CHANGE_ME.
+Security issues and bugs should be reported privately by emailing [contact@kevinchalet.com](mailto:contact@kevinchalet.com).
 
 You should receive a response within 48 hours. If for some reason you do not, please follow up via email to ensure we received your original message.
 
