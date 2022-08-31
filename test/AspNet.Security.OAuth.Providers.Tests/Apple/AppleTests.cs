@@ -4,6 +4,9 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Cryptography;
+using System.Text.Json;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.IdentityModel.Logging;
@@ -463,6 +466,91 @@ public class AppleTests : OAuthTests<AppleAuthenticationOptions>
             query.ShouldNotContainKey(OAuthConstants.CodeChallengeKey);
             query.ShouldNotContainKey(OAuthConstants.CodeChallengeMethodKey);
         }
+    }
+
+    [Fact]
+    public void Regenerate_Test_Jwts()
+    {
+        using var rsa = RSA.Create();
+        var parameters = rsa.ExportParameters(true);
+
+        var webKey = new
+        {
+            kty = JsonWebAlgorithmsKeyTypes.RSA,
+            kid = "AIDOPK1",
+            use = "sig",
+            alg = SecurityAlgorithms.RsaSha256,
+            n = Base64UrlEncoder.Encode(parameters.Modulus),
+            e = Base64UrlEncoder.Encode(parameters.Exponent),
+        };
+
+        var signingCredentials = new SigningCredentials(new RsaSecurityKey(rsa), SecurityAlgorithms.RsaSha256)
+        {
+            CryptoProviderFactory = new CryptoProviderFactory { CacheSignatureProviders = false }
+        };
+
+        var audience = "com.martincostello.signinwithapple.test.client";
+        var issuer = "https://appleid.apple.com";
+        var expires = DateTimeOffset.FromUnixTimeSeconds(1587212159).UtcDateTime;
+
+        var iat = new Claim(JwtRegisteredClaimNames.Iat, "1587211559");
+        var sub = new Claim(JwtRegisteredClaimNames.Sub, "001883.fcc77ba97500402389df96821ad9c790.1517");
+        var atHash = new Claim(JwtRegisteredClaimNames.AtHash, "eOy0y7XVexdkzc7uuDZiCQ");
+        var emailVerified = new Claim("email_verified", "true");
+        var authTime = new Claim(JwtRegisteredClaimNames.AuthTime, "1587211556");
+        var nonceSupported = new Claim("nonce_supported", "true");
+
+        var claimsForPublicEmail = new Claim[]
+        {
+            iat,
+            sub,
+            atHash,
+            new Claim(JwtRegisteredClaimNames.Email, "johnny.appleseed@apple.local"),
+            emailVerified,
+            authTime,
+            nonceSupported,
+        };
+
+        var publicEmailToken = new JwtSecurityToken(
+            issuer,
+            audience,
+            claimsForPublicEmail,
+            expires: expires,
+            signingCredentials: signingCredentials);
+
+        var claimsForPrivateEmail = new Claim[]
+        {
+            iat,
+            sub,
+            atHash,
+            new Claim(JwtRegisteredClaimNames.Email, "ussckefuz6@privaterelay.appleid.com"),
+            emailVerified,
+            authTime,
+            nonceSupported,
+            new Claim("is_private_email", "true"),
+        };
+
+        var privateEmailToken = new JwtSecurityToken(
+            issuer,
+            audience,
+            claimsForPrivateEmail,
+            expires: expires,
+            signingCredentials: signingCredentials);
+
+        var publicEmailIdToken = new JwtSecurityTokenHandler().WriteToken(publicEmailToken);
+        var privateEmailIdToken = new JwtSecurityTokenHandler().WriteToken(privateEmailToken);
+        var serializedRsaPublicKey = JsonSerializer.Serialize(webKey, new JsonSerializerOptions() { WriteIndented = true });
+
+        // Copy the values from the test output to bundles.json if you need to regenerate the JWTs to edit the claims
+
+        // For https://appleid.apple.com/auth/keys
+        OutputHelper!.WriteLine($"RSA key: {serializedRsaPublicKey}");
+
+        // For https://appleid.apple.com/auth/token
+        OutputHelper!.WriteLine($"Public email JWT: {publicEmailIdToken}");
+
+        // For https://appleid.apple.local/auth/token/email
+        OutputHelper!.WriteLine($"Private email JWT: {privateEmailIdToken}");
     }
 
     private sealed class CustomAppleAuthenticationEvents : AppleAuthenticationEvents
