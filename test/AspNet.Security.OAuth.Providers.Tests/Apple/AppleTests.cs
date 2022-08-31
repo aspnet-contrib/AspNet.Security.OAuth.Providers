@@ -44,9 +44,7 @@ public class AppleTests : OAuthTests<AppleAuthenticationOptions>
 
     [Theory]
     [InlineData(ClaimTypes.Email, "johnny.appleseed@apple.local")]
-    [InlineData(ClaimTypes.GivenName, "Johnny")]
     [InlineData(ClaimTypes.NameIdentifier, "001883.fcc77ba97500402389df96821ad9c790.1517")]
-    [InlineData(ClaimTypes.Surname, "Appleseed")]
     public async Task Can_Sign_In_Using_Apple_With_Client_Secret(string claimType, string claimValue)
     {
         // Arrange
@@ -71,9 +69,7 @@ public class AppleTests : OAuthTests<AppleAuthenticationOptions>
 
     [Theory]
     [InlineData(ClaimTypes.Email, "johnny.appleseed@apple.local")]
-    [InlineData(ClaimTypes.GivenName, "Johnny")]
     [InlineData(ClaimTypes.NameIdentifier, "001883.fcc77ba97500402389df96821ad9c790.1517")]
-    [InlineData(ClaimTypes.Surname, "Appleseed")]
     public async Task Can_Sign_In_Using_Apple_With_Private_Key(string claimType, string claimValue)
     {
         // Arrange
@@ -146,9 +142,7 @@ public class AppleTests : OAuthTests<AppleAuthenticationOptions>
 
     [Theory]
     [InlineData(ClaimTypes.Email, "johnny.appleseed@apple.local")]
-    [InlineData(ClaimTypes.GivenName, "Johnny")]
     [InlineData(ClaimTypes.NameIdentifier, "001883.fcc77ba97500402389df96821ad9c790.1517")]
-    [InlineData(ClaimTypes.Surname, "Appleseed")]
     public async Task Can_Sign_In_Using_Apple_With_No_Token_Validation(string claimType, string claimValue)
     {
         // Arrange
