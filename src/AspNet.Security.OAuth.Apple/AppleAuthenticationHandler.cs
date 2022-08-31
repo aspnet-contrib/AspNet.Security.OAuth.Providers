@@ -172,25 +172,31 @@ public partial class AppleAuthenticationHandler : OAuthHandler<AppleAuthenticati
     /// <inheritdoc />
     protected override async Task<HandleRequestResult> HandleRemoteAuthenticateAsync()
     {
+        bool trustUserResponse;
         IEnumerable<KeyValuePair<string, StringValues>> source;
 
         // If form_post was used, then read the parameters from the form rather than the query string
         if (string.Equals(Request.Method, HttpMethod.Post.Method, StringComparison.OrdinalIgnoreCase))
         {
+            trustUserResponse = true;
             source = Request.Form;
         }
         else
         {
+            // Do not trust the user query string parameter to
+            // prevent an elevation of privilege vulnerability.
+            trustUserResponse = false;
             source = Request.Query;
         }
 
         var parameters = new Dictionary<string, StringValues>(source);
 
-        return await HandleRemoteAuthenticateAsync(parameters);
+        return await HandleRemoteAuthenticateAsync(parameters, trustUserResponse);
     }
 
     private async Task<HandleRequestResult> HandleRemoteAuthenticateAsync(
-        [NotNull] Dictionary<string, StringValues> parameters)
+        [NotNull] Dictionary<string, StringValues> parameters,
+        bool trustUserParameter)
     {
         // Adapted from https://github.com/aspnet/AspNetCore/blob/66de493473521e173fa15ca557f5f97601cedb23/src/Security/Authentication/OAuth/src/OAuthHandler.cs#L48-L175
         if (!parameters.TryGetValue("state", out var state))
@@ -342,7 +348,9 @@ public partial class AppleAuthenticationHandler : OAuthHandler<AppleAuthenticati
             properties.StoreTokens(authTokens);
         }
 
-        if (parameters.TryGetValue("user", out var userJson))
+        // Do not consume the user parameter in an untrusted context.
+        // See https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers/issues/713.
+        if (trustUserParameter && parameters.TryGetValue("user", out var userJson))
         {
             using var user = JsonDocument.Parse(userJson);
             var userClaims = ExtractClaimsFromUser(user.RootElement);
