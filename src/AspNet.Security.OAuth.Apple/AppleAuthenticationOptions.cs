@@ -95,13 +95,6 @@ public class AppleAuthenticationOptions : OAuthOptions
     public string TeamId { get; set; } = string.Empty;
 
     /// <summary>
-    /// Get or set a value indicating whether to include the user parameter in callback.
-    /// The user parameter containing name and email is in clear text.
-    /// https://developer.apple.com/documentation/sign_in_with_apple/sign_in_with_apple_js/incorporating_sign_in_with_apple_into_other_platforms
-    /// </summary>
-    public bool IgnoreUserParameterInCallback { get; set; }
-
-    /// <summary>
     /// Gets or sets the audience used for tokens.
     /// </summary>
     public string TokenAudience { get; set; } = AppleAuthenticationConstants.Audience;
