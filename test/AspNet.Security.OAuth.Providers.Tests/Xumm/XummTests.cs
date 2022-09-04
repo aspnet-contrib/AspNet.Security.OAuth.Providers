@@ -38,45 +38,4 @@ public class XummTests : OAuthTests<XummAuthenticationOptions>
         // Assert
         AssertClaim(claims, claimType, claimValue);
     }
-
-    [Theory]
-    [InlineData(false)]
-    [InlineData(true)]
-    public async Task BuildChallengeUrl_Generates_Correct_Url(bool usePkce)
-    {
-        // Arrange
-        var options = new XummAuthenticationOptions
-        {
-            UsePkce = usePkce,
-        };
-
-        var redirectUrl = "https://my-site.local/signin-xumm";
-
-        // Act
-        Uri actual = await BuildChallengeUriAsync(
-            options,
-            redirectUrl,
-            (options, loggerFactory, encoder, clock) => new XummAuthenticationHandler(options, loggerFactory, encoder, clock));
-
-        // Assert
-        actual.ShouldNotBeNull();
-        actual.ToString().ShouldStartWith("https://oauth2.xumm.app/auth?");
-
-        var query = QueryHelpers.ParseQuery(actual.Query);
-
-        query.ShouldContainKey("state");
-        query.ShouldContainKeyAndValue("client_id", options.ClientId);
-        query.ShouldContainKeyAndValue("redirect_uri", redirectUrl);
-
-        if (usePkce)
-        {
-            query.ShouldContainKey(OAuthConstants.CodeChallengeKey);
-            query.ShouldContainKey(OAuthConstants.CodeChallengeMethodKey);
-        }
-        else
-        {
-            query.ShouldNotContainKey(OAuthConstants.CodeChallengeKey);
-            query.ShouldNotContainKey(OAuthConstants.CodeChallengeMethodKey);
-        }
-    }
 }
