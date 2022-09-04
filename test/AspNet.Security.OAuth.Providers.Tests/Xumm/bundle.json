@@ -1,0 +1,26 @@
+{
+  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
+  "items": [
+    {
+      "uri": "https://oauth2.xumm.app/token",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "secret-access-token",
+        "token_type": "access",
+        "refresh_token": "secret-refresh-token",
+        "expires_in": "300"
+      }
+    },
+    {
+      "uri": "https://oauth2.xumm.app/userinfo",
+      "contentFormat": "json",
+      "contentJson": {
+        "sub": "my-r-address",
+        "name": "John Smith",
+        "email": "john.smith@xumm.me",
+        "picture": "Avatar"
+      }
+    }
+  ]
+}
