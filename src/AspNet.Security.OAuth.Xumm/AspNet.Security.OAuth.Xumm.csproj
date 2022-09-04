@@ -3,7 +3,6 @@
   <PropertyGroup>
     <TargetFrameworks>$(DefaultNetCoreTargetFramework)</TargetFrameworks>
     <PackageValidationBaselineVersion>6.0.11</PackageValidationBaselineVersion>
-    <DisablePackageBaselineValidation>true</DisablePackageBaselineValidation>
   </PropertyGroup>
 
   <PropertyGroup>
