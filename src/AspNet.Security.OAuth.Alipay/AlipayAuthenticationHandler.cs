@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Primitives;
 
 namespace AspNet.Security.OAuth.Alipay;
 
@@ -32,18 +33,11 @@ public partial class AlipayAuthenticationHandler : OAuthHandler<AlipayAuthentica
     {
     }
 
+    private const string AuthCode = "auth_code";
+
     protected override Task<HandleRequestResult> HandleRemoteAuthenticateAsync()
     {
-        var query = Request.Query;
-        if (query.TryGetValue("auth_code", out var authCode))
-        {
-            // The base `HandleRemoteAuthenticateAsync` requires that `Request.Query` must contain the key called `code`,
-            // which is actually the same as `auth_code` by Alipay's design, but `Request.Query` does not have `Add` operation.
-            // So here is a trick to get the private `Store` dictionary of `QueryCollection`.
-            var queryStore = query.ToDictionary(c => c.Key, c => c.Value, StringComparer.OrdinalIgnoreCase);
-            queryStore["code"] = authCode;
-            Request.QueryString = QueryString.Create(queryStore);
-        }
+        StandardizeRemoteAuthenticateQuery(Request);
 
         return base.HandleRemoteAuthenticateAsync();
     }
@@ -234,6 +228,36 @@ public partial class AlipayAuthenticationHandler : OAuthHandler<AlipayAuthentica
         parameters["state"] = Options.StateDataFormat.Protect(properties);
 
         return QueryHelpers.AddQueryString(Options.AuthorizationEndpoint, parameters);
+    }
+
+    private static void StandardizeRemoteAuthenticateQuery(HttpRequest request)
+    {
+        var query = request.Query;
+
+        if (query.TryGetValue(AuthCode, out var authCode))
+        {
+            // Before: mydomain/signin-alipay?auth_code=xxx&state=xxx&...
+            // After: mydomain/signin-alipay?code=xxx&state=xxx&...
+            var queryParams = new List<KeyValuePair<string, StringValues>>(query.Count)
+            {
+                new("code", authCode)
+            };
+            foreach (var item in query)
+            {
+                switch (item.Key)
+                {
+                    case "code":
+                    case AuthCode: // No need in fact, skip it
+                        break;
+
+                    default:
+                        queryParams.Add(item);
+                        break;
+                }
+            }
+
+            request.QueryString = QueryString.Create(queryParams);
+        }
     }
 
     private static partial class Log
