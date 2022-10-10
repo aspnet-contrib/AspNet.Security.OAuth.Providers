@@ -17,9 +17,12 @@
       "contentFormat": "json",
       "contentJson": {
         "sub": "2039290222",
-        "mobilephone": "(314)000-0000",
+        "phoneNumber": "(314)000-0000",
+        "phoneNumberVerified": "true",
         "email": "john.smith@test.local",
-        "emailVerified": "true"
+        "emailVerified": "true",
+        "givenName": "John",
+        "familyName": "Smith"
       }
     }
   ]

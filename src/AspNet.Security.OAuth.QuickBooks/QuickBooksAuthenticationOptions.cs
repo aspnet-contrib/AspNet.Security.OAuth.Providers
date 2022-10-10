@@ -29,8 +29,11 @@ public class QuickBooksAuthenticationOptions : OAuthOptions
         Scope.Add("email");
 
         ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "sub");
-        ClaimActions.MapJsonKey(ClaimTypes.MobilePhone, "mobilephone");
+        ClaimActions.MapJsonKey(ClaimTypes.OtherPhone, "phoneNumber");
+        ClaimActions.MapJsonKey(Claims.PhoneNumberVerified, "phoneNumberVerified");
         ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
         ClaimActions.MapJsonKey(Claims.EmailVerified, "emailVerified");
+        ClaimActions.MapJsonKey(ClaimTypes.GivenName, "givenName");
+        ClaimActions.MapJsonKey(ClaimTypes.Surname, "familyName");
     }
 }

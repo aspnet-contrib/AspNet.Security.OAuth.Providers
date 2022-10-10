@@ -28,9 +28,12 @@ public class QuickBooksTests : OAuthTests<QuickBooksAuthenticationOptions>
 
     [Theory]
     [InlineData(ClaimTypes.NameIdentifier, "2039290222")]
-    [InlineData(ClaimTypes.MobilePhone, "(314)000-0000")]
+    [InlineData(ClaimTypes.OtherPhone, "(314)000-0000")]
+    [InlineData(Claims.PhoneNumberVerified, "true")]
     [InlineData(ClaimTypes.Email, "john.smith@test.local")]
     [InlineData(Claims.EmailVerified, "true")]
+    [InlineData(ClaimTypes.GivenName, "John")]
+    [InlineData(ClaimTypes.Surname, "Smith")]
     public async Task Can_Sign_In_Using_QuickBooks(string claimType, string claimValue)
     {
         // Arrange
