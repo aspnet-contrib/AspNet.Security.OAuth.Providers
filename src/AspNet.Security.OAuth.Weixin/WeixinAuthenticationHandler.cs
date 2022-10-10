@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Primitives;
 
 namespace AspNet.Security.OAuth.Weixin;
 
@@ -33,17 +34,9 @@ public partial class WeixinAuthenticationHandler : OAuthHandler<WeixinAuthentica
 
     protected override async Task<HandleRequestResult> HandleRemoteAuthenticateAsync()
     {
-        if (!IsWeixinAuthorizationEndpointInUse())
+        if (!IsWeixinAuthorizationEndpointInUse() && TryStandardizeRemoteAuthenticateQuery(Request.Query, out var queryString))
         {
-            if (Request.Query.TryGetValue(OauthState, out var stateValue))
-            {
-                var query = Request.Query.ToDictionary(c => c.Key, c => c.Value, StringComparer.OrdinalIgnoreCase);
-                if (query.TryGetValue(State, out _))
-                {
-                    query[State] = stateValue;
-                    Request.QueryString = QueryString.Create(query);
-                }
-            }
+            Request.QueryString = queryString;
         }
 
         return await base.HandleRemoteAuthenticateAsync();
@@ -196,6 +189,38 @@ public partial class WeixinAuthenticationHandler : OAuthHandler<WeixinAuthentica
     private bool IsWeixinAuthorizationEndpointInUse()
     {
         return string.Equals(Options.AuthorizationEndpoint, WeixinAuthenticationDefaults.AuthorizationEndpoint, StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static bool TryStandardizeRemoteAuthenticateQuery(IQueryCollection query, out QueryString queryString)
+    {
+        if (!query.TryGetValue(OauthState, out var actualState))
+        {
+            queryString = default;
+            return false;
+        }
+
+        // Before: mydomain/signin-weixin?code=xxx&state=_oauthstate&_oauthstate=<actual state>&...
+        // After: mydomain/signin-weixin?code=xxx&state=<actual state>&...
+        var queryParams = new List<KeyValuePair<string, StringValues>>(query.Count - 1);
+        foreach (var item in query)
+        {
+            switch (item.Key)
+            {
+                case OauthState: // No need in fact, skip it
+                    break;
+
+                case State:
+                    queryParams.Add(new(State, actualState));
+                    break;
+
+                default:
+                    queryParams.Add(item);
+                    break;
+            }
+        }
+
+        queryString = QueryString.Create(queryParams);
+        return true;
     }
 
     private static partial class Log
