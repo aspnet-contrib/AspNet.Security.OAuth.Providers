@@ -37,7 +37,10 @@ public partial class AlipayAuthenticationHandler : OAuthHandler<AlipayAuthentica
 
     protected override Task<HandleRequestResult> HandleRemoteAuthenticateAsync()
     {
-        StandardizeRemoteAuthenticateQuery(Request);
+        if (TryStandardizeRemoteAuthenticateQuery(Request.Query, out var queryString))
+        {
+            Request.QueryString = queryString;
+        }
 
         return base.HandleRemoteAuthenticateAsync();
     }
@@ -230,34 +233,36 @@ public partial class AlipayAuthenticationHandler : OAuthHandler<AlipayAuthentica
         return QueryHelpers.AddQueryString(Options.AuthorizationEndpoint, parameters);
     }
 
-    private static void StandardizeRemoteAuthenticateQuery(HttpRequest request)
+    private static bool TryStandardizeRemoteAuthenticateQuery(IQueryCollection query, out QueryString queryString)
     {
-        var query = request.Query;
-
-        if (query.TryGetValue(AuthCode, out var authCode))
+        if (!query.TryGetValue(AuthCode, out var authCode))
         {
-            // Before: mydomain/signin-alipay?auth_code=xxx&state=xxx&...
-            // After: mydomain/signin-alipay?code=xxx&state=xxx&...
-            var queryParams = new List<KeyValuePair<string, StringValues>>(query.Count)
-            {
-                new("code", authCode)
-            };
-            foreach (var item in query)
-            {
-                switch (item.Key)
-                {
-                    case "code":
-                    case AuthCode: // No need in fact, skip it
-                        break;
-
-                    default:
-                        queryParams.Add(item);
-                        break;
-                }
-            }
-
-            request.QueryString = QueryString.Create(queryParams);
+            queryString = default;
+            return false;
         }
+
+        // Before: mydomain/signin-alipay?auth_code=xxx&state=xxx&...
+        // After: mydomain/signin-alipay?code=xxx&state=xxx&...
+        var queryParams = new List<KeyValuePair<string, StringValues>>(query.Count)
+        {
+            new("code", authCode)
+        };
+        foreach (var item in query)
+        {
+            switch (item.Key)
+            {
+                case "code":
+                case AuthCode: // No need in fact, skip it
+                    break;
+
+                default:
+                    queryParams.Add(item);
+                    break;
+            }
+        }
+
+        queryString = QueryString.Create(queryParams);
+        return true;
     }
 
     private static partial class Log
