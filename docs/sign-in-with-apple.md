@@ -94,7 +94,7 @@ Below are links to some issues raised against this repository that were related 
 
 When using _Sign In with Apple_ on an iOS 13+ Device, [Apple provides a different authentication workflow](https://developer.apple.com/documentation/authenticationservices) that returns the validation response to the app instead of in a server callback. Using that response to authenticate a user against your own backend requires sending the response to your servers and [communicating with the Apple authentication endpoint from there](https://developer.apple.com/documentation/sign_in_with_apple/generate_and_validate_tokens).
 
-This workflow is out of the scope of this package but client secret generation and token validation can provide a starting point for an ASP.NET.Core integration. Note that the `ClientId` in this case is the App Id where the authentication was requested, not your Services Id.
+This workflow is out of the scope of this package but client secret generation and token validation can provide a starting point for an ASP.NET Core integration. Note that the `ClientId` in this case is the App Id where the authentication was requested, not your Services Id.
 
 ## Further Reading
 

@@ -15,5 +15,6 @@ public static class QuickBooksAuthenticationConstants
     {
         public const string AccountType = "urn:quickbooks:appenvrionment";
         public const string EmailVerified = "urn:quickbooks:email_verified";
+        public const string PhoneNumberVerified = "urn:quickbooks:phone_number_verified";
     }
 }
