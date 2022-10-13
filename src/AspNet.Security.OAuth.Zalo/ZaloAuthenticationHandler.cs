@@ -86,6 +86,7 @@ public partial class ZaloAuthenticationHandler : OAuthHandler<ZaloAuthentication
             Content = new FormUrlEncodedContent(tokenRequestParameters)
         };
 
+        Backchannel.DefaultRequestHeaders.Clear();
         Backchannel.DefaultRequestHeaders.Add("secret_key", Options.ClientSecret);
 
         using var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
