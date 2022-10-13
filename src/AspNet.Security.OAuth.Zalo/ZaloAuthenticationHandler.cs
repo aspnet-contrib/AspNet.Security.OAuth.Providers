@@ -69,9 +69,9 @@ public partial class ZaloAuthenticationHandler : OAuthHandler<ZaloAuthentication
         var tokenRequestParameters = new Dictionary<string, string?>
         {
             ["app_id"] = Options.ClientId,
-            ["app_secret"] = Options.ClientSecret,
             ["code"] = context.Code,
             ["redirect_uri"] = context.RedirectUri,
+            ["grant_type"] = "authorization_code"
         };
 
         // PKCE https://tools.ietf.org/html/rfc7636#section-4.5, see BuildChallengeUrl
@@ -81,9 +81,13 @@ public partial class ZaloAuthenticationHandler : OAuthHandler<ZaloAuthentication
             context.Properties.Items.Remove(OAuthConstants.CodeVerifierKey);
         }
 
-        var address = QueryHelpers.AddQueryString(Options.TokenEndpoint, tokenRequestParameters);
+        using var request = new HttpRequestMessage(HttpMethod.Post, Options.TokenEndpoint)
+        {
+            Content = new FormUrlEncodedContent(tokenRequestParameters)
+        };
 
-        using var request = new HttpRequestMessage(HttpMethod.Get, address);
+        Backchannel.DefaultRequestHeaders.Add("secret_key", Options.ClientSecret);
+
         using var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
         if (!response.IsSuccessStatusCode)
         {

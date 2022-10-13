@@ -34,12 +34,12 @@ public class ZaloAuthenticationDefaults
     /// <summary>
     /// Default value for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
     /// </summary>
-    public static readonly string AuthorizationEndpoint = "https://oauth.zaloapp.com/v3/auth";
+    public static readonly string AuthorizationEndpoint = "https://oauth.zaloapp.com/v4/permission";
 
     /// <summary>
     /// Default value for <see cref="OAuthOptions.TokenEndpoint"/>.
     /// </summary>
-    public static readonly string TokenEndpoint = "https://oauth.zaloapp.com/v3/access_token";
+    public static readonly string TokenEndpoint = "https://oauth.zaloapp.com/v4/access_token";
 
     /// <summary>
     /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
