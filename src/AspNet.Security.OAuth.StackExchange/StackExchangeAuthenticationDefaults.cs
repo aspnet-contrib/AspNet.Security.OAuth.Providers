@@ -34,15 +34,15 @@ public static class StackExchangeAuthenticationDefaults
     /// <summary>
     /// Default value for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
     /// </summary>
-    public static readonly string AuthorizationEndpoint = "https://stackexchange.com/oauth";
+    public static readonly string AuthorizationEndpoint = "https://stackoverflow.com/oauth";
 
     /// <summary>
     /// Default value for <see cref="OAuthOptions.TokenEndpoint"/>.
     /// </summary>
-    public static readonly string TokenEndpoint = "https://stackexchange.com/oauth/access_token";
+    public static readonly string TokenEndpoint = "https://stackoverflow.com/oauth/access_token/json";
 
     /// <summary>
     /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
     /// </summary>
-    public static readonly string UserInformationEndpoint = "https://api.stackexchange.com/2.2/me";
+    public static readonly string UserInformationEndpoint = "https://api.stackexchange.com/2.3/me";
 }
