@@ -9,7 +9,7 @@
     <PackageReference Update="Microsoft.AspNetCore.TestHost" Version="7.0.0-rc.2.22476.2" />
     <PackageReference Update="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="6.16.0" />
     <PackageReference Update="Moq" Version="4.18.2" />
-    <PackageReference Update="Shouldly" Version="4.0.3" />
+    <PackageReference Update="Shouldly" Version="4.1.0" />
     <PackageReference Update="StyleCop.Analyzers" Version="1.2.0-beta.435" />
   </ItemGroup>
 
