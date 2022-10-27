@@ -209,6 +209,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{C2CA4B38-A
 		docs\reddit.md = docs\reddit.md
 		docs\salesforce.md = docs\salesforce.md
 		docs\sign-in-with-apple.md = docs\sign-in-with-apple.md
+		docs\smartsheet.md = docs\smartsheet.md
 		docs\snapchat.md = docs\snapchat.md
 		docs\stackexchange.md = docs\stackexchange.md
 		docs\superoffice.md = docs\superoffice.md
@@ -289,6 +290,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.Kroger", "src\AspNet.Security.OAuth.Kroger\AspNet.Security.OAuth.Kroger.csproj", "{8C7A98A6-5F61-492B-980D-0A9F5F9F5C73}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.Xumm", "src\AspNet.Security.OAuth.Xumm\AspNet.Security.OAuth.Xumm.csproj", "{8E42EF81-A630-4BDB-B642-3F20C863F9BE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.Smartsheet", "src\AspNet.Security.OAuth.Smartsheet\AspNet.Security.OAuth.Smartsheet.csproj", "{68862DC5-65B7-4517-B909-AB334F9FCF6E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -664,6 +667,10 @@ Global
 		{8E42EF81-A630-4BDB-B642-3F20C863F9BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8E42EF81-A630-4BDB-B642-3F20C863F9BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8E42EF81-A630-4BDB-B642-3F20C863F9BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68862DC5-65B7-4517-B909-AB334F9FCF6E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68862DC5-65B7-4517-B909-AB334F9FCF6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68862DC5-65B7-4517-B909-AB334F9FCF6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68862DC5-65B7-4517-B909-AB334F9FCF6E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -767,6 +774,7 @@ Global
 		{B8F9B052-84BF-436C-B22B-CEBD5EB1F8E3} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 		{8C7A98A6-5F61-492B-980D-0A9F5F9F5C73} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 		{8E42EF81-A630-4BDB-B642-3F20C863F9BE} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
+		{68862DC5-65B7-4517-B909-AB334F9FCF6E} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C7B54DE2-6407-4802-AD9C-CE54BF414C8C}
