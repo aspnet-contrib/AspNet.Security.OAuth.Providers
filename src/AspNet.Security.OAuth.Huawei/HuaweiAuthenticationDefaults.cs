@@ -44,5 +44,5 @@ public static class HuaweiAuthenticationDefaults
     /// <summary>
     /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
     /// </summary>
-    public static readonly string UserInformationEndpoint = "https://account.cloud.huawei.com/rest.php?nsp_svc=GOpen.User.getInfo";
+    public static readonly string UserInformationEndpoint = "https://account.cloud.huawei.com/rest.php";
 }

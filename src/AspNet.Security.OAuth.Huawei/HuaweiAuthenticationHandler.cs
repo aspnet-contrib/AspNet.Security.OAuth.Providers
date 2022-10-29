@@ -4,10 +4,10 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using System.Net;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Text.Json;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -29,12 +29,15 @@ public partial class HuaweiAuthenticationHandler : OAuthHandler<HuaweiAuthentica
         [NotNull] AuthenticationProperties properties,
         [NotNull] OAuthTokenResponse tokens)
     {
+        var address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, "nsp_svc", "GOpen.User.getInfo");
+
         var content = new FormUrlEncodedContent(new[]
         {
             new KeyValuePair<string, string>("getNickName", Options.GetNickName ? "1" : "0"),
-            new KeyValuePair<string, string>("access_token", WebUtility.UrlEncode(tokens.AccessToken) ?? string.Empty),
+            new KeyValuePair<string, string>("access_token", tokens.AccessToken!)
         });
-        using var request = new HttpRequestMessage(HttpMethod.Post, Options.UserInformationEndpoint);
+
+        using var request = new HttpRequestMessage(HttpMethod.Post, address);
         request.Content = content;
 
         using var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
