@@ -17,13 +17,22 @@ public class HuaweiTests : OAuthTests<HuaweiAuthenticationOptions>
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
     {
-        builder.AddHuawei(options => ConfigureDefaults(builder, options));
+        builder.AddHuawei(options =>
+        {
+            options.GetNickName = true;
+
+            options.Scope.Add("profile");
+            options.Scope.Add("email");
+
+            ConfigureDefaults(builder, options);
+        });
     }
 
     [Theory]
     [InlineData(ClaimTypes.NameIdentifier, "test-name-identifier")]
     [InlineData(ClaimTypes.Name, "test-display-name")]
     [InlineData(HuaweiAuthenticationConstants.Claims.Avatar, "test-head-picture-url.jpg")]
+    [InlineData(ClaimTypes.Email, "test-email@test")]
     public async Task Can_Sign_In_Using_Huawei(string claimType, string claimValue)
     {
         // Arrange

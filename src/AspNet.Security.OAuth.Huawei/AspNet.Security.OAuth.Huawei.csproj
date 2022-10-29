@@ -2,14 +2,14 @@
 
   <PropertyGroup>
     <DisablePackageBaselineValidation>true</DisablePackageBaselineValidation>
-    <PackageValidationBaselineVersion>6.0.9</PackageValidationBaselineVersion>
+    <PackageValidationBaselineVersion>6.0.13</PackageValidationBaselineVersion>
     <TargetFrameworks>$(DefaultNetCoreTargetFramework)</TargetFrameworks>
   </PropertyGroup>
 
   <PropertyGroup>
     <Description>ASP.NET Core security middleware enabling Huawei authentication.</Description>
     <Authors>Vicente Yu</Authors>
-    <PackageTags>aspnetcore;authentication;Huawei;oauth;security</PackageTags>
+    <PackageTags>aspnetcore;authentication;huawei;oauth;security</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>

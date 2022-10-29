@@ -29,6 +29,7 @@ public class HuaweiAuthenticationOptions : OAuthOptions
         ClaimActions.MapJsonKey(Claims.Avatar, "headPictureURL");
 
         Scope.Add("openid");
-        Scope.Add("profile");
     }
+
+    public bool GetNickName { get; set; }
 }

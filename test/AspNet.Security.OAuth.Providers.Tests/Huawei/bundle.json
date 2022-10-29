@@ -2,7 +2,7 @@
   "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
   "items": [
     {
-      "comment": "https://developer.huawei.com/consumer/cn/doc/development/HMSCore-References/account-obtain-token_hms_reference-0000001050048618",
+      "comment": "https://developer.huawei.com/consumer/en/doc/development/HMSCore-References/account-obtain-token_hms_reference-0000001050048618",
       "uri": "https://oauth-login.cloud.huawei.com/oauth2/v3/token",
       "method": "POST",
       "contentFormat": "json",
@@ -16,14 +16,15 @@
       }
     },
     {
-      "comment": "https://developer.huawei.com/consumer/cn/doc/development/HMSCore-References/get-user-info-0000001060261938",
+      "comment": "https://developer.huawei.com/consumer/en/doc/development/HMSCore-References/get-user-info-0000001060261938",
       "uri": "https://account.cloud.huawei.com/rest.php?nsp_svc=GOpen.User.getInfo",
       "method": "POST",
       "contentFormat": "json",
       "contentJson": {
         "displayName": "test-display-name",
         "openID": "test-name-identifier",
-        "headPictureURL": "test-head-picture-url.jpg"
+        "headPictureURL": "test-head-picture-url.jpg",
+        "email": "test-email@test"
       }
     }
   ]
