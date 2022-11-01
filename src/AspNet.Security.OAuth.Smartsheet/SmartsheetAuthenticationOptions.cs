@@ -34,13 +34,12 @@ public class SmartsheetAuthenticationOptions : OAuthOptions
 
     private static string GetProfileImageUri(JsonElement user)
     {
-        var profileImageUri = user.EnumerateObject()
-            .Where(u => u.Name == "profileImage")
-            .Select(u => u.Value)
-            .Select(p => p.GetProperty("imageId"))
-            .Select(i => i.GetString()?.Replace("g:", string.Empty, StringComparison.CurrentCulture))
-            .FirstOrDefault();
+        if (!user.TryGetProperty("profileImage", out var profileImageProperty)
+            || !profileImageProperty.TryGetProperty("imageId", out var imageIdProperty))
+        {
+            return string.Empty;
+        }
 
-        return profileImageUri ?? string.Empty;
+        return imageIdProperty.GetString()!.Replace("g:", string.Empty, StringComparison.Ordinal);
     }
 }
