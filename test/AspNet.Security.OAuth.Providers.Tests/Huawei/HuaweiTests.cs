@@ -19,7 +19,7 @@ public class HuaweiTests : OAuthTests<HuaweiAuthenticationOptions>
     {
         builder.AddHuawei(options =>
         {
-            options.FetchNickName = true;
+            options.FetchNickname = true;
 
             options.Scope.Add("profile");
             options.Scope.Add("email");

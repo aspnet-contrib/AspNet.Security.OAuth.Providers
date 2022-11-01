@@ -31,5 +31,8 @@ public class HuaweiAuthenticationOptions : OAuthOptions
         Scope.Add("openid");
     }
 
-    public bool FetchNickName { get; set; }
+    /// <summary>
+    /// Gets or sets a value indicating whether to use the user's nickname, if available.
+    /// </summary>
+    public bool FetchNickname { get; set; }
 }
