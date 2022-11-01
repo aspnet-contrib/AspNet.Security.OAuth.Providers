@@ -33,7 +33,7 @@ public partial class HuaweiAuthenticationHandler : OAuthHandler<HuaweiAuthentica
 
         var content = new FormUrlEncodedContent(new[]
         {
-            new KeyValuePair<string, string>("getNickName", Options.GetNickName ? "1" : "0"),
+            new KeyValuePair<string, string>("getNickName", Options.FetchNickName ? "1" : "0"),
             new KeyValuePair<string, string>("access_token", tokens.AccessToken!)
         });
 

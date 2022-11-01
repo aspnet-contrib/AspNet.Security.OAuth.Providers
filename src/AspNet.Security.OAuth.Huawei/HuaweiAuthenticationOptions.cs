@@ -31,5 +31,5 @@ public class HuaweiAuthenticationOptions : OAuthOptions
         Scope.Add("openid");
     }
 
-    public bool GetNickName { get; set; }
+    public bool FetchNickName { get; set; }
 }
