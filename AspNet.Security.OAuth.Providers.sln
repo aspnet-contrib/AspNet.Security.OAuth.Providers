@@ -290,6 +290,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.Kroge
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.Xumm", "src\AspNet.Security.OAuth.Xumm\AspNet.Security.OAuth.Xumm.csproj", "{8E42EF81-A630-4BDB-B642-3F20C863F9BE}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.Huawei", "src\AspNet.Security.OAuth.Huawei\AspNet.Security.OAuth.Huawei.csproj", "{E3CF7FFC-56A0-4033-87A9-BB3080CF030E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -664,6 +666,10 @@ Global
 		{8E42EF81-A630-4BDB-B642-3F20C863F9BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8E42EF81-A630-4BDB-B642-3F20C863F9BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8E42EF81-A630-4BDB-B642-3F20C863F9BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E3CF7FFC-56A0-4033-87A9-BB3080CF030E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E3CF7FFC-56A0-4033-87A9-BB3080CF030E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E3CF7FFC-56A0-4033-87A9-BB3080CF030E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E3CF7FFC-56A0-4033-87A9-BB3080CF030E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -767,6 +773,7 @@ Global
 		{B8F9B052-84BF-436C-B22B-CEBD5EB1F8E3} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 		{8C7A98A6-5F61-492B-980D-0A9F5F9F5C73} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 		{8E42EF81-A630-4BDB-B642-3F20C863F9BE} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
+		{E3CF7FFC-56A0-4033-87A9-BB3080CF030E} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C7B54DE2-6407-4802-AD9C-CE54BF414C8C}
