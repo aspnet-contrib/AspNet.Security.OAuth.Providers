@@ -9,12 +9,12 @@ services.AddAuthentication(options => /* Auth configuration */)
             options.ClientId = "my-client-id";
             options.ClientSecret = "my-client-secret";
 
-            // Optionally.
+            // Optionally return the user's profile and email address
             options.Scope.Add("profile");
             options.Scope.Add("email");
 
-            // Optionally.
-            options.FetchNickName = true;
+            // Optionally get the user's nickname
+            options.FetchNickname = true;
         });
 ```
 
@@ -26,9 +26,4 @@ _None._
 
 | Property Name | Property Type | Description | Default Value |
 |:--|:--|:--|:--|
-| `FetchNickName` | `bool` | When FetchNickName is set to false or not set, the anonymous account is returned. If the anonymous account is unavailable, the nickname is returned. When FetchNickName is set to true, the nickname is returned. If the nickname is unavailable, the anonymous account is returned. | `false` |
-
-### Scope
-Corresponding information, such as the profile picture and email address, can be obtained only if the app has the permission to obtain the information.
-* `profile`   basic information of a HUAWEI ID, such as the profile picture and nickname.
-* `email` email address of a HUAWEI ID.
+| `FetchNickname` | `bool` | When `false` the anonymous account is returned. If the anonymous account is unavailable, the nickname is returned. When `true`, the nickname is returned. If the nickname is unavailable, the anonymous account is returned. | `false` |
