@@ -53,6 +53,7 @@ covered by the section above.
 | Foursquare | _Optional_ | [Documentation](foursquare.md "Foursquare provider documentation") |
 | GitHub | _Optional_ | [Documentation](github.md "GitHub provider documentation") |
 | Gitee | _Optional_ | [Documentation](gitee.md "Gitee provider documentation") |
+| Huawei | _Optional_ | [Documentation](huawei.md "Huawei provider documentation") |
 | Instagram | _Optional_ | [Documentation](instagram.md "Instagram provider documentation") |
 | Kloudless | _Optional_ | [Documentation](kloudless.md "Kloudless provider documentation") |
 | Line | _Optional_ | [Documentation](line.md "Line provider documentation") |
