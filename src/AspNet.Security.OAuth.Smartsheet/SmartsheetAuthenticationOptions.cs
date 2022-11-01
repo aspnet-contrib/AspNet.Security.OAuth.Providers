@@ -38,7 +38,7 @@ public class SmartsheetAuthenticationOptions : OAuthOptions
             .Where(u => u.Name == "profileImage")
             .Select(u => u.Value)
             .Select(p => p.GetProperty("imageId"))
-            .Select(i => i.GetString()?.Replace("g:", string.Empty, StringComparison.CurrentCulture))
+            .Select(i => i.GetString()?.Replace("g:", string.Empty, StringComparison.Ordinal))
             .FirstOrDefault();
 
         return profileImageUri ?? string.Empty;
