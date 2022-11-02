@@ -1,0 +1,31 @@
+{
+  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
+  "items": [
+    {
+      "uri": "https://api.smartsheet.com/2.0/token",
+      "contentFormat": "json",
+      "method": "POST",
+      "contentJson": {
+        "access_token": "secret-access-token",
+        "refresh_token": "secret-refresh-token",
+        "token_type": "Bearer",
+        "expires_in": "300"
+      }
+    },
+    {
+      "uri": "https://api.smartsheet.com/2.0/users/me",
+      "contentFormat": "json",
+      "contentJson": {
+        "result": "ok",
+        "description": "Success",
+        "id": 12345,
+        "email": "fred@example.com",
+        "firstName": "Fred",
+        "lastName": "Flintstone",
+        "profileImage": {
+          "imageId": "https://example.com/profile.png"
+        }
+      }
+    }
+  ]
+}
