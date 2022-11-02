@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <TargetFrameworks>$(DefaultNetCoreTargetFramework)</TargetFrameworks>
-    <PackageValidationBaselineVersion>6.0.14</PackageValidationBaselineVersion>
   </PropertyGroup>
 
   <PropertyGroup>
