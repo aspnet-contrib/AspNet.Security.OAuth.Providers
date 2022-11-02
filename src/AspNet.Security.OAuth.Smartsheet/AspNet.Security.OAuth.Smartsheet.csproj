@@ -6,10 +6,6 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <DisablePackageBaselineValidation>true</DisablePackageBaselineValidation>
-  </PropertyGroup>
-
-  <PropertyGroup>
     <Description>ASP.NET Core security middleware enabling Smartsheet authentication.</Description>
     <Authors>Steve Albison</Authors>
     <PackageTags>aspnetcore;authentication;oauth;smartsheet;security</PackageTags>
