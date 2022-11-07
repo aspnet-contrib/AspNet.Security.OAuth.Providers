@@ -14,11 +14,6 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <!-- TODO Remove once 7.0.0 published to NuGet.org -->
-  <PropertyGroup>
-    <DisablePackageBaselineValidation>true</DisablePackageBaselineValidation>
-  </PropertyGroup>
-
   <PropertyGroup>
     <StrongNameKeyId>aspnet-contrib</StrongNameKeyId>
     <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)\eng\key.snk</AssemblyOriginatorKeyFile>
