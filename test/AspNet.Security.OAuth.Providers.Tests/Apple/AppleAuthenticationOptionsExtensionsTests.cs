@@ -4,6 +4,7 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 
 namespace AspNet.Security.OAuth.Apple;
@@ -15,8 +16,10 @@ public static class AppleAuthenticationOptionsExtensionsTests
     {
         // Arrange
         var services = new ServiceCollection();
+        var configuration = new ConfigurationBuilder().Build();
 
         services.AddLogging()
+                .AddSingleton<IConfiguration>(configuration)
                 .AddAuthentication()
                 .AddApple();
 

@@ -43,7 +43,7 @@ public class ApplePostConfigureOptions : IPostConfigureOptions<AppleAuthenticati
 
     /// <inheritdoc/>
     public void PostConfigure(
-        [NotNull] string name,
+        string? name,
         [NotNull] AppleAuthenticationOptions options)
     {
         // Use a custom CryptoProviderFactory so that keys are not cached and then disposed of, see below:

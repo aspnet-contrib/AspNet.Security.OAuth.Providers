@@ -17,7 +17,11 @@ public class StackExchangeTests : OAuthTests<StackExchangeAuthenticationOptions>
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
     {
-        builder.AddStackExchange(options => ConfigureDefaults(builder, options));
+        builder.AddStackExchange(options =>
+        {
+            ConfigureDefaults(builder, options);
+            options.RequestKey = "request-key";
+        });
     }
 
     [Theory]

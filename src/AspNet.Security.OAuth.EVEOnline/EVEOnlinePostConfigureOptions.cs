@@ -16,7 +16,7 @@ public class EVEOnlinePostConfigureOptions : IPostConfigureOptions<EVEOnlineAuth
 {
     /// <inheritdoc />
     public void PostConfigure(
-        [NotNull] string name,
+        string? name,
         [NotNull] EVEOnlineAuthenticationOptions options)
     {
         if (options.SecurityTokenHandler == null)

@@ -43,4 +43,20 @@ public class StackExchangeAuthenticationOptions : OAuthOptions
     /// By default, this property is set to "StackOverflow".
     /// </summary>
     public string Site { get; set; } = "StackOverflow";
+
+    /// <inheritdoc />
+    public override void Validate()
+    {
+        base.Validate();
+
+        if (string.IsNullOrEmpty(RequestKey))
+        {
+            throw new ArgumentException($"The '{nameof(RequestKey)}' option must be provided.", nameof(RequestKey));
+        }
+
+        if (string.IsNullOrEmpty(Site))
+        {
+            throw new ArgumentException($"The '{nameof(Site)}' option must be provided.", nameof(Site));
+        }
+    }
 }

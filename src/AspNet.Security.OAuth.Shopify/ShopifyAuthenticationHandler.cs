@@ -87,10 +87,6 @@ public partial class ShopifyAuthenticationHandler : OAuthHandler<ShopifyAuthenti
     }
 
     /// <inheritdoc />
-    protected override string FormatScope()
-        => FormatScope(Options.Scope); // TODO This override is the same as the base class' and can be removed in the next major version
-
-    /// <inheritdoc />
     protected override string FormatScope([NotNull] IEnumerable<string> scopes)
         => string.Join(',', scopes);
 

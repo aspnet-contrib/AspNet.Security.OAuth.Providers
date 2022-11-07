@@ -16,7 +16,7 @@ public class OktaPostConfigureOptions : IPostConfigureOptions<OktaAuthentication
 {
     /// <inheritdoc/>
     public void PostConfigure(
-        [NotNull] string name,
+        string? name,
         [NotNull] OktaAuthenticationOptions options)
     {
         if (string.IsNullOrWhiteSpace(options.Domain))

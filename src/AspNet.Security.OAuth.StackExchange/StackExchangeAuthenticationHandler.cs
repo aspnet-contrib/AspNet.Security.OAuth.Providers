@@ -8,11 +8,9 @@ using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Text.Json;
-using System.Text.Json.Nodes;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Microsoft.Extensions.Primitives;
 
 namespace AspNet.Security.OAuth.StackExchange;
 
@@ -32,22 +30,12 @@ public partial class StackExchangeAuthenticationHandler : OAuthHandler<StackExch
         [NotNull] AuthenticationProperties properties,
         [NotNull] OAuthTokenResponse tokens)
     {
-        if (string.IsNullOrEmpty(Options.Site))
-        {
-            throw new InvalidOperationException(
-                $"No site was specified for the {nameof(StackExchangeAuthenticationOptions.Site)} property of {nameof(StackExchangeAuthenticationOptions)}.");
-        }
-
         var queryArguments = new Dictionary<string, string?>
         {
             ["access_token"] = tokens.AccessToken,
+            ["key"] = Options.RequestKey,
             ["site"] = Options.Site,
         };
-
-        if (!string.IsNullOrEmpty(Options.RequestKey))
-        {
-            queryArguments["key"] = Options.RequestKey;
-        }
 
         var address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, queryArguments);
 
@@ -71,50 +59,6 @@ public partial class StackExchangeAuthenticationHandler : OAuthHandler<StackExch
         return new AuthenticationTicket(context.Principal!, context.Properties, Scheme.Name);
     }
 
-    protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] OAuthCodeExchangeContext context)
-    {
-        var tokenRequestParameters = new Dictionary<string, string>
-        {
-            ["client_id"] = Options.ClientId,
-            ["redirect_uri"] = context.RedirectUri,
-            ["client_secret"] = Options.ClientSecret,
-            ["code"] = context.Code,
-            ["grant_type"] = "authorization_code",
-        };
-
-        // PKCE https://tools.ietf.org/html/rfc7636#section-4.5, see BuildChallengeUrl
-        if (context.Properties.Items.TryGetValue(OAuthConstants.CodeVerifierKey, out var codeVerifier))
-        {
-            tokenRequestParameters.Add(OAuthConstants.CodeVerifierKey, codeVerifier!);
-            context.Properties.Items.Remove(OAuthConstants.CodeVerifierKey);
-        }
-
-        using var request = new HttpRequestMessage(HttpMethod.Post, Options.TokenEndpoint)
-        {
-            Content = new FormUrlEncodedContent(tokenRequestParameters!)
-        };
-
-        using var response = await Backchannel.SendAsync(request, Context.RequestAborted);
-        if (!response.IsSuccessStatusCode)
-        {
-            await Log.ExchangeCodeErrorAsync(Logger, response, Context.RequestAborted);
-            return OAuthTokenResponse.Failed(new Exception("An error occurred while retrieving an access token."));
-        }
-
-        // Note: StackExchange's token endpoint doesn't return JSON but uses application/x-www-form-urlencoded.
-        // Since OAuthTokenResponse expects a JSON payload, a response is manually created using the returned values.
-        var content = QueryHelpers.ParseQuery(await response.Content.ReadAsStringAsync(Context.RequestAborted));
-
-        var token = new JsonObject();
-
-        foreach ((var key, var value) in content)
-        {
-            token[key] = value.ToString();
-        }
-
-        return OAuthTokenResponse.Success(JsonSerializer.SerializeToDocument(token));
-    }
-
     private static partial class Log
     {
         internal static async Task UserProfileErrorAsync(ILogger logger, HttpResponseMessage response, CancellationToken cancellationToken)
@@ -126,24 +70,8 @@ public partial class StackExchangeAuthenticationHandler : OAuthHandler<StackExch
                 await response.Content.ReadAsStringAsync(cancellationToken));
         }
 
-        internal static async Task ExchangeCodeErrorAsync(ILogger logger, HttpResponseMessage response, CancellationToken cancellationToken)
-        {
-            ExchangeCodeError(
-                logger,
-                response.StatusCode,
-                response.Headers.ToString(),
-                await response.Content.ReadAsStringAsync(cancellationToken));
-        }
-
         [LoggerMessage(1, LogLevel.Error, "An error occurred while retrieving the user profile: the remote server returned a {Status} response with the following payload: {Headers} {Body}.")]
         private static partial void UserProfileError(
-            ILogger logger,
-            System.Net.HttpStatusCode status,
-            string headers,
-            string body);
-
-        [LoggerMessage(2, LogLevel.Error, "An error occurred while retrieving an access token: the remote server returned a {Status} response with the following payload: {Headers} {Body}.")]
-        private static partial void ExchangeCodeError(
             ILogger logger,
             System.Net.HttpStatusCode status,
             string headers,

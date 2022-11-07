@@ -32,8 +32,6 @@ public class WeiboAuthenticationOptions : OAuthOptions
         ClaimActions.MapJsonKey(Claims.AvatarHd, "avatar_hd");
         ClaimActions.MapJsonKey(Claims.CoverImagePhone, "cover_image_phone");
         ClaimActions.MapJsonKey(Claims.Location, "location");
-
-        Scope.Add("email");
     }
 
     /// <summary>

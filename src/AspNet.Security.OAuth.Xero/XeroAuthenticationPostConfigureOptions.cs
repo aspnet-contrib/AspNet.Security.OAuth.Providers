@@ -18,7 +18,7 @@ public class XeroAuthenticationPostConfigureOptions : IPostConfigureOptions<Xero
 {
     /// <inheritdoc />
     public void PostConfigure(
-        [NotNull] string name,
+        string? name,
         [NotNull] XeroAuthenticationOptions options)
     {
         if (string.IsNullOrEmpty(options.TokenValidationParameters.ValidAudience) && !string.IsNullOrEmpty(options.ClientId))
