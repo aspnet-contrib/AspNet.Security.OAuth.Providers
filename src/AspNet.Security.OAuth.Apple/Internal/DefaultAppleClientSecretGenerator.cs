@@ -36,7 +36,7 @@ internal sealed partial class DefaultAppleClientSecretGenerator : AppleClientSec
     {
         string key = CreateCacheKey(context.Options);
 
-        return await _cache.GetOrCreateAsync(key, async (entry) =>
+        var clientSecret = await _cache.GetOrCreateAsync(key, async (entry) =>
         {
             try
             {
@@ -50,6 +50,8 @@ internal sealed partial class DefaultAppleClientSecretGenerator : AppleClientSec
                 throw;
             }
         });
+
+        return clientSecret!;
     }
 
     private static string CreateCacheKey(AppleAuthenticationOptions options)

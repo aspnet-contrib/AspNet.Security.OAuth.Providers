@@ -3,13 +3,17 @@
   "items": [
     {
       "comment": "https://api.stackexchange.com/docs/authentication",
-      "uri": "https://stackexchange.com/oauth/access_token",
+      "uri": "https://stackoverflow.com/oauth/access_token/json",
       "method": "POST",
-      "contentString": "access_token=secret-access-token"
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "secret-access-token",
+        "expires": 86400
+      }
     },
     {
       "comment": "https://api.stackexchange.com/docs/me",
-      "uri": "https://api.stackexchange.com/2.2/me?access_token=secret-access-token&site=StackOverflow",
+      "uri": "https://api.stackexchange.com/2.3/me?access_token=secret-access-token&key=request-key&site=StackOverflow",
       "contentFormat": "json",
       "contentJson": {
         "items": [

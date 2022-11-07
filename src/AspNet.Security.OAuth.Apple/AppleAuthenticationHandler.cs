@@ -153,32 +153,6 @@ public partial class AppleAuthenticationHandler : OAuthHandler<AppleAuthenticati
         }
     }
 
-    /// <summary>
-    /// Extracts the claims from the user received from the authorization endpoint.
-    /// </summary>
-    /// <param name="user">The user object to extract the claims from.</param>
-    /// <returns>
-    /// An <see cref="IEnumerable{Claim}"/> containing the claims extracted from the user information.
-    /// </returns>
-    [Obsolete("This method is obsolete and will be removed in a future version.")]
-    protected virtual IEnumerable<Claim> ExtractClaimsFromUser([NotNull] JsonElement user)
-    {
-        var claims = new List<Claim>();
-
-        if (user.TryGetProperty("name", out var name))
-        {
-            claims.Add(new Claim(ClaimTypes.GivenName, name.GetString("firstName") ?? string.Empty, ClaimValueTypes.String, ClaimsIssuer));
-            claims.Add(new Claim(ClaimTypes.Surname, name.GetString("lastName") ?? string.Empty, ClaimValueTypes.String, ClaimsIssuer));
-        }
-
-        if (user.TryGetProperty("email", out var email))
-        {
-            claims.Add(new Claim(ClaimTypes.Email, email.GetString() ?? string.Empty, ClaimValueTypes.String, ClaimsIssuer));
-        }
-
-        return claims;
-    }
-
     /// <inheritdoc />
     protected override async Task<HandleRequestResult> HandleRemoteAuthenticateAsync()
     {
@@ -293,7 +267,7 @@ public partial class AppleAuthenticationHandler : OAuthHandler<AppleAuthenticati
             return HandleRequestResult.Fail("Code was not found.", properties);
         }
 
-        var codeExchangeContext = new OAuthCodeExchangeContext(properties, code, BuildRedirectUri(Options.CallbackPath));
+        var codeExchangeContext = new OAuthCodeExchangeContext(properties, code!, BuildRedirectUri(Options.CallbackPath));
 
         using var tokens = await ExchangeCodeAsync(codeExchangeContext);
 

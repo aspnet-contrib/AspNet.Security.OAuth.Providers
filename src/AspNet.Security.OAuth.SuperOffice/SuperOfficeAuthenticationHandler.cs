@@ -158,7 +158,7 @@ public partial class SuperOfficeAuthenticationHandler : OAuthHandler<SuperOffice
 
         try
         {
-            var result = Options.SecurityTokenHandler.ValidateToken(idToken, validationParameters);
+            var result = await Options.SecurityTokenHandler.ValidateTokenAsync(idToken, validationParameters);
 
             if (result.Exception != null || !result.IsValid)
             {

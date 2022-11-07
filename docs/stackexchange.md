@@ -8,16 +8,18 @@ services.AddAuthentication(options => /* Auth configuration */)
         {
             options.ClientId = "my-client-id";
             options.ClientSecret = "my-client-secret";
+            options.RequestKey = "my-request-key";
         });
 ```
 
 ## Required Additional Settings
 
-_None._
+| Property Name | Property Type | Description |
+|:--|:--|:--|:--|
+| `RequestKey` | `string` | The application request key. |
 
 ## Optional Settings
 
 | Property Name | Property Type | Description | Default Value |
 |:--|:--|:--|:--|
-| `RequestKey` | `string` | The application request key. | `""` |
 | `Site` | `string` | The site the users being authenticated are registered with. | `"StackOverflow"` |

@@ -49,7 +49,7 @@ internal sealed partial class DefaultAppleIdTokenValidator : AppleIdTokenValidat
 
         try
         {
-            var result = context.Options.SecurityTokenHandler.ValidateToken(context.IdToken, validationParameters);
+            var result = await context.Options.SecurityTokenHandler.ValidateTokenAsync(context.IdToken, validationParameters);
 
             if (result.Exception is not null || !result.IsValid)
             {

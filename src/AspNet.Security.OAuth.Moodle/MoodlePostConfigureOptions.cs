@@ -15,7 +15,7 @@ public class MoodlePostConfigureOptions : IPostConfigureOptions<MoodleAuthentica
 {
     /// <inheritdoc/>
     public void PostConfigure(
-        [NotNull] string name,
+        string? name,
         [NotNull] MoodleAuthenticationOptions options)
     {
         if (string.IsNullOrWhiteSpace(options.Domain))

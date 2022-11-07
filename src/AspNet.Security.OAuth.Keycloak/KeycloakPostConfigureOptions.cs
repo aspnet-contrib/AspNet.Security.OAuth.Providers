@@ -14,7 +14,7 @@ public class KeycloakPostConfigureOptions : IPostConfigureOptions<KeycloakAuthen
 {
     private static readonly Version NoAuthPrefixVersion = new(18, 0);
 
-    public void PostConfigure([NotNull] string name, [NotNull] KeycloakAuthenticationOptions options)
+    public void PostConfigure(string? name, [NotNull] KeycloakAuthenticationOptions options)
     {
         if ((!string.IsNullOrWhiteSpace(options.Domain) || options.BaseAddress is not null) &&
             !string.IsNullOrWhiteSpace(options.Realm))
