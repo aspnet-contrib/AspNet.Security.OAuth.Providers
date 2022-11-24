@@ -45,4 +45,6 @@ public static class KeycloakAuthenticationDefaults
     /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
     /// </summary>
     public static readonly string UserInformationEndpoint = "/protocol/openid-connect/userinfo";
+
+    public static readonly string SignoutEndpoint = "/protocol/openid-connect/logout";
 }

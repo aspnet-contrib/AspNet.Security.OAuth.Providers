@@ -22,6 +22,7 @@ public class KeycloakPostConfigureOptions : IPostConfigureOptions<KeycloakAuthen
             options.AuthorizationEndpoint = CreateUrl(options, KeycloakAuthenticationDefaults.AuthorizationEndpoint);
             options.TokenEndpoint = CreateUrl(options, KeycloakAuthenticationDefaults.TokenEndpoint);
             options.UserInformationEndpoint = CreateUrl(options, KeycloakAuthenticationDefaults.UserInformationEndpoint);
+            options.SignOutUrl = CreateUrl(options, KeycloakAuthenticationDefaults.SignoutEndpoint);
         }
     }
 

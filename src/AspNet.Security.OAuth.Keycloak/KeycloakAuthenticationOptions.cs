@@ -59,6 +59,8 @@ public class KeycloakAuthenticationOptions : OAuthOptions
     /// </summary>
     public Version? Version { get; set; }
 
+    public string? SignOutUrl { get; set; }
+
     /// <inheritdoc />
     public override void Validate()
     {

@@ -8,6 +8,7 @@ using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Text.Json;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -16,7 +17,7 @@ namespace AspNet.Security.OAuth.Keycloak;
 /// <summary>
 /// Defines a handler for authentication using Keycloak.
 /// </summary>
-public partial class KeycloakAuthenticationHandler : OAuthHandler<KeycloakAuthenticationOptions>
+public partial class KeycloakAuthenticationHandler : OAuthHandler<KeycloakAuthenticationOptions>, IAuthenticationSignOutHandler
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="KeycloakAuthenticationHandler"/> class.
@@ -32,6 +33,21 @@ public partial class KeycloakAuthenticationHandler : OAuthHandler<KeycloakAuthen
         [NotNull] ISystemClock clock)
         : base(options, logger, encoder, clock)
     {
+    }
+
+    public async Task SignOutAsync(AuthenticationProperties? properties)
+    {
+        var parameters = new Dictionary<string, string?>
+        {
+            { "client_id", Options.ClientId },
+            // { "post_logout_redirect_uri", properties?.RedirectUri }
+        };
+        
+        var signOutQuery = QueryHelpers.AddQueryString(this.Options.SignOutUrl!, parameters);
+        using var request = new HttpRequestMessage(HttpMethod.Get, signOutQuery);
+        request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        request.Headers.Add("Cookie", $"{this.Request.Cookies[".AspNetCore.Cookies"]}");
+        await Backchannel.SendAsync(request, HttpCompletionOption.ResponseContentRead, Context.RequestAborted);
     }
 
     /// <inheritdoc />

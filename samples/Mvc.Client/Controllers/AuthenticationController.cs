@@ -4,7 +4,11 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using System.Web;
+using AspNet.Security.OAuth.Keycloak;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Mvc.Client.Extensions;
 
@@ -12,6 +16,13 @@ namespace Mvc.Client.Controllers;
 
 public class AuthenticationController : Controller
 {
+    private readonly IAuthenticationService authenticationService;
+
+    public AuthenticationController(IAuthenticationService authenticationService)
+    {
+        this.authenticationService = authenticationService;
+    }
+
     [HttpGet("~/signin")]
     public async Task<IActionResult> SignIn() => View("SignIn", await HttpContext.GetExternalProvidersAsync());
 
@@ -38,12 +49,18 @@ public class AuthenticationController : Controller
 
     [HttpGet("~/signout")]
     [HttpPost("~/signout")]
-    public IActionResult SignOutCurrentUser()
+    public async Task SignOutCurrentUser()
     {
         // Instruct the cookies middleware to delete the local cookie created
         // when the user agent is redirected from the external identity provider
         // after a successful authentication flow (e.g Google or Facebook).
-        return SignOut(new AuthenticationProperties { RedirectUri = "/" },
-            CookieAuthenticationDefaults.AuthenticationScheme);
+        // return SignOut(new AuthenticationProperties { RedirectUri = "/" },
+        // CookieAuthenticationDefaults.AuthenticationScheme);
+        //var result = SignOut(new AuthenticationProperties { RedirectUri = "/" }, CookieAuthenticationDefaults.AuthenticationScheme);
+        //return result;
+
+        await this.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+        await this.HttpContext.SignOutAsync(OpenIdConnectDefaults.AuthenticationScheme);
     }
 }
