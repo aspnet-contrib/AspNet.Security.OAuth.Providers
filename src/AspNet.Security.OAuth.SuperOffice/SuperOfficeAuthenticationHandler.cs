@@ -38,20 +38,13 @@ public partial class SuperOfficeAuthenticationHandler : OAuthHandler<SuperOffice
     {
         var contextId = await ProcessIdTokenAndGetContactIdentifierAsync(tokens, properties, identity);
 
-        if (string.IsNullOrEmpty(contextId.TenantId))
+        if (string.IsNullOrEmpty(contextId))
         {
             throw new InvalidOperationException("An error occurred trying to obtain the context identifier from the current user's identity claims.");
         }
 
-        if (string.IsNullOrEmpty(contextId.WebApiUrl))
-        {
-            throw new InvalidOperationException("An error occurred trying to obtain the WebApi from the current user's identity claims.");
-        }
-
-        // UserInfo endpoint must support multiple subdomains, i.e. sod, sod1, online, online1, online2, ...
-        // - subdomain only becomes known from id token
-        // Example WebApi Url https://sod.superoffice.com/Cust12345/api/
-        var userInfoEndpoint = string.Format(CultureInfo.InvariantCulture, SuperOfficeAuthenticationConstants.FormatStrings.UserInfoEndpoint, contextId.WebApiUrl);
+        // Add contextId to the Options.UserInformationEndpoint (https://sod.superoffice.com/{0}/api/v1/user/currentPrincipal).
+        var userInfoEndpoint = string.Format(CultureInfo.InvariantCulture, Options.UserInformationEndpoint, contextId);
 
         // Get the SuperOffice user principal.
         using var request = new HttpRequestMessage(HttpMethod.Get, userInfoEndpoint);
@@ -76,7 +69,7 @@ public partial class SuperOfficeAuthenticationHandler : OAuthHandler<SuperOffice
         return new AuthenticationTicket(context.Principal!, context.Properties, Scheme.Name);
     }
 
-    private async Task<(string TenantId, string WebApiUrl)> ProcessIdTokenAndGetContactIdentifierAsync(
+    private async Task<string> ProcessIdTokenAndGetContactIdentifierAsync(
         [NotNull] OAuthTokenResponse tokens,
         [NotNull] AuthenticationProperties properties,
         [NotNull] ClaimsIdentity identity)
@@ -92,18 +85,12 @@ public partial class SuperOfficeAuthenticationHandler : OAuthHandler<SuperOffice
         var tokenValidationResult = await ValidateAsync(idToken, Options.TokenValidationParameters.Clone());
 
         var contextIdentifier = string.Empty;
-        var webApiUrl = string.Empty;
 
         foreach (var claim in tokenValidationResult.ClaimsIdentity.Claims)
         {
             if (claim.Type == SuperOfficeAuthenticationConstants.ClaimNames.ContextIdentifier)
             {
                 contextIdentifier = claim.Value;
-            }
-
-            if (claim.Type == SuperOfficeAuthenticationConstants.ClaimNames.WebApiUrl)
-            {
-                webApiUrl = claim.Value;
             }
 
             if (claim.Type == SuperOfficeAuthenticationConstants.ClaimNames.SubjectIdentifier)
@@ -122,7 +109,7 @@ public partial class SuperOfficeAuthenticationHandler : OAuthHandler<SuperOffice
             }
         }
 
-        return await Task.FromResult((contextIdentifier, webApiUrl));
+        return contextIdentifier;
     }
 
     /// <summary>
