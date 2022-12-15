@@ -36,14 +36,14 @@ public partial class SuperOfficeAuthenticationHandler : OAuthHandler<SuperOffice
         [NotNull] AuthenticationProperties properties,
         [NotNull] OAuthTokenResponse tokens)
     {
-        (string tenantId, string webApiUrl) = await ProcessIdTokenAndGetContactIdentifierAsync(tokens, properties, identity);
+        var contextId = await ProcessIdTokenAndGetContactIdentifierAsync(tokens, properties, identity);
 
-        if (string.IsNullOrEmpty(tenantId))
+        if (string.IsNullOrEmpty(contextId.TenantId))
         {
             throw new InvalidOperationException("An error occurred trying to obtain the context identifier from the current user's identity claims.");
         }
 
-        if (string.IsNullOrEmpty(webApiUrl))
+        if (string.IsNullOrEmpty(contextId.WebApiUrl))
         {
             throw new InvalidOperationException("An error occurred trying to obtain the WebApi from the current user's identity claims.");
         }
@@ -51,7 +51,7 @@ public partial class SuperOfficeAuthenticationHandler : OAuthHandler<SuperOffice
         // UserInfo endpoint must support multiple subdomains, i.e. sod, sod1, online, online1, online2, ...
         // - subdomain only becomes known from id token
         // Example WebApi Url https://sod.superoffice.com/Cust12345/api/
-        var userInfoEndpoint = string.Format(CultureInfo.InvariantCulture, SuperOfficeAuthenticationConstants.FormatStrings.UserInfoEndpoint, webApiUrl);
+        var userInfoEndpoint = string.Format(CultureInfo.InvariantCulture, SuperOfficeAuthenticationConstants.FormatStrings.UserInfoEndpoint, contextId.WebApiUrl);
 
         // Get the SuperOffice user principal.
         using var request = new HttpRequestMessage(HttpMethod.Get, userInfoEndpoint);
