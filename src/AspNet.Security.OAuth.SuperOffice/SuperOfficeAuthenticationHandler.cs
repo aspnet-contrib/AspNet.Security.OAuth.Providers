@@ -122,7 +122,7 @@ public partial class SuperOfficeAuthenticationHandler : OAuthHandler<SuperOffice
             }
         }
 
-        return (contextIdentifier, webApiUrl);
+        return await Task.FromResult((contextIdentifier, webApiUrl));
     }
 
     /// <summary>
