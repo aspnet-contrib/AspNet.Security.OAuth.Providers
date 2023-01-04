@@ -222,6 +222,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{C2CA4B38-A
 		docs\workweixin.md = docs\workweixin.md
 		docs\xumm.md = docs\xumm.md
 		docs\zendesk.md = docs\zendesk.md
+		docs\kook.md = docs\kook.md
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.Basecamp", "src\AspNet.Security.OAuth.Basecamp\AspNet.Security.OAuth.Basecamp.csproj", "{42306484-B2BF-4B52-B950-E0CDFA58B02A}"
@@ -294,6 +295,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.Smartsheet", "src\AspNet.Security.OAuth.Smartsheet\AspNet.Security.OAuth.Smartsheet.csproj", "{68862DC5-65B7-4517-B909-AB334F9FCF6E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.Huawei", "src\AspNet.Security.OAuth.Huawei\AspNet.Security.OAuth.Huawei.csproj", "{E3CF7FFC-56A0-4033-87A9-BB3080CF030E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.Kook", "src\AspNet.Security.OAuth.Kook\AspNet.Security.OAuth.Kook.csproj", "{101681FB-569F-4941-B943-2AD380039BE0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -677,6 +680,10 @@ Global
 		{E3CF7FFC-56A0-4033-87A9-BB3080CF030E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E3CF7FFC-56A0-4033-87A9-BB3080CF030E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E3CF7FFC-56A0-4033-87A9-BB3080CF030E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{101681FB-569F-4941-B943-2AD380039BE0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{101681FB-569F-4941-B943-2AD380039BE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{101681FB-569F-4941-B943-2AD380039BE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{101681FB-569F-4941-B943-2AD380039BE0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -782,6 +789,7 @@ Global
 		{8E42EF81-A630-4BDB-B642-3F20C863F9BE} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 		{68862DC5-65B7-4517-B909-AB334F9FCF6E} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 		{E3CF7FFC-56A0-4033-87A9-BB3080CF030E} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
+		{101681FB-569F-4941-B943-2AD380039BE0} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C7B54DE2-6407-4802-AD9C-CE54BF414C8C}
