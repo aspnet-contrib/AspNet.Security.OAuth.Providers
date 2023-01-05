@@ -9,9 +9,9 @@ services.AddAuthentication(options => /* Auth configuration */)
             options.ClientId = "my-client-id";
             options.ClientSecret = "my-client-secret";
 
-            // The scope get_user_info is added by default
-            // Please make sure the scope get_user_info is enabled in your KOOK developer center
-            // If you do not want to use the default scope indeed, try remove it by
+            // The scope get_user_info is added by default.
+            // Please make sure the scope get_user_info is enabled in your KOOK developer center.
+            // If you do not want to use the default scope indeed, remove it as shown below:
             // options.Scope.Remove("get_user_info");
         });
 ```
