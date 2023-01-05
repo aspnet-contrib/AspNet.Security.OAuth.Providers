@@ -25,11 +25,9 @@ public class KookAuthenticationOptions : OAuthOptions
         ClaimActions.MapJsonKey(ClaimTypes.Name, "username");
         ClaimActions.MapJsonKey(ClaimTypes.MobilePhone, "mobile");
         ClaimActions.MapJsonKey(KookAuthenticationConstants.Claims.IdentifyNumber, "identify_num");
-        ClaimActions.MapJsonKey(KookAuthenticationConstants.Claims.IsOnline, "online");
         ClaimActions.MapJsonKey(KookAuthenticationConstants.Claims.OperatingSystem, "os");
         ClaimActions.MapJsonKey(KookAuthenticationConstants.Claims.AvatarUrl, "avatar");
         ClaimActions.MapJsonKey(KookAuthenticationConstants.Claims.BannerUrl, "banner");
-        ClaimActions.MapJsonKey(KookAuthenticationConstants.Claims.IsBot, "bot");
         ClaimActions.MapJsonKey(KookAuthenticationConstants.Claims.IsMobileVerified, "mobile_verified");
 
         Scope.Add("get_user_info");

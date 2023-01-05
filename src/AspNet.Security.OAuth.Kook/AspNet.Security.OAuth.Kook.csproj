@@ -7,10 +7,11 @@
   <!-- TODO Remove once published to NuGet.org -->
   <PropertyGroup>
     <DisablePackageBaselineValidation>true</DisablePackageBaselineValidation>
+    <PackageValidationBaselineVersion>7.0.1</PackageValidationBaselineVersion>
   </PropertyGroup>
 
   <PropertyGroup>
-    <Description>ASP.NET Core security middleware enabling Kook authentication.</Description>
+    <Description>ASP.NET Core security middleware enabling KOOK authentication.</Description>
     <Authors>Gehongyan</Authors>
     <PackageTags>aspnetcore;authentication;kaiheila;kook;kookapp;oauth;security</PackageTags>
   </PropertyGroup>

@@ -11,8 +11,8 @@ services.AddAuthentication(options => /* Auth configuration */)
 
             // The scope get_user_info is added by default
             // Please make sure the scope get_user_info is enabled in your KOOK developer center
-            // Hence, whether to add the scope get_user_info here manually is optional
-            // options.Scope.Add("get_user_info");
+            // If you do not want to use the default scope indeed, try remove it by
+            // options.Scope.Remove("get_user_info");
         });
 ```
 

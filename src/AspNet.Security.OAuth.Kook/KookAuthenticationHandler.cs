@@ -53,8 +53,6 @@ public partial class KookAuthenticationHandler : OAuthHandler<KookAuthentication
         var principal = new ClaimsPrincipal(identity);
         var user = payload.RootElement.GetProperty("data");
 
-        identity.AddClaim(new Claim(KookAuthenticationConstants.Claims.IsBanned, (user.GetProperty("status").GetInt32() == 10).ToString()));
-
         var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, user);
         context.RunClaimActions();
 
