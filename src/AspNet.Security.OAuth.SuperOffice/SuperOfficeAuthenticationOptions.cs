@@ -160,9 +160,6 @@ public class SuperOfficeAuthenticationOptions : OAuthOptions
             FormatStrings.ClaimsIssuer,
             env);
 
-        // UserInformationEndpoint will include context identifier after authentication in SuperOfficeAuthenticationHandler.CreateTicketAsync
-        UserInformationEndpoint = string.Concat(ClaimsIssuer, FormatStrings.UserInfoEndpoint);
-
         MetadataAddress = string.Format(CultureInfo.InvariantCulture,
             FormatStrings.MetadataEndpoint,
             env);
