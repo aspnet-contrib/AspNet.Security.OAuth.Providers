@@ -45,7 +45,7 @@ public partial class SuperOfficeAuthenticationHandler : OAuthHandler<SuperOffice
 
         if (string.IsNullOrEmpty(webApiUrl))
         {
-            throw new InvalidOperationException("An error occurred trying to obtain the WebApi from the current user's identity claims.");
+            throw new InvalidOperationException("An error occurred trying to obtain the WebApi URL from the current user's identity claims.");
         }
 
         // UserInfo endpoint must support multiple subdomains, i.e. sod, sod1, online, online1, online2, ...
