@@ -24,13 +24,13 @@ public static class PingOnePostConfigureOptionsTests
         target.PostConfigure(name, options);
 
         // Assert
-        options.AuthorizationEndpoint.ShouldStartWith("https://auth.pingone.local/b775aadd-a2f3-4d88-a768-b7c85dd1af47/");
+        options.AuthorizationEndpoint.ShouldStartWith("https://auth.pingone.com/b775aadd-a2f3-4d88-a768-b7c85dd1af47/");
         Uri.TryCreate(options.AuthorizationEndpoint, UriKind.Absolute, out _).ShouldBeTrue();
 
-        options.TokenEndpoint.ShouldStartWith("https://auth.pingone.local/b775aadd-a2f3-4d88-a768-b7c85dd1af47/");
+        options.TokenEndpoint.ShouldStartWith("https://auth.pingone.com/b775aadd-a2f3-4d88-a768-b7c85dd1af47/");
         Uri.TryCreate(options.TokenEndpoint, UriKind.Absolute, out _).ShouldBeTrue();
 
-        options.UserInformationEndpoint.ShouldStartWith("https://auth.pingone.local/b775aadd-a2f3-4d88-a768-b7c85dd1af47/");
+        options.UserInformationEndpoint.ShouldStartWith("https://auth.pingone.com/b775aadd-a2f3-4d88-a768-b7c85dd1af47/");
         Uri.TryCreate(options.UserInformationEndpoint, UriKind.Absolute, out _).ShouldBeTrue();
     }
 
