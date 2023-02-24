@@ -2,7 +2,7 @@
   "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
   "items": [
     {
-      "uri": "https://developer.api.autodesk.com/authentication/v1/gettoken",
+      "uri": "https://developer.api.autodesk.com/authentication/v2/token",
       "method": "POST",
       "contentFormat": "json",
       "contentJson": {
