@@ -26,7 +26,7 @@ public class PingOnePostConfigureOptions : IPostConfigureOptions<PingOneAuthenti
 
         if (string.IsNullOrWhiteSpace(options.EnvironmentId))
         {
-            throw new ArgumentException("No PingOne EnvironmentId configured.", nameof(options));
+            throw new ArgumentException("No PingOne environment Id configured.", nameof(options));
         }
 
         options.AuthorizationEndpoint = CreateUrl(options.Domain, PingOneAuthenticationDefaults.AuthorizationEndpointPathFormat, options.EnvironmentId);
