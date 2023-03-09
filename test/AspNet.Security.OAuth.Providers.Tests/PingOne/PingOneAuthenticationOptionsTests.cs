@@ -4,8 +4,6 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using AspNet.Security.OAuth.Okta;
-
 namespace AspNet.Security.OAuth.PingOne;
 
 public static class PingOneAuthenticationOptionsTests
@@ -30,7 +28,7 @@ public static class PingOneAuthenticationOptionsTests
     public static void Validate_Throws_If_TokenEndpoint_Not_Set()
     {
         // Arrange
-        var options = new OktaAuthenticationOptions()
+        var options = new PingOneAuthenticationOptions()
         {
             AuthorizationEndpoint = "https://auth.pingone.local",
             ClientId = "ClientId",
@@ -46,7 +44,7 @@ public static class PingOneAuthenticationOptionsTests
     public static void Validate_Throws_If_UserInformationEndpoint_Not_Set()
     {
         // Arrange
-        var options = new OktaAuthenticationOptions()
+        var options = new PingOneAuthenticationOptions()
         {
             AuthorizationEndpoint = "https://auth.pingone.local",
             ClientId = "ClientId",
@@ -62,7 +60,7 @@ public static class PingOneAuthenticationOptionsTests
     public static void Validate_Does_Not_Throw_If_Uris_Are_Valid()
     {
         // Arrange
-        var options = new OktaAuthenticationOptions()
+        var options = new PingOneAuthenticationOptions()
         {
             AuthorizationEndpoint = "https://auth.pingone.local",
             ClientId = "ClientId",

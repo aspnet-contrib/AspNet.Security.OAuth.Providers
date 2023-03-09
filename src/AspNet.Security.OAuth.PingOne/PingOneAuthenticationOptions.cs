@@ -21,6 +21,7 @@ public class PingOneAuthenticationOptions : OAuthOptions
         ClaimsIssuer = PingOneAuthenticationDefaults.Issuer;
         CallbackPath = PingOneAuthenticationDefaults.CallbackPath;
         Domain = PingOneAuthenticationDefaults.Domain;
+        EnvironmentId = string.Empty;
 
         Scope.Add("openid");
         Scope.Add("profile");
@@ -44,7 +45,7 @@ public class PingOneAuthenticationOptions : OAuthOptions
     /// <summary>
     /// Gets or sets the PingOne EnvironmentId to use for authentication.
     /// </summary>
-    public string? EnvironmentId { get; set; }
+    public string EnvironmentId { get; set; }
 
     /// <inheritdoc/>
     public override void Validate()

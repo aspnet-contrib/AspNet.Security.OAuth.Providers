@@ -22,5 +22,5 @@ services.AddAuthentication(options => /* Auth configuration */)
 
 | Property Name | Property Type | Description | Default Value |
 |:--|:--|:--|:--|
-| `Domain` | `string?` | The PingOne domain to use for authentication. Can be a custom domain configured in PingOne or one of the following: `auth.pingone.com` for the North America region, `auth.pingone.ca` for the Canada region, `auth.pingone.eu` for the European Union region, or `auth.pingone.asia` for the Asia-Pacific region. | `auth.pingone.com` |
+| `Domain` | `string?` | The PingOne domain to use for authentication. Can be a custom domain configured in PingOne or one of the following: `auth.pingone.com` for the United States region, `auth.pingone.ca` for the Canada region, `auth.pingone.eu` for the European Union region, or `auth.pingone.asia` for the Asia-Pacific region. | `auth.pingone.com` |
 
