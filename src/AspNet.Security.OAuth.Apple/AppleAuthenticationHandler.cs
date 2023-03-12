@@ -101,7 +101,9 @@ public partial class AppleAuthenticationHandler : OAuthHandler<AppleAuthenticati
 
         var principal = new ClaimsPrincipal(identity);
 
-        var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, tokens.Response.RootElement);
+        var userJson = ExtractUserFromRequestForm(Request.Form["user"].ToString());
+        var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, userJson);
+
         context.RunClaimActions();
 
         await Events.CreatingTicket(context);
@@ -336,6 +338,15 @@ public partial class AppleAuthenticationHandler : OAuthHandler<AppleAuthenticati
         {
             return HandleRequestResult.Fail("Failed to retrieve user information from remote server.", properties);
         }
+    }
+
+    private static JsonElement ExtractUserFromRequestForm(string userFormValue)
+    {
+        var userJson = !string.IsNullOrWhiteSpace(userFormValue)
+                ? JsonDocument.Parse(userFormValue).RootElement
+                : new JsonElement();
+
+        return userJson;
     }
 
     private static partial class Log

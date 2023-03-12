@@ -4,9 +4,11 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using System;
 using System.Net;
 using System.Reflection;
 using System.Text.Encodings.Web;
+using System.Text.Json;
 using System.Xml.Linq;
 using AspNet.Security.OAuth.Apple;
 using AspNet.Security.OAuth.Infrastructure;
@@ -214,6 +216,45 @@ public abstract class OAuthTests<TOptions> : ITestOutputHelperAccessor
 
         // Assert
         onCreatingTicketEventRaised.ShouldBeTrue();
+    }
+
+    [Fact]
+    public async Task OnCreatingTicket_Is_Raised_With_Correct_User_Object_By_Handler()
+    {
+        // Arrange
+        bool onCreatingTicketEventRaised = false;
+        var userJson = new JsonElement();
+
+        void ConfigureServices(IServiceCollection services)
+        {
+            services.PostConfigureAll<TOptions>((options) =>
+            {
+                options.Events.OnCreatingTicket = (context) =>
+                {
+                    userJson = context.User;
+                    onCreatingTicketEventRaised = true;
+                    return Task.CompletedTask;
+                };
+
+                if (options is AppleAuthenticationOptions appleOptions)
+                {
+                    appleOptions.TokenValidationParameters.ValidateLifetime = false;
+                }
+            });
+        }
+
+        using var server = CreateTestServer(ConfigureServices);
+
+        // Act
+        var claims = await AuthenticateUserAsync(server);
+
+        // Assert
+        onCreatingTicketEventRaised.ShouldBeTrue();
+        userJson.ShouldSatisfyAllConditions(
+            () => userJson.ShouldNotBe(default),
+            () => userJson.GetProperty("name").ShouldNotBe(default),
+            () => userJson.GetProperty("name").GetString("firstName").ShouldNotBeNull(),
+            () => userJson.GetProperty("name").GetString("lastName").ShouldNotBeNull());
     }
 
     /// <summary>
