@@ -34,12 +34,12 @@ public static class AutodeskAuthenticationDefaults
     /// <summary>
     /// Default value for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
     /// </summary>
-    public static readonly string AuthorizationEndpoint = "https://developer.api.autodesk.com/authentication/v1/authorize";
+    public static readonly string AuthorizationEndpoint = "https://developer.api.autodesk.com/authentication/v2/authorize";
 
     /// <summary>
     /// Default value for <see cref="OAuthOptions.TokenEndpoint"/>.
     /// </summary>
-    public static readonly string TokenEndpoint = "https://developer.api.autodesk.com/authentication/v1/gettoken";
+    public static readonly string TokenEndpoint = "https://developer.api.autodesk.com/authentication/v2/token";
 
     /// <summary>
     /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
