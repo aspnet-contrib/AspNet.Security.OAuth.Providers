@@ -16,7 +16,7 @@ services.AddAuthentication(options => /* Auth configuration */)
 
 | Property Name | Property Type | Description | Default Value |
 |:--|:--|:--|:--|
-| `EnvironmentId` | `string` | The PingOne EnvironmentId to use for authentication. This can be found on the `environment.properties` page of the PingOne admin portal for your account. | `null` |
+| `EnvironmentId` | `string` | The PingOne EnvironmentId to use for authentication. This can be found on the `environment.properties` page of the PingOne admin portal for your account. | `String.Empty` |
 
 ## Optional Settings
 
