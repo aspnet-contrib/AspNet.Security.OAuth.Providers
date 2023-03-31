@@ -4,6 +4,7 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using System.Security.Authentication;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Text.Json;
@@ -50,6 +51,12 @@ public partial class VkontakteAuthenticationHandler : OAuthHandler<VkontakteAuth
         }
 
         using var container = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
+
+        if (container.RootElement.TryGetProperty("error", out _))
+        {
+            throw new AuthenticationException();
+        }
+
         using var enumerator = container.RootElement.GetProperty("response").EnumerateArray();
         var payload = enumerator.First();
 
