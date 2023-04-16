@@ -4,9 +4,7 @@
     <TargetFrameworks>$(DefaultNetCoreTargetFramework)</TargetFrameworks>
   </PropertyGroup>
 
-  <!-- TODO Remove once published to NuGet.org -->
   <PropertyGroup>
-    <DisablePackageBaselineValidation>true</DisablePackageBaselineValidation>
     <PackageValidationBaselineVersion>7.0.2</PackageValidationBaselineVersion>
   </PropertyGroup>
 
