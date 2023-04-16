@@ -5,9 +5,7 @@
   </PropertyGroup>
 
 
-  <!-- TODO Remove once published to NuGet.org -->
   <PropertyGroup>
-    <DisablePackageBaselineValidation>true</DisablePackageBaselineValidation>
     <PackageValidationBaselineVersion>7.0.1</PackageValidationBaselineVersion>
   </PropertyGroup>
 
