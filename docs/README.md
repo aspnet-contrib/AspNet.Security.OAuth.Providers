@@ -61,6 +61,7 @@ covered by the section above.
 | Odnoklassniki | _Optional_ | [Documentation](odnoklassniki.md "Odnoklassniki provider documentation") |
 | Okta | **Required** | [Documentation](okta.md "Okta provider documentation") |
 | Patreon | _Optional_ | [Documentation](patreon.md "Patreon provider documentation") |
+| PingOne | _Optional_ | [Documentation](pingone.md "PingOne provider documentation") |
 | QQ | _Optional_ | [Documentation](qq.md "QQ provider documentation") |
 | Reddit | _Optional_ | [Documentation](reddit.md "Reddit provider documentation") |
 | Salesforce | _Optional_ | [Documentation](salesforce.md "Salesforce provider documentation") |
