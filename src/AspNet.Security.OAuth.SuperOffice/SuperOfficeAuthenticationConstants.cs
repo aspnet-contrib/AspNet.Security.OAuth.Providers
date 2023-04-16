@@ -131,7 +131,7 @@ public static class SuperOfficeAuthenticationConstants
         /// </summary>
         /// <remarks>The final user information URL contains the protocol, host and tenant.</remarks>
         /// <example>https://sod.superoffice.com/Cust12345/api/v1/user/currentPrincipal</example>
-        public const string UserInfoEndpoint = "/{0}/api/v1/user/currentPrincipal";
+        public const string UserInfoEndpoint = "{0}v1/user/currentPrincipal";
     }
 
     public static class PrincipalNames
