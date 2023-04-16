@@ -43,7 +43,7 @@ public class PingOneAuthenticationOptions : OAuthOptions
     public string Domain { get; set; }
 
     /// <summary>
-    /// Gets or sets the PingOne EnvironmentId to use for authentication.
+    /// Gets or sets the PingOne environment Id to use for authentication.
     /// </summary>
     public string EnvironmentId { get; set; }
 
