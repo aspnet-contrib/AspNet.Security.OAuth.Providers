@@ -1,10 +1,10 @@
 {
   "sdk": {
-    "version": "7.0.100"
+    "version": "8.0.100-preview.3.23178.7"
   },
 
   "tools": {
-    "dotnet": "7.0.100"
+    "dotnet": "8.0.100-preview.3.23178.7"
   },
 
   "msbuild-sdks": {

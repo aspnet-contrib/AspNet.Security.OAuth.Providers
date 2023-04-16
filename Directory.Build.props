@@ -3,7 +3,7 @@
   <Import Project="Sdk.props" Sdk="Microsoft.DotNet.Arcade.Sdk" />
 
   <PropertyGroup>
-    <DefaultNetCoreTargetFramework>net7.0</DefaultNetCoreTargetFramework>
+    <DefaultNetCoreTargetFramework>net8.0</DefaultNetCoreTargetFramework>
     <LangVersion>latest</LangVersion>
     <NoWarn>$(NoWarn);CS1591</NoWarn>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
@@ -42,6 +42,7 @@
     <PackageIconFullPath>$(MSBuildThisFileDirectory)package-icon.png</PackageIconFullPath>
     <PackageProjectUrl>https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers</PackageProjectUrl>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>git://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers</RepositoryUrl>
   </PropertyGroup>
@@ -69,6 +70,13 @@
     <EnablePackageValidation>$(IsPackable)</EnablePackageValidation>
   </PropertyGroup>
 
+  <!--
+    TODO Remove after 8.0.0 release
+  -->
+  <PropertyGroup>
+    <NoWarn>$(NoWarn);PKV006</NoWarn>
+  </PropertyGroup>
+
   <ItemGroup>
     <AdditionalFiles Include="$(MSBuildThisFileDirectory)stylecop.json" Link="stylecop.json" />
     <PackageReference Include="StyleCop.Analyzers" PrivateAssets="All" />
@@ -87,6 +95,10 @@
     <Using Include="JetBrains.Annotations" />
     <Using Include="Microsoft.AspNetCore.Authentication" />
     <Using Include="Microsoft.AspNetCore.Authentication.OAuth" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)$(PackageReadmeFile)" Pack="True" PackagePath="" />
   </ItemGroup>
 
 </Project>
