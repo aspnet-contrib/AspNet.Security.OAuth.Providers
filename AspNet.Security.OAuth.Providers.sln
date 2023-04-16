@@ -297,6 +297,7 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.Huawei", "src\AspNet.Security.OAuth.Huawei\AspNet.Security.OAuth.Huawei.csproj", "{E3CF7FFC-56A0-4033-87A9-BB3080CF030E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.Kook", "src\AspNet.Security.OAuth.Kook\AspNet.Security.OAuth.Kook.csproj", "{101681FB-569F-4941-B943-2AD380039BE0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.PingOne", "src\AspNet.Security.OAuth.PingOne\AspNet.Security.OAuth.PingOne.csproj", "{CF8C4235-6AE6-404E-B572-4FF4E85AB5FF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -684,6 +685,10 @@ Global
 		{101681FB-569F-4941-B943-2AD380039BE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{101681FB-569F-4941-B943-2AD380039BE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{101681FB-569F-4941-B943-2AD380039BE0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF8C4235-6AE6-404E-B572-4FF4E85AB5FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF8C4235-6AE6-404E-B572-4FF4E85AB5FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF8C4235-6AE6-404E-B572-4FF4E85AB5FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF8C4235-6AE6-404E-B572-4FF4E85AB5FF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -790,6 +795,7 @@ Global
 		{68862DC5-65B7-4517-B909-AB334F9FCF6E} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 		{E3CF7FFC-56A0-4033-87A9-BB3080CF030E} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 		{101681FB-569F-4941-B943-2AD380039BE0} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
+		{CF8C4235-6AE6-404E-B572-4FF4E85AB5FF} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C7B54DE2-6407-4802-AD9C-CE54BF414C8C}

@@ -2,11 +2,21 @@ name: build
 
 on:
   push:
-    branches: [ dev, rel/* ]
+    branches: [ dev*, rel/* ]
     tags: [ '*' ]
   pull_request:
-    branches: [ dev, rel/* ]
+    branches: [ dev*, rel/* ]
   workflow_dispatch:
+
+env:
+  DOTNET_MULTILEVEL_LOOKUP: 0
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
+  DOTNET_SYSTEM_CONSOLE_ALLOW_ANSI_COLOR_REDIRECTION: 1
+  NUGET_XMLDOC_MODE: skip
+  TERM: xterm
+
+permissions:
+  contents: read
 
 jobs:
   build:
@@ -54,19 +64,11 @@ jobs:
     - name: Build, Test and Package
       if: ${{ runner.os == 'Windows' }}
       run: eng\common\CIBuild.cmd -configuration Release -prepareMachine
-      env:
-        DOTNET_MULTILEVEL_LOOKUP: 0
-        DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
-        NUGET_XMLDOC_MODE: skip
 
     - name: Build, Test and Package
       shell: pwsh
       if: ${{ runner.os != 'Windows' }}
       run: ./eng/common/cibuild.sh -configuration Release -prepareMachine
-      env:
-        DOTNET_MULTILEVEL_LOOKUP: 0
-        DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
-        NUGET_XMLDOC_MODE: skip
 
     - name: Publish logs
       uses: actions/upload-artifact@v3
@@ -88,10 +90,72 @@ jobs:
         name: testresults-${{ matrix.os_name }}
         path: ./artifacts/TestResults/Release
 
+  validate-packages:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Download packages
+      uses: actions/download-artifact@v3
+      with:
+        name: packages-windows
+
+    - name: Setup .NET SDK
+      uses: actions/setup-dotnet@v3
+
+    - name: Validate NuGet packages
+      shell: pwsh
+      run: |
+        dotnet tool install --global dotnet-validate --version 0.0.1-preview.304
+        $packages = Get-ChildItem -Filter "*.nupkg" | ForEach-Object { $_.FullName }
+        $invalidPackages = 0
+        foreach ($package in $packages) {
+          dotnet validate package local $package
+          if ($LASTEXITCODE -ne 0) {
+            $invalidPackages++
+          }
+        }
+        if ($invalidPackages -gt 0) {
+          Write-Output "::error::$invalidPackages NuGet package(s) failed validation."
+        }
+
+  publish-myget:
+    needs: validate-packages
+    runs-on: ubuntu-latest
+    if: |
+      github.event.repository.fork == false &&
+      (github.ref == format('refs/heads/{0}', github.event.repository.default_branch) ||
+       startsWith(github.ref, 'refs/heads/dev') ||
+       startsWith(github.ref, 'refs/heads/rel/') ||
+       startsWith(github.ref, 'refs/tags/'))
+    steps:
+
+    - name: Download packages
+      uses: actions/download-artifact@v3
+      with:
+        name: packages-windows
+
+    - name: Setup .NET SDK
+      uses: actions/setup-dotnet@v3
+
     - name: Push NuGet packages to aspnet-contrib MyGet
-      if: ${{ github.repository_owner == 'aspnet-contrib' && (github.ref == 'refs/heads/dev' || startsWith(github.ref, 'refs/heads/rel/') || startsWith(github.ref, 'refs/tags/')) && runner.os == 'Windows' }}
-      run: nuget push "artifacts\packages\Release\Shipping\*.nupkg" -ApiKey ${{ secrets.MYGET_API_KEY }} -SkipDuplicate -Source https://www.myget.org/F/aspnet-contrib/api/v3/index.json
+      run: nuget push "*.nupkg" -ApiKey ${{ secrets.MYGET_API_KEY }} -SkipDuplicate -Source https://www.myget.org/F/aspnet-contrib/api/v3/index.json
+
+  publish-nuget:
+    needs: validate-packages
+    runs-on: ubuntu-latest
+    if: |
+      github.event.repository.fork == false &&
+      startsWith(github.ref, 'refs/tags/')
+    steps:
+
+    - name: Download packages
+      uses: actions/download-artifact@v3
+      with:
+        name: packages-windows
+
+    - name: Setup .NET SDK
+      uses: actions/setup-dotnet@v3
 
     - name: Push NuGet packages to NuGet.org
-      if: ${{ github.repository_owner == 'aspnet-contrib' && startsWith(github.ref, 'refs/tags/') && runner.os == 'Windows' }}
-      run: nuget push "artifacts\packages\Release\Shipping\*.nupkg" -ApiKey ${{ secrets.NUGET_API_KEY }} -SkipDuplicate -Source https://api.nuget.org/v3/index.json
+      run: nuget push "*.nupkg" -ApiKey ${{ secrets.NUGET_API_KEY }} -SkipDuplicate -Source https://api.nuget.org/v3/index.json

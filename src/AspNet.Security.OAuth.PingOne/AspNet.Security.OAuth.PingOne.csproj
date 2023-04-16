@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>$(DefaultNetCoreTargetFramework)</TargetFrameworks>
+  </PropertyGroup>
+
+
+  <PropertyGroup>
+    <PackageValidationBaselineVersion>7.0.1</PackageValidationBaselineVersion>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Description>ASP.NET Core security provider enabling PingOne authentication.</Description>
+    <Authors>Drew Killion</Authors>
+    <PackageTags>pingone;aspnetcore;authentication;oauth;security</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="JetBrains.Annotations" PrivateAssets="All" />
+  </ItemGroup>
+
+</Project>
