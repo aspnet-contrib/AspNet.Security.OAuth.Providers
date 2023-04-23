@@ -3,6 +3,7 @@
   "items": [
     {
       "uri": "https://account.xiaomi.com/oauth2/token?client_id=my-client-id&client_secret=my-client-secret&code=a6ed8e7f-471f-44f1-903b-65946475f351&redirect_uri=http%3A%2F%2Flocalhost%2Fsignin-xiaomi&grant_type=authorization_code",
+      "method": "POST",
       "contentFormat": "json",
       "contentJson": {
         "access_token": "secret-access-token",
