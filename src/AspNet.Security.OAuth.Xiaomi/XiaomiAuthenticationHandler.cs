@@ -54,7 +54,7 @@ public partial class XiaomiAuthenticationHandler : OAuthHandler<XiaomiAuthentica
         if (!rootElement.TryGetProperty("data", out JsonElement dataElement))
         {
             var errorCode = rootElement.GetString("code")!;
-            throw new Exception($"An error (Code:{errorCode}) occurred while retrieving user information.");
+            throw new Exception($"An error (Code: {errorCode}) occurred while retrieving user information.");
         }
 
         identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, dataElement.GetString("unionId")!, ClaimValueTypes.String, Options.ClaimsIssuer));
