@@ -5,6 +5,7 @@
  */
 
 using System.Net;
+using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Encodings.Web;
@@ -85,9 +86,10 @@ public partial class XiaomiAuthenticationHandler : OAuthHandler<XiaomiAuthentica
             context.Properties.Items.Remove(OAuthConstants.CodeVerifierKey);
         }
 
-        var address = QueryHelpers.AddQueryString(Options.TokenEndpoint, tokenRequestParameters);
+        using var request = new HttpRequestMessage(HttpMethod.Post, Options.TokenEndpoint);
+        request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-        using var request = new HttpRequestMessage(HttpMethod.Post, address);
+        request.Content = new FormUrlEncodedContent(tokenRequestParameters);
 
         using var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
         if (!response.IsSuccessStatusCode)
