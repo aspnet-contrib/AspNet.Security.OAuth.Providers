@@ -88,7 +88,6 @@ public partial class XiaomiAuthenticationHandler : OAuthHandler<XiaomiAuthentica
 
         using var request = new HttpRequestMessage(HttpMethod.Post, Options.TokenEndpoint);
         request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
         request.Content = new FormUrlEncodedContent(tokenRequestParameters);
 
         using var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
