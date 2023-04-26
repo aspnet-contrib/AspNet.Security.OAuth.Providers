@@ -101,7 +101,7 @@ public partial class XiaomiAuthenticationHandler : OAuthHandler<XiaomiAuthentica
 
         var payload = JsonDocument.Parse(json);
 
-        var errorCode = payload.RootElement.GetString("errcode");
+        var errorCode = payload.RootElement.GetString("error");
         if (!string.IsNullOrEmpty(errorCode))
         {
             Log.ExchangeCodeErrorCode(Logger, errorCode, response.Headers.ToString(), json);
