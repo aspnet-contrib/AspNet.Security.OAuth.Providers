@@ -9,7 +9,7 @@ namespace AspNet.Security.OAuth.Instagram;
 /// <summary>
 /// Default values used by the Instagram authentication middleware.
 /// </summary>
-public static class InstagramAuthenticationDefaults
+public static class InstagramnDefaults
 {
     /// <summary>
     /// Default value for <see cref="AuthenticationScheme.Name"/>.
