@@ -4,9 +4,6 @@
     <TargetFrameworks>$(DefaultNetCoreTargetFramework)</TargetFrameworks>
   </PropertyGroup>
 
-  <!--
-    TODO Remove post-release
-  -->
   <PropertyGroup>
     <PackageValidationBaselineVersion>7.0.1</PackageValidationBaselineVersion>
   </PropertyGroup>
