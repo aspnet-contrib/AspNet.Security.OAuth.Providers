@@ -51,13 +51,13 @@ public class RedditTests : OAuthTests<RedditAuthenticationOptions>
 
         options.Scope.Add("scope-1");
 
-        string redirectUrl = "https://my-site.local/signin-reddit";
+        var redirectUrl = "https://my-site.local/signin-reddit";
 
         // Act
         Uri actual = await BuildChallengeUriAsync(
             options,
             redirectUrl,
-            (options, loggerFactory, encoder, clock) => new RedditAuthenticationHandler(options, loggerFactory, encoder, clock));
+            (options, loggerFactory, encoder) => new RedditAuthenticationHandler(options, loggerFactory, encoder));
 
         // Assert
         actual.ShouldNotBeNull();

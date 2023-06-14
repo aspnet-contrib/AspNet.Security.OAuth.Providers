@@ -71,7 +71,7 @@ public class XeroTests : OAuthTests<XeroAuthenticationOptions>
         Uri actual = await BuildChallengeUriAsync(
             options,
             redirectUrl,
-            (options, loggerFactory, encoder, clock) => new XeroAuthenticationHandler(options, loggerFactory, encoder, clock));
+            (options, loggerFactory, encoder) => new XeroAuthenticationHandler(options, loggerFactory, encoder));
 
         // Assert
         actual.ShouldNotBeNull();
@@ -112,7 +112,7 @@ public class XeroTests : OAuthTests<XeroAuthenticationOptions>
         using var server = CreateTestServer(ConfigureServices);
 
         // Act
-        var exception = await Assert.ThrowsAsync<Exception>(() => AuthenticateUserAsync(server));
+        var exception = await Assert.ThrowsAsync<AuthenticationFailureException>(() => AuthenticateUserAsync(server));
 
         // Assert
         exception.InnerException.ShouldBeOfType<SecurityTokenValidationException>();

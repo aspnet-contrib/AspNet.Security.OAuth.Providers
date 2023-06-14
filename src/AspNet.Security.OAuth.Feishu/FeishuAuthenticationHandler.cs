@@ -18,9 +18,8 @@ public partial class FeishuAuthenticationHandler : OAuthHandler<FeishuAuthentica
     public FeishuAuthenticationHandler(
         [NotNull] IOptionsMonitor<FeishuAuthenticationOptions> options,
         [NotNull] ILoggerFactory logger,
-        [NotNull] UrlEncoder encoder,
-        [NotNull] ISystemClock clock)
-        : base(options, logger, encoder, clock)
+        [NotNull] UrlEncoder encoder)
+        : base(options, logger, encoder)
     {
     }
 

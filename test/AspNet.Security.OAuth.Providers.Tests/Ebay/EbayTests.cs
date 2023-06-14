@@ -56,13 +56,13 @@ public class EbayTests : OAuthTests<EbayAuthenticationOptions>
         options.Scope.Add("scope-1");
         options.Scope.Add("scope-2");
 
-        string redirectUrl = "https://my-site.local/signin-ebay";
+        var redirectUrl = "https://my-site.local/signin-ebay";
 
         // Act
         Uri actual = await BuildChallengeUriAsync(
             options,
             redirectUrl,
-            (options, loggerFactory, encoder, clock) => new EbayAuthenticationHandler(options, loggerFactory, encoder, clock));
+            (options, loggerFactory, encoder) => new EbayAuthenticationHandler(options, loggerFactory, encoder));
 
         // Assert
         actual.ShouldNotBeNull();

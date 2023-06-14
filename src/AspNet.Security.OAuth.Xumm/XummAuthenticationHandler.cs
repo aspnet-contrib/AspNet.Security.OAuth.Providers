@@ -19,9 +19,8 @@ public partial class XummAuthenticationHandler : OAuthHandler<XummAuthentication
     public XummAuthenticationHandler(
         [NotNull] IOptionsMonitor<XummAuthenticationOptions> options,
         [NotNull] ILoggerFactory logger,
-        [NotNull] UrlEncoder encoder,
-        [NotNull] ISystemClock clock)
-        : base(options, logger, encoder, clock)
+        [NotNull] UrlEncoder encoder)
+        : base(options, logger, encoder)
     {
     }
 

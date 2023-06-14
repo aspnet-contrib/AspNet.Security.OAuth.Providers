@@ -19,9 +19,8 @@ public partial class YammerAuthenticationHandler : OAuthHandler<YammerAuthentica
     public YammerAuthenticationHandler(
         [NotNull] IOptionsMonitor<YammerAuthenticationOptions> options,
         [NotNull] ILoggerFactory logger,
-        [NotNull] UrlEncoder encoder,
-        [NotNull] ISystemClock clock)
-        : base(options, logger, encoder, clock)
+        [NotNull] UrlEncoder encoder)
+        : base(options, logger, encoder)
     {
     }
 

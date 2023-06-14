@@ -18,9 +18,8 @@ public partial class BitbucketAuthenticationHandler : OAuthHandler<BitbucketAuth
     public BitbucketAuthenticationHandler(
         [NotNull] IOptionsMonitor<BitbucketAuthenticationOptions> options,
         [NotNull] ILoggerFactory logger,
-        [NotNull] UrlEncoder encoder,
-        [NotNull] ISystemClock clock)
-        : base(options, logger, encoder, clock)
+        [NotNull] UrlEncoder encoder)
+        : base(options, logger, encoder)
     {
     }
 

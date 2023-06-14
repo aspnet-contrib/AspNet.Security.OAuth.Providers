@@ -20,9 +20,8 @@ public partial class DigitalOceanAuthenticationHandler : OAuthHandler<DigitalOce
     public DigitalOceanAuthenticationHandler(
         [NotNull] IOptionsMonitor<DigitalOceanAuthenticationOptions> options,
         [NotNull] ILoggerFactory logger,
-        [NotNull] UrlEncoder encoder,
-        [NotNull] ISystemClock clock)
-        : base(options, logger, encoder, clock)
+        [NotNull] UrlEncoder encoder)
+        : base(options, logger, encoder)
     {
     }
 

@@ -21,9 +21,8 @@ public partial class MixcloudAuthenticationHandler : OAuthHandler<MixcloudAuthen
     public MixcloudAuthenticationHandler(
         [NotNull] IOptionsMonitor<MixcloudAuthenticationOptions> options,
         [NotNull] ILoggerFactory logger,
-        [NotNull] UrlEncoder encoder,
-        [NotNull] ISystemClock clock)
-        : base(options, logger, encoder, clock)
+        [NotNull] UrlEncoder encoder)
+        : base(options, logger, encoder)
     {
     }
 

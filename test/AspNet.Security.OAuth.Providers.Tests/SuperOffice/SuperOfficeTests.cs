@@ -97,7 +97,7 @@ public class SuperOfficeTests : OAuthTests<SuperOfficeAuthenticationOptions>
         using var server = CreateTestServer(ConfigureServices);
 
         // Act
-        var exception = await Assert.ThrowsAsync<Exception>(() => AuthenticateUserAsync(server));
+        var exception = await Assert.ThrowsAsync<AuthenticationFailureException>(() => AuthenticateUserAsync(server));
 
         // Assert
         exception.InnerException.ShouldBeOfType<SecurityTokenValidationException>();

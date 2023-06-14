@@ -19,9 +19,8 @@ public partial class QuickBooksAuthenticationHandler : OAuthHandler<QuickBooksAu
     public QuickBooksAuthenticationHandler(
         [NotNull] IOptionsMonitor<QuickBooksAuthenticationOptions> options,
         [NotNull] ILoggerFactory logger,
-        [NotNull] UrlEncoder encoder,
-        [NotNull] ISystemClock clock)
-        : base(options, logger, encoder, clock)
+        [NotNull] UrlEncoder encoder)
+        : base(options, logger, encoder)
     {
     }
 

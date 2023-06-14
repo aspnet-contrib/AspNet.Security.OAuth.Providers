@@ -52,13 +52,13 @@ public class AdobeIOTests : OAuthTests<AdobeIOAuthenticationOptions>
         // Arrange
         var options = new AdobeIOAuthenticationOptions();
 
-        string redirectUrl = "https://my-site.local/signin-adobeio";
+        var redirectUrl = "https://my-site.local/signin-adobeio";
 
         // Act
         Uri actual = await BuildChallengeUriAsync(
             options,
             redirectUrl,
-            (options, loggerFactory, encoder, clock) => new AdobeIOAuthenticationHandler(options, loggerFactory, encoder, clock));
+            (options, loggerFactory, encoder) => new AdobeIOAuthenticationHandler(options, loggerFactory, encoder));
 
         // Assert
         actual.ShouldNotBeNull();

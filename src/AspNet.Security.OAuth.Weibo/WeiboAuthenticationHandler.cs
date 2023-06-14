@@ -20,9 +20,8 @@ public partial class WeiboAuthenticationHandler : OAuthHandler<WeiboAuthenticati
     public WeiboAuthenticationHandler(
         [NotNull] IOptionsMonitor<WeiboAuthenticationOptions> options,
         [NotNull] ILoggerFactory logger,
-        [NotNull] UrlEncoder encoder,
-        [NotNull] ISystemClock clock)
-        : base(options, logger, encoder, clock)
+        [NotNull] UrlEncoder encoder)
+        : base(options, logger, encoder)
     {
     }
 

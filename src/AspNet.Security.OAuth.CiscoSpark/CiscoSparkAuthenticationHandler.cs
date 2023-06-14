@@ -18,9 +18,8 @@ public partial class CiscoSparkAuthenticationHandler : OAuthHandler<CiscoSparkAu
     public CiscoSparkAuthenticationHandler(
         [NotNull] IOptionsMonitor<CiscoSparkAuthenticationOptions> options,
         [NotNull] ILoggerFactory logger,
-        [NotNull] UrlEncoder encoder,
-        [NotNull] ISystemClock clock)
-        : base(options, logger, encoder, clock)
+        [NotNull] UrlEncoder encoder)
+        : base(options, logger, encoder)
     {
     }
 

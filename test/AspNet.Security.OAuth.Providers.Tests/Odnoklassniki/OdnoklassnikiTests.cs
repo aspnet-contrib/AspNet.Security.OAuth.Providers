@@ -63,13 +63,13 @@ public class OdnoklassnikiTests : OAuthTests<OdnoklassnikiAuthenticationOptions>
 
         options.Scope.Add("scope-1");
 
-        string redirectUrl = "https://my-site.local/signin-odnoklassniki";
+        var redirectUrl = "https://my-site.local/signin-odnoklassniki";
 
         // Act
         Uri actual = await BuildChallengeUriAsync(
             options,
             redirectUrl,
-            (options, loggerFactory, encoder, clock) => new OdnoklassnikiAuthenticationHandler(options, loggerFactory, encoder, clock));
+            (options, loggerFactory, encoder) => new OdnoklassnikiAuthenticationHandler(options, loggerFactory, encoder));
 
         // Assert
         actual.ShouldNotBeNull();

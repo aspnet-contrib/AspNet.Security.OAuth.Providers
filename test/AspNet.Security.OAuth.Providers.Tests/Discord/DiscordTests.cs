@@ -44,7 +44,7 @@ public class DiscordTests : OAuthTests<DiscordAuthenticationOptions>
     [Fact]
     public async Task Authorization_Endpoint_Uri_by_Default_Does_Not_Contain_Prompt()
     {
-        bool doesNotContainPrompt = false;
+        var doesNotContainPrompt = false;
 
         void ConfigureServices(IServiceCollection services)
         {
@@ -75,7 +75,7 @@ public class DiscordTests : OAuthTests<DiscordAuthenticationOptions>
     [Fact]
     public async Task Authorization_Endpoint_Uri_Contains_Prompt_None()
     {
-        bool promptIsSetToNone = false;
+        var promptIsSetToNone = false;
 
         void ConfigureServices(IServiceCollection services)
         {
@@ -107,7 +107,7 @@ public class DiscordTests : OAuthTests<DiscordAuthenticationOptions>
     [Fact]
     public async Task Authorization_Endpoint_Uri_Contains_Prompt_Consent()
     {
-        bool promptIsSetToConsent = false;
+        var promptIsSetToConsent = false;
 
         void ConfigureServices(IServiceCollection services)
         {
@@ -150,13 +150,13 @@ public class DiscordTests : OAuthTests<DiscordAuthenticationOptions>
 
         options.Scope.Add("scope-1");
 
-        string redirectUrl = "https://my-site.local/signin-discord";
+        var redirectUrl = "https://my-site.local/signin-discord";
 
         // Act
         Uri actual = await BuildChallengeUriAsync(
             options,
             redirectUrl,
-            (options, loggerFactory, encoder, clock) => new DiscordAuthenticationHandler(options, loggerFactory, encoder, clock));
+            (options, loggerFactory, encoder) => new DiscordAuthenticationHandler(options, loggerFactory, encoder));
 
         // Assert
         actual.ShouldNotBeNull();

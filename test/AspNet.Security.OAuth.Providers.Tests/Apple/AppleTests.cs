@@ -178,7 +178,7 @@ public class AppleTests : OAuthTests<AppleAuthenticationOptions>
         using var server = CreateTestServer(ConfigureServices);
 
         // Act
-        var exception = await Assert.ThrowsAsync<Exception>(() => AuthenticateUserAsync(server));
+        var exception = await Assert.ThrowsAsync<AuthenticationFailureException>(() => AuthenticateUserAsync(server));
 
         // Assert
         exception.InnerException.ShouldBeOfType<SecurityTokenValidationException>();
@@ -202,7 +202,7 @@ public class AppleTests : OAuthTests<AppleAuthenticationOptions>
         using var server = CreateTestServer(ConfigureServices);
 
         // Act
-        var exception = await Assert.ThrowsAsync<Exception>(() => AuthenticateUserAsync(server));
+        var exception = await Assert.ThrowsAsync<AuthenticationFailureException>(() => AuthenticateUserAsync(server));
 
         // Assert
         exception.InnerException.ShouldBeOfType<SecurityTokenValidationException>();
@@ -226,7 +226,7 @@ public class AppleTests : OAuthTests<AppleAuthenticationOptions>
         using var server = CreateTestServer(ConfigureServices);
 
         // Act
-        var exception = await Assert.ThrowsAsync<Exception>(() => AuthenticateUserAsync(server));
+        var exception = await Assert.ThrowsAsync<AuthenticationFailureException>(() => AuthenticateUserAsync(server));
 
         // Assert
         exception.InnerException.ShouldBeOfType<SecurityTokenValidationException>();
@@ -249,7 +249,7 @@ public class AppleTests : OAuthTests<AppleAuthenticationOptions>
         using var server = CreateTestServer(ConfigureServices);
 
         // Act
-        var exception = await Assert.ThrowsAsync<Exception>(() => AuthenticateUserAsync(server));
+        var exception = await Assert.ThrowsAsync<AuthenticationFailureException>(() => AuthenticateUserAsync(server));
 
         // Assert
         exception.InnerException.ShouldNotBeNull();
@@ -273,7 +273,7 @@ public class AppleTests : OAuthTests<AppleAuthenticationOptions>
         using var server = CreateTestServer(ConfigureServices);
 
         // Act
-        var exception = await Assert.ThrowsAsync<Exception>(() => AuthenticateUserAsync(server));
+        var exception = await Assert.ThrowsAsync<AuthenticationFailureException>(() => AuthenticateUserAsync(server));
 
         // Assert
         exception.InnerException.ShouldNotBeNull();
@@ -299,7 +299,7 @@ public class AppleTests : OAuthTests<AppleAuthenticationOptions>
         using var server = CreateTestServer(ConfigureServices);
 
         // Act
-        var exception = await Assert.ThrowsAsync<Exception>(() => AuthenticateUserAsync(server));
+        var exception = await Assert.ThrowsAsync<AuthenticationFailureException>(() => AuthenticateUserAsync(server));
 
         // Assert
         exception.InnerException.ShouldNotBeNull();
@@ -312,8 +312,8 @@ public class AppleTests : OAuthTests<AppleAuthenticationOptions>
     public async Task Custom_Events_Are_Raised_By_Handler()
     {
         // Arrange
-        bool onGenerateClientSecretEventRaised = false;
-        bool onValidateIdTokenEventRaised = false;
+        var onGenerateClientSecretEventRaised = false;
+        var onValidateIdTokenEventRaised = false;
 
         void ConfigureServices(IServiceCollection services)
         {
@@ -363,8 +363,8 @@ public class AppleTests : OAuthTests<AppleAuthenticationOptions>
     public async Task Custom_Events_Are_Raised_By_Handler_Using_Custom_Events_Type()
     {
         // Arrange
-        bool onGenerateClientSecretEventRaised = false;
-        bool onValidateIdTokenEventRaised = false;
+        var onGenerateClientSecretEventRaised = false;
+        var onValidateIdTokenEventRaised = false;
 
         void ConfigureServices(IServiceCollection services)
         {
@@ -429,13 +429,13 @@ public class AppleTests : OAuthTests<AppleAuthenticationOptions>
             UsePkce = usePkce,
         };
 
-        string redirectUrl = "https://my-site.local/signin-zalo";
+        var redirectUrl = "https://my-site.local/signin-zalo";
 
         // Act
         Uri actual = await BuildChallengeUriAsync(
             options,
             redirectUrl,
-            (options, loggerFactory, encoder, clock) => new AppleAuthenticationHandler(options, loggerFactory, encoder, clock));
+            (options, loggerFactory, encoder) => new AppleAuthenticationHandler(options, loggerFactory, encoder));
 
         // Assert
         actual.ShouldNotBeNull();

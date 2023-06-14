@@ -16,9 +16,8 @@ public class MyobAuthenticationHandler : OAuthHandler<MyobAuthenticationOptions>
     public MyobAuthenticationHandler(
         [NotNull] IOptionsMonitor<MyobAuthenticationOptions> options,
         [NotNull] ILoggerFactory logger,
-        [NotNull] UrlEncoder encoder,
-        [NotNull] ISystemClock clock)
-        : base(options, logger, encoder, clock)
+        [NotNull] UrlEncoder encoder)
+        : base(options, logger, encoder)
     {
     }
 
