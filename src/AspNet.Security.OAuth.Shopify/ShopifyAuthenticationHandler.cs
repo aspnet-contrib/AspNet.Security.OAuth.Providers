@@ -23,9 +23,8 @@ public partial class ShopifyAuthenticationHandler : OAuthHandler<ShopifyAuthenti
     public ShopifyAuthenticationHandler(
         [NotNull] IOptionsMonitor<ShopifyAuthenticationOptions> options,
         [NotNull] ILoggerFactory logger,
-        [NotNull] UrlEncoder encoder,
-        [NotNull] ISystemClock clock)
-        : base(options, logger, encoder, clock)
+        [NotNull] UrlEncoder encoder)
+        : base(options, logger, encoder)
     {
     }
 
@@ -65,7 +64,7 @@ public partial class ShopifyAuthenticationHandler : OAuthHandler<ShopifyAuthenti
 
             if (expiresInProperty.TryGetInt32(out var expiresIn))
             {
-                var expires = Clock.UtcNow.AddSeconds(expiresIn);
+                var expires = TimeProvider.GetUtcNow().AddSeconds(expiresIn);
                 identity.AddClaim(new Claim(ClaimTypes.Expiration, expires.ToString("O", CultureInfo.InvariantCulture), ClaimValueTypes.DateTime));
             }
 

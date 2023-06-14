@@ -44,7 +44,7 @@ public class DropboxTests : OAuthTests<DropboxAuthenticationOptions>
     [InlineData("legacy")]
     public async Task RedirectUri_Contains_Access_Type(string value)
     {
-        bool accessTypeIsSet = false;
+        var accessTypeIsSet = false;
 
         void ConfigureServices(IServiceCollection services)
         {
@@ -76,7 +76,7 @@ public class DropboxTests : OAuthTests<DropboxAuthenticationOptions>
     [Fact]
     public async Task Response_Contains_Refresh_Token()
     {
-        bool refreshTokenIsPresent = false;
+        var refreshTokenIsPresent = false;
 
         void ConfigureServices(IServiceCollection services)
         {
@@ -116,13 +116,13 @@ public class DropboxTests : OAuthTests<DropboxAuthenticationOptions>
             UsePkce = usePkce,
         };
 
-        string redirectUrl = "https://my-site.local/signin-dropbox";
+        var redirectUrl = "https://my-site.local/signin-dropbox";
 
         // Act
         Uri actual = await BuildChallengeUriAsync(
             options,
             redirectUrl,
-            (options, loggerFactory, encoder, clock) => new DropboxAuthenticationHandler(options, loggerFactory, encoder, clock));
+            (options, loggerFactory, encoder) => new DropboxAuthenticationHandler(options, loggerFactory, encoder));
 
         // Assert
         actual.ShouldNotBeNull();

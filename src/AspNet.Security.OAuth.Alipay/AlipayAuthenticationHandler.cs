@@ -27,9 +27,8 @@ public partial class AlipayAuthenticationHandler : OAuthHandler<AlipayAuthentica
     public AlipayAuthenticationHandler(
         [NotNull] IOptionsMonitor<AlipayAuthenticationOptions> options,
         [NotNull] ILoggerFactory logger,
-        [NotNull] UrlEncoder encoder,
-        [NotNull] ISystemClock clock)
-        : base(options, logger, encoder, clock)
+        [NotNull] UrlEncoder encoder)
+        : base(options, logger, encoder)
     {
     }
 
@@ -57,7 +56,7 @@ public partial class AlipayAuthenticationHandler : OAuthHandler<AlipayAuthentica
             ["grant_type"] = "authorization_code",
             ["method"] = "alipay.system.oauth.token",
             ["sign_type"] = "RSA2",
-            ["timestamp"] = Clock.UtcNow.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture),
+            ["timestamp"] = TimeProvider.GetUtcNow().ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture),
             ["version"] = "1.0",
         };
         tokenRequestParameters.Add("sign", GetRSA2Signature(tokenRequestParameters));
@@ -105,7 +104,7 @@ public partial class AlipayAuthenticationHandler : OAuthHandler<AlipayAuthentica
             ["format"] = "JSON",
             ["method"] = "alipay.user.info.share",
             ["sign_type"] = "RSA2",
-            ["timestamp"] = Clock.UtcNow.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture),
+            ["timestamp"] = TimeProvider.GetUtcNow().ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture),
             ["version"] = "1.0",
         };
         parameters.Add("sign", GetRSA2Signature(parameters));

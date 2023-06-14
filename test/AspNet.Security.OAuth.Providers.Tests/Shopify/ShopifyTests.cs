@@ -72,13 +72,13 @@ public class ShopifyTests : OAuthTests<ShopifyAuthenticationOptions>
         properties.Items["GrantOptions"] = "per-user";
         properties.Items["ShopName"] = "Apple";
 
-        string redirectUrl = "https://my-site.local/signin-shopify";
+        var redirectUrl = "https://my-site.local/signin-shopify";
 
         // Act
         Uri actual = await BuildChallengeUriAsync(
             options,
             redirectUrl,
-            (options, loggerFactory, encoder, clock) => new ShopifyAuthenticationHandler(options, loggerFactory, encoder, clock),
+            (options, loggerFactory, encoder) => new ShopifyAuthenticationHandler(options, loggerFactory, encoder),
             properties);
 
         // Assert

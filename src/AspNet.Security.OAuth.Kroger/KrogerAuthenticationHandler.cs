@@ -24,13 +24,11 @@ public partial class KrogerAuthenticationHandler : OAuthHandler<KrogerAuthentica
     /// <param name="options">The authentication options.</param>
     /// <param name="logger">The logger to use.</param>
     /// <param name="encoder">The URL encoder to use.</param>
-    /// <param name="clock">The system clock to use.</param>
     public KrogerAuthenticationHandler(
         IOptionsMonitor<KrogerAuthenticationOptions> options,
         ILoggerFactory logger,
-        UrlEncoder encoder,
-        ISystemClock clock)
-        : base(options, logger, encoder, clock)
+        UrlEncoder encoder)
+        : base(options, logger, encoder)
     {
     }
 

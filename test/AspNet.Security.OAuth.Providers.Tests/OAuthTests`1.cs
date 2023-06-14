@@ -134,7 +134,7 @@ public abstract class OAuthTests<TOptions> : ITestOutputHelperAccessor
     public async Task OnCreatingTicket_Is_Raised_By_Handler()
     {
         // Arrange
-        bool onCreatingTicketEventRaised = false;
+        var onCreatingTicketEventRaised = false;
 
         void ConfigureServices(IServiceCollection services)
         {
@@ -166,7 +166,7 @@ public abstract class OAuthTests<TOptions> : ITestOutputHelperAccessor
     public async Task OnCreatingTicket_Is_Raised_By_Handler_Using_Custom_Events_Type()
     {
         // Arrange
-        bool onCreatingTicketEventRaised = false;
+        var onCreatingTicketEventRaised = false;
 
         void ConfigureServices(IServiceCollection services)
         {
@@ -261,7 +261,7 @@ public abstract class OAuthTests<TOptions> : ITestOutputHelperAccessor
             result.Content.Headers.ContentType.ShouldNotBeNull();
             result.Content.Headers.ContentType!.MediaType.ShouldBe("text/xml");
 
-            string xml = await result.Content.ReadAsStringAsync();
+            var xml = await result.Content.ReadAsStringAsync();
 
             element = XElement.Parse(xml);
         }
@@ -288,7 +288,7 @@ public abstract class OAuthTests<TOptions> : ITestOutputHelperAccessor
     {
         actual.ShouldContainKey(claimType);
 
-        string actualValue = actual[claimType].Value;
+        var actualValue = actual[claimType].Value;
 
         // Parse date strings as DateTimeOffsets so that local time zone differences
         // do not cause claims which are ISO date values to fail to assert correctly.
@@ -306,7 +306,7 @@ public abstract class OAuthTests<TOptions> : ITestOutputHelperAccessor
     protected async Task<Uri> BuildChallengeUriAsync<THandler>(
         TOptions options,
         string redirectUrl,
-        Func<IOptionsMonitor<TOptions>, ILoggerFactory, UrlEncoder, ISystemClock, THandler> factory,
+        Func<IOptionsMonitor<TOptions>, ILoggerFactory, UrlEncoder, THandler> factory,
         AuthenticationProperties? properties = null)
         where THandler : OAuthHandler<TOptions>
     {
@@ -342,18 +342,17 @@ public abstract class OAuthTests<TOptions> : ITestOutputHelperAccessor
         var optionsMonitor = mock.Object;
         var loggerFactory = NullLoggerFactory.Instance;
         var encoder = UrlEncoder.Default;
-        var clock = new SystemClock();
 
-        var handler = factory(optionsMonitor, loggerFactory, encoder, clock);
+        var handler = factory(optionsMonitor, loggerFactory, encoder);
 
         await handler.InitializeAsync(scheme, context);
 
         var type = handler.GetType();
         var method = type.GetMethod("BuildChallengeUrl", BindingFlags.NonPublic | BindingFlags.Instance);
 
-        object[] parameters = new object[] { properties, redirectUrl };
+        var parameters = new object[] { properties, redirectUrl };
 
-        string url = (string)method!.Invoke(handler, parameters)!;
+        var url = (string)method!.Invoke(handler, parameters)!;
 
         url.ShouldNotBeNullOrWhiteSpace();
         if (!Uri.TryCreate(url, UriKind.Absolute, out var uri))

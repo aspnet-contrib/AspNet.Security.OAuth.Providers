@@ -27,13 +27,11 @@ public partial class AppleAuthenticationHandler : OAuthHandler<AppleAuthenticati
     /// <param name="options">The authentication options.</param>
     /// <param name="logger">The logger to use.</param>
     /// <param name="encoder">The URL encoder to use.</param>
-    /// <param name="clock">The system clock to use.</param>
     public AppleAuthenticationHandler(
         [NotNull] IOptionsMonitor<AppleAuthenticationOptions> options,
         [NotNull] ILoggerFactory logger,
-        [NotNull] UrlEncoder encoder,
-        [NotNull] ISystemClock clock)
-        : base(options, logger, encoder, clock)
+        [NotNull] UrlEncoder encoder)
+        : base(options, logger, encoder)
     {
     }
 
@@ -52,7 +50,7 @@ public partial class AppleAuthenticationHandler : OAuthHandler<AppleAuthenticati
         [NotNull] AuthenticationProperties properties,
         [NotNull] string redirectUri)
     {
-        string challengeUrl = base.BuildChallengeUrl(properties, redirectUri);
+        var challengeUrl = base.BuildChallengeUrl(properties, redirectUri);
 
         // Apple requires the response mode to be form_post when the email or name scopes are requested
         return QueryHelpers.AddQueryString(challengeUrl, "response_mode", "form_post");
@@ -67,7 +65,7 @@ public partial class AppleAuthenticationHandler : OAuthHandler<AppleAuthenticati
         [NotNull] AuthenticationProperties properties,
         [NotNull] OAuthTokenResponse tokens)
     {
-        string? idToken = tokens.Response!.RootElement.GetString("id_token");
+        var idToken = tokens.Response!.RootElement.GetString("id_token");
 
         Log.CreatingTicket(Logger);
 
@@ -186,7 +184,7 @@ public partial class AppleAuthenticationHandler : OAuthHandler<AppleAuthenticati
 
         if (properties == null)
         {
-            return HandleRequestResult.Fail("The oauth state was missing or invalid.");
+            return HandleRequestResult.Fail("The OAuth state was missing or invalid.");
         }
 
         // OAuth2 10.12 CSRF
@@ -302,11 +300,11 @@ public partial class AppleAuthenticationHandler : OAuthHandler<AppleAuthenticati
 
             if (!string.IsNullOrEmpty(tokens.ExpiresIn))
             {
-                if (int.TryParse(tokens.ExpiresIn, NumberStyles.Integer, CultureInfo.InvariantCulture, out int value))
+                if (int.TryParse(tokens.ExpiresIn, NumberStyles.Integer, CultureInfo.InvariantCulture, out var value))
                 {
                     // https://www.w3.org/TR/xmlschema-2/#dateTime
                     // https://msdn.microsoft.com/en-us/library/az4se3k1(v=vs.110).aspx
-                    var expiresAt = Clock.UtcNow + TimeSpan.FromSeconds(value);
+                    var expiresAt = TimeProvider.GetUtcNow().AddSeconds(value);
 
                     authTokens.Add(new AuthenticationToken()
                     {
@@ -316,7 +314,7 @@ public partial class AppleAuthenticationHandler : OAuthHandler<AppleAuthenticati
                 }
             }
 
-            string? idToken = tokens.Response?.RootElement.GetString("id_token");
+            var idToken = tokens.Response?.RootElement.GetString("id_token");
 
             if (!string.IsNullOrEmpty(idToken))
             {

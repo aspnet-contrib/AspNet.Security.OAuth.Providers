@@ -20,9 +20,8 @@ public partial class UntappdAuthenticationHandler : OAuthHandler<UntappdAuthenti
     public UntappdAuthenticationHandler(
         [NotNull] IOptionsMonitor<UntappdAuthenticationOptions> options,
         [NotNull] ILoggerFactory logger,
-        [NotNull] UrlEncoder encoder,
-        [NotNull] ISystemClock clock)
-        : base(options, logger, encoder, clock)
+        [NotNull] UrlEncoder encoder)
+        : base(options, logger, encoder)
     {
     }
 

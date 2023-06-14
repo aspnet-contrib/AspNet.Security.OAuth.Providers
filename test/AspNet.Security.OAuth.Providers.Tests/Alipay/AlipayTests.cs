@@ -19,7 +19,7 @@ public class AlipayTests : OAuthTests<AlipayAuthenticationOptions>
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
     {
-        builder.Services.AddSingleton<ISystemClock, FixedClock>();
+        builder.Services.AddSingleton<TimeProvider, FixedClock>();
         builder.AddAlipay(options =>
         {
             ConfigureDefaults(builder, options);
@@ -59,13 +59,13 @@ public class AlipayTests : OAuthTests<AlipayAuthenticationOptions>
 
         options.Scope.Add("scope-1");
 
-        string redirectUrl = "https://my-site.local/signin-alipay";
+        var redirectUrl = "https://my-site.local/signin-alipay";
 
         // Act
         Uri actual = await BuildChallengeUriAsync(
             options,
             redirectUrl,
-            (options, loggerFactory, encoder, clock) => new AlipayAuthenticationHandler(options, loggerFactory, encoder, clock));
+            (options, loggerFactory, encoder) => new AlipayAuthenticationHandler(options, loggerFactory, encoder));
 
         // Assert
         actual.ShouldNotBeNull();
@@ -91,8 +91,8 @@ public class AlipayTests : OAuthTests<AlipayAuthenticationOptions>
         }
     }
 
-    private sealed class FixedClock : ISystemClock
+    private sealed class FixedClock : TimeProvider
     {
-        public DateTimeOffset UtcNow => new(2019, 12, 14, 22, 22, 22, TimeSpan.Zero);
+        public override DateTimeOffset GetUtcNow() => new(2019, 12, 14, 22, 22, 22, TimeSpan.Zero);
     }
 }

@@ -63,13 +63,13 @@ public class WeiboTests : OAuthTests<WeiboAuthenticationOptions>
         options.Scope.Add("scope-1");
         options.Scope.Add("scope-2");
 
-        string redirectUrl = "https://my-site.local/signin-weibo";
+        var redirectUrl = "https://my-site.local/signin-weibo";
 
         // Act
         Uri actual = await BuildChallengeUriAsync(
             options,
             redirectUrl,
-            (options, loggerFactory, encoder, clock) => new WeiboAuthenticationHandler(options, loggerFactory, encoder, clock));
+            (options, loggerFactory, encoder) => new WeiboAuthenticationHandler(options, loggerFactory, encoder));
 
         // Assert
         actual.ShouldNotBeNull();

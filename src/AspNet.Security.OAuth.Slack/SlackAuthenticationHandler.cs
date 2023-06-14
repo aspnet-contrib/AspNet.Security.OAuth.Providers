@@ -19,9 +19,8 @@ public partial class SlackAuthenticationHandler : OAuthHandler<SlackAuthenticati
     public SlackAuthenticationHandler(
         [NotNull] IOptionsMonitor<SlackAuthenticationOptions> options,
         [NotNull] ILoggerFactory logger,
-        [NotNull] UrlEncoder encoder,
-        [NotNull] ISystemClock clock)
-        : base(options, logger, encoder, clock)
+        [NotNull] UrlEncoder encoder)
+        : base(options, logger, encoder)
     {
     }
 

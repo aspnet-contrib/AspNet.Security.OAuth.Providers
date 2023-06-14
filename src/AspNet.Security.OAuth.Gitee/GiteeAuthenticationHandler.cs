@@ -19,9 +19,8 @@ public partial class GiteeAuthenticationHandler : OAuthHandler<GiteeAuthenticati
     public GiteeAuthenticationHandler(
         [NotNull] IOptionsMonitor<GiteeAuthenticationOptions> options,
         [NotNull] ILoggerFactory logger,
-        [NotNull] UrlEncoder encoder,
-        [NotNull] ISystemClock clock)
-        : base(options, logger, encoder, clock)
+        [NotNull] UrlEncoder encoder)
+        : base(options, logger, encoder)
     {
     }
 

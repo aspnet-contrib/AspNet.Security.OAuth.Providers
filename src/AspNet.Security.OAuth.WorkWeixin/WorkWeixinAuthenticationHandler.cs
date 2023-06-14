@@ -22,9 +22,8 @@ public partial class WorkWeixinAuthenticationHandler : OAuthHandler<WorkWeixinAu
     public WorkWeixinAuthenticationHandler(
         [NotNull] IOptionsMonitor<WorkWeixinAuthenticationOptions> options,
         [NotNull] ILoggerFactory logger,
-        [NotNull] UrlEncoder encoder,
-        [NotNull] ISystemClock clock)
-        : base(options, logger, encoder, clock)
+        [NotNull] UrlEncoder encoder)
+        : base(options, logger, encoder)
     {
     }
 
