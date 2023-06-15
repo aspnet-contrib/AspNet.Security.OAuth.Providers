@@ -81,7 +81,7 @@ public partial class AppleAuthenticationHandler : OAuthHandler<AppleAuthenticati
 
         if (string.IsNullOrWhiteSpace(idToken))
         {
-            throw new InvalidOperationException("No Apple ID token was returned in the OAuth token response.");
+            throw new AuthenticationFailureException("No Apple ID token was returned in the OAuth token response.");
         }
 
         if (Options.ValidateTokens)
@@ -147,7 +147,7 @@ public partial class AppleAuthenticationHandler : OAuthHandler<AppleAuthenticati
         }
         catch (Exception ex)
         {
-            throw new InvalidOperationException("Failed to parse JWT for claims from Apple ID token.", ex);
+            throw new AuthenticationFailureException("Failed to parse JWT for claims from Apple ID token.", ex);
         }
     }
 

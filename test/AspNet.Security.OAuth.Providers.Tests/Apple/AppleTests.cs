@@ -253,7 +253,7 @@ public class AppleTests : OAuthTests<AppleAuthenticationOptions>
 
         // Assert
         exception.InnerException.ShouldNotBeNull();
-        exception.InnerException.ShouldBeOfType<InvalidOperationException>();
+        exception.InnerException.ShouldBeOfType<AuthenticationFailureException>();
         exception.InnerException.Message.ShouldBe("No Apple ID token was returned in the OAuth token response.");
     }
 
@@ -303,7 +303,7 @@ public class AppleTests : OAuthTests<AppleAuthenticationOptions>
 
         // Assert
         exception.InnerException.ShouldNotBeNull();
-        exception.InnerException.ShouldBeOfType<InvalidOperationException>();
+        exception.InnerException.ShouldBeOfType<AuthenticationFailureException>();
         exception.InnerException!.Message.ShouldNotBeNull();
         exception.InnerException.Message.ShouldBe("No Apple ID token was returned in the OAuth token response.");
     }

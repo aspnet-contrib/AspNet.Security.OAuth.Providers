@@ -35,7 +35,7 @@ public partial class WorkWeixinAuthenticationHandler : OAuthHandler<WorkWeixinAu
         (var errorCode, var userId) = await GetUserIdentifierAsync(tokens);
         if (errorCode != 0 || string.IsNullOrEmpty(userId))
         {
-            throw new Exception($"An error (Code:{errorCode}) occurred while retrieving the user identifier.");
+            throw new AuthenticationFailureException($"An error (Code:{errorCode}) occurred while retrieving the user identifier.");
         }
 
         // See https://open.work.weixin.qq.com/api/doc/90000/90135/90196 for details.
@@ -60,7 +60,7 @@ public partial class WorkWeixinAuthenticationHandler : OAuthHandler<WorkWeixinAu
         if (errorCode != 0)
         {
             Log.UserProfileErrorCode(Logger, errorCode, payload.RootElement.GetString("errmsg"));
-            throw new Exception("An error occurred while retrieving user information.");
+            throw new AuthenticationFailureException("An error occurred while retrieving user information.");
         }
 
         var principal = new ClaimsPrincipal(identity);

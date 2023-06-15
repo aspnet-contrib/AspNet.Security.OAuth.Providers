@@ -38,7 +38,7 @@ public partial class EVEOnlineAuthenticationHandler : OAuthHandler<EVEOnlineAuth
 
         if (string.IsNullOrWhiteSpace(accessToken))
         {
-            throw new InvalidOperationException("No access token was returned in the OAuth token.");
+            throw new AuthenticationFailureException("No access token was returned in the OAuth token.");
         }
 
         var tokenClaims = ExtractClaimsFromToken(accessToken);
@@ -89,7 +89,7 @@ public partial class EVEOnlineAuthenticationHandler : OAuthHandler<EVEOnlineAuth
         }
         catch (Exception ex)
         {
-            throw new InvalidOperationException("Failed to parse JWT for claims from EVEOnline token.", ex);
+            throw new AuthenticationFailureException("Failed to parse JWT for claims from EVEOnline token.", ex);
         }
     }
 
@@ -99,7 +99,7 @@ public partial class EVEOnlineAuthenticationHandler : OAuthHandler<EVEOnlineAuth
 
         if (extractedClaim == null)
         {
-            throw new InvalidOperationException($"The claim '{claim}' is missing from the EVEOnline JWT.");
+            throw new AuthenticationFailureException($"The claim '{claim}' is missing from the EVEOnline JWT.");
         }
 
         return extractedClaim;
@@ -109,7 +109,7 @@ public partial class EVEOnlineAuthenticationHandler : OAuthHandler<EVEOnlineAuth
     {
         if (!long.TryParse(unixTimeStamp, NumberStyles.Integer, CultureInfo.InvariantCulture, out long unixTime))
         {
-            throw new InvalidOperationException($"The value {unixTimeStamp} of the 'exp' claim is not a valid 64-bit integer.");
+            throw new AuthenticationFailureException($"The value {unixTimeStamp} of the 'exp' claim is not a valid 64-bit integer.");
         }
 
         DateTimeOffset offset = DateTimeOffset.FromUnixTimeSeconds(unixTime);
