@@ -174,7 +174,7 @@ public partial class SuperOfficeAuthenticationHandler : OAuthHandler<SuperOffice
 
             if (result.Exception != null || !result.IsValid)
             {
-                throw new AuthenticationFailureException("SuperOffice ID token validation failed.", result.Exception);
+                throw new SecurityTokenValidationException("SuperOffice ID token validation failed.", result.Exception);
             }
 
             return result;
