@@ -39,12 +39,12 @@ public partial class SuperOfficeAuthenticationHandler : OAuthHandler<SuperOffice
 
         if (string.IsNullOrEmpty(tenantId))
         {
-            throw new InvalidOperationException("An error occurred trying to obtain the context identifier from the current user's identity claims.");
+            throw new AuthenticationFailureException("An error occurred trying to obtain the context identifier from the current user's identity claims.");
         }
 
         if (string.IsNullOrEmpty(webApiUrl))
         {
-            throw new InvalidOperationException("An error occurred trying to obtain the WebApi URL from the current user's identity claims.");
+            throw new AuthenticationFailureException("An error occurred trying to obtain the WebApi URL from the current user's identity claims.");
         }
 
         // UserInfo endpoint must support multiple subdomains, i.e. sod, sod1, online, online1, online2, ...
@@ -174,7 +174,7 @@ public partial class SuperOfficeAuthenticationHandler : OAuthHandler<SuperOffice
 
             if (result.Exception != null || !result.IsValid)
             {
-                throw new SecurityTokenValidationException("SuperOffice ID token validation failed.", result.Exception);
+                throw new AuthenticationFailureException("SuperOffice ID token validation failed.", result.Exception);
             }
 
             return result;

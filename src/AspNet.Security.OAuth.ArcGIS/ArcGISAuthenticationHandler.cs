@@ -51,7 +51,7 @@ public partial class ArcGISAuthenticationHandler : OAuthHandler<ArcGISAuthentica
             // See https://developers.arcgis.com/authentication/server-based-user-logins/ for more information
             Log.UserProfileError(Logger, error.GetString("code"), error.GetString("message"));
 
-            throw new InvalidOperationException("An error occurred while retrieving the user profile.");
+            throw new AuthenticationFailureException("An error occurred while retrieving the user profile.");
         }
 
         var principal = new ClaimsPrincipal(identity);

@@ -126,12 +126,12 @@ public partial class AlipayAuthenticationHandler : OAuthHandler<AlipayAuthentica
         if (!rootElement.TryGetProperty("alipay_user_info_share_response", out JsonElement mainElement))
         {
             var errorCode = rootElement.GetProperty("error_response").GetProperty("code").GetString()!;
-            throw new Exception($"An error (Code:{errorCode}) occurred while retrieving user information.");
+            throw new AuthenticationFailureException($"An error (Code:{errorCode}) occurred while retrieving user information.");
         }
 
         if (!ValidateReturnCode(mainElement, out var code))
         {
-            throw new Exception($"An error (Code:{code}) occurred while retrieving user information.");
+            throw new AuthenticationFailureException($"An error (Code:{code}) occurred while retrieving user information.");
         }
 
         identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, mainElement.GetString("user_id")!, ClaimValueTypes.String, Options.ClaimsIssuer));

@@ -47,7 +47,7 @@ public class EVEOnlineAuthenticationOptions : OAuthOptions
                     break;
 
                 default:
-                    throw new ArgumentException($"Server '{value}' is unsupported.", nameof(value));
+                    throw new ArgumentOutOfRangeException($"Server '{value}' is unsupported.", value, nameof(value));
             }
         }
     }

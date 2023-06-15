@@ -41,10 +41,7 @@ public class AmoCrmAuthenticationOptions : OAuthOptions
         get => _account;
         set
         {
-            if (string.IsNullOrWhiteSpace(value))
-            {
-                throw new ArgumentException("Account cannot be null or white space.", nameof(value));
-            }
+            ArgumentException.ThrowIfNullOrWhiteSpace(value);
 
             _account = value;
             TokenEndpoint = string.Format(CultureInfo.InvariantCulture, AmoCrmAuthenticationDefaults.TokenEndpointFormat, value);

@@ -95,7 +95,7 @@ public partial class ShopifyAuthenticationHandler : OAuthHandler<ShopifyAuthenti
         if (!properties.Items.TryGetValue(ShopifyAuthenticationDefaults.ShopNameAuthenticationProperty, out var shopName))
         {
             Log.ShopNameMissing(Logger);
-            throw new InvalidOperationException("Shopify provider AuthenticationProperties must contain ShopNameAuthenticationProperty.");
+            throw new AuthenticationFailureException("Shopify provider AuthenticationProperties must contain ShopNameAuthenticationProperty.");
         }
 
         var authorizationEndpoint = string.Format(CultureInfo.InvariantCulture, Options.AuthorizationEndpoint, shopName);
@@ -170,7 +170,7 @@ public partial class ShopifyAuthenticationHandler : OAuthHandler<ShopifyAuthenti
             // Shop name must end with myshopify.com
             if (!shop.EndsWith(".myshopify.com", StringComparison.OrdinalIgnoreCase))
             {
-                throw new InvalidOperationException("shop parameter is malformed. It should end with .myshopify.com");
+                throw new AuthenticationFailureException("shop parameter is malformed. It should end with .myshopify.com");
             }
 
             // Strip out the "myshopify.com" suffix
@@ -184,7 +184,7 @@ public partial class ShopifyAuthenticationHandler : OAuthHandler<ShopifyAuthenti
 
             if (!string.Equals(shopNamePropertyValue, shopDns, StringComparison.OrdinalIgnoreCase))
             {
-                throw new InvalidOperationException("Received shop name does not match the shop name specified in the authentication request.");
+                throw new AuthenticationFailureException("Received shop name does not match the shop name specified in the authentication request.");
             }
         }
         catch (Exception ex)

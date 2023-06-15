@@ -66,7 +66,7 @@ public class BattleNetAuthenticationOptions : OAuthOptions
                     break;
 
                 default:
-                    throw new ArgumentException($"Region '{value}' is unsupported.", nameof(value));
+                    throw new ArgumentOutOfRangeException($"Region '{value}' is unsupported.", value, nameof(value));
             }
         }
     }
