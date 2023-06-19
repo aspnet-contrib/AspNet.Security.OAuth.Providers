@@ -49,8 +49,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.Sound
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.Instagram", "src\AspNet.Security.OAuth.Instagram\AspNet.Security.OAuth.Instagram.csproj", "{244F6383-BD8E-4B32-8741-F2F114499B1A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.Beam", "src\AspNet.Security.OAuth.Beam\AspNet.Security.OAuth.Beam.csproj", "{5D24AAFC-5E31-45B6-A5C0-F2BAC88F3E20}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.Paypal", "src\AspNet.Security.OAuth.Paypal\AspNet.Security.OAuth.Paypal.csproj", "{9AA5F2CD-3AC4-4177-A8FE-82D67A0F36AC}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.Vimeo", "src\AspNet.Security.OAuth.Vimeo\AspNet.Security.OAuth.Vimeo.csproj", "{AC651C2B-C879-41E2-96E0-78D3F0888246}"
@@ -58,8 +56,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.ArcGIS", "src\AspNet.Security.OAuth.ArcGIS\AspNet.Security.OAuth.ArcGIS.csproj", "{1302E67D-5448-407B-8B8D-709A0BA458E8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.Salesforce", "src\AspNet.Security.OAuth.Salesforce\AspNet.Security.OAuth.Salesforce.csproj", "{5881BB63-89BD-4397-A61C-69B1844F7615}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.Gitter", "src\AspNet.Security.OAuth.Gitter\AspNet.Security.OAuth.Gitter.csproj", "{EDD1BA76-D656-4513-BC65-FEC688CBB9F8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.Vkontakte", "src\AspNet.Security.OAuth.Vkontakte\AspNet.Security.OAuth.Vkontakte.csproj", "{B332222F-43B4-4B3E-8EB3-9BCE29901043}"
 EndProject
@@ -197,6 +193,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{C2CA4B38-A
 		docs\instagram.md = docs\instagram.md
 		docs\keycloak.md = docs\keycloak.md
 		docs\kloudless.md = docs\kloudless.md
+		docs\kook.md = docs\kook.md
 		docs\lichess.md = docs\lichess.md
 		docs\line.md = docs\line.md
 		docs\linkedin.md = docs\linkedin.md
@@ -222,7 +219,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{C2CA4B38-A
 		docs\workweixin.md = docs\workweixin.md
 		docs\xumm.md = docs\xumm.md
 		docs\zendesk.md = docs\zendesk.md
-		docs\kook.md = docs\kook.md
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.Basecamp", "src\AspNet.Security.OAuth.Basecamp\AspNet.Security.OAuth.Basecamp.csproj", "{42306484-B2BF-4B52-B950-E0CDFA58B02A}"
@@ -296,8 +292,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.Smart
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.Huawei", "src\AspNet.Security.OAuth.Huawei\AspNet.Security.OAuth.Huawei.csproj", "{E3CF7FFC-56A0-4033-87A9-BB3080CF030E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.Kook", "src\AspNet.Security.OAuth.Kook\AspNet.Security.OAuth.Kook.csproj", "{101681FB-569F-4941-B943-2AD380039BE0}"
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.PingOne", "src\AspNet.Security.OAuth.PingOne\AspNet.Security.OAuth.PingOne.csproj", "{CF8C4235-6AE6-404E-B572-4FF4E85AB5FF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.Kook", "src\AspNet.Security.OAuth.Kook\AspNet.Security.OAuth.Kook.csproj", "{101681FB-569F-4941-B943-2AD380039BE0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.PingOne", "src\AspNet.Security.OAuth.PingOne\AspNet.Security.OAuth.PingOne.csproj", "{CF8C4235-6AE6-404E-B572-4FF4E85AB5FF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -389,10 +386,6 @@ Global
 		{244F6383-BD8E-4B32-8741-F2F114499B1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{244F6383-BD8E-4B32-8741-F2F114499B1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{244F6383-BD8E-4B32-8741-F2F114499B1A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5D24AAFC-5E31-45B6-A5C0-F2BAC88F3E20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5D24AAFC-5E31-45B6-A5C0-F2BAC88F3E20}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5D24AAFC-5E31-45B6-A5C0-F2BAC88F3E20}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5D24AAFC-5E31-45B6-A5C0-F2BAC88F3E20}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9AA5F2CD-3AC4-4177-A8FE-82D67A0F36AC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9AA5F2CD-3AC4-4177-A8FE-82D67A0F36AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9AA5F2CD-3AC4-4177-A8FE-82D67A0F36AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -409,10 +402,6 @@ Global
 		{5881BB63-89BD-4397-A61C-69B1844F7615}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5881BB63-89BD-4397-A61C-69B1844F7615}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5881BB63-89BD-4397-A61C-69B1844F7615}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EDD1BA76-D656-4513-BC65-FEC688CBB9F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EDD1BA76-D656-4513-BC65-FEC688CBB9F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EDD1BA76-D656-4513-BC65-FEC688CBB9F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EDD1BA76-D656-4513-BC65-FEC688CBB9F8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B332222F-43B4-4B3E-8EB3-9BCE29901043}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B332222F-43B4-4B3E-8EB3-9BCE29901043}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B332222F-43B4-4B3E-8EB3-9BCE29901043}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -715,12 +704,10 @@ Global
 		{C20BE880-52CB-491C-977C-F08702376766} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 		{6BC54AC2-5273-417E-B7E5-EF990F7A4A37} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 		{244F6383-BD8E-4B32-8741-F2F114499B1A} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
-		{5D24AAFC-5E31-45B6-A5C0-F2BAC88F3E20} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 		{9AA5F2CD-3AC4-4177-A8FE-82D67A0F36AC} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 		{AC651C2B-C879-41E2-96E0-78D3F0888246} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 		{1302E67D-5448-407B-8B8D-709A0BA458E8} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 		{5881BB63-89BD-4397-A61C-69B1844F7615} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
-		{EDD1BA76-D656-4513-BC65-FEC688CBB9F8} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 		{B332222F-43B4-4B3E-8EB3-9BCE29901043} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 		{B953D0C1-4C31-489D-A6C6-56A7C60AA3C6} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 		{571B6C99-2EE7-4300-9E0D-20A3A9C36647} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
