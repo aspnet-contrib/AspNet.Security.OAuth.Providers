@@ -44,5 +44,5 @@ public static class AutodeskAuthenticationDefaults
     /// <summary>
     /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
     /// </summary>
-    public static readonly string UserInformationEndpoint = "https://developer.api.autodesk.com/userprofile/v1/users/@me";
+    public static readonly string UserInformationEndpoint = "https://api.userprofile.autodesk.com/userinfo";
 }

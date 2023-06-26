@@ -25,12 +25,11 @@ public class AutodeskAuthenticationOptions : OAuthOptions
 
         Scope.Add("user-profile:read");
 
-        ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "userId");
-        ClaimActions.MapJsonKey(ClaimTypes.Name, "userName");
-        ClaimActions.MapJsonKey(ClaimTypes.GivenName, "firstName");
-        ClaimActions.MapJsonKey(ClaimTypes.Surname, "lastName");
-        ClaimActions.MapJsonKey(ClaimTypes.Email, "emailId");
-        ClaimActions.MapJsonKey(Claims.EmailVerified, "emailVerified");
-        ClaimActions.MapJsonKey(Claims.TwoFactorEnabled, "2FaEnabled");
+        ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "sub");
+        ClaimActions.MapJsonKey(ClaimTypes.Name, "preferred_username");
+        ClaimActions.MapJsonKey(ClaimTypes.GivenName, "given_name");
+        ClaimActions.MapJsonKey(ClaimTypes.Surname, "family_name");
+        ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
+        ClaimActions.MapJsonKey(Claims.EmailVerified, "email_verified");
     }
 }
