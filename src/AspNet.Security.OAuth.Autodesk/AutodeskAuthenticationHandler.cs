@@ -55,33 +55,24 @@ public partial class AutodeskAuthenticationHandler : OAuthHandler<AutodeskAuthen
     {
         var tokenRequestParameters = new Dictionary<string, string>
         {
-            { "redirect_uri", context.RedirectUri },
-            { "code", context.Code },
-            { "grant_type", "authorization_code" },
+            ["redirect_uri"] = context.RedirectUri,
+            ["code"] = context.Code,
+            ["grant_type"] = "authorization_code"
         };
-
-        var isNotPKCE = true;
 
         // PKCE https://tools.ietf.org/html/rfc7636#section-4.5, see BuildChallengeUrl
         if (context.Properties.Items.TryGetValue(OAuthConstants.CodeVerifierKey, out var codeVerifier))
         {
-            tokenRequestParameters.Add("client_id", Options.ClientId);
-            tokenRequestParameters.Add(OAuthConstants.CodeVerifierKey, codeVerifier!);
+            tokenRequestParameters[OAuthConstants.CodeVerifierKey] = codeVerifier!;
             context.Properties.Items.Remove(OAuthConstants.CodeVerifierKey);
-            isNotPKCE = false;
         }
 
-        var requestContent = new FormUrlEncodedContent(tokenRequestParameters!);
-
+        using var requestContent = new FormUrlEncodedContent(tokenRequestParameters!);
         using var requestMessage = new HttpRequestMessage(HttpMethod.Post, Options.TokenEndpoint);
         requestMessage.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-        if (isNotPKCE)
-        {
-            var credentials = Convert.ToBase64String(Encoding.ASCII.GetBytes(
-                $"{Options.ClientId}:{Options.ClientSecret}"));
-            requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Basic", credentials);
-        }
-
+        var credentials = Convert.ToBase64String(Encoding.ASCII.GetBytes(
+            $"{Options.ClientId}:{Options.ClientSecret}"));
+        requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Basic", credentials);
         requestMessage.Content = requestContent;
         requestMessage.Version = Backchannel.DefaultRequestVersion;
         using var response = await Backchannel.SendAsync(requestMessage, Context.RequestAborted);
