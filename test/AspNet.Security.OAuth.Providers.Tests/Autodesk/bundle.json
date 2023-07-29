@@ -13,16 +13,15 @@
       }
     },
     {
-      "uri": "https://developer.api.autodesk.com/userprofile/v1/users/@me",
+      "uri": "https://api.userprofile.autodesk.com/userinfo",
       "contentFormat": "json",
       "contentJson": {
-        "userId": "my-id",
-        "userName": "John Smith",
-        "firstName": "John",
-        "lastName": "Smith",
-        "emailId": "john@john-smith.local",
-        "emailVerified": true,
-        "2FaEnabled": false
+        "sub": "my-id",
+        "preferred_username": "John Smith",
+        "given_name": "John",
+        "family_name": "Smith",
+        "email": "john@john-smith.local",
+        "email_verified": true
       }
     }
   ]
