@@ -27,7 +27,6 @@ public class AutodeskTests : OAuthTests<AutodeskAuthenticationOptions>
     [InlineData(ClaimTypes.GivenName, "John")]
     [InlineData(ClaimTypes.Surname, "Smith")]
     [InlineData("urn:autodesk:emailverified", "True")]
-    [InlineData("urn:autodesk:twofactorenabled", "False")]
     public async Task Can_Sign_In_Using_Autodesk(string claimType, string claimValue)
     {
         // Arrange

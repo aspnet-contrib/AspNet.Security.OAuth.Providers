@@ -6,6 +6,7 @@
 
 using System.Net.Http.Headers;
 using System.Security.Claims;
+using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using Microsoft.Extensions.Logging;
@@ -50,6 +51,41 @@ public partial class AutodeskAuthenticationHandler : OAuthHandler<AutodeskAuthen
         return new AuthenticationTicket(context.Principal!, context.Properties, Scheme.Name);
     }
 
+    protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] OAuthCodeExchangeContext context)
+    {
+        var tokenRequestParameters = new Dictionary<string, string>
+        {
+            ["redirect_uri"] = context.RedirectUri,
+            ["code"] = context.Code,
+            ["grant_type"] = "authorization_code"
+        };
+
+        // PKCE https://tools.ietf.org/html/rfc7636#section-4.5, see BuildChallengeUrl
+        if (context.Properties.Items.TryGetValue(OAuthConstants.CodeVerifierKey, out var codeVerifier))
+        {
+            tokenRequestParameters[OAuthConstants.CodeVerifierKey] = codeVerifier!;
+            context.Properties.Items.Remove(OAuthConstants.CodeVerifierKey);
+        }
+
+        using var requestContent = new FormUrlEncodedContent(tokenRequestParameters!);
+        using var requestMessage = new HttpRequestMessage(HttpMethod.Post, Options.TokenEndpoint);
+        requestMessage.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        var credentials = Convert.ToBase64String(Encoding.ASCII.GetBytes(
+            $"{Options.ClientId}:{Options.ClientSecret}"));
+        requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Basic", credentials);
+        requestMessage.Content = requestContent;
+        requestMessage.Version = Backchannel.DefaultRequestVersion;
+        using var response = await Backchannel.SendAsync(requestMessage, Context.RequestAborted);
+        if (!response.IsSuccessStatusCode)
+        {
+            await Log.ExchangeCodeAsync(Logger, response, Context.RequestAborted);
+            return OAuthTokenResponse.Failed(new Exception("An error occurred while retrieving an access token."));
+        }
+
+        var body = await response.Content.ReadAsStringAsync(Context.RequestAborted);
+        return OAuthTokenResponse.Success(JsonDocument.Parse(body));
+    }
+
     private static partial class Log
     {
         internal static async Task UserProfileErrorAsync(ILogger logger, HttpResponseMessage response, CancellationToken cancellationToken)
@@ -63,6 +99,22 @@ public partial class AutodeskAuthenticationHandler : OAuthHandler<AutodeskAuthen
 
         [LoggerMessage(1, LogLevel.Error, "An error occurred while retrieving the user profile: the remote server returned a {Status} response with the following payload: {Headers} {Body}.")]
         private static partial void UserProfileError(
+            ILogger logger,
+            System.Net.HttpStatusCode status,
+            string headers,
+            string body);
+
+        internal static async Task ExchangeCodeAsync(ILogger logger, HttpResponseMessage response, CancellationToken cancellationToken)
+        {
+            ExchangeCodeAsync(
+                logger,
+                response.StatusCode,
+                response.Headers.ToString(),
+                await response.Content.ReadAsStringAsync(cancellationToken));
+        }
+
+        [LoggerMessage(2, LogLevel.Error, "An error occurred while retrieving an access token: the remote server returned a {Status} response with the following payload: {Headers} {Body}.")]
+        static partial void ExchangeCodeAsync(
             ILogger logger,
             System.Net.HttpStatusCode status,
             string headers,
