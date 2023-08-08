@@ -56,7 +56,7 @@ public partial class DigitalOceanAuthenticationHandler : OAuthHandler<DigitalOce
         }
 
         using var stream = await response.Content.ReadAsStreamAsync(Context.RequestAborted);
-        var payload = JsonDocument.Parse(stream);
+        var payload = await JsonDocument.ParseAsync(stream);
         return OAuthTokenResponse.Success(payload);
     }
 

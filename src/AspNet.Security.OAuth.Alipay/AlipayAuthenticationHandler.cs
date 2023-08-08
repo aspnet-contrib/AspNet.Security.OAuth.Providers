@@ -78,7 +78,7 @@ public partial class AlipayAuthenticationHandler : OAuthHandler<AlipayAuthentica
         }
 
         using var stream = await response.Content.ReadAsStreamAsync(Context.RequestAborted);
-        using var document = JsonDocument.Parse(stream);
+        using var document = await JsonDocument.ParseAsync(stream);
 
         var mainElement = document.RootElement.GetProperty("alipay_system_oauth_token_response");
         if (!ValidateReturnCode(mainElement, out var code))
@@ -120,7 +120,7 @@ public partial class AlipayAuthenticationHandler : OAuthHandler<AlipayAuthentica
         }
 
         using var stream = await response.Content.ReadAsStreamAsync(Context.RequestAborted);
-        using var document = JsonDocument.Parse(stream);
+        using var document = await JsonDocument.ParseAsync(stream);
         var rootElement = document.RootElement;
 
         if (!rootElement.TryGetProperty("alipay_user_info_share_response", out JsonElement mainElement))
