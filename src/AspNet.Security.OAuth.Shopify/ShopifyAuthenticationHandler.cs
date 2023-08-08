@@ -34,10 +34,12 @@ public partial class ShopifyAuthenticationHandler : OAuthHandler<ShopifyAuthenti
         [NotNull] AuthenticationProperties properties,
         [NotNull] OAuthTokenResponse tokens)
     {
+#pragma warning disable CA1863
         var uri = string.Format(
             CultureInfo.InvariantCulture,
             ShopifyAuthenticationDefaults.UserInformationEndpointFormat,
             properties.Items[ShopifyAuthenticationDefaults.ShopNameAuthenticationProperty]);
+#pragma warning restore CA1863
 
         using var request = new HttpRequestMessage(HttpMethod.Get, uri);
         request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));

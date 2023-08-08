@@ -32,6 +32,7 @@ public class AmoCrmAuthenticationOptions : OAuthOptions
         ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
     }
 
+#pragma warning disable CA1863
     /// <summary>
     /// Gets or sets the amoCRM account name.
     /// </summary>
@@ -48,4 +49,5 @@ public class AmoCrmAuthenticationOptions : OAuthOptions
             UserInformationEndpoint = string.Format(CultureInfo.InvariantCulture, AmoCrmAuthenticationDefaults.UserInformationEndpointFormat, value);
         }
     }
+#pragma warning restore CA1863
 }

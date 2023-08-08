@@ -50,7 +50,9 @@ public partial class SuperOfficeAuthenticationHandler : OAuthHandler<SuperOffice
         // UserInfo endpoint must support multiple subdomains, i.e. sod, sod1, online, online1, online2, ...
         // - subdomain only becomes known from id token
         // Example WebApi Url https://sod.superoffice.com/Cust12345/api/
+#pragma warning disable CA1863
         var userInfoEndpoint = string.Format(CultureInfo.InvariantCulture, SuperOfficeAuthenticationConstants.FormatStrings.UserInfoEndpoint, webApiUrl);
+#pragma warning restore CA1863
 
         // Get the SuperOffice user principal.
         using var request = new HttpRequestMessage(HttpMethod.Get, userInfoEndpoint);

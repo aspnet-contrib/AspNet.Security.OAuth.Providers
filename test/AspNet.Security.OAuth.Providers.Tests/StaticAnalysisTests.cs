@@ -58,7 +58,7 @@ public static class StaticAnalysisTests
         testedMethods.ShouldBeGreaterThan(0);
     }
 
-    private static IList<AssemblyName> GetProviderAssemblyNames()
+    private static AssemblyName[] GetProviderAssemblyNames()
     {
         var thisType = typeof(StaticAnalysisTests);
 
@@ -72,7 +72,7 @@ public static class StaticAnalysisTests
         return assemblies;
     }
 
-    private static IList<Type> GetPublicTypes(IEnumerable<AssemblyName> assemblyNames)
+    private static Type[] GetPublicTypes(IEnumerable<AssemblyName> assemblyNames)
     {
         var types = assemblyNames
             .Select((p) => AssemblyLoadContext.Default.LoadFromAssemblyName(p))
@@ -85,7 +85,7 @@ public static class StaticAnalysisTests
         return types;
     }
 
-    private static IList<MethodBase> GetPublicOrProtectedConstructorsOrMethods(Type type)
+    private static MethodBase[] GetPublicOrProtectedConstructorsOrMethods(Type type)
     {
         var constructors = type
             .GetConstructors(BindingFlags.Public | BindingFlags.NonPublic)

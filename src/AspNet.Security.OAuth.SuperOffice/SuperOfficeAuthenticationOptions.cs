@@ -148,6 +148,7 @@ public class SuperOfficeAuthenticationOptions : OAuthOptions
     {
         string env = GetEnvironment();
 
+#pragma warning disable CA1863
         AuthorizationEndpoint = string.Format(CultureInfo.InvariantCulture,
             FormatStrings.AuthorizeEndpoint,
             env);
@@ -167,5 +168,6 @@ public class SuperOfficeAuthenticationOptions : OAuthOptions
         Authority = string.Format(CultureInfo.InvariantCulture,
             FormatStrings.Authority,
             env);
+#pragma warning restore CA1863
     }
 }
