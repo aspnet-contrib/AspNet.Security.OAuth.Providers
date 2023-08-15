@@ -14,7 +14,9 @@ services.AddAuthentication(options => /* Auth configuration */)
 
 ## Required Additional Settings
 
-_None._
+| Property Name | Property Type | Description | Default Value |
+|:--|:--|:--|:--|
+| `Domain` | `string?` | The JumpCloud domain to use for authentication. | `null` |
 
 ## Optional Settings
 
