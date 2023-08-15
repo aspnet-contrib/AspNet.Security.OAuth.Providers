@@ -20,7 +20,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
-using Moq;
+using NSubstitute;
 
 namespace AspNet.Security.OAuth;
 
@@ -326,20 +326,19 @@ public abstract class OAuthTests<TOptions> : ITestOutputHelperAccessor
 
         if (options.StateDataFormat is null)
         {
-            var dataProtector = new Mock<IDataProtector>();
+            var dataProtector = Substitute.For<IDataProtector>();
 
-            dataProtector.Setup((p) => p.Protect(It.IsAny<byte[]>()))
+            dataProtector.Protect(Arg.Any<byte[]>())
                          .Returns(Array.Empty<byte>());
 
-            options.StateDataFormat ??= new PropertiesDataFormat(dataProtector.Object);
+            options.StateDataFormat ??= new PropertiesDataFormat(dataProtector);
         }
 
-        var mock = new Mock<IOptionsMonitor<TOptions>>();
+        var optionsMonitor = Substitute.For<IOptionsMonitor<TOptions>>();
 
-        mock.Setup((p) => p.CurrentValue).Returns(options);
-        mock.Setup((p) => p.Get(scheme.Name)).Returns(options);
+        optionsMonitor.CurrentValue.Returns(options);
+        optionsMonitor.Get(scheme.Name).Returns(options);
 
-        var optionsMonitor = mock.Object;
         var loggerFactory = NullLoggerFactory.Instance;
         var encoder = UrlEncoder.Default;
 
