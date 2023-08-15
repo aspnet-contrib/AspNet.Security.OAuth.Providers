@@ -33,9 +33,9 @@ public class JumpCloudAuthenticationOptions : OAuthOptions
     }
 
     /// <summary>
-    /// Gets or sets the JumpCloud domain (Org URL) to use for authentication.
+    /// Gets or sets the optional JumpCloud domain (Org URL) to use for authentication.
     /// </summary>
-    public string? Domain { get; set; }
+    public string? Domain { get; set; } = "oauth.id.jumpcloud.com";
 
     /// <inheritdoc/>
     public override void Validate()
