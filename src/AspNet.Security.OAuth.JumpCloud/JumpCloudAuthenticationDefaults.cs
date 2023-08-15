@@ -48,6 +48,7 @@ public static class JumpCloudAuthenticationDefaults
     /// </summary>
     public static readonly string UserInformationEndpointPathFormat = "/userinfo";
 
+#pragma warning disable CA1863
     /// <summary>
     /// Default path to use for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
     /// </summary>
@@ -62,4 +63,5 @@ public static class JumpCloudAuthenticationDefaults
     /// Default path to use for <see cref="OAuthOptions.UserInformationEndpoint"/>.
     /// </summary>
     public static readonly string UserInformationEndpointPath = string.Format(CultureInfo.InvariantCulture, UserInformationEndpointPathFormat);
+#pragma warning disable CA1863
 }
