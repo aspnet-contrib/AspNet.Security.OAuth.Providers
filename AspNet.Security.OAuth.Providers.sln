@@ -296,7 +296,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.Kook"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.PingOne", "src\AspNet.Security.OAuth.PingOne\AspNet.Security.OAuth.PingOne.csproj", "{CF8C4235-6AE6-404E-B572-4FF4E85AB5FF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.JumpCloud", "AspNet.Security.OAuth.JumpCloud\AspNet.Security.OAuth.JumpCloud.csproj", "{8AF5DDBE-2631-4E71-9045-73A6356CE86B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.JumpCloud", "src\AspNet.Security.OAuth.JumpCloud\AspNet.Security.OAuth.JumpCloud.csproj", "{8AF5DDBE-2631-4E71-9045-73A6356CE86B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
