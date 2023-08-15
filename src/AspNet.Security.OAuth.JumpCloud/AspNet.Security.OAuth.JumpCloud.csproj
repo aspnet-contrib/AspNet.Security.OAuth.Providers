@@ -5,11 +5,6 @@
     <TargetFramework>$(DefaultNetCoreTargetFramework)</TargetFramework>
   </PropertyGroup>
 
-  <!-- This property group is required until the new provider is first published to NuGet.org -->
-  <PropertyGroup>
-    <DisablePackageBaselineValidation>true</DisablePackageBaselineValidation>
-  </PropertyGroup>
-
   <PropertyGroup>
     <Description>ASP.NET Core security middleware enabling JumpCloud authentication.</Description>
     <Authors>AaronSadlerUK</Authors>
