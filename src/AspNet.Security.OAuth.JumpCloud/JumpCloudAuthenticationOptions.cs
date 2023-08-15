@@ -33,14 +33,6 @@ public class JumpCloudAuthenticationOptions : OAuthOptions
     }
 
     /// <summary>
-    /// Gets or sets the JumpCloud custom authorization server to use for authentication.
-    /// </summary>
-    /// <remarks>
-    /// The default value is <c>default</c>.
-    /// </remarks>
-    public string AuthorizationServer { get; set; } = JumpCloudAuthenticationDefaults.DefaultAuthorizationServer;
-
-    /// <summary>
     /// Gets or sets the JumpCloud domain (Org URL) to use for authentication.
     /// </summary>
     public string? Domain { get; set; }

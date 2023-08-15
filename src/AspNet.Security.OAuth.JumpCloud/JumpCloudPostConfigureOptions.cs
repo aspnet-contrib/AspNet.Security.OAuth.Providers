@@ -24,14 +24,9 @@ public class JumpCloudPostConfigureOptions : IPostConfigureOptions<JumpCloudAuth
             throw new ArgumentException("No JumpCloud domain configured.", nameof(options));
         }
 
-        if (string.IsNullOrWhiteSpace(options.AuthorizationServer))
-        {
-            throw new ArgumentException("No JumpCloud authorization server configured.", nameof(options));
-        }
-
-        options.AuthorizationEndpoint = CreateUrl(options.Domain, JumpCloudAuthenticationDefaults.AuthorizationEndpointPathFormat, options.AuthorizationServer);
-        options.TokenEndpoint = CreateUrl(options.Domain, JumpCloudAuthenticationDefaults.TokenEndpointPathFormat, options.AuthorizationServer);
-        options.UserInformationEndpoint = CreateUrl(options.Domain, JumpCloudAuthenticationDefaults.UserInformationEndpointPathFormat, options.AuthorizationServer);
+        options.AuthorizationEndpoint = CreateUrl(options.Domain, JumpCloudAuthenticationDefaults.AuthorizationEndpointPathFormat);
+        options.TokenEndpoint = CreateUrl(options.Domain, JumpCloudAuthenticationDefaults.TokenEndpointPathFormat);
+        options.UserInformationEndpoint = CreateUrl(options.Domain, JumpCloudAuthenticationDefaults.UserInformationEndpointPathFormat);
     }
 
     private static string CreateUrl(string domain, string pathFormat, params object[] args)

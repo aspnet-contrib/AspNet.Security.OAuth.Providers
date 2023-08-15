@@ -68,7 +68,7 @@ public static class JumpCloudAuthenticationExtensions
     public static AuthenticationBuilder AddJumpCloud(
         [NotNull] this AuthenticationBuilder builder,
         [NotNull] string scheme,
-         string? caption,
+        [CanBeNull] string caption,
         [NotNull] Action<JumpCloudAuthenticationOptions> configuration)
     {
         builder.Services.TryAddSingleton<IPostConfigureOptions<JumpCloudAuthenticationOptions>, JumpCloudPostConfigureOptions>();

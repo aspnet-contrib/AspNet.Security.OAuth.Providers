@@ -29,11 +29,6 @@ public static class JumpCloudAuthenticationDefaults
     public static readonly string Issuer = "JumpCloud";
 
     /// <summary>
-    /// The name of the default JumpCloud custom Authorization Server.
-    /// </summary>
-    public static readonly string DefaultAuthorizationServer = "default";
-
-    /// <summary>
     /// Default value for <see cref="RemoteAuthenticationOptions.CallbackPath"/>.
     /// </summary>
     public static readonly string CallbackPath = "/signin-jumpcloud";
@@ -56,15 +51,15 @@ public static class JumpCloudAuthenticationDefaults
     /// <summary>
     /// Default path to use for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
     /// </summary>
-    public static readonly string AuthorizationEndpointPath = string.Format(CultureInfo.InvariantCulture, AuthorizationEndpointPathFormat, DefaultAuthorizationServer);
+    public static readonly string AuthorizationEndpointPath = string.Format(CultureInfo.InvariantCulture, AuthorizationEndpointPathFormat);
 
     /// <summary>
     /// Default path to use for <see cref="OAuthOptions.TokenEndpoint"/>.
     /// </summary>
-    public static readonly string TokenEndpointPath = string.Format(CultureInfo.InvariantCulture, TokenEndpointPathFormat, DefaultAuthorizationServer);
+    public static readonly string TokenEndpointPath = string.Format(CultureInfo.InvariantCulture, TokenEndpointPathFormat);
 
     /// <summary>
     /// Default path to use for <see cref="OAuthOptions.UserInformationEndpoint"/>.
     /// </summary>
-    public static readonly string UserInformationEndpointPath = string.Format(CultureInfo.InvariantCulture, UserInformationEndpointPathFormat, DefaultAuthorizationServer);
+    public static readonly string UserInformationEndpointPath = string.Format(CultureInfo.InvariantCulture, UserInformationEndpointPathFormat);
 }
