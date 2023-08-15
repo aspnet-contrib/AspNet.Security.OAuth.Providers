@@ -4,8 +4,6 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using AspNet.Security.OAuth.Okta;
-
 namespace AspNet.Security.OAuth.JumpCloud;
 
 public static class JumpCloudAuthenticationOptionsTests
@@ -14,7 +12,7 @@ public static class JumpCloudAuthenticationOptionsTests
     public static void Validate_Throws_If_AuthorizationEndpoint_Not_Set()
     {
         // Arrange
-        var options = new OktaAuthenticationOptions()
+        var options = new JumpCloudAuthenticationOptions()
         {
             ClientId = "ClientId",
             ClientSecret = "ClientSecret",
@@ -30,7 +28,7 @@ public static class JumpCloudAuthenticationOptionsTests
     public static void Validate_Throws_If_TokenEndpoint_Not_Set()
     {
         // Arrange
-        var options = new OktaAuthenticationOptions()
+        var options = new JumpCloudAuthenticationOptions()
         {
             AuthorizationEndpoint = "https://jumpcloud.local",
             ClientId = "ClientId",
@@ -46,12 +44,12 @@ public static class JumpCloudAuthenticationOptionsTests
     public static void Validate_Throws_If_UserInformationEndpoint_Not_Set()
     {
         // Arrange
-        var options = new OktaAuthenticationOptions()
+        var options = new JumpCloudAuthenticationOptions()
         {
-            AuthorizationEndpoint = "https://okta.local",
+            AuthorizationEndpoint = "https://jumpcloud.local",
             ClientId = "ClientId",
             ClientSecret = "ClientSecret",
-            TokenEndpoint = "https://okta.local",
+            TokenEndpoint = "https://jumpcloud.local",
         };
 
         // Act and Assert
@@ -62,13 +60,13 @@ public static class JumpCloudAuthenticationOptionsTests
     public static void Validate_Does_Not_Throw_If_Uris_Are_Valid()
     {
         // Arrange
-        var options = new OktaAuthenticationOptions()
+        var options = new JumpCloudAuthenticationOptions()
         {
-            AuthorizationEndpoint = "https://okta.local",
+            AuthorizationEndpoint = "https://jumpcloud.local",
             ClientId = "ClientId",
             ClientSecret = "ClientSecret",
-            TokenEndpoint = "https://okta.local",
-            UserInformationEndpoint = "https://okta.local",
+            TokenEndpoint = "https://jumpcloud.local",
+            UserInformationEndpoint = "https://jumpcloud.local",
         };
 
         // Act (no Assert)
