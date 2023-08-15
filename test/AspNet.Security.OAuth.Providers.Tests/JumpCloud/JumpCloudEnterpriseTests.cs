@@ -6,20 +6,23 @@
 
 namespace AspNet.Security.OAuth.JumpCloud;
 
-public class JumpCloudTests : OAuthTests<JumpCloudAuthenticationOptions>
+public class JumpCloudEnterpriseTests : OAuthTests<JumpCloudAuthenticationOptions>
 {
-    public JumpCloudTests(ITestOutputHelper outputHelper)
+    public JumpCloudEnterpriseTests(ITestOutputHelper outputHelper)
     {
         OutputHelper = outputHelper;
     }
 
     public override string DefaultScheme => JumpCloudAuthenticationDefaults.AuthenticationScheme;
 
+    protected override string BundleName => "JumpCloud";
+
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
     {
         builder.AddJumpCloud(options =>
         {
             ConfigureDefaults(builder, options);
+            options.Domain = "jumpcloud.local";
         });
     }
 
