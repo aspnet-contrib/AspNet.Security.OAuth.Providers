@@ -18,6 +18,8 @@ public class JumpCloudAuthenticationOptions : OAuthOptions
     /// </summary>
     public JumpCloudAuthenticationOptions()
     {
+        UsePkce = true;
+
         ClaimsIssuer = JumpCloudAuthenticationDefaults.Issuer;
         CallbackPath = JumpCloudAuthenticationDefaults.CallbackPath;
 
