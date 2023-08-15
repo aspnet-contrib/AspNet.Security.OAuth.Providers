@@ -4,8 +4,6 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using System.Globalization;
-
 namespace AspNet.Security.OAuth.JumpCloud;
 
 /// <summary>
@@ -36,30 +34,33 @@ public static class JumpCloudAuthenticationDefaults
     /// <summary>
     /// Default path format to use for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
     /// </summary>
+    [Obsolete("This field is obsolete and will be removed in a future version.")]
     public static readonly string AuthorizationEndpointPathFormat = "/oauth2/auth";
 
     /// <summary>
     /// Default path format to use for <see cref="OAuthOptions.TokenEndpoint"/>.
     /// </summary>
+    [Obsolete("This field is obsolete and will be removed in a future version.")]
     public static readonly string TokenEndpointPathFormat = "/oauth2/token";
 
     /// <summary>
     /// Default path format to use for <see cref="OAuthOptions.UserInformationEndpoint"/>.
     /// </summary>
+    [Obsolete("This field is obsolete and will be removed in a future version.")]
     public static readonly string UserInformationEndpointPathFormat = "/userinfo";
 
     /// <summary>
     /// Default path to use for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
     /// </summary>
-    public static readonly string AuthorizationEndpointPath = string.Format(CultureInfo.InvariantCulture, AuthorizationEndpointPathFormat);
+    public static readonly string AuthorizationEndpointPath = "/oauth2/auth";
 
     /// <summary>
     /// Default path to use for <see cref="OAuthOptions.TokenEndpoint"/>.
     /// </summary>
-    public static readonly string TokenEndpointPath = string.Format(CultureInfo.InvariantCulture, TokenEndpointPathFormat);
+    public static readonly string TokenEndpointPath = "/oauth2/token";
 
     /// <summary>
     /// Default path to use for <see cref="OAuthOptions.UserInformationEndpoint"/>.
     /// </summary>
-    public static readonly string UserInformationEndpointPath = string.Format(CultureInfo.InvariantCulture, UserInformationEndpointPathFormat);
+    public static readonly string UserInformationEndpointPath = "/userinfo";
 }
