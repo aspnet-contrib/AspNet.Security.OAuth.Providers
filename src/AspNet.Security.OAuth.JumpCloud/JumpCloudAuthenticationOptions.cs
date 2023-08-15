@@ -24,8 +24,6 @@ public class JumpCloudAuthenticationOptions : OAuthOptions
         CallbackPath = JumpCloudAuthenticationDefaults.CallbackPath;
 
         Scope.Add("openid");
-        Scope.Add("profile");
-        Scope.Add("email");
 
         ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
         ClaimActions.MapJsonKey(ClaimTypes.GivenName, "given_name");
