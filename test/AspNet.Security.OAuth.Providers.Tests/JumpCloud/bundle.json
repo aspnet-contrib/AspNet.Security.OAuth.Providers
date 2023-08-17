@@ -1,6 +1,47 @@
 {
-  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
+  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/main/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
   "items": [
+    {
+      "comment": "https://jumpcloud.com/support/sso-with-oidc",
+      "uri": "https://oauth.id.jumpcloud.com/oauth2/token",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "secret-access-token",
+        "token_type": "Bearer",
+        "expires_in": 3600,
+        "scope": "openid email",
+        "refresh_token": "secret-refresh-token",
+        "id_token": "secret-id-token"
+      }
+    },
+    {
+      "comment": "https://jumpcloud.com/support/sso-with-oidc",
+      "uri": "https://oauth.id.jumpcloud.com/userinfo",
+      "contentFormat": "json",
+      "contentJson": {
+        "sub": "00uid4BxXw6I6TV4m0g3",
+        "name": "John Doe",
+        "nickname": "Jimmy",
+        "given_name": "John",
+        "middle_name": "James",
+        "family_name": "Doe",
+        "profile": "https://example.com/john.doe",
+        "zoneinfo": "America/Los_Angeles",
+        "locale": "en-US",
+        "updated_at": 1311280970,
+        "email": "john.doe@example.com",
+        "email_verified": true,
+        "address": {
+          "street_address": "123 Hollywood Blvd.",
+          "locality": "Los Angeles",
+          "region": "CA",
+          "postal_code": "90210",
+          "country": "US"
+        },
+        "phone_number": "+1 (425) 555-1212"
+      }
+    },
     {
       "comment": "https://jumpcloud.com/support/sso-with-oidc",
       "uri": "https://jumpcloud.local/oauth2/token",

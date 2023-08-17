@@ -4,7 +4,6 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using System.Globalization;
 using Microsoft.Extensions.Options;
 
 namespace AspNet.Security.OAuth.JumpCloud;
@@ -24,15 +23,13 @@ public class JumpCloudPostConfigureOptions : IPostConfigureOptions<JumpCloudAuth
             throw new ArgumentException("No JumpCloud domain configured.", nameof(options));
         }
 
-        options.AuthorizationEndpoint = CreateUrl(options.Domain, JumpCloudAuthenticationDefaults.AuthorizationEndpointPathFormat);
-        options.TokenEndpoint = CreateUrl(options.Domain, JumpCloudAuthenticationDefaults.TokenEndpointPathFormat);
-        options.UserInformationEndpoint = CreateUrl(options.Domain, JumpCloudAuthenticationDefaults.UserInformationEndpointPathFormat);
+        options.AuthorizationEndpoint = CreateUrl(options.Domain, JumpCloudAuthenticationDefaults.AuthorizationEndpointPath);
+        options.TokenEndpoint = CreateUrl(options.Domain, JumpCloudAuthenticationDefaults.TokenEndpointPath);
+        options.UserInformationEndpoint = CreateUrl(options.Domain, JumpCloudAuthenticationDefaults.UserInformationEndpointPath);
     }
 
-    private static string CreateUrl(string domain, string pathFormat, params object[] args)
+    private static string CreateUrl(string domain, string path)
     {
-        var path = string.Format(CultureInfo.InvariantCulture, pathFormat, args);
-
         // Enforce use of HTTPS
         var builder = new UriBuilder(domain)
         {

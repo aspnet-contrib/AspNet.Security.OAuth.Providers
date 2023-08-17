@@ -191,6 +191,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{C2CA4B38-A
 		docs\gitee.md = docs\gitee.md
 		docs\github.md = docs\github.md
 		docs\instagram.md = docs\instagram.md
+		docs\jumpcloud.md = docs\jumpcloud.md
 		docs\keycloak.md = docs\keycloak.md
 		docs\kloudless.md = docs\kloudless.md
 		docs\kook.md = docs\kook.md
@@ -296,7 +297,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.Kook"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.PingOne", "src\AspNet.Security.OAuth.PingOne\AspNet.Security.OAuth.PingOne.csproj", "{CF8C4235-6AE6-404E-B572-4FF4E85AB5FF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.JumpCloud", "src\AspNet.Security.OAuth.JumpCloud\AspNet.Security.OAuth.JumpCloud.csproj", "{8AF5DDBE-2631-4E71-9045-73A6356CE86B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.JumpCloud", "src\AspNet.Security.OAuth.JumpCloud\AspNet.Security.OAuth.JumpCloud.csproj", "{8AF5DDBE-2631-4E71-9045-73A6356CE86B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

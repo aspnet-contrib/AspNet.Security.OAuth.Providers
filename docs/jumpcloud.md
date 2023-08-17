@@ -8,16 +8,16 @@ services.AddAuthentication(options => /* Auth configuration */)
         {
             options.ClientId = "my-client-id";
             options.ClientSecret = "my-client-secret";
-            options.Domain = "https://oauth.id.jumpcloud.com";
+            options.Domain = "oauth.id.jumpcloud.com";
         });
 ```
 
 ## Required Additional Settings
 
-| Property Name | Property Type | Description | Default Value |
-|:--|:--|:--|:--|
-| `Domain` | `string?` | The JumpCloud domain to use for authentication. | `null` |
+_None._
 
 ## Optional Settings
 
-_None._
+| Property Name | Property Type | Description | Default Value |
+|:--|:--|:--|:--|
+| `Domain` | `string?` | The JumpCloud domain to use for authentication. | `"oauth.id.jumpcloud.com"` |
