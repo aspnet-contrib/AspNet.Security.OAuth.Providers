@@ -11,7 +11,7 @@
     <PackageValidationBaselineVersion Condition="'$(PackageValidationBaselineVersion)' == ''">7.0.0</PackageValidationBaselineVersion>
     <PreReleaseVersionLabel>rc</PreReleaseVersionLabel>
     <PreReleaseVersionIteration>1</PreReleaseVersionIteration>
-    <PreReleaseBrandingLabel>RC $(PreReleaseVersionIteration)</PreReleaseBrandingLabel>
+    <PreReleaseBrandingLabel>Release Candidate $(PreReleaseVersionIteration)</PreReleaseBrandingLabel>
     <StabilizePackageVersion Condition="'$(StabilizePackageVersion)' == ''">false</StabilizePackageVersion>
     <DotNetFinalVersionKind Condition="'$(StabilizePackageVersion)' == 'true'">release</DotNetFinalVersionKind>
     <IncludePreReleaseLabelInPackageVersion>true</IncludePreReleaseLabelInPackageVersion>
