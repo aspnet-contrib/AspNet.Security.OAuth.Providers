@@ -16,6 +16,8 @@ namespace AspNet.Security.OAuth.Apple;
 
 public class AppleTests : OAuthTests<AppleAuthenticationOptions>
 {
+    private static readonly JsonSerializerOptions SerializerOptions = new() { WriteIndented = true };
+
     public AppleTests(ITestOutputHelper outputHelper)
     {
         OutputHelper = outputHelper;
@@ -533,7 +535,7 @@ public class AppleTests : OAuthTests<AppleAuthenticationOptions>
 
         var publicEmailIdToken = new JwtSecurityTokenHandler().WriteToken(publicEmailToken);
         var privateEmailIdToken = new JwtSecurityTokenHandler().WriteToken(privateEmailToken);
-        var serializedRsaPublicKey = JsonSerializer.Serialize(webKey, new JsonSerializerOptions() { WriteIndented = true });
+        var serializedRsaPublicKey = JsonSerializer.Serialize(webKey, SerializerOptions);
 
         // Copy the values from the test output to bundles.json if you need to regenerate the JWTs to edit the claims
 

@@ -109,7 +109,7 @@ internal sealed partial class DefaultAppleClientSecretGenerator : AppleClientSec
         }
         catch (Exception)
         {
-            algorithm?.Dispose();
+            algorithm.Dispose();
             throw;
         }
     }
