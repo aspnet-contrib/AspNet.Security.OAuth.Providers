@@ -72,12 +72,6 @@ public class LinkedInTests(ITestOutputHelper outputHelper) : OAuthTests<LinkedIn
             return values.Values.FirstOrDefault();
         };
 
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
+        await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
     }
 }
