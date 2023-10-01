@@ -6,13 +6,8 @@
 
 namespace AspNet.Security.OAuth.PingOne;
 
-public class PingOneTests : OAuthTests<PingOneAuthenticationOptions>
+public class PingOneTests(ITestOutputHelper outputHelper) : OAuthTests<PingOneAuthenticationOptions>(outputHelper)
 {
-    public PingOneTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
     public override string DefaultScheme => PingOneAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
@@ -31,16 +26,7 @@ public class PingOneTests : OAuthTests<PingOneAuthenticationOptions>
     [InlineData(ClaimTypes.NameIdentifier, "00uid4BxXw6I6TV4m0g3")]
     [InlineData(ClaimTypes.Surname, "Doe")]
     public async Task Can_Sign_In_Using_PingOne(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 
     [Theory]
     [InlineData(ClaimTypes.Email, "jane.doe@example.com")]
@@ -59,12 +45,6 @@ public class PingOneTests : OAuthTests<PingOneAuthenticationOptions>
             });
         }
 
-        using var server = CreateTestServer(ConfigureServices);
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
+        await AuthenticateUserAndAssertClaimValue(claimType, claimValue, ConfigureServices);
     }
 }

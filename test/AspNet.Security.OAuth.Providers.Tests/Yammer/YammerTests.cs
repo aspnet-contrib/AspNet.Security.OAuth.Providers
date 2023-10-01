@@ -6,13 +6,8 @@
 
 namespace AspNet.Security.OAuth.Yammer;
 
-public class YammerTests : OAuthTests<YammerAuthenticationOptions>
+public class YammerTests(ITestOutputHelper outputHelper) : OAuthTests<YammerAuthenticationOptions>(outputHelper)
 {
-    public YammerTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
     public override string DefaultScheme => YammerAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
@@ -29,14 +24,5 @@ public class YammerTests : OAuthTests<YammerAuthenticationOptions>
     [InlineData("urn:yammer:link", "https://www.yammer.com")]
     [InlineData("urn:yammer:job_title", "Developer")]
     public async Task Can_Sign_In_Using_Yammer(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 }

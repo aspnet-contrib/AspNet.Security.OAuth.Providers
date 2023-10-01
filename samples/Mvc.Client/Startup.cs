@@ -9,17 +9,9 @@ using Microsoft.IdentityModel.Logging;
 
 namespace Mvc.Client;
 
-public class Startup
+public class Startup(IConfiguration configuration, IHostEnvironment hostingEnvironment)
 {
-    public Startup(IConfiguration configuration, IHostEnvironment hostingEnvironment)
-    {
-        Configuration = configuration;
-        HostingEnvironment = hostingEnvironment;
-    }
-
-    public IConfiguration Configuration { get; }
-
-    private IHostEnvironment HostingEnvironment { get; }
+    public IConfiguration Configuration { get; } = configuration;
 
     public void ConfigureServices(IServiceCollection services)
     {
@@ -78,7 +70,7 @@ public class Startup
 
     public void Configure(IApplicationBuilder app)
     {
-        if (HostingEnvironment.IsDevelopment())
+        if (hostingEnvironment.IsDevelopment())
         {
             IdentityModelEventSource.ShowPII = true;
         }

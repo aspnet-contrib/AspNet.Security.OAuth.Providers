@@ -6,13 +6,8 @@
 
 namespace AspNet.Security.OAuth.Zendesk;
 
-public class ZendeskTests : OAuthTests<ZendeskAuthenticationOptions>
+public class ZendeskTests(ITestOutputHelper outputHelper) : OAuthTests<ZendeskAuthenticationOptions>(outputHelper)
 {
-    public ZendeskTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
     public override string DefaultScheme => ZendeskAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
@@ -29,14 +24,5 @@ public class ZendeskTests : OAuthTests<ZendeskAuthenticationOptions>
     [InlineData(ClaimTypes.NameIdentifier, "35436")]
     [InlineData(ClaimTypes.Email, "johnnyagent@zendesk.com")]
     public async Task Can_Sign_In_Using_Zendesk(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 }

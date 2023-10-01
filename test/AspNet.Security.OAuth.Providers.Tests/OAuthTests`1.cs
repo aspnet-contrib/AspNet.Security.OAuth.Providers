@@ -31,7 +31,7 @@ namespace AspNet.Security.OAuth;
 public abstract class OAuthTests<TOptions> : ITestOutputHelperAccessor
     where TOptions : OAuthOptions, new()
 {
-    protected OAuthTests()
+    protected OAuthTests(ITestOutputHelper outputHelper)
     {
         Interceptor = new HttpClientInterceptorOptions()
             .ThrowsOnMissingRegistration()
@@ -43,6 +43,8 @@ public abstract class OAuthTests<TOptions> : ITestOutputHelperAccessor
             RedirectParameters = RedirectParameters,
             RedirectUri = RedirectUri,
         };
+
+        OutputHelper = outputHelper;
     }
 
     /// <summary>
@@ -94,6 +96,19 @@ public abstract class OAuthTests<TOptions> : ITestOutputHelperAccessor
     /// <param name="app">The application.</param>
     protected internal virtual void ConfigureApplication(IApplicationBuilder app)
     {
+        // No-op
+    }
+
+    protected async Task AuthenticateUserAndAssertClaimValue(string claimType, string claimValue, Action<IServiceCollection>? configureServices = null)
+    {
+        // Arrange
+        using var server = CreateTestServer(configureServices);
+
+        // Act
+        var claims = await AuthenticateUserAsync(server);
+
+        // Assert
+        AssertClaim(claims, claimType, claimValue);
     }
 
     /// <summary>
@@ -329,7 +344,7 @@ public abstract class OAuthTests<TOptions> : ITestOutputHelperAccessor
             var dataProtector = Substitute.For<IDataProtector>();
 
             dataProtector.Protect(Arg.Any<byte[]>())
-                         .Returns(Array.Empty<byte>());
+                         .Returns([]);
 
             options.StateDataFormat ??= new PropertiesDataFormat(dataProtector);
         }

@@ -6,13 +6,8 @@
 
 namespace AspNet.Security.OAuth.HubSpot;
 
-public class HubSpotTests : OAuthTests<HubSpotAuthenticationOptions>
+public class HubSpotTests(ITestOutputHelper outputHelper) : OAuthTests<HubSpotAuthenticationOptions>(outputHelper)
 {
-    public HubSpotTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
     public override string DefaultScheme => HubSpotAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
@@ -28,14 +23,5 @@ public class HubSpotTests : OAuthTests<HubSpotAuthenticationOptions>
     [InlineData("urn:HubSpot:app_id", "696969")]
     [InlineData("urn:HubSpot:hub_domain", "dev-13371337.com")]
     public async Task Can_Sign_In_Using_HubSpot(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 }

@@ -6,21 +6,13 @@
 
 namespace AspNet.Security.OAuth.MailRu;
 
-public class MailRuTests : OAuthTests<MailRuAuthenticationOptions>
+public class MailRuTests(ITestOutputHelper outputHelper) : OAuthTests<MailRuAuthenticationOptions>(outputHelper)
 {
-    public MailRuTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
     public override string DefaultScheme => MailRuAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
     {
-        builder.AddMailRu(options =>
-        {
-            ConfigureDefaults(builder, options);
-        });
+        builder.AddMailRu(options => ConfigureDefaults(builder, options));
     }
 
     [Theory]
@@ -32,14 +24,5 @@ public class MailRuTests : OAuthTests<MailRuAuthenticationOptions>
     [InlineData(ClaimTypes.Gender, "m")]
     [InlineData("urn:mailru:profileimage", "https://filin.mail.ru/pic?d=idofpic&width=180&height=180")]
     public async Task Can_Sign_In_Using_MailRu(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 }

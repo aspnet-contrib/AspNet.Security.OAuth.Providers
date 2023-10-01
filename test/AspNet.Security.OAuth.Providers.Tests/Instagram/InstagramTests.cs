@@ -8,13 +8,8 @@ using static AspNet.Security.OAuth.Instagram.InstagramAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.Instagram;
 
-public class InstagramTests : OAuthTests<InstagramAuthenticationOptions>
+public class InstagramTests(ITestOutputHelper outputHelper) : OAuthTests<InstagramAuthenticationOptions>(outputHelper)
 {
-    public InstagramTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
     public override string DefaultScheme => InstagramAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
@@ -26,16 +21,7 @@ public class InstagramTests : OAuthTests<InstagramAuthenticationOptions>
     [InlineData(ClaimTypes.Name, "jayposiris")]
     [InlineData(ClaimTypes.NameIdentifier, "17841405793187218")]
     public async Task Can_Sign_In_Using_Instagram(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 
     [Theory]
     [InlineData(ClaimTypes.Name, "jayposiris")]
@@ -55,12 +41,6 @@ public class InstagramTests : OAuthTests<InstagramAuthenticationOptions>
             });
         }
 
-        using var server = CreateTestServer(ConfigureServices);
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
+        await AuthenticateUserAndAssertClaimValue(claimType, claimValue, ConfigureServices);
     }
 }

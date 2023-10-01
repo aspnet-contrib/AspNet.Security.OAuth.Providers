@@ -35,7 +35,7 @@ public class LoopbackRedirectHandler : DelegatingHandler
             if (RedirectMethod == HttpMethod.Post)
             {
                 var queryString = HttpUtility.ParseQueryString(result.Headers.Location!.Query);
-                string? state = queryString["state"];
+                var state = queryString["state"];
 
                 var parameters = new Dictionary<string, string?>()
                 {
@@ -86,17 +86,17 @@ public class LoopbackRedirectHandler : DelegatingHandler
         // successfully authenticated with the external login page they were redirected to.
         var queryString = HttpUtility.ParseQueryString(responseMessage.Headers.Location!.Query);
 
-        string? location = queryString["redirect_uri"] ?? RedirectUri;
-        string? state = queryString["state"];
+        var location = queryString["redirect_uri"] ?? RedirectUri;
+        var state = queryString["state"];
 
         var builder = new UriBuilder(location!);
 
         // Retain the _oauthstate parameter in redirect_uri for WeChat (see #262)
         const string OAuthStateKey = "_oauthstate";
         var redirectQuery = HttpUtility.ParseQueryString(builder.Query);
-        string? oauthState = redirectQuery[OAuthStateKey];
+        var oauthState = redirectQuery[OAuthStateKey];
 
-        // Remove any query string parameters we do not explictly need to retain
+        // Remove any query string parameters we do not explicitly need to retain
         queryString.Clear();
 
         queryString.Add("code", "a6ed8e7f-471f-44f1-903b-65946475f351");

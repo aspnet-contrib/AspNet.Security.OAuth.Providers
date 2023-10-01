@@ -8,13 +8,8 @@ using Microsoft.AspNetCore.WebUtilities;
 
 namespace AspNet.Security.OAuth.Dropbox;
 
-public class DropboxTests : OAuthTests<DropboxAuthenticationOptions>
+public class DropboxTests(ITestOutputHelper outputHelper) : OAuthTests<DropboxAuthenticationOptions>(outputHelper)
 {
-    public DropboxTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
     public override string DefaultScheme => DropboxAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
@@ -27,16 +22,7 @@ public class DropboxTests : OAuthTests<DropboxAuthenticationOptions>
     [InlineData(ClaimTypes.Name, "Franz Ferdinand (Personal)")]
     [InlineData(ClaimTypes.Email, "franz@gmail.com")]
     public async Task Can_Sign_In_Using_Dropbox(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 
     [Theory]
     [InlineData("offline")]
@@ -67,7 +53,7 @@ public class DropboxTests : OAuthTests<DropboxAuthenticationOptions>
         using var server = CreateTestServer(ConfigureServices);
 
         // Act
-        var claims = await AuthenticateUserAsync(server);
+        await AuthenticateUserAsync(server);
 
         // Assert
         accessTypeIsSet.ShouldBeTrue();
@@ -98,7 +84,7 @@ public class DropboxTests : OAuthTests<DropboxAuthenticationOptions>
         using var server = CreateTestServer(ConfigureServices);
 
         // Act
-        var claims = await AuthenticateUserAsync(server);
+        await AuthenticateUserAsync(server);
 
         // Assert
         refreshTokenIsPresent.ShouldBeTrue();

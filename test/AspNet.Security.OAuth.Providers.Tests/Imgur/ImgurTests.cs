@@ -6,13 +6,8 @@
 
 namespace AspNet.Security.OAuth.Imgur;
 
-public class ImgurTests : OAuthTests<ImgurAuthenticationOptions>
+public class ImgurTests(ITestOutputHelper outputHelper) : OAuthTests<ImgurAuthenticationOptions>(outputHelper)
 {
-    public ImgurTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
     public override string DefaultScheme => ImgurAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
@@ -28,14 +23,5 @@ public class ImgurTests : OAuthTests<ImgurAuthenticationOptions>
     [InlineData("urn:imgur:proexpiration", "2019-03-17T14:00:00+00:00")]
     [InlineData("urn:imgur:reputation", "0")]
     public async Task Can_Sign_In_Using_Imgur(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 }

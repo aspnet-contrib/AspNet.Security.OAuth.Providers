@@ -6,13 +6,8 @@
 
 namespace AspNet.Security.OAuth.BattleNet;
 
-public class BattleNetTests : OAuthTests<BattleNetAuthenticationOptions>
+public class BattleNetTests(ITestOutputHelper outputHelper) : OAuthTests<BattleNetAuthenticationOptions>(outputHelper)
 {
-    public BattleNetTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
     public override string DefaultScheme => BattleNetAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
@@ -24,14 +19,5 @@ public class BattleNetTests : OAuthTests<BattleNetAuthenticationOptions>
     [InlineData(ClaimTypes.NameIdentifier, "my-id")]
     [InlineData(ClaimTypes.Name, "John Smith")]
     public async Task Can_Sign_In_Using_BattleNet(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 }

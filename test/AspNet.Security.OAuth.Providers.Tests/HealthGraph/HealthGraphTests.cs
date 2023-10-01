@@ -6,13 +6,8 @@
 
 namespace AspNet.Security.OAuth.HealthGraph;
 
-public class HealthGraphTests : OAuthTests<HealthGraphAuthenticationOptions>
+public class HealthGraphTests(ITestOutputHelper outputHelper) : OAuthTests<HealthGraphAuthenticationOptions>(outputHelper)
 {
-    public HealthGraphTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
     public override string DefaultScheme => HealthGraphAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
@@ -23,14 +18,5 @@ public class HealthGraphTests : OAuthTests<HealthGraphAuthenticationOptions>
     [Theory]
     [InlineData(ClaimTypes.NameIdentifier, "my-id")]
     public async Task Can_Sign_In_Using_HealthGraph(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 }

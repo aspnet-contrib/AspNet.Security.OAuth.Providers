@@ -8,13 +8,8 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace AspNet.Security.OAuth.SuperOffice;
 
-public class SuperOfficeTests : OAuthTests<SuperOfficeAuthenticationOptions>
+public class SuperOfficeTests(ITestOutputHelper outputHelper) : OAuthTests<SuperOfficeAuthenticationOptions>(outputHelper)
 {
-    public SuperOfficeTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
     public override string DefaultScheme => SuperOfficeAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
@@ -47,16 +42,7 @@ public class SuperOfficeTests : OAuthTests<SuperOfficeAuthenticationOptions>
     [InlineData(SuperOfficeAuthenticationConstants.PrincipalNames.RoleName, "User level 0")]
     [InlineData(SuperOfficeAuthenticationConstants.PrincipalNames.SecondaryGroups, "2")]
     public async Task Can_Sign_In_Using_SuperOffice(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 
     [Theory]
     [InlineData(SuperOfficeAuthenticationConstants.PrincipalNames.ContextIdentifier, "Cust12345")]
@@ -73,13 +59,7 @@ public class SuperOfficeTests : OAuthTests<SuperOfficeAuthenticationOptions>
             });
         }
 
-        using var server = CreateTestServer(ConfigureServices);
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
+        await AuthenticateUserAndAssertClaimValue(claimType, claimValue, ConfigureServices);
     }
 
     [Fact]

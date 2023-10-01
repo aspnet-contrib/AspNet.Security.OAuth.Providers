@@ -8,21 +8,13 @@ using Microsoft.AspNetCore.WebUtilities;
 
 namespace AspNet.Security.OAuth.AdobeIO;
 
-public class AdobeIOTests : OAuthTests<AdobeIOAuthenticationOptions>
+public class AdobeIOTests(ITestOutputHelper outputHelper) : OAuthTests<AdobeIOAuthenticationOptions>(outputHelper)
 {
-    public AdobeIOTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
     public override string DefaultScheme => AdobeIOAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
     {
-        builder.AddAdobeIO(options =>
-        {
-            ConfigureDefaults(builder, options);
-        });
+        builder.AddAdobeIO(options => ConfigureDefaults(builder, options));
     }
 
     [Theory]
@@ -35,16 +27,7 @@ public class AdobeIOTests : OAuthTests<AdobeIOAuthenticationOptions>
     [InlineData("urn:adobeio:account_type", "ent")]
     [InlineData("urn:adobeio:email_verified", "True")]
     public async Task Can_Sign_In_Using_AdobeIO(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 
     [Fact]
     public async Task BuildChallengeUrl_Generates_Correct_Url()

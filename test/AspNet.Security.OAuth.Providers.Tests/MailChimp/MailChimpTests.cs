@@ -6,13 +6,8 @@
 
 namespace AspNet.Security.OAuth.MailChimp;
 
-public class MailChimpTests : OAuthTests<MailChimpAuthenticationOptions>
+public class MailChimpTests(ITestOutputHelper outputHelper) : OAuthTests<MailChimpAuthenticationOptions>(outputHelper)
 {
-    public MailChimpTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
     public override string DefaultScheme => MailChimpAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
@@ -25,14 +20,5 @@ public class MailChimpTests : OAuthTests<MailChimpAuthenticationOptions>
     [InlineData(ClaimTypes.Name, "John Smith")]
     [InlineData(ClaimTypes.Email, "john@john-smith.local")]
     public async Task Can_Sign_In_Using_MailChimp(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 }

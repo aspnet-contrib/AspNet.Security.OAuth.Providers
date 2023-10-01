@@ -8,13 +8,8 @@ using Microsoft.AspNetCore.WebUtilities;
 
 namespace AspNet.Security.OAuth.Zalo;
 
-public class ZaloTests : OAuthTests<ZaloAuthenticationOptions>
+public class ZaloTests(ITestOutputHelper outputHelper) : OAuthTests<ZaloAuthenticationOptions>(outputHelper)
 {
-    public ZaloTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
     public override string DefaultScheme => ZaloAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
@@ -28,16 +23,7 @@ public class ZaloTests : OAuthTests<ZaloAuthenticationOptions>
     [InlineData(ClaimTypes.Gender, "male")]
     [InlineData(ClaimTypes.DateOfBirth, "1987-02-01")]
     public async Task Can_Sign_In_Using_Zalo(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 
     [Theory]
     [InlineData(false)]

@@ -8,13 +8,8 @@ using static AspNet.Security.OAuth.Kook.KookAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.Kook;
 
-public class KookTests : OAuthTests<KookAuthenticationOptions>
+public class KookTests(ITestOutputHelper outputHelper) : OAuthTests<KookAuthenticationOptions>(outputHelper)
 {
-    public KookTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
     public override string DefaultScheme => KookAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
@@ -32,14 +27,5 @@ public class KookTests : OAuthTests<KookAuthenticationOptions>
     [InlineData(Claims.BannerUrl, "https://xxx.com/assets/banner.png/icon")]
     [InlineData(Claims.IsMobileVerified, "True")]
     public async Task Can_Sign_In_Using_Kook(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 }

@@ -8,13 +8,8 @@ using static AspNet.Security.OAuth.KakaoTalk.KakaoTalkAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.KakaoTalk;
 
-public class KakaoTalkTests : OAuthTests<KakaoTalkAuthenticationOptions>
+public class KakaoTalkTests(ITestOutputHelper outputHelper) : OAuthTests<KakaoTalkAuthenticationOptions>(outputHelper)
 {
-    public KakaoTalkTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
     public override string DefaultScheme => KakaoTalkAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
@@ -32,14 +27,5 @@ public class KakaoTalkTests : OAuthTests<KakaoTalkAuthenticationOptions>
     [InlineData(Claims.AgeRange, "20~29")]
     [InlineData(Claims.YearOfBirth, "2020")]
     public async Task Can_Sign_In_Using_KakaoTalk(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 }

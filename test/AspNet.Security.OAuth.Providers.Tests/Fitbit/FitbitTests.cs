@@ -6,13 +6,8 @@
 
 namespace AspNet.Security.OAuth.Fitbit;
 
-public class FitbitTests : OAuthTests<FitbitAuthenticationOptions>
+public class FitbitTests(ITestOutputHelper outputHelper) : OAuthTests<FitbitAuthenticationOptions>(outputHelper)
 {
-    public FitbitTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
     public override string DefaultScheme => FitbitAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
@@ -26,14 +21,5 @@ public class FitbitTests : OAuthTests<FitbitAuthenticationOptions>
     [InlineData("urn:fitbit:avatar", "https://fitbit.local/john-smith/avatar.png")]
     [InlineData("urn:fitbit:avatar150", "https://fitbit.local/john-smith/avatar-150.png")]
     public async Task Can_Sign_In_Using_Fitbit(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 }

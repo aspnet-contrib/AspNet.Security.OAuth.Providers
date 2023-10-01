@@ -6,13 +6,8 @@
 
 namespace AspNet.Security.OAuth.Paypal;
 
-public class PaypalTests : OAuthTests<PaypalAuthenticationOptions>
+public class PaypalTests(ITestOutputHelper outputHelper) : OAuthTests<PaypalAuthenticationOptions>(outputHelper)
 {
-    public PaypalTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
     public override string DefaultScheme => PaypalAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
@@ -27,14 +22,5 @@ public class PaypalTests : OAuthTests<PaypalAuthenticationOptions>
     [InlineData(ClaimTypes.GivenName, "identity")]
     [InlineData(ClaimTypes.Surname, "test")]
     public async Task Can_Sign_In_Using_Paypal(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 }

@@ -6,13 +6,8 @@
 
 namespace AspNet.Security.OAuth.Buffer;
 
-public class BufferTests : OAuthTests<BufferAuthenticationOptions>
+public class BufferTests(ITestOutputHelper outputHelper) : OAuthTests<BufferAuthenticationOptions>(outputHelper)
 {
-    public BufferTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
     public override string DefaultScheme => BufferAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
@@ -23,14 +18,5 @@ public class BufferTests : OAuthTests<BufferAuthenticationOptions>
     [Theory]
     [InlineData(ClaimTypes.NameIdentifier, "my-id")]
     public async Task Can_Sign_In_Using_Buffer(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 }

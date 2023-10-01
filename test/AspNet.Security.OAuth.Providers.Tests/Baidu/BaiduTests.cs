@@ -6,21 +6,13 @@
 
 namespace AspNet.Security.OAuth.Baidu;
 
-public class BaiduTests : OAuthTests<BaiduAuthenticationOptions>
+public class BaiduTests(ITestOutputHelper outputHelper) : OAuthTests<BaiduAuthenticationOptions>(outputHelper)
 {
-    public BaiduTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
     public override string DefaultScheme => BaiduAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
     {
-        builder.AddBaidu(options =>
-        {
-            ConfigureDefaults(builder, options);
-        });
+        builder.AddBaidu(options => ConfigureDefaults(builder, options));
     }
 
     [Theory]
@@ -28,14 +20,5 @@ public class BaiduTests : OAuthTests<BaiduAuthenticationOptions>
     [InlineData(ClaimTypes.Name, "my-name")]
     [InlineData("urn:baidu:portrait", "https://tb.himg.baidu.com/sys/portrait/item/my-portrait")]
     public async Task Can_Sign_In_Using_Baidu(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 }

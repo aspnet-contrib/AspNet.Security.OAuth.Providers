@@ -6,13 +6,8 @@
 
 namespace AspNet.Security.OAuth.Yandex;
 
-public class YandexTests : OAuthTests<YandexAuthenticationOptions>
+public class YandexTests(ITestOutputHelper outputHelper) : OAuthTests<YandexAuthenticationOptions>(outputHelper)
 {
-    public YandexTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
     public override string DefaultScheme => YandexAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
@@ -27,14 +22,5 @@ public class YandexTests : OAuthTests<YandexAuthenticationOptions>
     [InlineData(ClaimTypes.GivenName, "John")]
     [InlineData(ClaimTypes.Surname, "Smith")]
     public async Task Can_Sign_In_Using_Yandex(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 }

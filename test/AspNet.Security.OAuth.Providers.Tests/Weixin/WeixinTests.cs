@@ -8,13 +8,8 @@ using Microsoft.AspNetCore.WebUtilities;
 
 namespace AspNet.Security.OAuth.Weixin;
 
-public class WeixinTests : OAuthTests<WeixinAuthenticationOptions>
+public class WeixinTests(ITestOutputHelper outputHelper) : OAuthTests<WeixinAuthenticationOptions>(outputHelper)
 {
-    public WeixinTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
     public override string DefaultScheme => WeixinAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
@@ -33,16 +28,7 @@ public class WeixinTests : OAuthTests<WeixinAuthenticationOptions>
     [InlineData("urn:weixin:privilege", "a,b,c")]
     [InlineData("urn:weixin:province", "Hebei")]
     public async Task Can_Sign_In_Using_Weixin(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 
     [Theory]
     [InlineData(ClaimTypes.NameIdentifier, "my-id")]
@@ -65,13 +51,7 @@ public class WeixinTests : OAuthTests<WeixinAuthenticationOptions>
             });
         }
 
-        using var server = CreateTestServer(ConfigureServices);
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
+        await AuthenticateUserAndAssertClaimValue(claimType, claimValue, ConfigureServices);
     }
 
     [Theory]
@@ -96,13 +76,7 @@ public class WeixinTests : OAuthTests<WeixinAuthenticationOptions>
             });
         }
 
-        using var server = CreateTestServer(ConfigureServices);
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
+        await AuthenticateUserAndAssertClaimValue(claimType, claimValue, ConfigureServices);
     }
 
     [Theory]

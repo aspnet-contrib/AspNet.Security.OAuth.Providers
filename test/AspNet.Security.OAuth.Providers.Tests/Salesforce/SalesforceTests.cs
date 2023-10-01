@@ -6,13 +6,8 @@
 
 namespace AspNet.Security.OAuth.Salesforce;
 
-public class SalesforceTests : OAuthTests<SalesforceAuthenticationOptions>
+public class SalesforceTests(ITestOutputHelper outputHelper) : OAuthTests<SalesforceAuthenticationOptions>(outputHelper)
 {
-    public SalesforceTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
     public override string DefaultScheme => SalesforceAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
@@ -28,14 +23,5 @@ public class SalesforceTests : OAuthTests<SalesforceAuthenticationOptions>
     [InlineData("urn:salesforce:thumbnail_photo", "https://yourInstance.salesforce.com/profilephoto/005/T")]
     [InlineData("urn:salesforce:utc_offset", "-28800000")]
     public async Task Can_Sign_In_Using_Salesforce(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 }
