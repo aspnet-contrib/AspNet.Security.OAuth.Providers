@@ -45,12 +45,6 @@ public static class EVEOnlineAuthenticationDefaults
         /// Default value for <see cref="OAuthOptions.TokenEndpoint"/>.
         /// </summary>
         public static readonly string TokenEndpoint = "https://login.eveonline.com/v2/oauth/token";
-
-        /// <summary>
-        /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
-        /// </summary>
-        [Obsolete("This endpoint is no longer used by the EVEOnline provider.")]
-        public static readonly string UserInformationEndpoint = "https://login.eveonline.com/oauth/verify";
     }
 
     /// <summary>
@@ -67,11 +61,5 @@ public static class EVEOnlineAuthenticationDefaults
         /// Default value for <see cref="OAuthOptions.TokenEndpoint"/>.
         /// </summary>
         public static readonly string TokenEndpoint = "https://sisilogin.testeveonline.com/v2/oauth/token";
-
-        /// <summary>
-        /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
-        /// </summary>
-        [Obsolete("This endpoint is no longer used by the EVEOnline provider.")]
-        public static readonly string UserInformationEndpoint = "https://sisilogin.testeveonline.com/oauth/verify";
     }
 }
