@@ -14,7 +14,7 @@ public class AppleAuthenticationEvents : OAuthEvents
     /// <summary>
     /// Gets or sets the delegate that is invoked when the <see cref="GenerateClientSecret"/> method is invoked.
     /// </summary>
-    public Func<AppleGenerateClientSecretContext, Task> OnGenerateClientSecret { get; set; } = async context =>
+    public Func<AppleGenerateClientSecretContext, Task> OnGenerateClientSecret { get; set; } = static async context =>
     {
         context.Options.ClientSecret = await context.Options.ClientSecretGenerator.GenerateAsync(context);
     };
@@ -22,7 +22,7 @@ public class AppleAuthenticationEvents : OAuthEvents
     /// <summary>
     /// Gets or sets the delegate that is invoked when the <see cref="ValidateIdToken"/> method is invoked.
     /// </summary>
-    public Func<AppleValidateIdTokenContext, Task> OnValidateIdToken { get; set; } = async context =>
+    public Func<AppleValidateIdTokenContext, Task> OnValidateIdToken { get; set; } = static async context =>
     {
         await context.Options.TokenValidator.ValidateAsync(context);
     };

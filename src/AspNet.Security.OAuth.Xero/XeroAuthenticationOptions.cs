@@ -45,7 +45,7 @@ public class XeroAuthenticationOptions : OAuthOptions
     /// Gets or sets the parameters used to validate identity tokens.
     /// </summary>
     /// <remarks>Contains the types and definitions required for validating a token.</remarks>
-    public TokenValidationParameters TokenValidationParameters { get; set; } = new TokenValidationParameters();
+    public TokenValidationParameters TokenValidationParameters { get; set; } = new();
 
     /// <summary>
     /// Gets or sets the configuration manager responsible for retrieving, caching, and refreshing the

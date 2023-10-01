@@ -5,7 +5,6 @@
  */
 
 using System.Security.Claims;
-using System.Text.Json;
 using static AspNet.Security.OAuth.Naver.NaverAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.Naver;

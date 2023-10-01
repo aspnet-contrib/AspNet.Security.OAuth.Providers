@@ -35,7 +35,7 @@ public partial class SuperOfficeAuthenticationHandler : OAuthHandler<SuperOffice
         [NotNull] AuthenticationProperties properties,
         [NotNull] OAuthTokenResponse tokens)
     {
-        (string tenantId, string webApiUrl) = await ProcessIdTokenAndGetContactIdentifierAsync(tokens, properties, identity);
+        (var tenantId, var webApiUrl) = await ProcessIdTokenAndGetContactIdentifierAsync(tokens, properties, identity);
 
         if (string.IsNullOrEmpty(tenantId))
         {
@@ -82,7 +82,7 @@ public partial class SuperOfficeAuthenticationHandler : OAuthHandler<SuperOffice
         [NotNull] AuthenticationProperties properties,
         [NotNull] ClaimsIdentity identity)
     {
-        string? idToken = tokens.Response!.RootElement.GetString("id_token");
+        var idToken = tokens.Response!.RootElement.GetString("id_token");
 
         if (Options.SaveTokens)
         {

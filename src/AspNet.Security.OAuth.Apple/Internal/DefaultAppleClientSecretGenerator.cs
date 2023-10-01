@@ -12,31 +12,18 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace AspNet.Security.OAuth.Apple.Internal;
 
-internal sealed partial class DefaultAppleClientSecretGenerator : AppleClientSecretGenerator
+internal sealed partial class DefaultAppleClientSecretGenerator(
+    [NotNull] IMemoryCache cache,
+    [NotNull] TimeProvider timeProvider,
+    [NotNull] CryptoProviderFactory cryptoProviderFactory,
+    [NotNull] ILogger<DefaultAppleClientSecretGenerator> logger) : AppleClientSecretGenerator
 {
-    private readonly IMemoryCache _cache;
-    private readonly TimeProvider _timeProvider;
-    private readonly ILogger _logger;
-    private readonly CryptoProviderFactory _cryptoProviderFactory;
-
-    public DefaultAppleClientSecretGenerator(
-        [NotNull] IMemoryCache cache,
-        [NotNull] TimeProvider clock,
-        [NotNull] CryptoProviderFactory cryptoProviderFactory,
-        [NotNull] ILogger<DefaultAppleClientSecretGenerator> logger)
-    {
-        _cache = cache;
-        _timeProvider = clock;
-        _cryptoProviderFactory = cryptoProviderFactory;
-        _logger = logger;
-    }
-
     /// <inheritdoc />
     public override async Task<string> GenerateAsync([NotNull] AppleGenerateClientSecretContext context)
     {
         var key = CreateCacheKey(context.Options);
 
-        var clientSecret = await _cache.GetOrCreateAsync(key, async (entry) =>
+        var clientSecret = await cache.GetOrCreateAsync(key, async (entry) =>
         {
             try
             {
@@ -45,7 +32,7 @@ internal sealed partial class DefaultAppleClientSecretGenerator : AppleClientSec
             }
             catch (Exception ex)
             {
-                Log.ClientSecretGenerationFailed(_logger, ex, context.Scheme.Name);
+                Log.ClientSecretGenerationFailed(logger, ex, context.Scheme.Name);
                 throw;
             }
         });
@@ -55,14 +42,14 @@ internal sealed partial class DefaultAppleClientSecretGenerator : AppleClientSec
 
     private static string CreateCacheKey(AppleAuthenticationOptions options)
     {
-        var segments = new[]
-        {
+        string[] segments =
+        [
             nameof(DefaultAppleClientSecretGenerator),
             "ClientSecret",
             options.TeamId,
             options.ClientId,
             options.KeyId
-        };
+        ];
 
         return string.Join('+', segments);
     }
@@ -70,10 +57,10 @@ internal sealed partial class DefaultAppleClientSecretGenerator : AppleClientSec
     private async Task<(string ClientSecret, DateTimeOffset ExpiresAt)> GenerateNewSecretAsync(
         [NotNull] AppleGenerateClientSecretContext context)
     {
-        var expiresAt = _timeProvider.GetUtcNow().Add(context.Options.ClientSecretExpiresAfter).UtcDateTime;
+        var expiresAt = timeProvider.GetUtcNow().Add(context.Options.ClientSecretExpiresAfter).UtcDateTime;
         var subject = new Claim("sub", context.Options.ClientId);
 
-        Log.GeneratingNewClientSecret(_logger, subject.Value, expiresAt);
+        Log.GeneratingNewClientSecret(logger, subject.Value, expiresAt);
 
         var tokenDescriptor = new SecurityTokenDescriptor()
         {
@@ -93,7 +80,7 @@ internal sealed partial class DefaultAppleClientSecretGenerator : AppleClientSec
             clientSecret = context.Options.SecurityTokenHandler.CreateToken(tokenDescriptor);
         }
 
-        Log.GeneratedNewClientSecret(_logger, clientSecret);
+        Log.GeneratedNewClientSecret(logger, clientSecret);
 
         return (clientSecret, expiresAt);
     }
@@ -122,7 +109,7 @@ internal sealed partial class DefaultAppleClientSecretGenerator : AppleClientSec
         // https://github.com/AzureAD/azure-activedirectory-identitymodel-extensions-for-dotnet/issues/1302
         return new SigningCredentials(key, SecurityAlgorithms.EcdsaSha256)
         {
-            CryptoProviderFactory = _cryptoProviderFactory,
+            CryptoProviderFactory = cryptoProviderFactory,
         };
     }
 

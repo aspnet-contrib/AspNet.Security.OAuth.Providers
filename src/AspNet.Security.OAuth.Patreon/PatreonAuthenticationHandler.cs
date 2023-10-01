@@ -29,7 +29,7 @@ public partial class PatreonAuthenticationHandler : OAuthHandler<PatreonAuthenti
         [NotNull] AuthenticationProperties properties,
         [NotNull] OAuthTokenResponse tokens)
     {
-        string endpoint = Options.UserInformationEndpoint;
+        var endpoint = Options.UserInformationEndpoint;
 
         if (Options.Fields.Count > 0)
         {

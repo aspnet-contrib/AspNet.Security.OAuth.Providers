@@ -106,10 +106,10 @@ public partial class TwitterAuthenticationHandler : OAuthHandler<TwitterAuthenti
         return response.IsSuccessStatusCode switch
         {
             true => OAuthTokenResponse.Success(JsonDocument.Parse(body)),
-            false => PrepareFailedOAuthTokenReponse(response, body)
+            false => PrepareFailedOAuthTokenResponse(response, body)
         };
 
-        static OAuthTokenResponse PrepareFailedOAuthTokenReponse(HttpResponseMessage response, string body)
+        static OAuthTokenResponse PrepareFailedOAuthTokenResponse(HttpResponseMessage response, string body)
         {
             var exception = GetStandardErrorException(JsonDocument.Parse(body));
 
