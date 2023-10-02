@@ -11,8 +11,6 @@ namespace Mvc.Client;
 
 public class Startup(IConfiguration configuration, IHostEnvironment hostingEnvironment)
 {
-    public IConfiguration Configuration { get; } = configuration;
-
     public void ConfigureServices(IServiceCollection services)
     {
         services.AddRouting();
@@ -30,21 +28,21 @@ public class Startup(IConfiguration configuration, IHostEnvironment hostingEnvir
 
         .AddGoogle(options =>
         {
-            options.ClientId = Configuration["Google:ClientId"] ?? string.Empty;
-            options.ClientSecret = Configuration["Google:ClientSecret"] ?? string.Empty;
+            options.ClientId = configuration["Google:ClientId"] ?? string.Empty;
+            options.ClientSecret = configuration["Google:ClientSecret"] ?? string.Empty;
         })
 
         .AddTwitter(options =>
         {
-            options.ClientId = Configuration["Twitter:ClientId"] ?? string.Empty;
-            options.ClientSecret = Configuration["Twitter:ClientSecret"] ?? string.Empty;
+            options.ClientId = configuration["Twitter:ClientId"] ?? string.Empty;
+            options.ClientSecret = configuration["Twitter:ClientSecret"] ?? string.Empty;
         })
 
         .AddGitHub(options =>
         {
-            options.ClientId = Configuration["GitHub:ClientId"] ?? string.Empty;
-            options.ClientSecret = Configuration["GitHub:ClientSecret"] ?? string.Empty;
-            options.EnterpriseDomain = Configuration["GitHub:EnterpriseDomain"] ?? string.Empty;
+            options.ClientId = configuration["GitHub:ClientId"] ?? string.Empty;
+            options.ClientSecret = configuration["GitHub:ClientSecret"] ?? string.Empty;
+            options.EnterpriseDomain = configuration["GitHub:EnterpriseDomain"] ?? string.Empty;
             options.Scope.Add("user:email");
         })
 
@@ -61,8 +59,8 @@ public class Startup(IConfiguration configuration, IHostEnvironment hostingEnvir
 
         .AddDropbox(options =>
         {
-            options.ClientId = Configuration["Dropbox:ClientId"] ?? string.Empty;
-            options.ClientSecret = Configuration["Dropbox:ClientSecret"] ?? string.Empty;
+            options.ClientId = configuration["Dropbox:ClientId"] ?? string.Empty;
+            options.ClientSecret = configuration["Dropbox:ClientSecret"] ?? string.Empty;
         });
 
         services.AddMvc();
