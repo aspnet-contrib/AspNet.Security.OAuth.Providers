@@ -29,7 +29,7 @@ public partial class DiscordAuthenticationHandler : OAuthHandler<DiscordAuthenti
         [NotNull] AuthenticationProperties properties,
         [NotNull] string redirectUri)
     {
-        string challengeUrl = base.BuildChallengeUrl(properties, redirectUri);
+        var challengeUrl = base.BuildChallengeUrl(properties, redirectUri);
 
         if (!string.IsNullOrEmpty(Options.Prompt))
         {

@@ -51,7 +51,7 @@ public partial class GitHubAuthenticationHandler : OAuthHandler<GitHubAuthentica
             !identity.HasClaim(claim => claim.Type == ClaimTypes.Email) &&
             Options.Scope.Contains("user:email"))
         {
-            string? address = await GetEmailAsync(tokens);
+            var address = await GetEmailAsync(tokens);
 
             if (!string.IsNullOrEmpty(address))
             {

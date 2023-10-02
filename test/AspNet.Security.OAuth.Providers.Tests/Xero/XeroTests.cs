@@ -9,13 +9,8 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace AspNet.Security.OAuth.Xero;
 
-public class XeroTests : OAuthTests<XeroAuthenticationOptions>
+public class XeroTests(ITestOutputHelper outputHelper) : OAuthTests<XeroAuthenticationOptions>(outputHelper)
 {
-    public XeroTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
     public override string DefaultScheme => XeroAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
@@ -43,16 +38,7 @@ public class XeroTests : OAuthTests<XeroAuthenticationOptions>
     [InlineData("sid", "c37c8dce142c4ce98c1d646df83dafeb")]
     [InlineData("global_session_id", "c37c8dce142c4ce98c1d646df83dafeb")]
     public async Task Can_Sign_In_Using_Xero(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 
     [Theory]
     [InlineData(false)]

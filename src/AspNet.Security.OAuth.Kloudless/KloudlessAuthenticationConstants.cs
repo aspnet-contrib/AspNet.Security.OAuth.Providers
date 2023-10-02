@@ -38,7 +38,7 @@ public static class KloudlessAuthenticationConstants
     public static class Scopes
     {
         /// <summary>
-        /// Use all available services in kloudless
+        /// Use all available services in Kloudless.
         /// <para>Default scope</para>
         /// </summary>
         public const string Any = "any";

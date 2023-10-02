@@ -6,13 +6,8 @@
 
 namespace AspNet.Security.OAuth.Nextcloud;
 
-public class NextcloudTests : OAuthTests<NextcloudAuthenticationOptions>
+public class NextcloudTests(ITestOutputHelper outputHelper) : OAuthTests<NextcloudAuthenticationOptions>(outputHelper)
 {
-    public NextcloudTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
     public override string DefaultScheme => NextcloudAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
@@ -36,14 +31,5 @@ public class NextcloudTests : OAuthTests<NextcloudAuthenticationOptions>
     [InlineData("urn:nextcloud:language", "de")]
     [InlineData("urn:nextcloud:locale", "de_DE")]
     public async Task Can_Sign_In_Using_Nextcloud(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 }

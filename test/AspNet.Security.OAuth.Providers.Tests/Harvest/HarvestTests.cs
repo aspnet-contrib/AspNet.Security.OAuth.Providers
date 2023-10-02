@@ -6,21 +6,13 @@
 
 namespace AspNet.Security.OAuth.Harvest;
 
-public class HarvestTests : OAuthTests<HarvestAuthenticationOptions>
+public class HarvestTests(ITestOutputHelper outputHelper) : OAuthTests<HarvestAuthenticationOptions>(outputHelper)
 {
-    public HarvestTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
     public override string DefaultScheme => HarvestAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
     {
-        builder.AddHarvest(options =>
-        {
-            ConfigureDefaults(builder, options);
-        });
+        builder.AddHarvest(options => ConfigureDefaults(builder, options));
     }
 
     [Theory]
@@ -30,14 +22,5 @@ public class HarvestTests : OAuthTests<HarvestAuthenticationOptions>
     [InlineData(ClaimTypes.Surname, "Smith")]
     [InlineData(ClaimTypes.Email, "john.smith@mail.com")]
     public async Task Can_Sign_In_Using_Harvest(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 }

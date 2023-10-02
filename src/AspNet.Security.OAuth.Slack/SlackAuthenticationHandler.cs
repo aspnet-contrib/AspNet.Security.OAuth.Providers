@@ -29,7 +29,7 @@ public partial class SlackAuthenticationHandler : OAuthHandler<SlackAuthenticati
         [NotNull] AuthenticationProperties properties,
         [NotNull] OAuthTokenResponse tokens)
     {
-        string address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, "token", tokens.AccessToken!);
+        var address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, "token", tokens.AccessToken!);
 
         using var request = new HttpRequestMessage(HttpMethod.Get, address);
         request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));

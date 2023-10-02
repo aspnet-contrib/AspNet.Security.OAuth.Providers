@@ -8,13 +8,8 @@ using Microsoft.AspNetCore.WebUtilities;
 
 namespace AspNet.Security.OAuth.Ebay;
 
-public class EbayTests : OAuthTests<EbayAuthenticationOptions>
+public class EbayTests(ITestOutputHelper outputHelper) : OAuthTests<EbayAuthenticationOptions>(outputHelper)
 {
-    public EbayTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
     public override string DefaultScheme => EbayAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
@@ -30,16 +25,7 @@ public class EbayTests : OAuthTests<EbayAuthenticationOptions>
     [InlineData(ClaimTypes.NameIdentifier, "my-id")]
     [InlineData(ClaimTypes.Name, "John Smith")]
     public async Task Can_Sign_In_Using_Ebay(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 
     [Theory]
     [InlineData(false)]

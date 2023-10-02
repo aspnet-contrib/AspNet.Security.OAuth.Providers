@@ -8,13 +8,8 @@ using Microsoft.AspNetCore.WebUtilities;
 
 namespace AspNet.Security.OAuth.Twitch;
 
-public class TwitchTests : OAuthTests<TwitchAuthenticationOptions>
+public class TwitchTests(ITestOutputHelper outputHelper) : OAuthTests<TwitchAuthenticationOptions>(outputHelper)
 {
-    public TwitchTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
     public override string DefaultScheme => TwitchAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
@@ -33,16 +28,7 @@ public class TwitchTests : OAuthTests<TwitchAuthenticationOptions>
     [InlineData("urn:twitch:profileimageurl", "https://static-cdn.jtvnw.net/jtv_user_pictures/dallas-profile_image-1a2c906ee2c35f12-300x300.png")]
     [InlineData("urn:twitch:type", "staff")]
     public async Task Can_Sign_In_Using_Twitch(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 
     [Theory]
     [InlineData(false, false)]

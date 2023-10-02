@@ -45,21 +45,15 @@ public class XeroAuthenticationPostConfigureOptions : IPostConfigureOptions<Xero
             options.Backchannel.MaxResponseContentBufferSize = 1024 * 1024 * 10; // 10 MB
         }
 
-        if (options.ConfigurationManager == null)
+        options.ConfigurationManager ??= new ConfigurationManager<OpenIdConnectConfiguration>(
+            options.MetadataAddress,
+            new OpenIdConnectConfigurationRetriever(),
+            new HttpDocumentRetriever(options.Backchannel))
         {
-            options.ConfigurationManager = new ConfigurationManager<OpenIdConnectConfiguration>(
-                options.MetadataAddress,
-                new OpenIdConnectConfigurationRetriever(),
-                new HttpDocumentRetriever(options.Backchannel))
-            {
-                AutomaticRefreshInterval = TimeSpan.FromDays(1),
-                RefreshInterval = TimeSpan.FromSeconds(30)
-            };
-        }
+            AutomaticRefreshInterval = TimeSpan.FromDays(1),
+            RefreshInterval = TimeSpan.FromSeconds(30)
+        };
 
-        if (options.SecurityTokenHandler == null)
-        {
-            options.SecurityTokenHandler = new JsonWebTokenHandler();
-        }
+        options.SecurityTokenHandler ??= new JsonWebTokenHandler();
     }
 }

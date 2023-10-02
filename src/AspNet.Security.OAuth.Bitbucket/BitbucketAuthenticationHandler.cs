@@ -51,7 +51,7 @@ public partial class BitbucketAuthenticationHandler : OAuthHandler<BitbucketAuth
             !identity.HasClaim(claim => claim.Type == ClaimTypes.Email) &&
             Options.Scope.Contains("email"))
         {
-            string? address = await GetEmailAsync(tokens);
+            var address = await GetEmailAsync(tokens);
 
             if (!string.IsNullOrEmpty(address))
             {

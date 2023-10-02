@@ -8,13 +8,8 @@ using Microsoft.AspNetCore.WebUtilities;
 
 namespace AspNet.Security.OAuth.Alipay;
 
-public class AlipayTests : OAuthTests<AlipayAuthenticationOptions>
+public class AlipayTests(ITestOutputHelper outputHelper) : OAuthTests<AlipayAuthenticationOptions>(outputHelper)
 {
-    public AlipayTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
     public override string DefaultScheme => AlipayAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
@@ -35,16 +30,7 @@ public class AlipayTests : OAuthTests<AlipayAuthenticationOptions>
     [InlineData("urn:alipay:nick_name", "my-nickname")]
     [InlineData("urn:alipay:gender", "M")]
     public async Task Can_Sign_In_Using_Alipay(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 
     [Theory]
     [InlineData(false)]

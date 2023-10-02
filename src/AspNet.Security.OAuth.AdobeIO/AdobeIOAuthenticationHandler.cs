@@ -29,7 +29,7 @@ public partial class AdobeIOAuthenticationHandler : OAuthHandler<AdobeIOAuthenti
         [NotNull] AuthenticationProperties properties,
         [NotNull] OAuthTokenResponse tokens)
     {
-        string address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, "client_id", Options.ClientId);
+        var address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, "client_id", Options.ClientId);
 
         using var request = new HttpRequestMessage(HttpMethod.Get, address);
         request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));

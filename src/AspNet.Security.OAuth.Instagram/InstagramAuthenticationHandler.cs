@@ -29,7 +29,7 @@ public partial class InstagramAuthenticationHandler : OAuthHandler<InstagramAuth
         [NotNull] AuthenticationProperties properties,
         [NotNull] OAuthTokenResponse tokens)
     {
-        string address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, "access_token", tokens.AccessToken!);
+        var address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, "access_token", tokens.AccessToken!);
 
         if (Options.Fields.Count > 0)
         {

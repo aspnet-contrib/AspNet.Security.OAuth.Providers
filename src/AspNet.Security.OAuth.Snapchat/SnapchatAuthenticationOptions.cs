@@ -5,8 +5,6 @@
  */
 
 using System.Security.Claims;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Http;
 using static AspNet.Security.OAuth.Snapchat.SnapchatAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.Snapchat;

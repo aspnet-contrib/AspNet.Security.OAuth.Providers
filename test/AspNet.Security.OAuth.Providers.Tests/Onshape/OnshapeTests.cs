@@ -6,13 +6,8 @@
 
 namespace AspNet.Security.OAuth.Onshape;
 
-public class OnshapeTests : OAuthTests<OnshapeAuthenticationOptions>
+public class OnshapeTests(ITestOutputHelper outputHelper) : OAuthTests<OnshapeAuthenticationOptions>(outputHelper)
 {
-    public OnshapeTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
     public override string DefaultScheme => OnshapeAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
@@ -24,14 +19,5 @@ public class OnshapeTests : OAuthTests<OnshapeAuthenticationOptions>
     [InlineData(ClaimTypes.NameIdentifier, "my-id")]
     [InlineData(ClaimTypes.Name, "John Smith")]
     public async Task Can_Sign_In_Using_Onshape(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 }

@@ -10,16 +10,8 @@ using Microsoft.AspNetCore.Authentication.OAuth.Claims;
 
 namespace AspNet.Security.OAuth.Apple;
 
-internal sealed class AppleEmailClaimAction : ClaimAction
+internal sealed class AppleEmailClaimAction(AppleAuthenticationOptions options) : ClaimAction(ClaimTypes.Email, ClaimValueTypes.String)
 {
-    private readonly AppleAuthenticationOptions _options;
-
-    internal AppleEmailClaimAction(AppleAuthenticationOptions options)
-        : base(ClaimTypes.Email, ClaimValueTypes.String)
-    {
-        _options = options;
-    }
-
     public override void Run(JsonElement userData, ClaimsIdentity identity, string issuer)
     {
         if (!identity.HasClaim((p) => string.Equals(p.Type, ClaimType, StringComparison.OrdinalIgnoreCase)))
@@ -28,7 +20,7 @@ internal sealed class AppleEmailClaimAction : ClaimAction
 
             if (!string.IsNullOrEmpty(emailClaim?.Value))
             {
-                identity.AddClaim(new Claim(ClaimType, emailClaim.Value, ValueType, _options.ClaimsIssuer));
+                identity.AddClaim(new Claim(ClaimType, emailClaim.Value, ValueType, options.ClaimsIssuer));
             }
         }
     }

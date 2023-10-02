@@ -6,13 +6,8 @@
 
 namespace AspNet.Security.OAuth.Kroger;
 
-public class KrogerTests : OAuthTests<KrogerAuthenticationOptions>
+public class KrogerTests(ITestOutputHelper outputHelper) : OAuthTests<KrogerAuthenticationOptions>(outputHelper)
 {
-    public KrogerTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
     public override string DefaultScheme => KrogerAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
@@ -23,14 +18,5 @@ public class KrogerTests : OAuthTests<KrogerAuthenticationOptions>
     [Theory]
     [InlineData(ClaimTypes.NameIdentifier, "53990804-cfd1-43f3-8256-bdc9817a4fd0")]
     public async Task Can_Sign_In_Using_Kroger(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 }

@@ -8,13 +8,8 @@ using static AspNet.Security.OAuth.Naver.NaverAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.Naver;
 
-public class NaverTests : OAuthTests<NaverAuthenticationOptions>
+public class NaverTests(ITestOutputHelper outputHelper) : OAuthTests<NaverAuthenticationOptions>(outputHelper)
 {
-    public NaverTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
     public override string DefaultScheme => NaverAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
@@ -34,14 +29,5 @@ public class NaverTests : OAuthTests<NaverAuthenticationOptions>
     [InlineData(Claims.YearOfBirth, "2020")]
     [InlineData(Claims.ProfileImage, "https://ssl.pstatic.net/static/pwe/address/img_profile.png")]
     public async Task Can_Sign_In_Using_Naver(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 }

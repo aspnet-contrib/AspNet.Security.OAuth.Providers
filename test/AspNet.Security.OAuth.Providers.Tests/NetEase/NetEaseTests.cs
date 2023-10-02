@@ -6,13 +6,8 @@
 
 namespace AspNet.Security.OAuth.NetEase;
 
-public class NetEaseTests : OAuthTests<NetEaseAuthenticationOptions>
+public class NetEaseTests(ITestOutputHelper outputHelper) : OAuthTests<NetEaseAuthenticationOptions>(outputHelper)
 {
-    public NetEaseTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
     public override string DefaultScheme => NetEaseAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
@@ -24,14 +19,5 @@ public class NetEaseTests : OAuthTests<NetEaseAuthenticationOptions>
     [InlineData(ClaimTypes.NameIdentifier, "820014421")]
     [InlineData(ClaimTypes.Name, "urstest_mreg")]
     public async Task Can_Sign_In_Using_NetEase(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 }

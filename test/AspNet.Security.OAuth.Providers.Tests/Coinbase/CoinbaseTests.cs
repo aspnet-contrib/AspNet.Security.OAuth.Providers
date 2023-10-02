@@ -6,13 +6,8 @@
 
 namespace AspNet.Security.OAuth.Coinbase;
 
-public class CoinbaseTests : OAuthTests<CoinbaseAuthenticationOptions>
+public class CoinbaseTests(ITestOutputHelper outputHelper) : OAuthTests<CoinbaseAuthenticationOptions>(outputHelper)
 {
-    public CoinbaseTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
     public override string DefaultScheme => CoinbaseAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
@@ -30,14 +25,5 @@ public class CoinbaseTests : OAuthTests<CoinbaseAuthenticationOptions>
     [InlineData("urn:coinbase:profile_url", "https://coinbase.com/jsmith")]
     [InlineData("urn:coinbase:username", "jsmith")]
     public async Task Can_Sign_In_Using_Coinbase(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 }

@@ -9,18 +9,8 @@ using Microsoft.IdentityModel.Logging;
 
 namespace Mvc.Client;
 
-public class Startup
+public class Startup(IConfiguration configuration, IHostEnvironment hostingEnvironment)
 {
-    public Startup(IConfiguration configuration, IHostEnvironment hostingEnvironment)
-    {
-        Configuration = configuration;
-        HostingEnvironment = hostingEnvironment;
-    }
-
-    public IConfiguration Configuration { get; }
-
-    private IHostEnvironment HostingEnvironment { get; }
-
     public void ConfigureServices(IServiceCollection services)
     {
         services.AddRouting();
@@ -38,21 +28,21 @@ public class Startup
 
         .AddGoogle(options =>
         {
-            options.ClientId = Configuration["Google:ClientId"] ?? string.Empty;
-            options.ClientSecret = Configuration["Google:ClientSecret"] ?? string.Empty;
+            options.ClientId = configuration["Google:ClientId"] ?? string.Empty;
+            options.ClientSecret = configuration["Google:ClientSecret"] ?? string.Empty;
         })
 
         .AddTwitter(options =>
         {
-            options.ClientId = Configuration["Twitter:ClientId"] ?? string.Empty;
-            options.ClientSecret = Configuration["Twitter:ClientSecret"] ?? string.Empty;
+            options.ClientId = configuration["Twitter:ClientId"] ?? string.Empty;
+            options.ClientSecret = configuration["Twitter:ClientSecret"] ?? string.Empty;
         })
 
         .AddGitHub(options =>
         {
-            options.ClientId = Configuration["GitHub:ClientId"] ?? string.Empty;
-            options.ClientSecret = Configuration["GitHub:ClientSecret"] ?? string.Empty;
-            options.EnterpriseDomain = Configuration["GitHub:EnterpriseDomain"] ?? string.Empty;
+            options.ClientId = configuration["GitHub:ClientId"] ?? string.Empty;
+            options.ClientSecret = configuration["GitHub:ClientSecret"] ?? string.Empty;
+            options.EnterpriseDomain = configuration["GitHub:EnterpriseDomain"] ?? string.Empty;
             options.Scope.Add("user:email");
         })
 
@@ -69,8 +59,8 @@ public class Startup
 
         .AddDropbox(options =>
         {
-            options.ClientId = Configuration["Dropbox:ClientId"] ?? string.Empty;
-            options.ClientSecret = Configuration["Dropbox:ClientSecret"] ?? string.Empty;
+            options.ClientId = configuration["Dropbox:ClientId"] ?? string.Empty;
+            options.ClientSecret = configuration["Dropbox:ClientSecret"] ?? string.Empty;
         });
 
         services.AddMvc();
@@ -78,7 +68,7 @@ public class Startup
 
     public void Configure(IApplicationBuilder app)
     {
-        if (HostingEnvironment.IsDevelopment())
+        if (hostingEnvironment.IsDevelopment())
         {
             IdentityModelEventSource.ShowPII = true;
         }

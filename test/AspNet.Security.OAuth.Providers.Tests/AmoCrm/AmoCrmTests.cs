@@ -6,7 +6,7 @@
 
 namespace AspNet.Security.OAuth.AmoCrm;
 
-public class AmoCrmTests : OAuthTests<AmoCrmAuthenticationOptions>
+public class AmoCrmTests(ITestOutputHelper outputHelper) : OAuthTests<AmoCrmAuthenticationOptions>(outputHelper)
 {
     public override string DefaultScheme => AmoCrmAuthenticationDefaults.AuthenticationScheme;
 
@@ -25,14 +25,5 @@ public class AmoCrmTests : OAuthTests<AmoCrmAuthenticationOptions>
     [InlineData(ClaimTypes.Surname, "Smith")]
     [InlineData(ClaimTypes.Email, "john@john-smith.local")]
     public async Task Can_Sign_In_Using_AmoCrm(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 }

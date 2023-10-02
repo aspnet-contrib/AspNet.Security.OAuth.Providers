@@ -8,13 +8,8 @@ using Microsoft.AspNetCore.WebUtilities;
 
 namespace AspNet.Security.OAuth.Deezer;
 
-public class DeezerTests : OAuthTests<DeezerAuthenticationOptions>
+public class DeezerTests(ITestOutputHelper outputHelper) : OAuthTests<DeezerAuthenticationOptions>(outputHelper)
 {
-    public DeezerTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
     public override string DefaultScheme => DeezerAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
@@ -46,16 +41,7 @@ public class DeezerTests : OAuthTests<DeezerAuthenticationOptions>
     [InlineData(DeezerAuthenticationConstants.Claims.Type, "Type")]
     [InlineData(DeezerAuthenticationConstants.Claims.ExplicitContentLevel, "ExplicitContentLevel")]
     public async Task Can_Sign_In_Using_Deezer(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 
     [Theory]
     [InlineData(false)]

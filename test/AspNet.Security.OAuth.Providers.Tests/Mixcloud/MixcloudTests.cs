@@ -8,13 +8,8 @@ using Microsoft.AspNetCore.WebUtilities;
 
 namespace AspNet.Security.OAuth.Mixcloud;
 
-public class MixcloudTests : OAuthTests<MixcloudAuthenticationOptions>
+public class MixcloudTests(ITestOutputHelper outputHelper) : OAuthTests<MixcloudAuthenticationOptions>(outputHelper)
 {
-    public MixcloudTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
     public override string DefaultScheme => MixcloudAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
@@ -33,16 +28,7 @@ public class MixcloudTests : OAuthTests<MixcloudAuthenticationOptions>
     [InlineData("urn:mixcloud:profileimageurl", "https://mixcloud.local/images/320wx320h")]
     [InlineData("urn:mixcloud:profilethumbnailurl", "https://mixcloud.local/images/thumbnail")]
     public async Task Can_Sign_In_Using_Mixcloud(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 
     [Theory]
     [InlineData(false)]

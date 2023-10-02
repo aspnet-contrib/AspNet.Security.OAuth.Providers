@@ -19,7 +19,7 @@ public class AuthenticationController : Controller
     public async Task<IActionResult> SignIn([FromForm] string provider)
     {
         // Note: the "provider" parameter corresponds to the external
-        // authentication provider choosen by the user agent.
+        // authentication provider chosen by the user agent.
         if (string.IsNullOrWhiteSpace(provider))
         {
             return BadRequest();

@@ -38,7 +38,7 @@ public partial class JumpCloudAuthenticationHandler : OAuthHandler<JumpCloudAuth
         [NotNull] AuthenticationProperties properties,
         [NotNull] OAuthTokenResponse tokens)
     {
-        string endpoint = Options.UserInformationEndpoint;
+        var endpoint = Options.UserInformationEndpoint;
 
         using var request = new HttpRequestMessage(HttpMethod.Get, endpoint);
         request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));

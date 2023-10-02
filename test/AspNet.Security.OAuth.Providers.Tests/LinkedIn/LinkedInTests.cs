@@ -8,14 +8,9 @@ using Microsoft.AspNetCore.Builder;
 
 namespace AspNet.Security.OAuth.LinkedIn;
 
-public class LinkedInTests : OAuthTests<LinkedInAuthenticationOptions>
+public class LinkedInTests(ITestOutputHelper outputHelper) : OAuthTests<LinkedInAuthenticationOptions>(outputHelper)
 {
     private Action<LinkedInAuthenticationOptions>? additionalConfiguration;
-
-    public LinkedInTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
 
     public override string DefaultScheme => LinkedInAuthenticationDefaults.AuthenticationScheme;
 
@@ -48,13 +43,7 @@ public class LinkedInTests : OAuthTests<LinkedInAuthenticationOptions>
         // Arrange
         additionalConfiguration = options => options.Fields.Add(LinkedInAuthenticationConstants.ProfileFields.PictureUrl);
 
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
+        await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
     }
 
     [Theory]
@@ -63,16 +52,7 @@ public class LinkedInTests : OAuthTests<LinkedInAuthenticationOptions>
     [InlineData(ClaimTypes.GivenName, "Frodon")]
     [InlineData(ClaimTypes.Surname, "Sacquet")]
     public async Task Can_Sign_In_Using_LinkedIn_Localized(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 
     [Theory]
     [InlineData(ClaimTypes.NameIdentifier, "1R2RtA")]
@@ -84,7 +64,7 @@ public class LinkedInTests : OAuthTests<LinkedInAuthenticationOptions>
         // Arrange
         additionalConfiguration = options => options.MultiLocaleStringResolver = (values, preferredLocale) =>
         {
-            if (values.TryGetValue("fr_FR", out string? value))
+            if (values.TryGetValue("fr_FR", out var value))
             {
                 return value;
             }
@@ -92,12 +72,6 @@ public class LinkedInTests : OAuthTests<LinkedInAuthenticationOptions>
             return values.Values.FirstOrDefault();
         };
 
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
+        await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
     }
 }

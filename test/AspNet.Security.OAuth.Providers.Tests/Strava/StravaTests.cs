@@ -8,13 +8,8 @@ using Microsoft.AspNetCore.WebUtilities;
 
 namespace AspNet.Security.OAuth.Strava;
 
-public class StravaTests : OAuthTests<StravaAuthenticationOptions>
+public class StravaTests(ITestOutputHelper outputHelper) : OAuthTests<StravaAuthenticationOptions>(outputHelper)
 {
-    public StravaTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
     public override string DefaultScheme => StravaAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
@@ -38,16 +33,7 @@ public class StravaTests : OAuthTests<StravaAuthenticationOptions>
     [InlineData("urn:strava:profile-medium", "https://strava.local/images/JohnSmith-medium.png")]
     [InlineData("urn:strava:updated-at", "2019-03-17T16:13:00+00:00")]
     public async Task Can_Sign_In_Using_Strava(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 
     [Theory]
     [InlineData(false)]

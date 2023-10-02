@@ -6,13 +6,8 @@
 
 namespace AspNet.Security.OAuth.StackExchange;
 
-public class StackExchangeTests : OAuthTests<StackExchangeAuthenticationOptions>
+public class StackExchangeTests(ITestOutputHelper outputHelper) : OAuthTests<StackExchangeAuthenticationOptions>(outputHelper)
 {
-    public StackExchangeTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
     public override string DefaultScheme => StackExchangeAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
@@ -30,14 +25,5 @@ public class StackExchangeTests : OAuthTests<StackExchangeAuthenticationOptions>
     [InlineData(ClaimTypes.Webpage, "https://example.com/")]
     [InlineData("urn:stackexchange:link", "https://example.stackexchange.com/users/1/example-user")]
     public async Task Can_Sign_In_Using_StackExchange(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 }

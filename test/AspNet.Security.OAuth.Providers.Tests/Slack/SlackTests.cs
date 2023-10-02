@@ -6,13 +6,8 @@
 
 namespace AspNet.Security.OAuth.Slack;
 
-public class SlackTests : OAuthTests<SlackAuthenticationOptions>
+public class SlackTests(ITestOutputHelper outputHelper) : OAuthTests<SlackAuthenticationOptions>(outputHelper)
 {
-    public SlackTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
     public override string DefaultScheme => SlackAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
@@ -34,14 +29,5 @@ public class SlackTests : OAuthTests<SlackAuthenticationOptions>
     [InlineData("urn:slack:team_name", "Captain Fabian's Naval Supply")]
     [InlineData("urn:slack:user_id", "U0G9QF9C6")]
     public async Task Can_Sign_In_Using_Slack(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 }

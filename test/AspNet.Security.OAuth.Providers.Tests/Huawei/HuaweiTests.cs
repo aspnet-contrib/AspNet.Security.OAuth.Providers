@@ -6,13 +6,8 @@
 
 namespace AspNet.Security.OAuth.Huawei;
 
-public class HuaweiTests : OAuthTests<HuaweiAuthenticationOptions>
+public class HuaweiTests(ITestOutputHelper outputHelper) : OAuthTests<HuaweiAuthenticationOptions>(outputHelper)
 {
-    public HuaweiTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
     public override string DefaultScheme => HuaweiAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
@@ -34,14 +29,5 @@ public class HuaweiTests : OAuthTests<HuaweiAuthenticationOptions>
     [InlineData(HuaweiAuthenticationConstants.Claims.Avatar, "test-head-picture-url.jpg")]
     [InlineData(ClaimTypes.Email, "test-email@test")]
     public async Task Can_Sign_In_Using_Huawei(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 }

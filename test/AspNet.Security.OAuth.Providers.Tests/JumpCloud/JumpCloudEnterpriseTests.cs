@@ -6,13 +6,8 @@
 
 namespace AspNet.Security.OAuth.JumpCloud;
 
-public class JumpCloudEnterpriseTests : OAuthTests<JumpCloudAuthenticationOptions>
+public class JumpCloudEnterpriseTests(ITestOutputHelper outputHelper) : OAuthTests<JumpCloudAuthenticationOptions>(outputHelper)
 {
-    public JumpCloudEnterpriseTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
     public override string DefaultScheme => JumpCloudAuthenticationDefaults.AuthenticationScheme;
 
     protected override string BundleName => "JumpCloud";
@@ -33,14 +28,5 @@ public class JumpCloudEnterpriseTests : OAuthTests<JumpCloudAuthenticationOption
     [InlineData(ClaimTypes.NameIdentifier, "00uid4BxXw6I6TV4m0g3")]
     [InlineData(ClaimTypes.Surname, "Doe")]
     public async Task Can_Sign_In_Using_JumpCloud(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 }

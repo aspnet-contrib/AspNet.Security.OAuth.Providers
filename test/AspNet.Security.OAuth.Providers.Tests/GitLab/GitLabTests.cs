@@ -6,21 +6,13 @@
 
 namespace AspNet.Security.OAuth.GitLab;
 
-public class GitLabTests : OAuthTests<GitLabAuthenticationOptions>
+public class GitLabTests(ITestOutputHelper outputHelper) : OAuthTests<GitLabAuthenticationOptions>(outputHelper)
 {
-    public GitLabTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
     public override string DefaultScheme => GitLabAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
     {
-        builder.AddGitLab(options =>
-        {
-            ConfigureDefaults(builder, options);
-        });
+        builder.AddGitLab(options => ConfigureDefaults(builder, options));
     }
 
     [Theory]
@@ -31,14 +23,5 @@ public class GitLabTests : OAuthTests<GitLabAuthenticationOptions>
     [InlineData(GitLabAuthenticationConstants.Claims.Url, "https://gitlab.com/testuser")]
     [InlineData(GitLabAuthenticationConstants.Claims.Avatar, "https://assets.gitlab-static.net/uploads/-/system/user/avatar/1234567/avatar.png")]
     public async Task Can_Sign_In_Using_GitHub(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 }

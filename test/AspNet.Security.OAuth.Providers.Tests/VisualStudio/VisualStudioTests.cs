@@ -8,13 +8,8 @@ using Microsoft.AspNetCore.WebUtilities;
 
 namespace AspNet.Security.OAuth.VisualStudio;
 
-public class VisualStudioTests : OAuthTests<VisualStudioAuthenticationOptions>
+public class VisualStudioTests(ITestOutputHelper outputHelper) : OAuthTests<VisualStudioAuthenticationOptions>(outputHelper)
 {
-    public VisualStudioTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
     public override string DefaultScheme => VisualStudioAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
@@ -28,16 +23,7 @@ public class VisualStudioTests : OAuthTests<VisualStudioAuthenticationOptions>
     [InlineData(ClaimTypes.Email, "john@john-smith.local")]
     [InlineData(ClaimTypes.GivenName, "John")]
     public async Task Can_Sign_In_Using_Visual_Studio(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 
     [Theory]
     [InlineData(false)]

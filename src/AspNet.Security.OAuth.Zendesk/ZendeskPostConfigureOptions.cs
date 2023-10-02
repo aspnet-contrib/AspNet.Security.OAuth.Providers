@@ -21,7 +21,7 @@ public class ZendeskPostConfigureOptions : IPostConfigureOptions<ZendeskAuthenti
     {
         if (string.IsNullOrWhiteSpace(options.Domain))
         {
-            throw new ArgumentException($"No Zendesk domain configured", nameof(options));
+            throw new ArgumentException("No Zendesk domain configured", nameof(options));
         }
 
         options.AuthorizationEndpoint = CreateUrl(options.Domain, AuthorizationEndpointPath);

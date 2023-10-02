@@ -6,13 +6,8 @@
 
 namespace AspNet.Security.OAuth.Patreon;
 
-public class PatreonTests : OAuthTests<PatreonAuthenticationOptions>
+public class PatreonTests(ITestOutputHelper outputHelper) : OAuthTests<PatreonAuthenticationOptions>(outputHelper)
 {
-    public PatreonTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
     public override string DefaultScheme => PatreonAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
@@ -29,14 +24,5 @@ public class PatreonTests : OAuthTests<PatreonAuthenticationOptions>
     [InlineData(ClaimTypes.Webpage, "https://patreon.local/JohnSmith")]
     [InlineData("urn:patreon:avatar", "https://patreon.local/JohnSmith/avatar.png")]
     public async Task Can_Sign_In_Using_Patreon(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 }

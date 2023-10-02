@@ -12,12 +12,12 @@ namespace AspNet.Security.OAuth.Kook;
 public static class KookAuthenticationDefaults
 {
     /// <summary>
-    /// Default value for <see cref="Microsoft.AspNetCore.Authentication.AuthenticationScheme.Name"/>.
+    /// Default value for <see cref="AuthenticationScheme.Name"/>.
     /// </summary>
     public const string AuthenticationScheme = "Kook";
 
     /// <summary>
-    /// Default value for <see cref="Microsoft.AspNetCore.Authentication.AuthenticationScheme.DisplayName"/>.
+    /// Default value for <see cref="AuthenticationScheme.DisplayName"/>.
     /// </summary>
     public static readonly string DisplayName = "Kook";
 

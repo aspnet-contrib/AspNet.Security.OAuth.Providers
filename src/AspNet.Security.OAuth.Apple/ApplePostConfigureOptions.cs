@@ -19,27 +19,15 @@ namespace AspNet.Security.OAuth.Apple;
 /// <summary>
 /// A class used to setup defaults for all <see cref="AppleAuthenticationOptions"/>.
 /// </summary>
-public class ApplePostConfigureOptions : IPostConfigureOptions<AppleAuthenticationOptions>
+/// <param name="cache">The <see cref="IMemoryCache"/> to use.</param>
+/// <param name="timeProvider">The <see cref="TimeProvider"/> to use.</param>
+/// <param name="loggerFactory">The <see cref="ILoggerFactory"/> to use.</param>
+public class ApplePostConfigureOptions(
+    IMemoryCache cache,
+    TimeProvider timeProvider,
+    ILoggerFactory loggerFactory) : IPostConfigureOptions<AppleAuthenticationOptions>
 {
-    private readonly IMemoryCache _cache;
-    private readonly TimeProvider _timeProvider;
-    private readonly ILoggerFactory _loggerFactory;
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="ApplePostConfigureOptions"/> class.
-    /// </summary>
-    /// <param name="cache">The <see cref="IMemoryCache"/> to use.</param>
-    /// <param name="timeProvider">The <see cref="TimeProvider"/> to use.</param>
-    /// <param name="loggerFactory">The <see cref="ILoggerFactory"/> to use.</param>
-    public ApplePostConfigureOptions(
-        IMemoryCache cache,
-        TimeProvider timeProvider,
-        ILoggerFactory loggerFactory)
-    {
-        _cache = cache;
-        _timeProvider = timeProvider;
-        _loggerFactory = loggerFactory ?? NullLoggerFactory.Instance;
-    }
+    private readonly ILoggerFactory _loggerFactory = loggerFactory ?? NullLoggerFactory.Instance;
 
     /// <inheritdoc/>
     public void PostConfigure(
@@ -51,8 +39,8 @@ public class ApplePostConfigureOptions : IPostConfigureOptions<AppleAuthenticati
         var cryptoProviderFactory = new CryptoProviderFactory() { CacheSignatureProviders = false };
 
         options.ClientSecretGenerator ??= new DefaultAppleClientSecretGenerator(
-            _cache,
-            _timeProvider,
+            cache,
+            timeProvider,
             cryptoProviderFactory,
             _loggerFactory.CreateLogger<DefaultAppleClientSecretGenerator>());
 

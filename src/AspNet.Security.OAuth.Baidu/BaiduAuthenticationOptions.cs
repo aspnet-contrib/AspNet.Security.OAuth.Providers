@@ -29,7 +29,7 @@ public class BaiduAuthenticationOptions : OAuthOptions
         ClaimActions.MapCustomJson(BaiduAuthenticationConstants.Claims.Portrait,
             user =>
             {
-                string? portrait = user.GetString("portrait");
+                var portrait = user.GetString("portrait");
                 return string.IsNullOrWhiteSpace(portrait) ?
                     null :
                     $"https://tb.himg.baidu.com/sys/portrait/item/{WebUtility.UrlEncode(portrait)}";

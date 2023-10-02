@@ -10,16 +10,9 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace AspNet.Security.OAuth.Apple.Internal;
 
-internal sealed partial class DefaultAppleIdTokenValidator : AppleIdTokenValidator
+internal sealed partial class DefaultAppleIdTokenValidator(
+    [NotNull] ILogger<DefaultAppleIdTokenValidator> logger) : AppleIdTokenValidator
 {
-    private readonly ILogger _logger;
-
-    public DefaultAppleIdTokenValidator(
-        [NotNull] ILogger<DefaultAppleIdTokenValidator> logger)
-    {
-        _logger = logger;
-    }
-
     public override async Task ValidateAsync([NotNull] AppleValidateIdTokenContext context)
     {
         if (context.Options.SecurityTokenHandler is null)
@@ -58,8 +51,8 @@ internal sealed partial class DefaultAppleIdTokenValidator : AppleIdTokenValidat
         }
         catch (Exception ex)
         {
-            Log.TokenValidationFailed(_logger, ex, validationParameters.ValidIssuer, validationParameters.ValidAudience);
-            Log.TokenInvalid(_logger, ex, context.IdToken);
+            Log.TokenValidationFailed(logger, ex, validationParameters.ValidIssuer, validationParameters.ValidAudience);
+            Log.TokenInvalid(logger, ex, context.IdToken);
             throw;
         }
     }

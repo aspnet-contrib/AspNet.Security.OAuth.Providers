@@ -34,7 +34,7 @@ public partial class EVEOnlineAuthenticationHandler : OAuthHandler<EVEOnlineAuth
         [NotNull] AuthenticationProperties properties,
         [NotNull] OAuthTokenResponse tokens)
     {
-        string? accessToken = tokens.AccessToken;
+        var accessToken = tokens.AccessToken;
 
         if (string.IsNullOrWhiteSpace(accessToken))
         {
@@ -72,11 +72,12 @@ public partial class EVEOnlineAuthenticationHandler : OAuthHandler<EVEOnlineAuth
             var nameClaim = ExtractClaim(securityToken, "name");
             var expClaim = ExtractClaim(securityToken, "exp");
 
-            var claims = new List<Claim>(securityToken.Claims);
-
-            claims.Add(new Claim(ClaimTypes.NameIdentifier, securityToken.Subject.Replace("CHARACTER:EVE:", string.Empty, StringComparison.OrdinalIgnoreCase), ClaimValueTypes.String, ClaimsIssuer));
-            claims.Add(new Claim(ClaimTypes.Name, nameClaim.Value, ClaimValueTypes.String, ClaimsIssuer));
-            claims.Add(new Claim(ClaimTypes.Expiration, UnixTimeStampToDateTime(expClaim.Value), ClaimValueTypes.DateTime, ClaimsIssuer));
+            var claims = new List<Claim>(securityToken.Claims)
+            {
+                new(ClaimTypes.NameIdentifier, securityToken.Subject.Replace("CHARACTER:EVE:", string.Empty, StringComparison.OrdinalIgnoreCase), ClaimValueTypes.String, ClaimsIssuer),
+                new(ClaimTypes.Name, nameClaim.Value, ClaimValueTypes.String, ClaimsIssuer),
+                new(ClaimTypes.Expiration, UnixTimeStampToDateTime(expClaim.Value), ClaimValueTypes.DateTime, ClaimsIssuer)
+            };
 
             var scopes = claims.Where(x => string.Equals(x.Type, "scp", StringComparison.OrdinalIgnoreCase)).ToList();
 
@@ -96,23 +97,17 @@ public partial class EVEOnlineAuthenticationHandler : OAuthHandler<EVEOnlineAuth
     private static Claim ExtractClaim([NotNull] JsonWebToken token, [NotNull] string claim)
     {
         var extractedClaim = token.Claims.FirstOrDefault(x => string.Equals(x.Type, claim, StringComparison.OrdinalIgnoreCase));
-
-        if (extractedClaim == null)
-        {
-            throw new AuthenticationFailureException($"The claim '{claim}' is missing from the EVEOnline JWT.");
-        }
-
-        return extractedClaim;
+        return extractedClaim ?? throw new AuthenticationFailureException($"The claim '{claim}' is missing from the EVEOnline JWT.");
     }
 
     private static string UnixTimeStampToDateTime(string unixTimeStamp)
     {
-        if (!long.TryParse(unixTimeStamp, NumberStyles.Integer, CultureInfo.InvariantCulture, out long unixTime))
+        if (!long.TryParse(unixTimeStamp, NumberStyles.Integer, CultureInfo.InvariantCulture, out var seconds))
         {
             throw new AuthenticationFailureException($"The value {unixTimeStamp} of the 'exp' claim is not a valid 64-bit integer.");
         }
 
-        DateTimeOffset offset = DateTimeOffset.FromUnixTimeSeconds(unixTime);
+        DateTimeOffset offset = DateTimeOffset.FromUnixTimeSeconds(seconds);
         return offset.ToString("o", CultureInfo.InvariantCulture);
     }
 

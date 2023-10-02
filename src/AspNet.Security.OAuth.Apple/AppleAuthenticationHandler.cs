@@ -19,22 +19,14 @@ namespace AspNet.Security.OAuth.Apple;
 /// <summary>
 /// Defines a handler for authentication using Apple.
 /// </summary>
-public partial class AppleAuthenticationHandler : OAuthHandler<AppleAuthenticationOptions>
+/// <param name="options">The authentication options.</param>
+/// <param name="logger">The logger to use.</param>
+/// <param name="encoder">The URL encoder to use.</param>
+public partial class AppleAuthenticationHandler(
+    [NotNull] IOptionsMonitor<AppleAuthenticationOptions> options,
+    [NotNull] ILoggerFactory logger,
+    [NotNull] UrlEncoder encoder) : OAuthHandler<AppleAuthenticationOptions>(options, logger, encoder)
 {
-    /// <summary>
-    /// Initializes a new instance of the <see cref="AppleAuthenticationHandler"/> class.
-    /// </summary>
-    /// <param name="options">The authentication options.</param>
-    /// <param name="logger">The logger to use.</param>
-    /// <param name="encoder">The URL encoder to use.</param>
-    public AppleAuthenticationHandler(
-        [NotNull] IOptionsMonitor<AppleAuthenticationOptions> options,
-        [NotNull] ILoggerFactory logger,
-        [NotNull] UrlEncoder encoder)
-        : base(options, logger, encoder)
-    {
-    }
-
     /// <summary>
     /// The handler calls methods on the events which give the application control at certain points where processing is occurring.
     /// If it is not provided a default instance is supplied which does nothing when the methods are called.
@@ -133,7 +125,7 @@ public partial class AppleAuthenticationHandler : OAuthHandler<AppleAuthenticati
 
             var claims = new List<Claim>(securityToken.Claims)
             {
-                new Claim(ClaimTypes.NameIdentifier, securityToken.Subject, ClaimValueTypes.String, ClaimsIssuer),
+                new(ClaimTypes.NameIdentifier, securityToken.Subject, ClaimValueTypes.String, ClaimsIssuer),
             };
 
             var emailClaim = claims.Find((p) => string.Equals(p.Type, "email", StringComparison.Ordinal));
@@ -283,19 +275,19 @@ public partial class AppleAuthenticationHandler : OAuthHandler<AppleAuthenticati
 
         if (Options.SaveTokens)
         {
-            var authTokens = new List<AuthenticationToken>()
-            {
-                new AuthenticationToken() { Name = "access_token", Value = tokens.AccessToken },
-            };
+            List<AuthenticationToken> authTokens =
+            [
+                new() { Name = "access_token", Value = tokens.AccessToken },
+            ];
 
             if (!string.IsNullOrEmpty(tokens.RefreshToken))
             {
-                authTokens.Add(new AuthenticationToken() { Name = "refresh_token", Value = tokens.RefreshToken });
+                authTokens.Add(new() { Name = "refresh_token", Value = tokens.RefreshToken });
             }
 
             if (!string.IsNullOrEmpty(tokens.TokenType))
             {
-                authTokens.Add(new AuthenticationToken() { Name = "token_type", Value = tokens.TokenType });
+                authTokens.Add(new() { Name = "token_type", Value = tokens.TokenType });
             }
 
             if (!string.IsNullOrEmpty(tokens.ExpiresIn))
@@ -306,7 +298,7 @@ public partial class AppleAuthenticationHandler : OAuthHandler<AppleAuthenticati
                     // https://msdn.microsoft.com/en-us/library/az4se3k1(v=vs.110).aspx
                     var expiresAt = TimeProvider.GetUtcNow().AddSeconds(value);
 
-                    authTokens.Add(new AuthenticationToken()
+                    authTokens.Add(new()
                     {
                         Name = "expires_at",
                         Value = expiresAt.ToString("o", CultureInfo.InvariantCulture),
@@ -318,7 +310,7 @@ public partial class AppleAuthenticationHandler : OAuthHandler<AppleAuthenticati
 
             if (!string.IsNullOrEmpty(idToken))
             {
-                authTokens.Add(new AuthenticationToken() { Name = "id_token", Value = idToken });
+                authTokens.Add(new() { Name = "id_token", Value = idToken });
             }
 
             properties.StoreTokens(authTokens);

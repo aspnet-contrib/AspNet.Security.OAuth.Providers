@@ -6,13 +6,8 @@
 
 namespace AspNet.Security.OAuth.Twitter;
 
-public class TwitterTests : OAuthTests<TwitterAuthenticationOptions>
+public class TwitterTests(ITestOutputHelper outputHelper) : OAuthTests<TwitterAuthenticationOptions>(outputHelper)
 {
-    public TwitterTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
     public override string DefaultScheme => TwitterAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
@@ -32,14 +27,5 @@ public class TwitterTests : OAuthTests<TwitterAuthenticationOptions>
     [InlineData(ClaimTypes.Name, "TwitterDev")]
     [InlineData("urn:twitter:name", "Twitter Dev")]
     public async Task Can_Sign_In_Using_Twitter(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 }

@@ -6,13 +6,8 @@
 
 namespace AspNet.Security.OAuth.Yahoo;
 
-public class YahooTests : OAuthTests<YahooAuthenticationOptions>
+public class YahooTests(ITestOutputHelper outputHelper) : OAuthTests<YahooAuthenticationOptions>(outputHelper)
 {
-    public YahooTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
     public override string DefaultScheme => YahooAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
@@ -28,14 +23,5 @@ public class YahooTests : OAuthTests<YahooAuthenticationOptions>
     [InlineData("urn:yahoo:givenname", "John")]
     [InlineData("urn:yahoo:picture", "https://www.yahoo.local/JohnSmith/image.png")]
     public async Task Can_Sign_In_Using_Yahoo(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 }

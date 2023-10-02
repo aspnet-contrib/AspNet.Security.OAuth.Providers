@@ -6,13 +6,8 @@
 
 namespace AspNet.Security.OAuth.Gitee;
 
-public class GiteeTests : OAuthTests<GiteeAuthenticationOptions>
+public class GiteeTests(ITestOutputHelper outputHelper) : OAuthTests<GiteeAuthenticationOptions>(outputHelper)
 {
-    public GiteeTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
     public override string DefaultScheme => GiteeAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
@@ -27,14 +22,5 @@ public class GiteeTests : OAuthTests<GiteeAuthenticationOptions>
     [InlineData("urn:gitee:name", "name")]
     [InlineData("urn:gitee:url", "https://gitee.com/api/v5/users/loginname")]
     public async Task Can_Sign_In_Using_Gitee(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 }

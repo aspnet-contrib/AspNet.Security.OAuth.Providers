@@ -6,13 +6,8 @@
 
 namespace AspNet.Security.OAuth.WordPress;
 
-public class WordPressTests : OAuthTests<WordPressAuthenticationOptions>
+public class WordPressTests(ITestOutputHelper outputHelper) : OAuthTests<WordPressAuthenticationOptions>(outputHelper)
 {
-    public WordPressTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
     public override string DefaultScheme => WordPressAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
@@ -29,14 +24,5 @@ public class WordPressTests : OAuthTests<WordPressAuthenticationOptions>
     [InlineData("urn:wordpress:primaryblog", "https://john-smith.wordpress.local")]
     [InlineData("urn:wordpress:profileurl", "https://www.wordpress.local/john-smith")]
     public async Task Can_Sign_In_Using_WordPress(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 }

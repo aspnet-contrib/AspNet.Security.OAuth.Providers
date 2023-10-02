@@ -6,13 +6,8 @@
 
 namespace AspNet.Security.OAuth.CiscoSpark;
 
-public class CiscoSparkTests : OAuthTests<CiscoSparkAuthenticationOptions>
+public class CiscoSparkTests(ITestOutputHelper outputHelper) : OAuthTests<CiscoSparkAuthenticationOptions>(outputHelper)
 {
-    public CiscoSparkTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
     public override string DefaultScheme => CiscoSparkAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
@@ -25,14 +20,5 @@ public class CiscoSparkTests : OAuthTests<CiscoSparkAuthenticationOptions>
     [InlineData(ClaimTypes.Name, "John Smith")]
     [InlineData(ClaimTypes.Email, "john@john-smith.local")]
     public async Task Can_Sign_In_Using_CiscoSpark(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 }

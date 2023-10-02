@@ -12,21 +12,14 @@ namespace AspNet.Security.OAuth.Infrastructure;
 /// <summary>
 /// Registers an delegating handler to intercept HTTP requests made by the test application.
 /// </summary>
-internal sealed class HttpRequestInterceptionFilter : IHttpMessageHandlerBuilderFilter
+internal sealed class HttpRequestInterceptionFilter(HttpClientInterceptorOptions options) : IHttpMessageHandlerBuilderFilter
 {
-    private readonly HttpClientInterceptorOptions _options;
-
-    internal HttpRequestInterceptionFilter(HttpClientInterceptorOptions options)
-    {
-        _options = options;
-    }
-
     public Action<HttpMessageHandlerBuilder> Configure(Action<HttpMessageHandlerBuilder> next)
     {
         return builder =>
         {
             next(builder);
-            builder.AdditionalHandlers.Add(_options.CreateHttpMessageHandler());
+            builder.AdditionalHandlers.Add(options.CreateHttpMessageHandler());
         };
     }
 }

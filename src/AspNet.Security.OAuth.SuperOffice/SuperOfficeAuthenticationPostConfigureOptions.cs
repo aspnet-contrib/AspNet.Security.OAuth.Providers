@@ -30,7 +30,7 @@ public class SuperOfficeAuthenticationPostConfigureOptions : IPostConfigureOptio
         // As seen in:
         // github.com/dotnet/aspnetcore/blob/master/src/Security/Authentication/OpenIdConnect/src/OpenIdConnectPostConfigureOptions.cs#L71-L102
         // need this now to successfully instantiate ConfigurationManager below.
-        if (options.Backchannel == null)
+        if (options.Backchannel is null)
         {
 #pragma warning disable CA2000 // Dispose objects before losing scope
             options.Backchannel = new HttpClient(options.BackchannelHttpHandler ?? new HttpClientHandler());
@@ -40,7 +40,7 @@ public class SuperOfficeAuthenticationPostConfigureOptions : IPostConfigureOptio
             options.Backchannel.MaxResponseContentBufferSize = 1024 * 1024 * 10; // 10 MB
         }
 
-        if (options.ConfigurationManager == null)
+        if (options.ConfigurationManager is null)
         {
             if (string.IsNullOrEmpty(options.MetadataAddress))
             {
@@ -57,9 +57,6 @@ public class SuperOfficeAuthenticationPostConfigureOptions : IPostConfigureOptio
             };
         }
 
-        if (options.SecurityTokenHandler == null)
-        {
-            options.SecurityTokenHandler = new JsonWebTokenHandler();
-        }
+        options.SecurityTokenHandler ??= new JsonWebTokenHandler();
     }
 }

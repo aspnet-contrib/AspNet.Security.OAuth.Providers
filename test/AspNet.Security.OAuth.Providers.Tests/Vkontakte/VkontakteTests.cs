@@ -6,13 +6,8 @@
 
 namespace AspNet.Security.OAuth.Vkontakte;
 
-public class VkontakteTests : OAuthTests<VkontakteAuthenticationOptions>
+public class VkontakteTests(ITestOutputHelper outputHelper) : OAuthTests<VkontakteAuthenticationOptions>(outputHelper)
 {
-    public VkontakteTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
     public override string DefaultScheme => VkontakteAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
@@ -29,14 +24,5 @@ public class VkontakteTests : OAuthTests<VkontakteAuthenticationOptions>
     [InlineData("urn:vkontakte:photo:link", "https://vk.local/photo.png")]
     [InlineData("urn:vkontakte:photo_thumb:link", "https://vk.local/thumbnail.png")]
     public async Task Can_Sign_In_Using_Vkontakte(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 }

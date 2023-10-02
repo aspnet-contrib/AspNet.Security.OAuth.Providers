@@ -36,9 +36,9 @@ public static class DeezerAuthenticationConstants
     public static class Scopes
     {
         /// <summary>
-        /// Access users basic information
-        /// <para>Includes name, firstname, profile picture only.</para>
-        /// <para>Default permission</para>
+        /// Access users basic information.
+        /// <para>Includes name, first name and profile picture only.</para>
+        /// <para>Default permission.</para>
         /// </summary>
         public const string Identity = "basic_access";
 

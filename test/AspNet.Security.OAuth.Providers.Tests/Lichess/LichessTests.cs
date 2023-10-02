@@ -6,13 +6,8 @@
 
 namespace AspNet.Security.OAuth.Lichess;
 
-public class LichessTests : OAuthTests<LichessAuthenticationOptions>
+public class LichessTests(ITestOutputHelper outputHelper) : OAuthTests<LichessAuthenticationOptions>(outputHelper)
 {
-    public LichessTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
     public override string DefaultScheme => LichessAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
@@ -31,14 +26,5 @@ public class LichessTests : OAuthTests<LichessAuthenticationOptions>
     [InlineData(ClaimTypes.GivenName, "Thibault")]
     [InlineData(ClaimTypes.Surname, "Duplessis")]
     public async Task Can_Sign_In_Using_Lichess(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 }

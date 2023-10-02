@@ -52,7 +52,7 @@ public partial class GiteeAuthenticationHandler : OAuthHandler<GiteeAuthenticati
             !identity.HasClaim(claim => claim.Type == ClaimTypes.Email) &&
             Options.Scope.Contains("emails"))
         {
-            string? address = await GetEmailAsync(tokens);
+            var address = await GetEmailAsync(tokens);
 
             if (!string.IsNullOrEmpty(address))
             {

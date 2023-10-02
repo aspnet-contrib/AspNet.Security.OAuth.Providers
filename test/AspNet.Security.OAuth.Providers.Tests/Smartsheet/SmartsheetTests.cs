@@ -5,13 +5,8 @@
  */
 
 namespace AspNet.Security.OAuth.Smartsheet;
-public class SmartsheetTests : OAuthTests<SmartsheetAuthenticationOptions>
+public class SmartsheetTests(ITestOutputHelper outputHelper) : OAuthTests<SmartsheetAuthenticationOptions>(outputHelper)
 {
-    public SmartsheetTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
     public override string DefaultScheme => SmartsheetAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
@@ -26,14 +21,5 @@ public class SmartsheetTests : OAuthTests<SmartsheetAuthenticationOptions>
     [InlineData(ClaimTypes.Email, "fred@example.com")]
     [InlineData(SmartsheetAuthenticationConstants.Claims.ProfileImage, "https://example.com/profile.png")]
     public async Task Can_Sign_In_Using_Smartsheet(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 }

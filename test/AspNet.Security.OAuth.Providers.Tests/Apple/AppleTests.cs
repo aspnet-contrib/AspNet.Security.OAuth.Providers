@@ -14,14 +14,9 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace AspNet.Security.OAuth.Apple;
 
-public class AppleTests : OAuthTests<AppleAuthenticationOptions>
+public class AppleTests(ITestOutputHelper outputHelper) : OAuthTests<AppleAuthenticationOptions>(outputHelper)
 {
     private static readonly JsonSerializerOptions SerializerOptions = new() { WriteIndented = true };
-
-    public AppleTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
 
     public override string DefaultScheme => AppleAuthenticationDefaults.AuthenticationScheme;
 
@@ -60,13 +55,7 @@ public class AppleTests : OAuthTests<AppleAuthenticationOptions>
             });
         }
 
-        using var server = CreateTestServer(ConfigureServices);
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
+        await AuthenticateUserAndAssertClaimValue(claimType, claimValue, ConfigureServices);
     }
 
     [Theory]
@@ -93,13 +82,7 @@ public class AppleTests : OAuthTests<AppleAuthenticationOptions>
             });
         }
 
-        using var server = CreateTestServer(ConfigureServices);
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
+        await AuthenticateUserAndAssertClaimValue(claimType, claimValue, ConfigureServices);
     }
 
     [Theory]
@@ -133,13 +116,7 @@ public class AppleTests : OAuthTests<AppleAuthenticationOptions>
 
         RedirectParameters.Clear(); // Simulate second sign in where user data is not returned
 
-        using var server = CreateTestServer(ConfigureServices);
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
+        await AuthenticateUserAndAssertClaimValue(claimType, claimValue, ConfigureServices);
     }
 
     [Theory]
@@ -156,13 +133,7 @@ public class AppleTests : OAuthTests<AppleAuthenticationOptions>
             });
         }
 
-        using var server = CreateTestServer(ConfigureServices);
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
+        await AuthenticateUserAndAssertClaimValue(claimType, claimValue, ConfigureServices);
     }
 
     [Fact]
@@ -354,7 +325,7 @@ public class AppleTests : OAuthTests<AppleAuthenticationOptions>
         using var server = CreateTestServer(ConfigureServices);
 
         // Act
-        var claims = await AuthenticateUserAsync(server);
+        await AuthenticateUserAsync(server);
 
         // Assert
         onGenerateClientSecretEventRaised.ShouldBeTrue();
@@ -413,7 +384,7 @@ public class AppleTests : OAuthTests<AppleAuthenticationOptions>
         using var server = CreateTestServer(ConfigureServices);
 
         // Act
-        var claims = await AuthenticateUserAsync(server);
+        await AuthenticateUserAsync(server);
 
         // Assert
         onGenerateClientSecretEventRaised.ShouldBeTrue();
@@ -501,7 +472,7 @@ public class AppleTests : OAuthTests<AppleAuthenticationOptions>
             iat,
             sub,
             atHash,
-            new Claim(JwtRegisteredClaimNames.Email, "johnny.appleseed@apple.local"),
+            new(JwtRegisteredClaimNames.Email, "johnny.appleseed@apple.local"),
             emailVerified,
             authTime,
             nonceSupported,
@@ -519,11 +490,11 @@ public class AppleTests : OAuthTests<AppleAuthenticationOptions>
             iat,
             sub,
             atHash,
-            new Claim(JwtRegisteredClaimNames.Email, "ussckefuz6@privaterelay.appleid.com"),
+            new(JwtRegisteredClaimNames.Email, "ussckefuz6@privaterelay.appleid.com"),
             emailVerified,
             authTime,
             nonceSupported,
-            new Claim("is_private_email", "true"),
+            new("is_private_email", "true"),
         };
 
         var privateEmailToken = new JwtSecurityToken(
@@ -540,13 +511,13 @@ public class AppleTests : OAuthTests<AppleAuthenticationOptions>
         // Copy the values from the test output to bundles.json if you need to regenerate the JWTs to edit the claims
 
         // For https://appleid.apple.com/auth/keys
-        OutputHelper!.WriteLine($"RSA key: {serializedRsaPublicKey}");
+        OutputHelper?.WriteLine($"RSA key: {serializedRsaPublicKey}");
 
         // For https://appleid.apple.com/auth/token
-        OutputHelper!.WriteLine($"Public email JWT: {publicEmailIdToken}");
+        OutputHelper?.WriteLine($"Public email JWT: {publicEmailIdToken}");
 
         // For https://appleid.apple.local/auth/token/email
-        OutputHelper!.WriteLine($"Private email JWT: {privateEmailIdToken}");
+        OutputHelper?.WriteLine($"Private email JWT: {privateEmailIdToken}");
     }
 
     private sealed class CustomAppleAuthenticationEvents : AppleAuthenticationEvents

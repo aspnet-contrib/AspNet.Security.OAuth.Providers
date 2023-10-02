@@ -11,23 +11,18 @@ namespace AspNet.Security.OAuth.Apple;
 /// <summary>
 /// Contains information about the ID token to validate.
 /// </summary>
-public class AppleValidateIdTokenContext : BaseContext<AppleAuthenticationOptions>
+/// <param name="context">The HTTP context.</param>
+/// <param name="scheme">The authentication scheme.</param>
+/// <param name="options">The authentication options associated with the scheme.</param>
+/// <param name="idToken">The Apple ID token for the user to validate.</param>
+public class AppleValidateIdTokenContext(
+    HttpContext context,
+    AuthenticationScheme scheme,
+    AppleAuthenticationOptions options,
+    string idToken) : BaseContext<AppleAuthenticationOptions>(context, scheme, options)
 {
-    /// <summary>
-    /// Creates a new instance of the <see cref="AppleValidateIdTokenContext"/> class.
-    /// </summary>
-    /// <param name="context">The HTTP context.</param>
-    /// <param name="scheme">The authentication scheme.</param>
-    /// <param name="options">The authentication options associated with the scheme.</param>
-    /// <param name="idToken">The Apple ID token for the user to validate.</param>
-    public AppleValidateIdTokenContext(HttpContext context, AuthenticationScheme scheme, AppleAuthenticationOptions options, string idToken)
-        : base(context, scheme, options)
-    {
-        IdToken = idToken;
-    }
-
     /// <summary>
     /// Gets the Apple ID token.
     /// </summary>
-    public string IdToken { get; }
+    public string IdToken { get; } = idToken;
 }
