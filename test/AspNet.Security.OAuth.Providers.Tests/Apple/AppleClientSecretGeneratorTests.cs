@@ -61,7 +61,7 @@ public class AppleClientSecretGeneratorTests
 
             // See https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers/issues/684
             securityToken.Header.Keys.OrderBy((p) => p).ShouldBe(
-                new[] { "alg", "kid", "typ" },
+                ["alg", "kid", "typ"],
                 Case.Sensitive,
                 "JWT header contains unexpected additional claims.");
 
@@ -76,7 +76,7 @@ public class AppleClientSecretGeneratorTests
             securityToken.Payload.Exp.HasValue.ShouldBeTrue();
 
             securityToken.Payload.Keys.OrderBy((p) => p).ShouldBe(
-                new[] { "aud", "exp", "iat", "iss", "nbf", "sub" },
+                ["aud", "exp", "iat", "iss", "nbf", "sub"],
                 Case.Sensitive,
                 "JWT payload contains unexpected additional claims.");
 
