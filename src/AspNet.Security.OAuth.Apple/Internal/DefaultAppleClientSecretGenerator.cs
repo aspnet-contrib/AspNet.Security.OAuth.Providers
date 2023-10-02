@@ -42,14 +42,14 @@ internal sealed partial class DefaultAppleClientSecretGenerator(
 
     private static string CreateCacheKey(AppleAuthenticationOptions options)
     {
-        string[] segments =
-        [
+        var segments = new[]
+        {
             nameof(DefaultAppleClientSecretGenerator),
             "ClientSecret",
             options.TeamId,
             options.ClientId,
             options.KeyId
-        ];
+        };
 
         return string.Join('+', segments);
     }
