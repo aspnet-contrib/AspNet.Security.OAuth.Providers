@@ -11,9 +11,6 @@ namespace AspNet.Security.OAuth.Apple;
 /// <summary>
 /// Contains information about the ID token to validate.
 /// </summary>
-/// <remarks>
-/// Creates a new instance of the <see cref="AppleValidateIdTokenContext"/> class.
-/// </remarks>
 /// <param name="context">The HTTP context.</param>
 /// <param name="scheme">The authentication scheme.</param>
 /// <param name="options">The authentication options associated with the scheme.</param>

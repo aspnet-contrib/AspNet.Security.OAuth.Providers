@@ -19,9 +19,6 @@ namespace AspNet.Security.OAuth.Apple;
 /// <summary>
 /// Defines a handler for authentication using Apple.
 /// </summary>
-/// <remarks>
-/// Initializes a new instance of the <see cref="AppleAuthenticationHandler"/> class.
-/// </remarks>
 /// <param name="options">The authentication options.</param>
 /// <param name="logger">The logger to use.</param>
 /// <param name="encoder">The URL encoder to use.</param>

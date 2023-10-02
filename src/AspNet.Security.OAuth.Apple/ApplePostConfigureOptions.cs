@@ -19,9 +19,6 @@ namespace AspNet.Security.OAuth.Apple;
 /// <summary>
 /// A class used to setup defaults for all <see cref="AppleAuthenticationOptions"/>.
 /// </summary>
-/// <remarks>
-/// Initializes a new instance of the <see cref="ApplePostConfigureOptions"/> class.
-/// </remarks>
 /// <param name="cache">The <see cref="IMemoryCache"/> to use.</param>
 /// <param name="timeProvider">The <see cref="TimeProvider"/> to use.</param>
 /// <param name="loggerFactory">The <see cref="ILoggerFactory"/> to use.</param>
