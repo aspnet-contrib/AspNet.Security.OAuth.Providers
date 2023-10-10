@@ -72,17 +72,16 @@ public class AppleClientSecretGeneratorTests
             securityToken.Payload.ShouldContainKeyAndValue("aud", "https://appleid.apple.com");
             securityToken.Payload.ShouldContainKeyAndValue("iss", "my-team-id");
             securityToken.Payload.ShouldContainKeyAndValue("sub", "my-client-id");
-            securityToken.Payload.Iat.HasValue.ShouldBeTrue();
-            securityToken.Payload.Exp.HasValue.ShouldBeTrue();
+            securityToken.Payload.Expiration.HasValue.ShouldBeTrue();
 
             securityToken.Payload.Keys.OrderBy((p) => p).ShouldBe(
                 ["aud", "exp", "iat", "iss", "nbf", "sub"],
                 Case.Sensitive,
                 "JWT payload contains unexpected additional claims.");
 
-            ((long)securityToken.Payload.Iat!.Value).ShouldBeGreaterThanOrEqualTo(utcNow.ToUnixTimeSeconds());
-            ((long)securityToken.Payload.Exp!.Value).ShouldBeGreaterThanOrEqualTo(utcNow.AddSeconds(60).ToUnixTimeSeconds());
-            ((long)securityToken.Payload.Exp.Value).ShouldBeLessThanOrEqualTo(utcNow.AddSeconds(70).ToUnixTimeSeconds());
+            securityToken.Payload.IssuedAt.ShouldBeGreaterThanOrEqualTo(utcNow.UtcDateTime);
+            ((long)securityToken.Payload.Expiration!.Value).ShouldBeGreaterThanOrEqualTo(utcNow.AddSeconds(60).ToUnixTimeSeconds());
+            ((long)securityToken.Payload.Expiration.Value).ShouldBeLessThanOrEqualTo(utcNow.AddSeconds(70).ToUnixTimeSeconds());
         });
     }
 
