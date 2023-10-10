@@ -5,6 +5,7 @@
  */
 
 namespace AspNet.Security.OAuth.Smartsheet;
+
 public class SmartsheetTests(ITestOutputHelper outputHelper) : OAuthTests<SmartsheetAuthenticationOptions>(outputHelper)
 {
     public override string DefaultScheme => SmartsheetAuthenticationDefaults.AuthenticationScheme;
