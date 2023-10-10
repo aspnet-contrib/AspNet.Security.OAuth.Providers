@@ -1,16 +1,16 @@
 <Project>
 
   <ItemGroup>
-    <PackageVersion Include="JetBrains.Annotations" Version="2022.1.0" />
-    <PackageVersion Include="JustEat.HttpClientInterception" Version="3.1.2" />
+    <PackageVersion Include="JetBrains.Annotations" Version="2023.2.0" />
+    <PackageVersion Include="JustEat.HttpClientInterception" Version="4.0.0" />
     <PackageVersion Include="MartinCostello.Logging.XUnit" Version="0.3.0" />
-    <PackageVersion Include="Microsoft.AspNetCore.Authentication.Google" Version="8.0.0-rc.1.23421.29" />
-    <PackageVersion Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.0-rc.1.23421.29" />
-    <PackageVersion Include="Microsoft.AspNetCore.TestHost" Version="8.0.0-rc.1.23421.29" />
-    <PackageVersion Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="6.16.0" />
-    <PackageVersion Include="NSubstitute" Version="5.0.0" />
-    <PackageVersion Include="Shouldly" Version="4.1.0" />
-    <PackageVersion Include="StyleCop.Analyzers" Version="1.2.0-beta.435" />
+    <PackageVersion Include="Microsoft.AspNetCore.Authentication.Google" Version="8.0.0-rc.2.23480.2" />
+    <PackageVersion Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.0-rc.2.23480.2" />
+    <PackageVersion Include="Microsoft.AspNetCore.TestHost" Version="8.0.0-rc.2.23480.2" />
+    <PackageVersion Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="7.0.0" />
+    <PackageVersion Include="NSubstitute" Version="5.1.0" />
+    <PackageVersion Include="Shouldly" Version="4.2.1" />
+    <PackageVersion Include="StyleCop.Analyzers" Version="1.2.0-beta.507" />
   </ItemGroup>
 
 </Project>
