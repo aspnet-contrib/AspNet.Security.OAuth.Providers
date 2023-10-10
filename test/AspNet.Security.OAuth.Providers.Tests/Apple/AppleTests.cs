@@ -251,7 +251,7 @@ public class AppleTests(ITestOutputHelper outputHelper) : OAuthTests<AppleAuthen
         // Assert
         exception.InnerException.ShouldNotBeNull();
         exception.InnerException.ShouldBeOfType<SecurityTokenValidationException>();
-        exception.InnerException.InnerException.ShouldBeOfType<ArgumentException>();
+        exception.InnerException.InnerException.ShouldBeOfType<SecurityTokenMalformedException>();
         exception.InnerException.InnerException!.Message.ShouldNotBeNull();
         exception.InnerException.InnerException.Message.ShouldStartWith("IDX");
     }

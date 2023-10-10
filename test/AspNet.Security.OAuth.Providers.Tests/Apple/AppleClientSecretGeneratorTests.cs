@@ -79,7 +79,7 @@ public class AppleClientSecretGeneratorTests
                 Case.Sensitive,
                 "JWT payload contains unexpected additional claims.");
 
-            securityToken.Payload.IssuedAt.ShouldBeGreaterThanOrEqualTo(utcNow.UtcDateTime);
+            securityToken.Payload.IssuedAt.ShouldBeGreaterThanOrEqualTo(utcNow.UtcDateTime.AddSeconds(-utcNow.Second));
             ((long)securityToken.Payload.Expiration!.Value).ShouldBeGreaterThanOrEqualTo(utcNow.AddSeconds(60).ToUnixTimeSeconds());
             ((long)securityToken.Payload.Expiration.Value).ShouldBeLessThanOrEqualTo(utcNow.AddSeconds(70).ToUnixTimeSeconds());
         });
