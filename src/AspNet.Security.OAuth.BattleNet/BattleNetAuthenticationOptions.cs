@@ -16,10 +16,11 @@ public class BattleNetAuthenticationOptions : OAuthOptions
     public BattleNetAuthenticationOptions()
     {
         ClaimsIssuer = BattleNetAuthenticationDefaults.Issuer;
-
         CallbackPath = BattleNetAuthenticationDefaults.CallbackPath;
 
-        Region = BattleNetAuthenticationRegion.America;
+        AuthorizationEndpoint = BattleNetAuthenticationDefaults.AuthorizationEndpoint;
+        TokenEndpoint = BattleNetAuthenticationDefaults.TokenEndpoint;
+        UserInformationEndpoint = BattleNetAuthenticationDefaults.UserInformationEndpoint;
 
         ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
         ClaimActions.MapJsonKey(ClaimTypes.Name, "battletag");
@@ -27,8 +28,11 @@ public class BattleNetAuthenticationOptions : OAuthOptions
 
     /// <summary>
     /// Sets the region used to determine the appropriate API endpoints when communicating
-    /// with BattleNet (by default, <see cref="BattleNetAuthenticationRegion.America"/>).
+    /// with BattleNet. By default the unified <c>oauth.battle.net</c> domain is used.
     /// </summary>
+    [Obsolete(
+        "This property is obsolete and will be removed in a future release. " +
+        "Use the properties of the BattleNetAuthenticationDefaults.China class to configure the Endpoint properties for access to the BattleNet servers in China.")]
     public BattleNetAuthenticationRegion Region
     {
         set

@@ -31,6 +31,22 @@ public static class BattleNetAuthenticationDefaults
     /// </summary>
     public static readonly string CallbackPath = "/signin-battlenet";
 
+    /// <summary>
+    /// Default value for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
+    /// </summary>
+    public static readonly string AuthorizationEndpoint = "https://oauth.battle.net/oauth/authorize";
+
+    /// <summary>
+    /// Default value for <see cref="OAuthOptions.TokenEndpoint"/>.
+    /// </summary>
+    public static readonly string TokenEndpoint = "https://oauth.battle.net/oauth/token";
+
+    /// <summary>
+    /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
+    /// </summary>
+    public static readonly string UserInformationEndpoint = "https://oauth.battle.net/oauth/userinfo";
+
+    [Obsolete("This class is obsolete and will be removed in a future release.")]
     public static class America
     {
         /// <summary>
@@ -49,6 +65,7 @@ public static class BattleNetAuthenticationDefaults
         public static readonly string UserInformationEndpoint = "https://us.battle.net/oauth/userinfo";
     }
 
+    [Obsolete("This class is obsolete and will be removed in a future release.")]
     public static class Europe
     {
         /// <summary>
@@ -67,6 +84,7 @@ public static class BattleNetAuthenticationDefaults
         public static readonly string UserInformationEndpoint = "https://eu.battle.net/oauth/userinfo";
     }
 
+    [Obsolete("This class is obsolete and will be removed in a future release.")]
     public static class Korea
     {
         /// <summary>
@@ -85,6 +103,7 @@ public static class BattleNetAuthenticationDefaults
         public static readonly string UserInformationEndpoint = "https://kr.battle.net/oauth/userinfo";
     }
 
+    [Obsolete("This class is obsolete and will be removed in a future release.")]
     public static class Taiwan
     {
         /// <summary>

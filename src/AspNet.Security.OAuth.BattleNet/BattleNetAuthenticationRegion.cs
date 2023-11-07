@@ -10,6 +10,7 @@ namespace AspNet.Security.OAuth.BattleNet;
 /// Defines a list of regions used to determine the appropriate
 /// API endpoints when communicating with BattleNet.
 /// </summary>
+[Obsolete("This enumeration is obsolete and will be removed in a future release.")]
 public enum BattleNetAuthenticationRegion
 {
     America = 0,

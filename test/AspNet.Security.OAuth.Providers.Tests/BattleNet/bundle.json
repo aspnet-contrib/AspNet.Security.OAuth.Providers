@@ -2,7 +2,7 @@
   "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
   "items": [
     {
-      "uri": "https://us.battle.net/oauth/token",
+      "uri": "https://oauth.battle.net/oauth/token",
       "method": "POST",
       "contentFormat": "json",
       "contentJson": {
@@ -13,7 +13,7 @@
       }
     },
     {
-      "uri": "https://us.battle.net/oauth/userinfo?access_token=secret-access-token",
+      "uri": "https://oauth.battle.net/oauth/userinfo?access_token=secret-access-token",
       "contentFormat": "json",
       "contentJson": {
         "id": "my-id",
