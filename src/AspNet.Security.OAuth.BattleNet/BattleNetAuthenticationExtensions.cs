@@ -5,6 +5,8 @@
  */
 
 using AspNet.Security.OAuth.BattleNet;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Options;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -69,6 +71,7 @@ public static class BattleNetAuthenticationExtensions
         [CanBeNull] string caption,
         [NotNull] Action<BattleNetAuthenticationOptions> configuration)
     {
+        builder.Services.TryAddSingleton<IPostConfigureOptions<BattleNetAuthenticationOptions>, BattleNetPostConfigureOptions>();
         return builder.AddOAuth<BattleNetAuthenticationOptions, BattleNetAuthenticationHandler>(scheme, caption, configuration);
     }
 }

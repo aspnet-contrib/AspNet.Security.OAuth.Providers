@@ -18,9 +18,7 @@ public class BattleNetAuthenticationOptions : OAuthOptions
         ClaimsIssuer = BattleNetAuthenticationDefaults.Issuer;
         CallbackPath = BattleNetAuthenticationDefaults.CallbackPath;
 
-        AuthorizationEndpoint = BattleNetAuthenticationDefaults.AuthorizationEndpoint;
-        TokenEndpoint = BattleNetAuthenticationDefaults.TokenEndpoint;
-        UserInformationEndpoint = BattleNetAuthenticationDefaults.UserInformationEndpoint;
+        Region = BattleNetAuthenticationRegion.Unified;
 
         ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
         ClaimActions.MapJsonKey(ClaimTypes.Name, "battletag");
@@ -28,50 +26,7 @@ public class BattleNetAuthenticationOptions : OAuthOptions
 
     /// <summary>
     /// Sets the region used to determine the appropriate API endpoints when communicating
-    /// with BattleNet. By default the unified <c>oauth.battle.net</c> domain is used.
+    /// with BattleNet. The default value is <see cref="BattleNetAuthenticationRegion.Unified"/>.
     /// </summary>
-    [Obsolete(
-        "This property is obsolete and will be removed in a future release. " +
-        "Use the properties of the BattleNetAuthenticationDefaults.China class to configure the Endpoint properties for access to the BattleNet servers in China.")]
-    public BattleNetAuthenticationRegion Region
-    {
-        set
-        {
-            switch (value)
-            {
-                case BattleNetAuthenticationRegion.America:
-                    AuthorizationEndpoint = BattleNetAuthenticationDefaults.America.AuthorizationEndpoint;
-                    TokenEndpoint = BattleNetAuthenticationDefaults.America.TokenEndpoint;
-                    UserInformationEndpoint = BattleNetAuthenticationDefaults.America.UserInformationEndpoint;
-                    break;
-
-                case BattleNetAuthenticationRegion.China:
-                    AuthorizationEndpoint = BattleNetAuthenticationDefaults.China.AuthorizationEndpoint;
-                    TokenEndpoint = BattleNetAuthenticationDefaults.China.TokenEndpoint;
-                    UserInformationEndpoint = BattleNetAuthenticationDefaults.China.UserInformationEndpoint;
-                    break;
-
-                case BattleNetAuthenticationRegion.Europe:
-                    AuthorizationEndpoint = BattleNetAuthenticationDefaults.Europe.AuthorizationEndpoint;
-                    TokenEndpoint = BattleNetAuthenticationDefaults.Europe.TokenEndpoint;
-                    UserInformationEndpoint = BattleNetAuthenticationDefaults.Europe.UserInformationEndpoint;
-                    break;
-
-                case BattleNetAuthenticationRegion.Korea:
-                    AuthorizationEndpoint = BattleNetAuthenticationDefaults.Korea.AuthorizationEndpoint;
-                    TokenEndpoint = BattleNetAuthenticationDefaults.Korea.TokenEndpoint;
-                    UserInformationEndpoint = BattleNetAuthenticationDefaults.Korea.UserInformationEndpoint;
-                    break;
-
-                case BattleNetAuthenticationRegion.Taiwan:
-                    AuthorizationEndpoint = BattleNetAuthenticationDefaults.Taiwan.AuthorizationEndpoint;
-                    TokenEndpoint = BattleNetAuthenticationDefaults.Taiwan.TokenEndpoint;
-                    UserInformationEndpoint = BattleNetAuthenticationDefaults.Taiwan.UserInformationEndpoint;
-                    break;
-
-                default:
-                    throw new ArgumentOutOfRangeException($"Region '{value}' is unsupported.", value, nameof(value));
-            }
-        }
-    }
+    public BattleNetAuthenticationRegion Region { get; set; }
 }

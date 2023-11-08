@@ -17,7 +17,121 @@
       "contentFormat": "json",
       "contentJson": {
         "id": "my-id",
-        "battletag": "John Smith"
+        "battletag": "Unified"
+      }
+    },
+    {
+      "uri": "https://eu.battle.net/oauth/token",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "secret-access-token",
+        "token_type": "access",
+        "refresh_token": "secret-refresh-token",
+        "expires_in": "300"
+      }
+    },
+    {
+      "uri": "https://eu.battle.net/oauth/userinfo?access_token=secret-access-token",
+      "contentFormat": "json",
+      "contentJson": {
+        "id": "my-id",
+        "battletag": "Europe"
+      }
+    },
+    {
+      "uri": "https://kr.battle.net/oauth/token",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "secret-access-token",
+        "token_type": "access",
+        "refresh_token": "secret-refresh-token",
+        "expires_in": "300"
+      }
+    },
+    {
+      "uri": "https://kr.battle.net/oauth/userinfo?access_token=secret-access-token",
+      "contentFormat": "json",
+      "contentJson": {
+        "id": "my-id",
+        "battletag": "Korea"
+      }
+    },
+    {
+      "uri": "https://tw.battle.net/oauth/token",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "secret-access-token",
+        "token_type": "access",
+        "refresh_token": "secret-refresh-token",
+        "expires_in": "300"
+      }
+    },
+    {
+      "uri": "https://tw.battle.net/oauth/userinfo?access_token=secret-access-token",
+      "contentFormat": "json",
+      "contentJson": {
+        "id": "my-id",
+        "battletag": "Taiwan"
+      }
+    },
+    {
+      "uri": "https://us.battle.net/oauth/token",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "secret-access-token",
+        "token_type": "access",
+        "refresh_token": "secret-refresh-token",
+        "expires_in": "300"
+      }
+    },
+    {
+      "uri": "https://us.battle.net/oauth/userinfo?access_token=secret-access-token",
+      "contentFormat": "json",
+      "contentJson": {
+        "id": "my-id",
+        "battletag": "America"
+      }
+    },
+    {
+      "uri": "https://www.battlenet.com.cn/oauth/token",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "secret-access-token",
+        "token_type": "access",
+        "refresh_token": "secret-refresh-token",
+        "expires_in": "300"
+      }
+    },
+    {
+      "uri": "https://www.battlenet.com.cn/oauth/userinfo?access_token=secret-access-token",
+      "contentFormat": "json",
+      "contentJson": {
+        "id": "my-id",
+        "battletag": "China"
+      }
+    },
+    {
+      "uri": "https://oauth.battle.local/oauth/token",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "secret-access-token",
+        "token_type": "access",
+        "refresh_token": "secret-refresh-token",
+        "expires_in": "300"
+      }
+    },
+    {
+      "uri": "https://oauth.battle.local/oauth/userinfo?access_token=secret-access-token",
+      "contentFormat": "json",
+      "contentJson": {
+        "id": "my-id",
+        "battletag": "Custom"
       }
     }
   ]

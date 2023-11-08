@@ -17,7 +17,45 @@ public class BattleNetTests(ITestOutputHelper outputHelper) : OAuthTests<BattleN
 
     [Theory]
     [InlineData(ClaimTypes.NameIdentifier, "my-id")]
-    [InlineData(ClaimTypes.Name, "John Smith")]
+    [InlineData(ClaimTypes.Name, "Unified")]
     public async Task Can_Sign_In_Using_BattleNet(string claimType, string claimValue)
         => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
+
+    [Theory]
+    [InlineData(BattleNetAuthenticationRegion.America)]
+    [InlineData(BattleNetAuthenticationRegion.China)]
+    [InlineData(BattleNetAuthenticationRegion.Europe)]
+    [InlineData(BattleNetAuthenticationRegion.Korea)]
+    [InlineData(BattleNetAuthenticationRegion.Taiwan)]
+    [InlineData(BattleNetAuthenticationRegion.Unified)]
+    public async Task Can_Sign_In_Using_BattleNet_Region(BattleNetAuthenticationRegion region)
+    {
+        // Arrange
+        void ConfigureServices(IServiceCollection services)
+        {
+            services.AddOptions<BattleNetAuthenticationOptions>(BattleNetAuthenticationDefaults.AuthenticationScheme)
+                    .Configure((options) => options.Region = region);
+        }
+
+        await AuthenticateUserAndAssertClaimValue(ClaimTypes.Name, region.ToString(), ConfigureServices);
+    }
+
+    [Fact]
+    public async Task Can_Sign_In_Using_Custom_BattleNet_Region()
+    {
+        // Arrange
+        static void ConfigureServices(IServiceCollection services)
+        {
+            services.AddOptions<BattleNetAuthenticationOptions>(BattleNetAuthenticationDefaults.AuthenticationScheme)
+                    .Configure((options) =>
+                    {
+                        options.Region = BattleNetAuthenticationRegion.Custom;
+                        options.AuthorizationEndpoint = "https://oauth.battle.local/oauth/authorize";
+                        options.TokenEndpoint = "https://oauth.battle.local/oauth/token";
+                        options.UserInformationEndpoint = "https://oauth.battle.local/oauth/userinfo";
+                    });
+        }
+
+        await AuthenticateUserAndAssertClaimValue(ClaimTypes.Name, "Custom", ConfigureServices);
+    }
 }

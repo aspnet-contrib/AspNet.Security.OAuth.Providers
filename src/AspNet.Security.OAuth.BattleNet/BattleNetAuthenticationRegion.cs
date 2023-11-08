@@ -10,12 +10,40 @@ namespace AspNet.Security.OAuth.BattleNet;
 /// Defines a list of regions used to determine the appropriate
 /// API endpoints when communicating with BattleNet.
 /// </summary>
-[Obsolete("This enumeration is obsolete and will be removed in a future release.")]
 public enum BattleNetAuthenticationRegion
 {
+    /// <summary>
+    /// The region for the Americas.
+    /// </summary>
     America = 0,
+
+    /// <summary>
+    /// The region for China.
+    /// </summary>
     China = 1,
+
+    /// <summary>
+    /// The region for Europe.
+    /// </summary>
     Europe = 2,
+
+    /// <summary>
+    /// The region for Korea.
+    /// </summary>
     Korea = 3,
-    Taiwan = 4
+
+    /// <summary>
+    /// The region for Taiwan.
+    /// </summary>
+    Taiwan = 4,
+
+    /// <summary>
+    /// The unified global region.
+    /// </summary>
+    Unified = 5,
+
+    /// <summary>
+    /// A custom region. Use this value to use custom endpoints.
+    /// </summary>
+    Custom = 6,
 }
