@@ -9,6 +9,7 @@ using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Text.Json;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -96,12 +97,11 @@ public partial class VisualStudioAuthenticationHandler : OAuthHandler<VisualStud
 
         query["response_type"] = "Assertion";
 
-        // Remove the query and re-add with the edit so that the parameters are not duplicated.
+        // Replace the query with the edit so that the parameters are not duplicated.
         // See https://github.com/dotnet/aspnetcore/issues/47054 for more context.
-        challengeUri.Query = string.Empty;
-        challengeUrl = challengeUri.Uri.ToString();
+        challengeUri.Query = QueryString.Create(query).Value;
 
-        return QueryHelpers.AddQueryString(challengeUrl, query);
+        return challengeUri.Uri.AbsoluteUri;
     }
 
     private static partial class Log
