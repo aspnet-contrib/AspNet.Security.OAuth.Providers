@@ -91,12 +91,17 @@ public partial class VisualStudioAuthenticationHandler : OAuthHandler<VisualStud
         var challengeUrl = base.BuildChallengeUrl(properties, redirectUri);
 
         // Visual Studio Online/Azure DevOps uses "Assertion" instead of "code"
-        var challengeUri = new Uri(challengeUrl, UriKind.Absolute);
+        var challengeUri = new UriBuilder(challengeUrl);
         var query = QueryHelpers.ParseQuery(challengeUri.Query);
 
         query["response_type"] = "Assertion";
 
-        return QueryHelpers.AddQueryString(Options.AuthorizationEndpoint, query);
+        // Remove the query and re-add with the edit so that the parameters are not duplicated.
+        // See https://github.com/dotnet/aspnetcore/issues/47054 for more context.
+        challengeUri.Query = string.Empty;
+        challengeUrl = challengeUri.Uri.ToString();
+
+        return QueryHelpers.AddQueryString(challengeUrl, query);
     }
 
     private static partial class Log
