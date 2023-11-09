@@ -9,6 +9,7 @@ using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -85,15 +86,32 @@ public partial class YammerAuthenticationHandler : OAuthHandler<YammerAuthentica
         using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
         var accessToken = payload.RootElement.GetProperty("access_token").GetString("token");
 
-        var token = new
+        var token = new OAuthToken()
         {
-            access_token = accessToken,
-            token_type = string.Empty,
-            refresh_token = string.Empty,
-            expires_in = string.Empty,
+            AccessToken = accessToken,
         };
 
-        return OAuthTokenResponse.Success(JsonSerializer.SerializeToDocument(token));
+        return OAuthTokenResponse.Success(JsonSerializer.SerializeToDocument(token, AppJsonSerializerContext.Default.OAuthToken));
+    }
+
+    [JsonSerializable(typeof(OAuthToken))]
+    internal sealed partial class AppJsonSerializerContext : JsonSerializerContext
+    {
+    }
+
+    internal sealed class OAuthToken
+    {
+        [JsonPropertyName("access_token")]
+        public string? AccessToken { get; set; }
+
+        [JsonPropertyName("token_type")]
+        public string TokenType { get; set; } = string.Empty;
+
+        [JsonPropertyName("refresh_token")]
+        public string RefreshToken { get; set; } = string.Empty;
+
+        [JsonPropertyName("expires_in")]
+        public string ExpiresIn { get; set; } = string.Empty;
     }
 
     private static partial class Log
