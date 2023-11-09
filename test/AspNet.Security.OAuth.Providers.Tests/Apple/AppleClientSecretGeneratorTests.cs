@@ -39,6 +39,7 @@ public class AppleClientSecretGeneratorTests
         await GenerateTokenAsync(Configure, async (context) =>
         {
             var utcNow = DateTimeOffset.UtcNow;
+            utcNow = utcNow.AddTicks(-(utcNow.Ticks % TimeSpan.TicksPerSecond));
 
             // Act
             var token = await context.Options.ClientSecretGenerator.GenerateAsync(context);
@@ -79,9 +80,9 @@ public class AppleClientSecretGeneratorTests
                 Case.Sensitive,
                 "JWT payload contains unexpected additional claims.");
 
-            securityToken.Payload.IssuedAt.ShouldBeGreaterThanOrEqualTo(utcNow.UtcDateTime.AddSeconds(-utcNow.Second));
-            ((long)securityToken.Payload.Expiration!.Value).ShouldBeGreaterThanOrEqualTo(utcNow.AddSeconds(60).ToUnixTimeSeconds());
-            ((long)securityToken.Payload.Expiration.Value).ShouldBeLessThanOrEqualTo(utcNow.AddSeconds(70).ToUnixTimeSeconds());
+            securityToken.Payload.IssuedAt.ShouldBeGreaterThanOrEqualTo(utcNow.UtcDateTime);
+            securityToken.Payload.Expiration!.Value.ShouldBeGreaterThanOrEqualTo(utcNow.AddSeconds(60).ToUnixTimeSeconds());
+            securityToken.Payload.Expiration.Value.ShouldBeLessThanOrEqualTo(utcNow.AddSeconds(70).ToUnixTimeSeconds());
         });
     }
 
