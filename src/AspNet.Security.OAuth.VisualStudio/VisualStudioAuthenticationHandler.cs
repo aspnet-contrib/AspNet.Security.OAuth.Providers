@@ -9,6 +9,7 @@ using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Text.Json;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -91,12 +92,16 @@ public partial class VisualStudioAuthenticationHandler : OAuthHandler<VisualStud
         var challengeUrl = base.BuildChallengeUrl(properties, redirectUri);
 
         // Visual Studio Online/Azure DevOps uses "Assertion" instead of "code"
-        var challengeUri = new Uri(challengeUrl, UriKind.Absolute);
+        var challengeUri = new UriBuilder(challengeUrl);
         var query = QueryHelpers.ParseQuery(challengeUri.Query);
 
         query["response_type"] = "Assertion";
 
-        return QueryHelpers.AddQueryString(Options.AuthorizationEndpoint, query);
+        // Replace the query with the edit so that the parameters are not duplicated.
+        // See https://github.com/dotnet/aspnetcore/issues/47054 for more context.
+        challengeUri.Query = QueryString.Create(query).Value;
+
+        return challengeUri.Uri.AbsoluteUri;
     }
 
     private static partial class Log

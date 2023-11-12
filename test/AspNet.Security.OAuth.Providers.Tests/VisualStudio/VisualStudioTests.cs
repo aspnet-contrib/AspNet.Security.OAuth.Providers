@@ -26,15 +26,21 @@ public class VisualStudioTests(ITestOutputHelper outputHelper) : OAuthTests<Visu
         => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 
     [Theory]
-    [InlineData(false)]
-    [InlineData(true)]
-    public async Task BuildChallengeUrl_Generates_Correct_Url(bool usePkce)
+    [InlineData(false, "")]
+    [InlineData(true, "")]
+    [InlineData(false, "?foo=bar")]
+    [InlineData(true, "?foo=bar")]
+    public async Task BuildChallengeUrl_Generates_Correct_Url(
+        bool usePkce,
+        string authorizationEndpointSuffix)
     {
         // Arrange
         var options = new VisualStudioAuthenticationOptions()
         {
             UsePkce = usePkce,
         };
+
+        options.AuthorizationEndpoint += authorizationEndpointSuffix;
 
         var redirectUrl = "https://my-site.local/signin-visualstudio";
 
@@ -65,6 +71,11 @@ public class VisualStudioTests(ITestOutputHelper outputHelper) : OAuthTests<Visu
         {
             query.ShouldNotContainKey(OAuthConstants.CodeChallengeKey);
             query.ShouldNotContainKey(OAuthConstants.CodeChallengeMethodKey);
+        }
+
+        foreach (var parameter in query)
+        {
+            parameter.Value.Count.ShouldBe(1, $"Query string parameter {parameter.Key} appears more than once: {parameter.Value}.");
         }
     }
 }
