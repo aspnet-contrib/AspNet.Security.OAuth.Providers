@@ -5,10 +5,6 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <PackageValidationBaselineVersion>7.0.1</PackageValidationBaselineVersion>
-  </PropertyGroup>
-
-  <PropertyGroup>
     <Description>ASP.NET Core security provider enabling PingOne authentication.</Description>
     <Authors>Drew Killion</Authors>
     <PackageTags>pingone;aspnetcore;authentication;oauth;security</PackageTags>
