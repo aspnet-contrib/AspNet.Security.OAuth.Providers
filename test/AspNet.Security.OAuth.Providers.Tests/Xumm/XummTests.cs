@@ -4,17 +4,10 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using Microsoft.AspNetCore.WebUtilities;
-
 namespace AspNet.Security.OAuth.Xumm;
 
-public class XummTests : OAuthTests<XummAuthenticationOptions>
+public class XummTests(ITestOutputHelper outputHelper) : OAuthTests<XummAuthenticationOptions>(outputHelper)
 {
-    public XummTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
     public override string DefaultScheme => XummAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
@@ -28,14 +21,5 @@ public class XummTests : OAuthTests<XummAuthenticationOptions>
     [InlineData(ClaimTypes.Email, "john.smith@xumm.me")]
     [InlineData(XummAuthenticationConstants.Claims.Picture, "Avatar")]
     public async Task Can_Sign_In_Using_Xumm(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 }

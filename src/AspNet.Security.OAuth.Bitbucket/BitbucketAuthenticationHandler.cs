@@ -18,9 +18,8 @@ public partial class BitbucketAuthenticationHandler : OAuthHandler<BitbucketAuth
     public BitbucketAuthenticationHandler(
         [NotNull] IOptionsMonitor<BitbucketAuthenticationOptions> options,
         [NotNull] ILoggerFactory logger,
-        [NotNull] UrlEncoder encoder,
-        [NotNull] ISystemClock clock)
-        : base(options, logger, encoder, clock)
+        [NotNull] UrlEncoder encoder)
+        : base(options, logger, encoder)
     {
     }
 
@@ -52,7 +51,7 @@ public partial class BitbucketAuthenticationHandler : OAuthHandler<BitbucketAuth
             !identity.HasClaim(claim => claim.Type == ClaimTypes.Email) &&
             Options.Scope.Contains("email"))
         {
-            string? address = await GetEmailAsync(tokens);
+            var address = await GetEmailAsync(tokens);
 
             if (!string.IsNullOrEmpty(address))
             {

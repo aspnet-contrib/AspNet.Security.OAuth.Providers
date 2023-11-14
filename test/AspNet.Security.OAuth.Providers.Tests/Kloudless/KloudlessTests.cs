@@ -6,13 +6,8 @@
 
 namespace AspNet.Security.OAuth.Kloudless;
 
-public class KloudlessTests : OAuthTests<KloudlessAuthenticationOptions>
+public class KloudlessTests(ITestOutputHelper outputHelper) : OAuthTests<KloudlessAuthenticationOptions>(outputHelper)
 {
-    public KloudlessTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
     public override string DefaultScheme => KloudlessAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
@@ -34,14 +29,5 @@ public class KloudlessTests : OAuthTests<KloudlessAuthenticationOptions>
     [InlineData(KloudlessAuthenticationConstants.Claims.Type, "account")]
     [InlineData(KloudlessAuthenticationConstants.Claims.Enabled, "True")]
     public async Task Can_Sign_In_Using_Kloudless(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 }

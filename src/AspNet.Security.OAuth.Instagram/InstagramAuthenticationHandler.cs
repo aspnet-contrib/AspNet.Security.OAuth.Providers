@@ -19,9 +19,8 @@ public partial class InstagramAuthenticationHandler : OAuthHandler<InstagramAuth
     public InstagramAuthenticationHandler(
         [NotNull] IOptionsMonitor<InstagramAuthenticationOptions> options,
         [NotNull] ILoggerFactory logger,
-        [NotNull] UrlEncoder encoder,
-        [NotNull] ISystemClock clock)
-        : base(options, logger, encoder, clock)
+        [NotNull] UrlEncoder encoder)
+        : base(options, logger, encoder)
     {
     }
 
@@ -30,7 +29,7 @@ public partial class InstagramAuthenticationHandler : OAuthHandler<InstagramAuth
         [NotNull] AuthenticationProperties properties,
         [NotNull] OAuthTokenResponse tokens)
     {
-        string address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, "access_token", tokens.AccessToken!);
+        var address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, "access_token", tokens.AccessToken!);
 
         if (Options.Fields.Count > 0)
         {

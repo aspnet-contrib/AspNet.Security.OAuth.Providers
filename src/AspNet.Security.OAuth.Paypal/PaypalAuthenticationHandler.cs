@@ -18,9 +18,8 @@ public partial class PaypalAuthenticationHandler : OAuthHandler<PaypalAuthentica
     public PaypalAuthenticationHandler(
         [NotNull] IOptionsMonitor<PaypalAuthenticationOptions> options,
         [NotNull] ILoggerFactory logger,
-        [NotNull] UrlEncoder encoder,
-        [NotNull] ISystemClock clock)
-        : base(options, logger, encoder, clock)
+        [NotNull] UrlEncoder encoder)
+        : base(options, logger, encoder)
     {
     }
 

@@ -32,6 +32,7 @@ public class AmoCrmAuthenticationOptions : OAuthOptions
         ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
     }
 
+#pragma warning disable CA1863
     /// <summary>
     /// Gets or sets the amoCRM account name.
     /// </summary>
@@ -41,14 +42,12 @@ public class AmoCrmAuthenticationOptions : OAuthOptions
         get => _account;
         set
         {
-            if (string.IsNullOrWhiteSpace(value))
-            {
-                throw new ArgumentException("Account cannot be null or white space.", nameof(value));
-            }
+            ArgumentException.ThrowIfNullOrWhiteSpace(value);
 
             _account = value;
             TokenEndpoint = string.Format(CultureInfo.InvariantCulture, AmoCrmAuthenticationDefaults.TokenEndpointFormat, value);
             UserInformationEndpoint = string.Format(CultureInfo.InvariantCulture, AmoCrmAuthenticationDefaults.UserInformationEndpointFormat, value);
         }
     }
+#pragma warning restore CA1863
 }

@@ -24,9 +24,8 @@ public partial class SuperOfficeAuthenticationHandler : OAuthHandler<SuperOffice
     public SuperOfficeAuthenticationHandler(
         [NotNull] IOptionsMonitor<SuperOfficeAuthenticationOptions> options,
         [NotNull] ILoggerFactory logger,
-        [NotNull] UrlEncoder encoder,
-        [NotNull] ISystemClock clock)
-        : base(options, logger, encoder, clock)
+        [NotNull] UrlEncoder encoder)
+        : base(options, logger, encoder)
     {
     }
 
@@ -36,22 +35,24 @@ public partial class SuperOfficeAuthenticationHandler : OAuthHandler<SuperOffice
         [NotNull] AuthenticationProperties properties,
         [NotNull] OAuthTokenResponse tokens)
     {
-        (string tenantId, string webApiUrl) = await ProcessIdTokenAndGetContactIdentifierAsync(tokens, properties, identity);
+        (var tenantId, var webApiUrl) = await ProcessIdTokenAndGetContactIdentifierAsync(tokens, properties, identity);
 
         if (string.IsNullOrEmpty(tenantId))
         {
-            throw new InvalidOperationException("An error occurred trying to obtain the context identifier from the current user's identity claims.");
+            throw new AuthenticationFailureException("An error occurred trying to obtain the context identifier from the current user's identity claims.");
         }
 
         if (string.IsNullOrEmpty(webApiUrl))
         {
-            throw new InvalidOperationException("An error occurred trying to obtain the WebApi URL from the current user's identity claims.");
+            throw new AuthenticationFailureException("An error occurred trying to obtain the WebApi URL from the current user's identity claims.");
         }
 
         // UserInfo endpoint must support multiple subdomains, i.e. sod, sod1, online, online1, online2, ...
         // - subdomain only becomes known from id token
         // Example WebApi Url https://sod.superoffice.com/Cust12345/api/
+#pragma warning disable CA1863
         var userInfoEndpoint = string.Format(CultureInfo.InvariantCulture, SuperOfficeAuthenticationConstants.FormatStrings.UserInfoEndpoint, webApiUrl);
+#pragma warning restore CA1863
 
         // Get the SuperOffice user principal.
         using var request = new HttpRequestMessage(HttpMethod.Get, userInfoEndpoint);
@@ -81,7 +82,7 @@ public partial class SuperOfficeAuthenticationHandler : OAuthHandler<SuperOffice
         [NotNull] AuthenticationProperties properties,
         [NotNull] ClaimsIdentity identity)
     {
-        string? idToken = tokens.Response!.RootElement.GetString("id_token");
+        var idToken = tokens.Response!.RootElement.GetString("id_token");
 
         if (Options.SaveTokens)
         {

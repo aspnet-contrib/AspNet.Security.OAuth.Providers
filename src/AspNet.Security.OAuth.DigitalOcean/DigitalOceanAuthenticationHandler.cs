@@ -4,7 +4,6 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using System.Net;
 using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
@@ -20,9 +19,8 @@ public partial class DigitalOceanAuthenticationHandler : OAuthHandler<DigitalOce
     public DigitalOceanAuthenticationHandler(
         [NotNull] IOptionsMonitor<DigitalOceanAuthenticationOptions> options,
         [NotNull] ILoggerFactory logger,
-        [NotNull] UrlEncoder encoder,
-        [NotNull] ISystemClock clock)
-        : base(options, logger, encoder, clock)
+        [NotNull] UrlEncoder encoder)
+        : base(options, logger, encoder)
     {
     }
 
@@ -57,7 +55,7 @@ public partial class DigitalOceanAuthenticationHandler : OAuthHandler<DigitalOce
         }
 
         using var stream = await response.Content.ReadAsStreamAsync(Context.RequestAborted);
-        var payload = JsonDocument.Parse(stream);
+        var payload = await JsonDocument.ParseAsync(stream);
         return OAuthTokenResponse.Success(payload);
     }
 

@@ -6,13 +6,8 @@
 
 namespace AspNet.Security.OAuth.Spotify;
 
-public class SpotifyTests : OAuthTests<SpotifyAuthenticationOptions>
+public class SpotifyTests(ITestOutputHelper outputHelper) : OAuthTests<SpotifyAuthenticationOptions>(outputHelper)
 {
-    public SpotifyTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
     public override string DefaultScheme => SpotifyAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
@@ -31,14 +26,5 @@ public class SpotifyTests : OAuthTests<SpotifyAuthenticationOptions>
     [InlineData("urn:spotify:url", "https://open.spotify.com/user/wizzler")]
     [InlineData("urn:spotify:profilepicture", "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-frc3/t1.0-1/1970403_10152215092574354_1798272330_n.jpg")]
     public async Task Can_Sign_In_Using_Spotify(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 }

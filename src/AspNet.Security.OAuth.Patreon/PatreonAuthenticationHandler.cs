@@ -19,9 +19,8 @@ public partial class PatreonAuthenticationHandler : OAuthHandler<PatreonAuthenti
     public PatreonAuthenticationHandler(
         [NotNull] IOptionsMonitor<PatreonAuthenticationOptions> options,
         [NotNull] ILoggerFactory logger,
-        [NotNull] UrlEncoder encoder,
-        [NotNull] ISystemClock clock)
-        : base(options, logger, encoder, clock)
+        [NotNull] UrlEncoder encoder)
+        : base(options, logger, encoder)
     {
     }
 
@@ -30,7 +29,7 @@ public partial class PatreonAuthenticationHandler : OAuthHandler<PatreonAuthenti
         [NotNull] AuthenticationProperties properties,
         [NotNull] OAuthTokenResponse tokens)
     {
-        string endpoint = Options.UserInformationEndpoint;
+        var endpoint = Options.UserInformationEndpoint;
 
         if (Options.Fields.Count > 0)
         {

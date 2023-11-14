@@ -8,13 +8,8 @@ using Microsoft.AspNetCore.WebUtilities;
 
 namespace AspNet.Security.OAuth.VisualStudio;
 
-public class VisualStudioTests : OAuthTests<VisualStudioAuthenticationOptions>
+public class VisualStudioTests(ITestOutputHelper outputHelper) : OAuthTests<VisualStudioAuthenticationOptions>(outputHelper)
 {
-    public VisualStudioTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
     public override string DefaultScheme => VisualStudioAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
@@ -28,21 +23,16 @@ public class VisualStudioTests : OAuthTests<VisualStudioAuthenticationOptions>
     [InlineData(ClaimTypes.Email, "john@john-smith.local")]
     [InlineData(ClaimTypes.GivenName, "John")]
     public async Task Can_Sign_In_Using_Visual_Studio(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 
     [Theory]
-    [InlineData(false)]
-    [InlineData(true)]
-    public async Task BuildChallengeUrl_Generates_Correct_Url(bool usePkce)
+    [InlineData(false, "")]
+    [InlineData(true, "")]
+    [InlineData(false, "?foo=bar")]
+    [InlineData(true, "?foo=bar")]
+    public async Task BuildChallengeUrl_Generates_Correct_Url(
+        bool usePkce,
+        string authorizationEndpointSuffix)
     {
         // Arrange
         var options = new VisualStudioAuthenticationOptions()
@@ -50,13 +40,15 @@ public class VisualStudioTests : OAuthTests<VisualStudioAuthenticationOptions>
             UsePkce = usePkce,
         };
 
-        string redirectUrl = "https://my-site.local/signin-visualstudio";
+        options.AuthorizationEndpoint += authorizationEndpointSuffix;
+
+        var redirectUrl = "https://my-site.local/signin-visualstudio";
 
         // Act
         Uri actual = await BuildChallengeUriAsync(
             options,
             redirectUrl,
-            (options, loggerFactory, encoder, clock) => new VisualStudioAuthenticationHandler(options, loggerFactory, encoder, clock));
+            (options, loggerFactory, encoder) => new VisualStudioAuthenticationHandler(options, loggerFactory, encoder));
 
         // Assert
         actual.ShouldNotBeNull();
@@ -79,6 +71,11 @@ public class VisualStudioTests : OAuthTests<VisualStudioAuthenticationOptions>
         {
             query.ShouldNotContainKey(OAuthConstants.CodeChallengeKey);
             query.ShouldNotContainKey(OAuthConstants.CodeChallengeMethodKey);
+        }
+
+        foreach (var parameter in query)
+        {
+            parameter.Value.Count.ShouldBe(1, $"Query string parameter {parameter.Key} appears more than once: {parameter.Value}.");
         }
     }
 }

@@ -11,17 +11,11 @@ using Microsoft.Extensions.Options;
 
 namespace AspNet.Security.OAuth.Myob;
 
-public class MyobAuthenticationHandler : OAuthHandler<MyobAuthenticationOptions>
+public class MyobAuthenticationHandler(
+    [NotNull] IOptionsMonitor<MyobAuthenticationOptions> options,
+    [NotNull] ILoggerFactory logger,
+    [NotNull] UrlEncoder encoder) : OAuthHandler<MyobAuthenticationOptions>(options, logger, encoder)
 {
-    public MyobAuthenticationHandler(
-        [NotNull] IOptionsMonitor<MyobAuthenticationOptions> options,
-        [NotNull] ILoggerFactory logger,
-        [NotNull] UrlEncoder encoder,
-        [NotNull] ISystemClock clock)
-        : base(options, logger, encoder, clock)
-    {
-    }
-
     protected override async Task<AuthenticationTicket> CreateTicketAsync(
         [NotNull] ClaimsIdentity identity,
         [NotNull] AuthenticationProperties properties,

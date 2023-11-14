@@ -9,21 +9,13 @@ using static AspNet.Security.OAuth.QuickBooks.QuickBooksAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.QuickBooksTests;
 
-public class QuickBooksTests : OAuthTests<QuickBooksAuthenticationOptions>
+public class QuickBooksTests(ITestOutputHelper outputHelper) : OAuthTests<QuickBooksAuthenticationOptions>(outputHelper)
 {
-    public QuickBooksTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
     public override string DefaultScheme => QuickBooksAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
     {
-        builder.AddQuickBooks(options =>
-        {
-            ConfigureDefaults(builder, options);
-        });
+        builder.AddQuickBooks(options => ConfigureDefaults(builder, options));
     }
 
     [Theory]
@@ -35,14 +27,5 @@ public class QuickBooksTests : OAuthTests<QuickBooksAuthenticationOptions>
     [InlineData(ClaimTypes.GivenName, "John")]
     [InlineData(ClaimTypes.Surname, "Smith")]
     public async Task Can_Sign_In_Using_QuickBooks(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 }

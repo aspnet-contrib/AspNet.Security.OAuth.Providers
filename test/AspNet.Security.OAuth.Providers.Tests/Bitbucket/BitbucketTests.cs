@@ -6,13 +6,8 @@
 
 namespace AspNet.Security.OAuth.Bitbucket;
 
-public class BitbucketTests : OAuthTests<BitbucketAuthenticationOptions>
+public class BitbucketTests(ITestOutputHelper outputHelper) : OAuthTests<BitbucketAuthenticationOptions>(outputHelper)
 {
-    public BitbucketTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
     public override string DefaultScheme => BitbucketAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
@@ -32,14 +27,5 @@ public class BitbucketTests : OAuthTests<BitbucketAuthenticationOptions>
     [InlineData("urn:bitbucket:name", "John Smith")]
     [InlineData("urn:bitbucket:url", "https://bitbucket.org")]
     public async Task Can_Sign_In_Using_Bitbucket(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 }

@@ -18,9 +18,8 @@ public partial class GitHubAuthenticationHandler : OAuthHandler<GitHubAuthentica
     public GitHubAuthenticationHandler(
         [NotNull] IOptionsMonitor<GitHubAuthenticationOptions> options,
         [NotNull] ILoggerFactory logger,
-        [NotNull] UrlEncoder encoder,
-        [NotNull] ISystemClock clock)
-        : base(options, logger, encoder, clock)
+        [NotNull] UrlEncoder encoder)
+        : base(options, logger, encoder)
     {
     }
 
@@ -52,7 +51,7 @@ public partial class GitHubAuthenticationHandler : OAuthHandler<GitHubAuthentica
             !identity.HasClaim(claim => claim.Type == ClaimTypes.Email) &&
             Options.Scope.Contains("user:email"))
         {
-            string? address = await GetEmailAsync(tokens);
+            var address = await GetEmailAsync(tokens);
 
             if (!string.IsNullOrEmpty(address))
             {

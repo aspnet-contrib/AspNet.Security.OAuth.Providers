@@ -39,9 +39,10 @@ public class AppleClientSecretGeneratorTests
         await GenerateTokenAsync(Configure, async (context) =>
         {
             var utcNow = DateTimeOffset.UtcNow;
+            utcNow = utcNow.AddTicks(-(utcNow.Ticks % TimeSpan.TicksPerSecond));
 
             // Act
-            string token = await context.Options.ClientSecretGenerator.GenerateAsync(context);
+            var token = await context.Options.ClientSecretGenerator.GenerateAsync(context);
 
             // Assert
             token.ShouldNotBeNullOrWhiteSpace();
@@ -61,7 +62,7 @@ public class AppleClientSecretGeneratorTests
 
             // See https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers/issues/684
             securityToken.Header.Keys.OrderBy((p) => p).ShouldBe(
-                new string[] { "alg", "kid", "typ" },
+                ["alg", "kid", "typ"],
                 Case.Sensitive,
                 "JWT header contains unexpected additional claims.");
 
@@ -72,17 +73,16 @@ public class AppleClientSecretGeneratorTests
             securityToken.Payload.ShouldContainKeyAndValue("aud", "https://appleid.apple.com");
             securityToken.Payload.ShouldContainKeyAndValue("iss", "my-team-id");
             securityToken.Payload.ShouldContainKeyAndValue("sub", "my-client-id");
-            securityToken.Payload.Iat.HasValue.ShouldBeTrue();
-            securityToken.Payload.Exp.HasValue.ShouldBeTrue();
+            securityToken.Payload.Expiration.HasValue.ShouldBeTrue();
 
             securityToken.Payload.Keys.OrderBy((p) => p).ShouldBe(
-                new string[] { "aud", "exp", "iat", "iss", "nbf", "sub" },
+                ["aud", "exp", "iat", "iss", "nbf", "sub"],
                 Case.Sensitive,
                 "JWT payload contains unexpected additional claims.");
 
-            ((long)securityToken.Payload.Iat!.Value).ShouldBeGreaterThanOrEqualTo(utcNow.ToUnixTimeSeconds());
-            ((long)securityToken.Payload.Exp!.Value).ShouldBeGreaterThanOrEqualTo(utcNow.AddSeconds(60).ToUnixTimeSeconds());
-            ((long)securityToken.Payload.Exp.Value).ShouldBeLessThanOrEqualTo(utcNow.AddSeconds(70).ToUnixTimeSeconds());
+            securityToken.Payload.IssuedAt.ShouldBeGreaterThanOrEqualTo(utcNow.UtcDateTime);
+            securityToken.Payload.Expiration!.Value.ShouldBeGreaterThanOrEqualTo(utcNow.AddSeconds(60).ToUnixTimeSeconds());
+            securityToken.Payload.Expiration.Value.ShouldBeLessThanOrEqualTo(utcNow.AddSeconds(70).ToUnixTimeSeconds());
         });
     }
 
@@ -101,18 +101,18 @@ public class AppleClientSecretGeneratorTests
 
         await GenerateTokenAsync(Configure, async (context) =>
         {
-            AppleClientSecretGenerator generator = context.Options.ClientSecretGenerator;
+            var generator = context.Options.ClientSecretGenerator;
 
             // Act
-            string token1 = await generator.GenerateAsync(context);
-            string token2 = await generator.GenerateAsync(context);
+            var token1 = await generator.GenerateAsync(context);
+            var token2 = await generator.GenerateAsync(context);
 
             // Assert
             token2.ShouldBe(token1);
 
             // Act
             await Task.Delay(context.Options.ClientSecretExpiresAfter * 2);
-            string token3 = await generator.GenerateAsync(context);
+            var token3 = await generator.GenerateAsync(context);
 
             // Assert
             token3.ShouldNotBe(token1);
@@ -146,18 +146,18 @@ public class AppleClientSecretGeneratorTests
 
         await GenerateTokenAsync(ConfigureA, async (contextA) =>
         {
-            AppleClientSecretGenerator generator = contextA.Options.ClientSecretGenerator;
+            var generator = contextA.Options.ClientSecretGenerator;
 
             var httpContext = new DefaultHttpContext();
             var scheme = new AuthenticationScheme("AppleB", "AppleB", typeof(AppleAuthenticationHandler));
             var contextB = new AppleGenerateClientSecretContext(httpContext, scheme, optionsB);
 
             // Act
-            string tokenA1 = await generator.GenerateAsync(contextA);
-            string tokenA2 = await generator.GenerateAsync(contextA);
+            var tokenA1 = await generator.GenerateAsync(contextA);
+            var tokenA2 = await generator.GenerateAsync(contextA);
 
-            string tokenB1 = await generator.GenerateAsync(contextB);
-            string tokenB2 = await generator.GenerateAsync(contextB);
+            var tokenB1 = await generator.GenerateAsync(contextB);
+            var tokenB2 = await generator.GenerateAsync(contextB);
 
             // Assert
             tokenA1.ShouldNotBeNullOrWhiteSpace();
@@ -169,8 +169,8 @@ public class AppleClientSecretGeneratorTests
             // Act
             await Task.Delay(clientSecretExpiresAfter * 3);
 
-            string tokenA3 = await generator.GenerateAsync(contextA);
-            string tokenB3 = await generator.GenerateAsync(contextB);
+            var tokenA3 = await generator.GenerateAsync(contextA);
+            var tokenB3 = await generator.GenerateAsync(contextB);
 
             // Assert
             tokenA3.ShouldNotBeNullOrWhiteSpace();

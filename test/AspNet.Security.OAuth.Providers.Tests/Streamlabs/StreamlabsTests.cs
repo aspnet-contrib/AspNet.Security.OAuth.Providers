@@ -8,13 +8,8 @@ using Microsoft.AspNetCore.WebUtilities;
 
 namespace AspNet.Security.OAuth.Streamlabs;
 
-public class StreamlabsTests : OAuthTests<StreamlabsAuthenticationOptions>
+public class StreamlabsTests(ITestOutputHelper outputHelper) : OAuthTests<StreamlabsAuthenticationOptions>(outputHelper)
 {
-    public StreamlabsTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
     public override string DefaultScheme => StreamlabsAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
@@ -37,16 +32,7 @@ public class StreamlabsTests : OAuthTests<StreamlabsAuthenticationOptions>
     [InlineData("urn:streamlabs:youtubeid", "UCC8H-NrBvYEqZ5KG-jzS_Oy")]
     [InlineData("urn:streamlabs:youtubetitle", "Sertay")]
     public async Task Can_Sign_In_Using_Streamlabs(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 
     [Theory]
     [InlineData(false)]
@@ -59,13 +45,13 @@ public class StreamlabsTests : OAuthTests<StreamlabsAuthenticationOptions>
             UsePkce = usePkce,
         };
 
-        string redirectUrl = "https://my-site.local/signin-streamlabs";
+        var redirectUrl = "https://my-site.local/signin-streamlabs";
 
         // Act
         Uri actual = await BuildChallengeUriAsync(
             options,
             redirectUrl,
-            (options, loggerFactory, encoder, clock) => new StreamlabsAuthenticationHandler(options, loggerFactory, encoder, clock));
+            (options, loggerFactory, encoder) => new StreamlabsAuthenticationHandler(options, loggerFactory, encoder));
 
         // Assert
         actual.ShouldNotBeNull();

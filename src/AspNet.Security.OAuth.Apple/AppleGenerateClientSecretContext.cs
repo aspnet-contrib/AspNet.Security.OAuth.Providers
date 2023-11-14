@@ -11,16 +11,12 @@ namespace AspNet.Security.OAuth.Apple;
 /// <summary>
 /// Contains information about the current request.
 /// </summary>
-public class AppleGenerateClientSecretContext : BaseContext<AppleAuthenticationOptions>
+/// <param name="context">The HTTP context.</param>
+/// <param name="scheme">The authentication scheme.</param>
+/// <param name="options">The authentication options associated with the scheme.</param>
+public class AppleGenerateClientSecretContext(
+    HttpContext context,
+    AuthenticationScheme scheme,
+    AppleAuthenticationOptions options) : BaseContext<AppleAuthenticationOptions>(context, scheme, options)
 {
-    /// <summary>
-    /// Creates a new instance of the <see cref="AppleGenerateClientSecretContext"/> class.
-    /// </summary>
-    /// <param name="context">The HTTP context.</param>
-    /// <param name="scheme">The authentication scheme.</param>
-    /// <param name="options">The authentication options associated with the scheme.</param>
-    public AppleGenerateClientSecretContext(HttpContext context, AuthenticationScheme scheme, AppleAuthenticationOptions options)
-        : base(context, scheme, options)
-    {
-    }
 }

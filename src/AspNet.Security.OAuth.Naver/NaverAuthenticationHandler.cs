@@ -18,9 +18,8 @@ public partial class NaverAuthenticationHandler : OAuthHandler<NaverAuthenticati
     public NaverAuthenticationHandler(
         [NotNull] IOptionsMonitor<NaverAuthenticationOptions> options,
         [NotNull] ILoggerFactory logger,
-        [NotNull] UrlEncoder encoder,
-        [NotNull] ISystemClock clock)
-        : base(options, logger, encoder, clock)
+        [NotNull] UrlEncoder encoder)
+        : base(options, logger, encoder)
     {
     }
 

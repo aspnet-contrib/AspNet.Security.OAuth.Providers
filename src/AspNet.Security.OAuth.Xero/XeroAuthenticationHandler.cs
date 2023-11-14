@@ -25,9 +25,8 @@ public partial class XeroAuthenticationHandler : OAuthHandler<XeroAuthentication
     public XeroAuthenticationHandler(
         [NotNull] IOptionsMonitor<XeroAuthenticationOptions> options,
         [NotNull] ILoggerFactory logger,
-        [NotNull] UrlEncoder encoder,
-        [NotNull] ISystemClock clock)
-        : base(options, logger, encoder, clock)
+        [NotNull] UrlEncoder encoder)
+        : base(options, logger, encoder)
     {
     }
 

@@ -6,21 +6,13 @@
 
 namespace AspNet.Security.OAuth.Notion;
 
-public class NotionTests : OAuthTests<NotionAuthenticationOptions>
+public class NotionTests(ITestOutputHelper outputHelper) : OAuthTests<NotionAuthenticationOptions>(outputHelper)
 {
-    public NotionTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
     public override string DefaultScheme => NotionAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
     {
-        builder.AddNotion(options =>
-        {
-            ConfigureDefaults(builder, options);
-        });
+        builder.AddNotion(options => ConfigureDefaults(builder, options));
     }
 
     [Theory]
@@ -28,14 +20,5 @@ public class NotionTests : OAuthTests<NotionAuthenticationOptions>
     [InlineData("urn:notion:workspace_icon", "icon")]
     [InlineData("urn:notion:bot_id", "mybot")]
     public async Task Can_Sign_In_Using_Notion(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 }

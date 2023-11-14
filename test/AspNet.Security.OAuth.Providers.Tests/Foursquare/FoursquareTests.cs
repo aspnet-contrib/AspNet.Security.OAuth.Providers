@@ -6,13 +6,8 @@
 
 namespace AspNet.Security.OAuth.Foursquare;
 
-public class FoursquareTests : OAuthTests<FoursquareAuthenticationOptions>
+public class FoursquareTests(ITestOutputHelper outputHelper) : OAuthTests<FoursquareAuthenticationOptions>(outputHelper)
 {
-    public FoursquareTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
     public override string DefaultScheme => FoursquareAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
@@ -29,14 +24,5 @@ public class FoursquareTests : OAuthTests<FoursquareAuthenticationOptions>
     [InlineData(ClaimTypes.Gender, "Male")]
     [InlineData(ClaimTypes.Uri, "https://foursquare.local/john-smith")]
     public async Task Can_Sign_In_Using_Foursquare(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 }

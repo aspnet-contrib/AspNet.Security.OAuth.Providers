@@ -9,13 +9,8 @@ using static AspNet.Security.OAuth.Trovo.TrovoAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.Trovo;
 
-public class TrovoTests : OAuthTests<TrovoAuthenticationOptions>
+public class TrovoTests(ITestOutputHelper outputHelper) : OAuthTests<TrovoAuthenticationOptions>(outputHelper)
 {
-    public TrovoTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
     public override string DefaultScheme => TrovoAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
@@ -31,16 +26,7 @@ public class TrovoTests : OAuthTests<TrovoAuthenticationOptions>
     [InlineData(Claims.ProfilePic, "https://headicon.trovo.live/user/cxq7kbiaaaaabd5cniezh3x5cu.jpeg?t=2")]
     [InlineData(Claims.ChannelId, "100000021")]
     public async Task Can_Sign_In_Using_Trovo(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 
     [Theory]
     [InlineData(false)]
@@ -59,7 +45,7 @@ public class TrovoTests : OAuthTests<TrovoAuthenticationOptions>
         Uri actual = await BuildChallengeUriAsync(
             options,
             redirectUrl,
-            (options, loggerFactory, encoder, clock) => new TrovoAuthenticationHandler(options, loggerFactory, encoder, clock));
+            (options, loggerFactory, encoder) => new TrovoAuthenticationHandler(options, loggerFactory, encoder));
 
         // Assert
         actual.ShouldNotBeNull();

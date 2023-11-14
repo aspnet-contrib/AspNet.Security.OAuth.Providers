@@ -19,9 +19,8 @@ public partial class QuickBooksAuthenticationHandler : OAuthHandler<QuickBooksAu
     public QuickBooksAuthenticationHandler(
         [NotNull] IOptionsMonitor<QuickBooksAuthenticationOptions> options,
         [NotNull] ILoggerFactory logger,
-        [NotNull] UrlEncoder encoder,
-        [NotNull] ISystemClock clock)
-        : base(options, logger, encoder, clock)
+        [NotNull] UrlEncoder encoder)
+        : base(options, logger, encoder)
     {
     }
 
@@ -30,7 +29,7 @@ public partial class QuickBooksAuthenticationHandler : OAuthHandler<QuickBooksAu
         [NotNull] AuthenticationProperties properties,
         [NotNull] OAuthTokenResponse tokens)
     {
-        string address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, "client_id", Options.ClientId);
+        var address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, "client_id", Options.ClientId);
 
         using var request = new HttpRequestMessage(HttpMethod.Get, address);
         request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));

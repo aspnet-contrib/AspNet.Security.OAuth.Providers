@@ -23,9 +23,8 @@ public partial class ShopifyAuthenticationHandler : OAuthHandler<ShopifyAuthenti
     public ShopifyAuthenticationHandler(
         [NotNull] IOptionsMonitor<ShopifyAuthenticationOptions> options,
         [NotNull] ILoggerFactory logger,
-        [NotNull] UrlEncoder encoder,
-        [NotNull] ISystemClock clock)
-        : base(options, logger, encoder, clock)
+        [NotNull] UrlEncoder encoder)
+        : base(options, logger, encoder)
     {
     }
 
@@ -35,10 +34,12 @@ public partial class ShopifyAuthenticationHandler : OAuthHandler<ShopifyAuthenti
         [NotNull] AuthenticationProperties properties,
         [NotNull] OAuthTokenResponse tokens)
     {
+#pragma warning disable CA1863
         var uri = string.Format(
             CultureInfo.InvariantCulture,
             ShopifyAuthenticationDefaults.UserInformationEndpointFormat,
             properties.Items[ShopifyAuthenticationDefaults.ShopNameAuthenticationProperty]);
+#pragma warning restore CA1863
 
         using var request = new HttpRequestMessage(HttpMethod.Get, uri);
         request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -65,7 +66,7 @@ public partial class ShopifyAuthenticationHandler : OAuthHandler<ShopifyAuthenti
 
             if (expiresInProperty.TryGetInt32(out var expiresIn))
             {
-                var expires = Clock.UtcNow.AddSeconds(expiresIn);
+                var expires = TimeProvider.GetUtcNow().AddSeconds(expiresIn);
                 identity.AddClaim(new Claim(ClaimTypes.Expiration, expires.ToString("O", CultureInfo.InvariantCulture), ClaimValueTypes.DateTime));
             }
 
@@ -96,7 +97,7 @@ public partial class ShopifyAuthenticationHandler : OAuthHandler<ShopifyAuthenti
         if (!properties.Items.TryGetValue(ShopifyAuthenticationDefaults.ShopNameAuthenticationProperty, out var shopName))
         {
             Log.ShopNameMissing(Logger);
-            throw new InvalidOperationException("Shopify provider AuthenticationProperties must contain ShopNameAuthenticationProperty.");
+            throw new AuthenticationFailureException("Shopify provider AuthenticationProperties must contain ShopNameAuthenticationProperty.");
         }
 
         var authorizationEndpoint = string.Format(CultureInfo.InvariantCulture, Options.AuthorizationEndpoint, shopName);
@@ -171,7 +172,7 @@ public partial class ShopifyAuthenticationHandler : OAuthHandler<ShopifyAuthenti
             // Shop name must end with myshopify.com
             if (!shop.EndsWith(".myshopify.com", StringComparison.OrdinalIgnoreCase))
             {
-                throw new InvalidOperationException("shop parameter is malformed. It should end with .myshopify.com");
+                throw new AuthenticationFailureException("shop parameter is malformed. It should end with .myshopify.com");
             }
 
             // Strip out the "myshopify.com" suffix
@@ -185,7 +186,7 @@ public partial class ShopifyAuthenticationHandler : OAuthHandler<ShopifyAuthenti
 
             if (!string.Equals(shopNamePropertyValue, shopDns, StringComparison.OrdinalIgnoreCase))
             {
-                throw new InvalidOperationException("Received shop name does not match the shop name specified in the authentication request.");
+                throw new AuthenticationFailureException("Received shop name does not match the shop name specified in the authentication request.");
             }
         }
         catch (Exception ex)

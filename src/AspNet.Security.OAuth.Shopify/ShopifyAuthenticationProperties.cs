@@ -7,9 +7,9 @@
 namespace AspNet.Security.OAuth.Shopify;
 
 /// <summary>
-/// Substitue for <see cref="AuthenticationProperties"/> to enforce setting shop name
+/// Substitute for <see cref="AuthenticationProperties"/> to enforce setting shop name
 /// before Challenge and provide an override for <see cref="OAuthOptions.Scope"/>. You
-/// can accomplish the same thing by setting the approriate values in <see cref="AuthenticationProperties.Items"/>.
+/// can accomplish the same thing by setting the appropriate values in <see cref="AuthenticationProperties.Items"/>.
 /// </summary>
 public class ShopifyAuthenticationProperties : AuthenticationProperties
 {

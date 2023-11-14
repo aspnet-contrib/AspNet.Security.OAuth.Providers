@@ -13,17 +13,16 @@ using Microsoft.Extensions.Options;
 
 namespace AspNet.Security.OAuth.Strava;
 
+/// <summary>
+/// Authentication handler for Strava authentication
+/// </summary>
 public partial class StravaAuthenticationHandler : OAuthHandler<StravaAuthenticationOptions>
 {
-    /// <summary>
-    /// Authentication handler for Strava authentication
-    /// </summary>
     public StravaAuthenticationHandler(
         [NotNull] IOptionsMonitor<StravaAuthenticationOptions> options,
         [NotNull] ILoggerFactory factory,
-        [NotNull] UrlEncoder encoder,
-        [NotNull] ISystemClock clock)
-        : base(options, factory, encoder, clock)
+        [NotNull] UrlEncoder encoder)
+        : base(options, factory, encoder)
     {
     }
 

@@ -20,9 +20,8 @@ public partial class RedditAuthenticationHandler : OAuthHandler<RedditAuthentica
     public RedditAuthenticationHandler(
         [NotNull] IOptionsMonitor<RedditAuthenticationOptions> options,
         [NotNull] ILoggerFactory logger,
-        [NotNull] UrlEncoder encoder,
-        [NotNull] ISystemClock clock)
-        : base(options, logger, encoder, clock)
+        [NotNull] UrlEncoder encoder)
+        : base(options, logger, encoder)
     {
     }
 

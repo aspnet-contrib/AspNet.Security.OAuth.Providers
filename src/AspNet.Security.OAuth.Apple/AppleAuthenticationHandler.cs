@@ -19,24 +19,14 @@ namespace AspNet.Security.OAuth.Apple;
 /// <summary>
 /// Defines a handler for authentication using Apple.
 /// </summary>
-public partial class AppleAuthenticationHandler : OAuthHandler<AppleAuthenticationOptions>
+/// <param name="options">The authentication options.</param>
+/// <param name="logger">The logger to use.</param>
+/// <param name="encoder">The URL encoder to use.</param>
+public partial class AppleAuthenticationHandler(
+    [NotNull] IOptionsMonitor<AppleAuthenticationOptions> options,
+    [NotNull] ILoggerFactory logger,
+    [NotNull] UrlEncoder encoder) : OAuthHandler<AppleAuthenticationOptions>(options, logger, encoder)
 {
-    /// <summary>
-    /// Initializes a new instance of the <see cref="AppleAuthenticationHandler"/> class.
-    /// </summary>
-    /// <param name="options">The authentication options.</param>
-    /// <param name="logger">The logger to use.</param>
-    /// <param name="encoder">The URL encoder to use.</param>
-    /// <param name="clock">The system clock to use.</param>
-    public AppleAuthenticationHandler(
-        [NotNull] IOptionsMonitor<AppleAuthenticationOptions> options,
-        [NotNull] ILoggerFactory logger,
-        [NotNull] UrlEncoder encoder,
-        [NotNull] ISystemClock clock)
-        : base(options, logger, encoder, clock)
-    {
-    }
-
     /// <summary>
     /// The handler calls methods on the events which give the application control at certain points where processing is occurring.
     /// If it is not provided a default instance is supplied which does nothing when the methods are called.
@@ -52,7 +42,7 @@ public partial class AppleAuthenticationHandler : OAuthHandler<AppleAuthenticati
         [NotNull] AuthenticationProperties properties,
         [NotNull] string redirectUri)
     {
-        string challengeUrl = base.BuildChallengeUrl(properties, redirectUri);
+        var challengeUrl = base.BuildChallengeUrl(properties, redirectUri);
 
         // Apple requires the response mode to be form_post when the email or name scopes are requested
         return QueryHelpers.AddQueryString(challengeUrl, "response_mode", "form_post");
@@ -67,7 +57,7 @@ public partial class AppleAuthenticationHandler : OAuthHandler<AppleAuthenticati
         [NotNull] AuthenticationProperties properties,
         [NotNull] OAuthTokenResponse tokens)
     {
-        string? idToken = tokens.Response!.RootElement.GetString("id_token");
+        var idToken = tokens.Response!.RootElement.GetString("id_token");
 
         Log.CreatingTicket(Logger);
 
@@ -83,7 +73,7 @@ public partial class AppleAuthenticationHandler : OAuthHandler<AppleAuthenticati
 
         if (string.IsNullOrWhiteSpace(idToken))
         {
-            throw new InvalidOperationException("No Apple ID token was returned in the OAuth token response.");
+            throw new AuthenticationFailureException("No Apple ID token was returned in the OAuth token response.");
         }
 
         if (Options.ValidateTokens)
@@ -135,7 +125,7 @@ public partial class AppleAuthenticationHandler : OAuthHandler<AppleAuthenticati
 
             var claims = new List<Claim>(securityToken.Claims)
             {
-                new Claim(ClaimTypes.NameIdentifier, securityToken.Subject, ClaimValueTypes.String, ClaimsIssuer),
+                new(ClaimTypes.NameIdentifier, securityToken.Subject, ClaimValueTypes.String, ClaimsIssuer),
             };
 
             var emailClaim = claims.Find((p) => string.Equals(p.Type, "email", StringComparison.Ordinal));
@@ -149,7 +139,7 @@ public partial class AppleAuthenticationHandler : OAuthHandler<AppleAuthenticati
         }
         catch (Exception ex)
         {
-            throw new InvalidOperationException("Failed to parse JWT for claims from Apple ID token.", ex);
+            throw new AuthenticationFailureException("Failed to parse JWT for claims from Apple ID token.", ex);
         }
     }
 
@@ -186,7 +176,7 @@ public partial class AppleAuthenticationHandler : OAuthHandler<AppleAuthenticati
 
         if (properties == null)
         {
-            return HandleRequestResult.Fail("The oauth state was missing or invalid.");
+            return HandleRequestResult.Fail("The OAuth state was missing or invalid.");
         }
 
         // OAuth2 10.12 CSRF
@@ -285,30 +275,30 @@ public partial class AppleAuthenticationHandler : OAuthHandler<AppleAuthenticati
 
         if (Options.SaveTokens)
         {
-            var authTokens = new List<AuthenticationToken>()
-            {
-                new AuthenticationToken() { Name = "access_token", Value = tokens.AccessToken },
-            };
+            List<AuthenticationToken> authTokens =
+            [
+                new() { Name = "access_token", Value = tokens.AccessToken },
+            ];
 
             if (!string.IsNullOrEmpty(tokens.RefreshToken))
             {
-                authTokens.Add(new AuthenticationToken() { Name = "refresh_token", Value = tokens.RefreshToken });
+                authTokens.Add(new() { Name = "refresh_token", Value = tokens.RefreshToken });
             }
 
             if (!string.IsNullOrEmpty(tokens.TokenType))
             {
-                authTokens.Add(new AuthenticationToken() { Name = "token_type", Value = tokens.TokenType });
+                authTokens.Add(new() { Name = "token_type", Value = tokens.TokenType });
             }
 
             if (!string.IsNullOrEmpty(tokens.ExpiresIn))
             {
-                if (int.TryParse(tokens.ExpiresIn, NumberStyles.Integer, CultureInfo.InvariantCulture, out int value))
+                if (int.TryParse(tokens.ExpiresIn, NumberStyles.Integer, CultureInfo.InvariantCulture, out var value))
                 {
                     // https://www.w3.org/TR/xmlschema-2/#dateTime
                     // https://msdn.microsoft.com/en-us/library/az4se3k1(v=vs.110).aspx
-                    var expiresAt = Clock.UtcNow + TimeSpan.FromSeconds(value);
+                    var expiresAt = TimeProvider.GetUtcNow().AddSeconds(value);
 
-                    authTokens.Add(new AuthenticationToken()
+                    authTokens.Add(new()
                     {
                         Name = "expires_at",
                         Value = expiresAt.ToString("o", CultureInfo.InvariantCulture),
@@ -316,11 +306,11 @@ public partial class AppleAuthenticationHandler : OAuthHandler<AppleAuthenticati
                 }
             }
 
-            string? idToken = tokens.Response?.RootElement.GetString("id_token");
+            var idToken = tokens.Response?.RootElement.GetString("id_token");
 
             if (!string.IsNullOrEmpty(idToken))
             {
-                authTokens.Add(new AuthenticationToken() { Name = "id_token", Value = idToken });
+                authTokens.Add(new() { Name = "id_token", Value = idToken });
             }
 
             properties.StoreTokens(authTokens);

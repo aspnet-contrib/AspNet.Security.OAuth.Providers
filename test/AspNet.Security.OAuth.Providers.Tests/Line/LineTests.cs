@@ -8,14 +8,9 @@ using Microsoft.AspNetCore.WebUtilities;
 
 namespace AspNet.Security.OAuth.Line;
 
-public class LineTests : OAuthTests<LineAuthenticationOptions>
+public class LineTests(ITestOutputHelper outputHelper) : OAuthTests<LineAuthenticationOptions>(outputHelper)
 {
     public override string DefaultScheme => LineAuthenticationDefaults.AuthenticationScheme;
-
-    public LineTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
     {
@@ -32,16 +27,7 @@ public class LineTests : OAuthTests<LineAuthenticationOptions>
     [InlineData("urn:line:picture_url", "my-picture")]
     [InlineData(ClaimTypes.Email, "my-email")]
     public async Task Can_Sign_In_Using_Line(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 
     [Theory]
     [InlineData(false, false)]
@@ -55,13 +41,13 @@ public class LineTests : OAuthTests<LineAuthenticationOptions>
             UsePkce = usePkce,
         };
 
-        string redirectUrl = "https://my-site.local/signin-line";
+        var redirectUrl = "https://my-site.local/signin-line";
 
         // Act
         Uri actual = await BuildChallengeUriAsync(
             options,
             redirectUrl,
-            (options, loggerFactory, encoder, clock) => new LineAuthenticationHandler(options, loggerFactory, encoder, clock));
+            (options, loggerFactory, encoder) => new LineAuthenticationHandler(options, loggerFactory, encoder));
 
         // Assert
         actual.ShouldNotBeNull();

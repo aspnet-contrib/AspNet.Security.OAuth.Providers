@@ -19,13 +19,13 @@ public static class PackageMetadataTests
 
     public static IEnumerable<object[]> Projects()
     {
-        foreach (string directory in Directory.EnumerateDirectories(Path.Combine(_solutionRoot!, "src")))
+        foreach (var directory in Directory.EnumerateDirectories(Path.Combine(_solutionRoot!, "src")))
         {
-            foreach (string project in Directory.EnumerateFiles(directory, "*.csproj"))
+            foreach (var project in Directory.EnumerateFiles(directory, "*.csproj"))
             {
-                string projectName = Path.GetFileNameWithoutExtension(project);
+                var projectName = Path.GetFileNameWithoutExtension(project);
 
-                foreach (string propertyName in new[] { "Authors", "Description", "PackageTags" })
+                foreach (var propertyName in new[] { "Authors", "Description", "PackageTags" })
                 {
                     yield return new object[] { projectName, propertyName };
                 }
@@ -38,7 +38,7 @@ public static class PackageMetadataTests
     public static async Task Project_Has_Expected_Package_Metadata(string projectName, string propertyName)
     {
         // Arrange
-        string path = Path.Combine(_solutionRoot!, "src", projectName, projectName) + ".csproj";
+        var path = Path.Combine(_solutionRoot!, "src", projectName, projectName) + ".csproj";
 
         using var stream = File.OpenRead(path);
         XElement project = await XElement.LoadAsync(stream, LoadOptions.None, CancellationToken.None);
@@ -48,7 +48,7 @@ public static class PackageMetadataTests
 
     private static void AssertPackageMetadata(XElement project, string propertyName)
     {
-        bool found = false;
+        var found = false;
 
         foreach (XElement item in project.Descendants("PropertyGroup").Descendants())
         {

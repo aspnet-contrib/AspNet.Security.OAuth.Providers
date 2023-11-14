@@ -20,9 +20,8 @@ public partial class LinkedInAuthenticationHandler : OAuthHandler<LinkedInAuthen
     public LinkedInAuthenticationHandler(
         [NotNull] IOptionsMonitor<LinkedInAuthenticationOptions> options,
         [NotNull] ILoggerFactory logger,
-        [NotNull] UrlEncoder encoder,
-        [NotNull] ISystemClock clock)
-        : base(options, logger, encoder, clock)
+        [NotNull] UrlEncoder encoder)
+        : base(options, logger, encoder)
     {
     }
 
@@ -31,7 +30,7 @@ public partial class LinkedInAuthenticationHandler : OAuthHandler<LinkedInAuthen
         [NotNull] AuthenticationProperties properties,
         [NotNull] OAuthTokenResponse tokens)
     {
-        string requestUri = Options.UserInformationEndpoint;
+        var requestUri = Options.UserInformationEndpoint;
         var fields = Options.Fields
             .Where(f => !string.Equals(f, LinkedInAuthenticationConstants.EmailAddressField, StringComparison.OrdinalIgnoreCase))
             .ToList();
@@ -62,7 +61,7 @@ public partial class LinkedInAuthenticationHandler : OAuthHandler<LinkedInAuthen
         if (!string.IsNullOrEmpty(Options.EmailAddressEndpoint) &&
             Options.Fields.Contains(LinkedInAuthenticationConstants.EmailAddressField))
         {
-            string? email = await GetEmailAsync(tokens);
+            var email = await GetEmailAsync(tokens);
             if (!string.IsNullOrEmpty(email))
             {
                 identity.AddClaim(new Claim(ClaimTypes.Email, email, ClaimValueTypes.String, Options.ClaimsIssuer));

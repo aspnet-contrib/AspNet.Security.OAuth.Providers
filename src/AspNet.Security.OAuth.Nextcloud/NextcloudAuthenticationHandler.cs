@@ -18,9 +18,8 @@ public partial class NextcloudAuthenticationHandler : OAuthHandler<NextcloudAuth
     public NextcloudAuthenticationHandler(
         [NotNull] IOptionsMonitor<NextcloudAuthenticationOptions> options,
         [NotNull] ILoggerFactory logger,
-        [NotNull] UrlEncoder encoder,
-        [NotNull] ISystemClock clock)
-        : base(options, logger, encoder, clock)
+        [NotNull] UrlEncoder encoder)
+        : base(options, logger, encoder)
     {
     }
 
@@ -29,8 +28,8 @@ public partial class NextcloudAuthenticationHandler : OAuthHandler<NextcloudAuth
         [NotNull] AuthenticationProperties properties,
         [NotNull] OAuthTokenResponse tokens)
     {
-        string userId = tokens.Response!.RootElement.GetString("user_id") ?? string.Empty;
-        string userEndpoint = Options.UserInformationEndpoint.TrimEnd('/');
+        var userId = tokens.Response!.RootElement.GetString("user_id") ?? string.Empty;
+        var userEndpoint = Options.UserInformationEndpoint.TrimEnd('/');
         userEndpoint += $"/{Uri.EscapeDataString(userId)}";
 
         using var request = new HttpRequestMessage(HttpMethod.Get, userEndpoint);

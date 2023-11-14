@@ -10,19 +10,11 @@ using Microsoft.AspNetCore.Authentication.OAuth.Claims;
 
 namespace AspNet.Security.OAuth.SuperOffice;
 
-internal sealed class SuperOfficeFunctionalRightsClaimAction : ClaimAction
+internal sealed class SuperOfficeFunctionalRightsClaimAction(SuperOfficeAuthenticationOptions options) : ClaimAction(ClaimTypes.Email, ClaimValueTypes.String)
 {
-    private readonly SuperOfficeAuthenticationOptions _options;
-
-    internal SuperOfficeFunctionalRightsClaimAction(SuperOfficeAuthenticationOptions options)
-        : base(ClaimTypes.Email, ClaimValueTypes.String)
-    {
-        _options = options;
-    }
-
     public override void Run(JsonElement userData, ClaimsIdentity identity, string issuer)
     {
-        if (!_options.IncludeFunctionalRightsAsClaims ||
+        if (!options.IncludeFunctionalRightsAsClaims ||
             userData.ValueKind != JsonValueKind.Object)
         {
             return;

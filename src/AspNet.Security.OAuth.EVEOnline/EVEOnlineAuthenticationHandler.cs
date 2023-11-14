@@ -21,13 +21,11 @@ public partial class EVEOnlineAuthenticationHandler : OAuthHandler<EVEOnlineAuth
     /// <param name="options">The authentication options.</param>
     /// <param name="logger">The logger to use.</param>
     /// <param name="encoder">The URL encoder to use.</param>
-    /// <param name="clock">The system clock to use.</param>
     public EVEOnlineAuthenticationHandler(
         [NotNull] IOptionsMonitor<EVEOnlineAuthenticationOptions> options,
         [NotNull] ILoggerFactory logger,
-        [NotNull] UrlEncoder encoder,
-        [NotNull] ISystemClock clock)
-        : base(options, logger, encoder, clock)
+        [NotNull] UrlEncoder encoder)
+        : base(options, logger, encoder)
     {
     }
 
@@ -36,11 +34,11 @@ public partial class EVEOnlineAuthenticationHandler : OAuthHandler<EVEOnlineAuth
         [NotNull] AuthenticationProperties properties,
         [NotNull] OAuthTokenResponse tokens)
     {
-        string? accessToken = tokens.AccessToken;
+        var accessToken = tokens.AccessToken;
 
         if (string.IsNullOrWhiteSpace(accessToken))
         {
-            throw new InvalidOperationException("No access token was returned in the OAuth token.");
+            throw new AuthenticationFailureException("No access token was returned in the OAuth token.");
         }
 
         var tokenClaims = ExtractClaimsFromToken(accessToken);
@@ -74,11 +72,12 @@ public partial class EVEOnlineAuthenticationHandler : OAuthHandler<EVEOnlineAuth
             var nameClaim = ExtractClaim(securityToken, "name");
             var expClaim = ExtractClaim(securityToken, "exp");
 
-            var claims = new List<Claim>(securityToken.Claims);
-
-            claims.Add(new Claim(ClaimTypes.NameIdentifier, securityToken.Subject.Replace("CHARACTER:EVE:", string.Empty, StringComparison.OrdinalIgnoreCase), ClaimValueTypes.String, ClaimsIssuer));
-            claims.Add(new Claim(ClaimTypes.Name, nameClaim.Value, ClaimValueTypes.String, ClaimsIssuer));
-            claims.Add(new Claim(ClaimTypes.Expiration, UnixTimeStampToDateTime(expClaim.Value), ClaimValueTypes.DateTime, ClaimsIssuer));
+            var claims = new List<Claim>(securityToken.Claims)
+            {
+                new(ClaimTypes.NameIdentifier, securityToken.Subject.Replace("CHARACTER:EVE:", string.Empty, StringComparison.OrdinalIgnoreCase), ClaimValueTypes.String, ClaimsIssuer),
+                new(ClaimTypes.Name, nameClaim.Value, ClaimValueTypes.String, ClaimsIssuer),
+                new(ClaimTypes.Expiration, UnixTimeStampToDateTime(expClaim.Value), ClaimValueTypes.DateTime, ClaimsIssuer)
+            };
 
             var scopes = claims.Where(x => string.Equals(x.Type, "scp", StringComparison.OrdinalIgnoreCase)).ToList();
 
@@ -91,30 +90,24 @@ public partial class EVEOnlineAuthenticationHandler : OAuthHandler<EVEOnlineAuth
         }
         catch (Exception ex)
         {
-            throw new InvalidOperationException("Failed to parse JWT for claims from EVEOnline token.", ex);
+            throw new AuthenticationFailureException("Failed to parse JWT for claims from EVEOnline token.", ex);
         }
     }
 
     private static Claim ExtractClaim([NotNull] JsonWebToken token, [NotNull] string claim)
     {
         var extractedClaim = token.Claims.FirstOrDefault(x => string.Equals(x.Type, claim, StringComparison.OrdinalIgnoreCase));
-
-        if (extractedClaim == null)
-        {
-            throw new InvalidOperationException($"The claim '{claim}' is missing from the EVEOnline JWT.");
-        }
-
-        return extractedClaim;
+        return extractedClaim ?? throw new AuthenticationFailureException($"The claim '{claim}' is missing from the EVEOnline JWT.");
     }
 
     private static string UnixTimeStampToDateTime(string unixTimeStamp)
     {
-        if (!long.TryParse(unixTimeStamp, NumberStyles.Integer, CultureInfo.InvariantCulture, out long unixTime))
+        if (!long.TryParse(unixTimeStamp, NumberStyles.Integer, CultureInfo.InvariantCulture, out var seconds))
         {
-            throw new InvalidOperationException($"The value {unixTimeStamp} of the 'exp' claim is not a valid 64-bit integer.");
+            throw new AuthenticationFailureException($"The value {unixTimeStamp} of the 'exp' claim is not a valid 64-bit integer.");
         }
 
-        DateTimeOffset offset = DateTimeOffset.FromUnixTimeSeconds(unixTime);
+        DateTimeOffset offset = DateTimeOffset.FromUnixTimeSeconds(seconds);
         return offset.ToString("o", CultureInfo.InvariantCulture);
     }
 

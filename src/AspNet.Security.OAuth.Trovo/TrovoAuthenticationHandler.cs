@@ -11,6 +11,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -23,9 +24,8 @@ public partial class TrovoAuthenticationHandler : OAuthHandler<TrovoAuthenticati
     public TrovoAuthenticationHandler(
         [NotNull] IOptionsMonitor<TrovoAuthenticationOptions> options,
         [NotNull] ILoggerFactory logger,
-        [NotNull] UrlEncoder encoder,
-        [NotNull] ISystemClock clock)
-        : base(options, logger, encoder, clock)
+        [NotNull] UrlEncoder encoder)
+        : base(options, logger, encoder)
     {
     }
 
@@ -73,11 +73,13 @@ public partial class TrovoAuthenticationHandler : OAuthHandler<TrovoAuthenticati
             context.Properties.Items.Remove(OAuthConstants.CodeVerifierKey);
         }
 
+        var content = JsonSerializer.Serialize(tokenRequestParameters, AppJsonSerializerContext.Default.DictionaryStringString);
+
         using var request = new HttpRequestMessage(HttpMethod.Post, Options.TokenEndpoint);
 
         request.Headers.Add(ClientIdHeaderName, Options.ClientId);
         request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json));
-        request.Content = new StringContent(JsonSerializer.Serialize(tokenRequestParameters), Encoding.UTF8, MediaTypeNames.Application.Json);
+        request.Content = new StringContent(content, Encoding.UTF8, MediaTypeNames.Application.Json);
 
         using var response = await Backchannel.SendAsync(request, Context.RequestAborted);
 
@@ -90,6 +92,11 @@ public partial class TrovoAuthenticationHandler : OAuthHandler<TrovoAuthenticati
         var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
 
         return OAuthTokenResponse.Success(payload);
+    }
+
+    [JsonSerializable(typeof(Dictionary<string, string>))]
+    internal sealed partial class AppJsonSerializerContext : JsonSerializerContext
+    {
     }
 
     private static partial class Log

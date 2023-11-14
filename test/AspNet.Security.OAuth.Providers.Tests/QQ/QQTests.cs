@@ -8,13 +8,8 @@ using Microsoft.AspNetCore.WebUtilities;
 
 namespace AspNet.Security.OAuth.QQ;
 
-public class QQTests : OAuthTests<QQAuthenticationOptions>
+public class QQTests(ITestOutputHelper outputHelper) : OAuthTests<QQAuthenticationOptions>(outputHelper)
 {
-    public QQTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
     public override string DefaultScheme => QQAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
@@ -36,16 +31,7 @@ public class QQTests : OAuthTests<QQAuthenticationOptions>
     [InlineData("urn:qq:avatar_full", "https://qq.local/avatar-large.png")]
     [InlineData("urn:qq:unionid", "my-union-id")]
     public async Task Can_Sign_In_Using_QQ(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 
     [Theory]
     [InlineData(false)]
@@ -60,13 +46,13 @@ public class QQTests : OAuthTests<QQAuthenticationOptions>
 
         options.Scope.Add("scope-1");
 
-        string redirectUrl = "https://my-site.local/signin-qq";
+        var redirectUrl = "https://my-site.local/signin-qq";
 
         // Act
         Uri actual = await BuildChallengeUriAsync(
             options,
             redirectUrl,
-            (options, loggerFactory, encoder, clock) => new QQAuthenticationHandler(options, loggerFactory, encoder, clock));
+            (options, loggerFactory, encoder) => new QQAuthenticationHandler(options, loggerFactory, encoder));
 
         // Assert
         actual.ShouldNotBeNull();

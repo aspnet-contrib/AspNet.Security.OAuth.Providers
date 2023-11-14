@@ -8,13 +8,8 @@ using Microsoft.AspNetCore.WebUtilities;
 
 namespace AspNet.Security.OAuth.WorkWeixin;
 
-public class WorkWeixinTests : OAuthTests<WorkWeixinAuthenticationOptions>
+public class WorkWeixinTests(ITestOutputHelper outputHelper) : OAuthTests<WorkWeixinAuthenticationOptions>(outputHelper)
 {
-    public WorkWeixinTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
     public override string DefaultScheme => WorkWeixinAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
@@ -31,16 +26,7 @@ public class WorkWeixinTests : OAuthTests<WorkWeixinAuthenticationOptions>
     [InlineData("urn:workweixin:mobile", "888888")]
     [InlineData("urn:workweixin:alias", "my-alias")]
     public async Task Can_Sign_In_Using_WorkWeixin(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 
     [Theory]
     [InlineData(false)]
@@ -54,13 +40,13 @@ public class WorkWeixinTests : OAuthTests<WorkWeixinAuthenticationOptions>
             UsePkce = usePkce,
         };
 
-        string redirectUrl = "https://my-site.local/signin-workweixin";
+        var redirectUrl = "https://my-site.local/signin-workweixin";
 
         // Act
         Uri actual = await BuildChallengeUriAsync(
             options,
             redirectUrl,
-            (options, loggerFactory, encoder, clock) => new WorkWeixinAuthenticationHandler(options, loggerFactory, encoder, clock));
+            (options, loggerFactory, encoder) => new WorkWeixinAuthenticationHandler(options, loggerFactory, encoder));
 
         // Assert
         actual.ShouldNotBeNull();

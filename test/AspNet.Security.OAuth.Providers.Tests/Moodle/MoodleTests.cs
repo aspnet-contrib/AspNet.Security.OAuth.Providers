@@ -8,13 +8,8 @@ using static AspNet.Security.OAuth.Moodle.MoodleAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.Moodle;
 
-public class MoodleTests : OAuthTests<MoodleAuthenticationOptions>
+public class MoodleTests(ITestOutputHelper outputHelper) : OAuthTests<MoodleAuthenticationOptions>(outputHelper)
 {
-    public MoodleTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
     public override string DefaultScheme => MoodleAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
@@ -40,16 +35,7 @@ public class MoodleTests : OAuthTests<MoodleAuthenticationOptions>
     [InlineData(Claims.Language, "en")]
     [InlineData(Claims.Description, "John Doe's Moodle account")]
     public async Task Can_Sign_In_Using_Moodle(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 
     [Theory]
     [InlineData(ClaimTypes.Name, "张三")]
@@ -80,12 +66,6 @@ public class MoodleTests : OAuthTests<MoodleAuthenticationOptions>
             });
         }
 
-        using var server = CreateTestServer(ConfigureServices);
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
+        await AuthenticateUserAndAssertClaimValue(claimType, claimValue, ConfigureServices);
     }
 }

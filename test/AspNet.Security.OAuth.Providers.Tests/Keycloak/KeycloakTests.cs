@@ -6,13 +6,8 @@
 
 namespace AspNet.Security.OAuth.Keycloak;
 
-public class KeycloakTests : OAuthTests<KeycloakAuthenticationOptions>
+public class KeycloakTests(ITestOutputHelper outputHelper) : OAuthTests<KeycloakAuthenticationOptions>(outputHelper)
 {
-    public KeycloakTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
     public override string DefaultScheme => KeycloakAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
@@ -42,13 +37,7 @@ public class KeycloakTests : OAuthTests<KeycloakAuthenticationOptions>
             });
         }
 
-        using var server = CreateTestServer(ConfigureServices);
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
+        await AuthenticateUserAndAssertClaimValue(claimType, claimValue, ConfigureServices);
     }
 
     [Theory]
@@ -88,13 +77,7 @@ public class KeycloakTests : OAuthTests<KeycloakAuthenticationOptions>
             });
         }
 
-        using var server = CreateTestServer(ConfigureServices);
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
+        await AuthenticateUserAndAssertClaimValue(claimType, claimValue, ConfigureServices);
     }
 
     [Theory]
@@ -116,12 +99,6 @@ public class KeycloakTests : OAuthTests<KeycloakAuthenticationOptions>
             });
         }
 
-        using var server = CreateTestServer(ConfigureServices);
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
+        await AuthenticateUserAndAssertClaimValue(claimType, claimValue, ConfigureServices);
     }
 }

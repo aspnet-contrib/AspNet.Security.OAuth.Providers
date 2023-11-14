@@ -8,13 +8,8 @@ using Microsoft.AspNetCore.WebUtilities;
 
 namespace AspNet.Security.OAuth.Odnoklassniki;
 
-public class OdnoklassnikiTests : OAuthTests<OdnoklassnikiAuthenticationOptions>
+public class OdnoklassnikiTests(ITestOutputHelper outputHelper) : OAuthTests<OdnoklassnikiAuthenticationOptions>(outputHelper)
 {
-    public OdnoklassnikiTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
     public override string DefaultScheme => OdnoklassnikiAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
@@ -39,16 +34,7 @@ public class OdnoklassnikiTests : OAuthTests<OdnoklassnikiAuthenticationOptions>
     [InlineData("urn:ok:image2", "https://i.mycdn.me/res/stub_128x96.gif")]
     [InlineData("urn:ok:image3", "https://i.mycdn.me/res/stub_128x96.gif")]
     public async Task Can_Sign_In_Using_Odnoklassniki(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 
     [Theory]
     [InlineData(false)]
@@ -63,13 +49,13 @@ public class OdnoklassnikiTests : OAuthTests<OdnoklassnikiAuthenticationOptions>
 
         options.Scope.Add("scope-1");
 
-        string redirectUrl = "https://my-site.local/signin-odnoklassniki";
+        var redirectUrl = "https://my-site.local/signin-odnoklassniki";
 
         // Act
         Uri actual = await BuildChallengeUriAsync(
             options,
             redirectUrl,
-            (options, loggerFactory, encoder, clock) => new OdnoklassnikiAuthenticationHandler(options, loggerFactory, encoder, clock));
+            (options, loggerFactory, encoder) => new OdnoklassnikiAuthenticationHandler(options, loggerFactory, encoder));
 
         // Assert
         actual.ShouldNotBeNull();

@@ -8,13 +8,8 @@ using Microsoft.AspNetCore.WebUtilities;
 
 namespace AspNet.Security.OAuth.Weibo;
 
-public class WeiboTests : OAuthTests<WeiboAuthenticationOptions>
+public class WeiboTests(ITestOutputHelper outputHelper) : OAuthTests<WeiboAuthenticationOptions>(outputHelper)
 {
-    public WeiboTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
     public override string DefaultScheme => WeiboAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
@@ -38,16 +33,7 @@ public class WeiboTests : OAuthTests<WeiboAuthenticationOptions>
     [InlineData("urn:weibo:profile_image_url", "https://weibo.local/profile.png")]
     [InlineData("urn:weibo:screen_name", "JohnSmith")]
     public async Task Can_Sign_In_Using_Weibo(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 
     [Theory]
     [InlineData(false)]
@@ -63,13 +49,13 @@ public class WeiboTests : OAuthTests<WeiboAuthenticationOptions>
         options.Scope.Add("scope-1");
         options.Scope.Add("scope-2");
 
-        string redirectUrl = "https://my-site.local/signin-weibo";
+        var redirectUrl = "https://my-site.local/signin-weibo";
 
         // Act
         Uri actual = await BuildChallengeUriAsync(
             options,
             redirectUrl,
-            (options, loggerFactory, encoder, clock) => new WeiboAuthenticationHandler(options, loggerFactory, encoder, clock));
+            (options, loggerFactory, encoder) => new WeiboAuthenticationHandler(options, loggerFactory, encoder));
 
         // Assert
         actual.ShouldNotBeNull();

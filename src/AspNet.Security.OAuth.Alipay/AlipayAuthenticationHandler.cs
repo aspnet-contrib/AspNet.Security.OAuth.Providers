@@ -27,9 +27,8 @@ public partial class AlipayAuthenticationHandler : OAuthHandler<AlipayAuthentica
     public AlipayAuthenticationHandler(
         [NotNull] IOptionsMonitor<AlipayAuthenticationOptions> options,
         [NotNull] ILoggerFactory logger,
-        [NotNull] UrlEncoder encoder,
-        [NotNull] ISystemClock clock)
-        : base(options, logger, encoder, clock)
+        [NotNull] UrlEncoder encoder)
+        : base(options, logger, encoder)
     {
     }
 
@@ -57,7 +56,7 @@ public partial class AlipayAuthenticationHandler : OAuthHandler<AlipayAuthentica
             ["grant_type"] = "authorization_code",
             ["method"] = "alipay.system.oauth.token",
             ["sign_type"] = "RSA2",
-            ["timestamp"] = Clock.UtcNow.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture),
+            ["timestamp"] = TimeProvider.GetUtcNow().ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture),
             ["version"] = "1.0",
         };
         tokenRequestParameters.Add("sign", GetRSA2Signature(tokenRequestParameters));
@@ -79,7 +78,7 @@ public partial class AlipayAuthenticationHandler : OAuthHandler<AlipayAuthentica
         }
 
         using var stream = await response.Content.ReadAsStreamAsync(Context.RequestAborted);
-        using var document = JsonDocument.Parse(stream);
+        using var document = await JsonDocument.ParseAsync(stream);
 
         var mainElement = document.RootElement.GetProperty("alipay_system_oauth_token_response");
         if (!ValidateReturnCode(mainElement, out var code))
@@ -105,7 +104,7 @@ public partial class AlipayAuthenticationHandler : OAuthHandler<AlipayAuthentica
             ["format"] = "JSON",
             ["method"] = "alipay.user.info.share",
             ["sign_type"] = "RSA2",
-            ["timestamp"] = Clock.UtcNow.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture),
+            ["timestamp"] = TimeProvider.GetUtcNow().ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture),
             ["version"] = "1.0",
         };
         parameters.Add("sign", GetRSA2Signature(parameters));
@@ -121,18 +120,18 @@ public partial class AlipayAuthenticationHandler : OAuthHandler<AlipayAuthentica
         }
 
         using var stream = await response.Content.ReadAsStreamAsync(Context.RequestAborted);
-        using var document = JsonDocument.Parse(stream);
+        using var document = await JsonDocument.ParseAsync(stream);
         var rootElement = document.RootElement;
 
         if (!rootElement.TryGetProperty("alipay_user_info_share_response", out JsonElement mainElement))
         {
             var errorCode = rootElement.GetProperty("error_response").GetProperty("code").GetString()!;
-            throw new Exception($"An error (Code:{errorCode}) occurred while retrieving user information.");
+            throw new AuthenticationFailureException($"An error (Code:{errorCode}) occurred while retrieving user information.");
         }
 
         if (!ValidateReturnCode(mainElement, out var code))
         {
-            throw new Exception($"An error (Code:{code}) occurred while retrieving user information.");
+            throw new AuthenticationFailureException($"An error (Code:{code}) occurred while retrieving user information.");
         }
 
         identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, mainElement.GetString("user_id")!, ClaimValueTypes.String, Options.ClaimsIssuer));

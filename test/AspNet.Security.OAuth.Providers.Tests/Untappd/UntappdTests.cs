@@ -6,13 +6,8 @@
 
 namespace AspNet.Security.OAuth.Untappd;
 
-public class UntappdTests : OAuthTests<UntappdAuthenticationOptions>
+public class UntappdTests(ITestOutputHelper outputHelper) : OAuthTests<UntappdAuthenticationOptions>(outputHelper)
 {
-    public UntappdTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
     public override string DefaultScheme => UntappdAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
@@ -28,14 +23,5 @@ public class UntappdTests : OAuthTests<UntappdAuthenticationOptions>
     [InlineData(ClaimTypes.Webpage, "https://untappd.local/JohnSmith")]
     [InlineData("urn:untappd:link", "https://untappd.local/john-smith.png")]
     public async Task Can_Sign_In_Using_Untappd(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 }

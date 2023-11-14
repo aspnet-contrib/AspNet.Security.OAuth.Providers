@@ -6,13 +6,8 @@
 
 namespace AspNet.Security.OAuth.GitHub;
 
-public class GitHubEnterpriseTests : OAuthTests<GitHubAuthenticationOptions>
+public class GitHubEnterpriseTests(ITestOutputHelper outputHelper) : OAuthTests<GitHubAuthenticationOptions>(outputHelper)
 {
-    public GitHubEnterpriseTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
     public override string DefaultScheme => GitHubAuthenticationDefaults.AuthenticationScheme;
 
     protected override string BundleName => "GitHub";
@@ -34,14 +29,5 @@ public class GitHubEnterpriseTests : OAuthTests<GitHubAuthenticationOptions>
     [InlineData("urn:github:name", "monalisa octocat")]
     [InlineData("urn:github:url", "https://api.github.enterprise.local/users/octocat")]
     public async Task Can_Sign_In_Using_GitHub_Enterprise(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 }

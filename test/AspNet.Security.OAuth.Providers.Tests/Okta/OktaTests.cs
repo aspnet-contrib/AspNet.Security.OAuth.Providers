@@ -6,13 +6,8 @@
 
 namespace AspNet.Security.OAuth.Okta;
 
-public class OktaTests : OAuthTests<OktaAuthenticationOptions>
+public class OktaTests(ITestOutputHelper outputHelper) : OAuthTests<OktaAuthenticationOptions>(outputHelper)
 {
-    public OktaTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
     public override string DefaultScheme => OktaAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
@@ -31,16 +26,7 @@ public class OktaTests : OAuthTests<OktaAuthenticationOptions>
     [InlineData(ClaimTypes.NameIdentifier, "00uid4BxXw6I6TV4m0g3")]
     [InlineData(ClaimTypes.Surname, "Doe")]
     public async Task Can_Sign_In_Using_Okta(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 
     [Theory]
     [InlineData(ClaimTypes.Email, "jane.doe@example.com")]
@@ -59,12 +45,6 @@ public class OktaTests : OAuthTests<OktaAuthenticationOptions>
             });
         }
 
-        using var server = CreateTestServer(ConfigureServices);
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
+        await AuthenticateUserAndAssertClaimValue(claimType, claimValue, ConfigureServices);
     }
 }

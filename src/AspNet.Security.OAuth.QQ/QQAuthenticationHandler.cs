@@ -19,9 +19,8 @@ public partial class QQAuthenticationHandler : OAuthHandler<QQAuthenticationOpti
     public QQAuthenticationHandler(
         [NotNull] IOptionsMonitor<QQAuthenticationOptions> options,
         [NotNull] ILoggerFactory logger,
-        [NotNull] UrlEncoder encoder,
-        [NotNull] ISystemClock clock)
-        : base(options, logger, encoder, clock)
+        [NotNull] UrlEncoder encoder)
+        : base(options, logger, encoder)
     {
     }
 
@@ -60,7 +59,7 @@ public partial class QQAuthenticationHandler : OAuthHandler<QQAuthenticationOpti
         }
 
         using var stream = await response.Content.ReadAsStreamAsync(Context.RequestAborted);
-        using var payload = JsonDocument.Parse(stream);
+        using var payload = await JsonDocument.ParseAsync(stream);
 
         var status = payload.RootElement.GetProperty("ret").GetInt32();
 
@@ -110,7 +109,7 @@ public partial class QQAuthenticationHandler : OAuthHandler<QQAuthenticationOpti
         }
 
         using var stream = await response.Content.ReadAsStreamAsync(Context.RequestAborted);
-        var payload = JsonDocument.Parse(stream);
+        var payload = await JsonDocument.ParseAsync(stream);
 
         return OAuthTokenResponse.Success(payload);
     }
@@ -140,7 +139,7 @@ public partial class QQAuthenticationHandler : OAuthHandler<QQAuthenticationOpti
         }
 
         using var stream = await response.Content.ReadAsStreamAsync(Context.RequestAborted);
-        using JsonDocument payload = JsonDocument.Parse(stream);
+        using var payload = await JsonDocument.ParseAsync(stream);
 
         var payloadRoot = payload.RootElement;
 

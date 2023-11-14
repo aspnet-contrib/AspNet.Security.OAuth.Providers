@@ -12,7 +12,7 @@ namespace AspNet.Security.OAuth;
 public static class StaticAnalysisTests
 {
 #if JETBRAINS_ANNOTATIONS
-    [Xunit.Fact]
+    [Fact]
 #endif
     public static void Publicly_Visible_Parameters_Have_Null_Annotations()
     {
@@ -21,7 +21,7 @@ public static class StaticAnalysisTests
         var types = GetPublicTypes(assemblyNames);
         var nullabilityContext = new NullabilityInfoContext();
 
-        int testedMethods = 0;
+        var testedMethods = 0;
 
         // Act
         foreach (var type in types)
@@ -34,7 +34,7 @@ public static class StaticAnalysisTests
 
                 foreach (var parameter in parameters)
                 {
-                    bool hasNullabilityAnnotation = parameter
+                    var hasNullabilityAnnotation = parameter
                         .GetCustomAttributes()
                         .Any((p) => p.GetType().FullName == "JetBrains.Annotations.CanBeNullAttribute" ||
                                     p.GetType().FullName == "JetBrains.Annotations.NotNullAttribute");
@@ -58,7 +58,7 @@ public static class StaticAnalysisTests
         testedMethods.ShouldBeGreaterThan(0);
     }
 
-    private static IList<AssemblyName> GetProviderAssemblyNames()
+    private static AssemblyName[] GetProviderAssemblyNames()
     {
         var thisType = typeof(StaticAnalysisTests);
 
@@ -72,7 +72,7 @@ public static class StaticAnalysisTests
         return assemblies;
     }
 
-    private static IList<Type> GetPublicTypes(IEnumerable<AssemblyName> assemblyNames)
+    private static Type[] GetPublicTypes(IEnumerable<AssemblyName> assemblyNames)
     {
         var types = assemblyNames
             .Select((p) => AssemblyLoadContext.Default.LoadFromAssemblyName(p))
@@ -85,7 +85,7 @@ public static class StaticAnalysisTests
         return types;
     }
 
-    private static IList<MethodBase> GetPublicOrProtectedConstructorsOrMethods(Type type)
+    private static MethodBase[] GetPublicOrProtectedConstructorsOrMethods(Type type)
     {
         var constructors = type
             .GetConstructors(BindingFlags.Public | BindingFlags.NonPublic)

@@ -6,10 +6,8 @@
 
 using System.Net.Http.Headers;
 using System.Security.Claims;
-using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
-using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -20,9 +18,8 @@ public partial class SnapchatAuthenticationHandler : OAuthHandler<SnapchatAuthen
     public SnapchatAuthenticationHandler(
         [NotNull] IOptionsMonitor<SnapchatAuthenticationOptions> options,
         [NotNull] ILoggerFactory logger,
-        [NotNull] UrlEncoder encoder,
-        [NotNull] ISystemClock clock)
-        : base(options, logger, encoder, clock)
+        [NotNull] UrlEncoder encoder)
+        : base(options, logger, encoder)
     {
     }
 
@@ -31,7 +28,7 @@ public partial class SnapchatAuthenticationHandler : OAuthHandler<SnapchatAuthen
         [NotNull] AuthenticationProperties properties,
         [NotNull] OAuthTokenResponse tokens)
     {
-        string endpoint = Options.UserInformationEndpoint;
+        var endpoint = Options.UserInformationEndpoint;
 
         using var request = new HttpRequestMessage(HttpMethod.Get, endpoint);
         request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));

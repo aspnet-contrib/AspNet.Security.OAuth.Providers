@@ -18,9 +18,8 @@ public partial class FoursquareAuthenticationHandler : OAuthHandler<FoursquareAu
     public FoursquareAuthenticationHandler(
         [NotNull] IOptionsMonitor<FoursquareAuthenticationOptions> options,
         [NotNull] ILoggerFactory logger,
-        [NotNull] UrlEncoder encoder,
-        [NotNull] ISystemClock clock)
-        : base(options, logger, encoder, clock)
+        [NotNull] UrlEncoder encoder)
+        : base(options, logger, encoder)
     {
     }
 

@@ -19,9 +19,8 @@ public partial class EbayAuthenticationHandler : OAuthHandler<EbayAuthentication
     public EbayAuthenticationHandler(
         IOptionsMonitor<EbayAuthenticationOptions> options,
         ILoggerFactory logger,
-        UrlEncoder encoder,
-        ISystemClock clock)
-        : base(options, logger, encoder, clock)
+        UrlEncoder encoder)
+        : base(options, logger, encoder)
     {
     }
 

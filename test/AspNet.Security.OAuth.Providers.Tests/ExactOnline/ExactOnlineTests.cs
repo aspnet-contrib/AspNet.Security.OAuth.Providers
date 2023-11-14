@@ -8,13 +8,8 @@ using static AspNet.Security.OAuth.ExactOnline.ExactOnlineAuthenticationConstant
 
 namespace AspNet.Security.OAuth.ExactOnline;
 
-public class ExactOnlineTests : OAuthTests<ExactOnlineAuthenticationOptions>
+public class ExactOnlineTests(ITestOutputHelper outputHelper) : OAuthTests<ExactOnlineAuthenticationOptions>(outputHelper)
 {
-    public ExactOnlineTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
     public override string DefaultScheme => ExactOnlineAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
@@ -31,14 +26,5 @@ public class ExactOnlineTests : OAuthTests<ExactOnlineAuthenticationOptions>
     [InlineData(Claims.Division, "12345")]
     [InlineData(Claims.Company, "Division Name")]
     public async Task Can_Sign_In_Using_ExactOnline(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 }

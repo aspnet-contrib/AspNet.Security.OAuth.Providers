@@ -8,13 +8,8 @@ using Microsoft.AspNetCore.WebUtilities;
 
 namespace AspNet.Security.OAuth.Dropbox;
 
-public class DropboxTests : OAuthTests<DropboxAuthenticationOptions>
+public class DropboxTests(ITestOutputHelper outputHelper) : OAuthTests<DropboxAuthenticationOptions>(outputHelper)
 {
-    public DropboxTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
     public override string DefaultScheme => DropboxAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
@@ -27,16 +22,7 @@ public class DropboxTests : OAuthTests<DropboxAuthenticationOptions>
     [InlineData(ClaimTypes.Name, "Franz Ferdinand (Personal)")]
     [InlineData(ClaimTypes.Email, "franz@gmail.com")]
     public async Task Can_Sign_In_Using_Dropbox(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 
     [Theory]
     [InlineData("offline")]
@@ -44,7 +30,7 @@ public class DropboxTests : OAuthTests<DropboxAuthenticationOptions>
     [InlineData("legacy")]
     public async Task RedirectUri_Contains_Access_Type(string value)
     {
-        bool accessTypeIsSet = false;
+        var accessTypeIsSet = false;
 
         void ConfigureServices(IServiceCollection services)
         {
@@ -67,7 +53,7 @@ public class DropboxTests : OAuthTests<DropboxAuthenticationOptions>
         using var server = CreateTestServer(ConfigureServices);
 
         // Act
-        var claims = await AuthenticateUserAsync(server);
+        await AuthenticateUserAsync(server);
 
         // Assert
         accessTypeIsSet.ShouldBeTrue();
@@ -76,7 +62,7 @@ public class DropboxTests : OAuthTests<DropboxAuthenticationOptions>
     [Fact]
     public async Task Response_Contains_Refresh_Token()
     {
-        bool refreshTokenIsPresent = false;
+        var refreshTokenIsPresent = false;
 
         void ConfigureServices(IServiceCollection services)
         {
@@ -98,7 +84,7 @@ public class DropboxTests : OAuthTests<DropboxAuthenticationOptions>
         using var server = CreateTestServer(ConfigureServices);
 
         // Act
-        var claims = await AuthenticateUserAsync(server);
+        await AuthenticateUserAsync(server);
 
         // Assert
         refreshTokenIsPresent.ShouldBeTrue();
@@ -116,13 +102,13 @@ public class DropboxTests : OAuthTests<DropboxAuthenticationOptions>
             UsePkce = usePkce,
         };
 
-        string redirectUrl = "https://my-site.local/signin-dropbox";
+        var redirectUrl = "https://my-site.local/signin-dropbox";
 
         // Act
         Uri actual = await BuildChallengeUriAsync(
             options,
             redirectUrl,
-            (options, loggerFactory, encoder, clock) => new DropboxAuthenticationHandler(options, loggerFactory, encoder, clock));
+            (options, loggerFactory, encoder) => new DropboxAuthenticationHandler(options, loggerFactory, encoder));
 
         // Assert
         actual.ShouldNotBeNull();

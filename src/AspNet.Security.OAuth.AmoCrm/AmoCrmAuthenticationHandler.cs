@@ -24,13 +24,11 @@ public partial class AmoCrmAuthenticationHandler : OAuthHandler<AmoCrmAuthentica
     /// <param name="options">The authentication options.</param>
     /// <param name="logger">The logger to use.</param>
     /// <param name="encoder">The URL encoder to use.</param>
-    /// <param name="clock">The system clock to use.</param>
     public AmoCrmAuthenticationHandler(
         [NotNull] IOptionsMonitor<AmoCrmAuthenticationOptions> options,
         [NotNull] ILoggerFactory logger,
-        [NotNull] UrlEncoder encoder,
-        [NotNull] ISystemClock clock)
-        : base(options, logger, encoder, clock)
+        [NotNull] UrlEncoder encoder)
+        : base(options, logger, encoder)
     {
     }
 
@@ -40,7 +38,7 @@ public partial class AmoCrmAuthenticationHandler : OAuthHandler<AmoCrmAuthentica
         [NotNull] AuthenticationProperties properties,
         [NotNull] OAuthTokenResponse tokens)
     {
-        string endpoint = Options.UserInformationEndpoint;
+        var endpoint = Options.UserInformationEndpoint;
 
         using var request = new HttpRequestMessage(HttpMethod.Get, endpoint);
         request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));

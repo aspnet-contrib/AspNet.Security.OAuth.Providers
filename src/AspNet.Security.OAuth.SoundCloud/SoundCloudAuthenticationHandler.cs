@@ -19,9 +19,8 @@ public partial class SoundCloudAuthenticationHandler : OAuthHandler<SoundCloudAu
     public SoundCloudAuthenticationHandler(
         [NotNull] IOptionsMonitor<SoundCloudAuthenticationOptions> options,
         [NotNull] ILoggerFactory logger,
-        [NotNull] UrlEncoder encoder,
-        [NotNull] ISystemClock clock)
-        : base(options, logger, encoder, clock)
+        [NotNull] UrlEncoder encoder)
+        : base(options, logger, encoder)
     {
     }
 
@@ -30,7 +29,7 @@ public partial class SoundCloudAuthenticationHandler : OAuthHandler<SoundCloudAu
         [NotNull] AuthenticationProperties properties,
         [NotNull] OAuthTokenResponse tokens)
     {
-        string address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, "oauth_token", tokens.AccessToken!);
+        var address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, "oauth_token", tokens.AccessToken!);
 
         using var request = new HttpRequestMessage(HttpMethod.Get, address);
         request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));

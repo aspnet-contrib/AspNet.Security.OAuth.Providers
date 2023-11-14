@@ -97,8 +97,8 @@ public static class ApplicationFactory
                    {
                        if (context.User.Identity?.IsAuthenticated == true)
                        {
-                           string xml = IdentityToXmlString(context.User);
-                           byte[] buffer = Encoding.UTF8.GetBytes(xml);
+                           var xml = IdentityToXmlString(context.User);
+                           var buffer = Encoding.UTF8.GetBytes(xml);
 
                            context.Response.StatusCode = 200;
                            context.Response.ContentType = "text/xml";

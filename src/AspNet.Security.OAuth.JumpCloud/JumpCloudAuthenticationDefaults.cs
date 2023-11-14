@@ -32,24 +32,6 @@ public static class JumpCloudAuthenticationDefaults
     public static readonly string CallbackPath = "/signin-jumpcloud";
 
     /// <summary>
-    /// Default path format to use for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
-    /// </summary>
-    [Obsolete("This field is obsolete and will be removed in a future version.")]
-    public static readonly string AuthorizationEndpointPathFormat = "/oauth2/auth";
-
-    /// <summary>
-    /// Default path format to use for <see cref="OAuthOptions.TokenEndpoint"/>.
-    /// </summary>
-    [Obsolete("This field is obsolete and will be removed in a future version.")]
-    public static readonly string TokenEndpointPathFormat = "/oauth2/token";
-
-    /// <summary>
-    /// Default path format to use for <see cref="OAuthOptions.UserInformationEndpoint"/>.
-    /// </summary>
-    [Obsolete("This field is obsolete and will be removed in a future version.")]
-    public static readonly string UserInformationEndpointPathFormat = "/userinfo";
-
-    /// <summary>
     /// Default path to use for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
     /// </summary>
     public static readonly string AuthorizationEndpointPath = "/oauth2/auth";

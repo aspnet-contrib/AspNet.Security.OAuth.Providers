@@ -19,27 +19,15 @@ namespace AspNet.Security.OAuth.Apple;
 /// <summary>
 /// A class used to setup defaults for all <see cref="AppleAuthenticationOptions"/>.
 /// </summary>
-public class ApplePostConfigureOptions : IPostConfigureOptions<AppleAuthenticationOptions>
+/// <param name="cache">The <see cref="IMemoryCache"/> to use.</param>
+/// <param name="timeProvider">The <see cref="TimeProvider"/> to use.</param>
+/// <param name="loggerFactory">The <see cref="ILoggerFactory"/> to use.</param>
+public class ApplePostConfigureOptions(
+    IMemoryCache cache,
+    TimeProvider timeProvider,
+    ILoggerFactory loggerFactory) : IPostConfigureOptions<AppleAuthenticationOptions>
 {
-    private readonly IMemoryCache _cache;
-    private readonly ISystemClock _clock;
-    private readonly ILoggerFactory _loggerFactory;
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="ApplePostConfigureOptions"/> class.
-    /// </summary>
-    /// <param name="cache">The <see cref="IMemoryCache"/> to use.</param>
-    /// <param name="clock">The <see cref="ISystemClock"/> to use.</param>
-    /// <param name="loggerFactory">The <see cref="ILoggerFactory"/> to use.</param>
-    public ApplePostConfigureOptions(
-        IMemoryCache cache,
-        ISystemClock clock,
-        ILoggerFactory loggerFactory)
-    {
-        _cache = cache;
-        _clock = clock;
-        _loggerFactory = loggerFactory ?? NullLoggerFactory.Instance;
-    }
+    private readonly ILoggerFactory _loggerFactory = loggerFactory ?? NullLoggerFactory.Instance;
 
     /// <inheritdoc/>
     public void PostConfigure(
@@ -50,20 +38,14 @@ public class ApplePostConfigureOptions : IPostConfigureOptions<AppleAuthenticati
         // https://github.com/AzureAD/azure-activedirectory-identitymodel-extensions-for-dotnet/issues/1302
         var cryptoProviderFactory = new CryptoProviderFactory() { CacheSignatureProviders = false };
 
-        if (options.ClientSecretGenerator is null)
-        {
-            options.ClientSecretGenerator = new DefaultAppleClientSecretGenerator(
-                _cache,
-                _clock,
-                cryptoProviderFactory,
-                _loggerFactory.CreateLogger<DefaultAppleClientSecretGenerator>());
-        }
+        options.ClientSecretGenerator ??= new DefaultAppleClientSecretGenerator(
+            cache,
+            timeProvider,
+            cryptoProviderFactory,
+            _loggerFactory.CreateLogger<DefaultAppleClientSecretGenerator>());
 
-        if (options.TokenValidator is null)
-        {
-            options.TokenValidator = new DefaultAppleIdTokenValidator(
-                _loggerFactory.CreateLogger<DefaultAppleIdTokenValidator>());
-        }
+        options.TokenValidator ??= new DefaultAppleIdTokenValidator(
+            _loggerFactory.CreateLogger<DefaultAppleIdTokenValidator>());
 
         if (options.ConfigurationManager is null)
         {
@@ -73,7 +55,7 @@ public class ApplePostConfigureOptions : IPostConfigureOptions<AppleAuthenticati
             }
 
             // As seen in:
-            // github.com/dotnet/aspnetcore/blob/master/src/Security/Authentication/OpenIdConnect/src/OpenIdConnectPostConfigureOptions.cs#L71-L102
+            // https://github.com/dotnet/aspnetcore/blob/master/src/Security/Authentication/OpenIdConnect/src/OpenIdConnectPostConfigureOptions.cs#L71-L102
             // need this now to successfully instantiate ConfigurationManager below.
             if (options.Backchannel is null)
             {
@@ -91,21 +73,14 @@ public class ApplePostConfigureOptions : IPostConfigureOptions<AppleAuthenticati
                 new HttpDocumentRetriever(options.Backchannel));
         }
 
-        if (options.SecurityTokenHandler is null)
+        options.SecurityTokenHandler ??= new JsonWebTokenHandler();
+        options.TokenValidationParameters ??= new TokenValidationParameters()
         {
-            options.SecurityTokenHandler = new JsonWebTokenHandler();
-        }
-
-        if (options.TokenValidationParameters is null)
-        {
-            options.TokenValidationParameters = new TokenValidationParameters()
-            {
-                CryptoProviderFactory = cryptoProviderFactory,
-                ValidateAudience = true,
-                ValidateIssuer = true,
-                ValidAudience = options.ClientId,
-                ValidIssuer = options.TokenAudience
-            };
-        }
+            CryptoProviderFactory = cryptoProviderFactory,
+            ValidateAudience = true,
+            ValidateIssuer = true,
+            ValidAudience = options.ClientId,
+            ValidIssuer = options.TokenAudience
+        };
     }
 }

@@ -6,13 +6,8 @@
 
 namespace AspNet.Security.OAuth.SoundCloud;
 
-public class SoundCloudTests : OAuthTests<SoundCloudAuthenticationOptions>
+public class SoundCloudTests(ITestOutputHelper outputHelper) : OAuthTests<SoundCloudAuthenticationOptions>(outputHelper)
 {
-    public SoundCloudTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
     public override string DefaultScheme => SoundCloudAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
@@ -28,14 +23,5 @@ public class SoundCloudTests : OAuthTests<SoundCloudAuthenticationOptions>
     [InlineData("urn:soundcloud:fullname", "John Q Smith")]
     [InlineData("urn:soundcloud:profileurl", "https://soundcloud.local/JohnSmith")]
     public async Task Can_Sign_In_Using_SoundCloud(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 }

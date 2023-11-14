@@ -19,9 +19,8 @@ public partial class DropboxAuthenticationHandler : OAuthHandler<DropboxAuthenti
     public DropboxAuthenticationHandler(
         [NotNull] IOptionsMonitor<DropboxAuthenticationOptions> options,
         [NotNull] ILoggerFactory logger,
-        [NotNull] UrlEncoder encoder,
-        [NotNull] ISystemClock clock)
-        : base(options, logger, encoder, clock)
+        [NotNull] UrlEncoder encoder)
+        : base(options, logger, encoder)
     {
     }
 
@@ -30,7 +29,7 @@ public partial class DropboxAuthenticationHandler : OAuthHandler<DropboxAuthenti
         [NotNull] AuthenticationProperties properties,
         [NotNull] string redirectUri)
     {
-        string challengeUrl = base.BuildChallengeUrl(properties, redirectUri);
+        var challengeUrl = base.BuildChallengeUrl(properties, redirectUri);
 
         if (!string.IsNullOrEmpty(Options.AccessType))
         {

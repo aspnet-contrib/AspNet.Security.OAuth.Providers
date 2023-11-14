@@ -53,6 +53,7 @@ public static class OktaAuthenticationDefaults
     /// </summary>
     public static readonly string UserInformationEndpointPathFormat = "/oauth2/{0}/v1/userinfo";
 
+#pragma warning disable CA1863
     /// <summary>
     /// Default path to use for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
     /// </summary>
@@ -67,4 +68,5 @@ public static class OktaAuthenticationDefaults
     /// Default path to use for <see cref="OAuthOptions.UserInformationEndpoint"/>.
     /// </summary>
     public static readonly string UserInformationEndpointPath = string.Format(CultureInfo.InvariantCulture, UserInformationEndpointPathFormat, DefaultAuthorizationServer);
+#pragma warning restore CA1863
 }

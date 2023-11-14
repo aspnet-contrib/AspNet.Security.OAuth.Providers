@@ -4,25 +4,15 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using Microsoft.AspNetCore.WebUtilities;
-
 namespace AspNet.Security.OAuth.DigitalOcean;
 
-public class DigitalOceanTests : OAuthTests<DigitalOceanAuthenticationOptions>
+public class DigitalOceanTests(ITestOutputHelper outputHelper) : OAuthTests<DigitalOceanAuthenticationOptions>(outputHelper)
 {
-    public DigitalOceanTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
     public override string DefaultScheme => DigitalOceanAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
     {
-        builder.AddDigitalOcean(options =>
-        {
-            ConfigureDefaults(builder, options);
-        });
+        builder.AddDigitalOcean(options => ConfigureDefaults(builder, options));
     }
 
     [Theory]
@@ -31,14 +21,5 @@ public class DigitalOceanTests : OAuthTests<DigitalOceanAuthenticationOptions>
     [InlineData(ClaimTypes.Email, "me@test.com")]
     [InlineData(DigitalOceanAuthenticationConstants.Claims.EmailVerified, "true")]
     public async Task Can_Sign_In_Using_DigitalOcean(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 }

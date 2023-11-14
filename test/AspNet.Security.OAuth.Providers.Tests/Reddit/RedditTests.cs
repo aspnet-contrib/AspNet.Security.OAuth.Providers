@@ -8,13 +8,8 @@ using Microsoft.AspNetCore.WebUtilities;
 
 namespace AspNet.Security.OAuth.Reddit;
 
-public class RedditTests : OAuthTests<RedditAuthenticationOptions>
+public class RedditTests(ITestOutputHelper outputHelper) : OAuthTests<RedditAuthenticationOptions>(outputHelper)
 {
-    public RedditTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
     public override string DefaultScheme => RedditAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
@@ -27,16 +22,7 @@ public class RedditTests : OAuthTests<RedditAuthenticationOptions>
     [InlineData(ClaimTypes.Name, "John Smith")]
     [InlineData("urn:reddit:over18", "True")]
     public async Task Can_Sign_In_Using_Reddit(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 
     [Theory]
     [InlineData(false)]
@@ -51,13 +37,13 @@ public class RedditTests : OAuthTests<RedditAuthenticationOptions>
 
         options.Scope.Add("scope-1");
 
-        string redirectUrl = "https://my-site.local/signin-reddit";
+        var redirectUrl = "https://my-site.local/signin-reddit";
 
         // Act
         Uri actual = await BuildChallengeUriAsync(
             options,
             redirectUrl,
-            (options, loggerFactory, encoder, clock) => new RedditAuthenticationHandler(options, loggerFactory, encoder, clock));
+            (options, loggerFactory, encoder) => new RedditAuthenticationHandler(options, loggerFactory, encoder));
 
         // Assert
         actual.ShouldNotBeNull();

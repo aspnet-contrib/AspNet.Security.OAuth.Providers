@@ -8,13 +8,8 @@ using Microsoft.AspNetCore.WebUtilities;
 
 namespace AspNet.Security.OAuth.Ebay;
 
-public class EbayTests : OAuthTests<EbayAuthenticationOptions>
+public class EbayTests(ITestOutputHelper outputHelper) : OAuthTests<EbayAuthenticationOptions>(outputHelper)
 {
-    public EbayTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
     public override string DefaultScheme => EbayAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
@@ -30,16 +25,7 @@ public class EbayTests : OAuthTests<EbayAuthenticationOptions>
     [InlineData(ClaimTypes.NameIdentifier, "my-id")]
     [InlineData(ClaimTypes.Name, "John Smith")]
     public async Task Can_Sign_In_Using_Ebay(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 
     [Theory]
     [InlineData(false)]
@@ -56,13 +42,13 @@ public class EbayTests : OAuthTests<EbayAuthenticationOptions>
         options.Scope.Add("scope-1");
         options.Scope.Add("scope-2");
 
-        string redirectUrl = "https://my-site.local/signin-ebay";
+        var redirectUrl = "https://my-site.local/signin-ebay";
 
         // Act
         Uri actual = await BuildChallengeUriAsync(
             options,
             redirectUrl,
-            (options, loggerFactory, encoder, clock) => new EbayAuthenticationHandler(options, loggerFactory, encoder, clock));
+            (options, loggerFactory, encoder) => new EbayAuthenticationHandler(options, loggerFactory, encoder));
 
         // Assert
         actual.ShouldNotBeNull();

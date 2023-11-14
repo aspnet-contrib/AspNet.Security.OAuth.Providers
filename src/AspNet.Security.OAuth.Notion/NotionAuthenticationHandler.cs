@@ -14,17 +14,11 @@ using Microsoft.Extensions.Options;
 
 namespace AspNet.Security.OAuth.Notion;
 
-public class NotionAuthenticationHandler : OAuthHandler<NotionAuthenticationOptions>
+public class NotionAuthenticationHandler(
+    [NotNull] IOptionsMonitor<NotionAuthenticationOptions> options,
+    [NotNull] ILoggerFactory logger,
+    [NotNull] UrlEncoder encoder) : OAuthHandler<NotionAuthenticationOptions>(options, logger, encoder)
 {
-    public NotionAuthenticationHandler(
-        [NotNull] IOptionsMonitor<NotionAuthenticationOptions> options,
-        [NotNull] ILoggerFactory logger,
-        [NotNull] UrlEncoder encoder,
-        [NotNull] ISystemClock clock)
-        : base(options, logger, encoder, clock)
-    {
-    }
-
     protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] OAuthCodeExchangeContext context)
     {
         var tokenRequestParameters = new Dictionary<string, string>()

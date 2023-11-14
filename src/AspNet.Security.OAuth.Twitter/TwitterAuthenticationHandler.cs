@@ -27,13 +27,11 @@ public partial class TwitterAuthenticationHandler : OAuthHandler<TwitterAuthenti
     /// <param name="options">The authentication options.</param>
     /// <param name="logger">The logger to use.</param>
     /// <param name="encoder">The URL encoder to use.</param>
-    /// <param name="clock">The system clock to use.</param>
     public TwitterAuthenticationHandler(
         [NotNull] IOptionsMonitor<TwitterAuthenticationOptions> options,
         [NotNull] ILoggerFactory logger,
-        [NotNull] UrlEncoder encoder,
-        [NotNull] ISystemClock clock)
-        : base(options, logger, encoder, clock)
+        [NotNull] UrlEncoder encoder)
+        : base(options, logger, encoder)
     {
     }
 
@@ -43,7 +41,7 @@ public partial class TwitterAuthenticationHandler : OAuthHandler<TwitterAuthenti
         [NotNull] AuthenticationProperties properties,
         [NotNull] OAuthTokenResponse tokens)
     {
-        string endpoint = Options.UserInformationEndpoint;
+        var endpoint = Options.UserInformationEndpoint;
 
         endpoint = AddQueryParameterIfValues(endpoint, "expansions", Options.Expansions);
         endpoint = AddQueryParameterIfValues(endpoint, "tweet.fields", Options.TweetFields);
@@ -88,7 +86,7 @@ public partial class TwitterAuthenticationHandler : OAuthHandler<TwitterAuthenti
             context.Properties.Items.Remove(OAuthConstants.CodeVerifierKey);
         }
 
-        string credentials = Convert.ToBase64String(Encoding.ASCII.GetBytes(
+        var credentials = Convert.ToBase64String(Encoding.ASCII.GetBytes(
             string.Concat(
                 Uri.EscapeDataString(Options.ClientId),
                 ":",
@@ -108,10 +106,10 @@ public partial class TwitterAuthenticationHandler : OAuthHandler<TwitterAuthenti
         return response.IsSuccessStatusCode switch
         {
             true => OAuthTokenResponse.Success(JsonDocument.Parse(body)),
-            false => PrepareFailedOAuthTokenReponse(response, body)
+            false => PrepareFailedOAuthTokenResponse(response, body)
         };
 
-        static OAuthTokenResponse PrepareFailedOAuthTokenReponse(HttpResponseMessage response, string body)
+        static OAuthTokenResponse PrepareFailedOAuthTokenResponse(HttpResponseMessage response, string body)
         {
             var exception = GetStandardErrorException(JsonDocument.Parse(body));
 

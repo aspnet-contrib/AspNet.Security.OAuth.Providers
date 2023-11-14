@@ -6,13 +6,8 @@
 
 namespace AspNet.Security.OAuth.Vimeo;
 
-public class VimeoTests : OAuthTests<VimeoAuthenticationOptions>
+public class VimeoTests(ITestOutputHelper outputHelper) : OAuthTests<VimeoAuthenticationOptions>(outputHelper)
 {
-    public VimeoTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
     public override string DefaultScheme => VimeoAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
@@ -25,14 +20,5 @@ public class VimeoTests : OAuthTests<VimeoAuthenticationOptions>
     [InlineData("urn:vimeo:fullname", "John Smith")]
     [InlineData("urn:vimeo:profileurl", "https://vimeo.local/JohnSmith")]
     public async Task Can_Sign_In_Using_Vimeo(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 }

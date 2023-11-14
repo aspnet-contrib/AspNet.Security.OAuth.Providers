@@ -9,13 +9,8 @@ using static AspNet.Security.OAuth.Discord.DiscordAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.Discord;
 
-public class DiscordTests : OAuthTests<DiscordAuthenticationOptions>
+public class DiscordTests(ITestOutputHelper outputHelper) : OAuthTests<DiscordAuthenticationOptions>(outputHelper)
 {
-    public DiscordTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
     public override string DefaultScheme => DiscordAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
@@ -30,21 +25,12 @@ public class DiscordTests : OAuthTests<DiscordAuthenticationOptions>
     [InlineData(Claims.Discriminator, "1234")]
     [InlineData(Claims.AvatarHash, "dummy-avatar-hash")]
     public async Task Can_Sign_In_Using_Discord(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 
     [Fact]
     public async Task Authorization_Endpoint_Uri_by_Default_Does_Not_Contain_Prompt()
     {
-        bool doesNotContainPrompt = false;
+        var doesNotContainPrompt = false;
 
         void ConfigureServices(IServiceCollection services)
         {
@@ -75,7 +61,7 @@ public class DiscordTests : OAuthTests<DiscordAuthenticationOptions>
     [Fact]
     public async Task Authorization_Endpoint_Uri_Contains_Prompt_None()
     {
-        bool promptIsSetToNone = false;
+        var promptIsSetToNone = false;
 
         void ConfigureServices(IServiceCollection services)
         {
@@ -107,7 +93,7 @@ public class DiscordTests : OAuthTests<DiscordAuthenticationOptions>
     [Fact]
     public async Task Authorization_Endpoint_Uri_Contains_Prompt_Consent()
     {
-        bool promptIsSetToConsent = false;
+        var promptIsSetToConsent = false;
 
         void ConfigureServices(IServiceCollection services)
         {
@@ -150,13 +136,13 @@ public class DiscordTests : OAuthTests<DiscordAuthenticationOptions>
 
         options.Scope.Add("scope-1");
 
-        string redirectUrl = "https://my-site.local/signin-discord";
+        var redirectUrl = "https://my-site.local/signin-discord";
 
         // Act
         Uri actual = await BuildChallengeUriAsync(
             options,
             redirectUrl,
-            (options, loggerFactory, encoder, clock) => new DiscordAuthenticationHandler(options, loggerFactory, encoder, clock));
+            (options, loggerFactory, encoder) => new DiscordAuthenticationHandler(options, loggerFactory, encoder));
 
         // Assert
         actual.ShouldNotBeNull();

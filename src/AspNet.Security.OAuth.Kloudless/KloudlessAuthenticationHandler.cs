@@ -18,9 +18,8 @@ public partial class KloudlessAuthenticationHandler : OAuthHandler<KloudlessAuth
     public KloudlessAuthenticationHandler(
         [NotNull] IOptionsMonitor<KloudlessAuthenticationOptions> options,
         [NotNull] ILoggerFactory logger,
-        [NotNull] UrlEncoder encoder,
-        [NotNull] ISystemClock clock)
-        : base(options, logger, encoder, clock)
+        [NotNull] UrlEncoder encoder)
+        : base(options, logger, encoder)
     {
     }
 
@@ -48,13 +47,13 @@ public partial class KloudlessAuthenticationHandler : OAuthHandler<KloudlessAuth
         var doesObjectsExist = payload.RootElement.TryGetProperty("objects", out var accounts);
         if (!doesObjectsExist)
         {
-            throw new InvalidOperationException("Property objects is missing on accounts JSON.");
+            throw new AuthenticationFailureException("Property objects is missing on accounts JSON.");
         }
 
         var hasAtLeastOneAccount = accounts.GetArrayLength() > 0;
         if (!hasAtLeastOneAccount)
         {
-            throw new InvalidOperationException("Accounts JSON does not contains any account.");
+            throw new AuthenticationFailureException("Accounts JSON does not contains any account.");
         }
 
         context.RunClaimActions(accounts[0]);

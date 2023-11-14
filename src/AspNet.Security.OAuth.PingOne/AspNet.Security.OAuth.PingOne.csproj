@@ -4,7 +4,6 @@
     <TargetFrameworks>$(DefaultNetCoreTargetFramework)</TargetFrameworks>
   </PropertyGroup>
 
-
   <PropertyGroup>
     <PackageValidationBaselineVersion>7.0.1</PackageValidationBaselineVersion>
   </PropertyGroup>

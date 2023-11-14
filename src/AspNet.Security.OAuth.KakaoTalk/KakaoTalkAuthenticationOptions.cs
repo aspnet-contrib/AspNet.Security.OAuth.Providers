@@ -28,7 +28,7 @@ public class KakaoTalkAuthenticationOptions : OAuthOptions
         ClaimActions.MapCustomJson(ClaimTypes.Name, user =>
         {
             JsonElement property = user;
-            bool hasProperty = property.TryGetProperty("kakao_account", out property)
+            var hasProperty = property.TryGetProperty("kakao_account", out property)
                             && property.TryGetProperty("profile", out property)
                             && property.TryGetProperty("nickname", out property)
                             && property.ValueKind == JsonValueKind.String;

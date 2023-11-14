@@ -85,7 +85,7 @@ public static class ShopifyAuthenticationDefaults
     public static readonly string ShopifyEligibleForPaymentsClaimType = "urn:shopify:eligible_for_payments";
 
     /// <summary>
-    /// The timezone that that the shop is using.
+    /// The time zone that that the shop is using.
     /// </summary>
     public static readonly string ShopifyTimezoneClaimType = "urn:shopify:timezone";
 }

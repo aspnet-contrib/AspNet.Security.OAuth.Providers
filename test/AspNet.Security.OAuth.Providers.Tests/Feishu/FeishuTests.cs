@@ -6,21 +6,13 @@
 
 namespace AspNet.Security.OAuth.Feishu;
 
-public class FeishuTests : OAuthTests<FeishuAuthenticationOptions>
+public class FeishuTests(ITestOutputHelper outputHelper) : OAuthTests<FeishuAuthenticationOptions>(outputHelper)
 {
-    public FeishuTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
     public override string DefaultScheme => FeishuAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
     {
-        builder.AddFeishu(options =>
-        {
-            ConfigureDefaults(builder, options);
-        });
+        builder.AddFeishu(options => ConfigureDefaults(builder, options));
     }
 
     [Theory]
@@ -29,14 +21,5 @@ public class FeishuTests : OAuthTests<FeishuAuthenticationOptions>
     [InlineData(FeishuAuthenticationConstants.Claims.UnionId, "test-union-id")]
     [InlineData(FeishuAuthenticationConstants.Claims.Avatar, "https://www.feishu.cn/avatar/icon_big")]
     public async Task Can_Sign_In_Using_Feishu(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 }

@@ -15,8 +15,8 @@ public class ShopifyTests : OAuthTests<ShopifyAuthenticationOptions>
     private const string TestShopName = "apple";
 
     public ShopifyTests(ITestOutputHelper outputHelper)
+        : base(outputHelper)
     {
-        OutputHelper = outputHelper;
         LoopbackRedirectHandler.LoopbackParameters.Add("shop", "apple.myshopify.com");
     }
 
@@ -45,16 +45,7 @@ public class ShopifyTests : OAuthTests<ShopifyAuthenticationOptions>
     [InlineData(ClaimTypes.NameIdentifier, "apple.myshopify.com")]
     [InlineData("urn:shopify:plan_name", "enterprise")]
     public async Task Can_Sign_In_Using_Shopify(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 
     [Theory]
     [InlineData(false)]
@@ -72,13 +63,13 @@ public class ShopifyTests : OAuthTests<ShopifyAuthenticationOptions>
         properties.Items["GrantOptions"] = "per-user";
         properties.Items["ShopName"] = "Apple";
 
-        string redirectUrl = "https://my-site.local/signin-shopify";
+        var redirectUrl = "https://my-site.local/signin-shopify";
 
         // Act
         Uri actual = await BuildChallengeUriAsync(
             options,
             redirectUrl,
-            (options, loggerFactory, encoder, clock) => new ShopifyAuthenticationHandler(options, loggerFactory, encoder, clock),
+            (options, loggerFactory, encoder) => new ShopifyAuthenticationHandler(options, loggerFactory, encoder),
             properties);
 
         // Assert

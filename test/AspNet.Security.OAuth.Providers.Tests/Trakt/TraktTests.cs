@@ -6,21 +6,13 @@
 
 namespace AspNet.Security.OAuth.Trakt;
 
-public class TraktTests : OAuthTests<TraktAuthenticationOptions>
+public class TraktTests(ITestOutputHelper outputHelper) : OAuthTests<TraktAuthenticationOptions>(outputHelper)
 {
-    public TraktTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
     public override string DefaultScheme => TraktAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
     {
-        builder.AddTrakt(options =>
-        {
-            ConfigureDefaults(builder, options);
-        });
+        builder.AddTrakt(options => ConfigureDefaults(builder, options));
     }
 
     [Theory]
@@ -30,14 +22,5 @@ public class TraktTests : OAuthTests<TraktAuthenticationOptions>
     [InlineData("urn:trakt:vip_ep", "True")]
     [InlineData("urn:trakt:private", "False")]
     public async Task Can_Sign_In_Using_Trakt(string claimType, string claimValue)
-    {
-        // Arrange
-        using var server = CreateTestServer();
-
-        // Act
-        var claims = await AuthenticateUserAsync(server);
-
-        // Assert
-        AssertClaim(claims, claimType, claimValue);
-    }
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 }

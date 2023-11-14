@@ -22,9 +22,8 @@ public partial class DeezerAuthenticationHandler : OAuthHandler<DeezerAuthentica
     public DeezerAuthenticationHandler(
         [NotNull] IOptionsMonitor<DeezerAuthenticationOptions> options,
         [NotNull] ILoggerFactory logger,
-        [NotNull] UrlEncoder encoder,
-        [NotNull] ISystemClock clock)
-        : base(options, logger, encoder, clock)
+        [NotNull] UrlEncoder encoder)
+        : base(options, logger, encoder)
     {
     }
 
