@@ -5,10 +5,6 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <PackageValidationBaselineVersion>7.0.2</PackageValidationBaselineVersion>
-  </PropertyGroup>
-
-  <PropertyGroup>
     <Description>ASP.NET Core security middleware enabling KOOK authentication.</Description>
     <Authors>Gehongyan</Authors>
     <PackageTags>aspnetcore;authentication;kaiheila;kook;kookapp;oauth;security</PackageTags>

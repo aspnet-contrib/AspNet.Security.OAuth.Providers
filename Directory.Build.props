@@ -78,13 +78,6 @@
     <EnablePackageValidation>$(IsPackable)</EnablePackageValidation>
   </PropertyGroup>
 
-  <!--
-    TODO Remove after 8.0.0 release
-  -->
-  <PropertyGroup>
-    <NoWarn>$(NoWarn);PKV006</NoWarn>
-  </PropertyGroup>
-
   <ItemGroup>
     <AdditionalFiles Include="$(MSBuildThisFileDirectory)stylecop.json" Link="stylecop.json" Visible="false" />
     <PackageReference Include="StyleCop.Analyzers" PrivateAssets="All" />
