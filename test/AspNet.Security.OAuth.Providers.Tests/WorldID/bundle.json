@@ -1,0 +1,35 @@
+{
+  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
+  "items": [
+    {
+      "comment": "https://docs.worldcoin.org/reference/sign-in#o-auth2",
+      "uri": "https://id.worldcoin.org/token",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "eyJhbGciOiJSUzI1NiIsImtpZCI6Imp3a1.ey8yZmVi.ZjY3MDc3N2UyY2NlNzY5YzUxOG...",
+        "token_type": "Bearer",
+        "expires_in": 3600,
+        "scope": "openid",
+        "id_token": "eyJhbGciOiJSUzI1NiIsImtpZCI6Imp3a1.ey8yZmVi.ZjY3MDc3N2UyY2NlNzY5YzUxOG..."
+      }
+    },
+    {
+      "comment": "https://docs.worldcoin.org/reference/sign-in#o-auth2",
+      "uri": "https://id.worldcoin.org/userinfo",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "sub": "0x2ae86d6d747702b3b2c81811cd2b39875e8fa6b780ee4a207bdc203a7860b535",
+        "https://id.worldcoin.org/beta": {
+          "likely_human": "strong",
+          "credential_type": "orb"
+        },
+        "email": "0x2ae86d6d747702b3b2c81811cd2b39875e8fa6b780ee4a207bdc203a7860b535@id.worldcoin.org",
+        "name": "World ID User",
+        "given_name": "World ID",
+        "family_name": "User"
+      }
+    }
+  ]
+}
