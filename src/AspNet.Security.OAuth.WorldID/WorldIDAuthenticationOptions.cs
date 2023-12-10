@@ -5,7 +5,6 @@
  */
 
 using System.Security.Claims;
-using static AspNet.Security.OAuth.WorldID.WorldIDAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.WorldID;
 
@@ -29,7 +28,5 @@ public class WorldIDAuthenticationOptions : OAuthOptions
         ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "sub");
         ClaimActions.MapJsonKey(ClaimTypes.Name, "name");
         ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
-        ClaimActions.MapJsonSubKey(Claims.CredentialType, "https://id.worldcoin.org/beta", "credential_type");
-        ClaimActions.MapJsonSubKey(Claims.LikelyHuman, "https://id.worldcoin.org/beta", "likely_human");
     }
 }
