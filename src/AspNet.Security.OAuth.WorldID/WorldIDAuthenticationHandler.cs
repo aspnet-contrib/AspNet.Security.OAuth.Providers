@@ -11,12 +11,12 @@ using System.Text.Json;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace AspNet.Security.OAuth.WorldID;
+namespace AspNet.Security.OAuth.WorldId;
 
-public partial class WorldIDAuthenticationHandler : OAuthHandler<WorldIDAuthenticationOptions>
+public partial class WorldIdAuthenticationHandler : OAuthHandler<WorldIdAuthenticationOptions>
 {
-    public WorldIDAuthenticationHandler(
-        [NotNull] IOptionsMonitor<WorldIDAuthenticationOptions> options,
+    public WorldIdAuthenticationHandler(
+        [NotNull] IOptionsMonitor<WorldIdAuthenticationOptions> options,
         [NotNull] ILoggerFactory logger,
         [NotNull] UrlEncoder encoder)
         : base(options, logger, encoder)

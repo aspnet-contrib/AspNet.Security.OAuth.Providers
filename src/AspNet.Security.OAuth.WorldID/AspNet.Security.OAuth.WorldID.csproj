@@ -11,7 +11,7 @@
   </PropertyGroup>
   
   <PropertyGroup>
-    <Description>ASP.NET Core security middleware enabling WorldID authentication.</Description>
+    <Description>ASP.NET Core security middleware enabling WorldId authentication.</Description>
     <Authors>Sandro Hanea</Authors>
     <PackageTags>aspnetcore;authentication;worldid;oauth;security</PackageTags>
   </PropertyGroup>

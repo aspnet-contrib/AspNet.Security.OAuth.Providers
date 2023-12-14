@@ -299,7 +299,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.PingO
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.JumpCloud", "src\AspNet.Security.OAuth.JumpCloud\AspNet.Security.OAuth.JumpCloud.csproj", "{8AF5DDBE-2631-4E71-9045-73A6356CE86B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.WorldID", "src\AspNet.Security.OAuth.WorldID\AspNet.Security.OAuth.WorldID.csproj", "{05636DB7-37C4-48B1-9093-FE1428DBCF98}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.WorldId", "src\AspNet.Security.OAuth.WorldId\AspNet.Security.OAuth.WorldId.csproj", "{05636DB7-37C4-48B1-9093-FE1428DBCF98}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

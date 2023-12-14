@@ -6,21 +6,21 @@
 
 using System.Security.Claims;
 
-namespace AspNet.Security.OAuth.WorldID;
+namespace AspNet.Security.OAuth.WorldId;
 
 /// <summary>
-/// Defines a set of options used by <see cref="WorldIDAuthenticationHandler"/>.
+/// Defines a set of options used by <see cref="WorldIdAuthenticationHandler"/>.
 /// </summary>
-public class WorldIDAuthenticationOptions : OAuthOptions
+public class WorldIdAuthenticationOptions : OAuthOptions
 {
-    public WorldIDAuthenticationOptions()
+    public WorldIdAuthenticationOptions()
     {
-        ClaimsIssuer = WorldIDAuthenticationDefaults.Issuer;
-        CallbackPath = WorldIDAuthenticationDefaults.CallbackPath;
+        ClaimsIssuer = WorldIdAuthenticationDefaults.Issuer;
+        CallbackPath = WorldIdAuthenticationDefaults.CallbackPath;
 
-        AuthorizationEndpoint = WorldIDAuthenticationDefaults.AuthorizationEndpoint;
-        TokenEndpoint = WorldIDAuthenticationDefaults.TokenEndpoint;
-        UserInformationEndpoint = WorldIDAuthenticationDefaults.UserInformationEndpoint;
+        AuthorizationEndpoint = WorldIdAuthenticationDefaults.AuthorizationEndpoint;
+        TokenEndpoint = WorldIdAuthenticationDefaults.TokenEndpoint;
+        UserInformationEndpoint = WorldIdAuthenticationDefaults.UserInformationEndpoint;
 
         Scope.Add("openid");
         Scope.Add("email");
