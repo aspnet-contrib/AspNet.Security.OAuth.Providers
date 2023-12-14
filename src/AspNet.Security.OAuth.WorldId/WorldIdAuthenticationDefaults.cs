@@ -4,14 +4,14 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-namespace AspNet.Security.OAuth.WorldID;
+namespace AspNet.Security.OAuth.WorldId;
 
-public static class WorldIDAuthenticationDefaults
+public static class WorldIdAuthenticationDefaults
 {
     /// <summary>
     /// Default value for <see cref="AuthenticationScheme.Name"/>.
     /// </summary>
-    public const string AuthenticationScheme = "WorldID";
+    public const string AuthenticationScheme = "WorldId";
 
     /// <summary>
     /// Default value for <see cref="AuthenticationScheme.DisplayName"/>.
@@ -21,7 +21,7 @@ public static class WorldIDAuthenticationDefaults
     /// <summary>
     /// Default value for <see cref="AuthenticationSchemeOptions.ClaimsIssuer"/>.
     /// </summary>
-    public static readonly string Issuer = "WorldID";
+    public static readonly string Issuer = "WorldId";
 
     /// <summary>
     /// Default value for <see cref="RemoteAuthenticationOptions.CallbackPath"/>.
