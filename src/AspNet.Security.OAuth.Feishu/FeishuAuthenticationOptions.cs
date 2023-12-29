@@ -30,8 +30,8 @@ public class FeishuAuthenticationOptions : OAuthOptions
         ClaimActions.MapJsonKey(Claims.AvatarThumb, "avatar_thumb");
         ClaimActions.MapJsonKey(Claims.AvatarUrl, "avatar_url");
         ClaimActions.MapJsonKey(Claims.Email, "email");
-        ClaimActions.MapJsonKey(Claims.EmployeeNo, "employee_no");
-        ClaimActions.MapJsonKey(Claims.EnName, "en_name");
+        ClaimActions.MapJsonKey(Claims.EmployeeNumber, "employee_no");
+        ClaimActions.MapJsonKey(Claims.EnglishName, "en_name");
         ClaimActions.MapJsonKey(Claims.Mobile, "mobile");
         ClaimActions.MapJsonKey(Claims.Name, "name");
         ClaimActions.MapJsonKey(Claims.OpenId, "open_id");

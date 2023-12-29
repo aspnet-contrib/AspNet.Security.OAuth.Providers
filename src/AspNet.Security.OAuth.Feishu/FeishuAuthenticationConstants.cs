@@ -13,12 +13,12 @@ public static class FeishuAuthenticationConstants
 {
     public static class Claims
     {
-        public const string UnionId = "urn:feishu:union_id";
+        public const string UnionId = "urn:feishu:unionid";
         public const string Sub = "urn:feishu:sub";
         public const string Name = "urn:feishu:name";
         public const string Picture = "urn:feishu:picture";
         public const string OpenId = "urn:feishu:open_id";
-        public const string EnName = "urn:feishu:en_name";
+        public const string EnglishName = "urn:feishu:en_name";
         public const string TenantKey = "urn:feishu:tenant_key";
         public const string Avatar = "urn:feishu:avatar";
         public const string AvatarUrl = "urn:feishu:avatar_url";
@@ -27,7 +27,7 @@ public static class FeishuAuthenticationConstants
         public const string AvatarBig = "urn:feishu:avatar_big";
         public const string Email = "urn:feishu:email";
         public const string UserId = "urn:feishu:userid";
-        public const string EmployeeNo = "urn:feishu:employee_no";
+        public const string EmployeeNumber = "urn:feishu:employee_no";
         public const string Mobile = "urn:feishu:mobile";
     }
 }
