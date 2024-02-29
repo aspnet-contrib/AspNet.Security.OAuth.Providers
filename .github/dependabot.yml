@@ -1,0 +1,25 @@
+version: 2
+updates:
+- package-ecosystem: "github-actions"
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "06:30"
+    timezone: Europe/London
+- package-ecosystem: nuget
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "06:30"
+    timezone: Europe/London
+  open-pull-requests-limit: 99
+  ignore:
+    - dependency-name: "Microsoft.AspNetCore.Authentication.Google"
+      update-types: ["version-update:semver-major"]
+    - dependency-name: "Microsoft.AspNetCore.Mvc.Testing"
+      update-types: ["version-update:semver-major"]
+    - dependency-name: "Microsoft.AspNetCore.TestHost"
+      update-types: ["version-update:semver-major"]
+    - dependency-name: "Microsoft.DotNet.Arcade.Sdk"
+    - dependency-name: "Microsoft.DotNet.Helix.Sdk"
+    - dependency-name: "Microsoft.IdentityModel.Protocols.OpenIdConnect"
