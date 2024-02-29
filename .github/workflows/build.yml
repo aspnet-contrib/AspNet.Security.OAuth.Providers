@@ -152,7 +152,7 @@ jobs:
     - name: Push NuGet packages to aspnet-contrib MyGet
       env:
         MYGET_API_KEY: ${{ secrets.MYGET_API_KEY }}
-      run: nuget push "*.nupkg" -ApiKey $env:MYGET_API_KEY -SkipDuplicate -Source https://www.myget.org/F/aspnet-contrib/api/v3/index.json
+      run: nuget push "*.nupkg" -ApiKey "${MYGET_API_KEY}" -SkipDuplicate -Source https://www.myget.org/F/aspnet-contrib/api/v3/index.json
 
   publish-nuget:
     needs: [ build, validate-packages ]
@@ -175,4 +175,4 @@ jobs:
     - name: Push NuGet packages to NuGet.org
       env:
         NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
-      run: nuget push "*.nupkg" -ApiKey $env:NUGET_API_KEY -SkipDuplicate -Source https://api.nuget.org/v3/index.json
+      run: nuget push "*.nupkg" -ApiKey "${NUGET_API_KEY}" -SkipDuplicate -Source https://api.nuget.org/v3/index.json
