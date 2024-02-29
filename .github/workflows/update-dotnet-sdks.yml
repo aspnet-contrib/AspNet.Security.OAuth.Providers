@@ -29,5 +29,8 @@ jobs:
       labels: 'dependencies,.NET'
       ref: ${{ inputs.branch || 'dev' }}
       update-nuget-packages: true
+      user-email: ${{ vars.SERVICE_ACCOUNT_GIT_EMAIL }}
+      user-name: ${{ vars.SERVICE_ACCOUNT_GIT_NAME }}
     secrets:
-      repo-token: ${{ secrets.GITHUB_TOKEN }}
+      application-id: ${{ secrets.SERVICE_ACCOUNT_ID }}
+      application-private-key: ${{ secrets.SERVICE_ACCOUNT_PRIVATE_KEY }}
