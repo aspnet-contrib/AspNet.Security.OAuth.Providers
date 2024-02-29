@@ -20,4 +20,6 @@ updates:
       update-types: ["version-update:semver-major"]
     - dependency-name: "Microsoft.AspNetCore.TestHost"
       update-types: ["version-update:semver-major"]
+    - dependency-name: "Microsoft.DotNet.Arcade.Sdk"
+    - dependency-name: "Microsoft.DotNet.Helix.Sdk"
     - dependency-name: "Microsoft.IdentityModel.Protocols.OpenIdConnect"
