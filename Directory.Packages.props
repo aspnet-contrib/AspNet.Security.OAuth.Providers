@@ -2,7 +2,7 @@
 
   <ItemGroup>
     <PackageVersion Include="JetBrains.Annotations" Version="2023.3.0" />
-    <PackageVersion Include="JustEat.HttpClientInterception" Version="4.0.0" />
+    <PackageVersion Include="JustEat.HttpClientInterception" Version="4.2.0" />
     <PackageVersion Include="MartinCostello.Logging.XUnit" Version="0.3.0" />
     <PackageVersion Include="Microsoft.AspNetCore.Authentication.Google" Version="8.0.2" />
     <PackageVersion Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.2" />
