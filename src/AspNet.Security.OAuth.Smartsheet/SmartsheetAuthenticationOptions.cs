@@ -29,7 +29,7 @@ public class SmartsheetAuthenticationOptions : OAuthOptions
         ClaimActions.MapJsonKey(ClaimTypes.GivenName, "firstName");
         ClaimActions.MapJsonKey(ClaimTypes.Surname, "lastName");
         ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
-        ClaimActions.MapCustomJson(Claims.ProfileImage, user => GetProfileImageUri(user));
+        ClaimActions.MapCustomJson(Claims.ProfileImage, GetProfileImageUri);
     }
 
     private static string GetProfileImageUri(JsonElement user)

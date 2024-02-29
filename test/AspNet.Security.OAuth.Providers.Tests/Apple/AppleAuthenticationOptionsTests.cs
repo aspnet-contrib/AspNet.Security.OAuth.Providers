@@ -19,7 +19,7 @@ public static class AppleAuthenticationOptionsTests
         };
 
         // Act and Assert
-        Assert.Throws<ArgumentException>("ClientSecret", () => options.Validate());
+        Assert.Throws<ArgumentNullException>("ClientSecret", options.Validate);
     }
 
     [Fact]
@@ -34,7 +34,7 @@ public static class AppleAuthenticationOptionsTests
         };
 
         // Act and Assert
-        Assert.Throws<ArgumentException>("AuthorizationEndpoint", () => options.Validate());
+        Assert.Throws<ArgumentException>("AuthorizationEndpoint", options.Validate);
     }
 
     [Fact]
@@ -49,7 +49,7 @@ public static class AppleAuthenticationOptionsTests
         };
 
         // Act and Assert
-        Assert.Throws<ArgumentException>("TokenEndpoint", () => options.Validate());
+        Assert.Throws<ArgumentException>("TokenEndpoint", options.Validate);
     }
 
     [Fact]
@@ -64,7 +64,7 @@ public static class AppleAuthenticationOptionsTests
         };
 
         // Act and Assert
-        Assert.Throws<ArgumentException>("CallbackPath", () => options.Validate());
+        Assert.Throws<ArgumentException>("CallbackPath", options.Validate);
     }
 
     [Fact]
@@ -79,7 +79,7 @@ public static class AppleAuthenticationOptionsTests
         };
 
         // Act and Assert
-        Assert.Throws<ArgumentException>("KeyId", () => options.Validate());
+        Assert.Throws<ArgumentException>("KeyId", options.Validate);
     }
 
     [Fact]
@@ -95,7 +95,7 @@ public static class AppleAuthenticationOptionsTests
         };
 
         // Act and Assert
-        Assert.Throws<ArgumentException>("TeamId", () => options.Validate());
+        Assert.Throws<ArgumentException>("TeamId", options.Validate);
     }
 
     [Fact]
@@ -112,7 +112,7 @@ public static class AppleAuthenticationOptionsTests
         };
 
         // Act and Assert
-        Assert.Throws<ArgumentException>("TokenAudience", () => options.Validate());
+        Assert.Throws<ArgumentException>("TokenAudience", options.Validate);
     }
 
     [Fact]
@@ -129,6 +129,6 @@ public static class AppleAuthenticationOptionsTests
         };
 
         // Act and Assert
-        Assert.Throws<ArgumentOutOfRangeException>("ClientSecretExpiresAfter", () => options.Validate());
+        Assert.Throws<ArgumentOutOfRangeException>("ClientSecretExpiresAfter", options.Validate);
     }
 }

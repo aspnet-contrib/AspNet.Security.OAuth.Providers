@@ -8,11 +8,11 @@ namespace AspNet.Security.OAuth.Keycloak;
 
 public static class KeycloakAuthenticationOptionsTests
 {
-    public static IEnumerable<object[]> AccessTypes => new object[][]
+    public static TheoryData<KeycloakAuthenticationAccessType> AccessTypes => new()
     {
-            new object[] { KeycloakAuthenticationAccessType.BearerOnly },
-            new object[] { KeycloakAuthenticationAccessType.Confidential },
-            new object[] { KeycloakAuthenticationAccessType.Public },
+        { KeycloakAuthenticationAccessType.BearerOnly },
+        { KeycloakAuthenticationAccessType.Confidential },
+        { KeycloakAuthenticationAccessType.Public },
     };
 
     [Theory]
@@ -46,7 +46,7 @@ public static class KeycloakAuthenticationOptionsTests
         };
 
         // Act and Assert
-        Assert.Throws<ArgumentException>("ClientSecret", () => options.Validate());
+        Assert.Throws<ArgumentNullException>("ClientSecret", options.Validate);
     }
 
     [Theory]
@@ -63,7 +63,7 @@ public static class KeycloakAuthenticationOptionsTests
         };
 
         // Act and Assert
-        Assert.Throws<ArgumentException>("AuthorizationEndpoint", () => options.Validate());
+        Assert.Throws<ArgumentNullException>("AuthorizationEndpoint", options.Validate);
     }
 
     [Theory]
@@ -80,7 +80,7 @@ public static class KeycloakAuthenticationOptionsTests
         };
 
         // Act and Assert
-        Assert.Throws<ArgumentException>("TokenEndpoint", () => options.Validate());
+        Assert.Throws<ArgumentNullException>("TokenEndpoint", options.Validate);
     }
 
     [Theory]
@@ -97,6 +97,6 @@ public static class KeycloakAuthenticationOptionsTests
         };
 
         // Act and Assert
-        Assert.Throws<ArgumentException>("CallbackPath", () => options.Validate());
+        Assert.Throws<ArgumentException>("CallbackPath", options.Validate);
     }
 }
