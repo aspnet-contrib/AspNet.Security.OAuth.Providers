@@ -92,7 +92,7 @@ public static class ApplicationFactory
            .UseEndpoints(endpoints =>
            {
                endpoints.MapGet(
-                   "/me",
+                   "/userinfo",
                    async context =>
                    {
                        if (context.User.Identity?.IsAuthenticated == true)

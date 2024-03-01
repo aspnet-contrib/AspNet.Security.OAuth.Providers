@@ -31,18 +31,8 @@ public partial class LinkedInAuthenticationHandler : OAuthHandler<LinkedInAuthen
         [NotNull] OAuthTokenResponse tokens)
     {
         var requestUri = Options.UserInformationEndpoint;
-        var fields = Options.Fields
-            .Where(f => !string.Equals(f, LinkedInAuthenticationConstants.EmailAddressField, StringComparison.OrdinalIgnoreCase))
-            .ToList();
-
-        // If at least one field is specified, append the fields to the endpoint URL.
-        if (fields.Count > 0)
-        {
-            requestUri = QueryHelpers.AddQueryString(requestUri, "projection", $"({string.Join(',', fields)})");
-        }
 
         using var request = new HttpRequestMessage(HttpMethod.Get, requestUri);
-        request.Headers.Add("x-li-format", "json");
         request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", tokens.AccessToken);
 
         using var response = await Backchannel.SendAsync(request, Context.RequestAborted);
@@ -58,45 +48,8 @@ public partial class LinkedInAuthenticationHandler : OAuthHandler<LinkedInAuthen
         var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload.RootElement);
         context.RunClaimActions();
 
-        if (!string.IsNullOrEmpty(Options.EmailAddressEndpoint) &&
-            Options.Fields.Contains(LinkedInAuthenticationConstants.EmailAddressField))
-        {
-            var email = await GetEmailAsync(tokens);
-            if (!string.IsNullOrEmpty(email))
-            {
-                identity.AddClaim(new Claim(ClaimTypes.Email, email, ClaimValueTypes.String, Options.ClaimsIssuer));
-            }
-        }
-
         await Events.CreatingTicket(context);
         return new AuthenticationTicket(context.Principal!, context.Properties, Scheme.Name);
-    }
-
-    protected virtual async Task<string?> GetEmailAsync([NotNull] OAuthTokenResponse tokens)
-    {
-        using var request = new HttpRequestMessage(HttpMethod.Get, Options.EmailAddressEndpoint);
-        request.Headers.Add("x-li-format", "json");
-        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", tokens.AccessToken);
-
-        using var response = await Backchannel.SendAsync(request, Context.RequestAborted);
-        if (!response.IsSuccessStatusCode)
-        {
-            await Log.EmailAddressErrorAsync(Logger, response, Context.RequestAborted);
-            throw new HttpRequestException("An error occurred while retrieving the email address.");
-        }
-
-        using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
-
-        if (!payload.RootElement.TryGetProperty("elements", out var emails))
-        {
-            return null;
-        }
-
-        return emails
-            .EnumerateArray()
-            .Select((p) => p.GetProperty("handle~"))
-            .Select((p) => p.GetString("emailAddress"))
-            .FirstOrDefault();
     }
 
     protected override async Task<HandleRequestResult> HandleRemoteAuthenticateAsync()
