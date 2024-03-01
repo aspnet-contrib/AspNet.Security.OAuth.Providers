@@ -10,8 +10,6 @@ namespace AspNet.Security.OAuth.LinkedIn;
 
 public class LinkedInTests(ITestOutputHelper outputHelper) : OAuthTests<LinkedInAuthenticationOptions>(outputHelper)
 {
-    /*private Action<LinkedInAuthenticationOptions>? additionalConfiguration;*/
-
     public override string DefaultScheme => LinkedInAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
@@ -19,7 +17,6 @@ public class LinkedInTests(ITestOutputHelper outputHelper) : OAuthTests<LinkedIn
         builder.AddLinkedIn(options =>
         {
             ConfigureDefaults(builder, options);
-            /*additionalConfiguration?.Invoke(options);*/
         });
     }
 
@@ -32,7 +29,7 @@ public class LinkedInTests(ITestOutputHelper outputHelper) : OAuthTests<LinkedIn
     }
 
     [Theory]
-    [InlineData(LinkedInAuthenticationConstants.Claims.Sub, "1R2RtA")]
+    [InlineData(ClaimTypes.NameIdentifier, "1R2RtA")]
     [InlineData(ClaimTypes.Name, "Frodo Baggins")]
     [InlineData(ClaimTypes.Email, "frodo@shire.middleearth")]
     [InlineData(ClaimTypes.GivenName, "Frodo")]
@@ -40,9 +37,6 @@ public class LinkedInTests(ITestOutputHelper outputHelper) : OAuthTests<LinkedIn
     [InlineData(LinkedInAuthenticationConstants.Claims.Picture, "https://upload.wikimedia.org/wikipedia/en/4/4e/Elijah_Wood_as_Frodo_Baggins.png")]
     public async Task Can_Sign_In_Using_LinkedIn(string claimType, string claimValue)
     {
-        // Arrange
-        /*additionalConfiguration = options => options.Fields.Add(LinkedInAuthenticationConstants.ProfileFields.PictureUrl);*/
-
         await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
     }
 }

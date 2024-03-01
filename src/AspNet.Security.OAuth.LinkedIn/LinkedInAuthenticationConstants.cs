@@ -13,6 +13,12 @@ public static class LinkedInAuthenticationConstants
 {
     public static class Claims
     {
+        [Obsolete("PictureUrls is deprecated, no longer conforms to data returned by recent API, please use Picture instead.", false)]
+        public const string PictureUrl = "urn:linkedin:pictureurl";
+
+        [Obsolete("PictureUrls is deprecated, no longer conforms to data returned by recent API, please use Picture instead.", false)]
+        public const string PictureUrls = "urn:linkedin:pictureurls";
+
         public const string Picture = "picture";
 
         public const string Email = "email";
@@ -40,34 +46,36 @@ public static class LinkedInAuthenticationConstants
         /// The unique identifier for the given member. May also be referenced as the <c>personId</c> within a Person URN (<c>urn:li:person:{personId}</c>).
         /// The <c>id</c> is unique to your specific developer application. Any attempts to use the <c>id</c> with other developer applications will not succeed.
         /// </summary>
-        public const string Id = "id";
+        public const string Id = "sub";
 
         /// <summary>
         /// First name of the member. Represented as a MultiLocaleString object type.
         /// See <a>https://docs.microsoft.com/en-us/linkedin/shared/references/v2/object-types#multilocalestring</a>
         /// </summary>
+        [Obsolete("FirstName is deprecated, please use GivenName instead.", false)]
         public const string FirstName = "firstName";
 
         /// <summary>
         /// Last name of the member. Represented as a MultiLocaleString object type.
         /// See <a>https://docs.microsoft.com/en-us/linkedin/shared/references/v2/object-types#multilocalestring</a>
         /// </summary>
+        [Obsolete("LastName is deprecated, please use FamilyName instead.", false)]
         public const string LastName = "lastName";
 
         /// <summary>
         /// Metadata about the member's picture in the profile. See Profile Picture Fields for more information.
         /// See <a>https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/profile-picture</a>
         /// </summary>
+        [Obsolete("PictureUrl is deprecated, please use Picture instead.", false)]
         public const string PictureUrl = "profilePicture(displayImage~:playableStreams)";
 
         /// <summary>
-        /// Full name of the member. Represented as a MultiLocaleString object type.
-        /// See <a>https://docs.microsoft.com/en-us/linkedin/shared/references/v2/object-types#multilocalestring</a>
+        /// Full name of the member.
         /// </summary>
         public const string Name = "name";
 
         /// <summary>
-        /// Given/First name of the member. Represented as a MultiLocaleString object type.
+        /// Given/First name of the member.
         /// </summary>
         public const string GivenName = "given_name";
 

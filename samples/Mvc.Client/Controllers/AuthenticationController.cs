@@ -5,7 +5,6 @@
  */
 
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Mvc.Client.Extensions;
 
@@ -34,14 +33,7 @@ public class AuthenticationController : Controller
         // Instruct the middleware corresponding to the requested external identity
         // provider to redirect the user agent to its own authorization endpoint.
         // Note: the authenticationScheme parameter must match the value configured in Startup.cs
-        return Challenge(new AuthenticationProperties { RedirectUri = $"/signinAuth-{provider}" }, provider);
-    }
-
-    [HttpGet("/signinAuth-{authProvider}")]
-    public async Task<IActionResult> MyCallback(string authProvider)
-    {
-        var auth = await HttpContext.AuthenticateAsync(authProvider);
-        return Ok();
+        return Challenge(new AuthenticationProperties { RedirectUri = "/" }, provider);
     }
 
     [HttpGet("~/signout")]
