@@ -253,7 +253,7 @@ public abstract class OAuthTests<TOptions> : ITestOutputHelperAccessor
         using (var client = server.CreateDefaultClient(LoopbackRedirectHandler))
         {
             // Act
-            using var result = await client.GetAsync("/userinfo");
+            using var result = await client.GetAsync("/me");
 
             // Assert
             result.StatusCode.ShouldBe(HttpStatusCode.Found);
@@ -269,7 +269,7 @@ public abstract class OAuthTests<TOptions> : ITestOutputHelperAccessor
             client.DefaultRequestHeaders.Add("Cookie", cookies);
 
             // Act
-            using var result = await client.GetAsync("/userinfo");
+            using var result = await client.GetAsync("/me");
 
             // Assert
             result.StatusCode.ShouldBe(HttpStatusCode.OK);

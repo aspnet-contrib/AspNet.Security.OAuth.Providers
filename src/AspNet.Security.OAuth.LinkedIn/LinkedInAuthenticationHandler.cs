@@ -52,6 +52,34 @@ public partial class LinkedInAuthenticationHandler : OAuthHandler<LinkedInAuthen
         return new AuthenticationTicket(context.Principal!, context.Properties, Scheme.Name);
     }
 
+    [Obsolete("GetEmailAsync is deprecated, no longer needed in the recent LinkedIn API changes.", false)]
+    protected virtual async Task<string?> GetEmailAsync([NotNull] OAuthTokenResponse tokens)
+    {
+        using var request = new HttpRequestMessage(HttpMethod.Get, Options.EmailAddressEndpoint);
+        request.Headers.Add("x-li-format", "json");
+        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", tokens.AccessToken);
+
+        using var response = await Backchannel.SendAsync(request, Context.RequestAborted);
+        if (!response.IsSuccessStatusCode)
+        {
+            await Log.EmailAddressErrorAsync(Logger, response, Context.RequestAborted);
+            throw new HttpRequestException("An error occurred while retrieving the email address.");
+        }
+
+        using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
+
+        if (!payload.RootElement.TryGetProperty("elements", out var emails))
+        {
+            return null;
+        }
+
+        return emails
+            .EnumerateArray()
+            .Select((p) => p.GetProperty("handle~"))
+            .Select((p) => p.GetString("emailAddress"))
+            .FirstOrDefault();
+    }
+
     protected override async Task<HandleRequestResult> HandleRemoteAuthenticateAsync()
     {
         // Taken from the base class' implementation so we can modify the status code check
