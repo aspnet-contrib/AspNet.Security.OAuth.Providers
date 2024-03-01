@@ -46,14 +46,16 @@ public class Startup(IConfiguration configuration, IHostEnvironment hostingEnvir
             options.Scope.Add("user:email");
         })
 
-        /*.AddApple(options =>
+        /*
+        .AddApple(options =>
         {
             options.ClientId = Configuration["Apple:ClientId"] ?? string.Empty;
             options.KeyId = Configuration["Apple:KeyId"] ?? string.Empty;
             options.TeamId = Configuration["Apple:TeamId"] ?? string.Empty;
             options.UsePrivateKey(
                 (keyId) => HostingEnvironment.ContentRootFileProvider.GetFileInfo($"AuthKey_{keyId}.p8"));
-        })*/
+        })
+        */
 
         .AddDropbox(options =>
         {
@@ -80,11 +82,6 @@ public class Startup(IConfiguration configuration, IHostEnvironment hostingEnvir
         app.UseStaticFiles(options);
 
         app.UseRouting();
-
-        app.UseCookiePolicy(new CookiePolicyOptions
-        {
-            Secure = CookieSecurePolicy.Always
-        });
 
         app.UseAuthentication();
         app.UseAuthorization();

@@ -37,7 +37,6 @@ public class LinkedInAuthenticationOptions : OAuthOptions
         ClaimActions.MapJsonKey(ClaimTypes.Surname, ProfileFields.FamilyName);
         ClaimActions.MapJsonKey(Claims.Picture, Claims.Picture);
         ClaimActions.MapJsonKey(Claims.EmailVerified, Claims.EmailVerified);
-        ClaimActions.MapJsonKey(Claims.Sub, Claims.Sub);
     }
 
     /// <summary>
@@ -52,8 +51,8 @@ public class LinkedInAuthenticationOptions : OAuthOptions
     public ISet<string> Fields { get; } = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
         {
             ProfileFields.Id,
-            ProfileFields.FirstName,
-            ProfileFields.LastName,
+            ProfileFields.GivenName,
+            ProfileFields.FamilyName,
             EmailAddressField
         };
 
