@@ -44,7 +44,7 @@ public class LinkedInAuthenticationDefaults
     /// <summary>
     /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
     /// </summary>
-    public static readonly string UserInformationEndpoint = "https://api.linkedin.com/v2/me";
+    public static readonly string UserInformationEndpoint = "https://api.linkedin.com/v2/userinfo";
 
     /// <summary>
     /// Specific endpoint to retrieve the LinkedIn member's email address.
