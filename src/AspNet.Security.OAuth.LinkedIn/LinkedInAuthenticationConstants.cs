@@ -74,7 +74,7 @@ public static class LinkedInAuthenticationConstants
         public const string Name = "name";
 
         /// <summary>
-        /// Picture Url of the member.
+        /// Picture URL of the member.
         /// </summary>
         public const string Picture = "picture";
 
