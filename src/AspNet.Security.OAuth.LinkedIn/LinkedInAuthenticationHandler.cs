@@ -52,7 +52,7 @@ public partial class LinkedInAuthenticationHandler : OAuthHandler<LinkedInAuthen
         return new AuthenticationTicket(context.Principal!, context.Properties, Scheme.Name);
     }
 
-    [Obsolete("GetEmailAsync is deprecated, no longer needed in the recent LinkedIn API changes.", false)]
+    [Obsolete("This method is no longer used and will be removed in a future version.", false)]
     protected virtual async Task<string?> GetEmailAsync([NotNull] OAuthTokenResponse tokens)
     {
         using var request = new HttpRequestMessage(HttpMethod.Get, Options.EmailAddressEndpoint);
