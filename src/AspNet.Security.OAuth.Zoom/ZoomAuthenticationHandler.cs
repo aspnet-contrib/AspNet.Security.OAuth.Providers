@@ -6,13 +6,10 @@
 
 using System.Net.Http.Headers;
 using System.Security.Claims;
-using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
-using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Microsoft.Extensions.Primitives;
 
 namespace AspNet.Security.OAuth.Zoom;
 
@@ -53,67 +50,6 @@ public partial class ZoomAuthenticationHandler : OAuthHandler<ZoomAuthentication
         return new AuthenticationTicket(context.Principal!, context.Properties, Scheme.Name);
     }
 
-    protected override string BuildChallengeUrl([NotNull] AuthenticationProperties properties, [NotNull] string redirectUri)
-    {
-        // eBay uses the RuName for the redirect_uri
-        return base.BuildChallengeUrl(properties, redirectUri);
-    }
-
-    protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] OAuthCodeExchangeContext context)
-    {
-        var tokenRequestParameters = new Dictionary<string, string>()
-        {
-            ["grant_type"] = "authorization_code",
-            ["code"] = context.Code,
-            ["redirect_uri"] = context.RedirectUri,
-        };
-
-        // PKCE https://tools.ietf.org/html/rfc7636#section-4.5, see BuildChallengeUrl
-        if (context.Properties.Items.TryGetValue(OAuthConstants.CodeVerifierKey, out var codeVerifier))
-        {
-            tokenRequestParameters.Add(OAuthConstants.CodeVerifierKey, codeVerifier!);
-            context.Properties.Items.Remove(OAuthConstants.CodeVerifierKey);
-        }
-
-        using var request = new HttpRequestMessage(HttpMethod.Post, Options.TokenEndpoint);
-        request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-        request.Headers.Authorization = CreateAuthorizationHeader();
-
-        request.Content = new FormUrlEncodedContent(tokenRequestParameters);
-
-        using var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
-        if (!response.IsSuccessStatusCode)
-        {
-            await Log.ExchangeCodeErrorAsync(Logger, response, Context.RequestAborted);
-            return OAuthTokenResponse.Failed(new Exception("An error occurred while retrieving an access token."));
-        }
-
-        var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
-
-        return OAuthTokenResponse.Success(payload);
-    }
-
-    private AuthenticationHeaderValue CreateAuthorizationHeader()
-    {
-        var credentials = Convert.ToBase64String(Encoding.ASCII.GetBytes(
-            string.Concat(
-                EscapeDataString(Options.ClientId),
-                ":",
-                EscapeDataString(Options.ClientSecret))));
-
-        return new AuthenticationHeaderValue("Basic", credentials);
-    }
-
-    private static string EscapeDataString(string value)
-    {
-        if (string.IsNullOrEmpty(value))
-        {
-            return string.Empty;
-        }
-
-        return Uri.EscapeDataString(value).Replace("%20", "+", StringComparison.Ordinal);
-    }
-
     private static partial class Log
     {
         internal static async Task UserProfileErrorAsync(ILogger logger, HttpResponseMessage response, CancellationToken cancellationToken)
@@ -125,24 +61,8 @@ public partial class ZoomAuthenticationHandler : OAuthHandler<ZoomAuthentication
                 await response.Content.ReadAsStringAsync(cancellationToken));
         }
 
-        internal static async Task ExchangeCodeErrorAsync(ILogger logger, HttpResponseMessage response, CancellationToken cancellationToken)
-        {
-            ExchangeCodeError(
-                logger,
-                response.StatusCode,
-                response.Headers.ToString(),
-                await response.Content.ReadAsStringAsync(cancellationToken));
-        }
-
         [LoggerMessage(1, LogLevel.Error, "An error occurred while retrieving the user profile: the remote server returned a {Status} response with the following payload: {Headers} {Body}.")]
         static partial void UserProfileError(
-            ILogger logger,
-            System.Net.HttpStatusCode status,
-            string headers,
-            string body);
-
-        [LoggerMessage(2, LogLevel.Error, "An error occurred while retrieving an access token: the remote server returned a {Status} response with the following payload: {Headers} {Body}.")]
-        static partial void ExchangeCodeError(
             ILogger logger,
             System.Net.HttpStatusCode status,
             string headers,

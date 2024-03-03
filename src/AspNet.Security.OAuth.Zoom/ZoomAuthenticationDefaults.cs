@@ -44,5 +44,5 @@ public class ZoomAuthenticationDefaults
     /// <summary>
     /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
     /// </summary>
-    public static readonly string UserInformationEndpoint = "https://zoom.us/v2/users/me";
+    public static readonly string UserInformationEndpoint = "https://api.zoom.us/v2/users/me";
 }

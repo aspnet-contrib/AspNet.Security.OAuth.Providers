@@ -22,6 +22,7 @@ public class ZoomAuthenticationOptions : OAuthOptions
         AuthorizationEndpoint = ZoomAuthenticationDefaults.AuthorizationEndpoint;
         TokenEndpoint = ZoomAuthenticationDefaults.TokenEndpoint;
         UserInformationEndpoint = ZoomAuthenticationDefaults.UserInformationEndpoint;
+        UsePkce = true;
 
         ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, ProfileFields.Id);
         ClaimActions.MapJsonKey(ClaimTypes.Name, ProfileFields.Name);
