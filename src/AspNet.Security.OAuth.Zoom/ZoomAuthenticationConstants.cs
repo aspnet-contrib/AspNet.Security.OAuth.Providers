@@ -41,8 +41,7 @@ public static class ZoomAuthenticationConstants
     public static class ProfileFields
     {
         /// <summary>
-        /// The unique identifier for the given memembermber. May also be referenced as the <c>personId</c> within a Person URN (<c>urn:li:person:{personId}</c>).
-        /// The <c>id</c> is unique to your specific developer application. Any attempts to use the <c>id</c> with other developer applications will not succeed.
+        /// The Unique identifier of the user
         /// </summary>
         public const string Id = "id";
 
@@ -72,7 +71,7 @@ public static class ZoomAuthenticationConstants
         public const string PhoneNumber = "phone_number";
 
         /// <summary>
-        /// Picture url of the user.
+        /// Picture URL of the user.
         /// </summary>
         public const string PictureUrl = "pic_url";
 
@@ -87,7 +86,7 @@ public static class ZoomAuthenticationConstants
         public const string Verified = "verified";
 
         /// <summary>
-        /// Personal meeting url of the user.
+        /// Personal meeting URL of the user.
         /// </summary>
         public const string PersonalMeetingUrl = "personal_meeting_url";
     }
