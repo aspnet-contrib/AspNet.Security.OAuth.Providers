@@ -17,8 +17,10 @@ public static class PackageMetadataTests
         .Select((p) => p.Value)
         .First();
 
-    public static IEnumerable<object[]> Projects()
+    public static TheoryData<string, string> Projects()
     {
+        var testCases = new TheoryData<string, string>();
+
         foreach (var directory in Directory.EnumerateDirectories(Path.Combine(_solutionRoot!, "src")))
         {
             foreach (var project in Directory.EnumerateFiles(directory, "*.csproj"))
@@ -27,10 +29,12 @@ public static class PackageMetadataTests
 
                 foreach (var propertyName in new[] { "Authors", "Description", "PackageTags" })
                 {
-                    yield return new object[] { projectName, propertyName };
+                    testCases.Add(projectName, propertyName);
                 }
             }
         }
+
+        return testCases;
     }
 
     [Theory]

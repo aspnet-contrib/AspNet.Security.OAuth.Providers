@@ -29,7 +29,7 @@ public class LinkedInAuthenticationOptions : OAuthOptions
         Scope.Add("r_emailaddress");
 
         ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, ProfileFields.Id);
-        ClaimActions.MapCustomJson(ClaimTypes.Name, user => GetFullName(user));
+        ClaimActions.MapCustomJson(ClaimTypes.Name, GetFullName);
         ClaimActions.MapCustomJson(ClaimTypes.GivenName, user => GetMultiLocaleString(user, ProfileFields.FirstName));
         ClaimActions.MapCustomJson(ClaimTypes.Surname, user => GetMultiLocaleString(user, ProfileFields.LastName));
         ClaimActions.MapCustomJson(Claims.PictureUrl, user => GetPictureUrls(user)?.LastOrDefault());

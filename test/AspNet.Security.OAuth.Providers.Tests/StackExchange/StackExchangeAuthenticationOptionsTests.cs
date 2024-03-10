@@ -22,7 +22,7 @@ public static class StackExchangeAuthenticationOptionsTests
         };
 
         // Act and Assert
-        Assert.Throws<ArgumentException>("RequestKey", () => options.Validate());
+        Assert.Throws<ArgumentException>("RequestKey", options.Validate);
     }
 
     [Theory]
@@ -40,6 +40,6 @@ public static class StackExchangeAuthenticationOptionsTests
         };
 
         // Act and Assert
-        Assert.Throws<ArgumentException>("Site", () => options.Validate());
+        Assert.Throws<ArgumentException>("Site", options.Validate);
     }
 }

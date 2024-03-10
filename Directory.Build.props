@@ -3,9 +3,9 @@
   <Import Project="Sdk.props" Sdk="Microsoft.DotNet.Arcade.Sdk" />
 
   <PropertyGroup>
-    <DefaultNetCoreTargetFramework>net8.0</DefaultNetCoreTargetFramework>
+    <DefaultNetCoreTargetFramework>net9.0</DefaultNetCoreTargetFramework>
     <LangVersion>latest</LangVersion>
-    <NoWarn>$(NoWarn);CS1591</NoWarn>
+    <NoWarn>$(NoWarn);CA1515;CS1591</NoWarn>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>portable</DebugType>
@@ -76,6 +76,8 @@
 
   <PropertyGroup>
     <EnablePackageValidation>$(IsPackable)</EnablePackageValidation>
+    <!-- TODO Re-enable when the 9.0.0 packages are published to NuGet.org -->
+    <EnablePackageValidation>false</EnablePackageValidation>
   </PropertyGroup>
 
   <ItemGroup>

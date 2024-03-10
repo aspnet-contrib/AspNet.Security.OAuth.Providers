@@ -21,7 +21,7 @@ public static class ZendeskAuthenticationOptionsTests
         };
 
         // Act and Assert
-        Assert.Throws<ArgumentException>("AuthorizationEndpoint", () => options.Validate());
+        Assert.Throws<ArgumentNullException>("AuthorizationEndpoint", options.Validate);
     }
 
     [Fact]
@@ -37,7 +37,7 @@ public static class ZendeskAuthenticationOptionsTests
         };
 
         // Act and Assert
-        Assert.Throws<ArgumentException>("TokenEndpoint", () => options.Validate());
+        Assert.Throws<ArgumentNullException>("TokenEndpoint", options.Validate);
     }
 
     [Fact]
@@ -53,7 +53,7 @@ public static class ZendeskAuthenticationOptionsTests
         };
 
         // Act and Assert
-        Assert.Throws<ArgumentException>("UserInformationEndpoint", () => options.Validate());
+        Assert.Throws<ArgumentException>("UserInformationEndpoint", options.Validate);
     }
 
     [Fact]

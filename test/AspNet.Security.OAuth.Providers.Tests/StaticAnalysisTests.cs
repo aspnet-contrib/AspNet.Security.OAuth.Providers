@@ -75,7 +75,7 @@ public static class StaticAnalysisTests
     private static Type[] GetPublicTypes(IEnumerable<AssemblyName> assemblyNames)
     {
         var types = assemblyNames
-            .Select((p) => AssemblyLoadContext.Default.LoadFromAssemblyName(p))
+            .Select(AssemblyLoadContext.Default.LoadFromAssemblyName)
             .SelectMany((p) => p.GetTypes())
             .Where((p) => p.IsPublic || p.IsNestedPublic)
             .ToArray();
