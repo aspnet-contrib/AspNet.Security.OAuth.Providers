@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <PackageValidationBaselineVersion>8.0.1</PackageValidationBaselineVersion>
+    <TargetFrameworks>$(DefaultNetCoreTargetFramework)</TargetFrameworks>
+  </PropertyGroup>
+
+  <!-- TODO Enable once this provider is published to NuGet.org -->
+  <PropertyGroup>
+    <DisablePackageBaselineValidation>true</DisablePackageBaselineValidation>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Description>ASP.NET Core security middleware enabling Zoom authentication.</Description>
+    <Authors>Christian Oluwawibe</Authors>
+    <PackageTags>aspnetcore;authentication;zoom;oauth;security</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="JetBrains.Annotations" PrivateAssets="All" />
+  </ItemGroup>
+
+</Project>

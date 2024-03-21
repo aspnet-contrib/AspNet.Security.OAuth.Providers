@@ -1,0 +1,32 @@
+{
+  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/main/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
+  "items": [
+    {
+      "comment": "https://developers.zoom.us/docs/integrations/",
+      "uri": "https://zoom.us/oauth/token",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "secret-access-token",
+        "expires_in": "300"
+      }
+    },
+    {
+      "comment": "https://developers.zoom.us/docs/api/rest/reference/user/methods/#tag/Users",
+      "uri": "https://api.zoom.us/v2/users/me",
+      "contentFormat": "json",
+      "contentJson": {
+        "id": "0ECPVTrOjh",
+        "email": "frodo@shire.middleearth",
+        "display_name": "Frodo Baggins",
+        "first_name": "Frodo",
+        "last_name": "Baggins",
+        "pic_url": "https://upload.wikimedia.org/wikipedia/en/4/4e/Elijah_Wood_as_Frodo_Baggins.png",
+        "personal_meeting_url": "https://us04web.zoom.us/j/5478221937?pwd=eZUKx2n11af",
+        "verified": 0,
+        "status": "active",
+        "phone_number": "+2348012345678"
+      }
+    }
+  ]
+}
