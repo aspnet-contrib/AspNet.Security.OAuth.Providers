@@ -131,9 +131,10 @@ public partial class WeixinAuthenticationHandler : OAuthHandler<WeixinAuthentica
         {
             ["appid"] = Options.ClientId,
             ["scope"] = scope,
+            ["response_type"] = "code",
         };
 
-        if (Options.AdditionalAuthorizationParameters?.Count > 0)
+        if (Options.AdditionalAuthorizationParameters.Count > 0)
         {
             foreach (var parameter in Options.AdditionalAuthorizationParameters)
             {

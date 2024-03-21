@@ -22,8 +22,6 @@ public class AlipayAuthenticationOptions : OAuthOptions
         TokenEndpoint = AlipayAuthenticationDefaults.TokenEndpoint;
         UserInformationEndpoint = AlipayAuthenticationDefaults.UserInformationEndpoint;
 
-        AdditionalAuthorizationParameters["response_type"] = "code";
-
         Scope.Add("auth_user");
 
         ClaimActions.MapJsonKey(Claims.Avatar, "avatar");

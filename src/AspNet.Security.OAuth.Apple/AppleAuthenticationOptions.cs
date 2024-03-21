@@ -29,9 +29,6 @@ public class AppleAuthenticationOptions : OAuthOptions
 
         Events = new AppleAuthenticationEvents();
 
-        // Apple requires the response mode to be form_post when the email or name scopes are requested
-        AdditionalAuthorizationParameters["response_mode"] = "form_post";
-
         Scope.Add("openid");
         Scope.Add("name");
         Scope.Add("email");

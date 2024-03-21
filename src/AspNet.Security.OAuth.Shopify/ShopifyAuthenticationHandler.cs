@@ -116,7 +116,7 @@ public partial class ShopifyAuthenticationHandler : OAuthHandler<ShopifyAuthenti
             ["redirect_uri"] = redirectUri,
         };
 
-        if (Options.AdditionalAuthorizationParameters?.Count > 0)
+        if (Options.AdditionalAuthorizationParameters.Count > 0)
         {
             foreach (var parameter in Options.AdditionalAuthorizationParameters)
             {

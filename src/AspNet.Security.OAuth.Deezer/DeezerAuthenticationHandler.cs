@@ -98,7 +98,7 @@ public partial class DeezerAuthenticationHandler : OAuthHandler<DeezerAuthentica
             ["perms"] = scopes,
         };
 
-        if (Options.AdditionalAuthorizationParameters?.Count > 0)
+        if (Options.AdditionalAuthorizationParameters.Count > 0)
         {
             foreach (var parameter in Options.AdditionalAuthorizationParameters)
             {

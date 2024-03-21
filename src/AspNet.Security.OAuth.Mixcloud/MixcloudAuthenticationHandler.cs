@@ -35,9 +35,10 @@ public partial class MixcloudAuthenticationHandler : OAuthHandler<MixcloudAuthen
         {
             ["client_id"] = Options.ClientId,
             ["scope"] = scope,
+            ["response_type"] = "code",
         };
 
-        if (Options.AdditionalAuthorizationParameters?.Count > 0)
+        if (Options.AdditionalAuthorizationParameters.Count > 0)
         {
             foreach (var parameter in Options.AdditionalAuthorizationParameters)
             {

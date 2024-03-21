@@ -9,6 +9,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
@@ -34,6 +35,17 @@ public partial class AppleAuthenticationHandler(
     {
         get { return (AppleAuthenticationEvents)base.Events; }
         set { base.Events = value; }
+    }
+
+    /// <inheritdoc />
+    protected override string BuildChallengeUrl(
+        [NotNull] AuthenticationProperties properties,
+        [NotNull] string redirectUri)
+    {
+        var challengeUrl = base.BuildChallengeUrl(properties, redirectUri);
+
+        // Apple requires the response mode to be form_post when the email or name scopes are requested
+        return QueryHelpers.AddQueryString(challengeUrl, "response_mode", "form_post");
     }
 
     /// <inheritdoc />

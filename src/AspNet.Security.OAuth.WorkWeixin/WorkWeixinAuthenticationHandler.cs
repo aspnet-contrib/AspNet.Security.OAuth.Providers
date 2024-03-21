@@ -110,7 +110,7 @@ public partial class WorkWeixinAuthenticationHandler : OAuthHandler<WorkWeixinAu
             ["redirect_uri"] = redirectUri,
         };
 
-        if (Options.AdditionalAuthorizationParameters?.Count > 0)
+        if (Options.AdditionalAuthorizationParameters.Count > 0)
         {
             foreach (var parameter in Options.AdditionalAuthorizationParameters)
             {
