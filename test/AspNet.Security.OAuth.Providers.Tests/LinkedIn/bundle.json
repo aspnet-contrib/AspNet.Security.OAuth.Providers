@@ -13,120 +13,15 @@
     },
     {
       "comment": "https://docs.microsoft.com/en-us/linkedin/consumer/integrations/self-serve/sign-in-with-linkedin",
-      "uri": "https://api.linkedin.com/v2/me?projection=(id,firstName,lastName,profilePicture(displayImage~%3AplayableStreams))",
+      "uri": "https://api.linkedin.com/v2/userinfo",
       "contentFormat": "json",
       "contentJson": {
-        "id": "1R2RtA",
-        "firstName": {
-          "localized": {
-            "en_US": "Frodo",
-            "fr_FR": "Frodon"
-          },
-          "preferredLocale": {
-            "country": "US",
-            "language": "en"
-          }
-        },
-        "lastName": {
-          "localized": {
-            "en_US": "Baggins",
-            "fr_FR": "Sacquet"
-          },
-          "preferredLocale": {
-            "country": "US",
-            "language": "en"
-          }
-        },
-        "profilePicture": {
-          "displayImage": "urn:li:digitalmediaAsset:C4D03AQGsitRwG8U8ZQ",
-          "displayImage~": {
-            "elements": [
-              {
-                "artifact": "urn:li:digitalmediaMediaArtifact:(urn:li:digitalmediaAsset:C4D03AQGsitRwG8U8ZQ,urn:li:digitalmediaMediaArtifactClass:profile-displayphoto-shrink_100_100)",
-                "authorizationMethod": "PUBLIC",
-                "data": {
-                  "com.linkedin.digitalmedia.mediaartifact.StillImage": {
-                    "storageSize": {
-                      "width": 100,
-                      "height": 100
-                    },
-                    "storageAspectRatio": {
-                      "widthAspect": 1,
-                      "heightAspect": 1,
-                      "formatted": "1.00:1.00"
-                    },
-                    "mediaType": "image/jpeg",
-                    "rawCodecSpec": {
-                      "name": "jpeg",
-                      "type": "image"
-                    },
-                    "displaySize": {
-                      "uom": "PX",
-                      "width": 100,
-                      "height": 100
-                    },
-                    "displayAspectRatio": {
-                      "widthAspect": 1,
-                      "heightAspect": 1,
-                      "formatted": "1.00:1.00"
-                    }
-                  }
-                },
-                "identifiers": [
-                  {
-                    "identifier": "https://upload.wikimedia.org/wikipedia/en/4/4e/Elijah_Wood_as_Frodo_Baggins.png",
-                    "file": "urn:li:digitalmediaFile:(urn:li:digitalmediaAsset:C4D03AQGsitRwG8U8ZQ,urn:li:digitalmediaMediaArtifactClass:profile-displayphoto-shrink_100_100,0)",
-                    "index": 0,
-                    "mediaType": "image/jpeg",
-                    "identifierExpiresInSeconds": 1526940000
-                  }
-                ]
-              }
-            ],
-            "paging": {
-              "count": 10,
-              "start": 0,
-              "links": [
-
-              ]
-            }
-          }
-        }
-      }
-    },
-    {
-      "comment": "https://docs.microsoft.com/en-us/linkedin/consumer/integrations/self-serve/sign-in-with-linkedin",
-      "uri": "https://api.linkedin.com/v2/me?projection=(id,firstName,lastName)",
-      "contentFormat": "json",
-      "contentJson": {
-        "id": "1R2RtA",
-        "firstName": {
-          "localized": {
-            "en_US": "Frodo",
-            "fr_FR": "Frodon"
-          }
-        },
-        "lastName": {
-          "localized": {
-            "en_US": "Baggins",
-            "fr_FR": "Sacquet"
-          }
-        }
-      }
-    },
-    {
-      "comment": "https://docs.microsoft.com/en-us/linkedin/consumer/integrations/self-serve/sign-in-with-linkedin",
-      "uri": "https://api.linkedin.com/v2/emailAddress?q=members&projection=(elements*(handle~))",
-      "contentFormat": "json",
-      "contentJson": {
-        "elements": [
-          {
-            "handle": "urn:li:emailAddress:3775708763",
-            "handle~": {
-              "emailAddress": "frodo@shire.middleearth"
-            }
-          }
-        ]
+        "sub": "1R2RtA",
+        "email": "frodo@shire.middleearth",
+        "name": "Frodo Baggins",
+        "given_name": "Frodo",
+        "family_name": "Baggins",
+        "picture": "https://upload.wikimedia.org/wikipedia/en/4/4e/Elijah_Wood_as_Frodo_Baggins.png"
       }
     }
   ]
