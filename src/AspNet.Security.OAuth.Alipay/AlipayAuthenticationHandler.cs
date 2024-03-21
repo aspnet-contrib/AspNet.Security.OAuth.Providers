@@ -210,9 +210,16 @@ public partial class AlipayAuthenticationHandler : OAuthHandler<AlipayAuthentica
         {
             ["app_id"] = Options.ClientId, // Used instead of "client_id"
             ["scope"] = scope,
-            ["response_type"] = "code",
             ["redirect_uri"] = redirectUri,
         };
+
+        if (Options.AdditionalAuthorizationParameters?.Count > 0)
+        {
+            foreach (var parameter in Options.AdditionalAuthorizationParameters)
+            {
+                parameters[parameter.Key] = parameter.Value;
+            }
+        }
 
         if (Options.UsePkce)
         {

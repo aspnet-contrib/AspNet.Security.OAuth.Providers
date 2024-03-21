@@ -58,15 +58,6 @@ public partial class RedditAuthenticationHandler : OAuthHandler<RedditAuthentica
         return new AuthenticationTicket(context.Principal!, context.Properties, Scheme.Name);
     }
 
-    protected override string BuildChallengeUrl([NotNull] AuthenticationProperties properties, [NotNull] string redirectUri)
-    {
-        var challengeUrl = base.BuildChallengeUrl(properties, redirectUri);
-
-        // Add duration=permanent to the authorization request to get an access token that doesn't expire after 1 hour.
-        // See https://github.com/reddit/reddit/wiki/OAuth2#authorization for more information.
-        return QueryHelpers.AddQueryString(challengeUrl, "duration", "permanent");
-    }
-
     /// <inheritdoc />
     protected override string FormatScope([NotNull] IEnumerable<string> scopes)
     {

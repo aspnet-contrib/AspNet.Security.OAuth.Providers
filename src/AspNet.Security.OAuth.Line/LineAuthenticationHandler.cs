@@ -35,12 +35,19 @@ public partial class LineAuthenticationHandler : OAuthHandler<LineAuthentication
     {
         var tokenRequestParameters = new Dictionary<string, string>
         {
-            ["grant_type"] = "authorization_code",
             ["code"] = context.Code,
             ["redirect_uri"] = context.RedirectUri,
             ["client_id"] = Options.ClientId,
             ["client_secret"] = Options.ClientSecret,
         };
+
+        if (Options.AdditionalAuthorizationParameters?.Count > 0)
+        {
+            foreach (var parameter in Options.AdditionalAuthorizationParameters)
+            {
+                tokenRequestParameters[parameter.Key] = parameter.Value;
+            }
+        }
 
         // PKCE https://tools.ietf.org/html/rfc7636#section-4.5, see BuildChallengeUrl
         if (context.Properties.Items.TryGetValue(OAuthConstants.CodeVerifierKey, out var codeVerifier))

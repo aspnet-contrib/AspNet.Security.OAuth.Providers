@@ -116,6 +116,14 @@ public partial class ShopifyAuthenticationHandler : OAuthHandler<ShopifyAuthenti
             ["redirect_uri"] = redirectUri,
         };
 
+        if (Options.AdditionalAuthorizationParameters?.Count > 0)
+        {
+            foreach (var parameter in Options.AdditionalAuthorizationParameters)
+            {
+                parameters[parameter.Key] = parameter.Value;
+            }
+        }
+
         if (Options.UsePkce)
         {
             var bytes = RandomNumberGenerator.GetBytes(256 / 8);

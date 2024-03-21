@@ -23,6 +23,8 @@ public class LineAuthenticationOptions : OAuthOptions
         TokenEndpoint = LineAuthenticationDefaults.TokenEndpoint;
         UserInformationEndpoint = LineAuthenticationDefaults.UserInformationEndpoint;
 
+        AdditionalAuthorizationParameters["grant_type"] = "authorization_code";
+
         Scope.Add("profile");
         Scope.Add("openid");
 

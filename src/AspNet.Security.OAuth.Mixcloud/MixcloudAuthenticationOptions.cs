@@ -23,6 +23,8 @@ public class MixcloudAuthenticationOptions : OAuthOptions
         TokenEndpoint = MixcloudAuthenticationDefaults.TokenEndpoint;
         UserInformationEndpoint = MixcloudAuthenticationDefaults.UserInformationEndpoint;
 
+        AdditionalAuthorizationParameters["response_type"] = "code";
+
         ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "key");
         ClaimActions.MapJsonKey(ClaimTypes.Name, "username");
         ClaimActions.MapJsonKey(Claims.FullName, "name");

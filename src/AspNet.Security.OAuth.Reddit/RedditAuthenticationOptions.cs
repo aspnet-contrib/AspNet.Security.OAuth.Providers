@@ -24,6 +24,10 @@ public class RedditAuthenticationOptions : OAuthOptions
         TokenEndpoint = RedditAuthenticationDefaults.TokenEndpoint;
         UserInformationEndpoint = RedditAuthenticationDefaults.UserInformationEndpoint;
 
+        // Add duration=permanent to the authorization request to get an access token that doesn't expire after 1 hour.
+        // See https://github.com/reddit/reddit/wiki/OAuth2#authorization for more information.
+        AdditionalAuthorizationParameters["duration"] = "permanent";
+
         Scope.Add("identity");
 
         ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");

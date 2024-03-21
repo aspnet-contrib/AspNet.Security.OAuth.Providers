@@ -23,6 +23,8 @@ public class WeixinAuthenticationOptions : OAuthOptions
         TokenEndpoint = WeixinAuthenticationDefaults.TokenEndpoint;
         UserInformationEndpoint = WeixinAuthenticationDefaults.UserInformationEndpoint;
 
+        AdditionalAuthorizationParameters["response_type"] = "code";
+
         Scope.Add("snsapi_login");
         Scope.Add("snsapi_userinfo");
 
