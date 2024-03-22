@@ -42,12 +42,9 @@ public partial class LineAuthenticationHandler : OAuthHandler<LineAuthentication
             ["client_secret"] = Options.ClientSecret,
         };
 
-        if (Options.AdditionalAuthorizationParameters.Count > 0)
+        foreach (var additionalParameter in Options.AdditionalAuthorizationParameters)
         {
-            foreach (var parameter in Options.AdditionalAuthorizationParameters)
-            {
-                tokenRequestParameters[parameter.Key] = parameter.Value;
-            }
+            tokenRequestParameters.Add(additionalParameter.Key, additionalParameter.Value);
         }
 
         // PKCE https://tools.ietf.org/html/rfc7636#section-4.5, see BuildChallengeUrl

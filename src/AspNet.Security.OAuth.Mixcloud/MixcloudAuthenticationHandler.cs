@@ -38,12 +38,9 @@ public partial class MixcloudAuthenticationHandler : OAuthHandler<MixcloudAuthen
             ["response_type"] = "code",
         };
 
-        if (Options.AdditionalAuthorizationParameters.Count > 0)
+        foreach (var additionalParameter in Options.AdditionalAuthorizationParameters)
         {
-            foreach (var parameter in Options.AdditionalAuthorizationParameters)
-            {
-                parameters[parameter.Key] = parameter.Value;
-            }
+            parameters.Add(additionalParameter.Key, additionalParameter.Value);
         }
 
         if (Options.UsePkce)
