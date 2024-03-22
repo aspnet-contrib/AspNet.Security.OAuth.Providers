@@ -134,6 +134,11 @@ public partial class WeixinAuthenticationHandler : OAuthHandler<WeixinAuthentica
             ["response_type"] = "code",
         };
 
+        foreach (var additionalParameter in Options.AdditionalAuthorizationParameters)
+        {
+            parameters.Add(additionalParameter.Key, additionalParameter.Value);
+        }
+
         if (Options.UsePkce)
         {
             var bytes = RandomNumberGenerator.GetBytes(256 / 8);
