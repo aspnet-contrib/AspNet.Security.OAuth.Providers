@@ -16,6 +16,7 @@ The provider comes with a built-in extension method `UsePrivateKey(string)` to g
 services.AddAuthentication(options => /* Auth configuration */)
         .AddApple(options =>
         {
+            options.GenerateClientSecret = true;
             options.ClientId = Configuration["AppleClientId"];
             options.KeyId = Configuration["AppleKeyId"];
             options.TeamId = Configuration["AppleTeamId"];
@@ -35,6 +36,7 @@ Below are two examples of this approach.
 services.AddAuthentication(options => /* Auth configuration */)
         .AddApple(options =>
         {
+            options.GenerateClientSecret = true;
             options.ClientId = Configuration["Apple:ClientId"];
             options.KeyId = Configuration["Apple:KeyId"];
             options.TeamId = Configuration["Apple:TeamId"];
@@ -54,6 +56,7 @@ services.AddAuthentication(options => /* Auth configuration */)
         .AddOptions<AppleAuthenticationOptions>(AppleAuthenticationDefaults.AuthenticationScheme)
         .Configure<IConfiguration, SecretClient>((options, configuration, client) =>
         {
+            options.GenerateClientSecret = true;
             options.ClientId = configuration["Apple:ClientId"];
             options.KeyId = configuration["Apple:KeyId"];
             options.TeamId = configuration["Apple:TeamId"];
