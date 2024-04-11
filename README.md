@@ -1,11 +1,16 @@
 
 # AspNet.Security.OAuth.Providers
 
-**AspNet.Security.OAuth.Providers** is a **collection of security middleware** that you can use in your **ASP.NET Core** application to support social authentication providers like **[GitHub](https://github.com/)**, **[Foursquare](https://foursquare.com/)** or **[Dropbox](https://www.dropbox.com/)**. It is directly inspired by **[Jerrie Pelser](https://github.com/jerriep)**'s initiative, **[Owin.Security.Providers](https://github.com/RockstarLabs/OwinOAuthProviders)**.
+**AspNet.Security.OAuth.Providers** is a **collection of security middleware** that you can use in your **ASP.NET Core** application to support social authentication providers like **[GitHub](https://github.com/)**, **[Twitter/X](https://twitter.com/)** or **[Dropbox](https://www.dropbox.com/)**. It is directly inspired by **[Jerrie Pelser](https://github.com/jerriep)**'s initiative, **[Owin.Security.Providers](https://github.com/RockstarLabs/OwinOAuthProviders)**.
 
 **The latest official release can be found on [NuGet](https://www.nuget.org/profiles/aspnet-contrib) and the nightly builds on [MyGet](https://www.myget.org/gallery/aspnet-contrib)**.
 
 [![Build status](https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers/workflows/build/badge.svg?branch=dev&event=push)](https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers/actions?query=workflow%3Abuild+branch%3Adev+event%3Apush)
+
+> [!TIP]
+> While the aspnet-contrib providers are still fully supported, **developers are encouraged to use the OpenIddict client for new applications**.
+>
+> For information, see the [Migrating to OpenIddict](#migrating-to-openiddict) section.
 
 ## Getting started
 
@@ -114,6 +119,35 @@ Please see [SECURITY.md](./.github/SECURITY.md) for information about reporting 
 ## License
 
 This project is licensed under the **Apache License**. This means that you can use, modify and distribute it freely. See [https://www.apache.org/licenses/LICENSE-2.0.html](https://www.apache.org/licenses/LICENSE-2.0.html) for more details.
+
+## Migrating to OpenIddict
+
+**The OpenIddict client and its 75+ web providers have significant advantages** over the
+simpler OAuth 2.0-only authentication handler that is used by the aspnet-contrib providers:
+
+ - **OpenIddict fully supports OpenID Connect**, which allows enforcing additional security checks for providers that implement it.
+
+ - The OpenIddict client is stateful and provides **built-in countermeasures against nonce/token replay attacks**.
+
+ - While the aspnet-contrib providers only support the OAuth 2.0 code flow, **the OpenIddict providers support additional flows**, including the
+   OpenID Connect hybrid flow, the OAuth 2.0 client credentials grant, the resource owner password credentials grant or the refresh token grant.
+
+ - **The OpenIddict client supports OAuth 2.0 token introspection and OAuth 2.0 token revocation**.
+
+ - **OpenIddict uses OAuth 2.0 and OpenID Connect server configuration discovery** to avoid hardcoding the endpoint
+   URIs of a provider when possible, making the OpenIddict web providers more robust and more future-proof.
+
+ - While the aspnet-contrib providers require targeting the latest ASP.NET Core version, **the OpenIddict web providers can be
+   used in any supported version**. They can also be used in ASP.NET 4.6.1+ websites and Windows/Linux desktop applications.
+
+ - **OpenIddict uses `Microsoft.Extensions.Http.Polly` (or `Microsoft.Extensions.Http.Resilience` on .NET 8+)
+   to make backchannel HTTP communications less prone to transient network errors**.
+
+For more information on how to get started with the OpenIddict web providers, you can read:
+  - [Getting started with the OpenIddict web providers](https://kevinchalet.com/2022/12/16/getting-started-with-the-openiddict-web-providers/)
+  - [Integrating with a remote server instance](https://documentation.openiddict.com/guides/getting-started/integrating-with-a-remote-server-instance.html)
+
+To contribute a new OpenIddict provider, visit [Contributing a new Web provider](https://documentation.openiddict.com/guides/contributing-a-new-web-provider.html).
 
 ## Providers
 
