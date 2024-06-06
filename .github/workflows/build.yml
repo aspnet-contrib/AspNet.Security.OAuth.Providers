@@ -26,6 +26,11 @@ jobs:
     outputs:
       dotnet-sdk-version: ${{ steps.setup-dotnet.outputs.dotnet-version }}
 
+    permissions:
+      attestations: write
+      contents: read
+      id-token: write
+
     strategy:
       fail-fast: false
       matrix:
@@ -76,6 +81,20 @@ jobs:
       shell: pwsh
       if: ${{ runner.os != 'Windows' }}
       run: ./eng/common/cibuild.sh -configuration Release -prepareMachine
+
+    - name: Attest artifacts
+      uses: actions/attest-build-provenance@49df96e17e918a15956db358890b08e61c704919 # v1.2.0
+      if: |
+        runner.os == 'Windows' &&
+        github.event.repository.fork == false &&
+        (github.ref_name == github.event.repository.default_branch ||
+         startsWith(github.ref, 'refs/heads/dev') ||
+         startsWith(github.ref, 'refs/heads/rel/') ||
+         startsWith(github.ref, 'refs/tags/'))
+      with:
+        subject-path: |
+          ./artifacts/bin/AspNet.Security.*/Release/**/AspNet.Security.*.dll
+          ./artifacts/packages/Release/Shipping/*
 
     - name: Publish logs
       uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # v4.3.3
@@ -134,7 +153,7 @@ jobs:
     runs-on: ubuntu-latest
     if: |
       github.event.repository.fork == false &&
-      (github.ref == format('refs/heads/{0}', github.event.repository.default_branch) ||
+      (github.ref_name == github.event.repository.default_branch ||
        startsWith(github.ref, 'refs/heads/dev') ||
        startsWith(github.ref, 'refs/heads/rel/') ||
        startsWith(github.ref, 'refs/tags/'))
