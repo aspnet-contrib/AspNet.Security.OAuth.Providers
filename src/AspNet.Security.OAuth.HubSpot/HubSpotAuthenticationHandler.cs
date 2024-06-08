@@ -57,7 +57,7 @@ public partial class HubSpotAuthenticationHandler : OAuthHandler<HubSpotAuthenti
             throw new HttpRequestException("An error occurred while retrieving the user profile.");
         }
 
-        return JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
+        return await JsonDocument.ParseAsync(await response.Content.ReadAsStreamAsync(Context.RequestAborted), cancellationToken: Context.RequestAborted);
     }
 
     private static partial class Log
