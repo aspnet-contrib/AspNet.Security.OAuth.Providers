@@ -40,7 +40,8 @@ public partial class YammerAuthenticationHandler : OAuthHandler<YammerAuthentica
             throw new HttpRequestException("An error occurred while retrieving the user profile.");
         }
 
-        using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
+        using var stream = await response.Content.ReadAsStreamAsync(Context.RequestAborted);
+        using var payload = await JsonDocument.ParseAsync(stream, cancellationToken: Context.RequestAborted);
 
         var principal = new ClaimsPrincipal(identity);
         var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload.RootElement);
@@ -83,7 +84,8 @@ public partial class YammerAuthenticationHandler : OAuthHandler<YammerAuthentica
         // Note: Yammer doesn't return a standard OAuth2 response. To make this middleware compatible
         // with the OAuth2 generic middleware, a compliant JSON payload is generated manually.
         // See https://developer.yammer.com/docs/oauth-2 for more information about this process.
-        using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
+        using var stream = await response.Content.ReadAsStreamAsync(Context.RequestAborted);
+        using var payload = await JsonDocument.ParseAsync(stream, cancellationToken: Context.RequestAborted);
         var accessToken = payload.RootElement.GetProperty("access_token").GetString("token");
 
         var token = new OAuthToken()

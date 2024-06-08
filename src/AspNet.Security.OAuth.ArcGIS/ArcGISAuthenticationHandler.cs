@@ -43,7 +43,8 @@ public partial class ArcGISAuthenticationHandler : OAuthHandler<ArcGISAuthentica
 
         // Request the token
         using var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
-        using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
+        using var stream = await response.Content.ReadAsStreamAsync(Context.RequestAborted);
+        using var payload = await JsonDocument.ParseAsync(stream, cancellationToken: Context.RequestAborted);
 
         // Note: error responses always return 200 status codes.
         if (payload.RootElement.TryGetProperty("error", out var error))
