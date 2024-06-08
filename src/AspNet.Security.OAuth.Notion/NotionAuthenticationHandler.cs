@@ -52,7 +52,7 @@ public class NotionAuthenticationHandler(
         using var response = await Backchannel.SendAsync(requestMessage, Context.RequestAborted);
         if (response.IsSuccessStatusCode)
         {
-            var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
+            var payload = await JsonDocument.ParseAsync(await response.Content.ReadAsStreamAsync(Context.RequestAborted), cancellationToken: Context.RequestAborted);
             return OAuthTokenResponse.Success(payload);
         }
 

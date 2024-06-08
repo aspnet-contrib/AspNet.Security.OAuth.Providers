@@ -74,7 +74,7 @@ public partial class XeroAuthenticationHandler : OAuthHandler<XeroAuthentication
             return OAuthTokenResponse.Failed(new Exception("An error occurred while retrieving an access token."));
         }
 
-        var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
+        var payload = await JsonDocument.ParseAsync(await response.Content.ReadAsStreamAsync(Context.RequestAborted), cancellationToken: Context.RequestAborted);
 
         return OAuthTokenResponse.Success(payload);
     }

@@ -54,7 +54,8 @@ public partial class WorkWeixinAuthenticationHandler : OAuthHandler<WorkWeixinAu
             throw new HttpRequestException("An error occurred while retrieving user information.");
         }
 
-        using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
+        using var stream = await response.Content.ReadAsStreamAsync(Context.RequestAborted);
+        using var payload = await JsonDocument.ParseAsync(stream, cancellationToken: Context.RequestAborted);
 
         errorCode = payload.RootElement.GetProperty("errcode").GetInt32();
         if (errorCode != 0)
@@ -96,7 +97,7 @@ public partial class WorkWeixinAuthenticationHandler : OAuthHandler<WorkWeixinAu
             return OAuthTokenResponse.Failed(new Exception("An error occurred while retrieving an access token."));
         }
 
-        var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
+        var payload = await JsonDocument.ParseAsync(await response.Content.ReadAsStreamAsync(Context.RequestAborted), cancellationToken: Context.RequestAborted);
 
         return OAuthTokenResponse.Success(payload);
     }
@@ -148,7 +149,8 @@ public partial class WorkWeixinAuthenticationHandler : OAuthHandler<WorkWeixinAu
             throw new HttpRequestException("An error occurred while retrieving the user identifier.");
         }
 
-        using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
+        using var stream = await response.Content.ReadAsStreamAsync(Context.RequestAborted);
+        using var payload = await JsonDocument.ParseAsync(stream, cancellationToken: Context.RequestAborted);
 
         var errorCode =
             payload.RootElement.TryGetProperty("errcode", out var errCodeElement) && errCodeElement.ValueKind == JsonValueKind.Number ?
