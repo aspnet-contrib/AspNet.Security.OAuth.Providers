@@ -1,0 +1,26 @@
+{
+  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
+  "items": [
+    {
+      "uri": "https://auth.calendly.com/oauth/token",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "secret-access-token",
+        "token_type": "Bearer",
+        "refresh_token": "secret-refresh-token",
+        "expires_in": 3600
+      }
+    },
+    {
+      "uri": "https://api.calendly.com/users/me",
+      "contentFormat": "json",
+      "contentJson": {
+        "resource": {
+          "email": "testuser@example.com",
+          "name": "Test User"
+        }
+      }
+    }
+  ]
+}
