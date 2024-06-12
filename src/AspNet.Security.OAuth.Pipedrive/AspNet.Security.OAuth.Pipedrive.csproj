@@ -7,6 +7,7 @@
   <!-- TODO Enable once this provider is published to NuGet.org -->
   <PropertyGroup>
     <DisablePackageBaselineValidation>true</DisablePackageBaselineValidation>
+    <PackageValidationBaselineVersion>8.0.1</PackageValidationBaselineVersion>
   </PropertyGroup>
 
   <PropertyGroup>

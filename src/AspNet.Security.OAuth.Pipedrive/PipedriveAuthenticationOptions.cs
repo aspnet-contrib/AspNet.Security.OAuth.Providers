@@ -24,8 +24,7 @@ public class PipedriveAuthenticationOptions : OAuthOptions
 
         Scope.Add("base");
 
-        ClaimActions.MapCustomJson(ClaimTypes.NameIdentifier,
-            user => user.GetProperty("data").GetString("id"));
+        ClaimActions.MapCustomJson(ClaimTypes.NameIdentifier, user => user.GetProperty("data").GetString("id"));
         ClaimActions.MapCustomJson(ClaimTypes.Name, user => user.GetProperty("data").GetString("name"));
         ClaimActions.MapCustomJson(ClaimTypes.Email, user => user.GetProperty("data").GetString("email"));
     }
