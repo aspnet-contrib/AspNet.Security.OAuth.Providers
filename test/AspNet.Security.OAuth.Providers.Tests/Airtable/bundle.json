@@ -1,0 +1,29 @@
+{
+  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
+  "items": [
+    {
+      "uri": "https://airtable.com/oauth2/v1/token",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "secret-access-token",
+        "token_type": "access",
+        "refresh_token": "secret-refresh-token",
+        "expires_in": 3600,
+        "refresh_expires_in": 5184000
+      }
+    },
+    {
+      "comment": "https://pipedrive.readme.io/docs/marketplace-getting-user-data",
+      "uri": "https://api.airtable.com/v0/meta/whoami",
+      "contentFormat": "json",
+      "contentJson": {
+        "id": "usr3d5D4ghuiJ",
+        "scopes": [
+          "user.email:read"
+        ],
+        "email": "testuser@example.com"
+      }
+    }
+  ]
+}

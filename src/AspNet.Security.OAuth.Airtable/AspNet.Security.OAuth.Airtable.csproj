@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>$(DefaultNetCoreTargetFramework)</TargetFramework>
+  </PropertyGroup>
+
+  <!-- TODO Enable once this provider is published to NuGet.org -->
+  <PropertyGroup>
+    <DisablePackageBaselineValidation>true</DisablePackageBaselineValidation>
+<!--    <PackageValidationBaselineVersion>8.0.1</PackageValidationBaselineVersion>-->
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Description>ASP.NET Core security middleware enabling Airtable authentication.</Description>
+    <Authors>Denys Goncharenko</Authors>
+    <PackageTags>aspnetcore;authentication;oauth;airtable;security</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App"/>
+    <PackageReference Include="JetBrains.Annotations" PrivateAssets="All"/>
+  </ItemGroup>
+
+</Project>
