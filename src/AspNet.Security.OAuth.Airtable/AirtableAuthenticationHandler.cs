@@ -36,8 +36,7 @@ public partial class AirtableAuthenticationHandler : OAuthHandler<AirtableAuthen
         request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", tokens.AccessToken);
 
-        using var response =
-            await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
+        using var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
         if (!response.IsSuccessStatusCode)
         {
             await Log.UserProfileErrorAsync(Logger, response, Context.RequestAborted);
@@ -74,13 +73,9 @@ public partial class AirtableAuthenticationHandler : OAuthHandler<AirtableAuthen
         }
 
         using var requestMessage = new HttpRequestMessage(HttpMethod.Post, Options.TokenEndpoint);
-        requestMessage.Headers.Accept.Add(
-            new MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.FormUrlEncoded));
+        requestMessage.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json));
         requestMessage.Content = new FormUrlEncodedContent(tokenRequestParameters);
-        var credentials = Convert.ToBase64String(Encoding.ASCII.GetBytes(
-            $"{Options.ClientId}:{Options.ClientSecret}"));
-        requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Basic", credentials);
-
+        requestMessage.Headers.Authorization = CreateAuthorizationHeader();
         requestMessage.Version = Backchannel.DefaultRequestVersion;
 
         var response = await Backchannel.SendAsync(requestMessage, Context.RequestAborted);
@@ -91,6 +86,27 @@ public partial class AirtableAuthenticationHandler : OAuthHandler<AirtableAuthen
             true => OAuthTokenResponse.Success(JsonDocument.Parse(body)),
             false => await ParseInvalidResponseAsync(response)
         };
+    }
+
+    private AuthenticationHeaderValue CreateAuthorizationHeader()
+    {
+        var credentials = Convert.ToBase64String(Encoding.ASCII.GetBytes(
+            string.Concat(
+                EscapeDataString(Options.ClientId),
+                ":",
+                EscapeDataString(Options.ClientSecret))));
+
+        return new AuthenticationHeaderValue("Basic", credentials);
+    }
+
+    private static string EscapeDataString(string value)
+    {
+        if (string.IsNullOrEmpty(value))
+        {
+            return string.Empty;
+        }
+
+        return Uri.EscapeDataString(value).Replace("%20", "+", StringComparison.Ordinal);
     }
 
     private async Task<OAuthTokenResponse> ParseInvalidResponseAsync(HttpResponseMessage response)
@@ -119,18 +135,17 @@ public partial class AirtableAuthenticationHandler : OAuthHandler<AirtableAuthen
                 await response.Content.ReadAsStringAsync(cancellationToken));
         }
 
-        [LoggerMessage(3, LogLevel.Error, "An error occurred while retrieving an access token: the remote server returned a {Status} response with the following payload: {Headers} {Body}.")]
-        private static partial void ExchangeCodeError(
-            ILogger logger,
-            HttpStatusCode status,
-            string headers,
-            string body);
-
-        [LoggerMessage(1, LogLevel.Error,
-            "An error occurred while retrieving the user profile: the remote server returned a {Status} response with the following payload: {Headers} {Body}.")]
+        [LoggerMessage(1, LogLevel.Error, "An error occurred while retrieving the user profile: the remote server returned a {Status} response with the following payload: {Headers} {Body}.")]
         private static partial void UserProfileError(
             ILogger logger,
             System.Net.HttpStatusCode status,
+            string headers,
+            string body);
+
+        [LoggerMessage(2, LogLevel.Error, "An error occurred while retrieving an access token: the remote server returned a {Status} response with the following payload: {Headers} {Body}.")]
+        private static partial void ExchangeCodeError(
+            ILogger logger,
+            HttpStatusCode status,
             string headers,
             string body);
     }
