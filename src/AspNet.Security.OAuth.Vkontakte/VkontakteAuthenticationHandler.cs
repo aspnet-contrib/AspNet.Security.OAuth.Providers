@@ -48,7 +48,7 @@ public partial class VkontakteAuthenticationHandler : OAuthHandler<VkontakteAuth
             throw new HttpRequestException("An error occurred while retrieving the user profile.");
         }
 
-        using var container = await JsonDocument.ParseAsync(await response.Content.ReadAsStreamAsync(Context.RequestAborted), cancellationToken: Context.RequestAborted);
+        using var container = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
         using var enumerator = container.RootElement.GetProperty("response").EnumerateArray();
         var payload = enumerator.First();
 
