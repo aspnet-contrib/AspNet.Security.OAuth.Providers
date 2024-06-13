@@ -22,7 +22,6 @@ public class TypeformAuthenticationOptions : OAuthOptions
         TokenEndpoint = TypeformAuthenticationDefaults.TokenEndpoint;
         UserInformationEndpoint = TypeformAuthenticationDefaults.UserInformationEndpoint;
 
-        Scope.Add("offline");
         Scope.Add("accounts:read");
 
         ClaimActions.MapCustomJson(ClaimTypes.NameIdentifier, user => user.GetString("user_id"));
