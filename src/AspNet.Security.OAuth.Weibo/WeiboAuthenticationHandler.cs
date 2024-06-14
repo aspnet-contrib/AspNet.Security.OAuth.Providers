@@ -48,8 +48,7 @@ public partial class WeiboAuthenticationHandler : OAuthHandler<WeiboAuthenticati
             throw new HttpRequestException("An error occurred while retrieving the user profile.");
         }
 
-        using var stream = await response.Content.ReadAsStreamAsync(Context.RequestAborted);
-        using var payload = await JsonDocument.ParseAsync(stream, cancellationToken: Context.RequestAborted);
+        using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
 
         // When the email address is not public, retrieve it from
         // the emails endpoint if the user:email scope is specified.
@@ -92,8 +91,7 @@ public partial class WeiboAuthenticationHandler : OAuthHandler<WeiboAuthenticati
             throw new HttpRequestException("An error occurred while retrieving the email address associated to the user profile.");
         }
 
-        using var stream = await response.Content.ReadAsStreamAsync(Context.RequestAborted);
-        using var payload = await JsonDocument.ParseAsync(stream, cancellationToken: Context.RequestAborted);
+        using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
 
         return (from email in payload.RootElement.EnumerateArray()
                 select email.GetString("email")).FirstOrDefault();

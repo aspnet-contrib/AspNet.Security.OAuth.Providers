@@ -40,8 +40,7 @@ public partial class ExactOnlineAuthenticationHandler : OAuthHandler<ExactOnline
             throw new HttpRequestException("An error occurred while retrieving the user profile.");
         }
 
-        using var stream = await response.Content.ReadAsStreamAsync(Context.RequestAborted);
-        using var payload = await JsonDocument.ParseAsync(stream, cancellationToken: Context.RequestAborted);
+        using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
         var user = payload.RootElement
             .GetProperty("d")
             .GetProperty("results")

@@ -47,8 +47,7 @@ public partial class ZaloAuthenticationHandler : OAuthHandler<ZaloAuthentication
             throw new HttpRequestException("An error occurred while retrieving the user profile.");
         }
 
-        using var stream = await response.Content.ReadAsStreamAsync(Context.RequestAborted);
-        using var payload = await JsonDocument.ParseAsync(stream, cancellationToken: Context.RequestAborted);
+        using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
 
         var principal = new ClaimsPrincipal(identity);
         var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload.RootElement);
@@ -91,7 +90,7 @@ public partial class ZaloAuthenticationHandler : OAuthHandler<ZaloAuthentication
             throw new HttpRequestException("An error occurred while retrieving the user profile.");
         }
 
-        var payload = await JsonDocument.ParseAsync(await response.Content.ReadAsStreamAsync(Context.RequestAborted), cancellationToken: Context.RequestAborted);
+        var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
 
         return OAuthTokenResponse.Success(payload);
     }
