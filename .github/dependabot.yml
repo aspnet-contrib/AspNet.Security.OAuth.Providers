@@ -2,6 +2,10 @@ version: 2
 updates:
 - package-ecosystem: "github-actions"
   directory: "/"
+  groups:
+    actions:
+      patterns:
+        - actions/*
   schedule:
     interval: daily
     time: "06:30"

@@ -4,51 +4,45 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-namespace AspNet.Security.OAuth.LinkedIn;
+namespace AspNet.Security.OAuth.Typeform;
 
 /// <summary>
-/// Default values used by the LinkedIn authentication middleware.
+/// Default values used by the Typeform authentication middleware.
 /// </summary>
-public class LinkedInAuthenticationDefaults
+public static class TypeformAuthenticationDefaults
 {
     /// <summary>
     /// Default value for <see cref="AuthenticationScheme.Name"/>.
     /// </summary>
-    public const string AuthenticationScheme = "LinkedIn";
+    public const string AuthenticationScheme = "Typeform";
 
     /// <summary>
     /// Default value for <see cref="AuthenticationScheme.DisplayName"/>.
     /// </summary>
-    public static readonly string DisplayName = "LinkedIn";
+    public static readonly string DisplayName = "Typeform";
 
     /// <summary>
     /// Default value for <see cref="AuthenticationSchemeOptions.ClaimsIssuer"/>.
     /// </summary>
-    public static readonly string Issuer = "LinkedIn";
+    public static readonly string Issuer = "Typeform";
 
     /// <summary>
     /// Default value for <see cref="RemoteAuthenticationOptions.CallbackPath"/>.
     /// </summary>
-    public static readonly string CallbackPath = "/signin-linkedin";
+    public static readonly string CallbackPath = "/signin-typeform";
 
     /// <summary>
     /// Default value for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
     /// </summary>
-    public static readonly string AuthorizationEndpoint = "https://www.linkedin.com/oauth/v2/authorization";
+    public static readonly string AuthorizationEndpoint = "https://api.typeform.com/oauth/authorize";
 
     /// <summary>
     /// Default value for <see cref="OAuthOptions.TokenEndpoint"/>.
     /// </summary>
-    public static readonly string TokenEndpoint = "https://www.linkedin.com/oauth/v2/accessToken";
+    public static readonly string TokenEndpoint = "https://api.typeform.com/oauth/token";
 
     /// <summary>
     /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
     /// </summary>
-    public static readonly string UserInformationEndpoint = "https://api.linkedin.com/v2/userinfo";
-
-    /// <summary>
-    /// Specific endpoint to retrieve the LinkedIn member's email address.
-    /// See <a>https://docs.microsoft.com/en-us/linkedin/consumer/integrations/self-serve/sign-in-with-linkedin</a> for more information.
-    /// </summary>
-    public static readonly string EmailAddressEndpoint = "https://api.linkedin.com/v2/emailAddress?q=members&projection=(elements*(handle~))";
+    public static readonly string UserInformationEndpoint = "https://api.typeform.com/me";
 }

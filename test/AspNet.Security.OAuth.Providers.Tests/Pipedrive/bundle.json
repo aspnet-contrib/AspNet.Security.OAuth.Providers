@@ -1,0 +1,28 @@
+{
+  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
+  "items": [
+    {
+      "uri": "https://oauth.pipedrive.com/oauth/token",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "secret-access-token",
+        "token_type": "access",
+        "refresh_token": "secret-refresh-token",
+        "expires_in": "300"
+      }
+    },
+    {
+      "comment": "https://pipedrive.readme.io/docs/marketplace-getting-user-data",
+      "uri": "https://api.pipedrive.com/v1/users/me",
+      "contentFormat": "json",
+      "contentJson": {
+        "data": {
+          "id": "12345",
+          "name": "Test User",
+          "email": "testuser@example.com"
+        }
+      }
+    }
+  ]
+}

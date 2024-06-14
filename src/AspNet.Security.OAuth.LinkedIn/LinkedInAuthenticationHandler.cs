@@ -31,18 +31,8 @@ public partial class LinkedInAuthenticationHandler : OAuthHandler<LinkedInAuthen
         [NotNull] OAuthTokenResponse tokens)
     {
         var requestUri = Options.UserInformationEndpoint;
-        var fields = Options.Fields
-            .Where(f => !string.Equals(f, LinkedInAuthenticationConstants.EmailAddressField, StringComparison.OrdinalIgnoreCase))
-            .ToList();
-
-        // If at least one field is specified, append the fields to the endpoint URL.
-        if (fields.Count > 0)
-        {
-            requestUri = QueryHelpers.AddQueryString(requestUri, "projection", $"({string.Join(',', fields)})");
-        }
 
         using var request = new HttpRequestMessage(HttpMethod.Get, requestUri);
-        request.Headers.Add("x-li-format", "json");
         request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", tokens.AccessToken);
 
         using var response = await Backchannel.SendAsync(request, Context.RequestAborted);
@@ -58,20 +48,11 @@ public partial class LinkedInAuthenticationHandler : OAuthHandler<LinkedInAuthen
         var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload.RootElement);
         context.RunClaimActions();
 
-        if (!string.IsNullOrEmpty(Options.EmailAddressEndpoint) &&
-            Options.Fields.Contains(LinkedInAuthenticationConstants.EmailAddressField))
-        {
-            var email = await GetEmailAsync(tokens);
-            if (!string.IsNullOrEmpty(email))
-            {
-                identity.AddClaim(new Claim(ClaimTypes.Email, email, ClaimValueTypes.String, Options.ClaimsIssuer));
-            }
-        }
-
         await Events.CreatingTicket(context);
         return new AuthenticationTicket(context.Principal!, context.Properties, Scheme.Name);
     }
 
+    [Obsolete("This method is no longer used and will be removed in a future version.", false)]
     protected virtual async Task<string?> GetEmailAsync([NotNull] OAuthTokenResponse tokens)
     {
         using var request = new HttpRequestMessage(HttpMethod.Get, Options.EmailAddressEndpoint);
