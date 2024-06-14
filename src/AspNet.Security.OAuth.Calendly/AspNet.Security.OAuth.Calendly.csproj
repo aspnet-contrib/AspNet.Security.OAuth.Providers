@@ -5,11 +5,6 @@
     <TargetFrameworks>$(DefaultNetCoreTargetFramework)</TargetFrameworks>
   </PropertyGroup>
 
-  <!-- TODO Enable once this provider is published to NuGet.org -->
-  <PropertyGroup>
-    <DisablePackageBaselineValidation>true</DisablePackageBaselineValidation>
-  </PropertyGroup>
-
   <PropertyGroup>
     <Description>ASP.NET Core security middleware enabling Calendly authentication.</Description>
     <Authors>Denys Goncharenko</Authors>
