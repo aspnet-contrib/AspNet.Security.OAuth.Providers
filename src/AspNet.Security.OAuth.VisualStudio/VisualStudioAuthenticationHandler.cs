@@ -42,8 +42,7 @@ public partial class VisualStudioAuthenticationHandler : OAuthHandler<VisualStud
             throw new HttpRequestException("An error occurred while retrieving the user profile.");
         }
 
-        using var stream = await response.Content.ReadAsStreamAsync(Context.RequestAborted);
-        using var payload = await JsonDocument.ParseAsync(stream, cancellationToken: Context.RequestAborted);
+        var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
 
         var principal = new ClaimsPrincipal(identity);
         var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload.RootElement);
@@ -83,8 +82,7 @@ public partial class VisualStudioAuthenticationHandler : OAuthHandler<VisualStud
             return OAuthTokenResponse.Failed(new Exception("An error occurred while retrieving an access token."));
         }
 
-        using var stream = await response.Content.ReadAsStreamAsync(Context.RequestAborted);
-        using var payload = await JsonDocument.ParseAsync(stream, cancellationToken: Context.RequestAborted);
+        var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
 
         return OAuthTokenResponse.Success(payload);
     }
