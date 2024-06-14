@@ -298,6 +298,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.JumpC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.Airtable", "src\AspNet.Security.OAuth.Airtable\AspNet.Security.OAuth.Airtable.csproj", "{83C37AC5-51FB-47CD-8CBE-77AA114FF6F3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.Pipedrive", "src\AspNet.Security.OAuth.Pipedrive\AspNet.Security.OAuth.Pipedrive.csproj", "{55975423-C9C0-4C47-AD00-0F012F30AD3C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -684,6 +686,10 @@ Global
 		{83C37AC5-51FB-47CD-8CBE-77AA114FF6F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{83C37AC5-51FB-47CD-8CBE-77AA114FF6F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{83C37AC5-51FB-47CD-8CBE-77AA114FF6F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55975423-C9C0-4C47-AD00-0F012F30AD3C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55975423-C9C0-4C47-AD00-0F012F30AD3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55975423-C9C0-4C47-AD00-0F012F30AD3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55975423-C9C0-4C47-AD00-0F012F30AD3C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -790,6 +796,7 @@ Global
 		{CF8C4235-6AE6-404E-B572-4FF4E85AB5FF} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 		{8AF5DDBE-2631-4E71-9045-73A6356CE86B} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 		{83C37AC5-51FB-47CD-8CBE-77AA114FF6F3} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
+		{55975423-C9C0-4C47-AD00-0F012F30AD3C} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C7B54DE2-6407-4802-AD9C-CE54BF414C8C}

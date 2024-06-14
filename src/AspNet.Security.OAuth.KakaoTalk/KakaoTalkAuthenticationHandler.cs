@@ -51,7 +51,7 @@ public partial class KakaoTalkAuthenticationHandler : OAuthHandler<KakaoTalkAuth
             throw new HttpRequestException("An error occurred while retrieving the user profile.");
         }
 
-        return await JsonDocument.ParseAsync(await response.Content.ReadAsStreamAsync(Context.RequestAborted), cancellationToken: Context.RequestAborted);
+        return JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
     }
 
     private static partial class Log

@@ -11,36 +11,24 @@ using System.Text.Json;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace AspNet.Security.OAuth.Okta;
+namespace AspNet.Security.OAuth.Pipedrive;
 
-/// <summary>
-/// Defines a handler for authentication using Okta.
-/// </summary>
-public partial class OktaAuthenticationHandler : OAuthHandler<OktaAuthenticationOptions>
+public partial class PipedriveAuthenticationHandler : OAuthHandler<PipedriveAuthenticationOptions>
 {
-    /// <summary>
-    /// Initializes a new instance of the <see cref="OktaAuthenticationHandler"/> class.
-    /// </summary>
-    /// <param name="options">The authentication options.</param>
-    /// <param name="logger">The logger to use.</param>
-    /// <param name="encoder">The URL encoder to use.</param>
-    public OktaAuthenticationHandler(
-        [NotNull] IOptionsMonitor<OktaAuthenticationOptions> options,
+    public PipedriveAuthenticationHandler(
+        [NotNull] IOptionsMonitor<PipedriveAuthenticationOptions> options,
         [NotNull] ILoggerFactory logger,
         [NotNull] UrlEncoder encoder)
         : base(options, logger, encoder)
     {
     }
 
-    /// <inheritdoc />
     protected override async Task<AuthenticationTicket> CreateTicketAsync(
         [NotNull] ClaimsIdentity identity,
         [NotNull] AuthenticationProperties properties,
         [NotNull] OAuthTokenResponse tokens)
     {
-        var endpoint = Options.UserInformationEndpoint;
-
-        using var request = new HttpRequestMessage(HttpMethod.Get, endpoint);
+        using var request = new HttpRequestMessage(HttpMethod.Get, Options.UserInformationEndpoint);
         request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", tokens.AccessToken);
 
@@ -48,7 +36,7 @@ public partial class OktaAuthenticationHandler : OAuthHandler<OktaAuthentication
         if (!response.IsSuccessStatusCode)
         {
             await Log.UserProfileErrorAsync(Logger, response, Context.RequestAborted);
-            throw new HttpRequestException("An error occurred while retrieving the user profile from Okta.");
+            throw new HttpRequestException("An error occurred while retrieving the user profile.");
         }
 
         using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));

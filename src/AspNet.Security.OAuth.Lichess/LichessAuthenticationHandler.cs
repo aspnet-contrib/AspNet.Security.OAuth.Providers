@@ -79,8 +79,7 @@ public partial class LichessAuthenticationHandler : OAuthHandler<LichessAuthenti
             throw new HttpRequestException($"An error occurred while retrieving the {requestInformationType}.");
         }
 
-        using var stream = await response.Content.ReadAsStreamAsync(Context.RequestAborted);
-        return await JsonDocument.ParseAsync(stream, cancellationToken: Context.RequestAborted);
+        return JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
     }
 
     private static partial class Log
