@@ -1,13 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <PackageValidationBaselineVersion>8.1.0</PackageValidationBaselineVersion>
     <TargetFramework>$(DefaultNetCoreTargetFramework)</TargetFramework>
-  </PropertyGroup>
-
-  <!-- TODO Enable once this provider is published to NuGet.org -->
-  <PropertyGroup>
-    <DisablePackageBaselineValidation>true</DisablePackageBaselineValidation>
   </PropertyGroup>
 
   <PropertyGroup>
