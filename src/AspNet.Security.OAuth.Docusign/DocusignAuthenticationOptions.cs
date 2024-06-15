@@ -13,18 +13,62 @@ namespace AspNet.Security.OAuth.Docusign;
 /// </summary>
 public class DocusignAuthenticationOptions : OAuthOptions
 {
+    /// <summary>
+    /// Sets or retrieves a value that determines whether sandbox or production endpoints are used.
+    /// The default value of this property is <see cref="DocusignAuthenticationEnvironment.Sandbox"/>.
+    /// </summary>
+    public DocusignAuthenticationEnvironment Environment
+    {
+        get
+        {
+            return _environment;
+        }
+
+        set
+        {
+            _environment = value;
+            ConfigureOptions();
+        }
+    }
+
+    private DocusignAuthenticationEnvironment _environment;
+
     public DocusignAuthenticationOptions()
     {
         ClaimsIssuer = DocusignAuthenticationDefaults.Issuer;
         CallbackPath = DocusignAuthenticationDefaults.CallbackPath;
-
-        AuthorizationEndpoint = DocusignAuthenticationDefaults.AuthorizationEndpoint;
-        TokenEndpoint = DocusignAuthenticationDefaults.TokenEndpoint;
-        UserInformationEndpoint = DocusignAuthenticationDefaults.UserInformationEndpoint;
+        Environment = DocusignAuthenticationEnvironment.Sandbox;
 
         ClaimActions.MapCustomJson(ClaimTypes.Name, user => user.GetString("name"));
         ClaimActions.MapCustomJson(ClaimTypes.Email, user => user.GetString("email"));
         ClaimActions.MapCustomJson(ClaimTypes.GivenName, user => user.GetString("given_name"));
         ClaimActions.MapCustomJson(ClaimTypes.Surname, user => user.GetString("family_name"));
+    }
+
+    public override void Validate()
+    {
+        base.Validate();
+
+        if (!Enum.IsDefined(typeof(DocusignAuthenticationEnvironment), Environment))
+        {
+            throw new InvalidOperationException($"The {nameof(Environment)} is not supported.");
+        }
+    }
+
+    private void ConfigureOptions()
+    {
+        switch (Environment)
+        {
+            case DocusignAuthenticationEnvironment.Production:
+                AuthorizationEndpoint = DocusignAuthenticationConstants.Endpoints.ProductionAuthorizationEndpoint;
+                TokenEndpoint = DocusignAuthenticationConstants.Endpoints.ProductionTokenEndpoint;
+                UserInformationEndpoint = DocusignAuthenticationConstants.Endpoints.ProductionUserInformationEndpoint;
+                break;
+            case DocusignAuthenticationEnvironment.Sandbox:
+                AuthorizationEndpoint = DocusignAuthenticationConstants.Endpoints.SandboxAuthorizationEndpoint;
+                TokenEndpoint = DocusignAuthenticationConstants.Endpoints.SandboxTokenEndpoint;
+                UserInformationEndpoint = DocusignAuthenticationConstants.Endpoints.SandboxUserInformationEndpoint;
+                break;
+        }
     }
 }

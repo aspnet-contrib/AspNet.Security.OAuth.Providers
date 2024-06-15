@@ -30,19 +30,4 @@ public static class DocusignAuthenticationDefaults
     /// Default value for <see cref="RemoteAuthenticationOptions.CallbackPath"/>.
     /// </summary>
     public static readonly string CallbackPath = "/signin-docusign";
-
-    /// <summary>
-    /// Default value for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
-    /// </summary>
-    public static readonly string AuthorizationEndpoint = "https://account.docusign.com/oauth/auth";
-
-    /// <summary>
-    /// Default value for <see cref="OAuthOptions.TokenEndpoint"/>.
-    /// </summary>
-    public static readonly string TokenEndpoint = "https://account.docusign.com/oauth/token";
-
-    /// <summary>
-    /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
-    /// </summary>
-    public static readonly string UserInformationEndpoint = "https://account.docusign.com/oauth/userinfo";
 }
