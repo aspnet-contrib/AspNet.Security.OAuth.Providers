@@ -12,5 +12,5 @@ namespace AspNet.Security.OAuth.Docusign;
 public enum DocusignAuthenticationEnvironment
 {
     Production = 0,
-    Sandbox = 1
+    Development = 1
 }
