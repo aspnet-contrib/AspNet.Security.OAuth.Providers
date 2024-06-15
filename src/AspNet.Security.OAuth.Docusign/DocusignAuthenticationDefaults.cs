@@ -34,15 +34,15 @@ public static class DocusignAuthenticationDefaults
     /// <summary>
     /// Default value for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
     /// </summary>
-    public static readonly string AuthorizationEndpoint = "https://account-d.docusign.com/oauth/auth";
+    public static readonly string AuthorizationEndpoint = "https://account.docusign.com/oauth/auth";
 
     /// <summary>
     /// Default value for <see cref="OAuthOptions.TokenEndpoint"/>.
     /// </summary>
-    public static readonly string TokenEndpoint = "https://account-d.docusign.com/oauth/token";
+    public static readonly string TokenEndpoint = "https://account.docusign.com/oauth/token";
 
     /// <summary>
     /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
     /// </summary>
-    public static readonly string UserInformationEndpoint = "https://account-d.docusign.com/oauth/userinfo";
+    public static readonly string UserInformationEndpoint = "https://account.docusign.com/oauth/userinfo";
 }
