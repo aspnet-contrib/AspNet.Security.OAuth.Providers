@@ -30,4 +30,34 @@ public static class DocusignAuthenticationDefaults
     /// Default value for <see cref="RemoteAuthenticationOptions.CallbackPath"/>.
     /// </summary>
     public static readonly string CallbackPath = "/signin-docusign";
+
+    /// <summary>
+    /// Default value for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
+    /// </summary>
+    public static readonly string DevelopmentAuthorizationEndpoint = "https://account-d.docusign.com/oauth/auth";
+
+    /// <summary>
+    /// Default value for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
+    /// </summary>
+    public static readonly string ProductionAuthorizationEndpoint = "https://account.docusign.com/oauth/auth";
+
+    /// <summary>
+    /// Default value for <see cref="OAuthOptions.TokenEndpoint"/>.
+    /// </summary>
+    public static readonly string DevelopmentTokenEndpoint = "https://account-d.docusign.com/oauth/token";
+
+    /// <summary>
+    /// Default value for <see cref="OAuthOptions.TokenEndpoint"/>.
+    /// </summary>
+    public static readonly string ProductionTokenEndpoint = "https://account.docusign.com/oauth/token";
+
+    /// <summary>
+    /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
+    /// </summary>
+    public static readonly string DevelopmentUserInformationEndpoint = "https://account-d.docusign.com/oauth/userinfo";
+
+    /// <summary>
+    /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
+    /// </summary>
+    public static readonly string ProductionUserInformationEndpoint = "https://account.docusign.com/oauth/userinfo";
 }

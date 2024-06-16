@@ -17,21 +17,7 @@ public class DocusignAuthenticationOptions : OAuthOptions
     /// Sets or retrieves a value that determines whether development or production endpoints are used.
     /// The default value of this property is <see cref="DocusignAuthenticationEnvironment.Development"/>.
     /// </summary>
-    public DocusignAuthenticationEnvironment Environment
-    {
-        get
-        {
-            return _environment;
-        }
-
-        set
-        {
-            _environment = value;
-            ConfigureOptions();
-        }
-    }
-
-    private DocusignAuthenticationEnvironment _environment;
+    public DocusignAuthenticationEnvironment Environment { get; set; }
 
     public DocusignAuthenticationOptions()
     {
@@ -43,32 +29,5 @@ public class DocusignAuthenticationOptions : OAuthOptions
         ClaimActions.MapCustomJson(ClaimTypes.Email, user => user.GetString("email"));
         ClaimActions.MapCustomJson(ClaimTypes.GivenName, user => user.GetString("given_name"));
         ClaimActions.MapCustomJson(ClaimTypes.Surname, user => user.GetString("family_name"));
-    }
-
-    public override void Validate()
-    {
-        base.Validate();
-
-        if (!Enum.IsDefined(typeof(DocusignAuthenticationEnvironment), Environment))
-        {
-            throw new InvalidOperationException($"The {nameof(Environment)} is not supported.");
-        }
-    }
-
-    private void ConfigureOptions()
-    {
-        switch (Environment)
-        {
-            case DocusignAuthenticationEnvironment.Production:
-                AuthorizationEndpoint = DocusignAuthenticationConstants.Endpoints.ProductionAuthorizationEndpoint;
-                TokenEndpoint = DocusignAuthenticationConstants.Endpoints.ProductionTokenEndpoint;
-                UserInformationEndpoint = DocusignAuthenticationConstants.Endpoints.ProductionUserInformationEndpoint;
-                break;
-            case DocusignAuthenticationEnvironment.Development:
-                AuthorizationEndpoint = DocusignAuthenticationConstants.Endpoints.DevelopmentAuthorizationEndpoint;
-                TokenEndpoint = DocusignAuthenticationConstants.Endpoints.DevelopmentTokenEndpoint;
-                UserInformationEndpoint = DocusignAuthenticationConstants.Endpoints.DevelopmentUserInformationEndpoint;
-                break;
-        }
     }
 }

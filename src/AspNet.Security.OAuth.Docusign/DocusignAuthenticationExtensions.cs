@@ -5,6 +5,8 @@
  */
 
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Options;
 
 namespace AspNet.Security.OAuth.Docusign;
 
@@ -69,6 +71,7 @@ public static class DocusignAuthenticationExtensions
         [CanBeNull] string caption,
         [NotNull] Action<DocusignAuthenticationOptions> configuration)
     {
+        builder.Services.TryAddSingleton<IPostConfigureOptions<DocusignAuthenticationOptions>, DocusignAuthenticationPostConfigureOptions>();
         return builder.AddOAuth<DocusignAuthenticationOptions, DocusignAuthenticationHandler>(scheme, caption, configuration);
     }
 }
