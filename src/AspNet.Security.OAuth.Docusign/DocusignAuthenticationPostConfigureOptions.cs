@@ -9,7 +9,7 @@ using Microsoft.Extensions.Options;
 namespace AspNet.Security.OAuth.Docusign;
 
 /// <summary>
-/// Used to setup defaults for all <see cref="DocusignAuthenticationOptions"/>.
+/// Used to configure <see cref="DocusignAuthenticationOptions"/> instances.
 /// </summary>
 public sealed class DocusignAuthenticationPostConfigureOptions : IPostConfigureOptions<DocusignAuthenticationOptions>
 {
@@ -26,17 +26,30 @@ public sealed class DocusignAuthenticationPostConfigureOptions : IPostConfigureO
         switch (options.Environment)
         {
             case DocusignAuthenticationEnvironment.Production:
-                options.AuthorizationEndpoint = DocusignAuthenticationDefaults.ProductionAuthorizationEndpoint;
-                options.TokenEndpoint = DocusignAuthenticationDefaults.ProductionTokenEndpoint;
-                options.UserInformationEndpoint = DocusignAuthenticationDefaults.ProductionUserInformationEndpoint;
+                options.AuthorizationEndpoint = CreateUrl(DocusignAuthenticationDefaults.ProductionDomain, DocusignAuthenticationDefaults.AuthorizationPath);
+                options.TokenEndpoint = CreateUrl(DocusignAuthenticationDefaults.ProductionDomain, DocusignAuthenticationDefaults.TokenPath);
+                options.UserInformationEndpoint = CreateUrl(DocusignAuthenticationDefaults.ProductionDomain, DocusignAuthenticationDefaults.UserInformationPath);
                 break;
             case DocusignAuthenticationEnvironment.Development:
-                options.AuthorizationEndpoint = DocusignAuthenticationDefaults.DevelopmentAuthorizationEndpoint;
-                options.TokenEndpoint = DocusignAuthenticationDefaults.DevelopmentTokenEndpoint;
-                options.UserInformationEndpoint = DocusignAuthenticationDefaults.DevelopmentUserInformationEndpoint;
+                options.AuthorizationEndpoint = CreateUrl(DocusignAuthenticationDefaults.DevelopmentDomain, DocusignAuthenticationDefaults.AuthorizationPath);
+                options.TokenEndpoint = CreateUrl(DocusignAuthenticationDefaults.DevelopmentDomain, DocusignAuthenticationDefaults.TokenPath);
+                options.UserInformationEndpoint = CreateUrl(DocusignAuthenticationDefaults.DevelopmentDomain, DocusignAuthenticationDefaults.UserInformationPath);
                 break;
             default:
                 throw new InvalidOperationException($"The {nameof(Environment)} is not supported.");
         }
+    }
+
+    private static string CreateUrl(string domain, string path)
+    {
+        // Enforce use of HTTPS
+        var builder = new UriBuilder(domain)
+        {
+            Path = path,
+            Port = -1,
+            Scheme = Uri.UriSchemeHttps,
+        };
+
+        return builder.Uri.ToString();
     }
 }

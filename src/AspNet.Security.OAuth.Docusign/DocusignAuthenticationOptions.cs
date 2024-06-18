@@ -14,8 +14,8 @@ namespace AspNet.Security.OAuth.Docusign;
 public class DocusignAuthenticationOptions : OAuthOptions
 {
     /// <summary>
-    /// Sets or retrieves a value that determines whether development or production endpoints are used.
-    /// The default value of this property is <see cref="DocusignAuthenticationEnvironment.Development"/>.
+    /// Gets or sets a value that determines whether development or production endpoints are used.
+    /// The default value of this property is <see cref="DocusignAuthenticationEnvironment.Production"/>.
     /// </summary>
     public DocusignAuthenticationEnvironment Environment { get; set; }
 
@@ -23,7 +23,7 @@ public class DocusignAuthenticationOptions : OAuthOptions
     {
         ClaimsIssuer = DocusignAuthenticationDefaults.Issuer;
         CallbackPath = DocusignAuthenticationDefaults.CallbackPath;
-        Environment = DocusignAuthenticationEnvironment.Development;
+        Environment = DocusignAuthenticationEnvironment.Production;
 
         ClaimActions.MapCustomJson(ClaimTypes.Name, user => user.GetString("name"));
         ClaimActions.MapCustomJson(ClaimTypes.Email, user => user.GetString("email"));
