@@ -219,6 +219,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{C2CA4B38-A
 		docs\workweixin.md = docs\workweixin.md
 		docs\xumm.md = docs\xumm.md
 		docs\zendesk.md = docs\zendesk.md
+		docs\docusign.md = docs\docusign.md
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.Basecamp", "src\AspNet.Security.OAuth.Basecamp\AspNet.Security.OAuth.Basecamp.csproj", "{42306484-B2BF-4B52-B950-E0CDFA58B02A}"
@@ -305,6 +306,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.Airtable", "src\AspNet.Security.OAuth.Airtable\AspNet.Security.OAuth.Airtable.csproj", "{83C37AC5-51FB-47CD-8CBE-77AA114FF6F3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.Pipedrive", "src\AspNet.Security.OAuth.Pipedrive\AspNet.Security.OAuth.Pipedrive.csproj", "{55975423-C9C0-4C47-AD00-0F012F30AD3C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.Docusign", "src\AspNet.Security.OAuth.Docusign\AspNet.Security.OAuth.Docusign.csproj", "{4E96BD06-04CD-4014-BA42-10D2CDB820D6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -708,6 +711,10 @@ Global
 		{55975423-C9C0-4C47-AD00-0F012F30AD3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{55975423-C9C0-4C47-AD00-0F012F30AD3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{55975423-C9C0-4C47-AD00-0F012F30AD3C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E96BD06-04CD-4014-BA42-10D2CDB820D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E96BD06-04CD-4014-BA42-10D2CDB820D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E96BD06-04CD-4014-BA42-10D2CDB820D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E96BD06-04CD-4014-BA42-10D2CDB820D6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -818,6 +825,7 @@ Global
 		{ADAC649F-A8CC-4CF2-8C34-288F7DEBBE69} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 		{83C37AC5-51FB-47CD-8CBE-77AA114FF6F3} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 		{55975423-C9C0-4C47-AD00-0F012F30AD3C} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
+		{4E96BD06-04CD-4014-BA42-10D2CDB820D6} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C7B54DE2-6407-4802-AD9C-CE54BF414C8C}

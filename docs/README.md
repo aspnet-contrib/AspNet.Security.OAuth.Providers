@@ -48,6 +48,7 @@ covered by the section above.
 | Bitbucket | _Optional_ | [Documentation](bitbucket.md "Bitbucket provider documentation") |
 | DigitalOcean | _Optional_ | [Documentation](digitalocean.md "DigitalOcean provider documentation") |
 | Discord | _Optional_ | [Documentation](discord.md "Discord provider documentation") |
+| Docusign | **Required** | [Documentation](docusign.md "Docusign provider documentation") |
 | eBay | **Required** | [Documentation](ebay.md "eBay provider documentation") |
 | EVEOnline | _Optional_ | [Documentation](eveonline.md "EVEOnline provider documentation") |
 | Foursquare | _Optional_ | [Documentation](foursquare.md "Foursquare provider documentation") |
