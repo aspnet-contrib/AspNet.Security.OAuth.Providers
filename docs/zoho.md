@@ -13,10 +13,10 @@ services.AddAuthentication(options => /* Auth configuration */)
 
 ## Required Additional Settings
 
-| Property Name | Property Type                                                                                                                                                                                                       | Description                                       | Default Value                     |
-|:--------------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:--------------------------------------------------|:----------------------------------|
-| `Region`      | [`ZohoAuthenticationRegion`](https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers/blob/dev/src/AspNet.Security.OAuth.Zoho/ZohoAuthenticationRegion.cs "ZohoAuthenticationRegion enumeration") | The target online region for Zoho authentication. | `ZohoAuthenticationRegion.Global` |
+_None._
 
 ## Optional Settings
 
-_None._
+| Property Name | Property Type                                                                                                                                                                                                       | Description                                       | Default Value                     |
+|:--------------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:--------------------------------------------------|:----------------------------------|
+| `Region`      | [`ZohoAuthenticationRegion`](https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers/blob/dev/src/AspNet.Security.OAuth.Zoho/ZohoAuthenticationRegion.cs "ZohoAuthenticationRegion enumeration") | The target online region for Zoho authentication. | `ZohoAuthenticationRegion.Global` |
