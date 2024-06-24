@@ -23,16 +23,22 @@ public sealed class ZohoAuthenticationPostConfigureOptions : IPostConfigureOptio
 
     private static void ConfigureEndpoints(ZohoAuthenticationOptions options)
     {
-        if (AreEndpointsInitialized(options))
-        {
-            return;
-        }
-
         var domain = GetDomain(options.Region);
 
-        options.AuthorizationEndpoint = CreateUrl(domain, ZohoAuthenticationDefaults.AuthorizationPath);
-        options.TokenEndpoint = CreateUrl(domain, ZohoAuthenticationDefaults.TokenPath);
-        options.UserInformationEndpoint = CreateUrl(domain, ZohoAuthenticationDefaults.UserInformationPath);
+        if (string.IsNullOrEmpty(options.AuthorizationEndpoint))
+        {
+            options.AuthorizationEndpoint = CreateUrl(domain, ZohoAuthenticationDefaults.AuthorizationPath);
+        }
+
+        if (string.IsNullOrEmpty(options.TokenEndpoint))
+        {
+            options.TokenEndpoint = CreateUrl(domain, ZohoAuthenticationDefaults.TokenPath);
+        }
+
+        if (string.IsNullOrEmpty(options.UserInformationEndpoint))
+        {
+            options.UserInformationEndpoint = CreateUrl(domain, ZohoAuthenticationDefaults.UserInformationPath);
+        }
     }
 
     private static string CreateUrl(string domain, string path)
@@ -61,12 +67,5 @@ public sealed class ZohoAuthenticationPostConfigureOptions : IPostConfigureOptio
             ZohoAuthenticationRegion.SaudiArabia => "accounts.zoho.sa",
             _ => throw new InvalidOperationException($"The {nameof(ZohoAuthenticationRegion)} is not supported."),
         };
-    }
-
-    private static bool AreEndpointsInitialized(ZohoAuthenticationOptions options)
-    {
-        return !string.IsNullOrEmpty(options.AuthorizationEndpoint) &&
-               !string.IsNullOrEmpty(options.TokenEndpoint) &&
-               !string.IsNullOrEmpty(options.UserInformationEndpoint);
     }
 }
