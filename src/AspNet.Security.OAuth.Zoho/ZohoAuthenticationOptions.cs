@@ -23,7 +23,6 @@ public class ZohoAuthenticationOptions : OAuthOptions
     {
         ClaimsIssuer = ZohoAuthenticationDefaults.Issuer;
         CallbackPath = ZohoAuthenticationDefaults.CallbackPath;
-        Region = ZohoAuthenticationRegion.Global;
 
         Scope.Add("AaaServer.profile.READ");
 

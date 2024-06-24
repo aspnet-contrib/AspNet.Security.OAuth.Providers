@@ -9,12 +9,12 @@ namespace AspNet.Security.OAuth.Zoho;
 public static class ZohoAuthenticationPostConfigureOptionsTests
 {
     [Theory]
-    [InlineData(ZohoAuthenticationRegion.Global, "accounts.zoho.com")]
-    [InlineData(ZohoAuthenticationRegion.Europe, "accounts.zoho.eu")]
-    [InlineData(ZohoAuthenticationRegion.India, "accounts.zoho.in")]
     [InlineData(ZohoAuthenticationRegion.Australia, "accounts.zoho.com.au")]
-    [InlineData(ZohoAuthenticationRegion.Japan, "accounts.zoho.jp")]
     [InlineData(ZohoAuthenticationRegion.Canada, "accounts.zohocloud.ca")]
+    [InlineData(ZohoAuthenticationRegion.Europe, "accounts.zoho.eu")]
+    [InlineData(ZohoAuthenticationRegion.Global, "accounts.zoho.com")]
+    [InlineData(ZohoAuthenticationRegion.India, "accounts.zoho.in")]
+    [InlineData(ZohoAuthenticationRegion.Japan, "accounts.zoho.jp")]
     [InlineData(ZohoAuthenticationRegion.SaudiArabia, "accounts.zoho.sa")]
     public static void PostConfigure_Configures_Valid_Authentication_Region(ZohoAuthenticationRegion region, string domain)
     {

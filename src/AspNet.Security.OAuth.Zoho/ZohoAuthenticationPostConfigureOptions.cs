@@ -23,6 +23,11 @@ public sealed class ZohoAuthenticationPostConfigureOptions : IPostConfigureOptio
 
     private static void ConfigureEndpoints(ZohoAuthenticationOptions options)
     {
+        if (AreEndpointsInitialized(options))
+        {
+            return;
+        }
+
         var domain = GetDomain(options.Region);
 
         options.AuthorizationEndpoint = CreateUrl(domain, ZohoAuthenticationDefaults.AuthorizationPath);
@@ -47,14 +52,21 @@ public sealed class ZohoAuthenticationPostConfigureOptions : IPostConfigureOptio
     {
         return region switch
         {
-            ZohoAuthenticationRegion.Global => "accounts.zoho.com",
-            ZohoAuthenticationRegion.Europe => "accounts.zoho.eu",
-            ZohoAuthenticationRegion.India => "accounts.zoho.in",
             ZohoAuthenticationRegion.Australia => "accounts.zoho.com.au",
-            ZohoAuthenticationRegion.Japan => "accounts.zoho.jp",
             ZohoAuthenticationRegion.Canada => "accounts.zohocloud.ca",
+            ZohoAuthenticationRegion.Europe => "accounts.zoho.eu",
+            ZohoAuthenticationRegion.Global => "accounts.zoho.com",
+            ZohoAuthenticationRegion.India => "accounts.zoho.in",
+            ZohoAuthenticationRegion.Japan => "accounts.zoho.jp",
             ZohoAuthenticationRegion.SaudiArabia => "accounts.zoho.sa",
             _ => throw new InvalidOperationException($"The {nameof(ZohoAuthenticationRegion)} is not supported."),
         };
+    }
+
+    private static bool AreEndpointsInitialized(ZohoAuthenticationOptions options)
+    {
+        return !string.IsNullOrEmpty(options.AuthorizationEndpoint) &&
+               !string.IsNullOrEmpty(options.TokenEndpoint) &&
+               !string.IsNullOrEmpty(options.UserInformationEndpoint);
     }
 }
