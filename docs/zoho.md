@@ -8,7 +8,6 @@ services.AddAuthentication(options => /* Auth configuration */)
         {
             options.ClientId = "my-client-id";
             options.ClientSecret = "my-client-secret";
-            options.Region = ZohoAuthenticationRegion.Global;
         });
 ```
 
