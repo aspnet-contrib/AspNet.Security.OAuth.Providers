@@ -13,7 +13,7 @@
     <DefineConstants Condition=" '$(Configuration)' == 'Debug' ">$(DefineConstants);JETBRAINS_ANNOTATIONS</DefineConstants>
     <Nullable>enable</Nullable>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
-    <CentralPackageTransitivePinningEnabled>false</CentralPackageTransitivePinningEnabled>
+    <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
   </PropertyGroup>
 
   <PropertyGroup>
