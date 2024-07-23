@@ -5,8 +5,6 @@
  */
 
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.Extensions.Options;
 
 namespace AspNet.Security.OAuth.Zoho;
 
@@ -71,7 +69,6 @@ public static class ZohoAuthenticationExtensions
         [CanBeNull] string caption,
         [NotNull] Action<ZohoAuthenticationOptions> configuration)
     {
-        builder.Services.TryAddSingleton<IPostConfigureOptions<ZohoAuthenticationOptions>, ZohoAuthenticationPostConfigureOptions>();
         return builder.AddOAuth<ZohoAuthenticationOptions, ZohoAuthenticationHandler>(scheme, caption, configuration);
     }
 }

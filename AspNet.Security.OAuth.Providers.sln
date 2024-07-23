@@ -220,7 +220,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{C2CA4B38-A
 		docs\xumm.md = docs\xumm.md
 		docs\zendesk.md = docs\zendesk.md
 		docs\docusign.md = docs\docusign.md
-		docs\zoho.md = docs\zoho.md
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.Basecamp", "src\AspNet.Security.OAuth.Basecamp\AspNet.Security.OAuth.Basecamp.csproj", "{42306484-B2BF-4B52-B950-E0CDFA58B02A}"

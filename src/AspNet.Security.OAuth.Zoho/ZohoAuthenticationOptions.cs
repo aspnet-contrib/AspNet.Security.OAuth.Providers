@@ -13,17 +13,12 @@ namespace AspNet.Security.OAuth.Zoho;
 /// </summary>
 public class ZohoAuthenticationOptions : OAuthOptions
 {
-    /// <summary>
-    /// Gets or sets a value that determines whether development or production endpoints are used.
-    /// The default value of this property is <see cref="ZohoAuthenticationRegion.Global"/>.
-    /// </summary>
-    public ZohoAuthenticationRegion Region { get; set; }
-
     public ZohoAuthenticationOptions()
     {
         ClaimsIssuer = ZohoAuthenticationDefaults.Issuer;
         CallbackPath = ZohoAuthenticationDefaults.CallbackPath;
-        Region = ZohoAuthenticationRegion.Global;
+        AuthorizationEndpoint = ZohoAuthenticationDefaults.AuthorizeEndpoint;
+        TokenEndpoint = ZohoAuthenticationDefaults.TokenEndpoint;
 
         Scope.Add("AaaServer.profile.READ");
 

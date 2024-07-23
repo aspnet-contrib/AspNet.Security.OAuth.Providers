@@ -34,7 +34,7 @@ public static class ZohoAuthenticationDefaults
     /// <summary>
     /// Default value for <see cref="OAuthOptions.AuthorizationEndpoint"/>.
     /// </summary>
-    public static readonly string AuthorizationPath = "/oauth/v2/auth";
+    public static readonly string AuthorizeEndpoint = "https://accounts.zoho.com/oauth/v2/auth";
 
     /// <summary>
     /// Default value for <see cref="OAuthOptions.TokenEndpoint"/>.
@@ -42,7 +42,17 @@ public static class ZohoAuthenticationDefaults
     public static readonly string TokenPath = "/oauth/v2/token";
 
     /// <summary>
+    /// Default value for <see cref="OAuthOptions.TokenEndpoint"/>.
+    /// </summary>
+    public static readonly string TokenEndpoint = "https://accounts.zoho.com/oauth/v2/token";
+
+    /// <summary>
     /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
     /// </summary>
     public static readonly string UserInformationPath = "/oauth/user/info";
+
+    /// <summary>
+    /// Default value for Zoho Server Info.
+    /// </summary>
+    public static readonly string ServerInfoEndpoint = "https://accounts.zoho.com/oauth/serverinfo";
 }
