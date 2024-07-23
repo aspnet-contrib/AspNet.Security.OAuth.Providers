@@ -21,6 +21,24 @@
         "Email": "testuser@example.com",
         "Display_Name": "User Name"
       }
+    },
+    {
+      "uri": "https://accounts.zoho.com/oauth/serverinfo",
+      "method": "GET",
+      "contentFormat": "json",
+      "contentJson": {
+        "result": "success",
+        "locations": {
+          "eu": "https://accounts.zoho.eu",
+          "au": "https://accounts.zoho.com.au",
+          "in": "https://accounts.zoho.in",
+          "jp": "https://accounts.zoho.jp",
+          "uk": "https://accounts.zoho.uk",
+          "us": "https://accounts.zoho.com",
+          "ca": "https://accounts.zohocloud.ca",
+          "sa": "https://accounts.zoho.sa"
+        }
+      }
     }
   ]
 }

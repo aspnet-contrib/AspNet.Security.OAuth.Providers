@@ -6,13 +6,22 @@
 
 namespace AspNet.Security.OAuth.Zoho;
 
-public class ZohoTests(ITestOutputHelper outputHelper) : OAuthTests<ZohoAuthenticationOptions>(outputHelper)
+public class ZohoTests : OAuthTests<ZohoAuthenticationOptions>
 {
+    public ZohoTests(ITestOutputHelper outputHelper)
+        : base(outputHelper)
+    {
+        LoopbackRedirectHandler.LoopbackParameters.Add("location", "us");
+    }
+
     public override string DefaultScheme => ZohoAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
     {
-        builder.AddZoho(options => ConfigureDefaults(builder, options));
+        builder.AddZoho(options =>
+        {
+            ConfigureDefaults(builder, options);
+        });
     }
 
     [Theory]
