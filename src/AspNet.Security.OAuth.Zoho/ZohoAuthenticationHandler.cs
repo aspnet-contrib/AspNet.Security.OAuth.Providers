@@ -4,6 +4,7 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Mime;
 using System.Security.Claims;
@@ -29,7 +30,8 @@ public partial class ZohoAuthenticationHandler : OAuthHandler<ZohoAuthentication
         [NotNull] AuthenticationProperties properties,
         [NotNull] OAuthTokenResponse tokens)
     {
-        using var requestMessage = new HttpRequestMessage(HttpMethod.Get, Options.UserInformationEndpoint);
+        var userInformationEndpoint = CreateEndpoint(ZohoAuthenticationDefaults.UserInformationPath);
+        using var requestMessage = new HttpRequestMessage(HttpMethod.Get, userInformationEndpoint);
         requestMessage.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json));
         requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", tokens.AccessToken);
         requestMessage.Version = Backchannel.DefaultRequestVersion;
@@ -51,28 +53,64 @@ public partial class ZohoAuthenticationHandler : OAuthHandler<ZohoAuthentication
         return new AuthenticationTicket(context.Principal!, context.Properties, Scheme.Name);
     }
 
-    protected override async Task<HandleRequestResult> HandleRemoteAuthenticateAsync()
+    protected override async Task<OAuthTokenResponse> ExchangeCodeAsync(OAuthCodeExchangeContext context)
+    {
+        var nameValueCollection = new Dictionary<string, string?>
+        {
+            ["client_id"] = Options.ClientId,
+            ["client_secret"] = Options.ClientSecret,
+            ["code"] = context.Code,
+            ["redirect_uri"] = context.RedirectUri,
+            ["grant_type"] = "authorization_code"
+        };
+
+        if (context.Properties.Items.TryGetValue(OAuthConstants.CodeVerifierKey, out var codeVerifier))
+        {
+            nameValueCollection.Add(OAuthConstants.CodeVerifierKey, codeVerifier!);
+            context.Properties.Items.Remove(OAuthConstants.CodeVerifierKey);
+        }
+
+        var tokenEndpoint = CreateEndpoint(ZohoAuthenticationDefaults.TokenPath);
+        using var request = new HttpRequestMessage(HttpMethod.Post, tokenEndpoint);
+        request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json));
+        request.Content = new FormUrlEncodedContent(nameValueCollection);
+        request.Version = Backchannel.DefaultRequestVersion;
+
+        using var response = await Backchannel.SendAsync(request, Context.RequestAborted);
+        if (!response.IsSuccessStatusCode)
+        {
+            await Log.ExchangeCodeErrorAsync(Logger, response, Context.RequestAborted);
+            return OAuthTokenResponse.Failed(new Exception("An error occurred while retrieving an access token."));
+        }
+
+        var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
+
+        return OAuthTokenResponse.Success(payload);
+    }
+
+    private string CreateEndpoint(string path)
     {
         var location = Context.Request.Query["location"];
 
-        using var requestMessage = new HttpRequestMessage(HttpMethod.Get, ZohoAuthenticationDefaults.ServerInfoEndpoint);
-        requestMessage.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json));
-        requestMessage.Version = Backchannel.DefaultRequestVersion;
+        var domain = GetDomain(location.ToString());
 
-        using var response = await Backchannel.SendAsync(requestMessage, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
-        if (!response.IsSuccessStatusCode)
+        return $"{domain}{path}";
+    }
+
+    private static string GetDomain(string location)
+    {
+        return location switch
         {
-            await Log.ServerInfoErrorAsync(Logger, response, Context.RequestAborted);
-            throw new HttpRequestException("An error occurred while retrieving the server info.");
-        }
-
-        using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
-
-        var domain = payload.RootElement.GetProperty("locations").GetProperty(location.ToString());
-        Options.UserInformationEndpoint = $"{domain}{ZohoAuthenticationDefaults.UserInformationPath}";
-        Options.TokenEndpoint = $"{domain}{ZohoAuthenticationDefaults.TokenPath}";
-
-        return await base.HandleRemoteAuthenticateAsync();
+            "au" => "https://accounts.zoho.com.au",
+            "ca" => "https://accounts.zohocloud.ca",
+            "eu" => "https://accounts.zoho.eu",
+            "us" => "https://accounts.zoho.com",
+            "in" => "https://accounts.zoho.in",
+            "jp" => "https://accounts.zoho.jp",
+            "sa" => "https://accounts.zoho.sa",
+            "uk" => "https://accounts.zoho.uk",
+            _ => "https://accounts.zoho.com"
+        };
     }
 
     private static partial class Log
@@ -95,6 +133,15 @@ public partial class ZohoAuthenticationHandler : OAuthHandler<ZohoAuthentication
                 await response.Content.ReadAsStringAsync(cancellationToken));
         }
 
+        internal static async Task ExchangeCodeErrorAsync(ILogger logger, HttpResponseMessage response, CancellationToken cancellationToken)
+        {
+            ExchangeCodeError(
+                logger,
+                response.StatusCode,
+                response.Headers.ToString(),
+                await response.Content.ReadAsStringAsync(cancellationToken));
+        }
+
         [LoggerMessage(1, LogLevel.Error, "An error occurred while retrieving the user profile: the remote server returned a {Status} response with the following payload: {Headers} {Body}.")]
         private static partial void UserProfileError(
             ILogger logger,
@@ -105,7 +152,14 @@ public partial class ZohoAuthenticationHandler : OAuthHandler<ZohoAuthentication
         [LoggerMessage(2, LogLevel.Error, "An error occurred while retrieving the server info: the remote server returned a {Status} response with the following payload: {Headers} {Body}.")]
         private static partial void ServerInfoErrorAsync(
             ILogger logger,
-            System.Net.HttpStatusCode status,
+            HttpStatusCode status,
+            string headers,
+            string body);
+
+        [LoggerMessage(3, LogLevel.Error, "An error occurred while retrieving an access token: the remote server returned a {Status} response with the following payload: {Headers} {Body}.")]
+        private static partial void ExchangeCodeError(
+            ILogger logger,
+            HttpStatusCode status,
             string headers,
             string body);
     }
