@@ -12,7 +12,7 @@ public static class PingOnePostConfigureOptionsTests
     public static void PostConfigure_Configures_Valid_Endpoints()
     {
         // Arrange
-        string name = "PingOne";
+        var name = "PingOne";
         var target = new PingOnePostConfigureOptions();
 
         var options = new PingOneAuthenticationOptions()
@@ -38,7 +38,7 @@ public static class PingOnePostConfigureOptionsTests
     public static void PostConfigure_Configures_Valid_Endpoints_With_Custom_Domain()
     {
         // Arrange
-        string name = "PingOne";
+        var name = "PingOne";
         var target = new PingOnePostConfigureOptions();
 
         var options = new PingOneAuthenticationOptions()
@@ -65,38 +65,38 @@ public static class PingOnePostConfigureOptionsTests
     [InlineData(null)]
     [InlineData("")]
     [InlineData(" ")]
-    public static void PostConfigure_Throws_If_Domain_Is_Invalid(string value)
+    public static void PostConfigure_Throws_If_Domain_Is_Invalid(string? value)
     {
         // Arrange
-        string name = "PingOne";
+        var name = "PingOne";
         var target = new PingOnePostConfigureOptions();
 
         var options = new PingOneAuthenticationOptions()
         {
-            Domain = value,
+            Domain = value!,
             EnvironmentId = "b775aadd-a2f3-4d88-a768-b7c85dd1af47",
         };
 
         // Act and Assert
-        Assert.Throws<ArgumentException>("options", () => target.PostConfigure(name, options));
+        _ = Assert.Throws<ArgumentException>("options", () => target.PostConfigure(name, options));
     }
 
     [Theory]
     [InlineData(null)]
     [InlineData("")]
     [InlineData(" ")]
-    public static void PostConfigure_Throws_If_EnvironmentId_Is_Invalid(string value)
+    public static void PostConfigure_Throws_If_EnvironmentId_Is_Invalid(string? value)
     {
         // Arrange
-        string name = "PingOne";
+        var name = "PingOne";
         var target = new PingOnePostConfigureOptions();
 
         var options = new PingOneAuthenticationOptions()
         {
-            EnvironmentId = value,
+            EnvironmentId = value!,
         };
 
         // Act and Assert
-        Assert.Throws<ArgumentException>("options", () => target.PostConfigure(name, options));
+        _ = Assert.Throws<ArgumentException>("options", () => target.PostConfigure(name, options));
     }
 }
