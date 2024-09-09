@@ -17,7 +17,7 @@ public static class ZendeskPostConfigureOptionsTests
     public static void PostConfigure_Configures_Valid_Endpoints(string domain)
     {
         // Arrange
-        string name = "Zendesk";
+        var name = "Zendesk";
         var target = new ZendeskPostConfigureOptions();
 
         var options = new ZendeskAuthenticationOptions()
@@ -43,10 +43,10 @@ public static class ZendeskPostConfigureOptionsTests
     [InlineData(null)]
     [InlineData("")]
     [InlineData(" ")]
-    public static void PostConfigure_Throws_If_Domain_Is_Invalid(string value)
+    public static void PostConfigure_Throws_If_Domain_Is_Invalid(string? value)
     {
         // Arrange
-        string name = "Zendesk";
+        var name = "Zendesk";
         var target = new ZendeskPostConfigureOptions();
 
         var options = new ZendeskAuthenticationOptions()
@@ -55,6 +55,6 @@ public static class ZendeskPostConfigureOptionsTests
         };
 
         // Act and Assert
-        Assert.Throws<ArgumentException>("options", () => target.PostConfigure(name, options));
+        _ = Assert.Throws<ArgumentException>("options", () => target.PostConfigure(name, options));
     }
 }

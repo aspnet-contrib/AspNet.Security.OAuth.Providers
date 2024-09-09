@@ -17,7 +17,7 @@ public static class JumpCloudPostConfigureOptionsTests
     public static void PostConfigure_Configures_Valid_Endpoints(string domain)
     {
         // Arrange
-        string name = "JumpCloud";
+        var name = "JumpCloud";
         var target = new JumpCloudPostConfigureOptions();
 
         var options = new JumpCloudAuthenticationOptions()
@@ -43,10 +43,10 @@ public static class JumpCloudPostConfigureOptionsTests
     [InlineData(null)]
     [InlineData("")]
     [InlineData(" ")]
-    public static void PostConfigure_Throws_If_Domain_Is_Invalid(string value)
+    public static void PostConfigure_Throws_If_Domain_Is_Invalid(string? value)
     {
         // Arrange
-        string name = "JumpCloud";
+        var name = "JumpCloud";
         var target = new JumpCloudPostConfigureOptions();
 
         var options = new JumpCloudAuthenticationOptions()
@@ -55,6 +55,6 @@ public static class JumpCloudPostConfigureOptionsTests
         };
 
         // Act and Assert
-        Assert.Throws<ArgumentException>("options", () => target.PostConfigure(name, options));
+        _ = Assert.Throws<ArgumentException>("options", () => target.PostConfigure(name, options));
     }
 }

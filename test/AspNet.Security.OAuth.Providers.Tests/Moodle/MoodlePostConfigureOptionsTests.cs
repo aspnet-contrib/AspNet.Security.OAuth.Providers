@@ -17,7 +17,7 @@ public static class MoodlePostConfigureOptionsTests
     public static void PostConfigure_Configures_Valid_Endpoints(string domain)
     {
         // Arrange
-        string name = "Moodle";
+        var name = "Moodle";
         var target = new MoodlePostConfigureOptions();
 
         var options = new MoodleAuthenticationOptions()
@@ -43,10 +43,10 @@ public static class MoodlePostConfigureOptionsTests
     [InlineData(null)]
     [InlineData("")]
     [InlineData(" ")]
-    public static void PostConfigure_Throws_If_Domain_Is_Invalid(string value)
+    public static void PostConfigure_Throws_If_Domain_Is_Invalid(string? value)
     {
         // Arrange
-        string name = "Moodle";
+        var name = "Moodle";
         var target = new MoodlePostConfigureOptions();
 
         var options = new MoodleAuthenticationOptions()
@@ -55,6 +55,6 @@ public static class MoodlePostConfigureOptionsTests
         };
 
         // Act and Assert
-        Assert.Throws<ArgumentException>("options", () => target.PostConfigure(name, options));
+        _ = Assert.Throws<ArgumentException>("options", () => target.PostConfigure(name, options));
     }
 }
