@@ -6,7 +6,7 @@ on:
   pull_request:
     branches: [ dev* ]
   schedule:
-    - cron: "0 12 * * MON"
+    - cron: '0 12 * * MON'
   workflow_dispatch:
 
 permissions:
@@ -24,24 +24,19 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: [ "csharp" ]
+        language: [ 'csharp' ]
 
     steps:
     - name: Checkout repository
       uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
 
-    - name: Setup .NET SDK
-      uses: actions/setup-dotnet@4d6c8fcf3c8f7a60068d26b594648e99df24cee3 # v4.0.0
-
     - name: Initialize CodeQL
-      uses: github/codeql-action/init@23acc5c183826b7a8a97bce3cecc52db901f8251 # v3.25.10
+      uses: github/codeql-action/init@4dd16135b69a43b6c8efb853346f8437d92d3c93 # v3.26.6
       with:
+        build-mode: none
         languages: ${{ matrix.language }}
 
-    - name: Autobuild
-      uses: github/codeql-action/autobuild@23acc5c183826b7a8a97bce3cecc52db901f8251 # v3.25.10
-
     - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@23acc5c183826b7a8a97bce3cecc52db901f8251 # v3.25.10
+      uses: github/codeql-action/analyze@4dd16135b69a43b6c8efb853346f8437d92d3c93 # v3.26.6
       with:
-        category: "/language:${{ matrix.language }}"
+        category: '/language:${{ matrix.language }}'
