@@ -17,7 +17,7 @@ public class ZohoAuthenticationOptions : OAuthOptions
     {
         ClaimsIssuer = ZohoAuthenticationDefaults.Issuer;
         CallbackPath = ZohoAuthenticationDefaults.CallbackPath;
-        AuthorizationEndpoint = ZohoAuthenticationDefaults.AuthorizeEndpoint;
+        AuthorizationEndpoint = ZohoAuthenticationDefaults.AuthorizationEndpoint;
         TokenEndpoint = ZohoAuthenticationDefaults.TokenEndpoint;
 
         Scope.Add("AaaServer.profile.READ");

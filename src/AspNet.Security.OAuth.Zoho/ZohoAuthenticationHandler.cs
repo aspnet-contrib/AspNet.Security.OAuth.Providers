@@ -88,18 +88,18 @@ public partial class ZohoAuthenticationHandler : OAuthHandler<ZohoAuthentication
         return OAuthTokenResponse.Success(payload);
     }
 
+    /// <summary>
+    /// Creates the endpoint for the Zoho API using the location parameter.
+    /// If the location parameter doesn't match any of the supported locations, the default location (US) is used.
+    /// We don't use the accounts-server parameter due to security reasons.
+    /// </summary>
+    /// <param name="path">The request path.</param>
+    /// <returns>The API endpoint for the Zoho API.</returns>
     private string CreateEndpoint(string path)
     {
         var location = Context.Request.Query["location"];
 
-        var domain = GetDomain(location.ToString());
-
-        return $"{domain}{path}";
-    }
-
-    private static string GetDomain(string location)
-    {
-        return location switch
+        var domain = location.ToString().ToLowerInvariant() switch
         {
             "au" => "https://accounts.zoho.com.au",
             "ca" => "https://accounts.zohocloud.ca",
@@ -111,6 +111,8 @@ public partial class ZohoAuthenticationHandler : OAuthHandler<ZohoAuthentication
             "uk" => "https://accounts.zoho.uk",
             _ => "https://accounts.zoho.com"
         };
+
+        return $"{domain}{path}";
     }
 
     private static partial class Log
