@@ -112,7 +112,14 @@ public partial class ZohoAuthenticationHandler : OAuthHandler<ZohoAuthentication
             _ => "https://accounts.zoho.com"
         };
 
-        return $"{domain}{path}";
+        var builder = new UriBuilder(domain)
+        {
+            Path = path,
+            Port = -1,
+            Scheme = Uri.UriSchemeHttps,
+        };
+
+        return builder.Uri.ToString();
     }
 
     private static partial class Log
