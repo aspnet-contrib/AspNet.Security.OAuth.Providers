@@ -91,7 +91,7 @@ public partial class ZohoAuthenticationHandler : OAuthHandler<ZohoAuthentication
     /// <summary>
     /// Creates the endpoint for the Zoho API using the location parameter.
     /// If the location parameter doesn't match any of the supported locations, the default location (US) is used.
-    /// We don't use the accounts-server parameter due to security reasons.
+    /// We don't use the <c>accounts-server</c> parameter for security reasons.
     /// </summary>
     /// <param name="path">The request path.</param>
     /// <returns>The API endpoint for the Zoho API.</returns>
