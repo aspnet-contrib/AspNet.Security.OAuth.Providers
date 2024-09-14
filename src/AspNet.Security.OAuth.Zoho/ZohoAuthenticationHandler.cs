@@ -53,7 +53,7 @@ public partial class ZohoAuthenticationHandler : OAuthHandler<ZohoAuthentication
         return new AuthenticationTicket(context.Principal!, context.Properties, Scheme.Name);
     }
 
-    protected override async Task<OAuthTokenResponse> ExchangeCodeAsync(OAuthCodeExchangeContext context)
+    protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] OAuthCodeExchangeContext context)
     {
         var nameValueCollection = new Dictionary<string, string?>
         {
