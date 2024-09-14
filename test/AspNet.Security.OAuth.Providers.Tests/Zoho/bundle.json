@@ -1,0 +1,26 @@
+{
+  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
+  "items": [
+    {
+      "uri": "https://accounts.zoho.com/oauth/v2/token",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "secret-access-token",
+        "token_type": "Bearer",
+        "refresh_token": "secret-refresh-token",
+        "expires_in": 3600
+      }
+    },
+    {
+      "uri": "https://accounts.zoho.com/oauth/user/info",
+      "method": "GET",
+      "contentFormat": "json",
+      "contentJson": {
+        "ZUID": "1234567890",
+        "Email": "testuser@example.com",
+        "Display_Name": "User Name"
+      }
+    }
+  ]
+}
