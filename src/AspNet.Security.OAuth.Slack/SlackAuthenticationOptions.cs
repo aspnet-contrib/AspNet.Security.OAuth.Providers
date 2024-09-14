@@ -25,13 +25,28 @@ public class SlackAuthenticationOptions : OAuthOptions
         TokenEndpoint = SlackAuthenticationDefaults.TokenEndpoint;
         UserInformationEndpoint = SlackAuthenticationDefaults.UserInformationEndpoint;
 
-        ClaimActions.MapCustomJson(ClaimTypes.NameIdentifier, user =>
-            string.Concat(user.GetProperty("team").GetString("id"), "|", user.GetProperty("user").GetString("id")));
         ClaimActions.MapJsonSubKey(ClaimTypes.Name, "user", "name");
         ClaimActions.MapJsonSubKey(ClaimTypes.Email, "user", "email");
         ClaimActions.MapJsonSubKey(Claims.UserId, "user", "id");
         ClaimActions.MapJsonSubKey(Claims.TeamId, "team", "id");
         ClaimActions.MapJsonSubKey(Claims.TeamName, "team", "name");
+        ClaimActions.MapCustomJson(ClaimTypes.NameIdentifier, (element) =>
+        {
+            string? teamId = null;
+            string? userId = null;
+
+            if (element.TryGetProperty("team", out var team))
+            {
+                teamId = team.GetString("id");
+            }
+
+            if (element.TryGetProperty("user", out var user))
+            {
+                userId = user.GetString("id");
+            }
+
+            return $"{teamId}|{userId}";
+        });
 
         Scope.Add("identity.basic");
     }
