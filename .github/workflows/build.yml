@@ -94,20 +94,20 @@ jobs:
           ./artifacts/packages/Release/Shipping/*
 
     - name: Publish logs
-      uses: actions/upload-artifact@604373da6381bf24206979c74d06a550515601b9 # v4.4.1
+      uses: actions/upload-artifact@84480863f228bb9747b473957fcc9e309aa96097 # v4.4.2
       if: ${{ always() }}
       with:
         name: logs-${{ matrix.os_name }}
         path: ./artifacts/log/Release
 
     - name: Publish NuGet packages
-      uses: actions/upload-artifact@604373da6381bf24206979c74d06a550515601b9 # v4.4.1
+      uses: actions/upload-artifact@84480863f228bb9747b473957fcc9e309aa96097 # v4.4.2
       with:
         name: packages-${{ matrix.os_name }}
         path: ./artifacts/packages/Release/Shipping
 
     - name: Publish test results
-      uses: actions/upload-artifact@604373da6381bf24206979c74d06a550515601b9 # v4.4.1
+      uses: actions/upload-artifact@84480863f228bb9747b473957fcc9e309aa96097 # v4.4.2
       if: ${{ always() }}
       with:
         name: testresults-${{ matrix.os_name }}
