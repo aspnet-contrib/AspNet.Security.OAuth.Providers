@@ -98,6 +98,11 @@ public partial class DeezerAuthenticationHandler : OAuthHandler<DeezerAuthentica
             ["perms"] = scopes,
         };
 
+        foreach (var additionalParameter in Options.AdditionalAuthorizationParameters)
+        {
+            parameters.Add(additionalParameter.Key, additionalParameter.Value);
+        }
+
         if (Options.UsePkce)
         {
             var bytes = RandomNumberGenerator.GetBytes(256 / 8);

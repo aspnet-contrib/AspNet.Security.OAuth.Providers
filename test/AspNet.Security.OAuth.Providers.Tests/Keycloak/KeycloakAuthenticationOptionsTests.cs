@@ -8,24 +8,24 @@ namespace AspNet.Security.OAuth.Keycloak;
 
 public static class KeycloakAuthenticationOptionsTests
 {
-    public static IEnumerable<object[]> AccessTypes => new object[][]
+    public static TheoryData<KeycloakAuthenticationAccessType> AccessTypes => new()
     {
-            new object[] { KeycloakAuthenticationAccessType.BearerOnly },
-            new object[] { KeycloakAuthenticationAccessType.Confidential },
-            new object[] { KeycloakAuthenticationAccessType.Public },
+        { KeycloakAuthenticationAccessType.BearerOnly },
+        { KeycloakAuthenticationAccessType.Confidential },
+        { KeycloakAuthenticationAccessType.Public },
     };
 
     [Theory]
     [InlineData(null)]
     [InlineData("")]
-    public static void Validate_Does_Not_Throw_If_ClientSecret_Is_Not_Provided_For_Public_Access_Type(string clientSecret)
+    public static void Validate_Does_Not_Throw_If_ClientSecret_Is_Not_Provided_For_Public_Access_Type(string? clientSecret)
     {
         // Arrange
         var options = new KeycloakAuthenticationOptions()
         {
             AccessType = KeycloakAuthenticationAccessType.Public,
             ClientId = "my-client-id",
-            ClientSecret = clientSecret,
+            ClientSecret = clientSecret!,
         };
 
         // Act (no Assert)
@@ -46,7 +46,7 @@ public static class KeycloakAuthenticationOptionsTests
         };
 
         // Act and Assert
-        Assert.Throws<ArgumentException>("ClientSecret", () => options.Validate());
+        _ = Assert.Throws<ArgumentNullException>("ClientSecret", options.Validate);
     }
 
     [Theory]
@@ -63,7 +63,7 @@ public static class KeycloakAuthenticationOptionsTests
         };
 
         // Act and Assert
-        Assert.Throws<ArgumentException>("AuthorizationEndpoint", () => options.Validate());
+        _ = Assert.Throws<ArgumentNullException>("AuthorizationEndpoint", options.Validate);
     }
 
     [Theory]
@@ -80,7 +80,7 @@ public static class KeycloakAuthenticationOptionsTests
         };
 
         // Act and Assert
-        Assert.Throws<ArgumentException>("TokenEndpoint", () => options.Validate());
+        _ = Assert.Throws<ArgumentNullException>("TokenEndpoint", options.Validate);
     }
 
     [Theory]
@@ -97,6 +97,6 @@ public static class KeycloakAuthenticationOptionsTests
         };
 
         // Act and Assert
-        Assert.Throws<ArgumentException>("CallbackPath", () => options.Validate());
+        _ = Assert.Throws<ArgumentException>("CallbackPath", options.Validate);
     }
 }

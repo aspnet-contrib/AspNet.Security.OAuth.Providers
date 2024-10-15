@@ -17,7 +17,7 @@ public static class GitHubPostConfigureOptionsTests
     public static void PostConfigure_Configures_Valid_Endpoints_For_GitHub_Enterprise(string value)
     {
         // Arrange
-        string name = "GitHub";
+        var name = "GitHub";
         var target = new GitHubPostConfigureOptions();
 
         var options = new GitHubAuthenticationOptions()
@@ -46,10 +46,10 @@ public static class GitHubPostConfigureOptionsTests
     [InlineData(null)]
     [InlineData("")]
     [InlineData(" ")]
-    public static void PostConfigure_Does_Not_Update_Endpoints_If_EnterpriseDomain_Not_Set(string value)
+    public static void PostConfigure_Does_Not_Update_Endpoints_If_EnterpriseDomain_Not_Set(string? value)
     {
         // Arrange
-        string name = "GitHub";
+        var name = "GitHub";
         var target = new GitHubPostConfigureOptions();
 
         var options = new GitHubAuthenticationOptions()

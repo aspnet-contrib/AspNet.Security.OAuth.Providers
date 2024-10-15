@@ -42,6 +42,11 @@ public partial class LineAuthenticationHandler : OAuthHandler<LineAuthentication
             ["client_secret"] = Options.ClientSecret,
         };
 
+        foreach (var additionalParameter in Options.AdditionalAuthorizationParameters)
+        {
+            tokenRequestParameters.Add(additionalParameter.Key, additionalParameter.Value);
+        }
+
         // PKCE https://tools.ietf.org/html/rfc7636#section-4.5, see BuildChallengeUrl
         if (context.Properties.Items.TryGetValue(OAuthConstants.CodeVerifierKey, out var codeVerifier))
         {

@@ -1,14 +1,14 @@
 <Project>
 
   <PropertyGroup>
-    <MajorVersion>8</MajorVersion>
-    <MinorVersion>2</MinorVersion>
-    <PatchVersion>1</PatchVersion>
+    <MajorVersion>9</MajorVersion>
+    <MinorVersion>0</MinorVersion>
+    <PatchVersion>0</PatchVersion>
     <VersionPrefix>$(MajorVersion).$(MinorVersion).$(PatchVersion)</VersionPrefix>
-    <PackageValidationBaselineVersion Condition="'$(PackageValidationBaselineVersion)' == ''">8.0.0</PackageValidationBaselineVersion>
-    <PreReleaseVersionLabel>preview</PreReleaseVersionLabel>
-    <PreReleaseVersionIteration></PreReleaseVersionIteration>
-    <PreReleaseBrandingLabel>Preview $(PreReleaseVersionIteration)</PreReleaseBrandingLabel>
+    <PackageValidationBaselineVersion Condition=" '$(EnablePackageValidation)' == 'true' AND '$(PackageValidationBaselineVersion)' == '' ">9.0.0</PackageValidationBaselineVersion>
+    <PreReleaseVersionLabel>rc</PreReleaseVersionLabel>
+    <PreReleaseVersionIteration>2</PreReleaseVersionIteration>
+    <PreReleaseBrandingLabel>Release Candidate $(PreReleaseVersionIteration)</PreReleaseBrandingLabel>
     <StabilizePackageVersion Condition="'$(StabilizePackageVersion)' == ''">false</StabilizePackageVersion>
     <DotNetFinalVersionKind Condition="'$(StabilizePackageVersion)' == 'true'">release</DotNetFinalVersionKind>
     <IncludePreReleaseLabelInPackageVersion>true</IncludePreReleaseLabelInPackageVersion>

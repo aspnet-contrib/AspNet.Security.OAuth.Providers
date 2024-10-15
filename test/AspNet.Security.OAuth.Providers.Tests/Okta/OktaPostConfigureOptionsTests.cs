@@ -17,7 +17,7 @@ public static class OktaPostConfigureOptionsTests
     public static void PostConfigure_Configures_Valid_Endpoints(string domain)
     {
         // Arrange
-        string name = "Okta";
+        var name = "Okta";
         var target = new OktaPostConfigureOptions();
 
         var options = new OktaAuthenticationOptions()
@@ -48,7 +48,7 @@ public static class OktaPostConfigureOptionsTests
     public static void PostConfigure_Configures_Valid_Endpoints_With_Custom_Authorization_Server(string domain)
     {
         // Arrange
-        string name = "Okta";
+        var name = "Okta";
         var target = new OktaPostConfigureOptions();
 
         var options = new OktaAuthenticationOptions()
@@ -75,10 +75,10 @@ public static class OktaPostConfigureOptionsTests
     [InlineData(null)]
     [InlineData("")]
     [InlineData(" ")]
-    public static void PostConfigure_Throws_If_Domain_Is_Invalid(string value)
+    public static void PostConfigure_Throws_If_Domain_Is_Invalid(string? value)
     {
         // Arrange
-        string name = "Okta";
+        var name = "Okta";
         var target = new OktaPostConfigureOptions();
 
         var options = new OktaAuthenticationOptions()
@@ -87,26 +87,26 @@ public static class OktaPostConfigureOptionsTests
         };
 
         // Act and Assert
-        Assert.Throws<ArgumentException>("options", () => target.PostConfigure(name, options));
+        _ = Assert.Throws<ArgumentException>("options", () => target.PostConfigure(name, options));
     }
 
     [Theory]
     [InlineData(null)]
     [InlineData("")]
     [InlineData(" ")]
-    public static void PostConfigure_Throws_If_AuthorizationServer_Is_Invalid(string value)
+    public static void PostConfigure_Throws_If_AuthorizationServer_Is_Invalid(string? value)
     {
         // Arrange
-        string name = "Okta";
+        var name = "Okta";
         var target = new OktaPostConfigureOptions();
 
         var options = new OktaAuthenticationOptions()
         {
-            AuthorizationServer = value,
+            AuthorizationServer = value!,
             Domain = "okta.local",
         };
 
         // Act and Assert
-        Assert.Throws<ArgumentException>("options", () => target.PostConfigure(name, options));
+        _ = Assert.Throws<ArgumentException>("options", () => target.PostConfigure(name, options));
     }
 }
