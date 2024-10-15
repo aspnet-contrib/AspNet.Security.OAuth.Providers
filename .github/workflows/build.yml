@@ -128,6 +128,11 @@ jobs:
       with:
         dotnet-version: ${{ needs.build.outputs.dotnet-sdk-version }}
 
+    - name: Setup .NET 6 SDK
+      uses: actions/setup-dotnet@6bd8b7f7774af54e05809fcc5431931b3eb1ddee # v4.0.1
+      with:
+        dotnet-version: '6.0.x'
+
     - name: Validate NuGet packages
       shell: pwsh
       run: |
