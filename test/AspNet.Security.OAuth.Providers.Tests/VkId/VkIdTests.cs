@@ -23,7 +23,6 @@ public class VkIdTests : OAuthTests<VkIdAuthenticationOptions>
     }
 
     [Theory]
-
     [InlineData(ClaimTypes.NameIdentifier, "1234567890")]
     [InlineData(ClaimTypes.GivenName, "Ivan")]
     [InlineData(ClaimTypes.Surname, "Ivanov")]

@@ -69,12 +69,15 @@ public sealed class VkIdAuthenticationHandler(
         var deviceId = Request.Query["device_id"];
         if (StringValues.IsNullOrEmpty(deviceId))
         {
-            return HandleRequestResult.Fail("DeviceId was not found.");
+            return HandleRequestResult.Fail("Device ID was not found.");
         }
 
         properties.Items.Add(VkIdAuthenticationConstants.AuthenticationProperties.DeviceId, deviceId);
-        var codeExchangeContext =
-            new OAuthCodeExchangeContext(properties, code!, BuildRedirectUri(Options.CallbackPath));
+        var codeExchangeContext = new OAuthCodeExchangeContext(
+            properties,
+            code!,
+            BuildRedirectUri(Options.CallbackPath));
+
         using var tokens = await ExchangeCodeAsync(codeExchangeContext);
         if (tokens.Error is not null)
         {
@@ -83,38 +86,58 @@ public sealed class VkIdAuthenticationHandler(
 
         if (string.IsNullOrEmpty(tokens.AccessToken))
         {
-            return HandleRequestResult.Fail("Failed to retrieve access_token.", properties);
+            return HandleRequestResult.Fail("Failed to retrieve access token.", properties);
         }
 
         if (string.IsNullOrEmpty(tokens.RefreshToken))
         {
-            return HandleRequestResult.Fail("Failed to retrieve refresh_token.", properties);
+            return HandleRequestResult.Fail("Failed to retrieve refresh token.", properties);
         }
 
         if (Options.SaveTokens)
         {
             var tokensToStore = new List<AuthenticationToken>
             {
-                new() { Name = "access_token", Value = tokens.AccessToken, },
-                new() { Name = "refresh_token", Value = tokens.RefreshToken, },
+                new()
+                {
+                    Name = "access_token",
+                    Value = tokens.AccessToken,
+                },
+                new()
+                {
+                    Name = "refresh_token",
+                    Value = tokens.RefreshToken,
+                },
             };
 
             if (tokens.Response!.RootElement.GetString("id_token") is { } idToken)
             {
-                tokensToStore.Add(new AuthenticationToken { Name = "id_token", Value = idToken });
+                tokensToStore.Add(new AuthenticationToken
+                {
+                    Name = "id_token",
+                    Value = idToken
+                });
             }
 
             if (!string.IsNullOrEmpty(tokens.TokenType))
             {
-                tokensToStore.Add(new AuthenticationToken { Name = "token_type", Value = tokens.TokenType });
+                tokensToStore.Add(new AuthenticationToken
+                {
+                    Name = "token_type",
+                    Value = tokens.TokenType
+                });
             }
 
             if (int.TryParse(tokens.ExpiresIn, NumberStyles.Integer, CultureInfo.InvariantCulture, out var expiresIn))
             {
-                var expiresAt = TimeProvider.GetUtcNow().AddSeconds(expiresIn);
+                var expiresAt = TimeProvider
+                    .GetUtcNow()
+                    .AddSeconds(expiresIn);
+
                 tokensToStore.Add(new AuthenticationToken
                 {
-                    Name = "expires_at", Value = expiresAt.ToString("o", CultureInfo.InvariantCulture)
+                    Name = "expires_at",
+                    Value = expiresAt.ToString("o", CultureInfo.InvariantCulture)
                 });
             }
 
@@ -131,7 +154,7 @@ public sealed class VkIdAuthenticationHandler(
         if (!context.Properties.Items.TryGetValue(VkIdAuthenticationConstants.AuthenticationProperties.DeviceId, out var deviceId) ||
             string.IsNullOrEmpty(deviceId))
         {
-            return OAuthTokenResponse.Failed(new Exception("Code verifier key was not found."));
+            return OAuthTokenResponse.Failed(new Exception("Device ID was not found."));
         }
 
         if (!context.Properties.Items.TryGetValue(OAuthConstants.CodeVerifierKey, out var codeVerifier) ||
@@ -193,9 +216,12 @@ public sealed class VkIdAuthenticationHandler(
 
         if (body.RootElement.TryGetProperty("error", out var errorElement))
         {
-            var error = errorElement.GetString();
-            var errorDescription = body.RootElement.GetProperty("error_description").GetString();
-            throw new Exception($"{error} - {errorDescription}");
+            var errorCode = errorElement.GetString();
+            var errorDescription = body.RootElement
+                .GetProperty("error_description")
+                .GetString();
+
+            throw new Exception($"{errorCode}: {errorDescription}");
         }
 
         if (!body.RootElement.TryGetProperty("user", out var payload))
@@ -204,7 +230,15 @@ public sealed class VkIdAuthenticationHandler(
         }
 
         var principal = new ClaimsPrincipal(identity);
-        var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload);
+        var context = new OAuthCreatingTicketContext(
+            principal,
+            properties,
+            Context,
+            Scheme,
+            Options,
+            Backchannel,
+            tokens,
+            payload);
         context.RunClaimActions();
 
         await Events.CreatingTicket(context);

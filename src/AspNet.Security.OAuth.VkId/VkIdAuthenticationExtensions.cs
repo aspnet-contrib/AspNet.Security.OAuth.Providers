@@ -21,7 +21,7 @@ public static class VkIdAuthenticationExtensions
     /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
     public static AuthenticationBuilder AddVkId(this AuthenticationBuilder builder)
     {
-        return builder.AddVkId(VkIdAuthenticationDefaults.AuthenticationScheme, options => { });
+        return builder.AddVkId(VkIdAuthenticationDefaults.AuthenticationScheme, _ => { });
     }
 
     /// <summary>
