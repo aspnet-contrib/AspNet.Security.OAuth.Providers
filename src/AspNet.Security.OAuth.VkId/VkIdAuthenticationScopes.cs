@@ -12,7 +12,7 @@ namespace AspNet.Security.OAuth.VkId;
 public static class VkIdAuthenticationScopes
 {
     /// <summary>
-    /// Grants access to first and last name, gender, profile photo, date of birth.
+    /// Grants access to personal information.
     /// </summary>
     public const string PersonalInfo = "vkid.personal_info";
 

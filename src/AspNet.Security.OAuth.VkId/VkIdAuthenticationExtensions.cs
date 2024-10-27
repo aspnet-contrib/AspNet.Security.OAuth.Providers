@@ -15,7 +15,7 @@ public static class VkIdAuthenticationExtensions
 {
     /// <summary>
     /// Adds <see cref="VkIdAuthenticationHandler"/> to the specified
-    /// <see cref="AuthenticationBuilder"/>, which enables Vkontakte OAuth2.1 authentication capabilities.
+    /// <see cref="AuthenticationBuilder"/>, which enables VK ID authentication capabilities.
     /// </summary>
     /// <param name="builder">The authentication builder.</param>
     /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
@@ -26,7 +26,7 @@ public static class VkIdAuthenticationExtensions
 
     /// <summary>
     /// Adds <see cref="VkIdAuthenticationHandler"/> to the specified
-    /// <see cref="AuthenticationBuilder"/>, which enables Vkontakte OAuth2.1 authentication capabilities.
+    /// <see cref="AuthenticationBuilder"/>, which enables VK ID authentication capabilities.
     /// </summary>
     /// <param name="builder">The authentication builder.</param>
     /// <param name="configuration">The delegate used to configure the <see cref="VkIdAuthenticationOptions"/> options.</param>
@@ -40,7 +40,7 @@ public static class VkIdAuthenticationExtensions
 
     /// <summary>
     /// Adds <see cref="VkIdAuthenticationHandler"/> to the specified
-    /// <see cref="AuthenticationBuilder"/>, which enables Vkontakte OAuth2.1 authentication capabilities.
+    /// <see cref="AuthenticationBuilder"/>, which enables VK ID authentication capabilities.
     /// </summary>
     /// <param name="builder">The authentication builder.</param>
     /// <param name="scheme">The authentication scheme associated with this instance.</param>
@@ -56,7 +56,7 @@ public static class VkIdAuthenticationExtensions
 
     /// <summary>
     /// Adds <see cref="VkIdAuthenticationHandler"/> to the specified
-    /// <see cref="AuthenticationBuilder"/>, which enables Vkontakte OAuth2.1 authentication capabilities.
+    /// <see cref="AuthenticationBuilder"/>, which enables VK ID authentication capabilities.
     /// </summary>
     /// <param name="builder">The authentication builder.</param>
     /// <param name="scheme">The authentication scheme associated with this instance.</param>

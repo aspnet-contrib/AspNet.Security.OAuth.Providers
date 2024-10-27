@@ -19,12 +19,16 @@ using Base64UrlEncoder = Microsoft.AspNetCore.Authentication.Base64UrlTextEncode
 
 namespace AspNet.Security.OAuth.VkId;
 
-public sealed class VkIdAuthenticationHandler(
-    IOptionsMonitor<VkIdAuthenticationOptions> options,
-    ILoggerFactory logger,
-    UrlEncoder encoder)
-    : OAuthHandler<VkIdAuthenticationOptions>(options, logger, encoder)
+public sealed class VkIdAuthenticationHandler : OAuthHandler<VkIdAuthenticationOptions>
 {
+    public VkIdAuthenticationHandler(
+        IOptionsMonitor<VkIdAuthenticationOptions> options,
+        ILoggerFactory logger,
+        UrlEncoder encoder)
+        : base(options, logger, encoder)
+    {
+    }
+
     protected override string BuildChallengeUrl(AuthenticationProperties properties, string redirectUri)
     {
         var parameter = Options.Scope;
