@@ -19,7 +19,7 @@ public static class VkIdAuthenticationExtensions
     /// </summary>
     /// <param name="builder">The authentication builder.</param>
     /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
-    public static AuthenticationBuilder AddVkId(this AuthenticationBuilder builder)
+    public static AuthenticationBuilder AddVkId([NotNull] this AuthenticationBuilder builder)
     {
         return builder.AddVkId(VkIdAuthenticationDefaults.AuthenticationScheme, _ => { });
     }
@@ -32,8 +32,8 @@ public static class VkIdAuthenticationExtensions
     /// <param name="configuration">The delegate used to configure the <see cref="VkIdAuthenticationOptions"/> options.</param>
     /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
     public static AuthenticationBuilder AddVkId(
-        this AuthenticationBuilder builder,
-        Action<VkIdAuthenticationOptions> configuration)
+        [NotNull] this AuthenticationBuilder builder,
+        [NotNull] Action<VkIdAuthenticationOptions> configuration)
     {
         return builder.AddVkId(VkIdAuthenticationDefaults.AuthenticationScheme, configuration);
     }
@@ -47,9 +47,9 @@ public static class VkIdAuthenticationExtensions
     /// <param name="configuration">The delegate used to configure the <see cref="VkIdAuthenticationOptions"/> options.</param>
     /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
     public static AuthenticationBuilder AddVkId(
-        this AuthenticationBuilder builder,
-        string scheme,
-        Action<VkIdAuthenticationOptions> configuration)
+        [NotNull] this AuthenticationBuilder builder,
+        [NotNull] string scheme,
+        [NotNull] Action<VkIdAuthenticationOptions> configuration)
     {
         return builder.AddVkId(scheme, VkIdAuthenticationDefaults.DisplayName, configuration);
     }
@@ -64,10 +64,10 @@ public static class VkIdAuthenticationExtensions
     /// <param name="configuration">The delegate used to configure the <see cref="VkIdAuthenticationOptions"/> options.</param>
     /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
     public static AuthenticationBuilder AddVkId(
-        this AuthenticationBuilder builder,
-        string scheme,
+        [NotNull] this AuthenticationBuilder builder,
+        [NotNull] string scheme,
         [CanBeNull] string caption,
-        Action<VkIdAuthenticationOptions> configuration)
+        [NotNull] Action<VkIdAuthenticationOptions> configuration)
     {
         return builder.AddOAuth<VkIdAuthenticationOptions, VkIdAuthenticationHandler>(scheme, caption, configuration);
     }

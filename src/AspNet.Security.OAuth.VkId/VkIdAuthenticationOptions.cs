@@ -22,6 +22,9 @@ public sealed class VkIdAuthenticationOptions : OAuthOptions
         TokenEndpoint = VkIdAuthenticationDefaults.TokenEndpoint;
         UserInformationEndpoint = VkIdAuthenticationDefaults.UserInformationEndpoint;
 
+        // It's mandatory to use PKCE
+        UsePkce = true;
+
         Scope.Add(VkIdAuthenticationScopes.PersonalInfo);
 
         ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "user_id");

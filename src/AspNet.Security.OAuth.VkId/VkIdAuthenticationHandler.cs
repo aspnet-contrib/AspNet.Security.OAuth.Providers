@@ -22,14 +22,16 @@ namespace AspNet.Security.OAuth.VkId;
 public sealed class VkIdAuthenticationHandler : OAuthHandler<VkIdAuthenticationOptions>
 {
     public VkIdAuthenticationHandler(
-        IOptionsMonitor<VkIdAuthenticationOptions> options,
-        ILoggerFactory logger,
-        UrlEncoder encoder)
+        [NotNull] IOptionsMonitor<VkIdAuthenticationOptions> options,
+        [NotNull] ILoggerFactory logger,
+        [NotNull] UrlEncoder encoder)
         : base(options, logger, encoder)
     {
     }
 
-    protected override string BuildChallengeUrl(AuthenticationProperties properties, string redirectUri)
+    protected override string BuildChallengeUrl(
+        [NotNull] AuthenticationProperties properties,
+        [NotNull] string redirectUri)
     {
         var parameter = Options.Scope;
         var scopes = FormatScope(parameter);
@@ -153,7 +155,7 @@ public sealed class VkIdAuthenticationHandler : OAuthHandler<VkIdAuthenticationO
         return HandleRequestResult.Success(ticket);
     }
 
-    protected override async Task<OAuthTokenResponse> ExchangeCodeAsync(OAuthCodeExchangeContext context)
+    protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] OAuthCodeExchangeContext context)
     {
         if (!context.Properties.Items.TryGetValue(VkIdAuthenticationConstants.AuthenticationProperties.DeviceId, out var deviceId) ||
             string.IsNullOrEmpty(deviceId))
@@ -202,7 +204,10 @@ public sealed class VkIdAuthenticationHandler : OAuthHandler<VkIdAuthenticationO
         return OAuthTokenResponse.Failed(new Exception($"{errorCode}: {errorDescription}"));
     }
 
-    protected override async Task<AuthenticationTicket> CreateTicketAsync(ClaimsIdentity identity, AuthenticationProperties properties, OAuthTokenResponse tokens)
+    protected override async Task<AuthenticationTicket> CreateTicketAsync(
+        [NotNull] ClaimsIdentity identity,
+        [NotNull] AuthenticationProperties properties,
+        [NotNull] OAuthTokenResponse tokens)
     {
         var query = new Dictionary<string, string>
         {
