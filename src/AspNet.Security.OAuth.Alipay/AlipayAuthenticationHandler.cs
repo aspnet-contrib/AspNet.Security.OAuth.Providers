@@ -134,8 +134,6 @@ public partial class AlipayAuthenticationHandler : OAuthHandler<AlipayAuthentica
             throw new AuthenticationFailureException($"An error (Code:{code}) occurred while retrieving user information.");
         }
 
-        identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, mainElement.GetString("user_id")!, ClaimValueTypes.String, Options.ClaimsIssuer));
-
         var principal = new ClaimsPrincipal(identity);
         var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, mainElement);
 
