@@ -59,6 +59,12 @@ public partial class AlipayAuthenticationHandler : OAuthHandler<AlipayAuthentica
             ["timestamp"] = TimeProvider.GetUtcNow().ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture),
             ["version"] = "1.0",
         };
+        if (Options.EnableCertSignature)
+        {
+            tokenRequestParameters["app_cert_sn"] = Options.AppCertSN;
+            tokenRequestParameters["alipay_root_cert_sn"] = Options.RootCertSN;
+        }
+
         tokenRequestParameters.Add("sign", GetRSA2Signature(tokenRequestParameters));
 
         // PKCE https://tools.ietf.org/html/rfc7636#section-4.5, see BuildChallengeUrl
@@ -107,6 +113,12 @@ public partial class AlipayAuthenticationHandler : OAuthHandler<AlipayAuthentica
             ["timestamp"] = TimeProvider.GetUtcNow().ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture),
             ["version"] = "1.0",
         };
+        if (Options.EnableCertSignature)
+        {
+            parameters["app_cert_sn"] = Options.AppCertSN;
+            parameters["alipay_root_cert_sn"] = Options.RootCertSN;
+        }
+
         parameters.Add("sign", GetRSA2Signature(parameters));
 
         var address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, parameters);

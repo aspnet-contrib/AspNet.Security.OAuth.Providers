@@ -34,9 +34,41 @@ public class AlipayAuthenticationOptions : OAuthOptions
         ClaimActions.MapCustomJson(System.Security.Claims.ClaimTypes.NameIdentifier, user => user.GetString(NameIdentifierKey));
     }
 
+    public override void Validate()
+    {
+        base.Validate();
+
+        if (!string.IsNullOrEmpty(AppCertSN) && !string.IsNullOrEmpty(RootCertSN))
+        {
+            EnableCertSignature = true;
+        }
+        else if (!string.IsNullOrEmpty(AppCertPath) && !string.IsNullOrEmpty(RootCertPath))
+        {
+            try
+            {
+                AppCertSN = AlipayCertificationUtils.GetCertSN(AppCertPath);
+                RootCertSN = AlipayCertificationUtils.GetRootCertSN(RootCertPath);
+                EnableCertSignature = true;
+            }
+            catch (Exception ex)
+            {
+                throw new ArgumentException($"The '{nameof(AppCertPath)}' and '{nameof(RootCertPath)}' options must be set to the correct certificate files.", ex);
+            }
+        }
+    }
+
     /// <summary>
-    /// Alipay user system internal identifier, which will no longer be open independently in the future and will be replaced by open_id. Currently the default is user_id
     /// See https://opendocs.alipay.com/mini/0ai2i6?pathHash=13dd5946
     /// </summary>
     public string NameIdentifierKey { get; set; } = "user_id";
+
+    public string? AppCertPath { get; set; }
+
+    public string? RootCertPath { get; set; }
+
+    public bool EnableCertSignature { get; set; }
+
+    public string AppCertSN { get; set; } = string.Empty;
+
+    public string RootCertSN { get; set; } = string.Empty;
 }
