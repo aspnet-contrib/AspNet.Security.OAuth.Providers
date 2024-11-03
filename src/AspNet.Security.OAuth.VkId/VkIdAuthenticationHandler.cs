@@ -5,12 +5,14 @@
  */
 
 using System.Globalization;
+using System.Net;
 using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -19,7 +21,7 @@ using Base64UrlEncoder = Microsoft.AspNetCore.Authentication.Base64UrlTextEncode
 
 namespace AspNet.Security.OAuth.VkId;
 
-public sealed class VkIdAuthenticationHandler : OAuthHandler<VkIdAuthenticationOptions>
+public sealed partial class VkIdAuthenticationHandler : OAuthHandler<VkIdAuthenticationOptions>
 {
     public VkIdAuthenticationHandler(
         [NotNull] IOptionsMonitor<VkIdAuthenticationOptions> options,
@@ -36,6 +38,7 @@ public sealed class VkIdAuthenticationHandler : OAuthHandler<VkIdAuthenticationO
         var parameter = Options.Scope;
         var scopes = FormatScope(parameter);
 
+        // It's mandatory to use PKCE
         var data = RandomNumberGenerator.GetBytes(32);
         var codeVerifierKey = Base64UrlEncoder.Encode(data);
         properties.Items.Add(OAuthConstants.CodeVerifierKey, codeVerifierKey);
@@ -55,7 +58,8 @@ public sealed class VkIdAuthenticationHandler : OAuthHandler<VkIdAuthenticationO
 
     protected override async Task<HandleRequestResult> HandleRemoteAuthenticateAsync()
     {
-        var properties = Options.StateDataFormat.Unprotect(Request.Query["state"]);
+        var query = Request.Query;
+        var properties = Options.StateDataFormat.Unprotect(query["state"]);
         if (properties is null)
         {
             return HandleRequestResult.Fail("The oauth state was missing or invalid.");
@@ -65,6 +69,9 @@ public sealed class VkIdAuthenticationHandler : OAuthHandler<VkIdAuthenticationO
         {
             return HandleRequestResult.Fail("Correlation failed.");
         }
+
+        // According to docs query cannot contain errors but VK documentation tends to lie so debug log here
+        Log.CodeResponse(Logger, query);
 
         var code = Request.Query["code"];
         if (StringValues.IsNullOrEmpty(code))
@@ -95,11 +102,6 @@ public sealed class VkIdAuthenticationHandler : OAuthHandler<VkIdAuthenticationO
             return HandleRequestResult.Fail("Failed to retrieve access token.", properties);
         }
 
-        if (string.IsNullOrEmpty(tokens.RefreshToken))
-        {
-            return HandleRequestResult.Fail("Failed to retrieve refresh token.", properties);
-        }
-
         if (Options.SaveTokens)
         {
             var tokensToStore = new List<AuthenticationToken>
@@ -109,28 +111,14 @@ public sealed class VkIdAuthenticationHandler : OAuthHandler<VkIdAuthenticationO
                     Name = "access_token",
                     Value = tokens.AccessToken,
                 },
-                new()
+            };
+
+            if (!string.IsNullOrEmpty(tokens.RefreshToken))
+            {
+                tokensToStore.Add(new AuthenticationToken
                 {
                     Name = "refresh_token",
                     Value = tokens.RefreshToken,
-                },
-            };
-
-            if (tokens.Response!.RootElement.GetString("id_token") is { } idToken)
-            {
-                tokensToStore.Add(new AuthenticationToken
-                {
-                    Name = "id_token",
-                    Value = idToken
-                });
-            }
-
-            if (!string.IsNullOrEmpty(tokens.TokenType))
-            {
-                tokensToStore.Add(new AuthenticationToken
-                {
-                    Name = "token_type",
-                    Value = tokens.TokenType
                 });
             }
 
@@ -147,6 +135,15 @@ public sealed class VkIdAuthenticationHandler : OAuthHandler<VkIdAuthenticationO
                 });
             }
 
+            if (!string.IsNullOrEmpty(tokens.TokenType))
+            {
+                tokensToStore.Add(new AuthenticationToken
+                {
+                    Name = "token_type",
+                    Value = tokens.TokenType
+                });
+            }
+
             properties.StoreTokens(tokensToStore);
         }
 
@@ -157,6 +154,7 @@ public sealed class VkIdAuthenticationHandler : OAuthHandler<VkIdAuthenticationO
 
     protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] OAuthCodeExchangeContext context)
     {
+        // Both device_id and code_verifier are required to get access token
         if (!context.Properties.Items.TryGetValue(VkIdAuthenticationConstants.AuthenticationProperties.DeviceId, out var deviceId) ||
             string.IsNullOrEmpty(deviceId))
         {
@@ -170,7 +168,7 @@ public sealed class VkIdAuthenticationHandler : OAuthHandler<VkIdAuthenticationO
         }
 
         context.Properties.Items.Remove(OAuthConstants.CodeVerifierKey);
-        var query = new Dictionary<string, string>()
+        var query = new Dictionary<string, string>
         {
             ["grant_type"] = "authorization_code",
             ["code"] = context.Code,
@@ -184,10 +182,19 @@ public sealed class VkIdAuthenticationHandler : OAuthHandler<VkIdAuthenticationO
         using var request = new HttpRequestMessage(HttpMethod.Post, Options.TokenEndpoint);
         request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         request.Content = new FormUrlEncodedContent(query);
-        request.Version = Backchannel.DefaultRequestVersion;
 
         var response = await Backchannel.SendAsync(request, Context.RequestAborted);
+
+        // According to docs even error response should be 200
+        if (response.StatusCode is not HttpStatusCode.OK)
+        {
+            await Log.ExchangeCodeErrorAsync(Logger, response, Context.RequestAborted);
+            return OAuthTokenResponse.Failed(new Exception("Invalid remote server response during code exchange."));
+        }
+
         var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
+
+        // Code exchange response should always contain state parameter.
         if (!payload.RootElement.TryGetProperty("state", out var state) ||
             Options.StateDataFormat.Unprotect(state.GetString()) is null)
         {
@@ -220,6 +227,12 @@ public sealed class VkIdAuthenticationHandler : OAuthHandler<VkIdAuthenticationO
         request.Version = Backchannel.DefaultRequestVersion;
 
         var response = await Backchannel.SendAsync(request, Context.RequestAborted);
+        if (!response.IsSuccessStatusCode)
+        {
+            await Log.UserProfileErrorAsync(Logger, response, Context.RequestAborted);
+            throw new HttpRequestException("An error occurred while retrieving the user profile.");
+        }
+
         var content = await response.Content.ReadAsStringAsync(Context.RequestAborted);
         var body = JsonDocument.Parse(content);
 
@@ -235,6 +248,7 @@ public sealed class VkIdAuthenticationHandler : OAuthHandler<VkIdAuthenticationO
 
         if (!body.RootElement.TryGetProperty("user", out var payload))
         {
+            Log.FailedToRetrieveUserInformation(Logger, response, content);
             throw new Exception("Failed to retrieve user information.");
         }
 
@@ -252,5 +266,70 @@ public sealed class VkIdAuthenticationHandler : OAuthHandler<VkIdAuthenticationO
 
         await Events.CreatingTicket(context);
         return new AuthenticationTicket(context.Principal!, context.Properties, Scheme.Name);
+    }
+
+    private static partial class Log
+    {
+        internal static void CodeResponse(ILogger logger, IQueryCollection? query)
+        {
+            CodeResponse(logger, query?.ToString() ?? string.Empty);
+        }
+
+        internal static async Task ExchangeCodeErrorAsync(
+            ILogger logger,
+            HttpResponseMessage response,
+            CancellationToken cancellationToken)
+        {
+            ExchangeCodeErrorAsync(
+                logger,
+                response.StatusCode,
+                response.Headers.ToString(),
+                await response.Content.ReadAsStringAsync(cancellationToken));
+        }
+
+        internal static async Task UserProfileErrorAsync(ILogger logger, HttpResponseMessage response, CancellationToken cancellationToken)
+        {
+            UserProfileError(
+                logger,
+                response.StatusCode,
+                response.Headers.ToString(),
+                await response.Content.ReadAsStringAsync(cancellationToken));
+        }
+
+        internal static void FailedToRetrieveUserInformation(
+            ILogger logger,
+            HttpResponseMessage response,
+            string content)
+        {
+            FailedToRetrieveUserInformation(
+                logger,
+                response.StatusCode,
+                response.Headers.ToString(),
+                content);
+        }
+
+        [LoggerMessage(1, LogLevel.Debug, "Authorization endpoint callback query: {Query}.")]
+        internal static partial void CodeResponse(ILogger logger, string query);
+
+        [LoggerMessage(2, LogLevel.Error, "Invalid server response while retrieving an OAuth token: the remote server returned a {Status} response with the following payload: {Headers} {Body}.")]
+        private static partial void ExchangeCodeErrorAsync(
+            ILogger logger,
+            HttpStatusCode status,
+            string headers,
+            string body);
+
+        [LoggerMessage(3, LogLevel.Error, "An error occurred while retrieving the user profile: the remote server returned a {Status} response with the following payload: {Headers} {Body}.")]
+        private static partial void UserProfileError(
+            ILogger logger,
+            HttpStatusCode status,
+            string headers,
+            string body);
+
+        [LoggerMessage(4, LogLevel.Error, "Failed to retrieve user information: the remote server returned a {Status} response with the following payload: {Headers} {Body}.")]
+        private static partial void FailedToRetrieveUserInformation(
+            ILogger logger,
+            HttpStatusCode status,
+            string headers,
+            string body);
     }
 }
