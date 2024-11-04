@@ -65,9 +65,10 @@ public sealed partial class VkIdAuthenticationHandler : OAuthHandler<VkIdAuthent
             return HandleRequestResult.Fail("The oauth state was missing or invalid.");
         }
 
+        // OAuth2 10.12 CSRF
         if (ValidateCorrelationId(properties) is false)
         {
-            return HandleRequestResult.Fail("Correlation failed.");
+            return HandleRequestResult.Fail("Correlation failed.", properties);
         }
 
         // According to docs query cannot contain errors but VK documentation tends to lie so debug log here
@@ -76,13 +77,13 @@ public sealed partial class VkIdAuthenticationHandler : OAuthHandler<VkIdAuthent
         var code = Request.Query["code"];
         if (StringValues.IsNullOrEmpty(code))
         {
-            return HandleRequestResult.Fail("Code was not found.");
+            return HandleRequestResult.Fail("Code was not found.", properties);
         }
 
         var deviceId = Request.Query["device_id"];
         if (StringValues.IsNullOrEmpty(deviceId))
         {
-            return HandleRequestResult.Fail("Device ID was not found.");
+            return HandleRequestResult.Fail("Device ID was not found.", properties);
         }
 
         properties.Items.Add(VkIdAuthenticationConstants.AuthenticationProperties.DeviceId, deviceId);
@@ -201,14 +202,15 @@ public sealed partial class VkIdAuthenticationHandler : OAuthHandler<VkIdAuthent
             return OAuthTokenResponse.Failed(new Exception("The oauth state was missing or invalid."));
         }
 
-        if (!payload.RootElement.TryGetProperty("error", out var errorElement))
+        // ReSharper disable once InvertIf
+        if (payload.RootElement.TryGetProperty("error", out var errorElement))
         {
-            return OAuthTokenResponse.Success(payload);
+            var errorCode = errorElement.GetString()!;
+            var errorDescription = errorElement.GetProperty("error_description").GetString()!;
+            return OAuthTokenResponse.Failed(new Exception($"{errorCode}: {errorDescription}"));
         }
 
-        var errorCode = errorElement.GetString()!;
-        var errorDescription = errorElement.GetProperty("error_description").GetString()!;
-        return OAuthTokenResponse.Failed(new Exception($"{errorCode}: {errorDescription}"));
+        return OAuthTokenResponse.Success(payload);
     }
 
     protected override async Task<AuthenticationTicket> CreateTicketAsync(
