@@ -52,7 +52,7 @@ jobs:
       id: setup-dotnet
 
     - name: Setup NuGet
-      uses: nuget/setup-nuget@a21f25cd3998bf370fde17e3f1b4c12c175172f9 # v2.0.0
+      uses: nuget/setup-nuget@323ab0502cd38fdc493335025a96c8fdb0edc71f # v2.0.1
       with:
         nuget-version: '5.11.0'
 
