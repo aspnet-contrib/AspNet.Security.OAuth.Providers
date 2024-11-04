@@ -4,6 +4,9 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using Microsoft.AspNetCore.DataProtection;
+using NSubstitute;
+
 namespace AspNet.Security.OAuth.VkId;
 
 public class VkIdTests : OAuthTests<VkIdAuthenticationOptions>
@@ -19,7 +22,24 @@ public class VkIdTests : OAuthTests<VkIdAuthenticationOptions>
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
     {
-        builder.AddVkId(options => ConfigureDefaults(builder, options));
+        var dataProtector = (IDataProtector)DataProtectionProvider.Create("test");
+        var fakeDataProtector = Substitute.For<IDataProtector>();
+
+        fakeDataProtector.Protect(Arg.Any<byte[]>())
+            .Returns(x => dataProtector.Protect(x.Arg<byte[]>()));
+        fakeDataProtector.Unprotect(Arg.Is<byte[]>(x => !x.SequenceEqual(Array.Empty<byte>())))
+            .Returns(x => dataProtector.Unprotect(x.Arg<byte[]>()));
+
+        // Use fake DP with empty AuthenticationProperties for ExchangeCodeAsync state validation
+        fakeDataProtector.Unprotect(Arg.Is<byte[]>(x => x.SequenceEqual(Array.Empty<byte>())))
+            .Returns([1, 0, 0, 0, 0, 0, 0, 0]);
+
+        builder.AddVkId(
+            options =>
+            {
+                ConfigureDefaults(builder, options);
+                options.StateDataFormat = new PropertiesDataFormat(fakeDataProtector);
+            });
     }
 
     [Theory]

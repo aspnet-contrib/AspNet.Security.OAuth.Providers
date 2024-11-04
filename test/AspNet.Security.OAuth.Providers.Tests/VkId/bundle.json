@@ -11,7 +11,7 @@
         "id_token": "XXXXX",
         "expires_in": 0,
         "user_id": 1234567890,
-        "state": "CfDJ8Pr-vgGKYEFCgHueyh17vWJ8_XXJHbV5XtKOAW1PZ7cddgZQNE8Jlv7QL7wa3fdIFbUxtxqp9lfe4volp6-TBWPj1SNU0VUO5SjY3jwDPgRfgxcbPlSk3yzYriW9bgrZ3B3umpSOZYRhLggxPvYPBRW9eruVvYmesbrt8fVsTTgV",
+        "state": "",
         "scope": "email phone"
       }
     },
