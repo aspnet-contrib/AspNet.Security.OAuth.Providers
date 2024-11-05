@@ -33,7 +33,7 @@ public class VkIdTests : OAuthTests<VkIdAuthenticationOptions>
 
         // Use fake DP with empty AuthenticationProperties for ExchangeCodeAsync state validation
         fakeDataProtector.Unprotect(Arg.Is<byte[]>(x => x.SequenceEqual(Base64UrlEncoder.DecodeBytes("ZmFrZS1zdGF0ZS1zdHJpbmc"))))
-            .Returns([1, 0, 0, 0, 0, 0, 0, 0]);
+            .Returns(new PropertiesSerializer().Serialize(new AuthenticationProperties()));
 
         builder.AddVkId(
             options =>
