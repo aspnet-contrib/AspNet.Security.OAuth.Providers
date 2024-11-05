@@ -11,7 +11,7 @@
         "id_token": "XXXXX",
         "expires_in": 0,
         "user_id": 1234567890,
-        "state": "",
+        "state": "ZmFrZS1zdGF0ZS1zdHJpbmc",
         "scope": "email phone"
       }
     },

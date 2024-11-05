@@ -5,6 +5,7 @@
  */
 
 using Microsoft.AspNetCore.DataProtection;
+using Microsoft.IdentityModel.Tokens;
 using NSubstitute;
 
 namespace AspNet.Security.OAuth.VkId;
@@ -31,7 +32,7 @@ public class VkIdTests : OAuthTests<VkIdAuthenticationOptions>
             .Returns(x => dataProtector.Unprotect(x.Arg<byte[]>()));
 
         // Use fake DP with empty AuthenticationProperties for ExchangeCodeAsync state validation
-        fakeDataProtector.Unprotect(Arg.Is<byte[]>(x => x.SequenceEqual(Array.Empty<byte>())))
+        fakeDataProtector.Unprotect(Arg.Is<byte[]>(x => x.SequenceEqual(Base64UrlEncoder.DecodeBytes("ZmFrZS1zdGF0ZS1zdHJpbmc"))))
             .Returns([1, 0, 0, 0, 0, 0, 0, 0]);
 
         builder.AddVkId(
