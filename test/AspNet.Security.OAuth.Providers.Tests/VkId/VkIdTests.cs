@@ -23,24 +23,7 @@ public class VkIdTests : OAuthTests<VkIdAuthenticationOptions>
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
     {
-        var dataProtector = (IDataProtector)DataProtectionProvider.Create("test");
-        var fakeDataProtector = Substitute.For<IDataProtector>();
-
-        fakeDataProtector.Protect(Arg.Any<byte[]>())
-            .Returns(x => dataProtector.Protect(x.Arg<byte[]>()));
-        fakeDataProtector.Unprotect(Arg.Is<byte[]>(x => !x.SequenceEqual(Array.Empty<byte>())))
-            .Returns(x => dataProtector.Unprotect(x.Arg<byte[]>()));
-
-        // Use fake DP with empty AuthenticationProperties for ExchangeCodeAsync state validation
-        fakeDataProtector.Unprotect(Arg.Is<byte[]>(x => x.SequenceEqual(Base64UrlEncoder.DecodeBytes("ZmFrZS1zdGF0ZS1zdHJpbmc"))))
-            .Returns(new PropertiesSerializer().Serialize(new AuthenticationProperties()));
-
-        builder.AddVkId(
-            options =>
-            {
-                ConfigureDefaults(builder, options);
-                options.StateDataFormat = new PropertiesDataFormat(fakeDataProtector);
-            });
+        builder.AddVkId(options => ConfigureDefaults(builder, options));
     }
 
     [Theory]

@@ -35,9 +35,6 @@ public sealed partial class VkIdAuthenticationHandler : OAuthHandler<VkIdAuthent
         [NotNull] AuthenticationProperties properties,
         [NotNull] string redirectUri)
     {
-        var parameter = Options.Scope;
-        var scopes = FormatScope(parameter);
-
         // It's mandatory to use PKCE
         var data = RandomNumberGenerator.GetBytes(32);
         var codeVerifierKey = Base64UrlEncoder.Encode(data);
@@ -47,7 +44,7 @@ public sealed partial class VkIdAuthenticationHandler : OAuthHandler<VkIdAuthent
         {
             ["response_type"] = "code",
             ["client_id"] = Options.ClientId,
-            ["scope"] = scopes,
+            ["scope"] = FormatScope(Options.Scope),
             ["redirect_uri"] = redirectUri,
             ["state"] = Options.StateDataFormat.Protect(properties),
             ["code_challenge"] = WebEncoders.Base64UrlEncode(SHA256.HashData(Encoding.UTF8.GetBytes(codeVerifierKey))),
@@ -66,7 +63,7 @@ public sealed partial class VkIdAuthenticationHandler : OAuthHandler<VkIdAuthent
         }
 
         // OAuth2 10.12 CSRF
-        if (ValidateCorrelationId(properties) is false)
+        if (!ValidateCorrelationId(properties))
         {
             return HandleRequestResult.Fail("Correlation failed.", properties);
         }
@@ -194,13 +191,6 @@ public sealed partial class VkIdAuthenticationHandler : OAuthHandler<VkIdAuthent
         }
 
         var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
-
-        // Code exchange response should always contain state parameter.
-        if (!payload.RootElement.TryGetProperty("state", out var state) ||
-            Options.StateDataFormat.Unprotect(state.GetString()) is null)
-        {
-            return OAuthTokenResponse.Failed(new Exception("The oauth state was missing or invalid."));
-        }
 
         // ReSharper disable once InvertIf
         if (payload.RootElement.TryGetProperty("error", out var errorElement))
