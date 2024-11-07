@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <PackageValidationBaselineVersion>8.3.0</PackageValidationBaselineVersion>
+    <TargetFrameworks>$(DefaultNetCoreTargetFramework)</TargetFrameworks>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Description>ASP.NET Core security middleware enabling VK ID authentication.</Description>
+    <Authors>hscokies</Authors>
+    <PackageTags>aspnetcore;authentication;oauth;security;vkontakte;vkid</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="JetBrains.Annotations" PrivateAssets="All" />
+  </ItemGroup>
+
+</Project>

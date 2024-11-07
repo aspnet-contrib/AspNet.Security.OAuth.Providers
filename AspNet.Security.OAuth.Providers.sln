@@ -311,6 +311,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.Docus
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.Zoho", "src\AspNet.Security.OAuth.Zoho\AspNet.Security.OAuth.Zoho.csproj", "{CD56ABE4-1CD2-4029-B556-E110A31A2CC4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.VkId", "src\AspNet.Security.OAuth.VkId\AspNet.Security.OAuth.VkId.csproj", "{F3E62C24-5F82-4CF5-A994-0E10D04FB495}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -721,6 +723,10 @@ Global
 		{CD56ABE4-1CD2-4029-B556-E110A31A2CC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CD56ABE4-1CD2-4029-B556-E110A31A2CC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CD56ABE4-1CD2-4029-B556-E110A31A2CC4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F3E62C24-5F82-4CF5-A994-0E10D04FB495}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3E62C24-5F82-4CF5-A994-0E10D04FB495}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3E62C24-5F82-4CF5-A994-0E10D04FB495}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3E62C24-5F82-4CF5-A994-0E10D04FB495}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -833,6 +839,7 @@ Global
 		{55975423-C9C0-4C47-AD00-0F012F30AD3C} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 		{4E96BD06-04CD-4014-BA42-10D2CDB820D6} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 		{CD56ABE4-1CD2-4029-B556-E110A31A2CC4} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
+		{F3E62C24-5F82-4CF5-A994-0E10D04FB495} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C7B54DE2-6407-4802-AD9C-CE54BF414C8C}

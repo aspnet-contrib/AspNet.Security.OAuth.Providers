@@ -1,0 +1,37 @@
+{
+  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
+  "items": [
+    {
+      "uri": "https://id.vk.com/oauth2/auth",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "XXXXX",
+        "refresh_token": "XXXXX",
+        "id_token": "XXXXX",
+        "expires_in": 0,
+        "user_id": 1234567890,
+        "state": "ZmFrZS1zdGF0ZS1zdHJpbmc",
+        "scope": "email phone"
+      }
+    },
+    {
+      "uri": "https://id.vk.com/oauth2/user_info",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "user": {
+          "user_id": "1234567890",
+          "first_name": "Ivan",
+          "last_name": "Ivanov",
+          "phone": "79991234567",
+          "avatar": "https://pp.userapi.com/60tZWMo4SmwcploUVl9XEt8ufnTTvDUmQ6Bj1g/mmv1pcj63C4.png",
+          "email": "ivan_i123@vk.com",
+          "sex": 2,
+          "verified": false,
+          "birthday": "01.01.2000"
+        }
+      }
+    }
+  ]
+}
