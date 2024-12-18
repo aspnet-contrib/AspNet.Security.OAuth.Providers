@@ -123,15 +123,10 @@ jobs:
       with:
         dotnet-version: ${{ needs.build.outputs.dotnet-sdk-version }}
 
-    - name: Setup .NET 6 SDK
-      uses: actions/setup-dotnet@3e891b0cb619bf60e2c25674b222b8940e2c1c25 # v4.1.0
-      with:
-        dotnet-version: '6.0.x'
-
     - name: Validate NuGet packages
       shell: pwsh
       run: |
-        dotnet tool install --global dotnet-validate --version 0.0.1-preview.304
+        dotnet tool install --global dotnet-validate --version 0.0.1-preview.304 --allow-roll-forward
         $packages = Get-ChildItem -Filter "*.nupkg" | ForEach-Object { $_.FullName }
         $invalidPackages = 0
         foreach ($package in $packages) {
