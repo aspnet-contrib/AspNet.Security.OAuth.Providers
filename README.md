@@ -5,7 +5,7 @@
 
 **The latest official release can be found on [NuGet](https://www.nuget.org/profiles/aspnet-contrib) and the nightly builds on [MyGet](https://www.myget.org/gallery/aspnet-contrib)**.
 
-[![Build status](https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers/workflows/build/badge.svg?branch=dev&event=push)](https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers/actions?query=workflow%3Abuild+branch%3Adev+event%3Apush)
+[![Build status](https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers/actions/workflows/build.yml/badge.svg?branch=dev&event=push)](https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers/actions/workflows/build.yml?query=event%3Apush+branch%3Adev)
 
 > [!TIP]
 > While the aspnet-contrib providers are still fully supported, **developers are encouraged to use the OpenIddict client for new applications**.
