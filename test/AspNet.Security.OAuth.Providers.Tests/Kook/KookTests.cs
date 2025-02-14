@@ -23,8 +23,8 @@ public class KookTests(ITestOutputHelper outputHelper) : OAuthTests<KookAuthenti
     [InlineData(ClaimTypes.MobilePhone, "110****2333")]
     [InlineData(Claims.IdentifyNumber, "1670")]
     [InlineData(Claims.OperatingSystem, "iOS")]
-    [InlineData(Claims.AvatarUrl, "https://xxx.com/assets/avatar.png/icon")]
-    [InlineData(Claims.BannerUrl, "https://xxx.com/assets/banner.png/icon")]
+    [InlineData(Claims.AvatarUrl, "https://example.com/assets/avatar.png/icon")]
+    [InlineData(Claims.BannerUrl, "https://example.com/assets/banner.png/icon")]
     [InlineData(Claims.IsMobileVerified, "True")]
     public async Task Can_Sign_In_Using_Kook(string claimType, string claimValue)
         => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);

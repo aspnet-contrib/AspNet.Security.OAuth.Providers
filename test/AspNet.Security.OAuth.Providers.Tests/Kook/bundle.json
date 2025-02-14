@@ -25,8 +25,8 @@
           "online": false,
           "os": "iOS",
           "status": 0,
-          "avatar": "https://xxx.com/assets/avatar.png/icon",
-          "banner": "https://xxx.com/assets/banner.png/icon",
+          "avatar": "https://example.com/assets/avatar.png/icon",
+          "banner": "https://example.com/assets/banner.png/icon",
           "bot": true,
           "mobile": "110****2333",
           "mobile_verified": true
