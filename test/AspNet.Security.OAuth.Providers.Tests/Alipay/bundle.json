@@ -31,6 +31,62 @@
         },
         "sign": "sign"
       }
+    },
+    {
+      "uri": "https://openapi.alipay.com/gateway.do?app_id=error-id&charset=utf-8&code=a6ed8e7f-471f-44f1-903b-65946475f351&format=JSON&grant_type=authorization_code&method=alipay.system.oauth.token&sign=N3%2B7cd6Sln12%2BgfKMFUcsqMQbZIbgG%2Br8Bbf5YImFQ%2B3IkFzSjwyBFuFNH3nshwZpGgyw5CQhar1PZapdJyhUwMwwO3gcC1os6vRe7kFGU84mbje3QnlU%2FS98QjFjViZ8fHLlCb1uFd2oCngkDmKaTTma9eLkiVmlu8eQ3tiU0k4ADG09F2y5YmP6vOg8RJxfsIoeImvnLGd7c5gUqU70ub2ekjR0FrWnjNs3wO8leT3QA1FG9bGqnnV3lB2MkiyZssENN0XvC4is8gG4zFdHRW%2BzIL6CA0Vz2CG0uD1g7f%2BUXQzvNJ26p97U%2F1bHWDw9XkTCbhGToGBNkacKy3xkg%3D%3D&sign_type=RSA2&timestamp=2019-12-14%2022%3A22%3A22&version=1.0",
+      "contentFormat": "json",
+      "contentJson": {
+        "alipay_system_oauth_token_response": {
+          "open_id": "open-id",
+          "access_token": "secret-access-token",
+          "expires_in": "300",
+          "refresh_token": "secret-refresh-token",
+          "re_expires_in": "300"
+        },
+        "sign": "sign"
+      }
+    },
+    {
+      "uri": "https://openapi.alipay.com/gateway.do?app_id=error-id&auth_token=secret-access-token&charset=utf-8&format=JSON&method=alipay.user.info.share&sign=4p9fbAnCCa%2FUKDkJH2OZcPhHXvDEwy17G9iZjRM%2BxpPc2%2FUw5it8BuBiU57SIkAwFBJjnC0RXGOlur94jO4b9rMyQWNsNXKjIHe3nHPx6fMFEgqSe6SUohuo%2BvvvdFyK1TkvstLgAJXyfAlMLg1SxLUZDLo%2FPga0Emxy2UXjCyTZBgIc%2BzZEBwly5s4NW0Jln3ZFYlpG4yFiuSBFzTCJ4bypVkQ59yANl3kZGnoXBkddieDLA4DGLUN6PacsdGNBFgIA%2BwU9v95gL80SdcHON7cxDDU33Lev0k%2Fu3%2F7EBBN%2BqaCmQS5wL0Huls3n6JAhZvL%2FFEWTa2gvedcm1AtE6w%3D%3D&sign_type=RSA2&timestamp=2019-12-14%2022%3A22%3A22&version=1.0",
+      "contentFormat": "json",
+      "contentJson": {
+        "alipay_user_info_share_response": {
+          "code": "40003",
+          "sub_code": "isv.not-online-app"
+        },
+        "sign": "sign"
+      }
+    },
+    {
+      "uri": "https://openapi.alipay.com/gateway.do?app_id=open-id&charset=utf-8&code=a6ed8e7f-471f-44f1-903b-65946475f351&format=JSON&grant_type=authorization_code&method=alipay.system.oauth.token&sign=tvlLQ%2Brp1tu5z8VFP9YpOZyhyAjAhVDz1s8eJ0x78Z0FWSFw1OPBxqramdbz2ZCgKJTbQ3Ajd1eJLlNTp7XzVjpUCLGYpUaUs23GMhk%2BYlMNAYxVvTvVLq7ceKLygpVt4dS5rdUI0zesscsoAB3YMPNZ2yEj%2BCVMvsHIS0VFgt0wmc8HN8Cc7XWTdIeN3LycBecH8rMGs5iakKzeGMHbUh5KKayEPEZqQNZTzVhTNmuf%2BNsLcnfIVPDBdLDVA8FQEm6mRQvNlZd2w8gfWAQk6chf2j%2FpyrEaGEvpliZzG6GRulcuuJ%2FwhCtLdm5KkzN75dxTpTvKdbcWCHbDa2iTjQ%3D%3D&sign_type=RSA2&timestamp=2019-12-14%2022%3A22%3A22&version=1.0",
+      "contentFormat": "json",
+      "contentJson": {
+        "alipay_system_oauth_token_response": {
+          "open_id": "open-id",
+          "access_token": "secret-access-token",
+          "expires_in": "300",
+          "refresh_token": "secret-refresh-token",
+          "re_expires_in": "300"
+        },
+        "sign": "sign"
+      }
+    },
+    {
+      "uri": "https://openapi.alipay.com/gateway.do?app_id=open-id&auth_token=secret-access-token&charset=utf-8&format=JSON&method=alipay.user.info.share&sign=uYIsXQsOZnpqWmy4Roa48LHX6D4g%2BDhz%2BdtQfrFTus2hjDiAOxOZFooUy%2Fw6sXHkPYO6vM5JpmNRdXDdontk%2BNP8szwyMHaGEX8%2FKWDzLGErMkJs1gneepnaVPeoTd57fxS6fY58py%2FsObG0zcxGp61wzI3D4fdN6c2AoFy0mOoqeMZixynHjXQFkPtj68pBcfZNlxujDhYkHtWdjrdR%2BPhRT%2FAazABa%2B%2BHLfM6YMHyd3Ryo%2BvSh7Xr%2BANU9n%2F2Ayw%2FvSxjGdd6UnYJ%2FIgi5XTWoAMvmKB%2BBpiS6cnP96HG27mgU2LGnrDAIYvQORLAOutezDeVHB7xHSGvtSobEmg%3D%3D&sign_type=RSA2&timestamp=2019-12-14 22%3A22%3A22&version=1.0",
+      "contentFormat": "json",
+      "contentJson": {
+        "alipay_user_info_share_response": {
+          "code": "10000",
+          "msg": "Success",
+          "open_id": "open-id",
+          "avatar": "http://tfsimg.alipay.com/images/partner/T1uIxXXbpXXXXXXXX",
+          "province": "my-province",
+          "city": "my-city",
+          "nick_name": "my-nickname",
+          "gender": "M"
+        },
+        "sign": "sign"
+      }
     }
   ]
 }

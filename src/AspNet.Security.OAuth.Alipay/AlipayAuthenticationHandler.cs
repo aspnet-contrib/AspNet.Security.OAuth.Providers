@@ -81,9 +81,9 @@ public partial class AlipayAuthenticationHandler : OAuthHandler<AlipayAuthentica
         using var document = await JsonDocument.ParseAsync(stream);
 
         var mainElement = document.RootElement.GetProperty("alipay_system_oauth_token_response");
-        if (!ValidateReturnCode(mainElement, out var code))
+        if (!ValidateReturnCode(mainElement, out var code, out var subCode))
         {
-            return OAuthTokenResponse.Failed(new Exception($"An error (Code:{code}) occurred while retrieving an access token."));
+            return OAuthTokenResponse.Failed(new Exception($"An error (Code:{code} subCode:{subCode}) occurred while retrieving an access token."));
         }
 
         var payload = JsonDocument.Parse(mainElement.GetRawText());
@@ -126,15 +126,16 @@ public partial class AlipayAuthenticationHandler : OAuthHandler<AlipayAuthentica
         if (!rootElement.TryGetProperty("alipay_user_info_share_response", out JsonElement mainElement))
         {
             var errorCode = rootElement.GetProperty("error_response").GetProperty("code").GetString()!;
-            throw new AuthenticationFailureException($"An error (Code:{errorCode}) occurred while retrieving user information.");
+            var errorSubCode = rootElement.GetProperty("error_response").GetProperty("sub_code").GetString()!;
+            throw new AuthenticationFailureException($"An error response (Code:{errorCode} subCode:{errorSubCode}) occurred while retrieving user information.");
         }
 
-        if (!ValidateReturnCode(mainElement, out var code))
+        if (!ValidateReturnCode(mainElement, out var code, out var subCode))
         {
-            throw new AuthenticationFailureException($"An error (Code:{code}) occurred while retrieving user information.");
+            throw new AuthenticationFailureException($"An error (Code:{code} subCode:{subCode}) occurred while retrieving user information.");
         }
 
-        identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, mainElement.GetString("user_id")!, ClaimValueTypes.String, Options.ClaimsIssuer));
+        identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, GetUserIdentifier(mainElement), ClaimValueTypes.String, Options.ClaimsIssuer));
 
         var principal = new ClaimsPrincipal(identity);
         var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, mainElement);
@@ -153,17 +154,28 @@ public partial class AlipayAuthenticationHandler : OAuthHandler<AlipayAuthentica
     /// </summary>
     /// <param name="element">Main part of json document from response</param>
     /// <param name="code">Returned code from server</param>
+    /// <param name="subCode">Returned sub_code from server</param>
     /// <remarks>See https://opendocs.alipay.com/open/common/105806 for details.</remarks>
     /// <returns>True if succeed, otherwise false.</returns>
-    private static bool ValidateReturnCode(JsonElement element, out string code)
+    private static bool ValidateReturnCode(JsonElement element, out string code, out string subCode)
     {
         if (!element.TryGetProperty("code", out JsonElement codeElement))
         {
             code = string.Empty;
+            subCode = string.Empty;
             return true;
         }
 
         code = codeElement.GetString()!;
+
+        if (!element.TryGetProperty("sub_code", out JsonElement subCodeElement))
+        {
+            subCode = string.Empty;
+            return true;
+        }
+
+        subCode = subCodeElement.GetString()!;
+
         return code == "10000";
     }
 
@@ -198,6 +210,22 @@ public partial class AlipayAuthenticationHandler : OAuthHandler<AlipayAuthentica
         var encryptedBytes = rsa.SignData(plainBytes, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
 
         return Convert.ToBase64String(encryptedBytes);
+    }
+
+    /// <summary>
+    /// Get user identifier from response.
+    /// </summary>
+    /// <param name="element">Main part of json document from response</param>
+    /// <remarks>See https://opendocs.alipay.com/common/0ai2i6?pathHash=cba76ebf for details.</remarks>
+    /// <returns>UserId or OpenId</returns>
+    private static string GetUserIdentifier(JsonElement element)
+    {
+        if (element.TryGetProperty("user_id", out JsonElement userIdElement))
+        {
+            return userIdElement.GetString()!;
+        }
+
+        return element.GetString("open_id")!;
     }
 
     /// <inheritdoc />

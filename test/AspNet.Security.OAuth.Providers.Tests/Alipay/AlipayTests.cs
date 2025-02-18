@@ -77,6 +77,46 @@ public class AlipayTests(ITestOutputHelper outputHelper) : OAuthTests<AlipayAuth
         }
     }
 
+    [Fact]
+    public async Task Cannot_Sign_In_Using_Alipay_With_Sub_Code_Error()
+    {
+        // Arrange
+        static void ConfigureServices(IServiceCollection services)
+        {
+            services.PostConfigureAll<AlipayAuthenticationOptions>((options) => options.ClientId = "error-id");
+        }
+
+        using var server = CreateTestServer(ConfigureServices);
+
+        // Act
+        var exception = await Assert.ThrowsAsync<AuthenticationFailureException>(async () => await AuthenticateUserAsync(server));
+        exception.InnerException!.Message.ShouldBe("An error (Code:40003 subCode:isv.not-online-app) occurred while retrieving user information.");
+    }
+
+    [Theory]
+    [InlineData(ClaimTypes.NameIdentifier, "open-id")]
+    [InlineData("urn:alipay:avatar", "http://tfsimg.alipay.com/images/partner/T1uIxXXbpXXXXXXXX")]
+    [InlineData("urn:alipay:province", "my-province")]
+    [InlineData("urn:alipay:city", "my-city")]
+    [InlineData("urn:alipay:nick_name", "my-nickname")]
+    [InlineData("urn:alipay:gender", "M")]
+    public async Task Can_Sign_In_Using_Alipay_With_Use_Open_Id(string claimType, string claimValue)
+    {
+        // Arrange
+        static void ConfigureServices(IServiceCollection services)
+        {
+            services.PostConfigureAll<AlipayAuthenticationOptions>((options) => options.ClientId = "open-id");
+        }
+
+        using var server = CreateTestServer(ConfigureServices);
+
+        // Act
+        var claims = await AuthenticateUserAsync(server);
+
+        // Assert
+        AssertClaim(claims, claimType, claimValue);
+    }
+
     private sealed class FixedClock : TimeProvider
     {
         public override DateTimeOffset GetUtcNow() => new(2019, 12, 14, 22, 22, 22, TimeSpan.Zero);
