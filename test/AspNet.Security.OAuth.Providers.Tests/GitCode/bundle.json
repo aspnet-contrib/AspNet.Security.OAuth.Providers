@@ -19,7 +19,7 @@
       "contentFormat": "json",
       "contentJson": {
         "avatar_url": "https://cdn-img.gitcode.com/fa/be/example.png?time=1694709764757",
-        "followers_url": "https://api.gitcode.com/api/v5users/example/followers",
+        "followers_url": "https://api.gitcode.com/api/v5/users/example/followers",
         "html_url": "https://gitcode.com/example",
         "id": "example-id",
         "login": "example-login",

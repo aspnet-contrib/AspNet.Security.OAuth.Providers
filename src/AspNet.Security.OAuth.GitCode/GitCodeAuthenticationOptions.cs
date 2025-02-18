@@ -17,7 +17,6 @@ public class GitCodeAuthenticationOptions : OAuthOptions
     public GitCodeAuthenticationOptions()
     {
         ClaimsIssuer = GitCodeAuthenticationDefaults.Issuer;
-
         CallbackPath = GitCodeAuthenticationDefaults.CallbackPath;
 
         AuthorizationEndpoint = GitCodeAuthenticationDefaults.AuthorizationEndpoint;
