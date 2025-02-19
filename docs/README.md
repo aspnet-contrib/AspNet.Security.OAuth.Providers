@@ -49,6 +49,7 @@ covered by the section above.
 | DigitalOcean | _Optional_ | [Documentation](digitalocean.md "DigitalOcean provider documentation") |
 | Discord | _Optional_ | [Documentation](discord.md "Discord provider documentation") |
 | Docusign | **Required** | [Documentation](docusign.md "Docusign provider documentation") |
+| Douyin |  _Optional_ | [Documentation](douyin.md "Douyin provider documentation") |
 | eBay | **Required** | [Documentation](ebay.md "eBay provider documentation") |
 | EVEOnline | _Optional_ | [Documentation](eveonline.md "EVEOnline provider documentation") |
 | Foursquare | _Optional_ | [Documentation](foursquare.md "Foursquare provider documentation") |
