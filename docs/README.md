@@ -52,6 +52,7 @@ covered by the section above.
 | eBay | **Required** | [Documentation](ebay.md "eBay provider documentation") |
 | EVEOnline | _Optional_ | [Documentation](eveonline.md "EVEOnline provider documentation") |
 | Foursquare | _Optional_ | [Documentation](foursquare.md "Foursquare provider documentation") |
+| GitCode | _Optional_ | [Documentation](gitcode.md "GitCode provider documentation") |
 | GitHub | _Optional_ | [Documentation](github.md "GitHub provider documentation") |
 | Gitee | _Optional_ | [Documentation](gitee.md "Gitee provider documentation") |
 | Huawei | _Optional_ | [Documentation](huawei.md "Huawei provider documentation") |
