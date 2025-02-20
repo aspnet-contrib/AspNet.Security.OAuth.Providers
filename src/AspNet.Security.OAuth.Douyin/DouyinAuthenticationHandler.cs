@@ -126,19 +126,19 @@ public partial class DouyinAuthenticationHandler : OAuthHandler<DouyinAuthentica
     /// <summary>
     /// Check the code sent back by server for potential server errors.
     /// </summary>
-    /// <param name="element">Main part of json document from response</param>
+    /// <param name="element">Main part of JSON document from response</param>
     /// <param name="errorCode">Returned error_code from server</param>
     /// <remarks>See https://developer.open-douyin.com/docs/resource/zh-CN/dop/develop/openapi/status-code for details.</remarks>
     /// <returns>True if succeed, otherwise false.</returns>
     private static bool ValidateReturnCode(JsonElement element, out int errorCode)
     {
-        if (!element.TryGetProperty("error_code", out JsonElement errorCodeElement))
+        errorCode = 0;
+
+        if (element.TryGetProperty("error_code", out JsonElement errorCodeElement))
         {
-            errorCode = 0;
-            return true;
+            errorCode = errorCodeElement.GetInt32()!;
         }
 
-        errorCode = errorCodeElement.GetInt32()!;
         return errorCode == 0;
     }
 
