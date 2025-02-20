@@ -9,9 +9,9 @@ services.AddAuthentication(options => /* Auth configuration */)
             options.ClientId = "my-client-id";
             options.ClientSecret = "my-client-secret";
 
-            // It appears that GitCode does not support setting the scopes through query strings.
-            // The configuration of scopes (App permissions) is instead managed
-            // within the OAuth app management on the official web.
+            // GitCode does not support setting scopes via requests to the API.
+            // The configuration of scopes (App permissions) are instead managed
+            // within the OAuth app management in GitCode itself.
         });
 ```
 
