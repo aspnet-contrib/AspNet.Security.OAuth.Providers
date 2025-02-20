@@ -32,18 +32,6 @@ public partial class DouyinAuthenticationHandler : OAuthHandler<DouyinAuthentica
     {
     }
 
-    private const string AuthCode = "auth_code";
-
-    protected override Task<HandleRequestResult> HandleRemoteAuthenticateAsync()
-    {
-        if (TryStandardizeRemoteAuthenticateQuery(Request.Query, out var queryString))
-        {
-            Request.QueryString = queryString;
-        }
-
-        return base.HandleRemoteAuthenticateAsync();
-    }
-
     protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] OAuthCodeExchangeContext context)
     {
         // See https://developer.open-douyin.com/docs/resource/zh-CN/dop/develop/openapi/account-permission/get-access-token for details.
@@ -164,38 +152,6 @@ public partial class DouyinAuthenticationHandler : OAuthHandler<DouyinAuthentica
         parameters["state"] = Options.StateDataFormat.Protect(properties);
 
         return QueryHelpers.AddQueryString(Options.AuthorizationEndpoint, parameters);
-    }
-
-    private static bool TryStandardizeRemoteAuthenticateQuery(IQueryCollection query, out QueryString queryString)
-    {
-        if (!query.TryGetValue(AuthCode, out var authCode))
-        {
-            queryString = default;
-            return false;
-        }
-
-        // Before: mydomain/signin-douyin?auth_code=xxx&state=xxx&...
-        // After: mydomain/signin-douyin?code=xxx&state=xxx&...
-        var queryParams = new List<KeyValuePair<string, StringValues>>(query.Count)
-        {
-            new("code", authCode)
-        };
-        foreach (var item in query)
-        {
-            switch (item.Key)
-            {
-                case "code":
-                case AuthCode: // No need in fact, skip it
-                    break;
-
-                default:
-                    queryParams.Add(item);
-                    break;
-            }
-        }
-
-        queryString = QueryString.Create(queryParams);
-        return true;
     }
 
     private static partial class Log
