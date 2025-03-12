@@ -30,5 +30,10 @@ public partial class AtlassianAuthenticationOptions : OAuthOptions
         ClaimActions.MapJsonKey(Claims.Nickname, "nickname");
         ClaimActions.MapJsonKey(Claims.ZoneInfo, "zoneinfo");
         ClaimActions.MapJsonKey(Claims.Locale, "locale");
+
+        ClaimActions.MapJsonSubKey(Claims.JobTitle, "extended_profile", "job_title");
+        ClaimActions.MapJsonSubKey(Claims.Organization, "extended_profile", "organization");
+        ClaimActions.MapJsonSubKey(Claims.Department, "extended_profile", "department");
+        ClaimActions.MapJsonSubKey(Claims.Location, "extended_profile", "location");
     }
 }

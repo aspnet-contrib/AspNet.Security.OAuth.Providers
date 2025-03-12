@@ -14,5 +14,9 @@ public static class AtlassianOAuthenticationConstants
         public const string Nickname = "urn:atlassian:nickname";
         public const string ZoneInfo = "urn:atlassian:zoneinfo";
         public const string Locale = "urn:atlassian:locale";
+        public const string JobTitle = "urn:atlassian:job_title";
+        public const string Organization = "urn:atlassian:organization";
+        public const string Department = "urn:atlassian:department";
+        public const string Location = "urn:atlassian:location";
     }
 }

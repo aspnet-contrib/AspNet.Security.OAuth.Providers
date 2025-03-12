@@ -23,6 +23,10 @@ public class AtlassianTests(ITestOutputHelper outputHelper) : OAuthTests<Atlassi
     [InlineData(AtlassianOAuthenticationConstants.Claims.Nickname, "mkrystof")]
     [InlineData(AtlassianOAuthenticationConstants.Claims.ZoneInfo, "Australia/Sydney")]
     [InlineData(AtlassianOAuthenticationConstants.Claims.Locale, "en-US")]
+    [InlineData(AtlassianOAuthenticationConstants.Claims.JobTitle, "Designer")]
+    [InlineData(AtlassianOAuthenticationConstants.Claims.Organization, "mia@example.com")]
+    [InlineData(AtlassianOAuthenticationConstants.Claims.Department, "Design team")]
+    [InlineData(AtlassianOAuthenticationConstants.Claims.Location, "Sydney")]
     public async Task Can_Sign_In_Using_Atlassian(string claimType, string claimValue)
         => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 }
