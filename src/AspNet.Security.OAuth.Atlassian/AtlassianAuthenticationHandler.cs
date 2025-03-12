@@ -43,8 +43,6 @@ public partial class AtlassianAuthenticationHandler : OAuthHandler<AtlassianAuth
 
         var principal = new ClaimsPrincipal(identity);
         var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload.RootElement);
-
-        // context.RunClaimActions(payload.RootElement.GetProperty("data"));
         context.RunClaimActions();
 
         await Events.CreatingTicket(context);
