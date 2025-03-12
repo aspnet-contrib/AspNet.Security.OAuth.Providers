@@ -20,6 +20,8 @@ public partial class AtlassianAuthenticationOptions : OAuthOptions
         TokenEndpoint = AtlassianAuthenticationDefaults.TokenEndpoint;
         UserInformationEndpoint = AtlassianAuthenticationDefaults.UserInformationEndpoint;
 
+        Scope.Add("read:me");
+
         ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "account_id");
         ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
         ClaimActions.MapJsonKey(ClaimTypes.Name, "name");
