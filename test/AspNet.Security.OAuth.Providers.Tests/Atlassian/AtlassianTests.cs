@@ -10,7 +10,7 @@ public class AtlassianTests(ITestOutputHelper outputHelper) : OAuthTests<Atlassi
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
     {
-        builder.AddAtlassian("Atlassian", "Atlassian", options => ConfigureDefaults(builder, options));
+        builder.AddAtlassian(options => ConfigureDefaults(builder, options));
     }
 
     [Theory]
