@@ -4,7 +4,7 @@
     <TargetFramework>$(DefaultNetCoreTargetFramework)</TargetFramework>
   </PropertyGroup>
 
-    <PropertyGroup>
+  <PropertyGroup>
     <Description>ASP.NET Core security middleware enabling Atlassian authentication.</Description>
     <Authors>smnsht</Authors>
     <PackageTags>atlassian;aspnetcore;authentication;oauth;security</PackageTags>
