@@ -44,7 +44,6 @@ covered by the section above.
 |:-:|:-:|:-:|
 | Amazon | _Optional_ | [Documentation](amazon.md "Amazon provider documentation") |
 | Apple | **Required** | [Documentation](sign-in-with-apple.md "Apple provider documentation") |
-| Atlassian | **Required** | [Documentation](atlassian.md "Atlassian provider documentation") |
 | BattleNet | **Required** | [Documentation](battlenet.md "BattleNet provider documentation") |
 | Bitbucket | _Optional_ | [Documentation](bitbucket.md "Bitbucket provider documentation") |
 | DigitalOcean | _Optional_ | [Documentation](digitalocean.md "DigitalOcean provider documentation") |
