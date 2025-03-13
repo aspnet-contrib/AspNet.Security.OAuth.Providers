@@ -4,6 +4,7 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using System.Linq;
 using System.Security.Claims;
 using static AspNet.Security.OAuth.Atlassian.AtlassianOAuthenticationConstants;
 
@@ -19,6 +20,11 @@ public partial class AtlassianAuthenticationOptions : OAuthOptions
         AuthorizationEndpoint = AtlassianAuthenticationDefaults.AuthorizationEndpoint;
         TokenEndpoint = AtlassianAuthenticationDefaults.TokenEndpoint;
         UserInformationEndpoint = AtlassianAuthenticationDefaults.UserInformationEndpoint;
+
+        foreach (var additionalParameter in AtlassianAuthenticationDefaults.AdditionalAuthorizationParameters)
+        {
+            AdditionalAuthorizationParameters.Add(additionalParameter);
+        }
 
         Scope.Add("read:me");
 

@@ -40,4 +40,14 @@ public class AtlassianAuthenticationDefaults
     /// Default value for <see cref="OAuthOptions.UserInformationEndpoint"/>.
     /// </summary>
     public static readonly string UserInformationEndpoint = "https://api.atlassian.com/me";
+
+    /// <summary>
+    /// Default value for <see cref="OAuthOptions.AdditionalAuthorizationParameters"/>.
+    /// </summary>
+    public static readonly IDictionary<string, string> AdditionalAuthorizationParameters =
+        new Dictionary<string, string>(
+        [
+            new KeyValuePair<string, string>("audience", "api.atlassian.com"),
+            new KeyValuePair<string, string>("prompt", "consent")
+        ]);
 }

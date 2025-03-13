@@ -2,6 +2,9 @@
 // See https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers
 // for more information concerning the license and the contributors participating to this project.
 
+using AspNet.Security.OAuth.AdobeIO;
+using Microsoft.AspNetCore.WebUtilities;
+
 namespace AspNet.Security.OAuth.Atlassian;
 
 public class AtlassianTests(ITestOutputHelper outputHelper) : OAuthTests<AtlassianAuthenticationOptions>(outputHelper)
@@ -29,4 +32,33 @@ public class AtlassianTests(ITestOutputHelper outputHelper) : OAuthTests<Atlassi
     [InlineData(AtlassianOAuthenticationConstants.Claims.Location, "Sydney")]
     public async Task Can_Sign_In_Using_Atlassian(string claimType, string claimValue)
         => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
+
+    [Fact]
+    public async Task BuildChallengeUrl_Generates_Correct_Url()
+    {
+        // Arrange
+        var options = new AtlassianAuthenticationOptions();
+
+        var redirectUrl = "https://my-site.local/signin-atlassian";
+
+        // Act
+        Uri actual = await BuildChallengeUriAsync(
+            options,
+            redirectUrl,
+            (options, loggerFactory, encoder) => new AtlassianAuthenticationHandler(options, loggerFactory, encoder));
+
+        // Assert
+        actual.ShouldNotBeNull();
+        actual.ToString().ShouldStartWith("https://auth.atlassian.com/authorize?");
+
+        var query = QueryHelpers.ParseQuery(actual.Query);
+
+        query.ShouldContainKeyAndValue("audience", "api.atlassian.com");
+        query.ShouldContainKeyAndValue("client_id", options.ClientId);
+        query.ShouldContainKeyAndValue("scope", "read:me");
+        query.ShouldContainKeyAndValue("redirect_uri", redirectUrl);
+        query.ShouldContainKey("state");
+        query.ShouldContainKeyAndValue("response_type", "code");
+        query.ShouldContainKeyAndValue("prompt", "consent");
+    }
 }
