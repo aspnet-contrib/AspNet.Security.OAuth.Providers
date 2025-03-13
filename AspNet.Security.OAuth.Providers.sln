@@ -180,7 +180,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{C2CA4B38-A
 	ProjectSection(SolutionItems) = preProject
 		docs\amazon.md = docs\amazon.md
 		docs\amocrm.md = docs\amocrm.md
-		atlassian.md = atlassian.md
 		docs\battlenet.md = docs\battlenet.md
 		docs\bitbucket.md = docs\bitbucket.md
 		docs\digitalocean.md = docs\digitalocean.md
