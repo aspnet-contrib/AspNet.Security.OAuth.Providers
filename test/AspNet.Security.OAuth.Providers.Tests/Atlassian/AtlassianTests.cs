@@ -2,7 +2,6 @@
 // See https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers
 // for more information concerning the license and the contributors participating to this project.
 
-using AspNet.Security.OAuth.AdobeIO;
 using Microsoft.AspNetCore.WebUtilities;
 
 namespace AspNet.Security.OAuth.Atlassian;
@@ -16,20 +15,25 @@ public class AtlassianTests(ITestOutputHelper outputHelper) : OAuthTests<Atlassi
         builder.AddAtlassian(options => ConfigureDefaults(builder, options));
     }
 
+    public static IEnumerable<object[]> AtlassianClaimsData => new List<string[]>
+    {
+        new string[] { ClaimTypes.NameIdentifier, "112233aa-bb11-cc22-33dd-445566abcabc" },
+        new string[] { ClaimTypes.Email, "mia@example.com" },
+        new string[] { ClaimTypes.Name, "Mia Krystof" },
+        new string[] { AtlassianOAuthenticationConstants.Claims.AccountType, "atlassian" },
+        new string[] { AtlassianOAuthenticationConstants.Claims.Picture, "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/112233aa-bb11-cc22-33dd-445566abcabc/1234abcd-9876-54aa-33aa-1234dfsade9487ds" },
+        new string[] { AtlassianOAuthenticationConstants.Claims.AccountStatus, "active" },
+        new string[] { AtlassianOAuthenticationConstants.Claims.Nickname, "mkrystof" },
+        new string[] { AtlassianOAuthenticationConstants.Claims.ZoneInfo, "Australia/Sydney" },
+        new string[] { AtlassianOAuthenticationConstants.Claims.Locale, "en-US" },
+        new string[] { AtlassianOAuthenticationConstants.Claims.JobTitle, "Designer" },
+        new string[] { AtlassianOAuthenticationConstants.Claims.Organization, "mia@example.com" },
+        new string[] { AtlassianOAuthenticationConstants.Claims.Department, "Design team" },
+        new string[] { AtlassianOAuthenticationConstants.Claims.Location, "Sydney" },
+    };
+
     [Theory]
-    [InlineData(ClaimTypes.NameIdentifier, "112233aa-bb11-cc22-33dd-445566abcabc")]
-    [InlineData(ClaimTypes.Email, "mia@example.com")]
-    [InlineData(ClaimTypes.Name, "Mia Krystof")]
-    [InlineData(AtlassianOAuthenticationConstants.Claims.AccountType, "atlassian")]
-    [InlineData(AtlassianOAuthenticationConstants.Claims.Picture, "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/112233aa-bb11-cc22-33dd-445566abcabc/1234abcd-9876-54aa-33aa-1234dfsade9487ds")]
-    [InlineData(AtlassianOAuthenticationConstants.Claims.AccountStatus, "active")]
-    [InlineData(AtlassianOAuthenticationConstants.Claims.Nickname, "mkrystof")]
-    [InlineData(AtlassianOAuthenticationConstants.Claims.ZoneInfo, "Australia/Sydney")]
-    [InlineData(AtlassianOAuthenticationConstants.Claims.Locale, "en-US")]
-    [InlineData(AtlassianOAuthenticationConstants.Claims.JobTitle, "Designer")]
-    [InlineData(AtlassianOAuthenticationConstants.Claims.Organization, "mia@example.com")]
-    [InlineData(AtlassianOAuthenticationConstants.Claims.Department, "Design team")]
-    [InlineData(AtlassianOAuthenticationConstants.Claims.Location, "Sydney")]
+    [MemberData(nameof(AtlassianClaimsData))]
     public async Task Can_Sign_In_Using_Atlassian(string claimType, string claimValue)
         => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 

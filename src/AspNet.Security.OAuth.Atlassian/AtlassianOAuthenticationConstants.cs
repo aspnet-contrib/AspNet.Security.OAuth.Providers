@@ -8,15 +8,15 @@ public static class AtlassianOAuthenticationConstants
 {
     public static class Claims
     {
-        public const string AccountType = "urn:atlassian:account_type";
-        public const string Picture = "urn:atlassian:picture";
-        public const string AccountStatus = "urn:atlassian:account_status";
-        public const string Nickname = "urn:atlassian:nickname";
-        public const string ZoneInfo = "urn:atlassian:zoneinfo";
-        public const string Locale = "urn:atlassian:locale";
-        public const string JobTitle = "urn:atlassian:job_title";
-        public const string Organization = "urn:atlassian:organization";
-        public const string Department = "urn:atlassian:department";
-        public const string Location = "urn:atlassian:location";
+        public static readonly string AccountType = "urn:atlassian:account_type";
+        public static readonly string Picture = "urn:atlassian:picture";
+        public static readonly string AccountStatus = "urn:atlassian:account_status";
+        public static readonly string Nickname = "urn:atlassian:nickname";
+        public static readonly string ZoneInfo = "urn:atlassian:zoneinfo";
+        public static readonly string Locale = "urn:atlassian:locale";
+        public static readonly string JobTitle = "urn:atlassian:job_title";
+        public static readonly string Organization = "urn:atlassian:organization";
+        public static readonly string Department = "urn:atlassian:department";
+        public static readonly string Location = "urn:atlassian:location";
     }
 }

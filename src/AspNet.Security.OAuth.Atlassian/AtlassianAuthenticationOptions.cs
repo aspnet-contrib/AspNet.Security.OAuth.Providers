@@ -21,10 +21,8 @@ public partial class AtlassianAuthenticationOptions : OAuthOptions
         TokenEndpoint = AtlassianAuthenticationDefaults.TokenEndpoint;
         UserInformationEndpoint = AtlassianAuthenticationDefaults.UserInformationEndpoint;
 
-        foreach (var additionalParameter in AtlassianAuthenticationDefaults.AdditionalAuthorizationParameters)
-        {
-            AdditionalAuthorizationParameters.Add(additionalParameter);
-        }
+        AdditionalAuthorizationParameters.Add("audience", "api.atlassian.com");
+        AdditionalAuthorizationParameters.Add("prompt", "consent");
 
         Scope.Add("read:me");
 
