@@ -4,11 +4,6 @@
     <PackageValidationBaselineVersion>9.1.0</PackageValidationBaselineVersion>
     <TargetFramework>$(DefaultNetCoreTargetFramework)</TargetFramework>
   </PropertyGroup>
-  
-  <!-- TODO Remove once published to NuGet.org -->
-  <PropertyGroup>
-    <DisablePackageBaselineValidation>true</DisablePackageBaselineValidation>
-  </PropertyGroup>
 
   <PropertyGroup>
     <Description>ASP.NET Core security middleware enabling Atlassian authentication.</Description>
