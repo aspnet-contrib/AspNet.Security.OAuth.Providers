@@ -1,0 +1,218 @@
+﻿/*
+ * Licensed under the Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0)
+ * See https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers
+ * for more information concerning the license and the contributors participating to this project.
+ */
+
+using System.Globalization;
+using System.Net;
+using System.Net.Http.Headers;
+using System.Security.Claims;
+using System.Text;
+using System.Text.Encodings.Web;
+using System.Text.Json;
+using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+
+namespace AspNet.Security.OAuth.Bilibili;
+
+public partial class BilibiliAuthenticationHandler : OAuthHandler<BilibiliAuthenticationOptions>
+{
+    public BilibiliAuthenticationHandler(
+        [NotNull] IOptionsMonitor<BilibiliAuthenticationOptions> options,
+        [NotNull] ILoggerFactory logger,
+        [NotNull] UrlEncoder encoder)
+        : base(options, logger, encoder)
+    {
+    }
+
+    protected override string BuildChallengeUrl([NotNull] AuthenticationProperties properties, [NotNull] string redirectUri)
+    {
+        var parameters = new Dictionary<string, string?>
+        {
+            ["client_id"] = Options.ClientId, // Used instead of "client_id"
+            ["response_type"] = "code",
+            ["gourl"] = redirectUri
+        };
+
+        foreach (var additionalParameter in Options.AdditionalAuthorizationParameters)
+        {
+            parameters.Add(additionalParameter.Key, additionalParameter.Value);
+        }
+
+        parameters["state"] = Options.StateDataFormat.Protect(properties);
+
+        return QueryHelpers.AddQueryString(Options.AuthorizationEndpoint, parameters);
+    }
+
+    protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] OAuthCodeExchangeContext context)
+    {
+        // See https://open.bilibili.com/doc/4/eaf0e2b5-bde9-b9a0-9be1-019bb455701c#h1-u7B80u4ECB for details.
+        var tokenRequestParameters = new Dictionary<string, string?>()
+        {
+            ["client_id"] = Options.ClientId,
+            ["code"] = context.Code,
+            ["client_secret"] = Options.ClientSecret,
+            ["grant_type"] = "authorization_code",
+        };
+
+        using var tokenRequestContent = new FormUrlEncodedContent(tokenRequestParameters);
+
+        using var response = await Backchannel.PostAsync(Options.TokenEndpoint, tokenRequestContent, Context.RequestAborted);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            await Log.AccessTokenError(Logger, response, Context.RequestAborted);
+            return OAuthTokenResponse.Failed(new Exception("An error occurred while retrieving an access token."));
+        }
+
+        using var stream = await response.Content.ReadAsStreamAsync(Context.RequestAborted);
+        using var document = await JsonDocument.ParseAsync(stream);
+
+        var mainElement = document.RootElement;
+        if (!ValidateReturnCode(mainElement, out var code))
+        {
+            return OAuthTokenResponse.Failed(new Exception($"An error (Code:{code}) occurred while retrieving an access token."));
+        }
+
+        var payload = JsonDocument.Parse(mainElement.GetProperty("data").GetRawText());
+        return OAuthTokenResponse.Success(payload);
+    }
+
+    private static string ComputeHmacSHA256(string key, string data)
+    {
+        using var hmacsha256 = new System.Security.Cryptography.HMACSHA256(System.Text.Encoding.UTF8.GetBytes(key));
+        var hash = hmacsha256.ComputeHash(System.Text.Encoding.UTF8.GetBytes(data));
+        return Convert.ToHexStringLower(hash);
+    }
+
+#pragma warning disable CA5351
+    private static string ComputeMd5(string input)
+    {
+        var inputBytes = Encoding.ASCII.GetBytes(input);
+        var hashBytes = System.Security.Cryptography.MD5.HashData(inputBytes);
+        return Convert.ToHexStringLower(hashBytes).Replace("-", string.Empty, StringComparison.OrdinalIgnoreCase).ToLower(CultureInfo.InvariantCulture);
+    }
+#pragma warning disable CA5351
+
+    private static string BuildSignatureString(HttpRequestMessage request, string appSecret)
+    {
+        var headers = request.Headers
+            .Where(h => h.Key.StartsWith("x-bili-", StringComparison.OrdinalIgnoreCase))
+            .OrderBy(h => h.Key)
+            .Select(h => $"{h.Key}:{string.Join(",", h.Value)}")
+            .ToList();
+
+        var signatureString = string.Join("\n", headers);
+        var signature = ComputeHmacSHA256(appSecret, signatureString);
+
+        return signature;
+    }
+
+    protected override async Task<AuthenticationTicket> CreateTicketAsync(
+        [NotNull] ClaimsIdentity identity,
+        [NotNull] AuthenticationProperties properties,
+        [NotNull] OAuthTokenResponse tokens)
+    {
+        using var request = new HttpRequestMessage(HttpMethod.Get, Options.UserInformationEndpoint);
+        request.Headers.Add("Access-Token", tokens.AccessToken);
+        request.Headers.Add("x-bili-accesskeyid", Options.ClientId);
+        request.Headers.Add("x-bili-content-md5", ComputeMd5(string.Empty));
+        request.Headers.Add("x-bili-signature-method", "HMAC-SHA256");
+        request.Headers.Add("x-bili-signature-nonce", DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString(CultureInfo.InvariantCulture));
+        request.Headers.Add("x-bili-signature-version", "2.0");
+        request.Headers.Add("x-bili-timestamp", DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString(CultureInfo.InvariantCulture));
+        request.Headers.Add("Host", "member.bilibili.com");
+        request.Headers.Add("Connection", "keep-alive");
+
+        var signature = BuildSignatureString(request, Options.ClientSecret);
+        request.Headers.Add("Authorization", signature);
+
+        request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+        using var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
+        if (!response.IsSuccessStatusCode)
+        {
+            await Log.UserProfileErrorAsync(Logger, response, Context.RequestAborted);
+            throw new HttpRequestException("An error occurred while retrieving the user profile.");
+        }
+
+        using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
+
+        var mainElement = payload.RootElement;
+        if (!ValidateReturnCode(mainElement, out var code))
+        {
+            throw new AuthenticationFailureException($"An error (ErrorCode:{code}) occurred while retrieving user information.");
+        }
+
+        var principal = new ClaimsPrincipal(identity);
+        var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, mainElement.GetProperty("data"));
+        context.RunClaimActions();
+
+        await Events.CreatingTicket(context);
+        return new AuthenticationTicket(context.Principal!, context.Properties, Scheme.Name);
+    }
+
+    /// <summary>
+    /// Check the code sent back by server for potential server errors.
+    /// </summary>
+    /// <param name="element">Main part of json document from response</param>
+    /// <param name="code">Returned error_code from server</param>
+    /// <remarks>See https://open.bilibili.com/doc/4/8673959e-f7bb-56e6-6e68-d225f971b81b#h1-u63A5u53E3u7B7Eu540Du5B9Eu73B0u6807u51C6u548Cu72B6u6001u7801 for details.</remarks>
+    /// <returns>True if succeed, otherwise false.</returns>
+    private static bool ValidateReturnCode(JsonElement element, out int code)
+    {
+        code = 0;
+        if (!element.TryGetProperty("code", out JsonElement errorCodeElement))
+        {
+            return true;
+        }
+
+        code = errorCodeElement.GetInt32()!;
+
+        return code == 0;
+    }
+
+    private static partial class Log
+    {
+        internal static async Task UserProfileErrorAsync(ILogger logger, HttpResponseMessage response, CancellationToken cancellationToken)
+        {
+            UserProfileError(
+                logger,
+                response.StatusCode,
+                response.Headers.ToString(),
+                await response.Content.ReadAsStringAsync(cancellationToken));
+        }
+
+        internal static async Task AccessTokenError(ILogger logger, HttpResponseMessage response, CancellationToken cancellationToken)
+        {
+            AccessTokenError(
+                logger,
+                response.StatusCode,
+                response.Headers.ToString(),
+                await response.Content.ReadAsStringAsync(cancellationToken));
+        }
+
+        [LoggerMessage(1, LogLevel.Error, "An error occurred while retrieving the user profile: the remote server returned a {Status} response with the following payload: {Headers} {Body}.")]
+        private static partial void UserProfileError(
+            ILogger logger,
+            HttpStatusCode status,
+            string headers,
+            string body);
+
+        [LoggerMessage(2, LogLevel.Error, "An error occurred while retrieving an access token: the remote server returned a {Status} response with the following payload: {Headers} {Body}.")]
+        private static partial void AccessTokenError(
+            ILogger logger,
+            HttpStatusCode status,
+            string headers,
+            string body);
+
+        [LoggerMessage(2, LogLevel.Warning, "An error occurred while retrieving the email address associated with the logged in user: the remote server returned a {Status} response with the following payload: {Headers} {Body}.")]
+        private static partial void EmailAddressError(
+            ILogger logger,
+            HttpStatusCode status,
+            string headers,
+            string body);
+    }
+}
