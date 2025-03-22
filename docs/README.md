@@ -76,6 +76,7 @@ covered by the section above.
 | Twitch | _Optional_ | [Documentation](twitch.md "Twitch provider documentation") |
 | Twitter | _Optional_ | [Documentation](twitter.md "Twitter provider documentation") |
 | Vkontakte | _Optional_ | [Documentation](vkontakte.md "Vkontakte provider documentation") |
+| Webflow | _Optional_ | [Documentation](webflow.md "Webflow provider documentation") |
 | Weibo | _Optional_ | [Documentation](weibo.md "Weibo provider documentation") |
 | WorkWeixin (WeCom) | _Optional_ | [Documentation](workweixin.md "WorkWeixin provider documentation") |
 | Xero | _Optional_ | [Documentation](xero.md "Xero provider documentation") |
