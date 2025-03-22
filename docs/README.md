@@ -59,6 +59,7 @@ covered by the section above.
 | Instagram | _Optional_ | [Documentation](instagram.md "Instagram provider documentation") |
 | KOOK | _Optional_ | [Documentation](kook.md "KOOK provider documentation") |
 | Line | _Optional_ | [Documentation](line.md "Line provider documentation") |
+| Linear | _Optional_ | [Documentation](linear.md "Linear provider documentation") |
 | LinkedIn | _Optional_ | [Documentation](linkedin.md "LinkedIn provider documentation") |
 | Odnoklassniki | _Optional_ | [Documentation](odnoklassniki.md "Odnoklassniki provider documentation") |
 | Okta | **Required** | [Documentation](okta.md "Okta provider documentation") |
