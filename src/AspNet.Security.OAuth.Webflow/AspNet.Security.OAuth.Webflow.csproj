@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Description>ASP.NET Core security middleware enabling LinkedIn authentication.</Description>
+    <Description>ASP.NET Core security middleware enabling Webflow authentication.</Description>
     <Authors>Jerrie Pelser</Authors>
     <PackageTags>aspnetcore;authentication;webflow;oauth;security</PackageTags>
   </PropertyGroup>
