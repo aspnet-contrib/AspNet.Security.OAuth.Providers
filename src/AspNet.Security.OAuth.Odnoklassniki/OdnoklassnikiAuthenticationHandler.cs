@@ -74,7 +74,7 @@ public partial class OdnoklassnikiAuthenticationHandler : OAuthHandler<Odnoklass
         var hash = MD5.HashData(Encoding.UTF8.GetBytes(input));
 #pragma warning restore CA5351
 
-        return Convert.ToHexString(hash).ToLowerInvariant();
+        return Convert.ToHexStringLower(hash);
     }
 
     private static partial class Log
