@@ -2,7 +2,7 @@
   "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
   "items": [
     {
-      "comment": "https://docs.microsoft.com/en-us/linkedin/shared/authentication/authorization-code-flow?context=linkedin/consumer/context",
+      "comment": "https://developers.linear.app/docs/oauth/authentication",
       "uri": "https://api.linear.app/oauth/token",
       "method": "POST",
       "contentFormat": "json",
@@ -14,7 +14,7 @@
       }
     },
     {
-      "comment": "https://docs.microsoft.com/en-us/linkedin/consumer/integrations/self-serve/sign-in-with-linkedin",
+      "comment": "https://developers.linear.app/docs/graphql/working-with-the-graphql-api",
       "uri": "https://api.linear.app/graphql",
       "method": "POST",
       "contentFormat": "json",

@@ -75,9 +75,9 @@ public partial class LinearAuthenticationHandler(
     }
 
     [JsonSerializable(typeof(GraphqlQuery))]
-    internal sealed partial class AppJsonSerializerContext : JsonSerializerContext;
+    private sealed partial class AppJsonSerializerContext : JsonSerializerContext;
 
-    internal sealed record GraphqlQuery([property: JsonPropertyName("query")] string Query);
+    private sealed record GraphqlQuery([property: JsonPropertyName("query")] string Query);
 
     private static partial class Log
     {
