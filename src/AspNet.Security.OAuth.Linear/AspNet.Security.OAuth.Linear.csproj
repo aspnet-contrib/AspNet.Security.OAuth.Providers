@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <PackageValidationBaselineVersion>9.2.0</PackageValidationBaselineVersion>
+    <!-- TODO Remove once published to NuGet.org -->
+    <DisablePackageBaselineValidation>true</DisablePackageBaselineValidation>
+    <TargetFrameworks>$(DefaultNetCoreTargetFramework)</TargetFrameworks>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Description>ASP.NET Core security middleware enabling Linear authentication.</Description>
+    <Authors>Jerrie Pelser</Authors>
+    <PackageTags>aspnetcore;authentication;linear;oauth;security</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="JetBrains.Annotations" PrivateAssets="All" />
+  </ItemGroup>
+
+</Project>
