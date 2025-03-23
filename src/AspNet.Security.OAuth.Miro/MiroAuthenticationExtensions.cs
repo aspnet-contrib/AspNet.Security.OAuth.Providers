@@ -10,7 +10,7 @@ namespace Microsoft.Extensions.DependencyInjection;
 
 public static class MiroAuthenticationExtensions
 {
-        /// <summary>
+    /// <summary>
     /// Adds <see cref="MiroAuthenticationHandler"/> to the specified
     /// <see cref="AuthenticationBuilder"/>, which enables Miro authentication capabilities.
     /// </summary>
