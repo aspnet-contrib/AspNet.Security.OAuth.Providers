@@ -1,0 +1,44 @@
+{
+  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
+  "items": [
+    {
+      "comment": "https://developers.miro.com/docs/getting-started-with-oauth#step-2-exchange-authorization-code-for-an-access-token",
+      "uri": "https://api.miro.com/v1/oauth/token",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "secret-access-token",
+        "token_type": "bearer",
+        "scope": "repo,gist"
+      }
+    },
+    {
+      "uri": "https://api.miro.com/v1/oauth-token",
+      "contentFormat": "json",
+      "contentJson": {
+        "type" : "oAuthToken",
+        "createdBy" : {
+          "type" : "user",
+          "name" : "John Wick",
+          "id" : "the-user-id"
+        },
+        "team" : {
+          "type" : "team",
+          "name" : "Baba Yaga Unit",
+          "id" : "the-team-id"
+        },
+        "scopes" : [ "boards:read" ],
+        "organization" : {
+          "type" : "organization",
+          "name" : "Continental Services",
+          "id" : "the-organization-id"
+        },
+        "user" : {
+          "type" : "user",
+          "name" : "John Wick",
+          "id" : "the-user-id"
+        }
+      }
+    }
+  ]
+}

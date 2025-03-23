@@ -1,0 +1,37 @@
+{
+  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
+  "items": [
+    {
+      "comment": "https://developers.linear.app/docs/oauth/authentication",
+      "uri": "https://api.linear.app/oauth/token",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "00a21d8b0c4e2375114e49c067dfb81eb0d2076f48354714cd5df984d87b67cc",
+        "token_type": "Bearer",
+        "expires_in": 315705599,
+        "scope": "read"
+      }
+    },
+    {
+      "comment": "https://developers.linear.app/docs/graphql/working-with-the-graphql-api",
+      "uri": "https://api.linear.app/graphql",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "data" : {
+          "viewer" : {
+            "id" : "the-user-id",
+            "name" : "Marty McFly",
+            "email" : "marty@hillvalley.com",
+            "organization" : {
+              "id" : "the-org-id",
+              "name" : "Hill Valley Ventures",
+              "urlKey" : "hill-valley"
+            }
+          }
+        }
+      }
+    }
+  ]
+}
