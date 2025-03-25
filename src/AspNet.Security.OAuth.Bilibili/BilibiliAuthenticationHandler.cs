@@ -8,6 +8,7 @@ using System.Globalization;
 using System.Net;
 using System.Net.Http.Headers;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
@@ -82,8 +83,9 @@ public partial class BilibiliAuthenticationHandler : OAuthHandler<BilibiliAuthen
 
     private static string ComputeHmacSHA256(string key, string data)
     {
-        using var hmacsha256 = new System.Security.Cryptography.HMACSHA256(System.Text.Encoding.UTF8.GetBytes(key));
-        var hash = hmacsha256.ComputeHash(System.Text.Encoding.UTF8.GetBytes(data));
+        var keyBytes = Encoding.UTF8.GetBytes(key);
+        var dataBytes = Encoding.UTF8.GetBytes(data);
+        var hash = HMACSHA256.HashData(keyBytes, dataBytes);
         return Convert.ToHexStringLower(hash);
     }
 
@@ -91,8 +93,8 @@ public partial class BilibiliAuthenticationHandler : OAuthHandler<BilibiliAuthen
     private static string ComputeMd5(string input)
     {
         var inputBytes = Encoding.ASCII.GetBytes(input);
-        var hashBytes = System.Security.Cryptography.MD5.HashData(inputBytes);
-        return Convert.ToHexStringLower(hashBytes).Replace("-", string.Empty, StringComparison.OrdinalIgnoreCase).ToLower(CultureInfo.InvariantCulture);
+        var hashBytes = MD5.HashData(inputBytes);
+        return Convert.ToHexStringLower(hashBytes);
     }
 #pragma warning disable CA5351
 
@@ -104,10 +106,9 @@ public partial class BilibiliAuthenticationHandler : OAuthHandler<BilibiliAuthen
             .Select(h => $"{h.Key}:{string.Join(",", h.Value)}")
             .ToList();
 
-        var signatureString = string.Join("\n", headers);
-        var signature = ComputeHmacSHA256(appSecret, signatureString);
+        var signature = string.Join("\n", headers);
 
-        return signature;
+        return ComputeHmacSHA256(appSecret, signature);
     }
 
     protected override async Task<AuthenticationTicket> CreateTicketAsync(
@@ -115,14 +116,15 @@ public partial class BilibiliAuthenticationHandler : OAuthHandler<BilibiliAuthen
         [NotNull] AuthenticationProperties properties,
         [NotNull] OAuthTokenResponse tokens)
     {
+        var utcNow = TimeProvider.GetUtcNow();
         using var request = new HttpRequestMessage(HttpMethod.Get, Options.UserInformationEndpoint);
         request.Headers.Add("Access-Token", tokens.AccessToken);
         request.Headers.Add("x-bili-accesskeyid", Options.ClientId);
         request.Headers.Add("x-bili-content-md5", ComputeMd5(string.Empty));
         request.Headers.Add("x-bili-signature-method", "HMAC-SHA256");
-        request.Headers.Add("x-bili-signature-nonce", DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString(CultureInfo.InvariantCulture));
+        request.Headers.Add("x-bili-signature-nonce", utcNow.ToUnixTimeMilliseconds().ToString(CultureInfo.InvariantCulture));
         request.Headers.Add("x-bili-signature-version", "2.0");
-        request.Headers.Add("x-bili-timestamp", DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString(CultureInfo.InvariantCulture));
+        request.Headers.Add("x-bili-timestamp", utcNow.ToUnixTimeSeconds().ToString(CultureInfo.InvariantCulture));
         request.Headers.Add("Host", "member.bilibili.com");
         request.Headers.Add("Connection", "keep-alive");
 

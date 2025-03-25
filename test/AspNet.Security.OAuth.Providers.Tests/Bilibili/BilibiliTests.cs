@@ -18,7 +18,6 @@ public class BilibiliTests(ITestOutputHelper outputHelper) : OAuthTests<Bilibili
         builder.AddBilibili(options =>
         {
             ConfigureDefaults(builder, options);
-            options.ClientSecret = "ee9ee51ee0ceabdeeeb9459168eeeef7";
         });
         LoopbackRedirectHandler.RedirectUri = "http://localhost/signin-bilibili";
     }
