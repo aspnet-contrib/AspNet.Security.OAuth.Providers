@@ -106,7 +106,7 @@ public partial class BilibiliAuthenticationHandler : OAuthHandler<BilibiliAuthen
             .Select(h => $"{h.Key}:{string.Join(",", h.Value)}")
             .ToList();
 
-        var signature = string.Join("\n", headers);
+        var signature = string.Join('\n', headers);
 
         return ComputeHmacSHA256(appSecret, signature);
     }
