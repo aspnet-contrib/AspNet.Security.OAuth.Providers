@@ -109,15 +109,13 @@ public partial class BilibiliAuthenticationHandler : OAuthHandler<BilibiliAuthen
     {
         var utcNow = TimeProvider.GetUtcNow();
         using var request = new HttpRequestMessage(HttpMethod.Get, Options.UserInformationEndpoint);
-        request.Headers.Add("Access-Token", tokens.AccessToken);
+        request.Headers.Add("access-token", tokens.AccessToken);
         request.Headers.Add("x-bili-accesskeyid", Options.ClientId);
         request.Headers.Add("x-bili-content-md5", "d41d8cd98f00b204e9800998ecf8427e");
         request.Headers.Add("x-bili-signature-method", "HMAC-SHA256");
         request.Headers.Add("x-bili-signature-nonce", utcNow.ToUnixTimeMilliseconds().ToString(CultureInfo.InvariantCulture));
         request.Headers.Add("x-bili-signature-version", "2.0");
         request.Headers.Add("x-bili-timestamp", utcNow.ToUnixTimeSeconds().ToString(CultureInfo.InvariantCulture));
-        request.Headers.Add("Host", "member.bilibili.com");
-        request.Headers.Add("Connection", "keep-alive");
 
         var signature = BuildSignatureString(request, Options.ClientSecret);
         request.Headers.Add("Authorization", signature);
