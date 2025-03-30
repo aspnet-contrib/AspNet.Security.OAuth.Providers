@@ -89,15 +89,6 @@ public partial class BilibiliAuthenticationHandler : OAuthHandler<BilibiliAuthen
         return Convert.ToHexStringLower(hash);
     }
 
-#pragma warning disable CA5351
-    private static string ComputeMd5(string input)
-    {
-        var inputBytes = Encoding.ASCII.GetBytes(input);
-        var hashBytes = MD5.HashData(inputBytes);
-        return Convert.ToHexStringLower(hashBytes);
-    }
-#pragma warning disable CA5351
-
     private static string BuildSignatureString(HttpRequestMessage request, string appSecret)
     {
         var headers = request.Headers
@@ -120,7 +111,7 @@ public partial class BilibiliAuthenticationHandler : OAuthHandler<BilibiliAuthen
         using var request = new HttpRequestMessage(HttpMethod.Get, Options.UserInformationEndpoint);
         request.Headers.Add("Access-Token", tokens.AccessToken);
         request.Headers.Add("x-bili-accesskeyid", Options.ClientId);
-        request.Headers.Add("x-bili-content-md5", ComputeMd5(string.Empty));
+        request.Headers.Add("x-bili-content-md5", "d41d8cd98f00b204e9800998ecf8427e");
         request.Headers.Add("x-bili-signature-method", "HMAC-SHA256");
         request.Headers.Add("x-bili-signature-nonce", utcNow.ToUnixTimeMilliseconds().ToString(CultureInfo.InvariantCulture));
         request.Headers.Add("x-bili-signature-version", "2.0");
@@ -171,7 +162,7 @@ public partial class BilibiliAuthenticationHandler : OAuthHandler<BilibiliAuthen
             return true;
         }
 
-        code = errorCodeElement.GetInt32()!;
+        code = errorCodeElement.GetInt32();
 
         return code == 0;
     }
