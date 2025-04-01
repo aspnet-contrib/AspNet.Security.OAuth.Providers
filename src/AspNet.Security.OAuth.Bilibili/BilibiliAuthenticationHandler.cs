@@ -33,7 +33,7 @@ public partial class BilibiliAuthenticationHandler : OAuthHandler<BilibiliAuthen
     {
         var parameters = new Dictionary<string, string?>
         {
-            ["client_id"] = Options.ClientId, // Used instead of "client_id"
+            ["client_id"] = Options.ClientId,
             ["response_type"] = "code",
             ["gourl"] = redirectUri
         };
