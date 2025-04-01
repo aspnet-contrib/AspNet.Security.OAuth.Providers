@@ -4,6 +4,7 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using System.Buffers.Text;
 using System.Globalization;
 using System.Net;
 using System.Net.Http.Headers;
@@ -106,16 +107,15 @@ public partial class BilibiliAuthenticationHandler : OAuthHandler<BilibiliAuthen
         [NotNull] ClaimsIdentity identity,
         [NotNull] AuthenticationProperties properties,
         [NotNull] OAuthTokenResponse tokens)
-    {
-        var utcNow = TimeProvider.GetUtcNow();
+    { 
         using var request = new HttpRequestMessage(HttpMethod.Get, Options.UserInformationEndpoint);
         request.Headers.Add("access-token", tokens.AccessToken);
         request.Headers.Add("x-bili-accesskeyid", Options.ClientId);
         request.Headers.Add("x-bili-content-md5", "d41d8cd98f00b204e9800998ecf8427e");
         request.Headers.Add("x-bili-signature-method", "HMAC-SHA256");
-        request.Headers.Add("x-bili-signature-nonce", utcNow.ToUnixTimeMilliseconds().ToString(CultureInfo.InvariantCulture));
+        request.Headers.Add("x-bili-signature-nonce", Base64Url.EncodeToString(RandomNumberGenerator.GetBytes(256 / 8)));
         request.Headers.Add("x-bili-signature-version", "2.0");
-        request.Headers.Add("x-bili-timestamp", utcNow.ToUnixTimeSeconds().ToString(CultureInfo.InvariantCulture));
+        request.Headers.Add("x-bili-timestamp", TimeProvider.GetUtcNow().ToUnixTimeSeconds().ToString(CultureInfo.InvariantCulture));
 
         var signature = BuildSignatureString(request, Options.ClientSecret);
         request.Headers.Add("Authorization", signature);
