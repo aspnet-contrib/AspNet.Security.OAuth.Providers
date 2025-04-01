@@ -107,7 +107,7 @@ public partial class BilibiliAuthenticationHandler : OAuthHandler<BilibiliAuthen
         [NotNull] ClaimsIdentity identity,
         [NotNull] AuthenticationProperties properties,
         [NotNull] OAuthTokenResponse tokens)
-    { 
+    {
         using var request = new HttpRequestMessage(HttpMethod.Get, Options.UserInformationEndpoint);
         request.Headers.Add("access-token", tokens.AccessToken);
         request.Headers.Add("x-bili-accesskeyid", Options.ClientId);
