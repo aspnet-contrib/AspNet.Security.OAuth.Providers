@@ -35,7 +35,7 @@ public partial class BilibiliAuthenticationHandler : OAuthHandler<BilibiliAuthen
         {
             ["client_id"] = Options.ClientId,
             ["response_type"] = "code",
-            ["gourl"] = redirectUri
+            ["gourl"] = redirectUri // Used instead of "redirect_uri"
         };
 
         foreach (var additionalParameter in Options.AdditionalAuthorizationParameters)
