@@ -182,6 +182,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{C2CA4B38-A
 		docs\amocrm.md = docs\amocrm.md
 		docs\battlenet.md = docs\battlenet.md
 		docs\bitbucket.md = docs\bitbucket.md
+		docs\contentful.md = docs\contentful.md
 		docs\digitalocean.md = docs\digitalocean.md
 		docs\discord.md = docs\discord.md
 		docs\docusign.md = docs\docusign.md
@@ -326,6 +327,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.Miro", "src\AspNet.Security.OAuth.Miro\AspNet.Security.OAuth.Miro.csproj", "{7F22DE22-FDE8-4A14-AA65-D5B36098533E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.Linear", "src\AspNet.Security.OAuth.Linear\AspNet.Security.OAuth.Linear.csproj", "{B1167108-CA36-4C6B-85B0-1C7F5A24E4A4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.Contentful", "src\AspNet.Security.OAuth.Contentful\AspNet.Security.OAuth.Contentful.csproj", "{B1F6EA42-7B1B-469E-B304-6B2E6FE39852}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -761,6 +764,10 @@ Global
 		{B1167108-CA36-4C6B-85B0-1C7F5A24E4A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B1167108-CA36-4C6B-85B0-1C7F5A24E4A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B1167108-CA36-4C6B-85B0-1C7F5A24E4A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1F6EA42-7B1B-469E-B304-6B2E6FE39852}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1F6EA42-7B1B-469E-B304-6B2E6FE39852}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1F6EA42-7B1B-469E-B304-6B2E6FE39852}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1F6EA42-7B1B-469E-B304-6B2E6FE39852}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -879,6 +886,7 @@ Global
 		{F5DA8A08-5089-4076-B0FC-3F4A5CBB9664} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 		{7F22DE22-FDE8-4A14-AA65-D5B36098533E} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 		{B1167108-CA36-4C6B-85B0-1C7F5A24E4A4} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
+		{B1F6EA42-7B1B-469E-B304-6B2E6FE39852} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C7B54DE2-6407-4802-AD9C-CE54BF414C8C}

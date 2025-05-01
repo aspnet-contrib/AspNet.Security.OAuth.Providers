@@ -1,0 +1,25 @@
+﻿/*
+ * Licensed under the Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0)
+ * See https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers
+ * for more information concerning the license and the contributors participating to this project.
+ */
+
+namespace AspNet.Security.OAuth.Contentful;
+
+public class ContentfulTests(ITestOutputHelper outputHelper) : OAuthTests<ContentfulAuthenticationOptions>(outputHelper)
+{
+    public override string DefaultScheme => ContentfulAuthenticationDefaults.AuthenticationScheme;
+
+    protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
+    {
+        builder.AddContentful(options => ConfigureDefaults(builder, options));
+    }
+
+    [Theory]
+    [InlineData(ClaimTypes.NameIdentifier, "user-id")]
+    [InlineData(ClaimTypes.Email, "some@email.com")]
+    [InlineData(ClaimTypes.GivenName, "Some")]
+    [InlineData(ClaimTypes.Surname, "One")]
+    public async Task Can_Sign_In_Using_Contentful(string claimType, string claimValue)
+        => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
+}
