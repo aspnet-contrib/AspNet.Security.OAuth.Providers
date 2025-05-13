@@ -21,7 +21,7 @@ permissions:
 jobs:
   update-sdk:
     name: Update .NET SDK
-    uses: martincostello/update-dotnet-sdk/.github/workflows/update-dotnet-sdk.yml@85d667fd1555930e26433702522ad27d93e2b71a # v3.4.2
+    uses: martincostello/update-dotnet-sdk/.github/workflows/update-dotnet-sdk.yml@e7501ebba8948a456d25ac2ff867af8c8f680454 # v3.8.1
     permissions:
       contents: write
       pull-requests: write

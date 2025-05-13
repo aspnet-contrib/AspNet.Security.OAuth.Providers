@@ -1,0 +1,38 @@
+{
+  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
+  "items": [
+    {
+      "uri": "https://be.contentful.com/oauth/token",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "secret-access-token",
+        "token_type": "Bearer",
+        "refresh_token": "secret-refresh-token",
+        "scope": "content_management_read"
+      }
+    },
+    {
+      "uri": "https://api.contentful.com/users/me",
+      "contentFormat": "json",
+      "contentJson": {
+        "firstName": "Some",
+        "lastName": "One",
+        "avatarUrl": "https://gravatar.com/avatar/27205e5c51cb03f862138b22bcb5dc20f94a342e744ff6df1b8dc8af3c865109",
+        "email": "some@email.com",
+        "signupSource": null,
+        "activated": true,
+        "signInCount": 475,
+        "confirmed": true,
+        "2faEnabled": false,
+        "sys": {
+          "type": "User",
+          "id": "user-id",
+          "version": 490,
+          "createdAt": "2018-08-15T04:08:47Z",
+          "updatedAt": "2025-05-01T03:09:46Z"
+        }
+      }
+    }
+  ]
+}
