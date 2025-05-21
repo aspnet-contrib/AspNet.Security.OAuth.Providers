@@ -73,6 +73,7 @@ public partial class BilibiliAuthenticationHandler : OAuthHandler<BilibiliAuthen
         using var document = await JsonDocument.ParseAsync(stream);
 
         var mainElement = document.RootElement;
+
         if (!ValidateReturnCode(mainElement, out var code))
         {
             return OAuthTokenResponse.Failed(new Exception($"An error (Code:{code}) occurred while retrieving an access token."));
@@ -86,21 +87,26 @@ public partial class BilibiliAuthenticationHandler : OAuthHandler<BilibiliAuthen
     {
         var keyBytes = Encoding.UTF8.GetBytes(key);
         var dataBytes = Encoding.UTF8.GetBytes(data);
+
         var hash = HMACSHA256.HashData(keyBytes, dataBytes);
+
         return Convert.ToHexStringLower(hash);
     }
 
-    private static string BuildSignatureString(HttpRequestMessage request, string appSecret)
+    private static string BuildSignatureString(SortedList<string, string> xbiliHeaders, string key)
     {
-        var headers = request.Headers
-            .Where(h => h.Key.StartsWith("x-bili-", StringComparison.OrdinalIgnoreCase))
-            .OrderBy(h => h.Key)
-            .Select(h => $"{h.Key}:{string.Join(",", h.Value)}")
-            .ToList();
+        var builder = new StringBuilder(256); // 256 is an estimated size for the plain text
 
-        var signature = string.Join('\n', headers);
+        foreach ((var name, var value) in xbiliHeaders)
+        {
+            builder.Append(name)
+                   .Append(':')
+                   .Append(value)
+                   .Append('\n');
+        }
 
-        return ComputeHmacSHA256(appSecret, signature);
+        var data = builder.ToString(0, builder.Length - 1); // Ignore the last '\n'
+        return ComputeHmacSHA256(key, data);
     }
 
     protected override async Task<AuthenticationTicket> CreateTicketAsync(
@@ -110,19 +116,21 @@ public partial class BilibiliAuthenticationHandler : OAuthHandler<BilibiliAuthen
     {
         using var request = new HttpRequestMessage(HttpMethod.Get, Options.UserInformationEndpoint);
         request.Headers.Add("access-token", tokens.AccessToken);
-        request.Headers.Add("x-bili-accesskeyid", Options.ClientId);
-        request.Headers.Add("x-bili-content-md5", "d41d8cd98f00b204e9800998ecf8427e"); // It's a GET request so there's no content, so we send the MD5 hash of an empty string
-        request.Headers.Add("x-bili-signature-method", "HMAC-SHA256");
-        request.Headers.Add("x-bili-signature-nonce", Base64Url.EncodeToString(RandomNumberGenerator.GetBytes(256 / 8)));
-        request.Headers.Add("x-bili-signature-version", "2.0");
-        request.Headers.Add("x-bili-timestamp", TimeProvider.GetUtcNow().ToUnixTimeSeconds().ToString(CultureInfo.InvariantCulture));
 
-        var signature = BuildSignatureString(request, Options.ClientSecret);
+        var xbiliHeaders = BuildXBiliHeaders();
+
+        foreach ((var name, var value) in xbiliHeaders)
+        {
+            request.Headers.Add(name, value);
+        }
+
+        var signature = BuildSignatureString(xbiliHeaders, Options.ClientSecret);
         request.Headers.Add("Authorization", signature);
 
         request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
         using var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
+
         if (!response.IsSuccessStatusCode)
         {
             await Log.UserProfileErrorAsync(Logger, response, Context.RequestAborted);
@@ -132,6 +140,7 @@ public partial class BilibiliAuthenticationHandler : OAuthHandler<BilibiliAuthen
         using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
 
         var mainElement = payload.RootElement;
+
         if (!ValidateReturnCode(mainElement, out var code))
         {
             throw new AuthenticationFailureException($"An error (ErrorCode:{code}) occurred while retrieving user information.");
@@ -145,6 +154,23 @@ public partial class BilibiliAuthenticationHandler : OAuthHandler<BilibiliAuthen
         return new AuthenticationTicket(context.Principal!, context.Properties, Scheme.Name);
     }
 
+    private SortedList<string, string> BuildXBiliHeaders() => new(6, StringComparer.OrdinalIgnoreCase)
+    {
+        { "x-bili-accesskeyid", Options.ClientId },
+        { "x-bili-content-md5", "d41d8cd98f00b204e9800998ecf8427e" }, // It's a GET request so there's no content, so we send the MD5 hash of an empty string
+        { "x-bili-signature-method", "HMAC-SHA256" },
+        { "x-bili-signature-nonce", GenerateNonce() },
+        { "x-bili-signature-version", "2.0" },
+        { "x-bili-timestamp", TimeProvider.GetUtcNow().ToUnixTimeSeconds().ToString(CultureInfo.InvariantCulture) }
+    };
+
+    private static string GenerateNonce()
+    {
+        Span<byte> bytes = stackalloc byte[256 / 8];
+        RandomNumberGenerator.Fill(bytes);
+        return Base64Url.EncodeToString(bytes);
+    }
+
     /// <summary>
     /// Check the code sent back by server for potential server errors.
     /// </summary>
@@ -154,14 +180,13 @@ public partial class BilibiliAuthenticationHandler : OAuthHandler<BilibiliAuthen
     /// <returns>True if succeed, otherwise false.</returns>
     private static bool ValidateReturnCode(JsonElement element, out int code)
     {
-        code = 0;
         if (!element.TryGetProperty("code", out JsonElement errorCodeElement))
         {
+            code = 0;
             return true;
         }
 
         code = errorCodeElement.GetInt32();
-
         return code == 0;
     }
 

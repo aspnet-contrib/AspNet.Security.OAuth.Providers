@@ -4,7 +4,6 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using System.Web;
 using Microsoft.AspNetCore.WebUtilities;
 
 namespace AspNet.Security.OAuth.Bilibili;
