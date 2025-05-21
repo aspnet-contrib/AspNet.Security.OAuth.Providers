@@ -2,8 +2,6 @@
 
   <PropertyGroup>
     <PackageValidationBaselineVersion>9.4.0</PackageValidationBaselineVersion>
-    <!-- TODO Remove once published to NuGet.org -->
-    <DisablePackageBaselineValidation>true</DisablePackageBaselineValidation>
     <TargetFrameworks>$(DefaultNetCoreTargetFramework)</TargetFrameworks>
   </PropertyGroup>
 
@@ -12,7 +10,7 @@
     <Authors>Loongle Tse</Authors>
     <PackageTags>bilibili;aspnetcore;authentication;oauth;security</PackageTags>
   </PropertyGroup>
- 
+
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="JetBrains.Annotations" PrivateAssets="All" />
