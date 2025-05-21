@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <PackageValidationBaselineVersion>9.4.0</PackageValidationBaselineVersion>
     <TargetFrameworks>$(DefaultNetCoreTargetFramework)</TargetFrameworks>
   </PropertyGroup>
 
