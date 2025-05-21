@@ -90,17 +90,16 @@ public partial class BilibiliAuthenticationHandler : OAuthHandler<BilibiliAuthen
         return Convert.ToHexStringLower(hash);
     }
 
-    private static string BuildSignatureString(HttpRequestMessage request, string appSecret)
+    private static string BuildSignatureString(SortedList<string, string> xBiliHeaders, string appSecret)
     {
-        var headers = request.Headers
-            .Where(h => h.Key.StartsWith("x-bili-", StringComparison.OrdinalIgnoreCase))
-            .OrderBy(h => h.Key)
-            .Select(h => $"{h.Key}:{string.Join(",", h.Value)}")
-            .ToList();
+        StringBuilder sb = new(256); // 256 is an estimated size for the plain text
+        foreach (var xbh in xBiliHeaders)
+        {
+            sb.Append(xbh.Key).Append(':').Append(xbh.Value).Append('\n');
+        }
 
-        var signature = string.Join('\n', headers);
-
-        return ComputeHmacSHA256(appSecret, signature);
+        var signSrcText = sb.ToString(0, sb.Length - 1); // Ignore the last '\n'
+        return ComputeHmacSHA256(appSecret, signSrcText);
     }
 
     protected override async Task<AuthenticationTicket> CreateTicketAsync(
@@ -110,14 +109,14 @@ public partial class BilibiliAuthenticationHandler : OAuthHandler<BilibiliAuthen
     {
         using var request = new HttpRequestMessage(HttpMethod.Get, Options.UserInformationEndpoint);
         request.Headers.Add("access-token", tokens.AccessToken);
-        request.Headers.Add("x-bili-accesskeyid", Options.ClientId);
-        request.Headers.Add("x-bili-content-md5", "d41d8cd98f00b204e9800998ecf8427e"); // It's a GET request so there's no content, so we send the MD5 hash of an empty string
-        request.Headers.Add("x-bili-signature-method", "HMAC-SHA256");
-        request.Headers.Add("x-bili-signature-nonce", Base64Url.EncodeToString(RandomNumberGenerator.GetBytes(256 / 8)));
-        request.Headers.Add("x-bili-signature-version", "2.0");
-        request.Headers.Add("x-bili-timestamp", TimeProvider.GetUtcNow().ToUnixTimeSeconds().ToString(CultureInfo.InvariantCulture));
 
-        var signature = BuildSignatureString(request, Options.ClientSecret);
+        var xBiliHeaders = BuildXBiliHeaders();
+        foreach (var xbh in xBiliHeaders)
+        {
+            request.Headers.Add(xbh.Key, xbh.Value);
+        }
+
+        var signature = BuildSignatureString(xBiliHeaders, Options.ClientSecret);
         request.Headers.Add("Authorization", signature);
 
         request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -145,6 +144,27 @@ public partial class BilibiliAuthenticationHandler : OAuthHandler<BilibiliAuthen
         return new AuthenticationTicket(context.Principal!, context.Properties, Scheme.Name);
     }
 
+    private SortedList<string, string> BuildXBiliHeaders()
+    {
+        var list = new SortedList<string, string>(StringComparer.OrdinalIgnoreCase)
+        {
+            { "x-bili-accesskeyid", Options.ClientId },
+            { "x-bili-content-md5", "d41d8cd98f00b204e9800998ecf8427e" }, // It's a GET request so there's no content, so we send the MD5 hash of an empty string
+            { "x-bili-signature-method", "HMAC-SHA256" },
+            { "x-bili-signature-nonce", GenerateNonce() },
+            { "x-bili-signature-version", "2.0" },
+            { "x-bili-timestamp", TimeProvider.GetUtcNow().ToUnixTimeSeconds().ToString(CultureInfo.InvariantCulture) }
+        };
+        return list;
+    }
+
+    private static string GenerateNonce()
+    {
+        Span<byte> bytes = stackalloc byte[256 / 8];
+        RandomNumberGenerator.Fill(bytes);
+        return Base64Url.EncodeToString(bytes);
+    }
+
     /// <summary>
     /// Check the code sent back by server for potential server errors.
     /// </summary>
@@ -154,14 +174,13 @@ public partial class BilibiliAuthenticationHandler : OAuthHandler<BilibiliAuthen
     /// <returns>True if succeed, otherwise false.</returns>
     private static bool ValidateReturnCode(JsonElement element, out int code)
     {
-        code = 0;
         if (!element.TryGetProperty("code", out JsonElement errorCodeElement))
         {
+            code = 0;
             return true;
         }
 
         code = errorCodeElement.GetInt32();
-
         return code == 0;
     }
 
