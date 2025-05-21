@@ -111,7 +111,7 @@ public partial class BilibiliAuthenticationHandler : OAuthHandler<BilibiliAuthen
         using var request = new HttpRequestMessage(HttpMethod.Get, Options.UserInformationEndpoint);
         request.Headers.Add("access-token", tokens.AccessToken);
         request.Headers.Add("x-bili-accesskeyid", Options.ClientId);
-        request.Headers.Add("x-bili-content-md5", "d41d8cd98f00b204e9800998ecf8427e");
+        request.Headers.Add("x-bili-content-md5", "d41d8cd98f00b204e9800998ecf8427e"); // it's a GET request so there's no content and the MD5 hash of an empty string is always d41d8cd98f00b204e9800998ecf8427e
         request.Headers.Add("x-bili-signature-method", "HMAC-SHA256");
         request.Headers.Add("x-bili-signature-nonce", Base64Url.EncodeToString(RandomNumberGenerator.GetBytes(256 / 8)));
         request.Headers.Add("x-bili-signature-version", "2.0");
