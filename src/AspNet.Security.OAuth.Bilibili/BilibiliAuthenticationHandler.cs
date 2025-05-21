@@ -73,6 +73,7 @@ public partial class BilibiliAuthenticationHandler : OAuthHandler<BilibiliAuthen
         using var document = await JsonDocument.ParseAsync(stream);
 
         var mainElement = document.RootElement;
+
         if (!ValidateReturnCode(mainElement, out var code))
         {
             return OAuthTokenResponse.Failed(new Exception($"An error (Code:{code}) occurred while retrieving an access token."));
@@ -86,23 +87,26 @@ public partial class BilibiliAuthenticationHandler : OAuthHandler<BilibiliAuthen
     {
         var keyBytes = Encoding.UTF8.GetBytes(key);
         var dataBytes = Encoding.UTF8.GetBytes(data);
+
         var hash = HMACSHA256.HashData(keyBytes, dataBytes);
+
         return Convert.ToHexStringLower(hash);
     }
 
-    private static string BuildSignatureString(SortedList<string, string> xbiliHeaders, string appSecret)
+    private static string BuildSignatureString(SortedList<string, string> xbiliHeaders, string key)
     {
-        var sb = new StringBuilder(256); // 256 is an estimated size for the plain text
+        var builder = new StringBuilder(256); // 256 is an estimated size for the plain text
+
         foreach ((var name, var value) in xbiliHeaders)
         {
-            sb.Append(name)
-              .Append(':')
-              .Append(value)
-              .Append('\n');
+            builder.Append(name)
+                   .Append(':')
+                   .Append(value)
+                   .Append('\n');
         }
 
-        var signSrcText = sb.ToString(0, sb.Length - 1); // Ignore the last '\n'
-        return ComputeHmacSHA256(appSecret, signSrcText);
+        var data = builder.ToString(0, builder.Length - 1); // Ignore the last '\n'
+        return ComputeHmacSHA256(key, data);
     }
 
     protected override async Task<AuthenticationTicket> CreateTicketAsync(
@@ -114,6 +118,7 @@ public partial class BilibiliAuthenticationHandler : OAuthHandler<BilibiliAuthen
         request.Headers.Add("access-token", tokens.AccessToken);
 
         var xbiliHeaders = BuildXBiliHeaders();
+
         foreach ((var name, var value) in xbiliHeaders)
         {
             request.Headers.Add(name, value);
@@ -125,6 +130,7 @@ public partial class BilibiliAuthenticationHandler : OAuthHandler<BilibiliAuthen
         request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
         using var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
+
         if (!response.IsSuccessStatusCode)
         {
             await Log.UserProfileErrorAsync(Logger, response, Context.RequestAborted);
@@ -134,6 +140,7 @@ public partial class BilibiliAuthenticationHandler : OAuthHandler<BilibiliAuthen
         using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
 
         var mainElement = payload.RootElement;
+
         if (!ValidateReturnCode(mainElement, out var code))
         {
             throw new AuthenticationFailureException($"An error (ErrorCode:{code}) occurred while retrieving user information.");
