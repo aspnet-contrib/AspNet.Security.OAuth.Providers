@@ -90,12 +90,15 @@ public partial class BilibiliAuthenticationHandler : OAuthHandler<BilibiliAuthen
         return Convert.ToHexStringLower(hash);
     }
 
-    private static string BuildSignatureString(SortedList<string, string> xBiliHeaders, string appSecret)
+    private static string BuildSignatureString(SortedList<string, string> xbiliHeaders, string appSecret)
     {
-        StringBuilder sb = new(256); // 256 is an estimated size for the plain text
-        foreach (var xbh in xBiliHeaders)
+        var sb = new StringBuilder(256); // 256 is an estimated size for the plain text
+        foreach ((var name, var value) in xbiliHeaders)
         {
-            sb.Append(xbh.Key).Append(':').Append(xbh.Value).Append('\n');
+            sb.Append(name)
+              .Append(':')
+              .Append(value)
+              .Append('\n');
         }
 
         var signSrcText = sb.ToString(0, sb.Length - 1); // Ignore the last '\n'
@@ -110,13 +113,13 @@ public partial class BilibiliAuthenticationHandler : OAuthHandler<BilibiliAuthen
         using var request = new HttpRequestMessage(HttpMethod.Get, Options.UserInformationEndpoint);
         request.Headers.Add("access-token", tokens.AccessToken);
 
-        var xBiliHeaders = BuildXBiliHeaders();
-        foreach (var xbh in xBiliHeaders)
+        var xbiliHeaders = BuildXBiliHeaders();
+        foreach ((var name, var value) in xbiliHeaders)
         {
-            request.Headers.Add(xbh.Key, xbh.Value);
+            request.Headers.Add(name, value);
         }
 
-        var signature = BuildSignatureString(xBiliHeaders, Options.ClientSecret);
+        var signature = BuildSignatureString(xbiliHeaders, Options.ClientSecret);
         request.Headers.Add("Authorization", signature);
 
         request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -144,19 +147,15 @@ public partial class BilibiliAuthenticationHandler : OAuthHandler<BilibiliAuthen
         return new AuthenticationTicket(context.Principal!, context.Properties, Scheme.Name);
     }
 
-    private SortedList<string, string> BuildXBiliHeaders()
+    private SortedList<string, string> BuildXBiliHeaders() => new(6, StringComparer.OrdinalIgnoreCase)
     {
-        var list = new SortedList<string, string>(StringComparer.OrdinalIgnoreCase)
-        {
-            { "x-bili-accesskeyid", Options.ClientId },
-            { "x-bili-content-md5", "d41d8cd98f00b204e9800998ecf8427e" }, // It's a GET request so there's no content, so we send the MD5 hash of an empty string
-            { "x-bili-signature-method", "HMAC-SHA256" },
-            { "x-bili-signature-nonce", GenerateNonce() },
-            { "x-bili-signature-version", "2.0" },
-            { "x-bili-timestamp", TimeProvider.GetUtcNow().ToUnixTimeSeconds().ToString(CultureInfo.InvariantCulture) }
-        };
-        return list;
-    }
+        { "x-bili-accesskeyid", Options.ClientId },
+        { "x-bili-content-md5", "d41d8cd98f00b204e9800998ecf8427e" }, // It's a GET request so there's no content, so we send the MD5 hash of an empty string
+        { "x-bili-signature-method", "HMAC-SHA256" },
+        { "x-bili-signature-nonce", GenerateNonce() },
+        { "x-bili-signature-version", "2.0" },
+        { "x-bili-timestamp", TimeProvider.GetUtcNow().ToUnixTimeSeconds().ToString(CultureInfo.InvariantCulture) }
+    };
 
     private static string GenerateNonce()
     {
