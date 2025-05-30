@@ -1,14 +1,14 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <PackageValidationBaselineVersion>9.1.0</PackageValidationBaselineVersion>
+    <PackageValidationBaselineVersion>9.4.0</PackageValidationBaselineVersion>
     <TargetFrameworks>$(DefaultNetCoreTargetFramework)</TargetFrameworks>
   </PropertyGroup>
 
   <PropertyGroup>
-    <Description>ASP.NET Core security middleware enabling GitCode authentication.</Description>
-    <Authors>Gehongyan</Authors>
-    <PackageTags>aspnetcore;authentication;gitcode;oauth;security</PackageTags>
+    <Description>ASP.NET Core security middleware enabling Bilibili authentication.</Description>
+    <Authors>Loongle Tse</Authors>
+    <PackageTags>bilibili;aspnetcore;authentication;oauth;security</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>

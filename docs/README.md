@@ -59,7 +59,9 @@ covered by the section above.
 | Instagram | _Optional_ | [Documentation](instagram.md "Instagram provider documentation") |
 | KOOK | _Optional_ | [Documentation](kook.md "KOOK provider documentation") |
 | Line | _Optional_ | [Documentation](line.md "Line provider documentation") |
+| Linear | _Optional_ | [Documentation](linear.md "Linear provider documentation") |
 | LinkedIn | _Optional_ | [Documentation](linkedin.md "LinkedIn provider documentation") |
+| Miro | _Optional_ | [Documentation](miro.md "Miro provider documentation") |
 | Odnoklassniki | _Optional_ | [Documentation](odnoklassniki.md "Odnoklassniki provider documentation") |
 | Okta | **Required** | [Documentation](okta.md "Okta provider documentation") |
 | Patreon | _Optional_ | [Documentation](patreon.md "Patreon provider documentation") |
@@ -76,6 +78,7 @@ covered by the section above.
 | Twitch | _Optional_ | [Documentation](twitch.md "Twitch provider documentation") |
 | Twitter | _Optional_ | [Documentation](twitter.md "Twitter provider documentation") |
 | Vkontakte | _Optional_ | [Documentation](vkontakte.md "Vkontakte provider documentation") |
+| Webflow | _Optional_ | [Documentation](webflow.md "Webflow provider documentation") |
 | Weibo | _Optional_ | [Documentation](weibo.md "Weibo provider documentation") |
 | WorkWeixin (WeCom) | _Optional_ | [Documentation](workweixin.md "WorkWeixin provider documentation") |
 | Xero | _Optional_ | [Documentation](xero.md "Xero provider documentation") |

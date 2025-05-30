@@ -1,0 +1,25 @@
+{
+  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
+  "items": [
+    {
+      "uri": "https://api.webflow.com/oauth/access_token",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "secret-access-token",
+        "token_type": "bearer",
+        "scope": "authorized_user:read"
+      }
+    },
+    {
+      "uri": "https://api.webflow.com/v2/token/authorized_by",
+      "contentFormat": "json",
+      "contentJson": {
+        "id": "545bbecb7bdd6769632504a7",
+        "email": "some@email.com",
+        "firstName": "Some",
+        "lastName": "One"
+      }
+    }
+  ]
+}

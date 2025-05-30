@@ -189,6 +189,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{C2CA4B38-A
 		docs\ebay.md = docs\ebay.md
 		docs\eveonline.md = docs\eveonline.md
 		docs\foursquare.md = docs\foursquare.md
+		docs\gitcode.md = docs\gitcode.md
 		docs\gitee.md = docs\gitee.md
 		docs\github.md = docs\github.md
 		docs\instagram.md = docs\instagram.md
@@ -221,6 +222,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{C2CA4B38-A
 		docs\xumm.md = docs\xumm.md
 		docs\zendesk.md = docs\zendesk.md
 		docs\gitcode.md = docs\gitcode.md
+		docs\webflow.md = docs\webflow.md
+		docs\miro.md = docs\miro.md
+		docs\linear.md = docs\linear.md
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Security.OAuth.Basecamp", "src\AspNet.Security.OAuth.Basecamp\AspNet.Security.OAuth.Basecamp.csproj", "{42306484-B2BF-4B52-B950-E0CDFA58B02A}"
@@ -317,6 +321,16 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.GitCode", "src\AspNet.Security.OAuth.GitCode\AspNet.Security.OAuth.GitCode.csproj", "{668833D5-DB6A-475F-B0FD-A03462B037B8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.Douyin", "src\AspNet.Security.OAuth.Douyin\AspNet.Security.OAuth.Douyin.csproj", "{1F02BB27-45BF-4FEF-9D07-B9C5C91988A4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.Atlassian", "src\AspNet.Security.OAuth.Atlassian\AspNet.Security.OAuth.Atlassian.csproj", "{D2110C1B-6FE1-4D9A-81ED-93FB2AC85049}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.Webflow", "src\AspNet.Security.OAuth.Webflow\AspNet.Security.OAuth.Webflow.csproj", "{F5DA8A08-5089-4076-B0FC-3F4A5CBB9664}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.Miro", "src\AspNet.Security.OAuth.Miro\AspNet.Security.OAuth.Miro.csproj", "{7F22DE22-FDE8-4A14-AA65-D5B36098533E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.Linear", "src\AspNet.Security.OAuth.Linear\AspNet.Security.OAuth.Linear.csproj", "{B1167108-CA36-4C6B-85B0-1C7F5A24E4A4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.Bilibili", "src\AspNet.Security.OAuth.Bilibili\AspNet.Security.OAuth.Bilibili.csproj", "{8350C405-9E17-4110-B9A8-0AB43A8816B7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.Contentful", "src\AspNet.Security.OAuth.Contentful\AspNet.Security.OAuth.Contentful.csproj", "{B1F6EA42-7B1B-469E-B304-6B2E6FE39852}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -740,6 +754,30 @@ Global
 		{668833D5-DB6A-475F-B0FD-A03462B037B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{668833D5-DB6A-475F-B0FD-A03462B037B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{668833D5-DB6A-475F-B0FD-A03462B037B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D2110C1B-6FE1-4D9A-81ED-93FB2AC85049}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2110C1B-6FE1-4D9A-81ED-93FB2AC85049}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2110C1B-6FE1-4D9A-81ED-93FB2AC85049}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2110C1B-6FE1-4D9A-81ED-93FB2AC85049}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F5DA8A08-5089-4076-B0FC-3F4A5CBB9664}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F5DA8A08-5089-4076-B0FC-3F4A5CBB9664}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F5DA8A08-5089-4076-B0FC-3F4A5CBB9664}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F5DA8A08-5089-4076-B0FC-3F4A5CBB9664}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F22DE22-FDE8-4A14-AA65-D5B36098533E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F22DE22-FDE8-4A14-AA65-D5B36098533E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F22DE22-FDE8-4A14-AA65-D5B36098533E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F22DE22-FDE8-4A14-AA65-D5B36098533E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1167108-CA36-4C6B-85B0-1C7F5A24E4A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1167108-CA36-4C6B-85B0-1C7F5A24E4A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1167108-CA36-4C6B-85B0-1C7F5A24E4A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1167108-CA36-4C6B-85B0-1C7F5A24E4A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8350C405-9E17-4110-B9A8-0AB43A8816B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8350C405-9E17-4110-B9A8-0AB43A8816B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8350C405-9E17-4110-B9A8-0AB43A8816B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8350C405-9E17-4110-B9A8-0AB43A8816B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1F6EA42-7B1B-469E-B304-6B2E6FE39852}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1F6EA42-7B1B-469E-B304-6B2E6FE39852}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1F6EA42-7B1B-469E-B304-6B2E6FE39852}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1F6EA42-7B1B-469E-B304-6B2E6FE39852}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -855,6 +893,12 @@ Global
 		{F3E62C24-5F82-4CF5-A994-0E10D04FB495} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 		{668833D5-DB6A-475F-B0FD-A03462B037B8} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 		{1F02BB27-45BF-4FEF-9D07-B9C5C91988A4} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
+		{D2110C1B-6FE1-4D9A-81ED-93FB2AC85049} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
+		{F5DA8A08-5089-4076-B0FC-3F4A5CBB9664} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
+		{7F22DE22-FDE8-4A14-AA65-D5B36098533E} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
+		{B1167108-CA36-4C6B-85B0-1C7F5A24E4A4} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
+		{8350C405-9E17-4110-B9A8-0AB43A8816B7} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
+		{B1F6EA42-7B1B-469E-B304-6B2E6FE39852} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C7B54DE2-6407-4802-AD9C-CE54BF414C8C}

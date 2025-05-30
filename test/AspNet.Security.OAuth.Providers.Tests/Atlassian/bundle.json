@@ -1,0 +1,37 @@
+{
+  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
+  "items": [
+    {
+      "uri": "https://auth.atlassian.com/oauth/token",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "secret-access-token",
+        "token_type": "access",
+        "refresh_token": "secret-refresh-token",
+        "expires_in": "300"
+      }
+    },
+    {
+      "uri": "https://api.atlassian.com/me",
+      "contentFormat": "json",
+      "contentJson": {
+        "account_type": "atlassian",
+        "account_id": "112233aa-bb11-cc22-33dd-445566abcabc",
+        "email": "mia@example.com",
+        "name": "Mia Krystof",
+        "picture": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/112233aa-bb11-cc22-33dd-445566abcabc/1234abcd-9876-54aa-33aa-1234dfsade9487ds",
+        "account_status": "active",
+        "nickname": "mkrystof",
+        "zoneinfo": "Australia/Sydney",
+        "locale": "en-US",
+        "extended_profile": {
+          "job_title": "Designer",
+          "organization": "mia@example.com",
+          "department": "Design team",
+          "location": "Sydney"
+        }
+      }
+    }
+  ]
+}
