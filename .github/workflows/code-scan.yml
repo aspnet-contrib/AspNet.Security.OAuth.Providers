@@ -12,8 +12,8 @@ on:
 permissions: {}
 
 jobs:
-  code-ql:
 
+  code-ql:
     runs-on: ubuntu-latest
 
     permissions:
@@ -44,3 +44,27 @@ jobs:
       uses: github/codeql-action/analyze@df559355d593797519d70b90fc8edd5db049e7a2 # v3.29.5
       with:
         category: '/language:${{ matrix.language }}'
+
+  zizmor:
+    runs-on: ubuntu-latest
+
+    env:
+      ZIZMOR_VERSION: '1.12.1'
+
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      with:
+        filter: 'tree:0'
+        persist-credentials: false
+        show-progress: false
+
+    - name: Scan workflows with zizmor
+      uses: zizmorcore/zizmor-action@5ca5fc7a4779c5263a3ffa0e1f693009994446d1 # v0.1.2
+      with:
+        version: ${{ env.ZIZMOR_VERSION }}
