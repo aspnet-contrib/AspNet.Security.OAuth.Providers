@@ -11,12 +11,10 @@ on:
         type: choice
         options:
           - 'dev'
-          - 'dev-v9'
+          - 'dev-v10'
         default: 'dev'
 
-permissions:
-  contents: read
-  pull-requests: read
+permissions: {}
 
 jobs:
   update-sdk:
