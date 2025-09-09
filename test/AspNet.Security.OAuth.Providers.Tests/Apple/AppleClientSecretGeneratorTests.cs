@@ -8,21 +8,15 @@ using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.JsonWebTokens;
 
 namespace AspNet.Security.OAuth.Apple;
 
-public class AppleClientSecretGeneratorTests
+public class AppleClientSecretGeneratorTests(ITestOutputHelper outputHelper)
 {
-    private readonly ITestOutputHelper _outputHelper;
-
-    public AppleClientSecretGeneratorTests(ITestOutputHelper outputHelper)
-    {
-        _outputHelper = outputHelper;
-    }
-
     [Fact]
     public async Task GenerateAsync_Generates_Valid_Signed_Jwt()
     {
@@ -186,13 +180,16 @@ public class AppleClientSecretGeneratorTests
         Func<AppleGenerateClientSecretContext, Task> actAndAssert)
     {
         // Arrange
-        var builder = new WebHostBuilder()
-            .ConfigureLogging((p) => p.AddXUnit(_outputHelper).SetMinimumLevel(LogLevel.Debug))
-            .Configure((app) => app.UseAuthentication())
-            .ConfigureServices((services) =>
+        var builder = new HostBuilder()
+            .ConfigureWebHost((builder) =>
             {
-                services.AddAuthentication()
-                        .AddApple();
+                builder.ConfigureLogging((p) => p.AddXUnit(outputHelper).SetMinimumLevel(LogLevel.Debug))
+                       .Configure((app) => app.UseAuthentication())
+                       .ConfigureServices((services) =>
+                       {
+                           services.AddAuthentication()
+                                   .AddApple();
+                       });
             });
 
         using var host = builder.Build();

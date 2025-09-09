@@ -9,6 +9,7 @@ using System.Xml.Linq;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Http;
 using Microsoft.Extensions.Logging;
 
@@ -137,10 +138,15 @@ public static class ApplicationFactory
 
     private sealed class TestApplicationFactory : WebApplicationFactory<Program>
     {
-        protected override IWebHostBuilder CreateWebHostBuilder()
+        protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
-            return new WebHostBuilder()
-                .UseSetting("TEST_CONTENTROOT_ASPNET_SECURITY_OAUTH_PROVIDERS_TESTS", "."); // Use a dummy content root
+            base.ConfigureWebHost(builder);
+            builder.UseContentRoot("."); // Use a dummy content root
+        }
+
+        protected override IHostBuilder? CreateHostBuilder()
+        {
+            return new HostBuilder();
         }
     }
 }
