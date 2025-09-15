@@ -49,7 +49,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      ZIZMOR_VERSION: '1.12.1'
+      ZIZMOR_VERSION: '1.13.0'
 
     permissions:
       actions: read
