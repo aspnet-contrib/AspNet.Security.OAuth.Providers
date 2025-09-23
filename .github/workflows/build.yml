@@ -172,6 +172,11 @@ jobs:
 
   publish-nuget:
     needs: [ build, validate-packages ]
+    environment:
+      name: NuGet.org
+      url: https://www.nuget.org/profiles/aspnet-contrib
+    permissions:
+      id-token: write
     runs-on: ubuntu-latest
     if: |
       github.event.repository.fork == false &&
@@ -188,8 +193,14 @@ jobs:
       with:
         dotnet-version: ${{ needs.build.outputs.dotnet-sdk-version }}
 
+    - name: NuGet log in
+      uses: NuGet/login@d22cc5f58ff5b88bf9bd452535b4335137e24544 # v1.1.0
+      id: nuget-login
+      with:
+        user: ${{ secrets.NUGET_USER }}
+
     - name: Push NuGet packages to NuGet.org
       env:
-        API_KEY: ${{ secrets.NUGET_API_KEY }}
+        API_KEY: ${{ steps.nuget-login.outputs.NUGET_API_KEY }}
         SOURCE: https://api.nuget.org/v3/index.json
       run: dotnet nuget push "*.nupkg" --api-key "${API_KEY}" --skip-duplicate --source "${SOURCE}"
