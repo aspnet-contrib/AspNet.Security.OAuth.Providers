@@ -31,6 +31,7 @@ public class KeycloakAuthenticationOptions : OAuthOptions
         ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "sub");
         ClaimActions.MapJsonKey(ClaimTypes.Name, "name");
         ClaimActions.MapJsonKey(ClaimTypes.GivenName, "given_name");
+        ClaimActions.MapJsonKey(ClaimTypes.Surname, "family_name");
         ClaimActions.MapJsonKey(ClaimTypes.Role, "roles");
     }
 
