@@ -21,6 +21,7 @@
         "roles": "admin",
         "name": "John Smith",
         "given_name": "John",
+        "family_name": "Smith",
         "email": "john@smith.com"
       }
     },
@@ -44,6 +45,7 @@
         "roles": "admin",
         "name": "John Smith",
         "given_name": "John",
+        "family_name": "Smith",
         "email": "john@smith.com"
       }
     },
@@ -67,6 +69,7 @@
         "roles": "admin",
         "name": "John Smith",
         "given_name": "John",
+        "family_name": "Smith",
         "email": "john@smith.com"
       }
     }

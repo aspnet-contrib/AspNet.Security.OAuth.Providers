@@ -1,0 +1,6 @@
+changelog:
+  exclude:
+    authors:
+      - aspnet-contrib-service-account[bot]
+      - dependabot[bot]
+      - github-actions[bot]

@@ -24,6 +24,7 @@ public class KeycloakTests(ITestOutputHelper outputHelper) : OAuthTests<Keycloak
     [InlineData(ClaimTypes.NameIdentifier, "995c1500-0dca-495e-ba72-2499d370d181")]
     [InlineData(ClaimTypes.Email, "john@smith.com")]
     [InlineData(ClaimTypes.GivenName, "John")]
+    [InlineData(ClaimTypes.Surname, "Smith")]
     [InlineData(ClaimTypes.Role, "admin")]
     [InlineData(ClaimTypes.Name, "John Smith")]
     public async Task Can_Sign_In_Using_Keycloak_BaseAddress(string claimType, string claimValue)
@@ -44,6 +45,7 @@ public class KeycloakTests(ITestOutputHelper outputHelper) : OAuthTests<Keycloak
     [InlineData(null, ClaimTypes.NameIdentifier, "995c1500-0dca-495e-ba72-2499d370d181")]
     [InlineData(null, ClaimTypes.Email, "john@smith.com")]
     [InlineData(null, ClaimTypes.GivenName, "John")]
+    [InlineData(null, ClaimTypes.Surname, "Smith")]
     [InlineData(null, ClaimTypes.Role, "admin")]
     [InlineData(null, ClaimTypes.Name, "John Smith")]
     [InlineData("17.0", ClaimTypes.NameIdentifier, "995c1500-0dca-495e-ba72-2499d370d181")]
@@ -84,6 +86,7 @@ public class KeycloakTests(ITestOutputHelper outputHelper) : OAuthTests<Keycloak
     [InlineData(ClaimTypes.NameIdentifier, "995c1500-0dca-495e-ba72-2499d370d181")]
     [InlineData(ClaimTypes.Email, "john@smith.com")]
     [InlineData(ClaimTypes.GivenName, "John")]
+    [InlineData(ClaimTypes.Surname, "Smith")]
     [InlineData(ClaimTypes.Role, "admin")]
     [InlineData(ClaimTypes.Name, "John Smith")]
     public async Task Can_Sign_In_Using_Keycloak_Public_AccessType(string claimType, string claimValue)

@@ -15,8 +15,7 @@ env:
   NUGET_XMLDOC_MODE: skip
   TERM: xterm
 
-permissions:
-  contents: read
+permissions: {}
 
 jobs:
   build:
@@ -45,10 +44,14 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      with:
+        filter: 'tree:0'
+        persist-credentials: false
+        show-progress: false
 
     - name: Setup .NET SDK
-      uses: actions/setup-dotnet@67a3573c9a986a3f9c594539f4ab511d57bb3ce9 # v4.3.1
+      uses: actions/setup-dotnet@d4c94342e560b34958eacfc5d055d21461ed1c5d # v5.0.0
       id: setup-dotnet
 
     # Arcade only allows the revision to contain up to two characters, and GitHub Actions does not roll-over
@@ -69,16 +72,16 @@ jobs:
         Write-Output "_AspNetContribBuildNumber=${BuildId}" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
 
     - name: Build, Test and Package
-      if: ${{ runner.os == 'Windows' }}
+      if: runner.os == 'Windows'
       run: eng\common\CIBuild.cmd -configuration Release -prepareMachine
 
     - name: Build, Test and Package
       shell: pwsh
-      if: ${{ runner.os != 'Windows' }}
+      if: runner.os != 'Windows'
       run: ./eng/common/cibuild.sh -configuration Release -prepareMachine
 
     - name: Attest artifacts
-      uses: actions/attest-build-provenance@e8998f949152b193b063cb0ec769d69d929409be # v2.4.0
+      uses: actions/attest-build-provenance@977bb373ede98d70efdf65b84cb5f73e068dcc2a # v3.0.0
       if: |
         runner.os == 'Windows' &&
         github.event.repository.fork == false &&
@@ -90,7 +93,7 @@ jobs:
 
     - name: Publish logs
       uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
-      if: ${{ always() }}
+      if: ${{ !cancelled() }}
       with:
         name: logs-${{ matrix.os_name }}
         path: ./artifacts/log/Release
@@ -103,7 +106,7 @@ jobs:
 
     - name: Publish test results
       uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
-      if: ${{ always() }}
+      if: ${{ !cancelled() }}
       with:
         name: testresults-${{ matrix.os_name }}
         path: ./artifacts/TestResults/Release
@@ -119,7 +122,7 @@ jobs:
         name: packages-windows
 
     - name: Setup .NET SDK
-      uses: actions/setup-dotnet@67a3573c9a986a3f9c594539f4ab511d57bb3ce9 # v4.3.1
+      uses: actions/setup-dotnet@d4c94342e560b34958eacfc5d055d21461ed1c5d # v5.0.0
       with:
         dotnet-version: ${{ needs.build.outputs.dotnet-sdk-version }}
 
@@ -157,17 +160,23 @@ jobs:
         name: packages-windows
 
     - name: Setup .NET SDK
-      uses: actions/setup-dotnet@67a3573c9a986a3f9c594539f4ab511d57bb3ce9 # v4.3.1
+      uses: actions/setup-dotnet@d4c94342e560b34958eacfc5d055d21461ed1c5d # v5.0.0
       with:
         dotnet-version: ${{ needs.build.outputs.dotnet-sdk-version }}
 
     - name: Push NuGet packages to aspnet-contrib MyGet
       env:
-        MYGET_API_KEY: ${{ secrets.MYGET_API_KEY }}
-      run: dotnet nuget push "*.nupkg" --api-key "${MYGET_API_KEY}" --skip-duplicate --source https://www.myget.org/F/aspnet-contrib/api/v3/index.json
+        API_KEY: ${{ secrets.MYGET_API_KEY }}
+        SOURCE: https://www.myget.org/F/aspnet-contrib/api/v3/index.json
+      run: dotnet nuget push "*.nupkg" --api-key "${API_KEY}" --skip-duplicate --source "${SOURCE}"
 
   publish-nuget:
     needs: [ build, validate-packages ]
+    environment:
+      name: NuGet.org
+      url: https://www.nuget.org/profiles/aspnet-contrib
+    permissions:
+      id-token: write
     runs-on: ubuntu-latest
     if: |
       github.event.repository.fork == false &&
@@ -180,11 +189,18 @@ jobs:
         name: packages-windows
 
     - name: Setup .NET SDK
-      uses: actions/setup-dotnet@67a3573c9a986a3f9c594539f4ab511d57bb3ce9 # v4.3.1
+      uses: actions/setup-dotnet@d4c94342e560b34958eacfc5d055d21461ed1c5d # v5.0.0
       with:
         dotnet-version: ${{ needs.build.outputs.dotnet-sdk-version }}
 
+    - name: NuGet log in
+      uses: NuGet/login@d22cc5f58ff5b88bf9bd452535b4335137e24544 # v1.1.0
+      id: nuget-login
+      with:
+        user: ${{ secrets.NUGET_USER }}
+
     - name: Push NuGet packages to NuGet.org
       env:
-        NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
-      run: dotnet nuget push "*.nupkg" --api-key "${NUGET_API_KEY}" --skip-duplicate --source https://api.nuget.org/v3/index.json
+        API_KEY: ${{ steps.nuget-login.outputs.NUGET_API_KEY }}
+        SOURCE: https://api.nuget.org/v3/index.json
+      run: dotnet nuget push "*.nupkg" --api-key "${API_KEY}" --skip-duplicate --source "${SOURCE}"
