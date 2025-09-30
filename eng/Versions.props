@@ -3,9 +3,9 @@
   <PropertyGroup>
     <MajorVersion>9</MajorVersion>
     <MinorVersion>4</MinorVersion>
-    <PatchVersion>1</PatchVersion>
+    <PatchVersion>2</PatchVersion>
     <VersionPrefix>$(MajorVersion).$(MinorVersion).$(PatchVersion)</VersionPrefix>
-    <PackageValidationBaselineVersion Condition=" '$(EnablePackageValidation)' == 'true' AND '$(PackageValidationBaselineVersion)' == '' ">9.0.0</PackageValidationBaselineVersion>
+    <PackageValidationBaselineVersion Condition=" '$(EnablePackageValidation)' == 'true' AND '$(PackageValidationBaselineVersion)' == '' ">9.4.1</PackageValidationBaselineVersion>
     <PreReleaseVersionLabel>preview</PreReleaseVersionLabel>
     <PreReleaseVersionIteration></PreReleaseVersionIteration>
     <PreReleaseBrandingLabel>Preview $(PreReleaseVersionIteration)</PreReleaseBrandingLabel>
