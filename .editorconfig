@@ -13,6 +13,9 @@ indent_style = space
 insert_final_newline = true
 trim_trailing_whitespace = true
 
+[*.{sh}]
+end_of_line = lf
+
 [*.{csproj,json,props,ruleset,targets}]
 indent_size = 2
 
