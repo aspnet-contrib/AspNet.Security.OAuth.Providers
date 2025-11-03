@@ -1,0 +1,39 @@
+{
+  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
+  "items": [
+    {
+      "comment": "Etsy OAuth 2.0 token exchange endpoint",
+      "uri": "https://api.etsy.com/v3/public/oauth/token",
+      "method": "POST",
+      "contentFormat": "json",
+      "contentJson": {
+        "access_token": "secret-access-token",
+        "token_type": "Bearer",
+        "expires_in": 3600,
+        "refresh_token": "secret-refresh-token",
+        "scope": "email_r shops_r"
+      }
+    },
+    {
+      "comment": "Etsy /v3/application/users/me endpoint - returns basic user and shop IDs",
+      "uri": "https://openapi.etsy.com/v3/application/users/me",
+      "contentFormat": "json",
+      "contentJson": {
+        "user_id": 123456,
+        "shop_id": 789012
+      }
+    },
+    {
+      "comment": "Etsy /v3/application/users/{user_id} endpoint - returns detailed user information",
+      "uri": "https://openapi.etsy.com/v3/application/users/123456",
+      "contentFormat": "json",
+      "contentJson": {
+        "user_id": 123456,
+        "primary_email": "test@example.com",
+        "first_name": "Test",
+        "last_name": "User",
+        "image_url_75x75": "https://i.etsystatic.com/test/test_75x75.jpg"
+      }
+    }
+  ]
+}
