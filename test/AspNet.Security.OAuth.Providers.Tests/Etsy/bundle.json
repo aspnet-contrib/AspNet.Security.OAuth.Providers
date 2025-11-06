@@ -2,16 +2,15 @@
   "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
   "items": [
     {
-      "comment": "Etsy OAuth 2.0 token exchange endpoint",
+      "comment": "Etsy OAuth 2.0 token exchange endpoint response - returns sample token values from Etsy API Docs",
       "uri": "https://api.etsy.com/v3/public/oauth/token",
       "method": "POST",
       "contentFormat": "json",
       "contentJson": {
-        "access_token": "secret-access-token",
+        "access_token": "12345678.12345678.O1zLuwveeKjpIqCQFfmR-PaMMpBmagH6DljRAkK9qt05OtRKiANJOyZlMx3WQ_o2FdComQGuoiAWy3dxyGI4Ke_76PR",
         "token_type": "Bearer",
         "expires_in": 3600,
-        "refresh_token": "secret-refresh-token",
-        "scope": "email_r shops_r"
+        "refresh_token": "12345678.JNGIJtvLmwfDMhlYoOJl8aLR1BWottyHC6yhNcET-eC7RogSR5e1GTIXGrgrelWZalvh3YvvyLfKYYqvymd-u37Sjtx"
       }
     },
     {
