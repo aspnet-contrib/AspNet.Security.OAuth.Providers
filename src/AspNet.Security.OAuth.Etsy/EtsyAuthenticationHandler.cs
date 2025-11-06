@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Licensed under the Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0)
  * See https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers
  * for more information concerning the license and the contributors participating to this project.
@@ -6,6 +6,7 @@
 
 using System.Globalization;
 using System.Net.Http.Headers;
+using System.Net.Mime;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Text.Json;
@@ -29,9 +30,9 @@ public partial class EtsyAuthenticationHandler : OAuthHandler<EtsyAuthentication
         [NotNull] AuthenticationProperties properties,
         [NotNull] OAuthTokenResponse tokens)
     {
-        // First, get the basic user info and shop_id from /v3/application/users/me
+        // Get the basic user info (user_id and shop_id)
         using var meRequest = new HttpRequestMessage(HttpMethod.Get, Options.UserInformationEndpoint);
-        meRequest.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        meRequest.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json));
         meRequest.Headers.Authorization = new AuthenticationHeaderValue("Bearer", tokens.AccessToken);
         meRequest.Headers.Add("x-api-key", Options.ClientId);
 
@@ -50,41 +51,43 @@ public partial class EtsyAuthenticationHandler : OAuthHandler<EtsyAuthentication
         var userId = meRoot.GetProperty("user_id").GetInt64();
         var shopId = meRoot.GetProperty("shop_id").GetInt64();
 
-        // Add the basic claims from the /me endpoint
-        // Use shop_id as the primary identifier for Etsy (required for most API operations)
-        identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, shopId.ToString(CultureInfo.InvariantCulture), ClaimValueTypes.String, Options.ClaimsIssuer));
-        identity.AddClaim(new Claim(EtsyAuthenticationConstants.Claims.UserId, userId.ToString(CultureInfo.InvariantCulture), ClaimValueTypes.String, Options.ClaimsIssuer));
-        identity.AddClaim(new Claim(EtsyAuthenticationConstants.Claims.ShopId, shopId.ToString(CultureInfo.InvariantCulture), ClaimValueTypes.String, Options.ClaimsIssuer));
+        var principal = new ClaimsPrincipal(identity);
+        var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, meRoot);
 
-        // Now get additional user details from /v3/application/users/{user_id}
-        var userDetailEndpoint = $"https://openapi.etsy.com/v3/application/users/{userId}";
-        using var userRequest = new HttpRequestMessage(HttpMethod.Get, userDetailEndpoint);
-        userRequest.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        // Map claims from the basic payload first
+        context.RunClaimActions();
+
+        // Optionally enrich with detailed user info
+        if (Options.IncludeDetailedUserInfo)
+        {
+            using var detailedPayload = await GetDetailedUserInfoAsync(tokens);
+            context.RunClaimActions(detailedPayload.RootElement);
+        }
+
+        await Events.CreatingTicket(context);
+        return new AuthenticationTicket(context.Principal!, context.Properties, Scheme.Name);
+    }
+
+    /// <summary>
+    /// Retrieves detailed user information from Etsy.
+    /// </summary>
+    /// <param name="tokens">The OAuth token response.</param>
+    /// <returns>A JSON document containing the detailed user information.</returns>
+    protected virtual async Task<JsonDocument> GetDetailedUserInfoAsync([NotNull] OAuthTokenResponse tokens)
+    {
+        using var userRequest = new HttpRequestMessage(HttpMethod.Get, EtsyAuthenticationDefaults.EtsyBaseUri + EtsyAuthenticationDefaults.UserDetailsPath);
+        userRequest.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json));
         userRequest.Headers.Authorization = new AuthenticationHeaderValue("Bearer", tokens.AccessToken);
         userRequest.Headers.Add("x-api-key", Options.ClientId);
 
         using var userResponse = await Backchannel.SendAsync(userRequest, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
-        if (userResponse.IsSuccessStatusCode)
+        if (!userResponse.IsSuccessStatusCode)
         {
-            using var userPayload = JsonDocument.Parse(await userResponse.Content.ReadAsStringAsync(Context.RequestAborted));
-
-            // Create context with the detailed user data for claim mapping
-            var principal = new ClaimsPrincipal(identity);
-            var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, userPayload.RootElement);
-            context.RunClaimActions();
-
-            await Events.CreatingTicket(context);
-            return new AuthenticationTicket(context.Principal!, context.Properties, Scheme.Name);
+            await Log.UserProfileErrorAsync(Logger, userResponse, Context.RequestAborted);
+            throw new HttpRequestException("An error occurred while retrieving detailed user info from Etsy.");
         }
-        else
-        {
-            // If detailed user info call fails, just create ticket with basic info
-            var principal = new ClaimsPrincipal(identity);
-            var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, meRoot);
 
-            await Events.CreatingTicket(context);
-            return new AuthenticationTicket(context.Principal!, context.Properties, Scheme.Name);
-        }
+        return JsonDocument.Parse(await userResponse.Content.ReadAsStringAsync(Context.RequestAborted));
     }
 
     private static partial class Log
