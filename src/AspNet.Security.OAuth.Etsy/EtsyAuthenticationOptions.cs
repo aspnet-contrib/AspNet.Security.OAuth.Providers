@@ -26,10 +26,7 @@ public class EtsyAuthenticationOptions : OAuthOptions
         TokenEndpoint = EtsyAuthenticationDefaults.TokenEndpoint;
         UserInformationEndpoint = EtsyAuthenticationDefaults.UserInformationEndpoint;
 
-        // Enable PKCE by default (required by Etsy)
         UsePkce = true;
-
-        // Enable refresh token support
         SaveTokens = true;
 
         // Default scopes - Etsy requires at least one scope and this is the one for basic user info
@@ -37,6 +34,7 @@ public class EtsyAuthenticationOptions : OAuthOptions
 
         // Map basic user claims
         ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "user_id");
+        ClaimActions.MapJsonKey(Claims.UserId, "user_id");
         ClaimActions.MapJsonKey(Claims.ShopId, "shop_id");
 
         // Map detailed user claims for detailed user info /v3/application/users/{user_id}
@@ -66,7 +64,7 @@ public class EtsyAuthenticationOptions : OAuthOptions
             // because the won't be validated if the ClientSecret validation fails.
             base.Validate();
         }
-        catch (ArgumentException ex) when (ex.ParamName == nameof(ClientSecret) && AccessType == EtsyAuthenticationAccessType.Public)
+        catch (ArgumentException ex) when (ex.ParamName == nameof(ClientSecret) && AccessType == EtsyAuthenticationAccessType.Personal)
         {
             // No client secret is required for Etsy API, which uses Authorization Code Flow https://datatracker.ietf.org/doc/html/rfc6749#section-1.3.1 with:
             // See https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers/issues/610.

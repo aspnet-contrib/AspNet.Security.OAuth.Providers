@@ -40,7 +40,7 @@ public partial class EtsyAuthenticationHandler : OAuthHandler<EtsyAuthentication
         if (!meResponse.IsSuccessStatusCode)
         {
             await Log.UserProfileErrorAsync(Logger, meResponse, Context.RequestAborted);
-            throw new HttpRequestException("An error occurred while retrieving basic user info from Etsy.");
+            throw new HttpRequestException("An error occurred while retrieving basic user information from Etsy.");
         }
 
         using var mePayload = JsonDocument.Parse(await meResponse.Content.ReadAsStringAsync(Context.RequestAborted));

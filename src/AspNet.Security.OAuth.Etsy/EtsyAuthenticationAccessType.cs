@@ -9,10 +9,10 @@ public enum EtsyAuthenticationAccessType
     /// <summary>
     /// Public client access type aka 'private usage access' in Etsy App Registration.
     /// </summary>
-    Public,
+    Personal,
 
     //// <summary>
     //// Confidential client access type aka 'commercial usage access' in Etsy App Registration. // TODO: Uncomment if someone can verify that commercial usage access supports confidential clients.
     //// </summary>
-    // Confidential
+    // Commercial
 }

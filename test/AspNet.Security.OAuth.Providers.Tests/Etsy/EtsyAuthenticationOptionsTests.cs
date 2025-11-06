@@ -10,14 +10,14 @@ public static class EtsyAuthenticationOptionsTests
 {
     public static TheoryData<EtsyAuthenticationAccessType> AccessTypes => new()
     {
-        { EtsyAuthenticationAccessType.Public }, // Private Etsy API access does not use client secret (aka 'shared secret' in Etsy App Registration) https://developers.etsy.com/documentation/essentials/authentication
+        { EtsyAuthenticationAccessType.Personal }, // Private Etsy API access does not use client secret (aka 'shared secret' in Etsy App Registration) https://developers.etsy.com/documentation/essentials/authentication
 
-        // { EtsyAuthenticationAccessType.Confidential } // TODO: Verify commercial access app registration Authentication does support confidential clients. Etsy docs do not indicate this to be used at all but support stated this would be required for token refresh
+        // { EtsyAuthenticationAccessType.Commercial } // TODO: Verify commercial access app registration Authentication does support confidential clients. Etsy docs do not indicate this to be used at all but support stated this would be required for token refresh
     };
 
     [Theory]
-    [InlineData(null, EtsyAuthenticationAccessType.Public)]
-    [InlineData("", EtsyAuthenticationAccessType.Public)]
+    [InlineData(null, EtsyAuthenticationAccessType.Personal)]
+    [InlineData("", EtsyAuthenticationAccessType.Personal)]
     public static void Validate_Does_Not_Throw_If_ClientSecret_Is_Not_Provided_For_Public_Access_Type(string? clientSecret, EtsyAuthenticationAccessType accessType)
     {
         // Arrange
@@ -49,9 +49,9 @@ public static class EtsyAuthenticationOptionsTests
     //    _ = Assert.Throws<ArgumentNullException>("ClientSecret", options.Validate);
     // }
     [Theory]
-    [InlineData(EtsyAuthenticationAccessType.Public, true, false)]
-    [InlineData(EtsyAuthenticationAccessType.Public, false, false)]
-    [InlineData(EtsyAuthenticationAccessType.Public, false, true)]
+    [InlineData(EtsyAuthenticationAccessType.Personal, true, false)]
+    [InlineData(EtsyAuthenticationAccessType.Personal, false, false)]
+    [InlineData(EtsyAuthenticationAccessType.Personal, false, true)]
     public static void Validate_Throws_If_SaveTokens_Or_Pkce_Is_Disabled(EtsyAuthenticationAccessType accessType, bool usePkce, bool saveTokens)
     {
         // Arrange
