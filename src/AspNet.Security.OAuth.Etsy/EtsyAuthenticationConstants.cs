@@ -4,6 +4,8 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
+using System.Security.Claims;
+
 namespace AspNet.Security.OAuth.Etsy;
 
 /// <summary>
@@ -11,6 +13,9 @@ namespace AspNet.Security.OAuth.Etsy;
 /// </summary>
 public static class EtsyAuthenticationConstants
 {
+    /// <summary>
+    /// Contains claim type constants specific to Etsy authentication.
+    /// </summary>
     public static class Claims
     {
         /// <summary>The claim type for the user's Etsy shop ID.</summary>
