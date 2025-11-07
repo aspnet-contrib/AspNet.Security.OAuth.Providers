@@ -48,9 +48,15 @@ public class EtsyAuthenticationOptions : OAuthOptions
     }
 
     /// <summary>
-    /// Gets or sets the value for the Etsy client's access type.
+    /// Gets or sets a value indicating whether to fetch detailed user information
+    /// from the <see href="/v3/application/users/{user_id}">getUser</see> endpoint.
     /// </summary>
-    public EtsyAuthenticationAccessType AccessType { get; set; }
+    /// <remarks>
+    /// When enabled, requires the <c>email_r</c> scope to be added to the Scope collection.
+    /// Users must also configure which claims to map via <c>ClaimActions.MapJsonKey()</c>.
+    /// See <see cref="EtsyAuthenticationConstants.DetailedUserInfoClaimMappings"/> for available claims.
+    /// </remarks>
+    public bool IncludeDetailedUserInfo { get; set; }
 
     /// <inheritdoc />
     public override void Validate()
@@ -64,7 +70,7 @@ public class EtsyAuthenticationOptions : OAuthOptions
             // because the won't be validated if the ClientSecret validation fails.
             base.Validate();
         }
-        catch (ArgumentException ex) when (ex.ParamName == nameof(ClientSecret) && AccessType == EtsyAuthenticationAccessType.Personal)
+        catch (ArgumentException ex) when (ex.ParamName == nameof(ClientSecret))
         {
             // No client secret is required for Etsy API, which uses Authorization Code Flow https://datatracker.ietf.org/doc/html/rfc6749#section-1.3.1 with:
             // See https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers/issues/610.
