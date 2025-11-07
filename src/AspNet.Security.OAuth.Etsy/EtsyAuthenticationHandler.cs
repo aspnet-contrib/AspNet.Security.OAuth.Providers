@@ -99,20 +99,29 @@ public partial class EtsyAuthenticationHandler : OAuthHandler<EtsyAuthentication
     /// <returns>A <see cref="JsonDocument"/> containing the detailed user information.</returns>
     protected virtual async Task<JsonDocument> GetDetailedUserInfoAsync([NotNull] OAuthTokenResponse tokens, long userId)
     {
-        var userDetailsUrl = string.Format(null, EtsyAuthenticationDefaults.DetailedUserInfoEndpoint, userId);
+        string userDetailsUrl;
+        if (!string.IsNullOrWhiteSpace(Options.DetailedUserInfoEndpoint))
+        {
+            userDetailsUrl = string.Format(CultureInfo.InvariantCulture, Options.DetailedUserInfoEndpoint, userId);
+        }
+        else
+        {
+            userDetailsUrl = string.Format(CultureInfo.InvariantCulture, EtsyAuthenticationDefaults.DetailedUserInfoEndpoint, userId);
+        }
+
         using var request = new HttpRequestMessage(HttpMethod.Get, userDetailsUrl);
         request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json));
         request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", tokens.AccessToken);
         request.Headers.Add("x-api-key", Options.ClientId);
 
-        using var userResponse = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
-        if (!userResponse.IsSuccessStatusCode)
+        using var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
+        if (!response.IsSuccessStatusCode)
         {
-            await Log.UserProfileErrorAsync(Logger, userResponse, Context.RequestAborted);
+            await Log.UserProfileErrorAsync(Logger, response, Context.RequestAborted);
             throw new HttpRequestException("An error occurred while retrieving detailed user info from Etsy.");
         }
 
-        return JsonDocument.Parse(await userResponse.Content.ReadAsStringAsync(Context.RequestAborted));
+        return JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
     }
 
     private static partial class Log
