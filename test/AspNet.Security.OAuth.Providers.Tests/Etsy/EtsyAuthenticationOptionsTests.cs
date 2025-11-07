@@ -96,11 +96,26 @@ public static class EtsyAuthenticationOptionsTests
         {
             ClientId = "my-client-id",
             ClientSecret = "my-client-secret",
-            TokenEndpoint = null!,
+            UserInformationEndpoint = null!,
         };
 
         // Act and Assert
         _ = Assert.Throws<ArgumentNullException>(nameof(options.UserInformationEndpoint), options.Validate);
+    }
+
+    [Fact]
+    public static void Validate_Dont_Throws_If_DetailedUserInformationEndpoint_Is_Null()
+    {
+        // Arrange
+        var options = new EtsyAuthenticationOptions()
+        {
+            ClientId = "my-client-id",
+            ClientSecret = "my-client-secret",
+            DetailedUserInfoEndpoint = null!,
+        };
+
+        // Act (no Assert)
+        options.Validate();
     }
 
     [Fact]

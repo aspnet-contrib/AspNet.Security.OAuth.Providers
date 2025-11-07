@@ -2,8 +2,8 @@
   "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
   "items": [
     {
-      "comment": "Etsy OAuth 2.0 token exchange endpoint response - returns sample token values from Etsy API Docs",
-      "uri": "https://api.etsy.com/v3/public/oauth/token",
+      "comment": "Etsy OAuth 2.0 token exchange endpoint response - returns sample token values from Etsy API Docs (domain aligned to openapi.etsy.com to match provider defaults)",
+      "uri": "https://openapi.etsy.com/v3/public/oauth/token",
       "method": "POST",
       "contentFormat": "json",
       "contentJson": {
@@ -24,7 +24,7 @@
     },
     {
       "comment": "Etsy /v3/application/users/{user_id} endpoint - returns detailed user information",
-      "uri": "https://openapi.etsy.com/v3/application/users/{0}",
+      "uri": "https://openapi.etsy.com/v3/application/users/123456",
       "contentFormat": "json",
       "contentJson": {
         "user_id": 123456,

@@ -89,7 +89,7 @@ public class EtsyAuthenticationOptions : OAuthOptions
 
         if (IncludeDetailedUserInfo && !Scope.Contains(Scopes.EmailRead))
         {
-            // EmailRead scope is required to access detailed user info
+            // EmailRead scope is required to access detailed user info. As the post configure action should have added it, we need to ensure it's present.
             throw new ArgumentOutOfRangeException(nameof(Scope), string.Join(',', Scope), $"The '{Scopes.EmailRead}' scope must be specified when '{nameof(IncludeDetailedUserInfo)}' is enabled.");
         }
 
