@@ -15,8 +15,6 @@ namespace AspNet.Security.OAuth.Etsy;
 /// </summary>
 public class EtsyAuthenticationOptions : OAuthOptions
 {
-    public bool IncludeDetailedUserInfo { get; set; }
-
     public EtsyAuthenticationOptions()
     {
         ClaimsIssuer = EtsyAuthenticationDefaults.Issuer;
@@ -34,17 +32,7 @@ public class EtsyAuthenticationOptions : OAuthOptions
 
         // Map basic user claims
         ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "user_id");
-        ClaimActions.MapJsonKey(Claims.UserId, "user_id");
         ClaimActions.MapJsonKey(Claims.ShopId, "shop_id");
-
-        // Map detailed user claims for detailed user info /v3/application/users/{user_id}
-        ClaimActions.MapJsonKey(ClaimTypes.Email, "primary_email");
-        ClaimActions.MapJsonKey(ClaimTypes.GivenName, "first_name");
-        ClaimActions.MapJsonKey(ClaimTypes.Surname, "last_name");
-        ClaimActions.MapJsonKey(Claims.PrimaryEmail, "primary_email");
-        ClaimActions.MapJsonKey(Claims.FirstName, "first_name");
-        ClaimActions.MapJsonKey(Claims.LastName, "last_name");
-        ClaimActions.MapJsonKey(Claims.ImageUrl, "image_url_75x75");
     }
 
     /// <summary>
@@ -54,7 +42,7 @@ public class EtsyAuthenticationOptions : OAuthOptions
     /// <remarks>
     /// When enabled, requires the <c>email_r</c> scope to be added to the Scope collection.
     /// Users must also configure which claims to map via <c>ClaimActions.MapJsonKey()</c>.
-    /// See <see cref="EtsyAuthenticationConstants.DetailedUserInfoClaimMappings"/> for available claims.
+    /// See <see cref="DetailedUserInfoClaimMappings"/> for available claims.
     /// </remarks>
     public bool IncludeDetailedUserInfo { get; set; }
 

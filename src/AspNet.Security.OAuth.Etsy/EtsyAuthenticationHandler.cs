@@ -31,20 +31,20 @@ public partial class EtsyAuthenticationHandler : OAuthHandler<EtsyAuthentication
         [NotNull] OAuthTokenResponse tokens)
     {
         // Get the basic user info (user_id and shop_id)
-        using var meRequest = new HttpRequestMessage(HttpMethod.Get, Options.UserInformationEndpoint);
-        meRequest.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json));
-        meRequest.Headers.Authorization = new AuthenticationHeaderValue("Bearer", tokens.AccessToken);
-        meRequest.Headers.Add("x-api-key", Options.ClientId);
+        using var request = new HttpRequestMessage(HttpMethod.Get, Options.UserInformationEndpoint);
+        request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json));
+        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", tokens.AccessToken);
+        request.Headers.Add("x-api-key", Options.ClientId);
 
-        using var meResponse = await Backchannel.SendAsync(meRequest, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
-        if (!meResponse.IsSuccessStatusCode)
+        using var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
+        if (!response.IsSuccessStatusCode)
         {
-            await Log.UserProfileErrorAsync(Logger, meResponse, Context.RequestAborted);
+            await Log.UserProfileErrorAsync(Logger, response, Context.RequestAborted);
             throw new HttpRequestException("An error occurred while retrieving basic user information from Etsy.");
         }
 
-        using var mePayload = JsonDocument.Parse(await meResponse.Content.ReadAsStringAsync(Context.RequestAborted));
-        var meRoot = mePayload.RootElement;
+        using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
+        var meRoot = payload.RootElement;
 
         // Extract user_id and shop_id from the /me response
         // Both fields should always be present in a successful Etsy OAuth response
@@ -60,8 +60,26 @@ public partial class EtsyAuthenticationHandler : OAuthHandler<EtsyAuthentication
         // Optionally enrich with detailed user info
         if (Options.IncludeDetailedUserInfo)
         {
-            using var detailedPayload = await GetDetailedUserInfoAsync(tokens);
-            context.RunClaimActions(detailedPayload.RootElement);
+            using var detailedPayload = await GetDetailedUserInfoAsync(tokens, userId);
+            var detailedRoot = detailedPayload.RootElement;
+
+            // Apply claim actions for fields that are only in the detailed payload
+            // We filter the ClaimActions to exclude those for user_id and shop_id
+            // since they were already processed from the basic /users/me endpoint
+            foreach (var action in Options.ClaimActions)
+            {
+                // Skip the action if it's a JsonKeyClaimAction for user_id or shop_id
+                if (action is Microsoft.AspNetCore.Authentication.OAuth.Claims.JsonKeyClaimAction jsonAction)
+                {
+                    if (jsonAction.ClaimType == ClaimTypes.NameIdentifier ||
+                        jsonAction.ClaimType == EtsyAuthenticationConstants.Claims.ShopId)
+                    {
+                        continue;
+                    }
+                }
+
+                action.Run(detailedRoot, identity, Options.ClaimsIssuer ?? ClaimsIssuer);
+            }
         }
 
         await Events.CreatingTicket(context);
@@ -72,15 +90,17 @@ public partial class EtsyAuthenticationHandler : OAuthHandler<EtsyAuthentication
     /// Retrieves detailed user information from Etsy.
     /// </summary>
     /// <param name="tokens">The OAuth token response.</param>
+    /// <param name="userId">The user ID to retrieve details for.</param>
     /// <returns>A JSON document containing the detailed user information.</returns>
-    protected virtual async Task<JsonDocument> GetDetailedUserInfoAsync([NotNull] OAuthTokenResponse tokens)
+    protected virtual async Task<JsonDocument> GetDetailedUserInfoAsync([NotNull] OAuthTokenResponse tokens, long userId)
     {
-        using var userRequest = new HttpRequestMessage(HttpMethod.Get, EtsyAuthenticationDefaults.EtsyBaseUri + EtsyAuthenticationDefaults.UserDetailsPath);
-        userRequest.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json));
-        userRequest.Headers.Authorization = new AuthenticationHeaderValue("Bearer", tokens.AccessToken);
-        userRequest.Headers.Add("x-api-key", Options.ClientId);
+        var userDetailsUrl = string.Format(null, EtsyAuthenticationDefaults.DetailedUserInfoEndpoint, userId);
+        using var request = new HttpRequestMessage(HttpMethod.Get, userDetailsUrl);
+        request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json));
+        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", tokens.AccessToken);
+        request.Headers.Add("x-api-key", Options.ClientId);
 
-        using var userResponse = await Backchannel.SendAsync(userRequest, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
+        using var userResponse = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
         if (!userResponse.IsSuccessStatusCode)
         {
             await Log.UserProfileErrorAsync(Logger, userResponse, Context.RequestAborted);
