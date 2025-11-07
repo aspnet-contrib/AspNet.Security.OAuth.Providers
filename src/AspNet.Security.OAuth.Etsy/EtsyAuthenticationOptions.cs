@@ -58,53 +58,36 @@ public class EtsyAuthenticationOptions : OAuthOptions
             // See https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers/issues/610.
         }
 
-        // Ensure PKCE is enabled (required by Etsy)
-        if (!UsePkce)
-        {
-            throw new ArgumentException("PKCE is required by Etsy Authentication and must be enabled.", nameof(UsePkce));
-        }
-
-        if (!SaveTokens)
-        {
-            throw new ArgumentException("Saving tokens is required by Etsy Authentication and must be enabled.", nameof(SaveTokens));
-        }
-
         if (string.IsNullOrEmpty(AuthorizationEndpoint))
         {
-            throw new ArgumentNullException($"The '{nameof(AuthorizationEndpoint)}' option must be provided.", nameof(AuthorizationEndpoint));
+            throw new ArgumentNullException(nameof(AuthorizationEndpoint), $"The '{nameof(AuthorizationEndpoint)}' option must be provided.");
         }
 
         if (string.IsNullOrEmpty(TokenEndpoint))
         {
-            throw new ArgumentNullException($"The '{nameof(TokenEndpoint)}' option must be provided.", nameof(TokenEndpoint));
+            throw new ArgumentNullException(nameof(TokenEndpoint), $"The '{nameof(TokenEndpoint)}' option must be provided.");
         }
 
         if (string.IsNullOrEmpty(UserInformationEndpoint))
         {
-            throw new ArgumentNullException($"The '{nameof(UserInformationEndpoint)}' option must be provided.", nameof(UserInformationEndpoint));
-        }
-
-        // Ensure at least one scope is requested (required by Etsy)
-        if (Scope.Count == 0)
-        {
-            throw new ArgumentOutOfRangeException(nameof(Scope), string.Join(',', Scope), "At least one scope must be specified for Etsy authentication.");
+            throw new ArgumentNullException(nameof(UserInformationEndpoint), $"The '{nameof(UserInformationEndpoint)}' option must be provided.");
         }
 
         if (!Scope.Contains(Scopes.ShopsRead))
         {
-            // ShopsRead scope is required to access basic user info
-            throw new ArgumentOutOfRangeException(nameof(Scope), string.Join(',', Scope), $"The '{Scopes.ShopsRead}' scope must be specified for Etsy authentication UserInfoEndpoint: https://developers.etsy.com/documentation/reference#operation/getMe");
+            // shops_r scope is required to access basic user info.
+            throw new ArgumentOutOfRangeException(nameof(Scope), string.Join(',', Scope), $"The '{Scopes.ShopsRead}' scope must be specified.");
         }
 
         if (IncludeDetailedUserInfo && !Scope.Contains(Scopes.EmailRead))
         {
             // EmailRead scope is required to access detailed user info
-            throw new ArgumentOutOfRangeException(nameof(Scope), string.Join(',', Scope), $"The '{Scopes.EmailRead}' scope must be specified for Etsy authentication when '{nameof(IncludeDetailedUserInfo)}' is enabled.");
+            throw new ArgumentOutOfRangeException(nameof(Scope), string.Join(',', Scope), $"The '{Scopes.EmailRead}' scope must be specified when '{nameof(IncludeDetailedUserInfo)}' is enabled.");
         }
 
         if (!CallbackPath.HasValue)
         {
-            throw new ArgumentException($"The '{nameof(CallbackPath)}' option must be provided.", nameof(CallbackPath));
+            throw new ArgumentNullException(nameof(CallbackPath), $"The '{nameof(CallbackPath)}' option must be provided.");
         }
     }
 }
