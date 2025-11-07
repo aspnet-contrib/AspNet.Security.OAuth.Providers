@@ -27,23 +27,17 @@ public class EtsyAuthenticationOptions : OAuthOptions
         UsePkce = true;
         SaveTokens = true;
 
-        // Default scopes - Etsy requires at least one scope and this is the one for basic user info
+        // Etsy requires at least one scope and this is the one for basic user info
         Scope.Add(Scopes.ShopsRead);
 
-        // Map basic user claims
         ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "user_id");
         ClaimActions.MapJsonKey(Claims.ShopId, "shop_id");
     }
 
     /// <summary>
     /// Gets or sets a value indicating whether to fetch detailed user information
-    /// from the <see href="/v3/application/users/{user_id}">getUser</see> endpoint.
+    /// from the <see href="https://developers.etsy.com/documentation/reference#operation/getUser">getUser</see> Endpoint.
     /// </summary>
-    /// <remarks>
-    /// When enabled, requires the <c>email_r</c> scope to be added to the Scope collection.
-    /// Users must also configure which claims to map via <c>ClaimActions.MapJsonKey()</c>.
-    /// See <see cref="DetailedUserInfoClaimMappings"/> for available claims.
-    /// </remarks>
     public bool IncludeDetailedUserInfo { get; set; }
 
     /// <inheritdoc />

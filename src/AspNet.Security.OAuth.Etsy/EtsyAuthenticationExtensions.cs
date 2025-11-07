@@ -71,6 +71,9 @@ public static class EtsyAuthenticationExtensions
         [CanBeNull] string caption,
         [NotNull] Action<EtsyAuthenticationOptions> configuration)
     {
+        // Ensure Etsy-specific post-configuration runs after the base OAuth configuration
+        builder.Services.TryAddSingleton<IPostConfigureOptions<EtsyAuthenticationOptions>, EtsyPostConfigureOptions>();
+
         return builder.AddOAuth<EtsyAuthenticationOptions, EtsyAuthenticationHandler>(scheme, caption, configuration);
     }
 }
