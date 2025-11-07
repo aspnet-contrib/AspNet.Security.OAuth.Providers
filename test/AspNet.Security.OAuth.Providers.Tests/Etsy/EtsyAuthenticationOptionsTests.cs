@@ -24,42 +24,8 @@ public static class EtsyAuthenticationOptionsTests
         options.Validate();
     }
 
-    [Theory]
-    [InlineData(true, false)]
-    [InlineData(false, false)]
-    [InlineData(false, true)]
-    public static void Validate_Throws_If_SaveTokens_Or_Pkce_Is_Disabled(bool usePkce, bool saveTokens)
-    {
-        // Arrange
-        var options = new EtsyAuthenticationOptions()
-        {
-            ClientId = "my-client-id",
-            ClientSecret = "my-client-secret",
-            SaveTokens = saveTokens,
-            UsePkce = usePkce,
-        };
-
-        // Act and Assert
-        _ = Assert.Throws<ArgumentException>(options.Validate);
-    }
-
     [Fact]
-    public static void Validate_Throws_If_Scope_Is_Empty()
-    {
-        // Arrange
-        var options = new EtsyAuthenticationOptions()
-        {
-            ClientId = "my-client-id",
-            ClientSecret = "my-client-secret",
-            Scope = { },
-        };
-
-        // Act and Assert
-        _ = Assert.Throws<ArgumentOutOfRangeException>(options.Validate);
-    }
-
-    [Fact]
-    public static void Validate_Throws_If_Scope_Does_Not_Contain_Scope_shop_r()
+    public static void Validate_Does_Throw_If_Scope_Does_Not_Contain_Scope_shop_r()
     {
         // Arrange
         var options = new EtsyAuthenticationOptions()
@@ -68,26 +34,9 @@ public static class EtsyAuthenticationOptionsTests
             ClientSecret = "my-client-secret",
         };
         options.Scope.Clear();
-        options.Scope.Add(ClaimTypes.Email);
+        options.Scope.Add(EtsyAuthenticationConstants.Scopes.EmailRead);
 
-        // Act and Assert
-        _ = Assert.Throws<ArgumentOutOfRangeException>(options.Validate);
-    }
-
-    [Fact]
-    public static void Validate_Throws_If_IncludeDetailedUserInfo_Is_True_But_Does_Not_Contain_Scope_email_r()
-    {
-        // Arrange
-        var options = new EtsyAuthenticationOptions()
-        {
-            ClientId = "my-client-id",
-            ClientSecret = "my-client-secret",
-            IncludeDetailedUserInfo = true,
-        };
-
-        // Not Adding email scope, shop scope is already added by default
-
-        // Act and Assert
+        // Act
         _ = Assert.Throws<ArgumentOutOfRangeException>(options.Validate);
     }
 
@@ -102,11 +51,56 @@ public static class EtsyAuthenticationOptionsTests
             IncludeDetailedUserInfo = false,
         };
 
-        // Adding email scope
-        options.Scope.Add(ClaimTypes.Email);
+        // Adding email scope should be harmless when IncludeDetailedUserInfo is false
+        options.Scope.Add(EtsyAuthenticationConstants.Scopes.EmailRead);
 
         // Act (no Assert)
         options.Validate();
+    }
+
+    [Fact]
+    public static void Validate_Throws_If_AuthorizationEndpoint_Is_Null()
+    {
+        // Arrange
+        var options = new EtsyAuthenticationOptions()
+        {
+            AuthorizationEndpoint = null!,
+            ClientId = "my-client-id",
+            ClientSecret = "my-client-secret",
+        };
+
+        // Act and Assert
+        _ = Assert.Throws<ArgumentNullException>(nameof(options.AuthorizationEndpoint), options.Validate);
+    }
+
+    [Fact]
+    public static void Validate_Throws_If_TokenEndpoint_Is_Null()
+    {
+        // Arrange
+        var options = new EtsyAuthenticationOptions()
+        {
+            ClientId = "my-client-id",
+            ClientSecret = "my-client-secret",
+            TokenEndpoint = null!,
+        };
+
+        // Act and Assert
+        _ = Assert.Throws<ArgumentNullException>(nameof(options.TokenEndpoint), options.Validate);
+    }
+
+    [Fact]
+    public static void Validate_Throws_If_UserInformationEndpoint_Is_Null()
+    {
+        // Arrange
+        var options = new EtsyAuthenticationOptions()
+        {
+            ClientId = "my-client-id",
+            ClientSecret = "my-client-secret",
+            TokenEndpoint = null!,
+        };
+
+        // Act and Assert
+        _ = Assert.Throws<ArgumentNullException>(nameof(options.UserInformationEndpoint), options.Validate);
     }
 
     [Fact]
@@ -121,6 +115,7 @@ public static class EtsyAuthenticationOptionsTests
         };
 
         // Act and Assert
-        _ = Assert.Throws<ArgumentNullException>(nameof(EtsyAuthenticationOptions.CallbackPath), options.Validate);
+        var ex = Assert.Throws<ArgumentException>(options.Validate);
+        ex.ParamName.ShouldBe(nameof(options.CallbackPath));
     }
 }

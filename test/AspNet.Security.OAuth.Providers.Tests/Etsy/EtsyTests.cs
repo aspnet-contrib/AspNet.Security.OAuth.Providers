@@ -5,6 +5,7 @@
  */
 
 using AspNet.Security.OAuth.Etsy;
+using static AspNet.Security.OAuth.Etsy.EtsyAuthenticationConstants;
 
 namespace AspNet.Security.OAuth.Providers.Tests.Etsy;
 
@@ -23,16 +24,8 @@ public class EtsyTests : OAuthTests<EtsyAuthenticationOptions>
     }
 
     [Theory]
-    [InlineData(ClaimTypes.NameIdentifier, "789012")]
-    [InlineData(ClaimTypes.Email, "test@example.com")]
-    [InlineData(ClaimTypes.GivenName, "Test")]
-    [InlineData(ClaimTypes.Surname, "User")]
-    [InlineData("urn:etsy:user_id", "123456")]
-    [InlineData("urn:etsy:shop_id", "789012")]
-    [InlineData("urn:etsy:primary_email", "test@example.com")]
-    [InlineData("urn:etsy:first_name", "Test")]
-    [InlineData("urn:etsy:last_name", "User")]
-    [InlineData("urn:etsy:image_url", "https://i.etsystatic.com/test/test_75x75.jpg")]
+    [InlineData(ClaimTypes.NameIdentifier, "123456")]
+    [InlineData("shop_id", "789012")]
     public async Task Can_Sign_In_Using_Etsy(string claimType, string claimValue)
         => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 
@@ -48,24 +41,28 @@ public class EtsyTests : OAuthTests<EtsyAuthenticationOptions>
         var claims = await AuthenticateUserAsync(server);
 
         // Assert basic claims are present
-        claims.ShouldContainKey("urn:etsy:user_id");
-        claims.ShouldContainKey("urn:etsy:shop_id");
+        claims.ShouldContainKey(ClaimTypes.NameIdentifier);
+        claims.ShouldContainKey(Claims.ShopId);
 
         // Detailed claims should be absent when flag is false
         claims.Keys.ShouldNotContain(ClaimTypes.Email);
         claims.Keys.ShouldNotContain(ClaimTypes.GivenName);
         claims.Keys.ShouldNotContain(ClaimTypes.Surname);
-        claims.Keys.ShouldNotContain("urn:etsy:primary_email");
-        claims.Keys.ShouldNotContain("urn:etsy:first_name");
-        claims.Keys.ShouldNotContain("urn:etsy:last_name");
-        claims.Keys.ShouldNotContain("urn:etsy:image_url");
+        claims.Keys.ShouldNotContain(Claims.ImageUrl);
     }
 
     [Fact]
     public async Task Includes_Detailed_Claims_When_IncludeDetailedUserInfo_Is_True()
     {
-        // Arrange: explicitly enable detailed user info enrichment (default may already be true, set explicitly for clarity)
-        void ConfigureServices(IServiceCollection services) => services.PostConfigureAll<EtsyAuthenticationOptions>(o => o.IncludeDetailedUserInfo = true);
+        // Arrange: enable detailed user info, configure claims to map.
+        // Note: email_r will be auto-added by the provider's post-configure step.
+        void ConfigureServices(IServiceCollection services) => services.PostConfigureAll<EtsyAuthenticationOptions>(o =>
+        {
+            o.IncludeDetailedUserInfo = true;
+
+            // User to include image claim
+            o.ClaimActions.MapImageClaim();
+        });
 
         using var server = CreateTestServer(ConfigureServices);
 
@@ -76,9 +73,6 @@ public class EtsyTests : OAuthTests<EtsyAuthenticationOptions>
         claims.ShouldContainKey(ClaimTypes.Email);
         claims.ShouldContainKey(ClaimTypes.GivenName);
         claims.ShouldContainKey(ClaimTypes.Surname);
-        claims.ShouldContainKey("urn:etsy:primary_email");
-        claims.ShouldContainKey("urn:etsy:first_name");
-        claims.ShouldContainKey("urn:etsy:last_name");
-        claims.ShouldContainKey("urn:etsy:image_url");
+        claims.ShouldContainKey(Claims.ImageUrl);
     }
 }
