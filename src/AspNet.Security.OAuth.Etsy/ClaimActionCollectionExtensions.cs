@@ -9,8 +9,14 @@ using Microsoft.AspNetCore.Authentication.OAuth.Claims;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
+/// <summary>
+/// Provides extension methods for <see cref="ClaimActionCollection"/> to map Etsy API specific user claims.
+/// </summary>
 public static class ClaimActionCollectionExtensions
 {
+    /// <summary>
+    /// Maps the Etsy user's profile image URL (75x75) to the <see cref="EtsyAuthenticationConstants.Claims.ImageUrl"/> claim.
+    /// </summary>
     public static void MapImageClaim(this ClaimActionCollection collection)
     {
         collection.MapJsonKey(EtsyAuthenticationConstants.Claims.ImageUrl, "image_url_75x75");

@@ -2,6 +2,27 @@
 
 Etsy's OAuth implementation uses Authorization Code with PKCE and issues refresh tokens. This provider enables PKCE by default and validates scopes to match Etsy's requirements.
 
+- [Integrating the Etsy Provider](#integrating-the-etsy-provider)
+  - [Quick Links](#quick-links)
+  - [Quick start](#quick-start)
+    - [Minimal configuration](#minimal-configuration)
+  - [Required Additional Settings](#required-additional-settings)
+  - [Optional Settings](#optional-settings)
+    - [Scope constants](#scope-constants)
+  - [Refreshing tokens](#refreshing-tokens)
+  - [Claims](#claims)
+    - [Basic User Information claims](#basic-user-information-claims)
+    - [Detailed User Information claims](#detailed-user-information-claims)
+      - [Automapped claims](#automapped-claims)
+      - [Manually Added Claims](#manually-added-claims)
+  - [Advanced Configuration](#advanced-configuration)
+  - [Accessing claims (Minimal API Sample)](#accessing-claims-minimal-api-sample)
+    - [Minimalistic directly in Program.cs](#minimalistic-directly-in-programcs)
+    - [Extended in a Feature-style Minimal API with endpoints using MapGroup](#extended-in-a-feature-style-minimal-api-with-endpoints-using-mapgroup)
+      - [Define record types for Typed Results](#define-record-types-for-typed-results)
+      - [Extension class anywhere in your project](#extension-class-anywhere-in-your-project)
+      - [Register the endpoints in Program.cs](#register-the-endpoints-in-programcs)
+
 ## Quick Links
 
 - Register your App at [Apps You've Made](https://www.etsy.com/developers/your-apps) on Etsy.
@@ -11,59 +32,103 @@ Etsy's OAuth implementation uses Authorization Code with PKCE and issues refresh
 
 ## Quick start
 
-Add the Etsy provider in your authentication configuration and request any additional scopes you need ("shops_r" is added by default):
+```csharp
+using AspNet.Security.OAuth.Etsy;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Services
+  .AddAuthentication(options =>
+  {
+    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = EtsyAuthenticationDefaults.AuthenticationScheme;
+  })
+  .AddCookie()
+  .AddEtsy(options =>
+  {
+    options.ClientId = builder.Configuration["Etsy:ClientId"]!;
+  });
+
+var app = builder.Build();
+
+app.UseAuthentication();
+app.UseAuthorization();
+
+// Route to start the Etsy OAuth flow (challenge)
+app.MapGet("/signin/etsy", (HttpContext ctx, string? returnUrl) =>
+  Results.Challenge(new AuthenticationProperties
+  {
+    RedirectUri = returnUrl ?? "/"
+  }, new[] { EtsyAuthenticationDefaults.AuthenticationScheme }));
+
+// NOTE: The callback path '/signin-etsy' is handled automatically by the middleware.
+// Do NOT map a route for it unless you change CallbackPath in options.
+
+app.Run();
+```
+
+### Minimal configuration
+
+**In your appsettings.json or appsettings.Development.json file:**
+
+```json
+{
+  "Etsy": {
+    "ClientId": "your-etsy-api-key"
+  }
+}
+```
+
+**In your `Program.cs` or `Startup.cs` file:**
 
 ```csharp
-services.AddAuthentication(options => /* Auth configuration */)
-    .AddEtsy(options =>
-    {
-      options.ClientId = builder.Configuration["Etsy:ClientId"]!;
-
-      // Optional: request additional scopes
-      options.Scope.Add(AspNet.Security.OAuth.Etsy.EtsyAuthenticationConstants.Scopes.ListingsRead);
-
-      // Optional: fetch extended profile (requires email_r)
-      // options.IncludeDetailedUserInfo = true;
-      // options.Scope.Add(AspNet.Security.OAuth.Etsy.EtsyAuthenticationConstants.Scopes.EmailRead);
-    });
+builder.Services.Configure<EtsyAuthenticationOptions>(
+    builder.Configuration.GetSection("Etsy"));
 ```
 
 ## Required Additional Settings
 
-_None._
+- `ClientId` is required.
+
+  You can obtain it by registering your application on [Etsy's developer portal](https://www.etsy.com/developers/your-apps).
+
+  It will be stated as `keystring` in your app settings:
+
+  ![Etsy-find-your-client_id](./assets/Etsy-find-your-client_id.png)
 
 > [!NOTE]
 >
-> - ClientSecret is optional for apps registered with Personal Access (public client); Etsy's flow uses Authorization Code with PKCE.
-> - PKCE is required and is enabled by default.
-> - The default callback path is `/signin-etsy`.
-> - Etsy requires at least one scope; `shops_r` must always be included and is added by default.
-> - To call the [`getUser` endpoint](https://developers.etsy.com/documentation/reference/#operation/getUser) or when `IncludeDetailedUserInfo` is enabled, add `email_r`.
+> - ClientSecret is optional for public clients using PKCE.
+> - When `IncludeDetailedUserInfo` is enabled, `email_r` scope and standard claims are auto-mapped.
+> - The `EtsyAuthenticationConstants.Claims.ImageUrl` claim must be [added if needed](#manually-added-claims).
 
 ## Optional Settings
 
 | Property Name | Property Type | Description | Default Value |
-|:--|:--|:--|:--|
-| `Scope` | `ICollection<string>` | Scopes to request. At least one scope is required and `shops_r` must be included (it is added by default). Add `email_r` if you enable `IncludeDetailedUserInfo`. | `["shops_r"]` |
-| `IncludeDetailedUserInfo` | `bool` | Makes a second API call to fetch extended profile data (requires `email_r`). | `false` |
-| `AccessType` | `EtsyAuthenticationAccessType` | Apps registered as `Personal Access` don't require the client secret in [Authorization Code Flow](https://datatracker.ietf.org/doc/html/rfc6749#section-4.1). | `Personal` |
-| `SaveTokens` | `bool` | Persists access/refresh tokens (required by Etsy and validated). | `true` |
+|:--:|:--:|:--:|:--:|
+| `Scope` | `ICollection<string>` | Scopes to request. Use `EtsyAuthenticationConstants.Scopes.*` constants. | `["shops_r"]` |
+| `IncludeDetailedUserInfo` | `bool` | Fetch extended profile data with auto-mapped claims (Email, GivenName, Surname). | `false` |
+| `UsePkce` | `bool` | Enable PKCE (required by Etsy). | `true` |
+| `SaveTokens` | `bool` | Persist access and refresh tokens. | `true` |
+| `CallbackPath` | `PathString` | The request path within your application where the user-agent will be returned after Etsy has authenticated the user. | `/signin-etsy` |
+| `DetailedUserInfoEndpoint` | `string` | The endpoint to retrieve detailed user information. | `https://openapi.etsy.com/v3/application/users/{0}` |
+
+> [!NOTE]
+> The `DetailedUserInfoEndpoint` uses `{0}` as a placeholder for the `user_id`. It's replaced automatically when fetching detailed user info.
 
 ### Scope constants
 
 Use `EtsyAuthenticationConstants.Scopes.*` instead of string literals. Common values:
 
-- `EmailRead` → `email_r`
-- `ListingsRead` → `listings_r`
-- `ListingsWrite` → `listings_w`
-- `ShopsRead` → `shops_r`
-- `TransactionsRead` → `transactions_r`
-
-## Validation behavior
-
-- PKCE and token saving are required and enforced by the options validator.
-- Validation fails if no scopes are requested or if `shops_r` is missing.
-- If `IncludeDetailedUserInfo` is true, `email_r` must be present.
+| Constant | Scope Value |
+|:--|:--|
+| `EmailRead` | `email_r` |
+| `ListingsRead` | `listings_r` |
+| `ListingsWrite` | `listings_w` |
+| `ShopsRead` | `shops_r` |
+| `TransactionsRead` | `transactions_r` |
 
 ## Refreshing tokens
 
@@ -77,124 +142,155 @@ See [Requesting a Refresh OAuth Token](#quick-links) in the Quick Links above fo
 
 ## Claims
 
-Basic claims are populated from `/v3/application/users/me`. When `IncludeDetailedUserInfo` is enabled and `email_r` is granted, additional claims are populated from `/v3/application/users/{user_id}`.
+### Basic User Information claims
+
+**Endpoint:** [`/v3/application/users/me` `getMe`](https://developers.etsy.com/documentation/reference#operation/getMe)
 
 | Claim Type | Value Source | Description |
-|:--|:--|:--|
+|:--|:--:|:--:|
 | `http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier` | `user_id` | Primary user identifier |
-| `urn:etsy:user_id` | `user_id` | Etsy-specific user ID claim (in addition to NameIdentifier) |
 | `urn:etsy:shop_id` | `shop_id` | User's shop ID |
-| `http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress` | `primary_email` | Primary email address |
-| `http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname` | `first_name` | First name |
-| `http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname` | `last_name` | Last name |
-| `urn:etsy:primary_email` | `primary_email` | Etsy-specific email claim |
-| `urn:etsy:first_name` | `first_name` | Etsy-specific first name claim |
-| `urn:etsy:last_name` | `last_name` | Etsy-specific last name claim |
-| `urn:etsy:image_url` | `image_url_75x75` | 75x75 profile image URL |
 
-## Configuration
+### Detailed User Information claims
 
-### Minimal configuration
+Endpoint: [`/v3/application/users/{user_id}` `getUser`](https://developers.etsy.com/documentation/reference#operation/getUser)
 
-#### [Program.cs](#tab/minimal-configuration-program)
+#### Automapped claims
+
+_Requires `EtsyAuthenticationOptions.IncludeDetailedUserInfo = true`_
+
+| Claim Type | JSON Key | Auto-mapped |
+|:--|:--:|:--:|
+| `http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress` | `primary_email` | ✓ |
+| `http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname` | `first_name` | ✓ |
+| `http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname` | `last_name` | ✓ |
+| `urn:etsy:image_url` | `image_url_75x75` | [Manual](#manually-added-claims) |
+
+> [!WARNING]
+> As those claims are set in Provider side `PostConfigureOptions`, you have to include them yourself if you bind from `PostConfigure<EtsyAuthenticationOptions>` also.
+
+#### Manually Added Claims
+
+The `image_url_75x75` claim is not auto-mapped to reduce data bloat. You can add it manually via either:
+
+**Direct JSON key mapping:**
+
+This sample does also work for regular JSON key mapping:
 
 ```csharp
-using AspNet.Security.OAuth.Etsy;
-using Microsoft.AspNetCore.Authentication.Cookies;
-
-var builder = WebApplication.CreateBuilder(args);
-
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = EtsyAuthenticationDefaults.AuthenticationScheme;
-})
-.AddCookie()
-.AddEtsy(options =>
-{
-    options.ClientId = builder.Configuration["Etsy:ClientId"]!;
-
-  // Enable extended profile (requires email_r)
-  // options.IncludeDetailedUserInfo = true;
-  // options.Scope.Add(EtsyAuthenticationConstants.Scopes.EmailRead);
-
-  // Add other optional scopes (shops_r is added by default)
-});
-
-var app = builder.Build();
-
-app.UseAuthentication();
-app.UseAuthorization();
-
-app.Run();
+options.ClaimActions.MapJsonKey(EtsyAuthenticationConstants.Claims.ImageUrl, "image_url_75x75");
 ```
 
-#### [appsettings.json or appsettings.Development.json](#tab/minimal-configuration-appsettings)
+**Claim Image using predefined extension method:**
 
-```json
-{
-  "Etsy": {
-    "ClientId": "your-etsy-api-key"
-  }
-}
+```csharp
+options.ClaimActions.MapImageClaim();
 ```
 
-***
+## Advanced Configuration
 
-### Advanced using App Settings
+The Etsy authentication handler can be configured in code or via configuration files.
 
-You can keep using code-based configuration, or bind from configuration values. Here is a comprehensive `appsettings.json` example covering supported options and common scopes:
+> [!NOTE]
+> Always make sure to use proper [Secret Management for production applications](https://learn.microsoft.com/aspnet/core/security/app-secrets).
+
+You can keep using code-based configuration, or bind from configuration values.
+
+> [!WARNING]
+> Avoid setting `UsePkce` from configuration, as Etsy requires PKCE for all OAuth flows.
+
+Here is a comprehensive `appsettings.json` example covering supported options and common scopes:
 
 ```json
 {
   "Etsy": {
     "ClientId": "your-etsy-api-key",
-    "AccessType": "Personal",
     "IncludeDetailedUserInfo": true,
+    "DetailedUserInfoEndpoint": "https://openapi.etsy.com/v3/application/users/{0}",
+    "AuthorizationEndpoint": "https://www.etsy.com/oauth/connect",
+    "TokenEndpoint": "https://openapi.etsy.com/v3/public/oauth/token",
+    "UserInformationEndpoint": "https://openapi.etsy.com/v3/application/users/me",
+    "CallbackPath": "/signin/etsy",
     "SaveTokens": true,
     "Scopes": [ "shops_r", "email_r" ]
-  },
-  "Logging": {
-    "LogLevel": { "Default": "Information" }
   }
 }
 ```
 
-If you bind from configuration, set the options in code, for example:
+> [!NOTE]
+> We recommend saving tokens (`SaveTokens = true`) to facilitate token refresh, so the user does not need to re-authenticate frequently.
+> [!NOTE]
+> If `IncludeDetailedUserInfo` is set to `true` and the scopes `shops_r` and `email_r` scopes are sufficient, you don't need to set additional scopes in `appsettings.json`, they are added automatically.
+> [!TIP]
+> We recommend using the `EtsyAuthenticationDefaults` class in your `.AddEtsy` call which contains the default endpoint URLs.
+
+If you bind then from configuration, set the options in code, for example:
 
 ```csharp
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    // If you only have Etsy as external provider you can apply it as default challenge scheme
+    options.DefaultChallengeScheme = EtsyAuthenticationDefaults.AuthenticationScheme;
+})
+.AddCookie(options =>
+{
+    options.LoginPath = "/signin";
+    options.LogoutPath = "/signout";
+})
 .AddEtsy(options =>
 {
-    var section = builder.Configuration.GetSection("Etsy");
-    options.ClientId = section["ClientId"]!;
-    options.AccessType = Enum.Parse<EtsyAuthenticationAccessType>(section["AccessType"] ?? "Personal", true);
-    options.IncludeDetailedUserInfo = bool.TryParse(section["IncludeDetailedUserInfo"], out var detailed) && detailed;
-    options.SaveTokens = !bool.TryParse(section["SaveTokens"], out var save) || save; // defaults to true
-
-    // Apply scopes from config if present
-    var scopes = section.GetSection("Scopes").Get<string[]?>();
-    if (scopes is { Length: > 0 })
+    var section = builder.Configuration.GetSection("Etsy").Get<EtsyAuthenticationOptions>()!;
+    if (section is not EtsyAuthenticationOptions
+      // Check if the values from appsettings.json has been properly overridden
+     || section.ClientId is "client-id-from-user-secrets")
     {
-        foreach (var scope in scopes)
-        {
-            options.Scope.Add(scope);
-        }
+        throw new InvalidOperationException("Etsy configuration section is missing or invalid.");
     }
+
+    options.ClientId = section.ClientId;
+    // Optional: The Etsy App registration provides the `Shared Secret` but it's not documented to be used/required for PKCE flows.
+    options.ClientSecret = section.ClientSecret;
+    // Optional: Include detailed user info and auto-mapped claims to get e.g. email, first and last name
+    options.IncludeDetailedUserInfo = section.IncludeDetailedUserInfo;
+
+    // Optional: Override the defaults from EtsyAuthenticationDefaults with your own values (not recommended! Will potentially break the handler)
+    // Here we just re-assign the defaults for demonstration
+    options.AuthorizationEndpoint = EtsyAuthenticationDefaults.AuthorizationEndpoint;
+    options.TokenEndpoint = EtsyAuthenticationDefaults.TokenEndpoint;
+    options.UserInformationEndpoint = EtsyAuthenticationDefaults.UserInformationEndpoint;
+
+    // Optional: Override SaveTokens setting from configuration (not recommended to disable! as Etsy API uses refresh tokens)
+    options.SaveTokens = section.SaveTokens;
+
+    // Optional: Add scopes from configuration
+    foreach (var scope in section.Scopes)
+    {
+        options.Scope.Add(scope);
+    }
+
+    // Optional: Or add scopes manually with provided constants
+    options.Scope.Add(EtsyAuthenticationConstants.Scopes.TransactionsRead);
+
+    // Optional: Map the image claim
+    options.ClaimActions.MapImageClaim();
+
+    // Map other Claims
+    options.ClaimActions.MapJsonKey("urn:etsy:listingsWrite", EtsyAuthenticationConstants.Claims.ListingsWrite);
 })
 ```
 
-> [!NOTE]
-> Make sure to use proper [Secret Management for production applications](https://learn.microsoft.com/aspnet/core/security/app-secrets).
+## Accessing claims (Minimal API Sample)
 
-## Accessing claims
+If you want to access the claims provided by the Etsy provider, you can set up some Minimal API endpoints like this:
 
-**Using Minimal API:**
+### Minimalistic directly in Program.cs
 
 ```csharp
 using AspNet.Security.OAuth.Etsy;
 using System.Security.Claims;
 
-app.MapGet("/profile", (ClaimsPrincipal user) =>
+app.MapGet("/etsy/profile", (ClaimsPrincipal user) =>
 {
   var userId = user.FindFirstValue(ClaimTypes.NameIdentifier);
   var shopId = user.FindFirstValue(EtsyAuthenticationConstants.Claims.ShopId);
@@ -204,10 +300,45 @@ app.MapGet("/profile", (ClaimsPrincipal user) =>
   var imageUrl = user.FindFirstValue(EtsyAuthenticationConstants.Claims.ImageUrl);
 
   return Results.Ok(new { userId, shopId, email, firstName, lastName, imageUrl });
-}).RequireAuthorization();
+})
+.RequireAuthorization()
+.WithName("EtsyProfile")
+.WithSummary("Get authenticated user's Etsy profile information");
 ```
 
-## Feature-style typed Minimal API endpoints with MapGroup
+### Extended in a Feature-style Minimal API with endpoints using MapGroup
+
+This sample assumes you not only have Etsy as external provider and use cookie authentication for session management.
+
+#### Define record types for Typed Results
+
+Before we can start, we need some record types to hold the user profile and token information.
+
+The following ones are created from the json-objects returned by Etsy's API.
+
+```csharp
+public sealed record UserInfo
+{
+  public required string UserId { get; init; }
+  public required string ShopId { get; init; }
+  public string? Email { get; init; }
+  public string? FirstName { get; init; }
+  public string? LastName { get; init; }
+  public string? ImageUrl { get; init; }
+}
+
+public sealed record TokenInfo
+{
+  public string? AccessToken { get; init; }
+  public string? RefreshToken { get; init; }
+  public string? ExpiresAt { get; init; }
+}
+```
+
+> [!NOTE]
+> Make sure to add proper JSON serialization attributes if you use System.Text.Json or Newtonsoft.Json to serialize those records to JSON in the HTTP responses.
+
+#### Extension class anywhere in your project
 
 ```csharp
 using AspNet.Security.OAuth.Etsy;
@@ -252,12 +383,11 @@ public static class EtsyAuthEndpoints
 
   private static Results<ChallengeHttpResult, RedirectHttpResult> SignInAsync(string? returnUrl)
     => TypedResults.Challenge(
-      new AuthenticationProperties { RedirectUri = returnUrl ?? "/" },
-      new[] { EtsyAuthenticationDefaults.AuthenticationScheme });
+      new AuthenticationProperties { RedirectUri = returnUrl ?? "/" }, EtsyAuthenticationDefaults.AuthenticationScheme);
 
   private static async Task<RedirectHttpResult> SignOutAsync(HttpContext context)
   {
-    await context.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+    await context.SignOutAsync(new AuthenticationProperties { RedirectUri = "/" }, CookieAuthenticationDefaults.AuthenticationScheme);
     return TypedResults.Redirect("/");
   }
 
@@ -287,22 +417,14 @@ public static class EtsyAuthEndpoints
 
     return TypedResults.Ok(tokenInfo);
   }
-
-  public sealed record UserInfo
-  {
-    public required string UserId { get; init; }
-    public required string ShopId { get; init; }
-    public string? Email { get; init; }
-    public string? FirstName { get; init; }
-    public string? LastName { get; init; }
-    public string? ImageUrl { get; init; }
-  }
-
-  public sealed record TokenInfo
-  {
-    public string? AccessToken { get; init; }
-    public string? RefreshToken { get; init; }
-    public string? ExpiresAt { get; init; }
-  }
 }
+```
+
+#### Register the endpoints in Program.cs
+
+Now that we have defined the extension method to map the Etsy authentication endpoints, we need to register them in our `Program.cs` file.
+
+```csharp
+using MyApi.Features.Authorization;
+app.MapEtsyAuth();
 ```

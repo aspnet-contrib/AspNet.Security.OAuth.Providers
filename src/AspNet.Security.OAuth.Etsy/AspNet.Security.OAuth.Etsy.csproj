@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <PackageValidationBaselineVersion>9.5.0</PackageValidationBaselineVersion>
+    <PackageValidationBaselineVersion>10.1.0</PackageValidationBaselineVersion>
     <TargetFrameworks>$(DefaultNetCoreTargetFramework)</TargetFrameworks>
     <!-- TODO Remove once published to NuGet.org -->
     <DisablePackageBaselineValidation>true</DisablePackageBaselineValidation>
@@ -9,7 +9,7 @@
 
   <PropertyGroup>
     <Description>ASP.NET Core security middleware enabling Etsy authentication.</Description>
-    <Authors>Sonja</Authors>
+    <Authors>Sonja Schweitzer</Authors>
     <PackageTags>aspnetcore;authentication;etsy;oauth;security</PackageTags>
   </PropertyGroup>
 
