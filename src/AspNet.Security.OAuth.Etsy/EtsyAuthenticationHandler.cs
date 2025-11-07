@@ -25,6 +25,14 @@ public partial class EtsyAuthenticationHandler : OAuthHandler<EtsyAuthentication
     {
     }
 
+    /// <summary>
+    /// Creates an <see cref="AuthenticationTicket"/> from the OAuth tokens and Etsy user information.
+    /// </summary>
+    /// <param name="identity">The claims identity to populate.</param>
+    /// <param name="properties">The authentication properties.</param>
+    /// <param name="tokens">The OAuth token response containing the access token.</param>
+    /// <returns>An <see cref="AuthenticationTicket"/> containing the user claims and properties.</returns>
+    /// <exception cref="HttpRequestException">Thrown when an error occurs while retrieving user information from Etsy.</exception>
     protected override async Task<AuthenticationTicket> CreateTicketAsync(
         [NotNull] ClaimsIdentity identity,
         [NotNull] AuthenticationProperties properties,
@@ -49,7 +57,6 @@ public partial class EtsyAuthenticationHandler : OAuthHandler<EtsyAuthentication
         // Extract user_id and shop_id from the /me response
         // Both fields should always be present in a successful Etsy OAuth response
         var userId = meRoot.GetProperty("user_id").GetInt64();
-        var shopId = meRoot.GetProperty("shop_id").GetInt64();
 
         var principal = new ClaimsPrincipal(identity);
         var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, meRoot);
@@ -69,13 +76,11 @@ public partial class EtsyAuthenticationHandler : OAuthHandler<EtsyAuthentication
             foreach (var action in Options.ClaimActions)
             {
                 // Skip the action if it's a JsonKeyClaimAction for user_id or shop_id
-                if (action is Microsoft.AspNetCore.Authentication.OAuth.Claims.JsonKeyClaimAction jsonAction)
+                if (action is Microsoft.AspNetCore.Authentication.OAuth.Claims.JsonKeyClaimAction { ClaimType: var t } &&
+                                    (t == ClaimTypes.NameIdentifier
+                                  || t == EtsyAuthenticationConstants.Claims.ShopId))
                 {
-                    if (jsonAction.ClaimType == ClaimTypes.NameIdentifier ||
-                        jsonAction.ClaimType == EtsyAuthenticationConstants.Claims.ShopId)
-                    {
-                        continue;
-                    }
+                    continue;
                 }
 
                 action.Run(detailedRoot, identity, Options.ClaimsIssuer ?? ClaimsIssuer);
@@ -91,7 +96,7 @@ public partial class EtsyAuthenticationHandler : OAuthHandler<EtsyAuthentication
     /// </summary>
     /// <param name="tokens">The OAuth token response.</param>
     /// <param name="userId">The user ID to retrieve details for.</param>
-    /// <returns>A JSON document containing the detailed user information.</returns>
+    /// <returns>A <see cref="JsonDocument"/> containing the detailed user information.</returns>
     protected virtual async Task<JsonDocument> GetDetailedUserInfoAsync([NotNull] OAuthTokenResponse tokens, long userId)
     {
         var userDetailsUrl = string.Format(null, EtsyAuthenticationDefaults.DetailedUserInfoEndpoint, userId);
