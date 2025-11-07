@@ -24,7 +24,7 @@
     },
     {
       "comment": "Etsy /v3/application/users/{user_id} endpoint - returns detailed user information",
-      "uri": "https://openapi.etsy.com/v3/application/users/123456",
+      "uri": "https://openapi.etsy.com/v3/application/users/{0}",
       "contentFormat": "json",
       "contentJson": {
         "user_id": 123456,

@@ -40,6 +40,14 @@ public class EtsyAuthenticationOptions : OAuthOptions
     /// </summary>
     public bool IncludeDetailedUserInfo { get; set; }
 
+    /// <summary>
+    /// Gets or sets the endpoint used to retrieve detailed user information.
+    /// </summary>
+    /// <remarks>
+    /// The placeholder for <c>client_id</c> needs to be <c>"{0}"</c> and will be replaced with the authenticated user's ID.
+    /// </remarks>
+    public string? DetailedUserInfoEndpoint { get; set; }
+
     /// <inheritdoc />
     public override void Validate()
     {
