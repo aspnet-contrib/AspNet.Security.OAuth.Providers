@@ -47,7 +47,7 @@ public partial class EtsyAuthenticationHandler : OAuthHandler<EtsyAuthentication
         using var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
         if (!response.IsSuccessStatusCode)
         {
-            await Log.UserProfileErrorAsync(Logger, response, Context.RequestAborted);
+            await Log.BasicUserInfoErrorAsync(Logger, response, Context.RequestAborted);
             throw new HttpRequestException("An error occurred while retrieving basic user information from Etsy.");
         }
 
@@ -117,7 +117,7 @@ public partial class EtsyAuthenticationHandler : OAuthHandler<EtsyAuthentication
         using var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
         if (!response.IsSuccessStatusCode)
         {
-            await Log.UserProfileErrorAsync(Logger, response, Context.RequestAborted);
+            await Log.DetailedUserInfoErrorAsync(Logger, response, Context.RequestAborted);
             throw new HttpRequestException("An error occurred while retrieving detailed user info from Etsy.");
         }
 
@@ -126,18 +126,38 @@ public partial class EtsyAuthenticationHandler : OAuthHandler<EtsyAuthentication
 
     private static partial class Log
     {
-        internal static async Task UserProfileErrorAsync(ILogger logger, HttpResponseMessage response, CancellationToken cancellationToken)
+        internal static async Task BasicUserInfoErrorAsync(ILogger logger, HttpResponseMessage response, CancellationToken cancellationToken)
         {
-            UserProfileError(
+            BasicUserInfoError(
                 logger,
+                response.RequestMessage?.RequestUri?.ToString() ?? string.Empty,
                 response.StatusCode,
                 response.Headers.ToString(),
                 await response.Content.ReadAsStringAsync(cancellationToken));
         }
 
-        [LoggerMessage(1, LogLevel.Error, "An error occurred while retrieving the user profile from Etsy: the remote server returned a {Status} response with the following payload: {Headers} {Body}.")]
-        private static partial void UserProfileError(
+        internal static async Task DetailedUserInfoErrorAsync(ILogger logger, HttpResponseMessage response, CancellationToken cancellationToken)
+        {
+            DetailedUserInfoError(
+                logger,
+                response.RequestMessage?.RequestUri?.ToString() ?? string.Empty,
+                response.StatusCode,
+                response.Headers.ToString(),
+                await response.Content.ReadAsStringAsync(cancellationToken));
+        }
+
+        [LoggerMessage(1, LogLevel.Error, "Etsy basic user info request failed for '{RequestUri}': remote server returned a {Status} response with: {Headers} {Body}.")]
+        private static partial void BasicUserInfoError(
             ILogger logger,
+            string requestUri,
+            System.Net.HttpStatusCode status,
+            string headers,
+            string body);
+
+        [LoggerMessage(2, LogLevel.Error, "Etsy detailed user info request failed for '{RequestUri}': remote server returned a {Status} response with: {Headers} {Body}.")]
+        private static partial void DetailedUserInfoError(
+            ILogger logger,
+            string requestUri,
             System.Net.HttpStatusCode status,
             string headers,
             string body);
