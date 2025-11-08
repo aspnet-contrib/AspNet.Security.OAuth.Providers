@@ -60,7 +60,17 @@ public class EtsyTests : OAuthTests<EtsyAuthenticationOptions>
         {
             o.IncludeDetailedUserInfo = true;
 
-            // User to include image claim
+            // Ensure the required scope is present before Validate() executes.
+            // BUG: This should not be necessary as the post-configure should add it. Assuming test Arrange should simulate eventual user setup.
+            if (!o.Scope.Contains(Scopes.EmailRead))
+            {
+                o.Scope.Add(Scopes.EmailRead);
+                o.ClaimActions.MapJsonKey(ClaimTypes.Email, "primary_email");
+                o.ClaimActions.MapJsonKey(ClaimTypes.GivenName, "first_name");
+                o.ClaimActions.MapJsonKey(ClaimTypes.Surname, "last_name");
+            }
+
+            // Opt-in to include image claim (not auto-mapped by provider to reduce payload size)
             o.ClaimActions.MapImageClaim();
         });
 
