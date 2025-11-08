@@ -25,7 +25,7 @@ public class EtsyTests : OAuthTests<EtsyAuthenticationOptions>
 
     [Theory]
     [InlineData(ClaimTypes.NameIdentifier, "123456")]
-    [InlineData("shop_id", "789012")]
+    [InlineData("urn:etsy:shop_id", "789012")]
     public async Task Can_Sign_In_Using_Etsy(string claimType, string claimValue)
         => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 
