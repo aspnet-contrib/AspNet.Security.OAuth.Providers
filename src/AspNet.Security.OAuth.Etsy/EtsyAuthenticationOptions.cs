@@ -44,7 +44,7 @@ public class EtsyAuthenticationOptions : OAuthOptions
     /// Gets or sets the endpoint used to retrieve detailed user information.
     /// </summary>
     /// <remarks>
-    /// The placeholder for <c>client_id</c> needs to be <c>"{0}"</c> and will be replaced with the authenticated user's ID.
+    /// The placeholder for <c>user_id</c> needs to be <c>"{0}"</c> and will be replaced with the authenticated user's ID.
     /// </remarks>
     public string? DetailedUserInfoEndpoint { get; set; }
 
@@ -55,9 +55,10 @@ public class EtsyAuthenticationOptions : OAuthOptions
         {
             // HACK We want all of the base validation except for ClientSecret,
             // so rather than re-implement it all, catch the exception thrown
-            // for that being null and only throw if we aren't using public access type.
+            // for that being null and only throw if we aren't using public client access type + PKCE.
+            // Etsy's OAuth implementation does not require a client secret referring to the Documentation using PKCE (Proof Key for Code Exchange).
             // This does mean that three checks have to be re-implemented
-            // because the won't be validated if the ClientSecret validation fails.
+            // because they won't be validated if the ClientSecret validation fails.
             base.Validate();
         }
         catch (ArgumentException ex) when (ex.ParamName == nameof(ClientSecret))
@@ -89,7 +90,8 @@ public class EtsyAuthenticationOptions : OAuthOptions
 
         if (IncludeDetailedUserInfo && !Scope.Contains(Scopes.EmailRead))
         {
-            // EmailRead scope is required to access detailed user info. As the post configure action should have added it, we need to ensure it's present.
+            // EmailRead scope is required to access detailed user info when IncludeDetailedUserInfo is enabled.
+            // The post configure action should have added it at this stage, so we need to ensure it's present.
             throw new ArgumentOutOfRangeException(nameof(Scope), string.Join(',', Scope), $"The '{Scopes.EmailRead}' scope must be specified when '{nameof(IncludeDetailedUserInfo)}' is enabled.");
         }
 
