@@ -11,6 +11,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
@@ -44,6 +45,21 @@ public partial class AlipayAuthenticationHandler : OAuthHandler<AlipayAuthentica
         return base.HandleRemoteAuthenticateAsync();
     }
 
+    private const string SignType = "RSA2";
+
+    private async Task AddCertSignatureParametersAsync(SortedDictionary<string, string?> parameters)
+    {
+        ArgumentNullException.ThrowIfNull(Options.PrivateKey);
+        ArgumentNullException.ThrowIfNull(Options.AppCertSNKeyId);
+        ArgumentNullException.ThrowIfNull(Options.RootCertSNKeyId);
+
+        var app_cert_sn = await Options.PrivateKey(Options.AppCertSNKeyId, Context.RequestAborted);
+        var alipay_root_cert_sn = await Options.PrivateKey(Options.RootCertSNKeyId, Context.RequestAborted);
+
+        parameters["app_cert_sn"] = AntCertificationUtil.GetCertSN(app_cert_sn.Span);
+        parameters["alipay_root_cert_sn"] = AntCertificationUtil.GetRootCertSN(alipay_root_cert_sn.Span, SignType);
+    }
+
     protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] OAuthCodeExchangeContext context)
     {
         // See https://opendocs.alipay.com/apis/api_9/alipay.system.oauth.token for details.
@@ -55,10 +71,16 @@ public partial class AlipayAuthenticationHandler : OAuthHandler<AlipayAuthentica
             ["format"] = "JSON",
             ["grant_type"] = "authorization_code",
             ["method"] = "alipay.system.oauth.token",
-            ["sign_type"] = "RSA2",
+            ["sign_type"] = SignType,
             ["timestamp"] = TimeProvider.GetUtcNow().ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture),
             ["version"] = "1.0",
         };
+
+        if (Options.EnableCertSignature)
+        {
+            await AddCertSignatureParametersAsync(tokenRequestParameters);
+        }
+
         tokenRequestParameters.Add("sign", GetRSA2Signature(tokenRequestParameters));
 
         // PKCE https://tools.ietf.org/html/rfc7636#section-4.5, see BuildChallengeUrl
@@ -103,10 +125,16 @@ public partial class AlipayAuthenticationHandler : OAuthHandler<AlipayAuthentica
             ["charset"] = "utf-8",
             ["format"] = "JSON",
             ["method"] = "alipay.user.info.share",
-            ["sign_type"] = "RSA2",
+            ["sign_type"] = SignType,
             ["timestamp"] = TimeProvider.GetUtcNow().ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture),
             ["version"] = "1.0",
         };
+
+        if (Options.EnableCertSignature)
+        {
+            await AddCertSignatureParametersAsync(parameters);
+        }
+
         parameters.Add("sign", GetRSA2Signature(parameters));
 
         var address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, parameters);

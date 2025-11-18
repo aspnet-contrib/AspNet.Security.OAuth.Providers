@@ -29,5 +29,52 @@ public class AlipayAuthenticationOptions : OAuthOptions
         ClaimActions.MapJsonKey(Claims.Gender, "gender");
         ClaimActions.MapJsonKey(Claims.Nickname, "nick_name");
         ClaimActions.MapJsonKey(Claims.Province, "province");
+        ClaimActions.MapJsonKey(Claims.OpenId, "open_id");
+        ClaimActions.MapJsonKey(Claims.UserId, "user_id");
+    }
+
+    /// <summary>
+    /// Get or set a value indicating whether to use certificate mode for signature implementation.
+    /// <para>https://opendocs.alipay.com/common/057k53?pathHash=e18d6f77#%E8%AF%81%E4%B9%A6%E6%A8%A1%E5%BC%8F</para>
+    /// </summary>
+    public bool EnableCertSignature { get; set; }
+
+    /// <summary>
+    /// Gets or sets the optional ID for your Sign in with app_cert_sn.
+    /// </summary>
+    public string? AppCertSNKeyId { get; set; }
+
+    /// <summary>
+    /// Gets or sets the optional ID for your Sign in with alipay_root_cert_sn.
+    /// </summary>
+    public string? RootCertSNKeyId { get; set; }
+
+    /// <summary>
+    /// Gets or sets an optional delegate to get the client's private key which is passed
+    /// the value of the <see cref="AppCertSNKeyId"/> or <see cref="RootCertSNKeyId"/> property and the <see cref="CancellationToken"/>
+    /// associated with the current HTTP request.
+    /// </summary>
+    /// <remarks>
+    /// The private key should be in PKCS #8 (<c>.p8</c>) format.
+    /// </remarks>
+    public Func<string, CancellationToken, Task<ReadOnlyMemory<char>>>? PrivateKey { get; set; }
+
+    /// <inheritdoc />
+    public override void Validate()
+    {
+        base.Validate();
+
+        if (EnableCertSignature)
+        {
+            if (string.IsNullOrEmpty(AppCertSNKeyId))
+            {
+                throw new ArgumentException($"The '{nameof(AppCertSNKeyId)}' option must be provided if the '{nameof(EnableCertSignature)}' option is set to true.", nameof(AppCertSNKeyId));
+            }
+
+            if (string.IsNullOrEmpty(RootCertSNKeyId))
+            {
+                throw new ArgumentException($"The '{nameof(RootCertSNKeyId)}' option must be provided if the '{nameof(EnableCertSignature)}' option is set to true.", nameof(RootCertSNKeyId));
+            }
+        }
     }
 }
