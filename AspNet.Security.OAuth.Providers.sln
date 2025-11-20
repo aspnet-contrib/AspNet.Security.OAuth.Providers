@@ -221,6 +221,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{C2CA4B38-A
 		docs\workweixin.md = docs\workweixin.md
 		docs\xumm.md = docs\xumm.md
 		docs\zendesk.md = docs\zendesk.md
+		docs\gitcode.md = docs\gitcode.md
 		docs\webflow.md = docs\webflow.md
 		docs\miro.md = docs\miro.md
 		docs\linear.md = docs\linear.md
@@ -319,6 +320,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.VkId"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.GitCode", "src\AspNet.Security.OAuth.GitCode\AspNet.Security.OAuth.GitCode.csproj", "{668833D5-DB6A-475F-B0FD-A03462B037B8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.Douyin", "src\AspNet.Security.OAuth.Douyin\AspNet.Security.OAuth.Douyin.csproj", "{1F02BB27-45BF-4FEF-9D07-B9C5C91988A4}"
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.Atlassian", "src\AspNet.Security.OAuth.Atlassian\AspNet.Security.OAuth.Atlassian.csproj", "{D2110C1B-6FE1-4D9A-81ED-93FB2AC85049}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Security.OAuth.Webflow", "src\AspNet.Security.OAuth.Webflow\AspNet.Security.OAuth.Webflow.csproj", "{F5DA8A08-5089-4076-B0FC-3F4A5CBB9664}"
@@ -744,6 +746,10 @@ Global
 		{F3E62C24-5F82-4CF5-A994-0E10D04FB495}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F3E62C24-5F82-4CF5-A994-0E10D04FB495}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F3E62C24-5F82-4CF5-A994-0E10D04FB495}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F02BB27-45BF-4FEF-9D07-B9C5C91988A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F02BB27-45BF-4FEF-9D07-B9C5C91988A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F02BB27-45BF-4FEF-9D07-B9C5C91988A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F02BB27-45BF-4FEF-9D07-B9C5C91988A4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{668833D5-DB6A-475F-B0FD-A03462B037B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{668833D5-DB6A-475F-B0FD-A03462B037B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{668833D5-DB6A-475F-B0FD-A03462B037B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -886,6 +892,7 @@ Global
 		{CD56ABE4-1CD2-4029-B556-E110A31A2CC4} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 		{F3E62C24-5F82-4CF5-A994-0E10D04FB495} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 		{668833D5-DB6A-475F-B0FD-A03462B037B8} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
+		{1F02BB27-45BF-4FEF-9D07-B9C5C91988A4} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 		{D2110C1B-6FE1-4D9A-81ED-93FB2AC85049} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 		{F5DA8A08-5089-4076-B0FC-3F4A5CBB9664} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}
 		{7F22DE22-FDE8-4A14-AA65-D5B36098533E} = {C1352FD3-AE8B-43EE-B45B-F6E0B3FBAC6D}

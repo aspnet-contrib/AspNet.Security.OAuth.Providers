@@ -1,0 +1,55 @@
+{
+  "$schema": "https://raw.githubusercontent.com/justeat/httpclient-interception/master/src/HttpClientInterception/Bundles/http-request-bundle-schema.json",
+  "items": [
+    {
+      "uri": "https://open.douyin.com/platform/oauth/connect/",
+      "contentFormat": "json",
+      "contentJson": {
+        "code": "code",
+        "access_token": "secret-access-token",
+        "client_token": "client_token",
+        "refresh_token": "secret-refresh-token"
+      }
+    },
+    {
+      "uri": "https://open.douyin.com/oauth/access_token/",
+      "contentFormat": "json",
+      "method": "POST",
+      "contentJson": {
+        "data": {
+          "access_token": "act.f7094fbffab2ecbfc45e9af9c32bc241oYdckvBKe82BPx8T******",
+          "captcha": "",
+          "desc_url": "",
+          "description": "",
+          "error_code": 0,
+          "expires_in": 1296000,
+          "log_id": "20230525105733ED3ED7AC56A******",
+          "open_id": "b9b71865-7fea-44cc-******",
+          "refresh_expires_in": 2592000,
+          "refresh_token": "rft.713900b74edde9f30ec4e246b706da30t******",
+          "scope": "user_info"
+        },
+        "message": "success"
+      }
+    },
+    {
+      "uri": "https://open.douyin.com/oauth/userinfo/",
+      "contentFormat": "json",
+      "method": "POST",
+      "contentJson": {
+        "data": {
+          "avatar": "https://example.com/x.jpeg",
+          "avatar_larger": "https://example.com/x.jpeg",
+          "client_key": "ExampleClientKey",
+          "e_account_role": "",
+          "error_code": 0,
+          "log_id": "202212011600080101351682282501F9E7",
+          "nickname": "TestAccount",
+          "open_id": "0da22181-d833-447f-995f-1beefe******",
+          "union_id": "1ad4e099-4a0c-47d1-a410-bffb4f******"
+        },
+        "message": "success"
+      }
+    }
+  ]
+}
