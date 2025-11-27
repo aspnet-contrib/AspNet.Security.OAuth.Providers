@@ -15,7 +15,7 @@ namespace Microsoft.Extensions.DependencyInjection;
 public static class AppleAuthenticationOptionsExtensions
 {
     /// <summary>
-    /// Configures the application to use a specified private to generate a client secret for the provider.
+    /// Configures the application to use a specified private key to generate a client secret for the provider.
     /// </summary>
     /// <param name="options">The Apple authentication options to configure.</param>
     /// <param name="privateKeyFile">
