@@ -54,8 +54,7 @@ public partial class EtsyAuthenticationHandler : OAuthHandler<EtsyAuthentication
         using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
         var meRoot = payload.RootElement;
 
-        // Extract user_id and shop_id from the /me response
-        // Both fields should always be present in a successful Etsy OAuth response
+        // Extract user_id from the /me response required to get detailed user info. shop_id is mapped later via ClaimActions
         var userId = meRoot.GetProperty("user_id").GetInt64();
 
         var principal = new ClaimsPrincipal(identity);
@@ -64,7 +63,7 @@ public partial class EtsyAuthenticationHandler : OAuthHandler<EtsyAuthentication
         // Map claims from the basic payload first
         context.RunClaimActions();
 
-        // Optionally enrich with detailed user info
+        // Optionally enrich with detailed user info if requested
         if (Options.IncludeDetailedUserInfo)
         {
             using var detailedPayload = await GetDetailedUserInfoAsync(tokens, userId);

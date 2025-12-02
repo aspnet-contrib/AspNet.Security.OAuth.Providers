@@ -4,8 +4,6 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using System.Text;
-
 namespace AspNet.Security.OAuth.Etsy;
 
 /// <summary>

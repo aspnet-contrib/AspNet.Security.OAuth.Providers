@@ -4,8 +4,6 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using System.Security.Claims;
-
 namespace AspNet.Security.OAuth.Etsy;
 
 /// <summary>
@@ -26,7 +24,7 @@ public static class EtsyAuthenticationConstants
     }
 
     /// <summary>
-    /// Contains the <see href="https://developers.etsy.com/documentation/reference#section/Authentication/oauth2">Etsy OAuth Scopes</see> constants for Etsy authentication.
+    /// Contains <see href="https://developers.etsy.com/documentation/reference#section/Authentication/oauth2">Etsy OAuth Scopes</see> constants for Etsy authentication.
     /// </summary>
     public static class Scopes
     {
