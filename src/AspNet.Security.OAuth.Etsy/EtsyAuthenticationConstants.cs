@@ -16,6 +16,9 @@ public static class EtsyAuthenticationConstants
     /// </summary>
     public static class Claims
     {
+        /// <summary>The claim type for the user's Etsy user ID.</summary>
+        public static readonly string UserId = "urn:etsy:user_id";
+
         /// <summary>The claim type for the user's Etsy shop ID.</summary>
         public static readonly string ShopId = "urn:etsy:shop_id";
 
