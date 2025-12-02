@@ -19,6 +19,7 @@ public class EtsyTests(ITestOutputHelper outputHelper) : OAuthTests<EtsyAuthenti
 
     [Theory]
     [InlineData(ClaimTypes.NameIdentifier, "123456")]
+    [InlineData("urn:etsy:user_id", "123456")]
     [InlineData("urn:etsy:shop_id", "789012")]
     public async Task Can_Sign_In_Using_Etsy(string claimType, string claimValue)
         => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
@@ -36,6 +37,7 @@ public class EtsyTests(ITestOutputHelper outputHelper) : OAuthTests<EtsyAuthenti
 
         // Assert basic claims are present
         claims.ShouldContainKey(ClaimTypes.NameIdentifier);
+        claims.ShouldContainKey(Claims.UserId);
         claims.ShouldContainKey(Claims.ShopId);
 
         // Detailed claims should be absent when flag is false
