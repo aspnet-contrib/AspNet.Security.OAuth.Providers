@@ -98,15 +98,7 @@ public partial class EtsyAuthenticationHandler : OAuthHandler<EtsyAuthentication
     /// <returns>A <see cref="JsonDocument"/> containing the detailed user information.</returns>
     protected virtual async Task<JsonDocument> GetDetailedUserInfoAsync([NotNull] OAuthTokenResponse tokens, long userId)
     {
-        string userDetailsUrl;
-        if (!string.IsNullOrWhiteSpace(Options.DetailedUserInfoEndpoint))
-        {
-            userDetailsUrl = string.Format(CultureInfo.InvariantCulture, Options.DetailedUserInfoEndpoint, userId);
-        }
-        else
-        {
-            userDetailsUrl = string.Format(CultureInfo.InvariantCulture, EtsyAuthenticationDefaults.DetailedUserInfoEndpoint, userId);
-        }
+        var userDetailsUrl = $"{Options.DetailedUserInfoEndpoint}{userId}";
 
         using var request = new HttpRequestMessage(HttpMethod.Get, userDetailsUrl);
         request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json));

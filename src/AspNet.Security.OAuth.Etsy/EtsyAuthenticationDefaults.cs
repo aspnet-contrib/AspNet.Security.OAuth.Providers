@@ -49,5 +49,5 @@ public static class EtsyAuthenticationDefaults
     /// <summary>
     /// Default value for receiving the user profile based upon a unique user ID <see href="https://developers.etsy.com/documentation/reference/#operation/getUser">getUser</see>.
     /// </summary>
-    public static readonly CompositeFormat DetailedUserInfoEndpoint = CompositeFormat.Parse("https://openapi.etsy.com/v3/application/users/{0}");
+    public static readonly string DetailedUserInfoEndpoint = "https://openapi.etsy.com/v3/application/users/";
 }
