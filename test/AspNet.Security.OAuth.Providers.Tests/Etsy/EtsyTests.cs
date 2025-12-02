@@ -4,18 +4,12 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using AspNet.Security.OAuth.Etsy;
 using static AspNet.Security.OAuth.Etsy.EtsyAuthenticationConstants;
 
-namespace AspNet.Security.OAuth.Providers.Tests.Etsy;
+namespace AspNet.Security.OAuth.Etsy;
 
-public class EtsyTests : OAuthTests<EtsyAuthenticationOptions>
+public class EtsyTests(ITestOutputHelper outputHelper) : OAuthTests<EtsyAuthenticationOptions>(outputHelper)
 {
-    public EtsyTests(ITestOutputHelper outputHelper)
-        : base(outputHelper)
-    {
-    }
-
     public override string DefaultScheme => EtsyAuthenticationDefaults.AuthenticationScheme;
 
     protected internal override void RegisterAuthentication(AuthenticationBuilder builder)
@@ -33,7 +27,7 @@ public class EtsyTests : OAuthTests<EtsyAuthenticationOptions>
     public async Task Does_Not_Include_Detailed_Claims_When_IncludeDetailedUserInfo_Is_False()
     {
         // Arrange: disable detailed user info enrichment
-        void ConfigureServices(IServiceCollection services) => services.PostConfigureAll<EtsyAuthenticationOptions>(o => o.IncludeDetailedUserInfo = false);
+        static void ConfigureServices(IServiceCollection services) => services.PostConfigureAll<EtsyAuthenticationOptions>(o => o.IncludeDetailedUserInfo = false);
 
         using var server = CreateTestServer(ConfigureServices);
 
@@ -55,24 +49,7 @@ public class EtsyTests : OAuthTests<EtsyAuthenticationOptions>
     public async Task Includes_Detailed_Claims_When_IncludeDetailedUserInfo_Is_True()
     {
         // Arrange: enable detailed user info, configure claims to map.
-        // Note: email_r will be auto-added by the provider's post-configure step.
-        void ConfigureServices(IServiceCollection services) => services.PostConfigureAll<EtsyAuthenticationOptions>(o =>
-        {
-            o.IncludeDetailedUserInfo = true;
-
-            // Ensure the required scope is present before Validate() executes.
-            // BUG: This should not be necessary as the post-configure should add it. Assuming test Arrange should simulate eventual user setup.
-            if (!o.Scope.Contains(Scopes.EmailRead))
-            {
-                o.Scope.Add(Scopes.EmailRead);
-                o.ClaimActions.MapJsonKey(ClaimTypes.Email, "primary_email");
-                o.ClaimActions.MapJsonKey(ClaimTypes.GivenName, "first_name");
-                o.ClaimActions.MapJsonKey(ClaimTypes.Surname, "last_name");
-            }
-
-            // Opt-in to include image claim (not auto-mapped by provider to reduce payload size)
-            o.ClaimActions.MapImageClaim();
-        });
+        static void ConfigureServices(IServiceCollection services) => services.PostConfigureAll<EtsyAuthenticationOptions>(o => o.IncludeDetailedUserInfo = true);
 
         using var server = CreateTestServer(ConfigureServices);
 
