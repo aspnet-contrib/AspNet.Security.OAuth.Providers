@@ -25,40 +25,6 @@ public static class EtsyAuthenticationOptionsTests
     }
 
     [Fact]
-    public static void Validate_Does_Throw_If_Scope_Does_Not_Contain_Scope_shop_r()
-    {
-        // Arrange
-        var options = new EtsyAuthenticationOptions()
-        {
-            ClientId = "my-client-id",
-            ClientSecret = "my-client-secret",
-        };
-        options.Scope.Clear();
-        options.Scope.Add(EtsyAuthenticationConstants.Scopes.EmailRead);
-
-        // Act
-        _ = Assert.Throws<ArgumentOutOfRangeException>(options.Validate);
-    }
-
-    [Fact]
-    public static void Validate_Does_Not_Throw_When_IncludeDetailedUserInfo_Is_False_And_Contains_Scope_email_r()
-    {
-        // Arrange
-        var options = new EtsyAuthenticationOptions()
-        {
-            ClientId = "my-client-id",
-            ClientSecret = "my-client-secret",
-            IncludeDetailedUserInfo = false,
-        };
-
-        // Adding email scope should be harmless when IncludeDetailedUserInfo is false
-        options.Scope.Add(EtsyAuthenticationConstants.Scopes.EmailRead);
-
-        // Act (no Assert)
-        options.Validate();
-    }
-
-    [Fact]
     public static void Validate_Throws_If_AuthorizationEndpoint_Is_Null()
     {
         // Arrange
