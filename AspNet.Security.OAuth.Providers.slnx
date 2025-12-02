@@ -39,9 +39,6 @@
     <File Path=".vscode/launch.json" />
     <File Path=".vscode/tasks.json" />
   </Folder>
-  <Folder Name="/Solution Items/docs/assets/">
-    <File Path="docs/assets/Etsy-find-your-client_id.png" />
-  </Folder>
   <Folder Name="/Solution Items/docs/">
     <File Path="docs/amazon.md" />
     <File Path="docs/amocrm.md" />
