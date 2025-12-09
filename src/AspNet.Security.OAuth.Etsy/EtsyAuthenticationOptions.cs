@@ -47,9 +47,9 @@ public class EtsyAuthenticationOptions : OAuthOptions
     /// Gets or sets the endpoint used to retrieve detailed user information.
     /// </summary>
     /// <remarks>
-    /// The placeholder for <c>user_id</c> needs to be <c>"{0}"</c> and will be replaced with the authenticated user's ID.
+    /// Make sure to end with '/' as it will be appended with the authenticated user's ID.
     /// </remarks>
-    public string? DetailedUserInfoEndpoint { get; set; }
+    public string? DetailedUserInfoEndpoint { get; set; } = EtsyAuthenticationDefaults.DetailedUserInfoEndpoint;
 
     /// <inheritdoc />
     public override void Validate()
