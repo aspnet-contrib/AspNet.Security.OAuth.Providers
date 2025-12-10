@@ -11,7 +11,6 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
@@ -47,14 +46,14 @@ public partial class AlipayAuthenticationHandler : OAuthHandler<AlipayAuthentica
 
     private const string SignType = "RSA2";
 
-    private async Task AddCertSignatureParametersAsync(SortedDictionary<string, string?> parameters)
+    private async Task AddCertificateSignatureParametersAsync(SortedDictionary<string, string?> parameters)
     {
         ArgumentNullException.ThrowIfNull(Options.PrivateKey);
-        ArgumentNullException.ThrowIfNull(Options.AppCertSNKeyId);
-        ArgumentNullException.ThrowIfNull(Options.RootCertSNKeyId);
+        ArgumentNullException.ThrowIfNull(Options.ApplicationCertificateSnKeyId);
+        ArgumentNullException.ThrowIfNull(Options.RootCertificateSnKeyId);
 
-        var app_cert_sn = await Options.PrivateKey(Options.AppCertSNKeyId, Context.RequestAborted);
-        var alipay_root_cert_sn = await Options.PrivateKey(Options.RootCertSNKeyId, Context.RequestAborted);
+        var app_cert_sn = await Options.PrivateKey(Options.ApplicationCertificateSnKeyId, Context.RequestAborted);
+        var alipay_root_cert_sn = await Options.PrivateKey(Options.RootCertificateSnKeyId, Context.RequestAborted);
 
         parameters["app_cert_sn"] = AntCertificationUtil.GetCertSN(app_cert_sn.Span);
         parameters["alipay_root_cert_sn"] = AntCertificationUtil.GetRootCertSN(alipay_root_cert_sn.Span, SignType);
@@ -76,9 +75,9 @@ public partial class AlipayAuthenticationHandler : OAuthHandler<AlipayAuthentica
             ["version"] = "1.0",
         };
 
-        if (Options.EnableCertSignature)
+        if (Options.UseCertificateSignatures)
         {
-            await AddCertSignatureParametersAsync(tokenRequestParameters);
+            await AddCertificateSignatureParametersAsync(tokenRequestParameters);
         }
 
         tokenRequestParameters.Add("sign", GetRSA2Signature(tokenRequestParameters));
@@ -130,9 +129,9 @@ public partial class AlipayAuthenticationHandler : OAuthHandler<AlipayAuthentica
             ["version"] = "1.0",
         };
 
-        if (Options.EnableCertSignature)
+        if (Options.UseCertificateSignatures)
         {
-            await AddCertSignatureParametersAsync(parameters);
+            await AddCertificateSignatureParametersAsync(parameters);
         }
 
         parameters.Add("sign", GetRSA2Signature(parameters));

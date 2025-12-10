@@ -27,13 +27,13 @@ public static class AlipayAuthenticationConstants
         public const string Gender = "urn:alipay:gender";
 
         /// <summary>
-        /// OpenID is the unique identifier of Alipay users in the application dimension.
+        /// OpenID is the unique identifier for Alipay users at the application level.
         /// See https://opendocs.alipay.com/mini/0ai2i6
         /// </summary>
         public const string OpenId = "urn:alipay:open_id";
 
         /// <summary>
-        /// Alipay user system internal identifier, will no longer be independently open in the future, and will be replaced by OpenID.
+        /// The internal identifier for Alipay users will no longer be independently available going forward and will be replaced by OpenID.
         /// </summary>
         public const string UserId = "urn:alipay:user_id";
     }

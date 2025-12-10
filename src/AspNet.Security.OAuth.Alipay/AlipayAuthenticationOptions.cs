@@ -34,24 +34,26 @@ public class AlipayAuthenticationOptions : OAuthOptions
     }
 
     /// <summary>
-    /// Get or set a value indicating whether to use certificate mode for signature implementation.
+    /// Gets or sets a value indicating whether to use certificate mode for signature implementation.
     /// <para>https://opendocs.alipay.com/common/057k53?pathHash=e18d6f77#%E8%AF%81%E4%B9%A6%E6%A8%A1%E5%BC%8F</para>
     /// </summary>
-    public bool EnableCertSignature { get; set; }
+    public bool UseCertificateSignatures { get; set; }
 
     /// <summary>
-    /// Gets or sets the optional ID for your Sign in with app_cert_sn.
+    /// Gets or sets the optional ID for your Sign in with Application Public Key Certificate SN(app_cert_sn).
+    /// <para>https://opendocs.alipay.com/support/01raux</para>
     /// </summary>
-    public string? AppCertSNKeyId { get; set; }
+    public string? ApplicationCertificateSnKeyId { get; set; }
 
     /// <summary>
-    /// Gets or sets the optional ID for your Sign in with alipay_root_cert_sn.
+    /// Gets or sets the optional ID for your Sign in with Alipay Root Certificate SN.
+    /// <para>https://opendocs.alipay.com/support/01rauy</para>
     /// </summary>
-    public string? RootCertSNKeyId { get; set; }
+    public string? RootCertificateSnKeyId { get; set; }
 
     /// <summary>
     /// Gets or sets an optional delegate to get the client's private key which is passed
-    /// the value of the <see cref="AppCertSNKeyId"/> or <see cref="RootCertSNKeyId"/> property and the <see cref="CancellationToken"/>
+    /// the value of the <see cref="ApplicationCertificateSnKeyId"/> or <see cref="RootCertificateSnKeyId"/> property and the <see cref="CancellationToken"/>
     /// associated with the current HTTP request.
     /// </summary>
     /// <remarks>
@@ -64,16 +66,16 @@ public class AlipayAuthenticationOptions : OAuthOptions
     {
         base.Validate();
 
-        if (EnableCertSignature)
+        if (UseCertificateSignatures)
         {
-            if (string.IsNullOrEmpty(AppCertSNKeyId))
+            if (string.IsNullOrEmpty(ApplicationCertificateSnKeyId))
             {
-                throw new ArgumentException($"The '{nameof(AppCertSNKeyId)}' option must be provided if the '{nameof(EnableCertSignature)}' option is set to true.", nameof(AppCertSNKeyId));
+                throw new ArgumentException($"The '{nameof(ApplicationCertificateSnKeyId)}' option must be provided if the '{nameof(UseCertificateSignatures)}' option is set to true.", nameof(ApplicationCertificateSnKeyId));
             }
 
-            if (string.IsNullOrEmpty(RootCertSNKeyId))
+            if (string.IsNullOrEmpty(RootCertificateSnKeyId))
             {
-                throw new ArgumentException($"The '{nameof(RootCertSNKeyId)}' option must be provided if the '{nameof(EnableCertSignature)}' option is set to true.", nameof(RootCertSNKeyId));
+                throw new ArgumentException($"The '{nameof(RootCertificateSnKeyId)}' option must be provided if the '{nameof(UseCertificateSignatures)}' option is set to true.", nameof(RootCertificateSnKeyId));
             }
         }
     }

@@ -15,12 +15,12 @@ namespace Microsoft.Extensions.DependencyInjection;
 public static class AlipayAuthenticationOptionsExtensions
 {
     /// <summary>
-    /// Configures the application to use a specified private to generate a client secret for the provider.
+    /// Configures the application to use a specified private key to generate a client secret for the provider.
     /// </summary>
     /// <param name="options">The Apple authentication options to configure.</param>
     /// <param name="privateKeyFile">
     /// A delegate to a method to return the <see cref="IFileInfo"/> for the private
-    /// key which is passed the value of <see cref="AlipayAuthenticationOptions.AppCertSNKeyId"/> or <see cref="AlipayAuthenticationOptions.RootCertSNKeyId"/>.
+    /// key which is passed the value of <see cref="AlipayAuthenticationOptions.ApplicationCertificateSnKeyId"/> or <see cref="AlipayAuthenticationOptions.RootCertificateSnKeyId"/>.
     /// </param>
     /// <returns>
     /// The value of the <paramref name="options"/> argument.
@@ -29,7 +29,7 @@ public static class AlipayAuthenticationOptionsExtensions
         [NotNull] this AlipayAuthenticationOptions options,
         [NotNull] Func<string, IFileInfo> privateKeyFile)
     {
-        options.EnableCertSignature = true;
+        options.UseCertificateSignatures = true;
         options.PrivateKey = async (keyId, cancellationToken) =>
         {
             var fileInfo = privateKeyFile(keyId);

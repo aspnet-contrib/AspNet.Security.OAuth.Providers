@@ -14,7 +14,7 @@ using System.Text;
 namespace AspNet.Security.OAuth.Alipay;
 
 /// <summary>
-/// https://github.com/alipay/alipay-sdk-net-all/blob/master/v2/AlipaySDKNet.Standard/Util/AntCertificationUtil.cs
+/// https://github.com/alipay/alipay-sdk-net-all/blob/b482d75d322e740760f9230d2a3859090af642a7/v2/AlipaySDKNet.Standard/Util/AntCertificationUtil.cs
 /// </summary>
 internal static class AntCertificationUtil
 {
@@ -49,8 +49,9 @@ internal static class AntCertificationUtil
                 attributes.Add(issuerDNSplit.Current);
             }
 
+            // attributes.Reverse()
             Span<char> charsTemp = chars;
-            for (var i = attributes.Count - 1; i >= 0; i--) // attributes.Reverse()
+            for (var i = attributes.Count - 1; i >= 0; i--)
             {
                 var it = issuerDN[attributes[i]];
                 it.CopyTo(charsTemp);
