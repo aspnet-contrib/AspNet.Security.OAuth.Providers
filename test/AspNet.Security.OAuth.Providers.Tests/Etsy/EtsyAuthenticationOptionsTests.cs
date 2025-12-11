@@ -70,21 +70,6 @@ public static class EtsyAuthenticationOptionsTests
     }
 
     [Fact]
-    public static void Validate_Dont_Throws_If_DetailedUserInformationEndpoint_Is_Null()
-    {
-        // Arrange
-        var options = new EtsyAuthenticationOptions()
-        {
-            ClientId = "my-client-id",
-            ClientSecret = "my-client-secret",
-            DetailedUserInfoEndpoint = null!,
-        };
-
-        // Act (no Assert)
-        options.Validate();
-    }
-
-    [Fact]
     public static void Validate_Throws_If_CallbackPath_Is_Null()
     {
         // Arrange
