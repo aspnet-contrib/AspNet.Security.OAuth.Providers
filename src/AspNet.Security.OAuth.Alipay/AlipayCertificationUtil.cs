@@ -16,7 +16,7 @@ namespace AspNet.Security.OAuth.Alipay;
 /// <summary>
 /// https://github.com/alipay/alipay-sdk-net-all/blob/b482d75d322e740760f9230d2a3859090af642a7/v2/AlipaySDKNet.Standard/Util/AntCertificationUtil.cs
 /// </summary>
-internal static class AntCertificationUtil
+internal static class AlipayCertificationUtil
 {
     public static string GetCertSN(ReadOnlySpan<char> certContent)
     {
@@ -26,53 +26,17 @@ internal static class AntCertificationUtil
 
     public static string GetCertSN(X509Certificate2 cert)
     {
-        var issuerDN = cert.Issuer.Replace(", ", ",", StringComparison.InvariantCulture).AsSpan();
+        var issuerDN = cert.Issuer.Replace(", ", ",", StringComparison.InvariantCulture);
         var serialNumber = new BigInteger(cert.GetSerialNumber()).ToString(CultureInfo.InvariantCulture);
-        var len = issuerDN.Length + serialNumber.Length;
-        char[]? array = null;
-        Span<char> chars = len <= StackallocByteThreshold ?
-            stackalloc char[StackallocByteThreshold] :
-            (array = ArrayPool<char>.Shared.Rent(len));
-        try
+
+        if (issuerDN.StartsWith("CN", StringComparison.InvariantCulture))
         {
-            if (issuerDN.StartsWith("CN", StringComparison.InvariantCulture))
-            {
-                issuerDN.CopyTo(chars);
-                serialNumber.AsSpan().CopyTo(chars[issuerDN.Length..]);
-                return CalculateMd5(chars[..len]);
-            }
-
-            List<Range> attributes = [];
-            var issuerDNSplit = issuerDN.Split(',');
-            while (issuerDNSplit.MoveNext())
-            {
-                attributes.Add(issuerDNSplit.Current);
-            }
-
-            // attributes.Reverse()
-            Span<char> charsTemp = chars;
-            for (var i = attributes.Count - 1; i >= 0; i--)
-            {
-                var it = issuerDN[attributes[i]];
-                it.CopyTo(charsTemp);
-                charsTemp = charsTemp[it.Length..];
-                if (i != 0)
-                {
-                    charsTemp[0] = ',';
-                    charsTemp = charsTemp[1..];
-                }
-            }
-
-            serialNumber.AsSpan().CopyTo(charsTemp);
-            return CalculateMd5(chars[..len]);
+            return CalculateMd5(issuerDN + serialNumber);
         }
-        finally
-        {
-            if (array != null)
-            {
-                ArrayPool<char>.Shared.Return(array);
-            }
-        }
+
+        var attributes = issuerDN.Split(',');
+        Array.Reverse(attributes);
+        return CalculateMd5(string.Join(',', attributes) + serialNumber);
     }
 
     public static string GetRootCertSN(ReadOnlySpan<char> rootCertContent, string signType = "RSA2")

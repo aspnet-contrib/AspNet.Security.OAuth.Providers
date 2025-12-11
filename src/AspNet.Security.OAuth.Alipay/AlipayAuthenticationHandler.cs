@@ -55,8 +55,8 @@ public partial class AlipayAuthenticationHandler : OAuthHandler<AlipayAuthentica
         var app_cert_sn = await Options.PrivateKey(Options.ApplicationCertificateSnKeyId, Context.RequestAborted);
         var alipay_root_cert_sn = await Options.PrivateKey(Options.RootCertificateSnKeyId, Context.RequestAborted);
 
-        parameters["app_cert_sn"] = AntCertificationUtil.GetCertSN(app_cert_sn.Span);
-        parameters["alipay_root_cert_sn"] = AntCertificationUtil.GetRootCertSN(alipay_root_cert_sn.Span, SignType);
+        parameters["app_cert_sn"] = AlipayCertificationUtil.GetCertSN(app_cert_sn.Span);
+        parameters["alipay_root_cert_sn"] = AlipayCertificationUtil.GetRootCertSN(alipay_root_cert_sn.Span, SignType);
     }
 
     protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] OAuthCodeExchangeContext context)
