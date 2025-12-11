@@ -54,9 +54,6 @@ public partial class EtsyAuthenticationHandler : OAuthHandler<EtsyAuthentication
         using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
         var meRoot = payload.RootElement;
 
-        // Extract user_id from the /me response required to get detailed user info. shop_id is mapped later via ClaimActions
-        var userId = meRoot.GetProperty("user_id").GetInt64();
-
         var principal = new ClaimsPrincipal(identity);
         var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, meRoot);
 
@@ -66,6 +63,9 @@ public partial class EtsyAuthenticationHandler : OAuthHandler<EtsyAuthentication
         // Optionally enrich with detailed user info if requested
         if (Options.IncludeDetailedUserInfo)
         {
+            // Extract user_id from the /me response
+            var userId = meRoot.GetProperty("user_id").GetInt64();
+
             using var detailedPayload = await GetDetailedUserInfoAsync(tokens, userId);
             var detailedRoot = detailedPayload.RootElement;
 
@@ -98,7 +98,7 @@ public partial class EtsyAuthenticationHandler : OAuthHandler<EtsyAuthentication
     /// <returns>A <see cref="JsonDocument"/> containing the detailed user information.</returns>
     protected virtual async Task<JsonDocument> GetDetailedUserInfoAsync([NotNull] OAuthTokenResponse tokens, long userId)
     {
-        var userDetailsUrl = $"{Options.DetailedUserInfoEndpoint}{userId}";
+        var userDetailsUrl = Options.DetailedUserInfoEndpoint.EndsWith('/') ? $"{Options.DetailedUserInfoEndpoint}{userId}" : $"{Options.DetailedUserInfoEndpoint}/{userId}";
 
         using var request = new HttpRequestMessage(HttpMethod.Get, userDetailsUrl);
         request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json));
