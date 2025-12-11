@@ -34,7 +34,7 @@ public class AlipayAuthenticationOptions : OAuthOptions
     }
 
     /// <summary>
-    /// Gets or sets a value indicating whether to use certificate mode for signature implementation.
+    /// Gets or sets a value indicating whether to use certificate mode for signing calls.
     /// <para>https://opendocs.alipay.com/common/057k53?pathHash=e18d6f77#%E8%AF%81%E4%B9%A6%E6%A8%A1%E5%BC%8F</para>
     /// </summary>
     public bool UseCertificateSignatures { get; set; }
