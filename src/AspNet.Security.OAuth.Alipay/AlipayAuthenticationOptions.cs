@@ -30,7 +30,9 @@ public class AlipayAuthenticationOptions : OAuthOptions
         ClaimActions.MapJsonKey(Claims.Nickname, "nick_name");
         ClaimActions.MapJsonKey(Claims.Province, "province");
         ClaimActions.MapJsonKey(Claims.OpenId, "open_id");
+#pragma warning disable CS0618
         ClaimActions.MapJsonKey(Claims.UserId, "user_id");
+#pragma warning restore CS0618
     }
 
     /// <summary>

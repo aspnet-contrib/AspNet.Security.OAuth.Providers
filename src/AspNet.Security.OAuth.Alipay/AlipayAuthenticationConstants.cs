@@ -34,7 +34,9 @@ public static class AlipayAuthenticationConstants
 
         /// <summary>
         /// The internal identifier for Alipay users will no longer be independently available going forward and will be replaced by OpenID.
+        /// See https://opendocs.alipay.com/common/0ai736
         /// </summary>
+        [Obsolete("The internal identifier for Alipay users will no longer be independently available going forward and will be replaced by OpenID. See https://opendocs.alipay.com/common/0ai736")]
         public const string UserId = "urn:alipay:user_id";
     }
 }

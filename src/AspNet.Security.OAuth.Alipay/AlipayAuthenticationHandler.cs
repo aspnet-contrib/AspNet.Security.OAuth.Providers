@@ -52,11 +52,11 @@ public partial class AlipayAuthenticationHandler : OAuthHandler<AlipayAuthentica
         ArgumentNullException.ThrowIfNull(Options.ApplicationCertificateSnKeyId);
         ArgumentNullException.ThrowIfNull(Options.RootCertificateSnKeyId);
 
-        var app_cert_sn = await Options.PrivateKey(Options.ApplicationCertificateSnKeyId, Context.RequestAborted);
-        var alipay_root_cert_sn = await Options.PrivateKey(Options.RootCertificateSnKeyId, Context.RequestAborted);
+        var appPublicKey = await Options.PrivateKey(Options.ApplicationCertificateSnKeyId, Context.RequestAborted);
+        var alipayRootPublicKey = await Options.PrivateKey(Options.RootCertificateSnKeyId, Context.RequestAborted);
 
-        parameters["app_cert_sn"] = AlipayCertificationUtil.GetCertSN(app_cert_sn.Span);
-        parameters["alipay_root_cert_sn"] = AlipayCertificationUtil.GetRootCertSN(alipay_root_cert_sn.Span, SignType);
+        parameters["app_cert_sn"] = AlipayCertificationUtil.GetCertSN(appPublicKey.Span);
+        parameters["alipay_root_cert_sn"] = AlipayCertificationUtil.GetRootCertSN(alipayRootPublicKey.Span, SignType);
     }
 
     protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] OAuthCodeExchangeContext context)

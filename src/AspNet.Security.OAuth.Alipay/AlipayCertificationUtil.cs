@@ -4,7 +4,6 @@
  * for more information concerning the license and the contributors participating to this project.
  */
 
-using System.Buffers;
 using System.Globalization;
 using System.Numerics;
 using System.Security.Cryptography;
@@ -14,19 +13,19 @@ using System.Text;
 namespace AspNet.Security.OAuth.Alipay;
 
 /// <summary>
-/// https://github.com/alipay/alipay-sdk-net-all/blob/b482d75d322e740760f9230d2a3859090af642a7/v2/AlipaySDKNet.Standard/Util/AntCertificationUtil.cs
+/// Based on https://github.com/alipay/alipay-sdk-net-all/blob/b482d75d322e740760f9230d2a3859090af642a7/v2/AlipaySDKNet.Standard/Util/AntCertificationUtil.cs.
 /// </summary>
 internal static class AlipayCertificationUtil
 {
-    public static string GetCertSN(ReadOnlySpan<char> certContent)
+    public static string GetCertSN(ReadOnlySpan<char> certPem)
     {
-        using var cert = X509Certificate2.CreateFromPem(certContent);
+        using var cert = X509Certificate2.CreateFromPem(certPem);
         return GetCertSN(cert);
     }
 
-    public static string GetCertSN(X509Certificate2 cert)
+    private static string GetCertSN(X509Certificate2 cert)
     {
-        var issuerDN = cert.Issuer.Replace(", ", ",", StringComparison.InvariantCulture);
+        var issuerDN = cert.Issuer.Replace(", ", ",", StringComparison.Ordinal);
         var serialNumber = new BigInteger(cert.GetSerialNumber()).ToString(CultureInfo.InvariantCulture);
 
         if (issuerDN.StartsWith("CN", StringComparison.InvariantCulture))
@@ -39,23 +38,25 @@ internal static class AlipayCertificationUtil
         return CalculateMd5(string.Join(',', attributes) + serialNumber);
     }
 
-    public static string GetRootCertSN(ReadOnlySpan<char> rootCertContent, string signType = "RSA2")
+    public static string GetRootCertSN(ReadOnlySpan<char> certPem, string signType = "RSA2")
     {
-        var rootCertSN = string.Join('_', GetRootCertSNCore(rootCertContent, signType));
+        var certificates = new X509Certificate2Collection();
+        certificates.ImportFromPem(certPem);
+        var rootCertSN = string.Join('_', GetRootCertSN(certificates, signType));
         return rootCertSN;
     }
 
-    private static IEnumerable<string> GetRootCertSNCore(X509Certificate2Collection x509Certificates, string signType)
+    private static IEnumerable<string> GetRootCertSN(X509Certificate2Collection certificates, string signType)
     {
-        foreach (X509Certificate2 cert in x509Certificates)
+        foreach (X509Certificate2 cert in certificates)
         {
             var signatureAlgorithm = cert.SignatureAlgorithm.Value;
             if (signatureAlgorithm != null)
             {
-                if ((signType.StartsWith("RSA", StringComparison.InvariantCultureIgnoreCase) &&
-                    signatureAlgorithm.StartsWith("1.2.840.113549.1.1", StringComparison.InvariantCultureIgnoreCase)) ||
-                    (signType.StartsWith("SM2", StringComparison.InvariantCultureIgnoreCase) &&
-                    signatureAlgorithm.StartsWith("1.2.156.10197.1.501", StringComparison.InvariantCultureIgnoreCase)))
+                if ((signType.StartsWith("RSA", StringComparison.OrdinalIgnoreCase) &&
+                    signatureAlgorithm.StartsWith("1.2.840.113549.1.1", StringComparison.OrdinalIgnoreCase)) ||
+                    (signType.StartsWith("SM2", StringComparison.OrdinalIgnoreCase) &&
+                    signatureAlgorithm.StartsWith("1.2.156.10197.1.501", StringComparison.OrdinalIgnoreCase)))
                 {
                     yield return GetCertSN(cert);
                 }
@@ -63,43 +64,13 @@ internal static class AlipayCertificationUtil
         }
     }
 
-    private static IEnumerable<string> GetRootCertSNCore(ReadOnlySpan<char> rootCertContent, string signType)
+    private static string CalculateMd5(string s)
     {
-        X509Certificate2Collection x509Certificates = [];
-        x509Certificates.ImportFromPem(rootCertContent);
-        return GetRootCertSNCore(x509Certificates, signType);
-    }
-
-    /// <summary>
-    /// https://github.com/dotnet/runtime/blob/v9.0.8/src/libraries/System.Text.Json/Common/JsonConstants.cs#L12
-    /// </summary>
-    private const int StackallocByteThreshold = 256;
-
-    private static string CalculateMd5(ReadOnlySpan<char> chars)
-    {
-        var lenU8 = Encoding.UTF8.GetMaxByteCount(chars.Length);
-        byte[]? array = null;
-        Span<byte> bytes = lenU8 <= StackallocByteThreshold ?
-            stackalloc byte[StackallocByteThreshold] :
-            (array = ArrayPool<byte>.Shared.Rent(lenU8));
-        try
-        {
-            Encoding.UTF8.TryGetBytes(chars, bytes, out var bytesWritten);
-            bytes = bytes[..bytesWritten];
-
-            Span<byte> hash = stackalloc byte[MD5.HashSizeInBytes];
+        var buffer = Encoding.UTF8.GetBytes(s);
+        Span<byte> hash = stackalloc byte[MD5.HashSizeInBytes];
 #pragma warning disable CA5351
-            MD5.HashData(bytes, hash);
+        MD5.HashData(buffer, hash);
 #pragma warning restore CA5351
-
-            return Convert.ToHexStringLower(hash);
-        }
-        finally
-        {
-            if (array != null)
-            {
-                ArrayPool<byte>.Shared.Return(array);
-            }
-        }
+        return Convert.ToHexStringLower(hash);
     }
 }

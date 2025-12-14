@@ -15,9 +15,9 @@ namespace Microsoft.Extensions.DependencyInjection;
 public static class AlipayAuthenticationOptionsExtensions
 {
     /// <summary>
-    /// Configures the application to use a specified private key to generate a client secret for the provider.
+    /// Configures the application to use a specified private key to generate a client secret for the provider when using certificate signatures.
     /// </summary>
-    /// <param name="options">The Apple authentication options to configure.</param>
+    /// <param name="options">The Alipay authentication options to configure.</param>
     /// <param name="privateKeyFile">
     /// A delegate to a method to return the <see cref="IFileInfo"/> for the private
     /// key which is passed the value of <see cref="AlipayAuthenticationOptions.ApplicationCertificateSnKeyId"/> or <see cref="AlipayAuthenticationOptions.RootCertificateSnKeyId"/>.
