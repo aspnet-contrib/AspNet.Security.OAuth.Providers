@@ -15,24 +15,24 @@ namespace Microsoft.Extensions.DependencyInjection;
 public static class AlipayAuthenticationOptionsExtensions
 {
     /// <summary>
-    /// Configures the application to use a specified private key to generate a client secret for the provider when using certificate signatures.
+    /// Configures the application to use a specified public key to generate a client secret for the provider when using certificate signatures.
     /// </summary>
     /// <param name="options">The Alipay authentication options to configure.</param>
-    /// <param name="privateKeyFile">
-    /// A delegate to a method to return the <see cref="IFileInfo"/> for the private
+    /// <param name="publicKeyFile">
+    /// A delegate to a method to return the <see cref="IFileInfo"/> for the public
     /// key which is passed the value of <see cref="AlipayAuthenticationOptions.ApplicationCertificateSnKeyId"/> or <see cref="AlipayAuthenticationOptions.RootCertificateSnKeyId"/>.
     /// </param>
     /// <returns>
     /// The value of the <paramref name="options"/> argument.
     /// </returns>
-    public static AlipayAuthenticationOptions UsePrivateKey(
+    public static AlipayAuthenticationOptions UsePublicKey(
         [NotNull] this AlipayAuthenticationOptions options,
-        [NotNull] Func<string, IFileInfo> privateKeyFile)
+        [NotNull] Func<string, IFileInfo> publicKeyFile)
     {
         options.UseCertificateSignatures = true;
-        options.PrivateKey = async (keyId, cancellationToken) =>
+        options.PublicKey = async (keyId, cancellationToken) =>
         {
-            var fileInfo = privateKeyFile(keyId);
+            var fileInfo = publicKeyFile(keyId);
 
             using var stream = fileInfo.CreateReadStream();
             using var reader = new StreamReader(stream);

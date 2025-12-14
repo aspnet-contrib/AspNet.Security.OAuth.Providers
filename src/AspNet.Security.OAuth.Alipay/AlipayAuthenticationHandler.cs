@@ -48,12 +48,12 @@ public partial class AlipayAuthenticationHandler : OAuthHandler<AlipayAuthentica
 
     private async Task AddCertificateSignatureParametersAsync(SortedDictionary<string, string?> parameters)
     {
-        ArgumentNullException.ThrowIfNull(Options.PrivateKey);
+        ArgumentNullException.ThrowIfNull(Options.PublicKey);
         ArgumentNullException.ThrowIfNull(Options.ApplicationCertificateSnKeyId);
         ArgumentNullException.ThrowIfNull(Options.RootCertificateSnKeyId);
 
-        var appPublicKey = await Options.PrivateKey(Options.ApplicationCertificateSnKeyId, Context.RequestAborted);
-        var alipayRootPublicKey = await Options.PrivateKey(Options.RootCertificateSnKeyId, Context.RequestAborted);
+        var appPublicKey = await Options.PublicKey(Options.ApplicationCertificateSnKeyId, Context.RequestAborted);
+        var alipayRootPublicKey = await Options.PublicKey(Options.RootCertificateSnKeyId, Context.RequestAborted);
 
         parameters["app_cert_sn"] = AlipayCertificationUtil.GetCertSN(appPublicKey.Span);
         parameters["alipay_root_cert_sn"] = AlipayCertificationUtil.GetRootCertSN(alipayRootPublicKey.Span, SignType);

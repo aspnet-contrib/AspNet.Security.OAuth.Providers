@@ -54,14 +54,14 @@ public class AlipayAuthenticationOptions : OAuthOptions
     public string? RootCertificateSnKeyId { get; set; }
 
     /// <summary>
-    /// Gets or sets an optional delegate to get the client's private key which is passed
+    /// Gets or sets an optional delegate to get the client's public key which is passed
     /// the value of the <see cref="ApplicationCertificateSnKeyId"/> or <see cref="RootCertificateSnKeyId"/> property and the <see cref="CancellationToken"/>
     /// associated with the current HTTP request.
     /// </summary>
     /// <remarks>
-    /// The private key should be in PKCS #8 (<c>.p8</c>) format.
+    /// The public key should be in PKCS #8 (<c>.p8</c>) format.
     /// </remarks>
-    public Func<string, CancellationToken, Task<ReadOnlyMemory<char>>>? PrivateKey { get; set; }
+    public Func<string, CancellationToken, Task<ReadOnlyMemory<char>>>? PublicKey { get; set; }
 
     /// <inheritdoc />
     public override void Validate()
