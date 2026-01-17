@@ -51,7 +51,7 @@ jobs:
         show-progress: false
 
     - name: Setup .NET SDK
-      uses: actions/setup-dotnet@2016bd2012dba4e32de620c46fe006a3ac9f0602 # v5.0.1
+      uses: actions/setup-dotnet@baa11fbfe1d6520db94683bd5c7a3818018e4309 # v5.1.0
       id: setup-dotnet
 
     # Arcade only allows the revision to contain up to two characters, and GitHub Actions does not roll-over
@@ -81,7 +81,7 @@ jobs:
       run: ./eng/common/cibuild.sh -configuration Release -prepareMachine
 
     - name: Attest artifacts
-      uses: actions/attest-build-provenance@977bb373ede98d70efdf65b84cb5f73e068dcc2a # v3.0.0
+      uses: actions/attest-build-provenance@00014ed6ed5efc5b1ab7f7f34a39eb55d41aa4f8 # v3.1.0
       if: |
         runner.os == 'Windows' &&
         github.event.repository.fork == false &&
@@ -92,20 +92,20 @@ jobs:
           ./artifacts/packages/Release/Shipping/*
 
     - name: Publish logs
-      uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+      uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
       if: ${{ !cancelled() }}
       with:
         name: logs-${{ matrix.os_name }}
         path: ./artifacts/log/Release
 
     - name: Publish NuGet packages
-      uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+      uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
       with:
         name: packages-${{ matrix.os_name }}
         path: ./artifacts/packages/Release/Shipping
 
     - name: Publish test results
-      uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+      uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
       if: ${{ !cancelled() }}
       with:
         name: testresults-${{ matrix.os_name }}
@@ -117,12 +117,12 @@ jobs:
     steps:
 
     - name: Download packages
-      uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6.0.0
+      uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
       with:
         name: packages-windows
 
     - name: Setup .NET SDK
-      uses: actions/setup-dotnet@2016bd2012dba4e32de620c46fe006a3ac9f0602 # v5.0.1
+      uses: actions/setup-dotnet@baa11fbfe1d6520db94683bd5c7a3818018e4309 # v5.1.0
       with:
         dotnet-version: ${{ needs.build.outputs.dotnet-sdk-version }}
 
@@ -155,12 +155,12 @@ jobs:
     steps:
 
     - name: Download packages
-      uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6.0.0
+      uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
       with:
         name: packages-windows
 
     - name: Setup .NET SDK
-      uses: actions/setup-dotnet@2016bd2012dba4e32de620c46fe006a3ac9f0602 # v5.0.1
+      uses: actions/setup-dotnet@baa11fbfe1d6520db94683bd5c7a3818018e4309 # v5.1.0
       with:
         dotnet-version: ${{ needs.build.outputs.dotnet-sdk-version }}
 
@@ -184,12 +184,12 @@ jobs:
     steps:
 
     - name: Download packages
-      uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6.0.0
+      uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
       with:
         name: packages-windows
 
     - name: Setup .NET SDK
-      uses: actions/setup-dotnet@2016bd2012dba4e32de620c46fe006a3ac9f0602 # v5.0.1
+      uses: actions/setup-dotnet@baa11fbfe1d6520db94683bd5c7a3818018e4309 # v5.1.0
       with:
         dotnet-version: ${{ needs.build.outputs.dotnet-sdk-version }}
 
