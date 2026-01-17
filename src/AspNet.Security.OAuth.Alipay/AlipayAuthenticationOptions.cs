@@ -30,9 +30,9 @@ public class AlipayAuthenticationOptions : OAuthOptions
         ClaimActions.MapJsonKey(Claims.Nickname, "nick_name");
         ClaimActions.MapJsonKey(Claims.Province, "province");
         ClaimActions.MapJsonKey(Claims.OpenId, "open_id");
-#pragma warning disable CS0618
-        ClaimActions.MapJsonKey(Claims.UserId, "user_id");
-#pragma warning restore CS0618
+
+        // https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers/pull/1131#discussion_r2657531257
+        ClaimActions.MapJsonKey("urn:alipay:user_id", "user_id");
     }
 
     /// <summary>
@@ -78,6 +78,11 @@ public class AlipayAuthenticationOptions : OAuthOptions
             if (string.IsNullOrEmpty(RootCertificateSnKeyId))
             {
                 throw new ArgumentException($"The '{nameof(RootCertificateSnKeyId)}' option must be provided if the '{nameof(UseCertificateSignatures)}' option is set to true.", nameof(RootCertificateSnKeyId));
+            }
+
+            if (PublicKey == null)
+            {
+                throw new ArgumentException($"The '{nameof(PublicKey)}' option must be provided if the '{nameof(UseCertificateSignatures)}' option is set to true.", nameof(PublicKey));
             }
         }
     }
