@@ -46,17 +46,12 @@ public partial class AlipayAuthenticationHandler : OAuthHandler<AlipayAuthentica
 
     private const string SignType = "RSA2";
 
-    private async Task AddCertificateSignatureParametersAsync(SortedDictionary<string, string?> parameters)
+    private void AddCertificateSignatureParameters(SortedDictionary<string, string?> parameters)
     {
-        ArgumentNullException.ThrowIfNull(Options.PublicKey);
-        ArgumentNullException.ThrowIfNull(Options.ApplicationCertificateSnKeyId);
-        ArgumentNullException.ThrowIfNull(Options.RootCertificateSnKeyId);
-
-        var appPublicKey = await Options.PublicKey(Options.ApplicationCertificateSnKeyId, Context.RequestAborted);
-        var alipayRootPublicKey = await Options.PublicKey(Options.RootCertificateSnKeyId, Context.RequestAborted);
-
-        parameters["app_cert_sn"] = AlipayCertificationUtil.GetCertSN(appPublicKey.Span);
-        parameters["alipay_root_cert_sn"] = AlipayCertificationUtil.GetRootCertSN(alipayRootPublicKey.Span, SignType);
+        ArgumentNullException.ThrowIfNull(Options.ApplicationCertificateSn);
+        ArgumentNullException.ThrowIfNull(Options.RootCertificateSn);
+        parameters["app_cert_sn"] = Options.ApplicationCertificateSn;
+        parameters["alipay_root_cert_sn"] = Options.RootCertificateSn;
     }
 
     protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] OAuthCodeExchangeContext context)
@@ -77,7 +72,7 @@ public partial class AlipayAuthenticationHandler : OAuthHandler<AlipayAuthentica
 
         if (Options.UseCertificateSignatures)
         {
-            await AddCertificateSignatureParametersAsync(tokenRequestParameters);
+            AddCertificateSignatureParameters(tokenRequestParameters);
         }
 
         tokenRequestParameters.Add("sign", GetRSA2Signature(tokenRequestParameters));
@@ -131,7 +126,7 @@ public partial class AlipayAuthenticationHandler : OAuthHandler<AlipayAuthentica
 
         if (Options.UseCertificateSignatures)
         {
-            await AddCertificateSignatureParametersAsync(parameters);
+            AddCertificateSignatureParameters(parameters);
         }
 
         parameters.Add("sign", GetRSA2Signature(parameters));

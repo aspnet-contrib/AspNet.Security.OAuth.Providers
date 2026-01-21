@@ -45,23 +45,13 @@ public class AlipayAuthenticationOptions : OAuthOptions
     /// Gets or sets the optional ID for your Sign in with Application Public Key Certificate SN(app_cert_sn).
     /// <para>https://opendocs.alipay.com/support/01raux</para>
     /// </summary>
-    public string? ApplicationCertificateSnKeyId { get; set; }
+    public string? ApplicationCertificateSn { get; set; }
 
     /// <summary>
     /// Gets or sets the optional ID for your Sign in with Alipay Root Certificate SN.
     /// <para>https://opendocs.alipay.com/support/01rauy</para>
     /// </summary>
-    public string? RootCertificateSnKeyId { get; set; }
-
-    /// <summary>
-    /// Gets or sets an optional delegate to get the client's public key which is passed
-    /// the value of the <see cref="ApplicationCertificateSnKeyId"/> or <see cref="RootCertificateSnKeyId"/> property and the <see cref="CancellationToken"/>
-    /// associated with the current HTTP request.
-    /// </summary>
-    /// <remarks>
-    /// The public key should be in PKCS #8 (<c>.p8</c>) format.
-    /// </remarks>
-    public Func<string, CancellationToken, Task<ReadOnlyMemory<char>>>? PublicKey { get; set; }
+    public string? RootCertificateSn { get; set; }
 
     /// <inheritdoc />
     public override void Validate()
@@ -70,19 +60,14 @@ public class AlipayAuthenticationOptions : OAuthOptions
 
         if (UseCertificateSignatures)
         {
-            if (string.IsNullOrEmpty(ApplicationCertificateSnKeyId))
+            if (string.IsNullOrEmpty(ApplicationCertificateSn))
             {
-                throw new ArgumentException($"The '{nameof(ApplicationCertificateSnKeyId)}' option must be provided if the '{nameof(UseCertificateSignatures)}' option is set to true.", nameof(ApplicationCertificateSnKeyId));
+                throw new ArgumentException($"The '{nameof(ApplicationCertificateSn)}' option must be provided if the '{nameof(UseCertificateSignatures)}' option is set to true.", nameof(ApplicationCertificateSn));
             }
 
-            if (string.IsNullOrEmpty(RootCertificateSnKeyId))
+            if (string.IsNullOrEmpty(RootCertificateSn))
             {
-                throw new ArgumentException($"The '{nameof(RootCertificateSnKeyId)}' option must be provided if the '{nameof(UseCertificateSignatures)}' option is set to true.", nameof(RootCertificateSnKeyId));
-            }
-
-            if (PublicKey == null)
-            {
-                throw new ArgumentException($"The '{nameof(PublicKey)}' option must be provided if the '{nameof(UseCertificateSignatures)}' option is set to true.", nameof(PublicKey));
+                throw new ArgumentException($"The '{nameof(RootCertificateSn)}' option must be provided if the '{nameof(UseCertificateSignatures)}' option is set to true.", nameof(RootCertificateSn));
             }
         }
     }
