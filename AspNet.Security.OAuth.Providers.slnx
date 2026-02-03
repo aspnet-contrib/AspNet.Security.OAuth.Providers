@@ -137,6 +137,7 @@
     <Project Path="src/AspNet.Security.OAuth.Instagram/AspNet.Security.OAuth.Instagram.csproj" />
     <Project Path="src/AspNet.Security.OAuth.JumpCloud/AspNet.Security.OAuth.JumpCloud.csproj" />
     <Project Path="src/AspNet.Security.OAuth.KakaoTalk/AspNet.Security.OAuth.KakaoTalk.csproj" />
+    <Project Path="src/AspNet.Security.OAuth.Kick/AspNet.Security.OAuth.Kick.csproj" />
     <Project Path="src/AspNet.Security.OAuth.Keycloak/AspNet.Security.OAuth.Keycloak.csproj" />
     <Project Path="src/AspNet.Security.OAuth.Kook/AspNet.Security.OAuth.Kook.csproj" />
     <Project Path="src/AspNet.Security.OAuth.Kroger/AspNet.Security.OAuth.Kroger.csproj" />
