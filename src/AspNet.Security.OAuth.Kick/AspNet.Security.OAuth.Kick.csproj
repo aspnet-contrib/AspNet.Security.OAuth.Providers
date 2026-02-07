@@ -1,6 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <PackageValidationBaselineVersion>10.1.0</PackageValidationBaselineVersion>
+    <!-- TODO Remove once published to NuGet.org -->
+    <DisablePackageBaselineValidation>true</DisablePackageBaselineValidation>
     <TargetFrameworks>$(DefaultNetCoreTargetFramework)</TargetFrameworks>
   </PropertyGroup>
 

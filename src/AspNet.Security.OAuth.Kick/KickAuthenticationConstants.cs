@@ -13,6 +13,6 @@ public static class KickAuthenticationConstants
 {
     public static class Claims
     {
-        public const string ProfilePicture = "urn:kick:profilepicture";
+        public static readonly string ProfilePicture = "urn:kick:profilepicture";
     }
 }
