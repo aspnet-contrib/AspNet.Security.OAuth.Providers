@@ -22,7 +22,7 @@ public class KickTests(ITestOutputHelper outputHelper) : OAuthTests<KickAuthenti
     [InlineData(ClaimTypes.NameIdentifier, "123456")]
     [InlineData(ClaimTypes.Name, "testuser")]
     [InlineData(ClaimTypes.Email, "test@example.com")]
-    [InlineData(Claims.ProfilePicture, "https://files.kick.com/images/user/123456/profile_image.png")]
+    [InlineData("urn:kick:profilepicture", "https://files.kick.com/images/user/123456/profile_image.png")]
     public async Task Can_Sign_In_Using_Kick(string claimType, string claimValue)
         => await AuthenticateUserAndAssertClaimValue(claimType, claimValue);
 
