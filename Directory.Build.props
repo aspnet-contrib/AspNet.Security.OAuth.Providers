@@ -3,7 +3,7 @@
   <Import Project="Sdk.props" Sdk="Microsoft.DotNet.Arcade.Sdk" />
 
   <PropertyGroup>
-    <DefaultNetCoreTargetFramework>net10.0</DefaultNetCoreTargetFramework>
+    <DefaultNetCoreTargetFramework>net11.0</DefaultNetCoreTargetFramework>
     <LangVersion>latest</LangVersion>
     <NoWarn>$(NoWarn);CA1515;CS1591</NoWarn>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
@@ -76,7 +76,8 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <EnablePackageValidation>$(IsPackable)</EnablePackageValidation>
+    <!-- TODO Re-enable when the 11.0.0 packages are published to NuGet.org -->
+    <EnablePackageValidation>false</EnablePackageValidation>
   </PropertyGroup>
 
   <ItemGroup>
