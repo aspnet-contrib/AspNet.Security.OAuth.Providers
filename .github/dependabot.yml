@@ -13,9 +13,9 @@ updates:
     time: "06:30"
     timezone: Europe/London
 - package-ecosystem: nuget
+  directory: "/"
   cooldown:
     default-days: 3
-  directory: "/"
   schedule:
     interval: daily
     time: "06:30"
