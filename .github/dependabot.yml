@@ -2,6 +2,8 @@ version: 2
 updates:
 - package-ecosystem: "github-actions"
   directory: "/"
+  cooldown:
+    default-days: 3
   groups:
     actions:
       patterns:
@@ -11,6 +13,8 @@ updates:
     time: "06:30"
     timezone: Europe/London
 - package-ecosystem: nuget
+  cooldown:
+    default-days: 3
   directory: "/"
   schedule:
     interval: daily
