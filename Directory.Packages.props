@@ -1,9 +1,8 @@
 <Project>
-
   <ItemGroup>
-    <PackageVersion Include="JetBrains.Annotations" Version="2025.2.2" />
+    <PackageVersion Include="JetBrains.Annotations" Version="2025.2.4" />
     <PackageVersion Include="JustEat.HttpClientInterception" Version="5.1.2" />
-    <PackageVersion Include="MartinCostello.Logging.XUnit" Version="0.6.0" />
+    <PackageVersion Include="MartinCostello.Logging.XUnit" Version="0.7.1" />
     <PackageVersion Include="Microsoft.AspNetCore.Authentication.Google" Version="11.0.0-preview.2.26159.112" />
     <PackageVersion Include="Microsoft.AspNetCore.Mvc.Testing" Version="11.0.0-preview.2.26159.112" />
     <PackageVersion Include="Microsoft.AspNetCore.TestHost" Version="11.0.0-preview.2.26159.112" />
@@ -12,5 +11,4 @@
     <PackageVersion Include="Shouldly" Version="4.3.0" />
     <PackageVersion Include="StyleCop.Analyzers" Version="1.2.0-beta.556" />
   </ItemGroup>
-
 </Project>
