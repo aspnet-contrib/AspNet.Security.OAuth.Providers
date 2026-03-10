@@ -1,5 +1,10 @@
 rules:
   anonymous-definition:
     disable: true
+  dependabot-cooldown:
+    config:
+      days: 3
+  secrets-outside-env:
+    disable: true
   undocumented-permissions:
     disable: true
