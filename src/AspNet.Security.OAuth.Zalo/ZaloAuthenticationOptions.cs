@@ -20,6 +20,7 @@ public class ZaloAuthenticationOptions : OAuthOptions
         AuthorizationEndpoint = ZaloAuthenticationDefaults.AuthorizationEndpoint;
         TokenEndpoint = ZaloAuthenticationDefaults.TokenEndpoint;
         UserInformationEndpoint = ZaloAuthenticationDefaults.UserInformationEndpoint;
+        UsePkce = true;
 
         ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
         ClaimActions.MapJsonKey(ClaimTypes.Name, "name");
