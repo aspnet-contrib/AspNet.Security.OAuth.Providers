@@ -35,7 +35,7 @@ internal sealed partial class DefaultAppleClientSecretGenerator(
                 Log.ClientSecretGenerationFailed(logger, ex, context.Scheme.Name);
                 throw;
             }
-        });
+        }, new MemoryCacheEntryOptions { Size = 1 });
 
         return clientSecret!;
     }
