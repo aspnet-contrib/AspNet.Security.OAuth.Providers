@@ -27,6 +27,7 @@ internal sealed partial class DefaultAppleClientSecretGenerator(
         {
             try
             {
+                entry.Size = 1;
                 (var clientSecret, entry.AbsoluteExpiration) = await GenerateNewSecretAsync(context);
                 return clientSecret;
             }
@@ -35,7 +36,7 @@ internal sealed partial class DefaultAppleClientSecretGenerator(
                 Log.ClientSecretGenerationFailed(logger, ex, context.Scheme.Name);
                 throw;
             }
-        }, new MemoryCacheEntryOptions { Size = 1 });
+        });
 
         return clientSecret!;
     }
