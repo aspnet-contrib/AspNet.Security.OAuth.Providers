@@ -8,6 +8,11 @@ updates:
     actions:
       patterns:
         - actions/*
+    github/codeql-action:
+      patterns:
+        - github/codeql-action/analyze
+        - github/codeql-action/init
+        - github/codeql-action/upload-sari
   schedule:
     interval: daily
     time: "06:30"
