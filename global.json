@@ -1,8 +1,7 @@
 {
   "sdk": {
     "version": "11.0.100-preview.6.26359.118",
-    "allowPrerelease": true,
-    "rollForward": "major"
+    "allowPrerelease": true
   },
 
   "tools": {
