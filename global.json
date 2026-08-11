@@ -1,11 +1,11 @@
 {
   "sdk": {
-    "version": "10.0.302",
+    "version": "10.0.400",
     "allowPrerelease": true
   },
 
   "tools": {
-    "dotnet": "10.0.302"
+    "dotnet": "10.0.400"
   },
 
   "msbuild-sdks": {
