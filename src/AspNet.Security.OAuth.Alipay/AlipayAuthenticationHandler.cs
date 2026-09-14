@@ -44,6 +44,16 @@ public partial class AlipayAuthenticationHandler : OAuthHandler<AlipayAuthentica
         return base.HandleRemoteAuthenticateAsync();
     }
 
+    private const string SignType = "RSA2";
+
+    private void AddCertificateSignatureParameters(SortedDictionary<string, string?> parameters)
+    {
+        ArgumentNullException.ThrowIfNull(Options.ApplicationCertificateSn);
+        ArgumentNullException.ThrowIfNull(Options.RootCertificateSn);
+        parameters["app_cert_sn"] = Options.ApplicationCertificateSn;
+        parameters["alipay_root_cert_sn"] = Options.RootCertificateSn;
+    }
+
     protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] OAuthCodeExchangeContext context)
     {
         // See https://opendocs.alipay.com/apis/api_9/alipay.system.oauth.token for details.
@@ -55,10 +65,16 @@ public partial class AlipayAuthenticationHandler : OAuthHandler<AlipayAuthentica
             ["format"] = "JSON",
             ["grant_type"] = "authorization_code",
             ["method"] = "alipay.system.oauth.token",
-            ["sign_type"] = "RSA2",
+            ["sign_type"] = SignType,
             ["timestamp"] = TimeProvider.GetUtcNow().ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture),
             ["version"] = "1.0",
         };
+
+        if (Options.UseCertificateSignatures)
+        {
+            AddCertificateSignatureParameters(tokenRequestParameters);
+        }
+
         tokenRequestParameters.Add("sign", GetRSA2Signature(tokenRequestParameters));
 
         // PKCE https://tools.ietf.org/html/rfc7636#section-4.5, see BuildChallengeUrl
@@ -103,10 +119,16 @@ public partial class AlipayAuthenticationHandler : OAuthHandler<AlipayAuthentica
             ["charset"] = "utf-8",
             ["format"] = "JSON",
             ["method"] = "alipay.user.info.share",
-            ["sign_type"] = "RSA2",
+            ["sign_type"] = SignType,
             ["timestamp"] = TimeProvider.GetUtcNow().ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture),
             ["version"] = "1.0",
         };
+
+        if (Options.UseCertificateSignatures)
+        {
+            AddCertificateSignatureParameters(parameters);
+        }
+
         parameters.Add("sign", GetRSA2Signature(parameters));
 
         var address = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, parameters);

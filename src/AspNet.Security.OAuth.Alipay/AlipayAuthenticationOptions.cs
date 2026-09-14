@@ -29,5 +29,46 @@ public class AlipayAuthenticationOptions : OAuthOptions
         ClaimActions.MapJsonKey(Claims.Gender, "gender");
         ClaimActions.MapJsonKey(Claims.Nickname, "nick_name");
         ClaimActions.MapJsonKey(Claims.Province, "province");
+        ClaimActions.MapJsonKey(Claims.OpenId, "open_id");
+
+        // https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers/pull/1131#discussion_r2657531257
+        ClaimActions.MapJsonKey("urn:alipay:user_id", "user_id");
+    }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether to use certificate mode for signing calls.
+    /// <para>https://opendocs.alipay.com/common/057k53?pathHash=e18d6f77#%E8%AF%81%E4%B9%A6%E6%A8%A1%E5%BC%8F</para>
+    /// </summary>
+    public bool UseCertificateSignatures { get; set; }
+
+    /// <summary>
+    /// Gets or sets the optional ID for your Sign in with Application Public Key Certificate SN(app_cert_sn).
+    /// <para>https://opendocs.alipay.com/support/01raux</para>
+    /// </summary>
+    public string? ApplicationCertificateSn { get; set; }
+
+    /// <summary>
+    /// Gets or sets the optional ID for your Sign in with Alipay Root Certificate SN.
+    /// <para>https://opendocs.alipay.com/support/01rauy</para>
+    /// </summary>
+    public string? RootCertificateSn { get; set; }
+
+    /// <inheritdoc />
+    public override void Validate()
+    {
+        base.Validate();
+
+        if (UseCertificateSignatures)
+        {
+            if (string.IsNullOrEmpty(ApplicationCertificateSn))
+            {
+                throw new ArgumentException($"The '{nameof(ApplicationCertificateSn)}' option must be provided if the '{nameof(UseCertificateSignatures)}' option is set to true.", nameof(ApplicationCertificateSn));
+            }
+
+            if (string.IsNullOrEmpty(RootCertificateSn))
+            {
+                throw new ArgumentException($"The '{nameof(RootCertificateSn)}' option must be provided if the '{nameof(UseCertificateSignatures)}' option is set to true.", nameof(RootCertificateSn));
+            }
+        }
     }
 }
