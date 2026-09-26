@@ -50,6 +50,7 @@ covered by the section above.
 | Discord | _Optional_ | [Documentation](discord.md "Discord provider documentation") |
 | Docusign | **Required** | [Documentation](docusign.md "Docusign provider documentation") |
 | eBay | **Required** | [Documentation](ebay.md "eBay provider documentation") |
+| Etsy | _Optional_ | [Documentation](etsy.md "Etsy provider documentation") |
 | EVEOnline | _Optional_ | [Documentation](eveonline.md "EVEOnline provider documentation") |
 | Foursquare | _Optional_ | [Documentation](foursquare.md "Foursquare provider documentation") |
 | GitCode | _Optional_ | [Documentation](gitcode.md "GitCode provider documentation") |
