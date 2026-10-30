@@ -175,7 +175,6 @@ public sealed partial class VkIdAuthenticationHandler : OAuthHandler<VkIdAuthent
             ["device_id"] = deviceId,
             ["redirect_uri"] = context.RedirectUri,
             ["state"] = Options.StateDataFormat.Protect(context.Properties),
-            ["service_token"] = Options.ServiceToken,
         };
 
         // The service token is required only for confidential VK ID applications.
