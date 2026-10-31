@@ -49,6 +49,7 @@
     <File Path="docs/docusign.md" />
     <File Path="docs/dropbox.md" />
     <File Path="docs/ebay.md" />
+    <File Path="docs/etsy.md" />
     <File Path="docs/eveonline.md" />
     <File Path="docs/foursquare.md" />
     <File Path="docs/gitcode.md" />
@@ -120,6 +121,7 @@
     <Project Path="src/AspNet.Security.OAuth.Docusign/AspNet.Security.OAuth.Docusign.csproj" />
     <Project Path="src/AspNet.Security.OAuth.Dropbox/AspNet.Security.OAuth.Dropbox.csproj" />
     <Project Path="src/AspNet.Security.OAuth.Ebay/AspNet.Security.OAuth.Ebay.csproj" />
+    <Project Path="src/AspNet.Security.OAuth.Etsy/AspNet.Security.OAuth.Etsy.csproj" />
     <Project Path="src/AspNet.Security.OAuth.EVEOnline/AspNet.Security.OAuth.EVEOnline.csproj" />
     <Project Path="src/AspNet.Security.OAuth.ExactOnline/AspNet.Security.OAuth.ExactOnline.csproj" />
     <Project Path="src/AspNet.Security.OAuth.Feishu/AspNet.Security.OAuth.Feishu.csproj" />
