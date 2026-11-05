@@ -40,7 +40,7 @@ public partial class XeroAuthenticationHandler : OAuthHandler<XeroAuthentication
 
         var principal = new ClaimsPrincipal(identity);
 
-        var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, JsonDocument.Parse("{}").RootElement);
+        var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, JsonElement.Parse("{}"));
         await Events.CreatingTicket(context);
         return new AuthenticationTicket(context.Principal!, context.Properties, Scheme.Name);
     }
