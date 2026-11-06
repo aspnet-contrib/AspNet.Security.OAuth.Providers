@@ -177,6 +177,12 @@ public sealed partial class VkIdAuthenticationHandler : OAuthHandler<VkIdAuthent
             ["state"] = Options.StateDataFormat.Protect(context.Properties),
         };
 
+        // The service token is required only for confidential VK ID applications.
+        if (!string.IsNullOrWhiteSpace(Options.ServiceToken))
+        {
+            query["service_token"] = Options.ServiceToken;
+        }
+
         using var request = new HttpRequestMessage(HttpMethod.Post, Options.TokenEndpoint);
         request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         request.Content = new FormUrlEncodedContent(query);
