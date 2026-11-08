@@ -13,11 +13,6 @@ namespace AspNet.Security.OAuth.VkId;
 /// </summary>
 public sealed class VkIdAuthenticationOptions : OAuthOptions
 {
-    /// <summary>
-    /// Gets or sets the service access token required by confidential VK ID applications.
-    /// </summary>
-    public string ServiceToken { get; set; } = string.Empty;
-
     public VkIdAuthenticationOptions()
     {
         ClaimsIssuer = VkIdAuthenticationDefaults.ClaimsIssuer;
@@ -40,4 +35,9 @@ public sealed class VkIdAuthenticationOptions : OAuthOptions
         ClaimActions.MapJsonKey(VkIdAuthenticationConstants.Claims.IsVerified, "verified");
         ClaimActions.MapJsonKey(ClaimTypes.DateOfBirth, "birthday");
     }
+
+    /// <summary>
+    /// Gets or sets the service access token required by confidential VK ID applications.
+    /// </summary>
+    public string ServiceToken { get; set; } = string.Empty;
 }
