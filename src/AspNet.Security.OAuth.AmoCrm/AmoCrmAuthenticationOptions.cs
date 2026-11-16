@@ -39,7 +39,11 @@ public class AmoCrmAuthenticationOptions : OAuthOptions
     /// <exception cref="ArgumentException">Thrown when <paramref name="value"/> is null or empty string.</exception>
     public string Account
     {
-        get => _account;
+        get
+        {
+            return _account;
+        }
+
         set
         {
             ArgumentException.ThrowIfNullOrWhiteSpace(value);

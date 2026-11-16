@@ -30,9 +30,9 @@ public class BaiduAuthenticationOptions : OAuthOptions
             user =>
             {
                 var portrait = user.GetString("portrait");
-                return string.IsNullOrWhiteSpace(portrait) ?
-                    null :
-                    $"https://tb.himg.baidu.com/sys/portrait/item/{WebUtility.UrlEncode(portrait)}";
+                return string.IsNullOrWhiteSpace(portrait)
+                    ? null
+                    : $"https://tb.himg.baidu.com/sys/portrait/item/{WebUtility.UrlEncode(portrait)}";
             });
     }
 }

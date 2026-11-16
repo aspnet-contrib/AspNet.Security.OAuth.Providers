@@ -52,7 +52,7 @@ public partial class AirtableAuthenticationHandler : OAuthHandler<AirtableAuthen
         return new AuthenticationTicket(context.Principal!, context.Properties, Scheme.Name);
     }
 
-    protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull]OAuthCodeExchangeContext context)
+    protected override async Task<OAuthTokenResponse> ExchangeCodeAsync([NotNull] OAuthCodeExchangeContext context)
     {
         var tokenRequestParameters = new Dictionary<string, string>
         {

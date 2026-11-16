@@ -27,9 +27,9 @@ public class KeycloakPostConfigureOptions : IPostConfigureOptions<KeycloakAuthen
 
     private static string CreateUrl(KeycloakAuthenticationOptions options, string resource)
     {
-        var builder = options.BaseAddress is not null ?
-            new UriBuilder(options.BaseAddress) :
-            new UriBuilder(options.Domain!);
+        var builder = options.BaseAddress is not null
+            ? new UriBuilder(options.BaseAddress)
+            : new UriBuilder(options.Domain!);
 
         // Enforce use of HTTPS if only the domain is specified
         if (options.BaseAddress is null)

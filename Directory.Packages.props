@@ -9,6 +9,6 @@
     <PackageVersion Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="8.19.2" />
     <PackageVersion Include="NSubstitute" Version="6.2.0" />
     <PackageVersion Include="Shouldly" Version="4.3.0" />
-    <PackageVersion Include="StyleCop.Analyzers" Version="1.2.0-beta.556" />
+    <PackageVersion Include="StyleCop.Analyzers" Version="1.3.180" />
   </ItemGroup>
 </Project>
