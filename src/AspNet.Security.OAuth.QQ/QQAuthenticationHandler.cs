@@ -144,9 +144,9 @@ public partial class QQAuthenticationHandler : OAuthHandler<QQAuthenticationOpti
         var payloadRoot = payload.RootElement;
 
         var errorCode =
-            payloadRoot.TryGetProperty("error", out var errorCodeElement) && errorCodeElement.ValueKind == JsonValueKind.Number ?
-            errorCodeElement.GetInt32() :
-            0;
+            payloadRoot.TryGetProperty("error", out var errorCodeElement) && errorCodeElement.ValueKind == JsonValueKind.Number
+                ? errorCodeElement.GetInt32()
+                : 0;
 
         return (errorCode, payloadRoot.GetString("openid"), payloadRoot.GetString("unionid"));
     }

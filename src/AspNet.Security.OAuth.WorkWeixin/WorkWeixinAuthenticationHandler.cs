@@ -156,9 +156,9 @@ public partial class WorkWeixinAuthenticationHandler : OAuthHandler<WorkWeixinAu
         using var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(Context.RequestAborted));
 
         var errorCode =
-            payload.RootElement.TryGetProperty("errcode", out var errCodeElement) && errCodeElement.ValueKind == JsonValueKind.Number ?
-            errCodeElement.GetInt32() :
-            0;
+            payload.RootElement.TryGetProperty("errcode", out var errCodeElement) && errCodeElement.ValueKind == JsonValueKind.Number
+                ? errCodeElement.GetInt32()
+                : 0;
 
         return (errorCode, payload.RootElement.GetString("UserId"));
     }
