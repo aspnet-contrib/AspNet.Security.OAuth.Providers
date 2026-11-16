@@ -43,6 +43,7 @@ public class AmoCrmAuthenticationOptions : OAuthOptions
         {
             return _account;
         }
+
         set
         {
             ArgumentException.ThrowIfNullOrWhiteSpace(value);
